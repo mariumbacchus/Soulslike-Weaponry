@@ -1,0 +1,10 @@
+{
+    "variants": {
+      "half=lower": {
+        "model": "soulsweapons:block/withered_tall_grass_bottom"
+      },
+      "half=upper": {
+        "model": "soulsweapons:block/withered_tall_grass_top"
+      }
+    }
+  }

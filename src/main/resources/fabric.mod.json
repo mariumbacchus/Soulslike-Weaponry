@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "soulsweapons",
+  "version": "${version}",
+
+  "name": "Marium's Soulslike Weaponry",
+  "description": "Adds lots of legendary weapons and bosses!",
+  "authors": [
+    "Marium"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/soulsweapons/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.soulsweaponry.SoulsWeaponry"
+    ],
+    "client": [
+      "net.soulsweaponry.client.SoulsWeaponryClient"
+    ]
+  },
+  "mixins": [
+    "soulsweapons.mixins.json"
+  ],
+
+  "depends": {
+    "fabric-key-binding-api-v1": "*",
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

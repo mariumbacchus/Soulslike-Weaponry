@@ -1,0 +1,13 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {"item": "soulsweapons:essence_of_eventide"},
+        {"item": "soulsweapons:withered_demon_heart"},
+        {"item": "soulsweapons:arkenstone"},
+        {"item": "soulsweapons:chaos_crown"}
+    ],
+    "result": {
+        "item": "soulsweapons:chaos_orb",
+        "count": 1
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " #",
+        "##",
+        "#G"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:lost_soul"
+        },
+        "G": {
+            "item": "soulsweapons:soul_ingot"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:translucent_glaive"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "soulsweapons:item/soul_robes_boots"
+    }
+}

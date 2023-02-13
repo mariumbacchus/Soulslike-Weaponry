@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "minecraft:leather_leggings"
+    },
+    "addition": {
+        "item": "soulsweapons:soul_ingot"
+    },
+    "result": {
+        "item": "soulsweapons:soul_robes_leggings"
+    }
+}

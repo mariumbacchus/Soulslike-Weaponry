@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/tinted_cross",
+    "textures": {
+      "cross": "soulsweapons:block/withered_berry_bush"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {"item": "minecraft:iron_ingot"},
+        {"item": "soulsweapons:lost_soul"}
+    ],
+    "result": {
+        "item": "soulsweapons:silver_bullet",
+        "count": 10
+    }
+}

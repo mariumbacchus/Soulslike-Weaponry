@@ -1,0 +1,16 @@
+{
+    "replace": false,
+    "values": [
+      "soulsweapons:moonstone_ore",
+      "soulsweapons:moonstone_ore_deepslate",
+      "soulsweapons:moonstone_block",
+      "soulsweapons:cracked_infused_blackstone",
+      "soulsweapons:infused_blackstone",
+      "soulsweapons:crimson_obsidian",
+      "soulsweapons:altar_block",
+      "soulsweapons:blackstone_pedestal",
+      "soulsweapons:verglas_ore",
+      "soulsweapons:verglas_ore_deepslate",
+      "soulsweapons:soulfire_stain"
+    ]
+  }

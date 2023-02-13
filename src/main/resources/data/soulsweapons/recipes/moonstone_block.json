@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:moonstone"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:moonstone_block",
+        "count": 1
+    }
+}

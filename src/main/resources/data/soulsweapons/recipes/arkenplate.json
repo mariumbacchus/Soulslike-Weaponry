@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "minecraft:netherite_chestplate"
+    },
+    "addition": {
+        "item": "soulsweapons:arkenstone"
+    },
+    "result": {
+        "item": "soulsweapons:arkenplate"
+    }
+}

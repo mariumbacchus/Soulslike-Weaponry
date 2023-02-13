@@ -1,0 +1,233 @@
+{
+    "moonlight_big": {
+        "subtitle": "subtitles.soulsweapons.moonlight_big",
+        "sounds": [
+            "soulsweapons:moonlight_big"
+        ]
+    },
+    "moonlight_small": {
+        "subtitle": "subtitles.soulsweapons.moonlight_small",
+        "sounds": [
+            "soulsweapons:moonlight_small"
+        ]
+    },
+    "big_chungus": {
+        "subtitle": "subtitles.soulsweapons.big_chungus",
+        "sounds": [
+            "soulsweapons:big_chungus"
+        ]
+    },
+    "big_chungus_song": {
+        "sounds": [
+            {
+                "name": "soulsweapons:big_chungus_song",
+                "stream": true
+            }
+
+        ]
+    },
+    "fart": {
+        "subtitle": "subtitles.soulsweapons.fart",
+        "sounds": [
+            "soulsweapons:fart"
+        ]
+    },
+    "demon_idle": {
+        "subtitle": "subtitles.soulsweapons.demon_idle",
+        "sounds": [
+            "soulsweapons:demon_idle"
+        ]
+    },
+    "demon_walk": {
+        "subtitle": "subtitles.soulsweapons.demon_walk",
+        "sounds": [
+            "soulsweapons:demon_walk"
+        ]
+    },
+    "demon_damage": {
+        "subtitle": "subtitles.soulsweapons.demon_damage",
+        "sounds": [
+            "soulsweapons:demon_damage"
+        ]
+    },
+    "demon_death": {
+        "subtitle": "subtitles.soulsweapons.demon_death",
+        "sounds": [
+            "soulsweapons:demon_death"
+        ]
+    },
+    "spawn_undead": {
+        "subtitle": "subtitles.soulsweapons.spawn_undead",
+        "sounds": [
+            "soulsweapons:spawn_undead"
+        ]
+    },
+    "shield": {
+        "subtitle": "subtitles.soulsweapons.shield",
+        "sounds": [
+            "soulsweapons:shield"
+        ]
+    },
+    "nightfall_bonk": {
+        "subtitle": "subtitles.soulsweapons.nightfall_bonk",
+        "sounds": [
+            "soulsweapons:nightfall_bonk"
+        ]
+    },
+    "death_screams": {
+        "subtitle": "subtitles.soulsweapons.death_screams",
+        "sounds": [
+            "soulsweapons:death_screams"
+        ]
+    },
+    "knight_hit": {
+        "subtitle": "subtitles.soulsweapons.knight_hit",
+        "sounds": [
+            "soulsweapons:knight_hit"
+        ]
+    },
+    "knight_death": {
+        "subtitle": "subtitles.soulsweapons.knight_death",
+        "sounds": [
+            "soulsweapons:knight_death"
+        ]
+    },
+    "decaying_king_idle": {
+        "subtitle": "subtitles.soulsweapons.decaying_king_idle",
+        "sounds": [
+            "soulsweapons:decaying_king_idle"
+        ]
+    },
+    "decaying_king_death": {
+        "subtitle": "subtitles.soulsweapons.decaying_king_death",
+        "sounds": [
+            "soulsweapons:decaying_king_death"
+        ]
+    },
+    "decaying_king_hurt": {
+        "subtitle": "subtitles.soulsweapons.decaying_king_hurt",
+        "sounds": [
+            "soulsweapons:decaying_king_hurt"
+        ]
+    },
+    "night_shade_damage": {
+        "subtitle": "subtitles.soulsweapons.night_shade_damage",
+        "sounds": [
+            "soulsweapons:night_shade_damage"
+        ]
+    },
+    "night_shade_idle": {
+        "subtitle": "subtitles.soulsweapons.night_shade_idle",
+        "sounds": [
+            "soulsweapons:night_shade_idle"
+        ]
+    },
+    "night_shade_death": {
+        "subtitle": "subtitles.soulsweapons.night_shade_death",
+        "sounds": [
+            "soulsweapons:night_shade_death"
+        ]
+    },
+    "gatling_gun_startup": {
+        "subtitle": "subtitles.soulsweapons.gatling_gun_startup",
+        "sounds": [
+            "soulsweapons:gatling_gun_startup"
+        ]
+    },
+    "gatling_gun_barrage": {
+        "subtitle": "subtitles.soulsweapons.gatling_gun_barrage",
+        "sounds": [
+            "soulsweapons:gatling_gun_barrage"
+        ]
+    },
+    "gatling_gun_stop": {
+        "subtitle": "subtitles.soulsweapons.gatling_gun_stop",
+        "sounds": [
+            "soulsweapons:gatling_gun_stop"
+        ]
+    },
+    "dawnbreaker_sound": {
+        "subtitle": "subtitles.soulsweapons.dawnbreaker_sound",
+        "sounds": [
+            "soulsweapons:dawnbreaker_sound"
+        ]
+    },
+    "soulmass_idle": {
+        "subtitle": "subtitles.soulsweapons.soulmass_idle",
+        "sounds": [
+            "soulsweapons:soulmass_idle"
+        ]
+    },
+    "crit_hit": {
+        "subtitle": "subtitles.soulsweapons.crit_hit",
+        "sounds": [
+            "soulsweapons:crit_hit"
+        ]
+    },
+    "posture_break": {
+        "subtitle": "subtitles.soulsweapons.posture_break",
+        "sounds": [
+            "soulsweapons:posture_break"
+        ]
+    },
+    "restore": {
+        "subtitle": "subtitles.soulsweapons.restore",
+        "sounds": [
+            "soulsweapons:restore"
+        ]
+    },
+    "sharpen": {
+        "subtitle": "subtitles.soulsweapons.sharpen",
+        "sounds": [
+            "soulsweapons:sharpen"
+        ]
+    },
+    "sword_hit_shield": {
+        "subtitle": "subtitles.soulsweapons.sword_hit_shield",
+        "sounds": [
+            "soulsweapons:sword_hit_shield"
+        ]
+    },
+    "knight_swipe": {
+        "subtitle": "subtitles.soulsweapons.knight_swipe",
+        "sounds": [
+            "soulsweapons:knight_swipe"
+        ]
+    },
+    "knight_death_laugh": {
+        "subtitle": "subtitles.soulsweapons.knight_death_laugh",
+        "sounds": [
+            "soulsweapons:knight_death_laugh"
+        ]
+    },
+    "blinding_light_explosion": {
+        "subtitle": "subtitles.soulsweapons.blinding_light_explosion",
+        "sounds": [
+            "soulsweapons:blinding_light_explosion"
+        ]
+    },
+    "knight_core_beam": {
+        "subtitle": "subtitles.soulsweapons.knight_core_beam",
+        "sounds": [
+            "soulsweapons:knight_core_beam"
+        ]
+    },
+    "knight_charge_sword": {
+        "subtitle": "subtitles.soulsweapons.knight_charge_sword",
+        "sounds": [
+            "soulsweapons:knight_charge_sword"
+        ]
+    },
+    "knight_sword_smash": {
+        "subtitle": "subtitles.soulsweapons.knight_sword_smash",
+        "sounds": [
+            "soulsweapons:knight_sword_smash"
+        ]
+    },
+    "knight_thrust_sword": {
+        "subtitle": "subtitles.soulsweapons.knight_thrust_sword",
+        "sounds": [
+            "soulsweapons:knight_thrust_sword"
+        ]
+    }
+}

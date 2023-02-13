@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#X#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:moonstone"
+        },
+        "X": {
+            "item": "minecraft:compass"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:boss_compass",
+        "count": 1
+    }
+}

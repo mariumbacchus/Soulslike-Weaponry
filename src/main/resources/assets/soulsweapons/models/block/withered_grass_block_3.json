@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+      "top": "soulsweapons:block/withered_grass_block_3",
+      "bottom": "soulsweapons:block/withered_dirt_3",
+      "side": "soulsweapons:block/withered_grass_block_side_3"
+    }
+  }

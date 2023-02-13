@@ -1,0 +1,133 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        68,
+        46,
+        -85.32
+      ],
+      "translation": [
+        -5.25,
+        -5.75,
+        2.25
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        17,
+        -90,
+        0
+      ],
+      "translation": [
+        0.25,
+        2,
+        2.75
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        111.46,
+        44.85,
+        -103.99
+      ],
+      "translation": [
+        -6.5,
+        3.5,
+        0
+      ],
+      "scale": [
+        0.35,
+        0.35,
+        0.35
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        -180,
+        -79,
+        178.25
+      ],
+      "translation": [
+        5.75,
+        2,
+        -1.25
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        45
+      ],
+      "scale": [
+        0.15,
+        0.15,
+        0.15
+      ]
+    },
+    "gui": {
+      "rotation": [
+        0,
+        -180,
+        45
+      ],
+      "translation": [
+        -2,
+        -3.25,
+        0
+      ],
+      "scale": [
+        0.15,
+        0.15,
+        0.15
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        45
+      ],
+      "translation": [
+        2.5,
+        -4.75,
+        0
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "head": {
+      "rotation": [0, 0, -40],
+      "translation": [-2, -1, 0],
+      "scale": [0.15, 0.15, 0.15]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "bettercombat_hold": 1
+      },
+      "model": "soulsweapons:item/soul_reaper_bettercombat"
+    }
+  ]
+}

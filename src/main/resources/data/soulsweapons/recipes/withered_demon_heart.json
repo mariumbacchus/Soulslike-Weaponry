@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "item": "soulsweapons:withered_demon_heart"
+    },
+    "result": "minecraft:netherite_ingot",
+    "experience": 10,
+    "cookingtime": 500
+}

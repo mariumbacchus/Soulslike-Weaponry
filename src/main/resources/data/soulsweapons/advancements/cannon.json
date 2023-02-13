@@ -1,0 +1,37 @@
+{
+    "parent": "soulsweapons:gatling_gun",
+    "display": {
+      "icon": {
+        "item": "soulsweapons:hunter_cannon"
+      },
+      "title": {
+        "translate": "advancements.soulsweapons.cannon.title"
+      },
+      "description": {
+        "translate": "advancements.soulsweapons.cannon.description"
+      },
+      "frame": "goal",
+      "show_toast": true,
+      "announce_to_chat": true,
+      "hidden": false
+    },
+    "criteria": {
+      "weapon": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:hunter_cannon"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "requirements": [
+      [
+        "weapon"
+      ]
+    ]
+  }

@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "XXX",
+        "X X"
+    ],
+    "key": {
+        "X": {
+            "item": "soulsweapons:soul_ingot"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:soul_ingot_helmet"
+    }
+}

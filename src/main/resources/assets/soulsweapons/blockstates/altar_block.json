@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "soulsweapons:block/altar_block",
+            "y": 270
+        },
+        "facing=north": {
+            "model": "soulsweapons:block/altar_block",
+            "y": 180
+        },
+        "facing=south": {
+            "model": "soulsweapons:block/altar_block"
+        },
+        "facing=west": {
+            "model": "soulsweapons:block/altar_block",
+            "y": 90
+        }
+    }
+}

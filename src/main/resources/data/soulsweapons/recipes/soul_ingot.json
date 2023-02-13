@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "minecraft:iron_ingot"
+    },
+    "addition": {
+        "item": "soulsweapons:lost_soul"
+    },
+    "result": {
+        "item": "soulsweapons:soul_ingot"
+    }
+}
