@@ -38,7 +38,7 @@ public class WeaponRegistry {
     
     public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
 
-    public static ToolItem BLUEMON_SHORTSWORD = new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
+    public static ToolItem BLUEMOON_SHORTSWORD = new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
     public static ToolItem BLUEMOON_GREATSWORD = new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
     public static ToolItem MOONLIGHT_SHORTSWORD = new MoonlightShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
     public static ToolItem MOONLIGHT_GREATSWORD = new MoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
