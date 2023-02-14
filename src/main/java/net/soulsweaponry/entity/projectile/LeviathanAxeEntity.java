@@ -13,30 +13,32 @@ import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class LeviathanAxeEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class LeviathanAxeEntity extends PersistentProjectileEntity implements IAnimatable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private ItemStack stack;
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
+        this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> type, double x, double y, double z,
             World world) {
         super(type, x, y, z, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
+        this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world);
         this.stack = stack.copy();
+        this.ignoreCameraFrustum = true;
     }
 
     @Override
@@ -62,11 +64,6 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
     }
 
     @Override
-    public int tickTimer() {
-        return 0;
-    }
-
-    @Override
     public void registerControllers(AnimationData data) {
     }
 
@@ -74,5 +71,4 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
     public AnimationFactory getFactory() {
         return this.factory;
     }
-    
 }

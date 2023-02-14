@@ -238,7 +238,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
         public SoulmassGoal(Soulmass entity) {
             this.entity = entity;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         @Override

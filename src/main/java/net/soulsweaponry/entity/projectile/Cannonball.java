@@ -24,7 +24,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Cannonball extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private int life;
 
     public Cannonball(EntityType<? extends Cannonball> entityType, World world) {

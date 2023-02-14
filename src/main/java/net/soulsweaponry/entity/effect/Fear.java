@@ -30,8 +30,8 @@ public class Fear extends StatusEffect {
         if (entity instanceof MobEntity) {
             MobEntity victim = (MobEntity)entity;
             if (destinationReset < 0) {
-                this.x = victim.getX() + victim.getRandom().nextBetween(-25, 25);
-                this.z = victim.getZ() + victim.getRandom().nextBetween(-25, 25);
+                this.x = victim.getX() + victim.getRandom().nextInt(25 - (-25)) + 25;
+                this.z = victim.getZ() + victim.getRandom().nextInt(25 - (-25)) + 25;
                 this.destinationReset = 40;
             } else {
                 victim.getNavigation().startMovingTo(x, victim.getY(), z, 1.1f);

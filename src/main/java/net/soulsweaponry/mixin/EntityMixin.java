@@ -15,7 +15,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 public class EntityMixin {
     
     @Shadow
-    public static <T extends MobEntity> void register(EntityType<T> type, SpawnRestriction.Location location,
+    private static <T extends MobEntity> void register(EntityType<T> type, SpawnRestriction.Location location,
      Heightmap.Type hType, SpawnRestriction.SpawnPredicate<T> predicate) {
 
     }

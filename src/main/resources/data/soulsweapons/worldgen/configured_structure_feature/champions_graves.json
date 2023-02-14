@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:village",
+    "config": {
+      "start_pool": "soulsweapons:champions_graves",
+      "size": 1
+    },
+    "terrain_adaptation": "bury",
+    "biomes": [
+        "minecraft:taiga",
+        "minecraft:snowy_taiga"
+    ],
+    "adapt_noise": true,
+    "spawn_overrides": {}
+}

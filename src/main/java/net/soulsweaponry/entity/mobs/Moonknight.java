@@ -1,5 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
@@ -28,10 +31,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -76,7 +78,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
     
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
-        super(entityType, world, BossBar.Color.WHITE);
+        super(entityType, world, Color.WHITE);
         this.setDrops(WeaponRegistry.MOONLIGHT_GREATSWORD);
         this.setDrops(ItemRegistry.LORD_SOUL_WHITE);
         this.setDrops(ItemRegistry.ESSENCE_OF_LUMINESCENCE);
@@ -239,7 +241,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 this.setPhaseTwo(true);
                 this.initiatePhaseTwo(false);
                 this.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
-                this.setCustomName(Text.translatable("entity.soulsweapons.moonknight_phase_2"));
+                this.setCustomName(new TranslatableText("entity.soulsweapons.moonknight_phase_2"));
                 this.bossBar.setColor(Color.BLUE);
             }
         }
@@ -309,10 +311,10 @@ public class Moonknight extends BossEntity implements IAnimatable {
             int points = 50;
             for (int i = 0; i < 10; i++) {
                 length += (this.getBeamLength()/100f) + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10);
+                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader);
+                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader);
+                this.world.addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader, (double)this.nextBetween(-points, points)/spreader);
+                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.nextBetween(-points, points)/10, (double)this.nextBetween(-points, points)/10, (double)this.nextBetween(-points, points)/10);
                 //Looks like wind blows particles away
                 this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
             }
@@ -331,6 +333,10 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 this.world.addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
             }
         }
+    }
+
+    private int nextBetween(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private boolean isPosNullish(BlockPos pos) {

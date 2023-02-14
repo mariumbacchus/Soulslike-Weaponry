@@ -10,7 +10,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ForlornScythe extends SwordItem implements IAnimatable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, attackSpeed, settings);

@@ -56,7 +56,7 @@ public class OreSpawnRegistry {
             HeightRangePlacementModifier.uniform(YOffset.fixed(-63), YOffset.fixed(0))
     ));
 
-    private static ConfiguredFeature<?, ?> OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE.getDefaultState(), 3));
+    private static ConfiguredFeature<?, ?> OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE.getDefaultState(),3));
     private static PlacedFeature OVERWORLD_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(20), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(100))));
 
     private static ConfiguredFeature<?, ?> OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE_DEEPSLATE.getDefaultState(), 3));

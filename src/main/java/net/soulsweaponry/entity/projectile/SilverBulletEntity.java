@@ -76,7 +76,7 @@ public class SilverBulletEntity extends PersistentProjectileEntity implements IA
             int random = this.random.nextInt(10);
             int chance = 2;
             int amplifier = 0;
-            for (ItemStack stack : this.getOwner().getHandItems()) {
+            for (ItemStack stack : this.getOwner().getItemsHand()) {
                 if (stack.getItem() instanceof GunItem) {
                     chance = 2 + EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
                     amplifier = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);

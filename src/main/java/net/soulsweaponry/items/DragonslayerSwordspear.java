@@ -33,6 +33,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -167,17 +168,17 @@ public class DragonslayerSwordspear extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning_description_1").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning_description_2").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.infinity").formatted(Formatting.GOLD));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.storm_stomp_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.weatherborn").formatted(Formatting.DARK_AQUA));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.weatherborn_description").formatted(Formatting.GRAY));
         } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         
         super.appendTooltip(stack, world, tooltip, context);

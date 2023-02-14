@@ -10,20 +10,20 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class LeviathanAxeEntityModel extends AnimatedGeoModel<LeviathanAxeEntity>{
 
     @Override
-    public Identifier getAnimationResource(LeviathanAxeEntity animatable) {
+    public Identifier getAnimationFileLocation(LeviathanAxeEntity animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/leviathan_axe.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(LeviathanAxeEntity object) {
+    public Identifier getModelLocation(LeviathanAxeEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/leviathan_axe.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(LeviathanAxeEntity object) {
+    public Identifier getTextureLocation(LeviathanAxeEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/leviathan_axe_texture.png");
     }
-    
+
     @SuppressWarnings("rawtypes")
     @Override
     public void setCustomAnimations(LeviathanAxeEntity animatable, int instanceId, AnimationEvent customPredicate) {

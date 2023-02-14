@@ -5,12 +5,10 @@ import net.soulsweaponry.client.renderer.entity.mobs.AccursedLordBossRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.BigChungusRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.ChaosMonarchRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.DarkSorcererRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.DayStalkerRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.DraugrBossRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.ForlornRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.FreyrSwordEntityRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.MoonknightRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.NightProwlerRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.NightShadeRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.RemnantRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.ReturningKnightRenderer;
@@ -57,8 +55,5 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.FREYR_SWORD_ENTITY_TYPE, FreyrSwordEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SHADOW_ORB, ShadowOrbRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONKNIGHT, MoonknightRenderer::new);
-
-        EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
     }
 }

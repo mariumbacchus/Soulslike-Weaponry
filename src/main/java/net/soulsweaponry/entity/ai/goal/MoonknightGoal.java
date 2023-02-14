@@ -54,7 +54,7 @@ public class MoonknightGoal extends Goal {
 
     public MoonknightGoal(Moonknight boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

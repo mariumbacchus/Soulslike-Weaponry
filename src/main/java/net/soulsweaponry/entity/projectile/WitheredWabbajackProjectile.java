@@ -121,7 +121,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             case DARKNESS:
                 world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE, SoundCategory.VOICE, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 5, 1.2D, 1.2D, 1.2D, 0.0D);
-                user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
+                user.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
                 break;
             case LIGHTNING:
                 for (int i = 0; i < power; i++) {

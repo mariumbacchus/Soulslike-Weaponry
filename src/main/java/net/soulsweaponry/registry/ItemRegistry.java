@@ -3,11 +3,9 @@ package net.soulsweaponry.registry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -16,7 +14,7 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.BossCompass;
 import net.soulsweaponry.items.ChaosSet;
 import net.soulsweaponry.items.LoreItem;
-import net.soulsweaponry.items.ModHoe;
+import net.soulsweaponry.items.ModTools;
 import net.soulsweaponry.items.ModMusicDiscs;
 import net.soulsweaponry.items.MoonstoneRing;
 import net.soulsweaponry.items.SkofnungStone;
@@ -49,9 +47,9 @@ public class ItemRegistry {
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20).group(MAIN_GROUP));
 
     public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new Item.Settings().group(MAIN_GROUP));
-    public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings().group(MAIN_GROUP));
-    public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f, new Item.Settings().group(MAIN_GROUP));
-    public static final Item MOONSTONE_HOE = new ModHoe(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new Item.Settings().group(MAIN_GROUP));
+    public static final Item MOONSTONE_PICKAXE = new ModTools.ModPickaxe(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings().group(MAIN_GROUP));
+    public static final Item MOONSTONE_AXE = new ModTools.ModAxe(ModToolMaterials.MOONSTONE_TOOL, 5, -3.0f, new Item.Settings().group(MAIN_GROUP));
+    public static final Item MOONSTONE_HOE = new ModTools.ModHoe(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new Item.Settings().group(MAIN_GROUP));
 
     public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "withered_demon_heart", 3);
     public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "arkenstone", 4);
@@ -63,7 +61,7 @@ public class ItemRegistry {
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ORB = new Item(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
 
-    public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1), 112);
+    public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1));
 
     public static void init() {
         registerLoreItem(LORD_SOUL_RED);

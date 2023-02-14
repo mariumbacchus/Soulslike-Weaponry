@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -64,11 +65,11 @@ public class SkofnungStone extends Item {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.skofnung_stone").formatted(Formatting.LIGHT_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.skofnung_stone_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.skofnung_stone_description_2").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone").formatted(Formatting.LIGHT_PURPLE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone_description_1").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone_description_2").formatted(Formatting.GRAY));
         } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -76,7 +77,6 @@ public class SkofnungStone extends Item {
     public StatusEffect[] harmfulEffects() {
         StatusEffect[] arr = {
             StatusEffects.BLINDNESS,
-            StatusEffects.DARKNESS,
             StatusEffects.HUNGER,
             StatusEffects.INSTANT_DAMAGE,
             StatusEffects.LEVITATION,

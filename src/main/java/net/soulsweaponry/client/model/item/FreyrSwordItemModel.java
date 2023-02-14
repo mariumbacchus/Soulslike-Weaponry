@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class FreyrSwordItemModel extends AnimatedGeoModel<FreyrSword>{
 
     @Override
-    public Identifier getAnimationResource(FreyrSword animatable) {
+    public Identifier getAnimationFileLocation(FreyrSword animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(FreyrSword object) {
+    public Identifier getModelLocation(FreyrSword object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/freyr_sword_item.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(FreyrSword object) {
+    public Identifier getTextureLocation(FreyrSword object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/freyr_sword.png");
     }
     

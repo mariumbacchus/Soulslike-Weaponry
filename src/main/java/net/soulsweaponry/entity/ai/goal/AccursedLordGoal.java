@@ -41,7 +41,7 @@ public class AccursedLordGoal extends Goal {
 
     public AccursedLordGoal(AccursedLordBoss boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

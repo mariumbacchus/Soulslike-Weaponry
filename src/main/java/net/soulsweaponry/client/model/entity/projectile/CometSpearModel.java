@@ -8,18 +8,18 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class CometSpearModel extends AnimatedGeoModel<CometSpearEntity> {
 
     @Override
-    public Identifier getAnimationResource(CometSpearEntity animatable) {
+    public Identifier getAnimationFileLocation(CometSpearEntity animatable) {
         return new Identifier(SoulsWeaponry.ModId, null);
     }
 
     @Override
-    public Identifier getModelResource(CometSpearEntity object) {
+    public Identifier getModelLocation(CometSpearEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/comet_spear.geo.json");
 
     }
 
     @Override
-    public Identifier getTextureResource(CometSpearEntity object) {
+    public Identifier getTextureLocation(CometSpearEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/comet_spear.png");
     }
     

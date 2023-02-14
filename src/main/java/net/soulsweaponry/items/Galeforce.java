@@ -20,6 +20,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -106,10 +107,10 @@ public class Galeforce extends BowItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.galeforce").formatted(Formatting.AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.galeforce_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce").formatted(Formatting.AQUA));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce_description").formatted(Formatting.GRAY));
         } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

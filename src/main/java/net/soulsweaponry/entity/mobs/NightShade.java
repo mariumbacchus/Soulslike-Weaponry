@@ -56,7 +56,7 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
 
     public NightShade(EntityType<? extends NightShade> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
-        this.moveControl = new NightShade.ShadeMoveControl(this);
+        this.moveControl = new ShadeMoveControl(this);
         this.setDrops(ItemRegistry.LORD_SOUL_DARK);
         this.setDrops(ItemRegistry.ESSENCE_OF_EVENTIDE);
     }
@@ -77,7 +77,7 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
 	protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(4, new NightShade.ChargeTargetGoal());
+        this.goalSelector.add(4, new ChargeTargetGoal());
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
@@ -173,11 +173,11 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
         }
   
         public void tick() {
-           if (this.state == MoveControl.State.MOVE_TO) {
+           if (this.state == State.MOVE_TO) {
               Vec3d vec3d = new Vec3d(this.targetX - NightShade.this.getX(), this.targetY - NightShade.this.getY(), this.targetZ - NightShade.this.getZ());
               double d = vec3d.length();
               if (d < NightShade.this.getBoundingBox().getAverageSideLength()) {
-                 this.state = MoveControl.State.WAIT;
+                 this.state = State.WAIT;
                  NightShade.this.setVelocity(NightShade.this.getVelocity().multiply(0.5D));
               } else {
                  NightShade.this.setVelocity(NightShade.this.getVelocity().add(vec3d.multiply(this.speed * 0.05D / d)));
@@ -201,7 +201,7 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
         private int attackCooldown;
 
         public ChargeTargetGoal() {
-           this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+           this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
   
         public boolean canStart() {

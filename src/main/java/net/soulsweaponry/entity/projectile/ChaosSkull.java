@@ -65,7 +65,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
     }
     
     /**
-     * On specifically entities hit, and will react only to instances of {@linkplain net.minecraft.entity.LivingEntity}.
+     * On specifically entities hit, and will react only to instances of {@linkplain LivingEntity}.
      * Will do random effects that include random damage and random potion effects.
      * Via {@link #onCollision(HitResult)}, it will call {@link #finisher()} to spawn particles and {@link #discard()} the projectile.
      * <p> The Default in the switch statement will always be triggered and will include the damaging effects while having only a small chance
@@ -182,7 +182,6 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
             StatusEffects.ABSORPTION,
             StatusEffects.BAD_OMEN,
             StatusEffects.BLINDNESS,
-            StatusEffects.DARKNESS,
             StatusEffects.FIRE_RESISTANCE,
             StatusEffects.GLOWING,
             StatusEffects.HASTE,

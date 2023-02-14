@@ -1,5 +1,7 @@
 package net.soulsweaponry.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
@@ -108,7 +109,7 @@ public class WitheredFlower extends WitherRoseBlock {
             Blocks.ALLIUM, Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP, 
             Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, 
             Blocks.LILY_OF_THE_VALLEY, Blocks.WITHER_ROSE};
-        return (FlowerBlock) smallFlowers[new java.util.Random().nextInt(smallFlowers.length)];
+        return (FlowerBlock) smallFlowers[new Random().nextInt(smallFlowers.length)];
     }
 
     @Override

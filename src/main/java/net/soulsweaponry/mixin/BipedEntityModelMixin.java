@@ -19,9 +19,9 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.SOUL_REAPER) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
+        if (entity.getItemsHand().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getItemsHand().iterator().next().isOf(WeaponRegistry.SOUL_REAPER) || entity.getItemsHand().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
             if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-                if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
+                if (entity.getItemsHand().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
                 } else {
                     ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
@@ -35,7 +35,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     @Inject(at = @At("TAIL"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-            if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.SOUL_REAPER)) {
+            if (entity.getItemsHand().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getItemsHand().iterator().next().isOf(WeaponRegistry.SOUL_REAPER)) {
                 ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
             }
         }

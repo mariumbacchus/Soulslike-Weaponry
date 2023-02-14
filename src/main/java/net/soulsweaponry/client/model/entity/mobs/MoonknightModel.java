@@ -11,17 +11,17 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class MoonknightModel extends AnimatedGeoModel<Moonknight> {
 
     @Override
-    public Identifier getAnimationResource(Moonknight animatable) {
+    public Identifier getAnimationFileLocation(Moonknight animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/moonknight.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(Moonknight object) {
+    public Identifier getModelLocation(Moonknight object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/moonknight.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Moonknight object) {
+    public Identifier getTextureLocation(Moonknight object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/moonknight.png");
     }
 

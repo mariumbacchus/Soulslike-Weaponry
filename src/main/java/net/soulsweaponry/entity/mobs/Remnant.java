@@ -56,7 +56,7 @@ public class Remnant extends TameableEntity {
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
         this.targetSelector.add(3, new ActiveTargetGoal<MobEntity>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster 
             && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
-        this.targetSelector.add(4, new RevengeGoal(this, new Class[0]).setGroupRevenge());
+        this.targetSelector.add(4, new RevengeGoal(this, Remnant.class));
     }
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {

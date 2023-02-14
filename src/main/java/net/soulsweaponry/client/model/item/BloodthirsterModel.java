@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class BloodthirsterModel extends AnimatedGeoModel<Bloodthirster>{
 
     @Override
-    public Identifier getAnimationResource(Bloodthirster animatable) {
+    public Identifier getAnimationFileLocation(Bloodthirster animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(Bloodthirster object) {
+    public Identifier getModelLocation(Bloodthirster object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/bloodthirster.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Bloodthirster object) {
+    public Identifier getTextureLocation(Bloodthirster object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/bloodthirster_textures.png");
     }
 }

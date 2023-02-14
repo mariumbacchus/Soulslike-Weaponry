@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:jigsaw",
+    "type": "minecraft:village",
     "biomes": [
         "minecraft:meadow",
         "minecraft:plains"
@@ -18,9 +18,11 @@
         ]
       }
     },
+    "config": {
+      "start_pool": "soulsweapons:cathedral_of_resurrection",
+      "size": 1
+    },
     "terrain_adaptation": "beard_thin",
-    "start_pool": "soulsweapons:cathedral_of_resurrection",
-    "size": 1,
     "start_height": {
       "absolute": 0
     },

@@ -1,5 +1,7 @@
 package net.soulsweaponry.util;
 
+import java.util.Random;
+
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -11,7 +13,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.PacketRegistry;
 
@@ -31,7 +32,7 @@ public class CustomDeathHandler {
         if (deathTicks > 0) {
             float l = ((float)deathTicks + partialTicks) / 200.0f;
             float m = Math.min(l > 0.8f ? (l - 0.8f) / 0.2f : 0.0f, 1.0f);
-            Random random = Random.create(432L);
+            Random random = new Random(432L);/* Random.create(432L); */
             VertexConsumer vertexConsumer4 = bufferIn.getBuffer(RenderLayer.getLightning());
             stack.push();
             stack.translate(translation[0], translation[1], translation[2]);

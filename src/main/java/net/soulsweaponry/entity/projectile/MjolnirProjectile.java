@@ -58,7 +58,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
         int returnSpeed = MathHelper.floor(2 + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
             if (!this.isOwnerAlive()) {
-                if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                if (!this.world.isClient && this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1f);
                 }
                 this.discard();

@@ -1,7 +1,6 @@
 package net.soulsweaponry.client.registry;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -9,11 +8,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.items.BossCompass;
+import net.soulsweaponry.items.BossCompassPredicate;
 import net.soulsweaponry.items.Skofnung;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 public class PredicateRegistry {
@@ -46,14 +44,6 @@ public class PredicateRegistry {
             }
         });
 
-        ModelPredicateProviderRegistry.register(ItemRegistry.BOSS_COMPASS, new Identifier("angle"), new CompassAnglePredicateProvider((world, stack, entity) -> {
-            if (stack.isOf(ItemRegistry.BOSS_COMPASS)) {
-                BossCompass item = (BossCompass) stack.getItem();
-                return item.getStructurePos(world, stack);
-            }
-            return null;
-        }));
-
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
                 boolean emp = ((Skofnung) itemStack.getItem()).isEmpowered(itemStack);
@@ -63,6 +53,8 @@ public class PredicateRegistry {
             }
             return 0.0f;
         });
+
+        BossCompassPredicate.init();
     }
 
     protected static void registerPulling(Item item) {

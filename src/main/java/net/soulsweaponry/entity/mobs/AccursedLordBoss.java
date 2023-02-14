@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -31,7 +32,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
@@ -126,7 +126,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 

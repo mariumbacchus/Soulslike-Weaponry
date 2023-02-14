@@ -27,7 +27,7 @@ public class DraugrBossGoal extends Goal {
 
     public DraugrBossGoal(DraugrBoss boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

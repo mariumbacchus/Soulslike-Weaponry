@@ -20,8 +20,8 @@ import net.soulsweaponry.util.CustomDamageSource;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin<T> {
     
-    @Inject(method = "modifyAppliedDamage", at = @At("TAIL"))
-    protected float modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<T> infoReturnable) {
+    @Inject(method = "applyEnchantmentsToDamage", at = @At("TAIL"))
+    protected float applyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<T> infoReturnable) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();

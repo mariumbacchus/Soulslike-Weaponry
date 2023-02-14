@@ -24,7 +24,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.AnimatedDeathInterface;
 
-public abstract class BossEntity extends HostileEntity implements AnimatedDeathInterface {
+public abstract class BossEntity extends HostileEntity implements AnimatedDeathInterface, ShieldBreaker {
     
     protected final ServerBossBar bossBar;
     protected ArrayList<Item> drops = new ArrayList<>();

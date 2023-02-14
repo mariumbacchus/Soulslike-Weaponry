@@ -33,7 +33,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
@@ -59,7 +58,7 @@ public class ChaosMonarchGoal extends Goal {
     
     public ChaosMonarchGoal(ChaosMonarch boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     public float getModifiedDamage(float damage) {
@@ -367,10 +366,8 @@ public class ChaosMonarchGoal extends Goal {
         if (!bl || bl2) {
             return false;
         }
-        Vec3d vec3d = this.boss.getPos();
         boolean bl3 = this.boss.teleport(x, y, z, true);
         if (bl3) {
-            this.boss.world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this.boss));
             if (!this.boss.isSilent()) {
                 this.boss.world.playSound(null, this.boss.prevX, this.boss.prevY, this.boss.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
                 this.boss.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);

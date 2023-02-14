@@ -84,7 +84,7 @@ public class DarkSorcerer extends HostileEntity {
 
         public BeamTargetGoal(DarkSorcerer user) {
             this.user = user;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         @Override

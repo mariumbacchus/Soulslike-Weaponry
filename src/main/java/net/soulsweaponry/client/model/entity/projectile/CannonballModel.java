@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class CannonballModel extends AnimatedGeoModel<Cannonball>{
 
     @Override
-    public Identifier getAnimationResource(Cannonball animatable) {
+    public Identifier getAnimationFileLocation(Cannonball animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(Cannonball object) {
+    public Identifier getModelLocation(Cannonball object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Cannonball object) {
+    public Identifier getTextureLocation(Cannonball object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/cannonball_texture.png");
     }
     

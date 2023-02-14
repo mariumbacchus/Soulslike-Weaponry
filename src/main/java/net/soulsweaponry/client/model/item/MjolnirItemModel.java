@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class MjolnirItemModel extends AnimatedGeoModel<Mjolnir>{
 
     @Override
-    public Identifier getAnimationResource(Mjolnir animatable) {
+    public Identifier getAnimationFileLocation(Mjolnir animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(Mjolnir object) {
+    public Identifier getModelLocation(Mjolnir object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/mjolnir.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Mjolnir object) {
+    public Identifier getTextureLocation(Mjolnir object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/mjolnir_texture.png");
     }
     

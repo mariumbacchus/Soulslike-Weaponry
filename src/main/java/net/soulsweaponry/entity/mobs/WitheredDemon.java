@@ -49,7 +49,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -113,11 +113,6 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
-    }
-
-    @Override
     public AnimationFactory getFactory() {
         return this.factory;
     }
@@ -162,17 +157,6 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     }
 
     @Override
-    public void onDeath(DamageSource damageSource) {
-        super.onDeath(damageSource);
-        this.setDeath();
-    }
-
-    @Override
-    public void setDeath() {
-        this.setDeath(true);
-    }
-
-    @Override
     public int getTicksUntilDeath() {
         return 40;
     }
@@ -182,13 +166,29 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         return this.deathTicks;
     }
 
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        super.onDeath(damageSource);
+        this.setDeath(true);
+    }
+
+    @Override
+    public void setDeath() {
+        this.setDeath(true);        
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
+    }
+
     //Now the renderer won't recognize the variable deathTicks so it won't turn red
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -253,7 +253,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
             this.mob = mob;
             this.movementSpeed = movementSpeed;
             this.attackRange = attackRange;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         @Override

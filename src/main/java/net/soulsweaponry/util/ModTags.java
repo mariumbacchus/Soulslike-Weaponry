@@ -5,7 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.soulsweaponry.SoulsWeaponry;
 
 @SuppressWarnings("unused")
@@ -37,11 +38,11 @@ public class ModTags {
     }
 
     public static class Structures {
-        public static final TagKey<Structure> DECAYING_KINGDOM = createTag("decaying_kingdom");
-        public static final TagKey<Structure> CHAMPIONS_GRAVES = createTag("champions_graves");
+        public static final TagKey<ConfiguredStructureFeature<?, ?>> DECAYING_KINGDOM = createTag("decaying_kingdom");
+        public static final TagKey<ConfiguredStructureFeature<?, ?>> CHAMPIONS_GRAVES = createTag("champions_graves");
 
-        private static TagKey<Structure> createTag(String id) {
-            return TagKey.of(Registry.STRUCTURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
+        private static TagKey<ConfiguredStructureFeature<?, ?>> createTag(String id) {
+            return TagKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
         }
     }
 }

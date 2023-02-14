@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ChaosSetModel extends AnimatedGeoModel<ChaosSet> {
 
     @Override
-    public Identifier getAnimationResource(ChaosSet animatable) {
+    public Identifier getAnimationFileLocation(ChaosSet animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/chaos_monarch.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(ChaosSet object) {
+    public Identifier getModelLocation(ChaosSet object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/chaos_set.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(ChaosSet object) {
+    public Identifier getTextureLocation(ChaosSet object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/armor/chaos_set_texture.png");
     }
     

@@ -12,7 +12,9 @@
     "LivingEntityMixin",
     "BowItemMixin",
     "ArrowProjectileMixin",
-    "LivingEntityInvoker"
+    "LivingEntityInvoker",
+    "PlayerEntityMixin",
+    "BrewingRecipeMixin"
   ],
   "client": [
     "BipedEntityModelMixin",

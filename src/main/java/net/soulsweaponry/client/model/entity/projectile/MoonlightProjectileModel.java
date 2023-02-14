@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class MoonlightProjectileModel extends AnimatedGeoModel<MoonlightProjectile>{
 
     @Override
-    public Identifier getAnimationResource(MoonlightProjectile animatable) {
+    public Identifier getAnimationFileLocation(MoonlightProjectile animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(MoonlightProjectile object) {
+    public Identifier getModelLocation(MoonlightProjectile object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/moonlight_projectile.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(MoonlightProjectile object) {
+    public Identifier getTextureLocation(MoonlightProjectile object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/moonlight_projectile.png");
     }
     

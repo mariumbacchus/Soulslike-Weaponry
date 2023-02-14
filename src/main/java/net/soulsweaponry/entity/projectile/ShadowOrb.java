@@ -81,7 +81,7 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
     }
 
     @Override
-    public boolean canHit() {
+    protected boolean canHit(Entity entity) {
         return false;
     }
 

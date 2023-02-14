@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class SoulReaperModel extends AnimatedGeoModel<SoulReaper>{
 
     @Override
-    public Identifier getAnimationResource(SoulReaper animatable) {
+    public Identifier getAnimationFileLocation(SoulReaper animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/soul_reaper.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(SoulReaper object) {
+    public Identifier getModelLocation(SoulReaper object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/soul_reaper.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(SoulReaper object) {
+    public Identifier getTextureLocation(SoulReaper object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/soul_reaper.png");
     }
     

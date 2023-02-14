@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class ForlornScytheModel extends AnimatedGeoModel<ForlornScythe>{
 
     @Override
-    public Identifier getAnimationResource(ForlornScythe animatable) {
+    public Identifier getAnimationFileLocation(ForlornScythe animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(ForlornScythe object) {
+    public Identifier getModelLocation(ForlornScythe object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/forlorn_scythe.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(ForlornScythe object) {
+    public Identifier getTextureLocation(ForlornScythe object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/forlorn_scythe.png");
     }
     

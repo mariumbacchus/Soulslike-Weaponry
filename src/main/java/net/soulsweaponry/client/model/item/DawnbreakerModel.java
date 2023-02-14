@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class DawnbreakerModel extends AnimatedGeoModel<Dawnbreaker> {
 
     @Override
-    public Identifier getAnimationResource(Dawnbreaker animatable) {
+    public Identifier getAnimationFileLocation(Dawnbreaker animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(Dawnbreaker object) {
+    public Identifier getModelLocation(Dawnbreaker object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/dawnbreaker.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Dawnbreaker object) {
+    public Identifier getTextureLocation(Dawnbreaker object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/dawnbreaker_texture.png");
     }
     

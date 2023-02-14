@@ -8,19 +8,19 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class SoulmassModel extends AnimatedGeoModel<Soulmass>{
 
     @Override
-    public Identifier getModelResource(Soulmass object)
+    public Identifier getModelLocation(Soulmass object)
     {
         return new Identifier(SoulsWeaponry.ModId, "geo/soulmass.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Soulmass object)
+    public Identifier getTextureLocation(Soulmass object)
     {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/soulmass_texture.png");
     }
 
     @Override
-    public Identifier getAnimationResource(Soulmass object)
+    public Identifier getAnimationFileLocation(Soulmass object)
     {
         return new Identifier(SoulsWeaponry.ModId, "animations/soulmass.animation.json");
     }

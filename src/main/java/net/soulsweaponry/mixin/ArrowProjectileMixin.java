@@ -33,7 +33,7 @@ public class ArrowProjectileMixin {
             double chance = 0;
             int amplifier = 0;
             LivingEntity target = (LivingEntity) entityHitResult.getEntity();
-            for (ItemStack stack : ((ArrowEntity)(Object) this).getOwner().getHandItems()) {
+            for (ItemStack stack : ((ArrowEntity)(Object) this).getOwner().getItemsHand()) {
                 if (stack.getItem() instanceof BowItem && EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack) > 0) {
                     chance = (double)EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack)/12;
                     amplifier = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);

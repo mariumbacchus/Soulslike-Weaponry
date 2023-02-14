@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class DarkinBladeModel extends AnimatedGeoModel<DarkinBlade>{
 
     @Override
-    public Identifier getAnimationResource(DarkinBlade animatable) {
+    public Identifier getAnimationFileLocation(DarkinBlade animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/darkin_blade.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(DarkinBlade object) {
+    public Identifier getModelLocation(DarkinBlade object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/darkin_blade.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(DarkinBlade object) {
+    public Identifier getTextureLocation(DarkinBlade object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/darkin_blade_textures.png");
     }
     

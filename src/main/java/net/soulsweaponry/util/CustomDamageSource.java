@@ -6,11 +6,15 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
 
-public class CustomDamageSource {
+public class CustomDamageSource extends DamageSource{
 
-    public static final DamageSource BLEED = new DamageSource("bleed").setBypassesArmor();
-    public static final DamageSource OBLIVION = new DamageSource("oblivion");
-    public static final DamageSource TRUE_MAGIC = new DamageSource("true_magic").setBypassesArmor().setUsesMagic();
+    public static final DamageSource BLEED = new CustomDamageSource("bleed").setBypassesArmor();
+    public static final DamageSource OBLIVION = new CustomDamageSource("oblivion");
+    public static final DamageSource TRUE_MAGIC = new CustomDamageSource("true_magic").setBypassesArmor().setUsesMagic();
+
+    protected CustomDamageSource(String name) {
+        super(name);
+    }
 
     public static DamageSource summonDamageSource(String name, LivingEntity summon, Entity attacker) {
         return new ProjectileDamageSource(name, summon, attacker);

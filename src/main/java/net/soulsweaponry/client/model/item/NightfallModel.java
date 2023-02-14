@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class NightfallModel extends AnimatedGeoModel<Nightfall>{
 
     @Override
-    public Identifier getAnimationResource(Nightfall animatable) {
+    public Identifier getAnimationFileLocation(Nightfall animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelResource(Nightfall object) {
+    public Identifier getModelLocation(Nightfall object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/nightfall.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Nightfall object) {
+    public Identifier getTextureLocation(Nightfall object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/item/nightfall.png");
     }
     
