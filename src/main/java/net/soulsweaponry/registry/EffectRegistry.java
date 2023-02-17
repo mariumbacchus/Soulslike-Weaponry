@@ -11,8 +11,9 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.Bloodthirsty;
 import net.soulsweaponry.entity.effect.Decay;
@@ -70,11 +71,11 @@ public class EffectRegistry {
     }
 
     public static <I extends StatusEffect> I registerEffect(I effect, String name) {
-		return Registry.register(Registry.STATUS_EFFECT, new Identifier(SoulsWeaponry.ModId, name), effect);
+		return Registry.register(Registries.STATUS_EFFECT, new Identifier(SoulsWeaponry.ModId, name), effect);
 	}
 
     private static Potion registerPotion(Potion potion, String name) {
-        return Registry.register(Registry.POTION, name, potion);
+        return Registry.register(Registries.POTION, name, potion);
     }
 
     static class DefaultStatusEffect extends StatusEffect {

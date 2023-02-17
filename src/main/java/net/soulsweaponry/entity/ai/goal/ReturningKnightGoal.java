@@ -40,7 +40,7 @@ public class ReturningKnightGoal extends Goal {
 
     public ReturningKnightGoal(ReturningKnight boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

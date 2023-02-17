@@ -16,7 +16,7 @@ public class ForlornParentRenderer<T extends Forlorn, M extends ForlornModel<T>>
         this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel));
     }
 
-    public Identifier getTexture(Remnant entity) {
+    public Identifier getTexture(T entity) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/forlorn_inner.png");
     }
 }

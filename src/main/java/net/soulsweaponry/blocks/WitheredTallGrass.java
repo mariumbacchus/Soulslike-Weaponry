@@ -44,7 +44,7 @@ public class WitheredTallGrass extends TallPlantBlock {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        world.createAndScheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
+        world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
     }
 
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {

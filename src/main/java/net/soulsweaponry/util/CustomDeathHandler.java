@@ -9,11 +9,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.PacketRegistry;
+import org.joml.Matrix4f;
 
 public class CustomDeathHandler {
 
@@ -35,14 +35,13 @@ public class CustomDeathHandler {
             VertexConsumer vertexConsumer4 = bufferIn.getBuffer(RenderLayer.getLightning());
             stack.push();
             stack.translate(translation[0], translation[1], translation[2]);
-            int n = 0;
-            while ((float)n < (l + l * l) / 2.0f * 60.0f) {
-                stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(random.nextFloat() * 360.0f));
-                stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(random.nextFloat() * 360.0f));
-                stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(random.nextFloat() * 360.0f));
-                stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(random.nextFloat() * 360.0f));
-                stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(random.nextFloat() * 360.0f));
-                stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(random.nextFloat() * 360.0f + l * 90.0f));
+            for(int n = 0; (float)n < (l + l * l) / 2.0F * 60.0F; ++n) {
+                stack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(random.nextFloat() * 360.0f));
+                stack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(random.nextFloat() * 360.0f));
+                stack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(random.nextFloat() * 360.0f));
+                stack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(random.nextFloat() * 360.0f));
+                stack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(random.nextFloat() * 360.0f));
+                stack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(random.nextFloat() * 360.0f + l * 90.0f));
                 float o = random.nextFloat() * 20.0f + 5.0f + m * 10.0f;
                 float p = random.nextFloat() * 2.0f + 1.0f + m * 2.0f;
                 Matrix4f matrix4f = stack.peek().getPositionMatrix();
@@ -56,7 +55,6 @@ public class CustomDeathHandler {
                 CustomDeathHandler.renderLight_1(vertexConsumer4, matrix4f, q, rgbColorOne);
                 CustomDeathHandler.renderLight_4(vertexConsumer4, matrix4f, o, p, rgbColorFour);
                 CustomDeathHandler.renderLight_2(vertexConsumer4, matrix4f, o, p, rgbColorTwo);
-                ++n;
             }
             stack.pop();
         }

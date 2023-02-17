@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.FreyrSword;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class FreyrSwordItemModel extends AnimatedGeoModel<FreyrSword>{
+public class FreyrSwordItemModel extends GeoModel<FreyrSword> {
 
     @Override
     public Identifier getAnimationResource(FreyrSword animatable) {

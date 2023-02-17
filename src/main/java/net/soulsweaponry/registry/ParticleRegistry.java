@@ -2,8 +2,9 @@ package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
 
 public class ParticleRegistry {
@@ -19,6 +20,6 @@ public class ParticleRegistry {
     }
 
     public static <I extends DefaultParticleType> I registerParticle(I particle, String name) {
-		return Registry.register(Registry.PARTICLE_TYPE, new Identifier(SoulsWeaponry.ModId, name), particle);
+		return Registry.register(Registries.PARTICLE_TYPE, new Identifier(SoulsWeaponry.ModId, name), particle);
 	}
 }

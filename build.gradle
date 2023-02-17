@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -19,9 +19,17 @@ repositories {
 
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 	maven { url 'https://maven.blamejared.com' }
+	mavenCentral()
+
+	//Runtime only repositories
+	maven { url "https://maven.shedaniel.me/" }
+	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://maven.architectury.dev/" }
+	maven { url "https://maven.shedaniel.me/" }
 }
 
 dependencies {
+
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -35,10 +43,13 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	modImplementation "software.bernie.geckolib:geckolib-fabric-1.19:${project.geckolib_version}"
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.19.3:${project.geckolib_version}"
 	
 	//Runtime only
-	modRuntimeOnly 'net.darkhax.bookshelf:Bookshelf-Fabric-1.19.2:16.0.1'
+	//modRuntimeOnly "net.darkhax.bookshelf:Bookshelf-Fabric-1.19.3:17.0.3"
+	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 processResources {

@@ -54,11 +54,11 @@ public class WitheredFlower extends WitherRoseBlock {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             mutable.set((Vec3i)pos, Direction.DOWN);
             if (!(world.getBlockState(mutable).getBlock() instanceof WitheredBlock)) {
-                world.createAndScheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
+                world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
             }
             return;
         }
-        world.createAndScheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
+        world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
     }
 
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {

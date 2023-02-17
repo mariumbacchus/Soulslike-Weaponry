@@ -19,15 +19,14 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.GunItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class SilverBulletEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class SilverBulletEntity extends PersistentProjectileEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int life;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
@@ -101,17 +100,12 @@ public class SilverBulletEntity extends PersistentProjectileEntity implements IA
     }
 
     @Override
-    public int tickTimer() {
-        return 0;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

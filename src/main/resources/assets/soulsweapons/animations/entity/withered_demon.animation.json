@@ -289,7 +289,7 @@
 						"vector": [0, 0, 0]
 					}
 				},
-				"h_head": {
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]

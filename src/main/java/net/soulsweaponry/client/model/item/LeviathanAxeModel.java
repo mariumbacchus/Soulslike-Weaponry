@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.LeviathanAxe;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class LeviathanAxeModel extends AnimatedGeoModel<LeviathanAxe>{
+public class LeviathanAxeModel extends GeoModel<LeviathanAxe> {
 
     @Override
     public Identifier getAnimationResource(LeviathanAxe animatable) {

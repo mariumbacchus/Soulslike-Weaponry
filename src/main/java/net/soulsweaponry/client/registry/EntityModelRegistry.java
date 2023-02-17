@@ -58,7 +58,7 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.SHADOW_ORB, ShadowOrbRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONKNIGHT, MoonknightRenderer::new);
 
-        EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
+        //EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
+        //EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
     }
 }

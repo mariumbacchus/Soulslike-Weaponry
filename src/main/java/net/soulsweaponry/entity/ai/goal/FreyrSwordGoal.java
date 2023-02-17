@@ -33,7 +33,7 @@ public class FreyrSwordGoal extends Goal {
     
     public FreyrSwordGoal(FreyrSwordEntity entity) {
         this.entity = entity;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

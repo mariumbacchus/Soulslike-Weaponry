@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.Dawnbreaker;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class DawnbreakerModel extends AnimatedGeoModel<Dawnbreaker> {
+public class DawnbreakerModel extends GeoModel<Dawnbreaker> {
 
     @Override
     public Identifier getAnimationResource(Dawnbreaker animatable) {

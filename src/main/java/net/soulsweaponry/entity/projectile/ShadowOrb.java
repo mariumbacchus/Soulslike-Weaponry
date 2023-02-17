@@ -21,14 +21,14 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
+public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
@@ -96,11 +96,11 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 }

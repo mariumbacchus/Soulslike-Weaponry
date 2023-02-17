@@ -2,9 +2,12 @@ package net.soulsweaponry.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.structure.Structure;
 import net.soulsweaponry.SoulsWeaponry;
 
@@ -14,11 +17,11 @@ public class ModTags {
     public static class Blocks {
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier(SoulsWeaponry.ModId, name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Block> createCommonTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier("c", name));
         }
     }
 
@@ -28,11 +31,11 @@ public class ModTags {
         public static final TagKey<Item> MOONLIGHT_SWORD = createTag("moonlight_sword");
 
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier(SoulsWeaponry.ModId, name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Item> createCommonTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier("c", name));
         }
     }
 
@@ -41,7 +44,7 @@ public class ModTags {
         public static final TagKey<Structure> CHAMPIONS_GRAVES = createTag("champions_graves");
 
         private static TagKey<Structure> createTag(String id) {
-            return TagKey.of(Registry.STRUCTURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
+            return TagKey.of(RegistryKeys.STRUCTURE, new Identifier(SoulsWeaponry.ModId, id));
         }
     }
 }

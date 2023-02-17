@@ -119,7 +119,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
                 }
                 break;
             case DARKNESS:
-                world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE, SoundCategory.VOICE, 1f, 1f);
+                world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE.value(), SoundCategory.AMBIENT, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 5, 1.2D, 1.2D, 1.2D, 0.0D);
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
                 break;
@@ -147,7 +147,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
                 break;
             default:
                 boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-                this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? DestructionType.DESTROY : DestructionType.NONE);
+                this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
                 break;
         }
     }

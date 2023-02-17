@@ -8,9 +8,10 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;
@@ -25,8 +26,8 @@ public class SpawnInit {
     public static void addSpawn(Predicate<BiomeSelectionContext> biomeSelector, SpawnGroup spawnGroup, SpawnSettings.SpawnEntry se) {
         Preconditions.checkArgument(se.type.getSpawnGroup() != SpawnGroup.MISC, "MISC spawns pigs");
 
-        Identifier id = Registry.ENTITY_TYPE.getId(se.type);
-        Preconditions.checkState(id != Registry.ENTITY_TYPE.getDefaultId(), "Unregistererd entity type: %s", se.type);
+        Identifier id = Registries.ENTITY_TYPE.getId(se.type);
+        Preconditions.checkState(id != Registries.ENTITY_TYPE.getDefaultId(), "Unregistererd entity type: %s", se.type);
 
         BiomeModifications.create(id).add(ModificationPhase.ADDITIONS, biomeSelector, context -> {
             context.getSpawnSettings().addSpawn(spawnGroup, se);

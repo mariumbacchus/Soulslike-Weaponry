@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.Mjolnir;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class MjolnirItemModel extends AnimatedGeoModel<Mjolnir>{
+public class MjolnirItemModel extends GeoModel<Mjolnir> {
 
     @Override
     public Identifier getAnimationResource(Mjolnir animatable) {

@@ -1,8 +1,13 @@
 package net.soulsweaponry.items;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
+import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
@@ -25,19 +30,19 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animation.*;
 
-public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
+public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     
     public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings);
@@ -124,18 +129,36 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event){
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("heartbeat", EDefaultLoopTypes.LOOP));
+    private PlayState predicate(AnimationState event){
+        event.getController().setAnimation(RawAnimation.begin().then("heartbeat", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));    
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "controller", 20, this::predicate));
+    }
+
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private final DarkinBladeRenderer renderer = new DarkinBladeRenderer();
+
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 }

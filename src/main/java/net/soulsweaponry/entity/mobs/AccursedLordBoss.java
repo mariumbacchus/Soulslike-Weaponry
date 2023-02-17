@@ -41,19 +41,15 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimationTickable {
+public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
@@ -70,40 +66,40 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         return true;
     }
 
-    private <E extends IAnimatable> PlayState attackAnimations(AnimationEvent<E> event) {
+    private PlayState attackAnimations(AnimationState state) {
         switch (this.getAttackAnimation()) {
             case FIREBALLS:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
                 break;
             case HAND_SLAM:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.groundSlamHand"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.groundSlamHand"));
                 break;
             case HEATWAVE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.explosion"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.explosion"));
                 break;
             case PULL:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.pull"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.pull"));
                 break;
             case SPIN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spin"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spin"));
                 break;
             case SWORDSLAM:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.swordSlam"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.swordSlam"));
                 break;
             case WITHERBALLS:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
                 break;
             case DEATH:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.death"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.death"));
                 break;
             case IDLE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.idle"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
                 break;
             case SPAWN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spawn"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spawn"));
                 break;
             default:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.idle"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
                 break;
             
         }    
@@ -126,7 +122,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -253,18 +249,13 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     }
 
     @Override
-    public int tickTimer() {
-        return age;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::attackAnimations));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attackAnimations));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected SoundEvent getAmbientSound() {

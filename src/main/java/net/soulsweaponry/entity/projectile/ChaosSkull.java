@@ -65,7 +65,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
     }
     
     /**
-     * On specifically entities hit, and will react only to instances of {@linkplain net.minecraft.entity.LivingEntity}.
+     * On specifically entities hit, and will react only to instances of {@linkplain LivingEntity}.
      * Will do random effects that include random damage and random potion effects.
      * Via {@link #onCollision(HitResult)}, it will call {@link #finisher()} to spawn particles and {@link #discard()} the projectile.
      * <p> The Default in the switch statement will always be triggered and will include the damaging effects while having only a small chance
@@ -138,7 +138,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
                     break;
                     case 5:
                         float power = this.random.nextFloat()*3;
-                        this.world.createExplosion(this, DamageSource.explosion((LivingEntity)this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, DestructionType.DESTROY);
+                        this.world.createExplosion(this, DamageSource.mob((LivingEntity)this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TNT);
                     break;
                     default:
                     for (int j = 0; j < 2; j++) {

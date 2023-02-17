@@ -2,8 +2,9 @@ package net.soulsweaponry.registry;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.enchantments.FastHandsEnchantment;
@@ -25,6 +26,6 @@ public class EnchantRegistry {
     }
 
     public static <I extends Enchantment> I registerEnchantment(I enchantment, String name) {
-		return Registry.register(Registry.ENCHANTMENT, new Identifier(SoulsWeaponry.ModId, name), enchantment);
+		return Registry.register(Registries.ENCHANTMENT, new Identifier(SoulsWeaponry.ModId, name), enchantment);
 	}
 }

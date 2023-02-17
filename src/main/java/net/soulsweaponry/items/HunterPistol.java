@@ -72,7 +72,7 @@ public class HunterPistol extends GunItem {
             }
 
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            user.getItemCooldownManager().set(this, ConfigConstructor.hunter_pistol_cooldown - this.getReducedCooldown(stack));
+            if (!user.isCreative()) user.getItemCooldownManager().set(this, ConfigConstructor.hunter_pistol_cooldown - this.getReducedCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 

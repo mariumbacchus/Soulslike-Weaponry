@@ -3,18 +3,18 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class FreyrSwordEntityModel extends AnimatedGeoModel<FreyrSwordEntity> {
+public class FreyrSwordEntityModel extends GeoModel<FreyrSwordEntity> {
 
     @Override
     public Identifier getAnimationResource(FreyrSwordEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/freyr_sword.animation.json");
+        return new Identifier(SoulsWeaponry.ModId, "animations/entity/freyr_sword.animation.json");
     }
 
     @Override
     public Identifier getModelResource(FreyrSwordEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/freyr_sword.geo.json");
+        return new Identifier(SoulsWeaponry.ModId, "geo/entity/freyr_sword.geo.json");
 
     }
 

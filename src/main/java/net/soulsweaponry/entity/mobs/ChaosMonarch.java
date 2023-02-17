@@ -34,19 +34,18 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationTickable {
+public class ChaosMonarch extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
@@ -59,31 +58,31 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         this.setDrops(ItemRegistry.CHAOS_ROBES);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         switch (this.getAttack()) {
             case SPAWN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
             break;
             case TELEPORT:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("teleport"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
             break;
             case MELEE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("swing_staff"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
             break;
             case LIGHTNING:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("lightning_call"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
             break;
             case SHOOT:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("shoot"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
             break;
             case BARRAGE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("barrage"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
             break;
             case DEATH:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
             break;
             default:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
             break;
         }
         return PlayState.CONTINUE;
@@ -276,18 +275,13 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     }
 
     @Override
-    public int tickTimer() {
-        return age;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

@@ -297,7 +297,7 @@
 					]
 				},
 				{
-					"name": "h_head",
+					"name": "head",
 					"parent": "upperPart",
 					"pivot": [0, 30, -4],
 					"cubes": [
@@ -306,7 +306,7 @@
 				},
 				{
 					"name": "h_jaw",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [0, 31, -2],
 					"rotation": [45, 0, 0],
 					"cubes": [
@@ -320,7 +320,7 @@
 				},
 				{
 					"name": "h_horns",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [0, 30, -4]
 				},
 				{

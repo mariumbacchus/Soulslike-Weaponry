@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.ForlornScythe;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ForlornScytheModel extends AnimatedGeoModel<ForlornScythe>{
+public class ForlornScytheModel extends GeoModel<ForlornScythe> {
 
     @Override
     public Identifier getAnimationResource(ForlornScythe animatable) {

@@ -44,19 +44,18 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class ReturningKnight extends BossEntity implements IAnimatable, IAnimationTickable {
+public class ReturningKnight extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private int blockBreakingCooldown;
@@ -78,27 +77,27 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSpawning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
         } else if (this.getUnbreakable()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("unbreakable"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
         } else if (this.getSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
         } else if (this.getObliterate()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
         } else if (this.getBlind()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_reflection"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
         } else if (this.getRupture()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
         } else if (this.getMaceOfSpades()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
         } else if (this.isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -157,7 +156,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -305,20 +304,14 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     public boolean isFireImmune() {
         return true;
     }
-    
-    @Override
-    public int tickTimer() {
-        return age;
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected void mobTick() {

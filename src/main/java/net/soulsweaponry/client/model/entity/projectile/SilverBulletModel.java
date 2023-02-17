@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class SilverBulletModel extends AnimatedGeoModel<SilverBulletEntity>{
+public class SilverBulletModel extends GeoModel<SilverBulletEntity> {
 
     @Override
     public Identifier getAnimationResource(SilverBulletEntity animatable) {

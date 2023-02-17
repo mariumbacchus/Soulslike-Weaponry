@@ -2,8 +2,8 @@ package net.soulsweaponry.items;
 
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nullable;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,6 +11,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.TallPlantBlock;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
@@ -31,21 +32,23 @@ import net.soulsweaponry.blocks.WitheredFlower;
 import net.soulsweaponry.blocks.WitheredGrass;
 import net.soulsweaponry.blocks.WitheredTallFlower;
 import net.soulsweaponry.blocks.WitheredTallGrass;
+import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ChaosSet extends ArmorItem implements IAnimatable {
+public class ChaosSet extends ArmorItem implements GeoItem {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     private HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
@@ -113,7 +116,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                         }  */
                         //if (!blockState2.isAir()/*  || blockState2.getBlock() == turnBlock */ || !blockState.canPlaceAt(world, blockPos2) || !world.canPlace(blockState, blockPos2, ShapeContext.absent())) continue;
                         world.setBlockState(blockPos2, blockState);
-                        world.createAndScheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
+                        world.scheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
                     } else if (world.getBlockState(blockPos2).getBlock() == this.turnableBlocks.get(turnBlock)) {
                         WitheredBlock block = (WitheredBlock) world.getBlockState(blockPos2).getBlock();
                         block.resetAge(world.getBlockState(blockPos2), world, blockPos2);
@@ -138,21 +141,20 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         return !chest.isEmpty() && chest.isOf(ItemRegistry.ARKENPLATE) && player.getHealth() < player.getMaxHealth()/2;
     }
 
-	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-		//LivingEntity livingEntity = event.getExtraDataOfType(LivingEntity.class).get(0);
+	private PlayState predicate(AnimationState event) {
         if (this == ItemRegistry.CHAOS_ROBES) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
 		return PlayState.CONTINUE;
 	}
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));    
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 20, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -184,5 +186,31 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         }
         
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private GeoArmorRenderer renderer;
+
+            @Override
+            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+                if(this.renderer == null) {
+                    if (itemStack.isOf(ItemRegistry.CHAOS_HELMET) || itemStack.isOf(ItemRegistry.ARKENPLATE)) {
+                        this.renderer = new ChaosArmorRenderer();
+                    } else {
+                        this.renderer = new ChaosSetRenderer();
+                    }
+                }
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 }

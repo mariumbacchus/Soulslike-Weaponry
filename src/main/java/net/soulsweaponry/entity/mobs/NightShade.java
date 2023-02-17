@@ -35,18 +35,17 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class NightShade extends BossEntity implements IAnimatable, IAnimationTickable {
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class NightShade extends BossEntity implements GeoEntity {
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
 
@@ -56,14 +55,10 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
 
     public NightShade(EntityType<? extends NightShade> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
-        this.moveControl = new NightShade.ShadeMoveControl(this);
+        this.moveControl = new ShadeMoveControl(this);
         this.setDrops(ItemRegistry.LORD_SOUL_DARK);
         this.setDrops(ItemRegistry.ESSENCE_OF_EVENTIDE);
     }
-
-    public NightShade(World world) {
-        this(EntityRegistry.NIGHT_SHADE, world);
-     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
@@ -77,7 +72,7 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
 	protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(4, new NightShade.ChargeTargetGoal());
+        this.goalSelector.add(4, new ChargeTargetGoal());
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
@@ -173,11 +168,11 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
         }
   
         public void tick() {
-           if (this.state == MoveControl.State.MOVE_TO) {
+           if (this.state == State.MOVE_TO) {
               Vec3d vec3d = new Vec3d(this.targetX - NightShade.this.getX(), this.targetY - NightShade.this.getY(), this.targetZ - NightShade.this.getZ());
               double d = vec3d.length();
               if (d < NightShade.this.getBoundingBox().getAverageSideLength()) {
-                 this.state = MoveControl.State.WAIT;
+                 this.state = State.WAIT;
                  NightShade.this.setVelocity(NightShade.this.getVelocity().multiply(0.5D));
               } else {
                  NightShade.this.setVelocity(NightShade.this.getVelocity().add(vec3d.multiply(this.speed * 0.05D / d)));
@@ -201,7 +196,7 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
         private int attackCooldown;
 
         public ChargeTargetGoal() {
-           this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+           this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
   
         public boolean canStart() {
@@ -243,20 +238,19 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         if (this.getSpawn()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
         } else if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         return PlayState.CONTINUE;
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -278,15 +272,10 @@ public class NightShade extends BossEntity implements IAnimatable, IAnimationTic
     public boolean disablesShield() {
         return false;
     }
-    
-    @Override
-    public int tickTimer() {
-        return age;
-    }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected SoundEvent getAmbientSound() {

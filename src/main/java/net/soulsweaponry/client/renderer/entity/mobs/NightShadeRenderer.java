@@ -6,9 +6,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.NightShadeModel;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class NightShadeRenderer extends GeoEntityRenderer<NightShade>{
+public class NightShadeRenderer extends GeoEntityRenderer<NightShade> {
 
     int[] rgbColorOne = {13, 2, 125};
     int[] rgbColorTwo = {20, 0, 237};

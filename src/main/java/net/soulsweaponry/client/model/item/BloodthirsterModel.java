@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.Bloodthirster;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class BloodthirsterModel extends AnimatedGeoModel<Bloodthirster>{
+public class BloodthirsterModel extends GeoModel<Bloodthirster> {
 
     @Override
     public Identifier getAnimationResource(Bloodthirster animatable) {

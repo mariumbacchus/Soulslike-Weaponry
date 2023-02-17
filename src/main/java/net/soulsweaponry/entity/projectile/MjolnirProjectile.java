@@ -1,6 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -26,15 +26,15 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class MjolnirProjectile extends PersistentProjectileEntity implements IAnimatable {
+public class MjolnirProjectile extends PersistentProjectileEntity implements GeoEntity {
 
     private ItemStack stack;
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
     private static final String DEALT_DAMAGE = "DealtDamage";
     public int returnTimer;
@@ -58,7 +58,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
         int returnSpeed = MathHelper.floor(2 + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
             if (!this.isOwnerAlive()) {
-                if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                if (!this.world.isClient && this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1f);
                 }
                 this.discard();
@@ -175,12 +175,12 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

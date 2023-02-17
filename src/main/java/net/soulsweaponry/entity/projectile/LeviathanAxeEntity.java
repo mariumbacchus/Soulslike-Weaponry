@@ -12,15 +12,15 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class LeviathanAxeEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class LeviathanAxeEntity extends PersistentProjectileEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stack;
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
@@ -56,23 +56,24 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
         this.discard();
     }
 
+    private PlayState predicate(AnimationState state) {
+        state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public ItemStack asItemStack() {
         return this.stack;
     }
 
     @Override
-    public int tickTimer() {
-        return 0;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
     
 }

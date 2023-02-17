@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ShadowOrbModel extends AnimatedGeoModel<ShadowOrb>{
+public class ShadowOrbModel extends GeoModel<ShadowOrb> {
 
     @Override
     public Identifier getAnimationResource(ShadowOrb animatable) {

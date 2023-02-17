@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CometSpearModel extends AnimatedGeoModel<CometSpearEntity> {
+public class CometSpearModel extends GeoModel<CometSpearEntity> {
 
     @Override
     public Identifier getAnimationResource(CometSpearEntity animatable) {

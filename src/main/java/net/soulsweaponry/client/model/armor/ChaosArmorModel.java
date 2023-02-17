@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.armor;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.ChaosSet;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ChaosArmorModel extends AnimatedGeoModel<ChaosSet> {
+public class ChaosArmorModel extends GeoModel<ChaosSet> {
 
     @Override
     public Identifier getAnimationResource(ChaosSet animatable) {

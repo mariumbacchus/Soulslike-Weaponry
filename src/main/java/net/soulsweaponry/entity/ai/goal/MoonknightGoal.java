@@ -2,7 +2,8 @@ package net.soulsweaponry.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import javax.annotation.Nullable;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -54,7 +55,7 @@ public class MoonknightGoal extends Goal {
 
     public MoonknightGoal(Moonknight boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override
@@ -335,7 +336,7 @@ public class MoonknightGoal extends Goal {
                 this.boss.setBeamLocation(targetPos);
                 this.boss.setBeamLength(range);
                 if (this.attackStatus % 2 == 0) {
-                    this.boss.world.createExplosion(boss, CustomDamageSource.beam(boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? DestructionType.DESTROY : DestructionType.NONE);
+                    this.boss.world.createExplosion(boss, CustomDamageSource.beam(boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
                     for (Entity entity : this.boss.world.getOtherEntities(boss, new Box(targetPos, this.boss.getBlockPos().add(0, 4, 0)))) {
                         if (entity instanceof LivingEntity) {
                             entity.damage(CustomDamageSource.beam(boss), this.getModifiedDamage(20f));

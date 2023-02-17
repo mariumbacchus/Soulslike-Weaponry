@@ -1,8 +1,9 @@
 package net.soulsweaponry.registry;
 
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
 
 public class SoundRegistry {
@@ -46,44 +47,44 @@ public class SoundRegistry {
     public static final Identifier KNIGHT_SWORD_SMASH_ID = registerId("knight_sword_smash");
     public static final Identifier KNIGHT_THRUST_SWORD_ID = registerId("knight_thrust_sword");
 
-	public static SoundEvent MOONLIGHT_BIG_EVENT = new SoundEvent(MOONLIGHT_BIG_SOUND_ID);
-	public static SoundEvent MOONLIGHT_SMALL_EVENT = new SoundEvent(MOONLIGHT_SMALL_SOUND_ID);
-	public static SoundEvent BIG_CHUNGUS_EVENT = new SoundEvent(BIG_CHUNGUS_SOUND_ID);
-	public static SoundEvent BIG_CHUNGUS_SONG_EVENT = new SoundEvent(BIG_CHUNGUS_SONG_SOUND_ID);
-    public static SoundEvent FART_EVENT = new SoundEvent(FART_SOUND_ID);
-	public static SoundEvent DEMON_IDLE_EVENT = new SoundEvent(DEMON_IDLE_ID);
-    public static SoundEvent DEMON_WALK_EVENT = new SoundEvent(DEMON_WALK_ID);
-    public static SoundEvent DEMON_DAMAGE_EVENT = new SoundEvent(DEMON_DAMAGE_ID);
-    public static SoundEvent DEMON_DEATH_EVENT = new SoundEvent(DEMON_DEATH_ID);
-    public static SoundEvent DEMON_BOSS_IDLE_EVENT = new SoundEvent(DEMON_BOSS_IDLE_ID);
-    public static SoundEvent DEMON_BOSS_DEATH_EVENT = new SoundEvent(DEMON_BOSS_DEATH_ID);
-    public static SoundEvent DEMON_BOSS_HURT_EVENT = new SoundEvent(DEMON_BOSS_HURT_ID);
-    public static SoundEvent NIGHTFALL_SPAWN_EVENT = new SoundEvent(NIGHTFALL_SPAWN_ID);
-    public static SoundEvent NIGHTFALL_SHIELD_EVENT = new SoundEvent(NIGHTFALL_SHIELD_ID);
-    public static SoundEvent NIGHTFALL_BONK_EVENT = new SoundEvent(NIGHTFALL_BONK_ID);
-    public static SoundEvent DEATH_SCREAMS_EVENT = new SoundEvent(DEATH_SCREAMS_ID);
-    public static SoundEvent KNIGHT_HIT_EVENT = new SoundEvent(KNIGHT_HIT_ID);
-    public static SoundEvent KNIGHT_DEATH_EVENT = new SoundEvent(KNIGHT_DEATH_ID);
-    public static SoundEvent NIGHT_SHADE_DAMAGE_EVENT = new SoundEvent(NIGHT_SHADE_DAMAGE_ID);
-    public static SoundEvent NIGHT_SHADE_IDLE_EVENT = new SoundEvent(NIGHT_SHADE_IDLE_ID);
-    public static SoundEvent NIGHT_SHADE_DEATH_EVENT = new SoundEvent(NIGHT_SHADE_DEATH_ID);
-    public static SoundEvent GATLING_GUN_STARTUP_EVENT = new SoundEvent(GATLING_GUN_STARTUP_ID);
-    public static SoundEvent GATLING_GUN_BARRAGE_EVENT = new SoundEvent(GATLING_GUN_BARRAGE_ID);
-    public static SoundEvent GATLING_GUN_STOP_EVENT = new SoundEvent(GATLING_GUN_STOP_ID);
-    public static SoundEvent DAWNBREAKER_EVENT = new SoundEvent(DAWNBREAKER_ID);
-    public static SoundEvent SOULMASS_IDLE_EVENT = new SoundEvent(SOULMASS_IDLE_ID);
-    public static SoundEvent CRIT_HIT_EVENT = new SoundEvent(CRIT_HIT_ID);
-    public static SoundEvent POSTURE_BREAK_EVENT = new SoundEvent(POSTURE_BREAK_ID);
-    public static SoundEvent RESTORE_EVENT = new SoundEvent(RESTORE_ID);
-    public static SoundEvent SHARPEN_EVENT = new SoundEvent(SHARPEN_ID);
-    public static SoundEvent SWORD_HIT_SHIELD_EVENT = new SoundEvent(SWORD_HIT_SHIELD_ID);
-    public static SoundEvent KNIGHT_SWIPE_EVENT = new SoundEvent(KNIGHT_SWIPE_ID);
-    public static SoundEvent KNIGHT_DEATH_LAUGH_EVENT = new SoundEvent(KNIGHT_DEATH_LAUGH_ID);
-    public static SoundEvent BLINDING_LIGHT_EXPLOSION_EVENT = new SoundEvent(BLINDING_LIGHT_EXPLOSION_ID);
-    public static SoundEvent KNIGHT_CORE_BEAM_EVENT = new SoundEvent(KNIGHT_CORE_BEAM_ID);
-    public static SoundEvent KNIGHT_THRUST_SWORD_EVENT = new SoundEvent(KNIGHT_THRUST_SWORD_ID);
-    public static SoundEvent KNIGHT_SWORD_SMASH_EVENT = new SoundEvent(KNIGHT_SWORD_SMASH_ID);
-    public static SoundEvent KNIGHT_CHARGE_SWORD_EVENT = new SoundEvent(KNIGHT_CHARGE_SWORD_ID);
+	public static SoundEvent MOONLIGHT_BIG_EVENT = SoundEvent.of(MOONLIGHT_BIG_SOUND_ID);
+	public static SoundEvent MOONLIGHT_SMALL_EVENT = SoundEvent.of(MOONLIGHT_SMALL_SOUND_ID);
+	public static SoundEvent BIG_CHUNGUS_EVENT = SoundEvent.of(BIG_CHUNGUS_SOUND_ID);
+	public static SoundEvent BIG_CHUNGUS_SONG_EVENT = SoundEvent.of(BIG_CHUNGUS_SONG_SOUND_ID);
+    public static SoundEvent FART_EVENT = SoundEvent.of(FART_SOUND_ID);
+	public static SoundEvent DEMON_IDLE_EVENT = SoundEvent.of(DEMON_IDLE_ID);
+    public static SoundEvent DEMON_WALK_EVENT = SoundEvent.of(DEMON_WALK_ID);
+    public static SoundEvent DEMON_DAMAGE_EVENT = SoundEvent.of(DEMON_DAMAGE_ID);
+    public static SoundEvent DEMON_DEATH_EVENT = SoundEvent.of(DEMON_DEATH_ID);
+    public static SoundEvent DEMON_BOSS_IDLE_EVENT = SoundEvent.of(DEMON_BOSS_IDLE_ID);
+    public static SoundEvent DEMON_BOSS_DEATH_EVENT = SoundEvent.of(DEMON_BOSS_DEATH_ID);
+    public static SoundEvent DEMON_BOSS_HURT_EVENT = SoundEvent.of(DEMON_BOSS_HURT_ID);
+    public static SoundEvent NIGHTFALL_SPAWN_EVENT = SoundEvent.of(NIGHTFALL_SPAWN_ID);
+    public static SoundEvent NIGHTFALL_SHIELD_EVENT = SoundEvent.of(NIGHTFALL_SHIELD_ID);
+    public static SoundEvent NIGHTFALL_BONK_EVENT = SoundEvent.of(NIGHTFALL_BONK_ID);
+    public static SoundEvent DEATH_SCREAMS_EVENT = SoundEvent.of(DEATH_SCREAMS_ID);
+    public static SoundEvent KNIGHT_HIT_EVENT = SoundEvent.of(KNIGHT_HIT_ID);
+    public static SoundEvent KNIGHT_DEATH_EVENT = SoundEvent.of(KNIGHT_DEATH_ID);
+    public static SoundEvent NIGHT_SHADE_DAMAGE_EVENT = SoundEvent.of(NIGHT_SHADE_DAMAGE_ID);
+    public static SoundEvent NIGHT_SHADE_IDLE_EVENT = SoundEvent.of(NIGHT_SHADE_IDLE_ID);
+    public static SoundEvent NIGHT_SHADE_DEATH_EVENT = SoundEvent.of(NIGHT_SHADE_DEATH_ID);
+    public static SoundEvent GATLING_GUN_STARTUP_EVENT = SoundEvent.of(GATLING_GUN_STARTUP_ID);
+    public static SoundEvent GATLING_GUN_BARRAGE_EVENT = SoundEvent.of(GATLING_GUN_BARRAGE_ID);
+    public static SoundEvent GATLING_GUN_STOP_EVENT = SoundEvent.of(GATLING_GUN_STOP_ID);
+    public static SoundEvent DAWNBREAKER_EVENT = SoundEvent.of(DAWNBREAKER_ID);
+    public static SoundEvent SOULMASS_IDLE_EVENT = SoundEvent.of(SOULMASS_IDLE_ID);
+    public static SoundEvent CRIT_HIT_EVENT = SoundEvent.of(CRIT_HIT_ID);
+    public static SoundEvent POSTURE_BREAK_EVENT = SoundEvent.of(POSTURE_BREAK_ID);
+    public static SoundEvent RESTORE_EVENT = SoundEvent.of(RESTORE_ID);
+    public static SoundEvent SHARPEN_EVENT = SoundEvent.of(SHARPEN_ID);
+    public static SoundEvent SWORD_HIT_SHIELD_EVENT = SoundEvent.of(SWORD_HIT_SHIELD_ID);
+    public static SoundEvent KNIGHT_SWIPE_EVENT = SoundEvent.of(KNIGHT_SWIPE_ID);
+    public static SoundEvent KNIGHT_DEATH_LAUGH_EVENT = SoundEvent.of(KNIGHT_DEATH_LAUGH_ID);
+    public static SoundEvent BLINDING_LIGHT_EXPLOSION_EVENT = SoundEvent.of(BLINDING_LIGHT_EXPLOSION_ID);
+    public static SoundEvent KNIGHT_CORE_BEAM_EVENT = SoundEvent.of(KNIGHT_CORE_BEAM_ID);
+    public static SoundEvent KNIGHT_THRUST_SWORD_EVENT = SoundEvent.of(KNIGHT_THRUST_SWORD_ID);
+    public static SoundEvent KNIGHT_SWORD_SMASH_EVENT = SoundEvent.of(KNIGHT_SWORD_SMASH_ID);
+    public static SoundEvent KNIGHT_CHARGE_SWORD_EVENT = SoundEvent.of(KNIGHT_CHARGE_SWORD_ID);
 
 
 	public static void init() {
@@ -132,7 +133,7 @@ public class SoundRegistry {
 	}
 
     public static SoundEvent registerSound(Identifier id, SoundEvent event) {
-		return Registry.register(Registry.SOUND_EVENT, id, event);
+		return Registry.register(Registries.SOUND_EVENT, id, event);
 	}
     
 }

@@ -5,19 +5,7 @@
         "minecraft:plains"
     ],
     "step": "surface_structures",
-    "spawn_overrides": {
-      "monster": {
-        "bounding_box": "full",
-        "spawns": [
-          {
-          "type": "soulsweapons:dark_sorcerer",
-          "weight": 1,
-          "minCount": 1,
-          "maxCount": 3
-          }
-        ]
-      }
-    },
+    "spawn_overrides": {},
     "terrain_adaptation": "beard_thin",
     "start_pool": "soulsweapons:cathedral_of_resurrection",
     "size": 1,

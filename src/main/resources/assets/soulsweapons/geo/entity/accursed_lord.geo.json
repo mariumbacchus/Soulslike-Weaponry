@@ -60,7 +60,7 @@
 					]
 				},
 				{
-					"name": "h_head",
+					"name": "head",
 					"parent": "main",
 					"pivot": [0.5, 64.5, 0.66333],
 					"cubes": [
@@ -70,7 +70,7 @@
 				},
 				{
 					"name": "teeth_upper",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [0.5, 64.5, 0.66333],
 					"cubes": [
 						{"origin": [-6.5, 77, -3], "size": [2, 1, 2], "uv": [181, 106]},
@@ -81,7 +81,7 @@
 				},
 				{
 					"name": "mouth",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [0, 58, 2],
 					"cubes": [
 						{"origin": [-5, 74, 5], "size": [2, 4, 2], "uv": [180, 96]},
@@ -94,7 +94,7 @@
 				},
 				{
 					"name": "horns1",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [-1, 18, -16],
 					"cubes": [
 						{"origin": [11, 88, -5], "size": [6, 17, 6], "pivot": [-1, 62, 2], "rotation": [0, 0, -45], "uv": [215, 0]},
@@ -105,7 +105,7 @@
 				},
 				{
 					"name": "horns2",
-					"parent": "h_head",
+					"parent": "head",
 					"pivot": [1, 18, -16],
 					"cubes": [
 						{"origin": [-17, 88, -5], "size": [6, 17, 6], "pivot": [1, 62, 2], "rotation": [0, 0, 45], "uv": [98, 213]},

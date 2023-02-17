@@ -16,15 +16,15 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 
-public class Cannonball extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class Cannonball extends PersistentProjectileEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int life;
 
     public Cannonball(EntityType<? extends Cannonball> entityType, World world) {
@@ -87,17 +87,11 @@ public class Cannonball extends PersistentProjectileEntity implements IAnimatabl
     }
 
     @Override
-    public int tickTimer() {
-        return 0;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
-
     @Override
-    public void registerControllers(AnimationData data) {
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

@@ -24,7 +24,7 @@
 						}
 					}
 				},
-				"h_head": {
+				"head": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -354,7 +354,7 @@
 		"animation.model.explosion": {
 			"animation_length": 3,
 			"bones": {
-				"h_head": {
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -1373,7 +1373,7 @@
 						}
 					}
 				},
-				"h_head": {
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -1476,7 +1476,7 @@
 						}
 					}
 				},
-				"h_head": {
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [40, 0, 0]

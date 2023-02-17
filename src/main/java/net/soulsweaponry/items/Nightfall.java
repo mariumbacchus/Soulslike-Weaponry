@@ -2,9 +2,12 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.soulsweaponry.client.renderer.item.NightfallRenderer;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -34,14 +37,16 @@ import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
-    
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class Nightfall extends UltraHeavyWeapon implements GeoItem {
+
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     
     public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings);
@@ -129,13 +134,28 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        
+    public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private final NightfallRenderer renderer = new NightfallRenderer();
+
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 
     @Override

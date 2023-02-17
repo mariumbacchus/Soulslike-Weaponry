@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class VerticalMoonlightProjectileModel extends AnimatedGeoModel<MoonlightProjectile>{
+public class VerticalMoonlightProjectileModel extends GeoModel<MoonlightProjectile> {
 
     @Override
     public Identifier getAnimationResource(MoonlightProjectile animatable) {

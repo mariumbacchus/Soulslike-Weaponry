@@ -60,11 +60,11 @@ public class WitheredBlock extends Block {
                 mutable.set((Vec3i)pos, direction);
                 BlockState blockState = world.getBlockState(mutable);
                 if (!blockState.isOf(this) || this.increaseAge(blockState, world, mutable)) continue;
-                world.createAndScheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
+                world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
             }
             return;
         }
-        world.createAndScheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
+        world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
     }
 
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {

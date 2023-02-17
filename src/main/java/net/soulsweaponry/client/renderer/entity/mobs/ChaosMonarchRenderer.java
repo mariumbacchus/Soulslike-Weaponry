@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.ChaosMonarchModel;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class ChaosMonarchRenderer extends GeoEntityRenderer<ChaosMonarch> {
 

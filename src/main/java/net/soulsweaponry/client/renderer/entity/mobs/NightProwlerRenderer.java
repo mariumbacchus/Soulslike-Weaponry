@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.NightProwlerModel;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
 

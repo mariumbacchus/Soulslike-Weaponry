@@ -3,7 +3,7 @@ package net.soulsweaponry.entity.ai.goal;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -41,7 +41,7 @@ public class AccursedLordGoal extends Goal {
 
     public AccursedLordGoal(AccursedLordBoss boss) {
         this.boss = boss;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     @Override

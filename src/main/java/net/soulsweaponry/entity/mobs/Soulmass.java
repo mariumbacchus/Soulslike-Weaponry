@@ -39,19 +39,18 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.AnimatedDeathInterface;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
+public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterface {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> CLAP = DataTracker.registerData(Soulmass.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -67,21 +66,21 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
         this.experiencePoints = 30;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         if (this.getSacrifice()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("sacrifice"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("sacrifice"));
         } else if (this.getStartBeam()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_beam"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("start_beam"));
         } else if (this.getStopBeam()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("stop_beam"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("stop_beam"));
         } else if (this.getBeaming()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("beaming"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("beaming"));
         } else if (this.getClap()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("clap"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("clap"));
         } else if (this.getSmash()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("smash_ground"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("smash_ground"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         
         return PlayState.CONTINUE;
@@ -238,7 +237,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
         public SoulmassGoal(Soulmass entity) {
             this.entity = entity;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         @Override
@@ -462,19 +461,13 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public void initEquip() {}
 
-    @Override
-    public int tickTimer() {
-        return 0;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
     
 }

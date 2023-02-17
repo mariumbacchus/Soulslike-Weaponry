@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.SoulReaper;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class SoulReaperModel extends AnimatedGeoModel<SoulReaper>{
+public class SoulReaperModel extends GeoModel<SoulReaper> {
 
     @Override
     public Identifier getAnimationResource(SoulReaper animatable) {

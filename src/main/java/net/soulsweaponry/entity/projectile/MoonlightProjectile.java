@@ -19,20 +19,19 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class MoonlightProjectile extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable{
+public class MoonlightProjectile extends PersistentProjectileEntity implements GeoEntity {
     
     private static final TrackedData<Integer> POINTS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> TICK_PARTICLES = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> MAX_AGE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HUGE_EXPLOSION = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ROTATE_STATE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stackShotFrom;
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -177,17 +176,14 @@ public class MoonlightProjectile extends PersistentProjectileEntity implements I
     public boolean hasNoGravity() {
         return true;
     }
+
     @Override
-    public int tickTimer() {
-        return age;
-    }
-    @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     public static enum RotationState {

@@ -2,9 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;

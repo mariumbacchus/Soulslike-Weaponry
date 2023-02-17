@@ -1,10 +1,12 @@
 package net.soulsweaponry;
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.text.Text;
+import net.soulsweaponry.world.gen.OreGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -18,25 +20,33 @@ import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.OreSpawnRegistry;
 import net.soulsweaponry.registry.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.SpawnInit;
 import net.soulsweaponry.registry.WeaponRegistry;
-import software.bernie.geckolib3.GeckoLib;
+import software.bernie.geckolib.GeckoLib;
 
 public class SoulsWeaponry implements ModInitializer {
 
     public static final String ModId = "soulsweapons";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
-    public static final ItemGroup MAIN_GROUP = FabricItemGroupBuilder.build(new Identifier(ModId, "general"), () -> new ItemStack(ItemRegistry.MOONSTONE));
+    public static ItemGroup MAIN_GROUP;
+    //FabricItemGroupBuilder.build(new Identifier(ModId, "general"), () -> new ItemStack(ItemRegistry.MOONSTONE));
+    public static void registerItemGroup() {
+        MAIN_GROUP = FabricItemGroup.builder(new Identifier(ModId, "general"))
+                .displayName(Text.translatable("itemGroup.soulsweapons.general"))
+                .icon(() -> new ItemStack(ItemRegistry.MOONSTONE)).build();
+    }
 
     @Override
     public void onInitialize() {
         MidnightConfig.init(ModId, ConfigConstructor.class);
         LOGGER.info("Config initialized!");
+        GeckoLib.initialize();
+        LOGGER.info("Successfully initialized Geckolib!");
+        registerItemGroup();
         BlockRegistry.init();
         ItemRegistry.init();
         EffectRegistry.init();
@@ -48,10 +58,8 @@ public class SoulsWeaponry implements ModInitializer {
         WeaponRegistry.init();
         ArmorRegistry.init();
         GunRegistry.init();
-        OreSpawnRegistry.init();
+        OreGenerator.generateOres();
         LOGGER.info("Successfully registered SoulsWeapons content!");
-        GeckoLib.initialize();
-        LOGGER.info("Successfully initialized Geckolib!");
         RecipeRegistry.init();
         LOGGER.info("Successfully regitered recipes!");
         PacketsServer.initServer();

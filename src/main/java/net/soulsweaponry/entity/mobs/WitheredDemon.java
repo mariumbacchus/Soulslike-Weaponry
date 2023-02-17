@@ -37,19 +37,18 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.AnimatedDeathInterface;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
+public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedDeathInterface {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -61,15 +60,15 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.experiencePoints = 20;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSwingArm()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("attack"));
         } else if (this.isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         
         return PlayState.CONTINUE;
@@ -98,14 +97,8 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.dataTracker.set(DEATH, bl);
     }
 
-    @Override
-    public int tickTimer() {
-        return age;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
     }
 
     public boolean isFireImmune() {
@@ -118,8 +111,8 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
     
     @Override
@@ -188,7 +181,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -253,7 +246,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
             this.mob = mob;
             this.movementSpeed = movementSpeed;
             this.attackRange = attackRange;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
         }
 
         @Override

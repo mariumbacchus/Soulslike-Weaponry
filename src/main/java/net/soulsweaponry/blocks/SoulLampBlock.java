@@ -21,7 +21,7 @@ public class SoulLampBlock extends Block {
 
     public static final BooleanProperty LIT = Properties.LIT;
     
-    public SoulLampBlock(AbstractBlock.Settings settings) {
+    public SoulLampBlock(Settings settings) {
         super(settings);
         this.setDefaultState((BlockState)this.getDefaultState().with(LIT, false));
     }

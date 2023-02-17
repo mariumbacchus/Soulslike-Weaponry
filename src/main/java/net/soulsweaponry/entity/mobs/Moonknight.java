@@ -12,7 +12,6 @@ import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
@@ -44,19 +43,19 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.ParticleKeyFrameEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.keyframe.event.ParticleKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class Moonknight extends BossEntity implements IAnimatable {
+public class Moonknight extends BossEntity implements GeoEntity {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private int unbreakableTicks;
@@ -76,7 +75,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
     
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
-        super(entityType, world, BossBar.Color.WHITE);
+        super(entityType, world, Color.WHITE);
         this.setDrops(WeaponRegistry.MOONLIGHT_GREATSWORD);
         this.setDrops(ItemRegistry.LORD_SOUL_WHITE);
         this.setDrops(ItemRegistry.ESSENCE_OF_LUMINESCENCE);
@@ -404,15 +403,15 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
-        data.addAnimationController(controller);  
-        controller.registerParticleListener(this::particleListener);          
+        controllers.add(controller);
+        controller.setParticleKeyframeHandler(this::particleListener);
     }
 
-    private <ENTITY extends IAnimatable> void particleListener(ParticleKeyFrameEvent<ENTITY> event) {
+    private void particleListener(ParticleKeyframeEvent<Moonknight> moonknightParticleKeyframeEvent) {
         this.setChargingSword(!this.isSwordCharging());
-	}
+    }
 
     @Override
 	protected void initGoals() {
@@ -426,8 +425,8 @@ public class Moonknight extends BossEntity implements IAnimatable {
 	}
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -460,67 +459,67 @@ public class Moonknight extends BossEntity implements IAnimatable {
         this.dataTracker.startTracking(BEAM_HEIGHT, 0f);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState state) {
         if (this.isDead()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death_phase_2"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else if (this.getSpawning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn_phase_1"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn_phase_1"));
         } else if (this.getUnbreakable()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("unbreakable_phase_1"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable_phase_1"));
         } else if (this.isInitiatingPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("initiate_phase_2"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("initiate_phase_2"));
         } else {
             if (this.isPhaseTwo()) {
                 switch (this.getPhaseTwoAttack()) {
                     case BLINDING_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_2"));
                         break;
                     case CORE_BEAM:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("core_beam_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
                         break;
                     case IDLE:
                         if (this.isAttacking()) {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_2"));
                         } else {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_2"));
                         }
                         break;
                     case MOONFALL:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
                         break;
                     case MOONVEIL:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("moon_explosion_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
                         break;
                     case SWORD_OF_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("sword_of_light_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
                         break;
                     case THRUST:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("thrust_phase_2"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
                         break;
                 }
             } else {
                 switch (this.getPhaseOneAttack()) {
                     case BLINDING_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_1"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_1"));
                         break;
                     case IDLE:
                         if (this.isAttacking()) {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_1"));
                         } else {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_1"));
                         }
                         break;
                     case MACE_OF_SPADES:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades_phase_1"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
                         break;
                     case OBLITERATE:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_1"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
                         break;
                     case RUPTURE:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture_phase_1"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
                         break;
                     case SUMMON:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors_phase_1"));
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
                         break;
                 }
             }

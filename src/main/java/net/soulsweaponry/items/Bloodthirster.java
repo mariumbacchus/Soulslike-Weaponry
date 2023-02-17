@@ -1,9 +1,12 @@
 package net.soulsweaponry.items;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -19,15 +22,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Bloodthirster extends SwordItem implements IAnimatable {
+public class Bloodthirster extends SwordItem implements GeoItem {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
+
     public Bloodthirster(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bloodthirster_damage, attackSpeed, settings);
         
@@ -68,11 +73,27 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private final BloodthirsterRenderer renderer = new BloodthirsterRenderer();
+
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public Supplier<Object> getRenderProvider() {
+        return this.renderProvider;
     }
 }

@@ -8,12 +8,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryEntryList;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.structure.Structure;
@@ -36,9 +38,9 @@ public class BossCompass extends Item {
     public void updatePos(ServerWorld world, BlockPos center, ItemStack stack) {
         Optional<RegistryEntryList.Named<Structure>> optional;
         if (world.getDimensionKey() == DimensionTypes.THE_NETHER) {
-            optional = world.getRegistryManager().get(Registry.STRUCTURE_KEY).getEntryList(ModTags.Structures.DECAYING_KINGDOM);
+            optional = world.getRegistryManager().get(RegistryKeys.STRUCTURE).getEntryList(ModTags.Structures.DECAYING_KINGDOM);
         } else if (world.getDimensionKey() == DimensionTypes.OVERWORLD) {
-            optional = world.getRegistryManager().get(Registry.STRUCTURE_KEY).getEntryList(ModTags.Structures.CHAMPIONS_GRAVES);
+            optional = world.getRegistryManager().get(RegistryKeys.STRUCTURE).getEntryList(ModTags.Structures.CHAMPIONS_GRAVES);
         } else {
             optional = null;
         }

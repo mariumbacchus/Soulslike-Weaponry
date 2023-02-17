@@ -35,7 +35,7 @@ public class Skofnung extends SwordItem {
      * The Skofnung sword will add a status effect that disables all healing on the target for a period of time.
      * This effect can be removed, however, by using the Skofnung Stone. Additionally, when the stone is used while 
      * Skofnung is in the other hand, it temporarily sharpens the Skofnung sword, empowering it for the next 8 hits.
-     * The empowering of the sword is coded in the {@link net.soulsweaponry.items.SkofnungStone} class.
+     * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
     public Skofnung(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.skofnung_damage, attackSpeed, settings);

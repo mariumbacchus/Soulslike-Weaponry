@@ -34,38 +34,15 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * NOTE TO SELF: <p>
- * This class had many random comments with dead code before now. It was me attempting to use the animation ticks
- * as the attack ticks, instead of having two seperate ticks, so if the animation speed increases
- * on the entity, the damage timing will work fine. Well, it's been a week now with me non-stop
- * trying to figure things out through data tracking, nbts, sound, particle and custom instruction
- * keyframes, but alas, nothing works. For some reason, I can't pass any data beyond the tick() function
- * or animation predicate functions, meaning I can't even pass booleans or doubles to neither the attack
- * goal nor mobTick() function. Moreover, I can't even interact with any entities beyond gathering their
- * information, not even the .damage() method works. Maybe some day I'll figure it out, but by the looks of it, 
- * other mods also use the two ticks seperately, so for now, I admit defeat. <p>
- * TLDR; Animation functions cannot interact with entities, only gather their information. The tick() function
- * will damage anything regardless if this entity despawned or not. The mobTick() method or Goals cannot
- * get any information from the animation functions, since it can't edit any variables to the entity. <p>
- * Methods I've tried: <p>
- * - Tracked data boolean changed in the animation function. <p>
- * - Tracked data blockPos if not null then animation function SHOULD damage all entities in box of blockPos. <p>
- * - Register custom controllers and interact with entities.
- */
-public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
+public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stack;
     public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -84,18 +61,18 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         this.setOwner(owner);
     }
 
-    public <E extends Entity & IAnimatable> PlayState attack(AnimationEvent<E> event) {
+    public PlayState attack(AnimationState state) {
         if (this.getAnimationAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack_east", ILoopType.EDefaultLoopTypes.LOOP));
+            state.getController().setAnimation(RawAnimation.begin().then("attack_east", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         }
-        event.getController().clearAnimationCache();
+        state.getController().stop();
         return PlayState.STOP;
     }
 
-    private <E extends Entity & IAnimatable> PlayState idle(AnimationEvent<E> event) {
+    private PlayState idle(AnimationState state) {
         if (!this.getAnimationAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
             return PlayState.CONTINUE;
         } else {
             return PlayState.STOP;
@@ -103,12 +80,12 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<FreyrSwordEntity> attackController = new AnimationController<>(this, "attackController", 0, this::attack);
         AnimationController<FreyrSwordEntity> idleController = new AnimationController<>(this, "idleController", 0, this::idle);
         //attackController.registerCustomInstructionListener(this::attackTargetListener); //Check GeoExampleEntity for more info/examples.
-        data.addAnimationController(attackController);
-        data.addAnimationController(idleController);
+        controllers.add(attackController);
+        controllers.add(idleController);
     }
 
     @Override
@@ -248,8 +225,8 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     public void setAnimationAttacking(boolean bl) {

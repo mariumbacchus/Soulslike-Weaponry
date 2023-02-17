@@ -3,9 +3,9 @@ package net.soulsweaponry.client.model.item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.Nightfall;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class NightfallModel extends AnimatedGeoModel<Nightfall>{
+public class NightfallModel extends GeoModel<Nightfall> {
 
     @Override
     public Identifier getAnimationResource(Nightfall animatable) {
