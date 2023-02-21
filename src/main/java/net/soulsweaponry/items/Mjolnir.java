@@ -53,6 +53,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     public static final String RAINING = "raining";
     public static final String LIGHTNING_STATUS = "lightning_status";
     public static final String SHOULD_UPDATE_LIGHTNING = "should_update_lightning";
+    public static final String OWNERS_LAST_POS = "owners_last_pos";
 
     public Mjolnir(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.mjolnir_damage, attackSpeed, settings);
@@ -80,12 +81,13 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     }
 
     private void throwHammer(World world, PlayerEntity player, ItemStack stack) {
+        if (stack.hasNbt()) {
+            stack.getNbt().putIntArray(OWNERS_LAST_POS, new int[]{player.getBlockX(), player.getBlockY(), player.getBlockZ()});
+        }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
         float speed = WeaponUtil.getEnchantDamageBonus(stack)/5;
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
-        //if (player.getAbilities().creativeMode) {
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;
-        //}
         world.spawnEntity(projectile);
         world.playSoundFromEntity(null, projectile, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0f, 1.0f);
         if (!player.getAbilities().creativeMode) {
