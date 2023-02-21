@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.soulsweaponry.items.Mjolnir;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -55,27 +56,37 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
-        int returnSpeed = MathHelper.floor(2 + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
+        int returnSpeed = MathHelper.floor(5 + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
+            this.setNoClip(true);
+            Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
             if (!this.isOwnerAlive()) {
-                if (!this.world.isClient && this.pickupType == PickupPermission.ALLOWED) {
-                    this.dropStack(this.asItemStack(), 0.1f);
+                if (this.stack.hasNbt() && this.stack.getNbt().contains(Mjolnir.OWNERS_LAST_POS)) {
+                    int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
+                    vec3d = new Vec3d(pos[0], pos[1], pos[2]).subtract(this.getPos());
+                    if (vec3d.getX() == pos[0] && vec3d.getY() == pos[1] && vec3d.getZ() == pos[2]) {
+                        if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                            this.dropStack(this.asItemStack(), 0.1f);
+                        }
+                        this.discard();
+                    }
+                } else {
+                    if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                        this.dropStack(this.asItemStack(), 0.1f);
+                    }
+                    this.discard();
                 }
-                this.discard();
-            } else {
-                this.setNoClip(true);
-                Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
-                this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * (double)returnSpeed, this.getZ());
-                if (this.world.isClient) {
-                    this.lastRenderY = this.getY();
-                }
-                double d = 0.05 * (double)returnSpeed;
-                this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
-                if (this.returnTimer == 0) {
-                    this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
-                }
-                ++this.returnTimer;
             }
+            this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * (double)returnSpeed, this.getZ());
+            if (this.world.isClient) {
+                this.lastRenderY = this.getY();
+            }
+            double d = 0.05 * (double)returnSpeed;
+            this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
+            if (this.returnTimer == 0) {
+                this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
+            }
+            ++this.returnTimer;
         }
         super.tick();
     }
@@ -131,7 +142,11 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
 
     @Override
     protected boolean tryPickup(PlayerEntity player) {
-        return super.tryPickup(player) || (this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack()));
+        int slot = player.getInventory().selectedSlot;
+        if (!player.getInventory().getMainHandStack().isEmpty()) {
+            slot = -1;
+        }
+        return super.tryPickup(player) || (this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(slot, this.asItemStack()));
     }
 
     @Override
