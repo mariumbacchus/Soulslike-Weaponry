@@ -91,7 +91,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
-        int returnSpeed = 5 + EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack);
+        int returnSpeed = ConfigConstructor.leviathan_axe_return_speed + EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack);
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
             this.setNoClip(true);
             Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
