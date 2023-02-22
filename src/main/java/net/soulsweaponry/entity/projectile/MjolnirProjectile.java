@@ -56,7 +56,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
-        int returnSpeed = MathHelper.floor(5 + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
+        int returnSpeed = ConfigConstructor.mjolnir_return_speed + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
             this.setNoClip(true);
             Vec3d vec3d = entity.getEyePos().subtract(this.getPos());

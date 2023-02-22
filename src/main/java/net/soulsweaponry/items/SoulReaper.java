@@ -39,7 +39,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SoulReaper extends SwordItem implements GeoItem {
+public class SoulReaper extends SoulHarvestingItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -47,24 +47,11 @@ public class SoulReaper extends SwordItem implements GeoItem {
     public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.soulreaper_damage, attackSpeed, settings);
     }
-    
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-        if (target.isDead()) {
-            if (stack.hasNbt() && stack.getNbt().contains("kills")) {
-                stack.getNbt().putInt("kills", stack.getNbt().getInt("kills") + 1);
-            } else {
-                stack.getNbt().putInt("kills", 1);
-            }
-        }
-        return true;
-    }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
         
-        if (stack.hasNbt() && stack.getNbt().contains("kills")) {
+        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
@@ -80,19 +67,19 @@ public class SoulReaper extends SwordItem implements GeoItem {
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    stack.getNbt().putInt("kills", power - 3);
+                    this.addAmount(stack, -3);
                 } else if (power >= 10 && power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    stack.getNbt().putInt("kills", power - 10);
+                    this.addAmount(stack, -10);
                 } else if (power >= 30) {
                     Soulmass entity = new Soulmass(EntityRegistry.SOULMASS, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    stack.getNbt().putInt("kills", power - 30);      
+                    this.addAmount(stack, -30);
                 }
 
                 stack.damage(3, player, (p_220045_0_) -> {
@@ -117,20 +104,12 @@ public class SoulReaper extends SwordItem implements GeoItem {
         }
     }
 
-    public int getSouls(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains("kills")) {
-            return stack.getNbt().getInt("kills");
-        } else {
-            return 0;
-        }
-    }
-
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             String kills = "0";
-            if (stack.hasNbt() && stack.getNbt().contains("kills")) {
-                kills = String.valueOf(stack.getNbt().getInt("kills"));
+            if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
+                kills = String.valueOf(stack.getNbt().getInt(KILLS));
             }
             tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE));
             tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY));
