@@ -30,4 +30,5 @@ public class PacketRegistry {
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
     public static final Identifier RETURN_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "check_can_freyr_return");
     public static final Identifier STATIONARY_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "switch_stationary_freyr");
+    public static final Identifier COLLECT_SUMMONS = new Identifier(SoulsWeaponry.ModId, "collect_summons_to_soul_reaper");
 }

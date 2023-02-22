@@ -42,10 +42,7 @@ import net.soulsweaponry.util.ParticleNetworking;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterface {
@@ -71,6 +68,8 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
             state.getController().setAnimation(RawAnimation.begin().thenPlay("sacrifice"));
         } else if (this.getStartBeam()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("start_beam"));
+        } else if (this.isSneaking()) {
+            state.getController().setAnimation(RawAnimation.begin().then("start_beam", Animation.LoopType.HOLD_ON_LAST_FRAME));
         } else if (this.getStopBeam()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("stop_beam"));
         } else if (this.getBeaming()) {
@@ -308,7 +307,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                             BlockPos pos = new BlockPos(this.entity.getX() + cords[i][0], this.entity.getY(),this.entity.getZ() + cords[i][1]);
                             if (!this.entity.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
 
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
                             mob.setPos(this.entity.getX() + cords[i][0], this.entity.getY() + .1f, this.entity.getZ() + cords[i][1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
@@ -412,7 +411,10 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     @Override
     public void tick() {
         super.tick();
-        if (this.getBeaming()) {
+        if (this.isSneaking() && !this.isDead()) {
+            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            if (this.getHealth() < this.getMaxHealth()) this.heal(1f);
+        } else if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
             double f = this.getBeamCords().getY() - this.getEyeY();
             double g = this.getBeamCords().getZ() - this.getZ();
