@@ -11,6 +11,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 
 public class PacketsClient {
 
@@ -208,6 +209,17 @@ public class PacketsClient {
                 DefaultParticleType[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME};
                 float[][] velDividers = {{3, 3, 3}, {3, 3, 3}};
                 PacketsClient.particleOutburst(client.world, 200, particles, target.getX(), height, target.getZ(), velDividers);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            client.execute(() -> {
+                DefaultParticleType[] particlesRound = {ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.LARGE_SMOKE};
+                DefaultParticleType[] particlesOut = {ParticleTypes.ELECTRIC_SPARK, ParticleTypes.CLOUD, ParticleTypes.SCRAPE, ParticleTypes.GLOW};
+                float[][] velDividers = {{1, 1, 1}, {1, 1, 1}};
+                PacketsClient.roundParticleOutburst(client.world, 1000, particlesRound, target.getX(), target.getY(), target.getZ(), 1f);
+                PacketsClient.particleOutburst(client.world, 500, particlesOut, target.getX(), target.getY(), target.getZ(), velDividers);
             });
         });
     }

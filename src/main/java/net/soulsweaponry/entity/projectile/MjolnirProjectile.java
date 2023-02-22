@@ -49,7 +49,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
+        if (this.inGroundTime > 4 || age > 60) {
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
@@ -115,7 +115,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
         float g = 1.0f;
         int strikes = 1;
         if (this.world instanceof ServerWorld && this.world.isSkyVisible(blockPos = entity.getBlockPos())) {
-            if (this.world.isThundering()) strikes = 3;
+            if (this.world.isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
             for (int i = 0; i < strikes; i++) {
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
@@ -126,6 +126,15 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
             g = 5.0f;
         }
         this.playSound(soundEvent, g, 1.0f);
+    }
+
+    @Override
+    protected boolean canHit(Entity entity) {
+        if (entity instanceof LeviathanAxeEntity) {
+            return true;
+        } else {
+            return super.canHit(entity);
+        }
     }
 
     private boolean isOwnerAlive() {

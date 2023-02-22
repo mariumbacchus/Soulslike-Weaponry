@@ -8,6 +8,7 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -22,11 +23,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.items.Mjolnir;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -80,14 +84,17 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
                 this.onHit(livingEntity2);
             }
         }
+        if (!world.isClient && entity instanceof MjolnirProjectile) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, this.getBlockPos());
+            world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 2f, true, Explosion.DestructionType.DESTROY);
+        }
         LeviathanAxe.iceExplosion(world, this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-
     }
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
+        if (this.inGroundTime > 4 || age > 60) {
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
@@ -133,6 +140,15 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
             return null;
         }
         return super.getEntityCollision(currentPosition, nextPosition);
+    }
+
+    @Override
+    protected boolean canHit(Entity entity) {
+        if (entity instanceof MjolnirProjectile) {
+            return true;
+        } else {
+            return super.canHit(entity);
+        }
     }
 
     private boolean isOwnerAlive() {
