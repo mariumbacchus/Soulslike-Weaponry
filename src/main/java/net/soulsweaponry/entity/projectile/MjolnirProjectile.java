@@ -52,7 +52,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 4) {
+        if (this.inGroundTime > 4 || age > 60) {
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
@@ -98,7 +98,6 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.mjolnir_projectile_damage;
         if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
-        //Custom damage source maybe?
         DamageSource damageSource = DamageSource.trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
@@ -119,7 +118,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
         float g = 1.0f;
         int strikes = 1;
         if (this.world instanceof ServerWorld && this.world.isSkyVisible(blockPos = entity.getBlockPos())) {
-            if (this.world.isThundering()) strikes = 3;
+            if (this.world.isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
             for (int i = 0; i < strikes; i++) {
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
@@ -130,6 +129,15 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
             g = 5.0f;
         }
         this.playSound(soundEvent, g, 1.0f);
+    }
+
+    @Override
+    protected boolean canHit(Entity entity) {
+        if (entity instanceof LeviathanAxeEntity) {
+            return true;
+        } else {
+            return super.canHit(entity);
+        }
     }
 
     private boolean isOwnerAlive() {

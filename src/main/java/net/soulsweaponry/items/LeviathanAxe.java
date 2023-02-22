@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import org.jetbrains.annotations.Nullable;
@@ -69,14 +70,19 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(user.getActiveHand());
                 });
-        
+
+                if (stack.hasNbt()) {
+                    stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
+                }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
-                int damage = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setDamage(ConfigConstructor.leviathan_axe_projectile_damage + damage);
+                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
+                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
+                entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
                 world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
-                if (!playerEntity.isCreative()) playerEntity.getItemCooldownManager().set(this, ConfigConstructor.leviathan_axe_throw_cooldown - damage*30);
+                if (!playerEntity.getAbilities().creativeMode) {
+                    playerEntity.getInventory().removeOne(stack);
+                }
             }
         }
     }
@@ -127,6 +133,8 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
             tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_2").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw").formatted(Formatting.WHITE));
             tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw_description").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.returning").formatted(Formatting.DARK_PURPLE));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.returning_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
