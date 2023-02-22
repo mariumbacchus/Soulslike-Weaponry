@@ -86,7 +86,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
         }
         if (!world.isClient && entity instanceof MjolnirProjectile) {
             ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, this.getBlockPos());
-            world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 2f, true, Explosion.DestructionType.DESTROY);
+            world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 6f, true, Explosion.DestructionType.DESTROY);
         }
         LeviathanAxe.iceExplosion(world, this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));

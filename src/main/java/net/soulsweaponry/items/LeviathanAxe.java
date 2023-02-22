@@ -126,6 +126,8 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
             tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_2").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw").formatted(Formatting.WHITE));
             tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw_description").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.returning").formatted(Formatting.DARK_PURPLE));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.returning_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
