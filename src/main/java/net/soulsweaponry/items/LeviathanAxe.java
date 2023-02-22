@@ -13,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -63,14 +64,19 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(user.getActiveHand());
                 });
-        
+
+                if (stack.hasNbt()) {
+                    stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
+                }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
-                int damage = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setDamage(ConfigConstructor.leviathan_axe_projectile_damage + damage);
+                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
+                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
+                entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
                 world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
-                playerEntity.getItemCooldownManager().set(this, ConfigConstructor.leviathan_axe_throw_cooldown - damage*30);
+                if (!playerEntity.getAbilities().creativeMode) {
+                    playerEntity.getInventory().removeOne(stack);
+                }
             }
         }
     }
@@ -121,6 +127,8 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.permafrost_description_2").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_throw").formatted(Formatting.WHITE));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_throw_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.returning").formatted(Formatting.DARK_PURPLE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.returning_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
