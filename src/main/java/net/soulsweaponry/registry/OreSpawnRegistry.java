@@ -58,7 +58,7 @@ public class OreSpawnRegistry {
     private static PlacedFeature OVERWORLD_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(8), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(120))));
 
     private static ConfiguredFeature<?, ?> OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE_DEEPSLATE.getDefaultState(), 3));
-    private static PlacedFeature OVERWORLD_DEEPSLATE_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(6), HeightRangePlacementModifier.uniform(YOffset.fixed(-80), YOffset.fixed(0))));
+    private static PlacedFeature OVERWORLD_DEEPSLATE_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(6), HeightRangePlacementModifier.uniform(YOffset.fixed(-63), YOffset.fixed(0))));
 
     public static void init() {
         registerConfigured(OVERWORLD_MOONSTONE_ORE_CONFIGURED_FEATURE, "overworld_moonstone_ore");
