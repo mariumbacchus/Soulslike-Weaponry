@@ -15,10 +15,12 @@ public class KeyBindRegistry {
 
     private static KeyBinding returnFreyrSword;
     private static KeyBinding stationaryFreyrSword;
+    private static KeyBinding collectSummons;
 
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
         stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_Z);
+        collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
@@ -28,6 +30,11 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (stationaryFreyrSword.wasPressed()) {
                 ClientPlayNetworking.send(PacketRegistry.STATIONARY_FREYR_SWORD, PacketByteBufs.empty());
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (collectSummons.wasPressed()) {
+                ClientPlayNetworking.send(PacketRegistry.COLLECT_SUMMONS, PacketByteBufs.empty());
             }
         });
     }
