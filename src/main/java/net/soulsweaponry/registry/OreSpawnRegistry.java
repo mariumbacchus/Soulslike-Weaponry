@@ -27,8 +27,6 @@ import net.minecraft.world.gen.GenerationStep;
 
 public class OreSpawnRegistry {
 
-    public static final ImmutableSet<RegistryKey<Biome>> MOUNTAIN_BIOME_KEYS = ImmutableSet.of(BiomeKeys.MEADOW, BiomeKeys.GROVE, BiomeKeys.SNOWY_SLOPES, BiomeKeys.JAGGED_PEAKS, BiomeKeys.FROZEN_PEAKS, BiomeKeys.STONY_PEAKS);
-    
     private static ConfiguredFeature<?, ?> OVERWORLD_MOONSTONE_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(
         Feature.ORE, new OreFeatureConfig(
             OreConfiguredFeatures.STONE_ORE_REPLACEABLES, 
@@ -57,10 +55,10 @@ public class OreSpawnRegistry {
     ));
 
     private static ConfiguredFeature<?, ?> OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE.getDefaultState(),3));
-    private static PlacedFeature OVERWORLD_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(20), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(100))));
+    private static PlacedFeature OVERWORLD_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(8), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(120))));
 
     private static ConfiguredFeature<?, ?> OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE_DEEPSLATE.getDefaultState(), 3));
-    private static PlacedFeature OVERWORLD_DEEPSLATE_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(20), HeightRangePlacementModifier.uniform(YOffset.fixed(-60), YOffset.fixed(0))));
+    private static PlacedFeature OVERWORLD_DEEPSLATE_VERGLAS_ORE_PLACED_FEATURE = new PlacedFeature(RegistryEntry.of(OVERWORLD_DEEPSLATE_VERGLAS_ORE_CONFIGURED_FEATURE), Arrays.asList(CountPlacementModifier.of(6), HeightRangePlacementModifier.uniform(YOffset.fixed(-63), YOffset.fixed(0))));
 
     public static void init() {
         registerConfigured(OVERWORLD_MOONSTONE_ORE_CONFIGURED_FEATURE, "overworld_moonstone_ore");
@@ -75,8 +73,8 @@ public class OreSpawnRegistry {
 
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_moonstone_ore")));
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_deepslate_moonstone_ore")));
-        BiomeModifications.addFeature(BiomeSelectors.includeByKey(MOUNTAIN_BIOME_KEYS), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_verglas_ore")));
-        BiomeModifications.addFeature(BiomeSelectors.includeByKey(MOUNTAIN_BIOME_KEYS), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_deepslate_verglas_ore")));
+        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_verglas_ore")));
+        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, "overworld_deepslate_verglas_ore")));
     }
 
     public static ConfiguredFeature<?, ?> registerConfigured(ConfiguredFeature<?,?> configFeature, String name) {

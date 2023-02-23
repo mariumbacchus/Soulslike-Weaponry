@@ -3,20 +3,8 @@ package net.soulsweaponry.entity.mobs;
 import java.util.Random;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.Tameable;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
-import net.minecraft.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TrackOwnerAttackerGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -32,6 +20,8 @@ import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ArmorRegistry;
@@ -47,6 +37,7 @@ public class Remnant extends TameableEntity {
     
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(2, new SitGoal(this));
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1D, false));
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
@@ -95,6 +86,34 @@ public class Remnant extends TameableEntity {
                 this.equipStack(spot[i], new ItemStack(equipment[i]));
             }
         }
+    }
+
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        this.setSitting(false);
+        return super.damage(source, amount);
+    }
+
+    @Override
+    public void tickMovement() {
+        if (this.isInSittingPose()) {
+            this.setSneaking(true);
+        } else {
+            this.setSneaking(false);
+        }
+        super.tickMovement();
+    }
+
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        if (this.isOwner(player) && player.getStackInHand(hand).isEmpty()) {
+            this.setSitting(!this.isSitting());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setTarget((LivingEntity)null);
+            return ActionResult.SUCCESS;
+        }
+        return super.interactMob(player, hand);
     }
 
     @Override

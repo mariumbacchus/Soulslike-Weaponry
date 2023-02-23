@@ -43,6 +43,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -72,6 +73,8 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             event.getController().setAnimation(new AnimationBuilder().addAnimation("sacrifice"));
         } else if (this.getStartBeam()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("start_beam"));
+        } else if (this.isSneaking()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_beam", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
         } else if (this.getStopBeam()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("stop_beam"));
         } else if (this.getBeaming()) {
@@ -309,7 +312,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                             BlockPos pos = new BlockPos(this.entity.getX() + cords[i][0], this.entity.getY(),this.entity.getZ() + cords[i][1]);
                             if (!this.entity.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
 
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
                             mob.setPos(this.entity.getX() + cords[i][0], this.entity.getY() + .1f, this.entity.getZ() + cords[i][1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
@@ -413,7 +416,10 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public void tick() {
         super.tick();
-        if (this.getBeaming()) {
+        if (this.isSneaking() && !this.isDead()) {
+            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            if (this.getHealth() < this.getMaxHealth()) this.heal(1f);
+        } else if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
             double f = this.getBeamCords().getY() - this.getEyeY();
             double g = this.getBeamCords().getZ() - this.getZ();

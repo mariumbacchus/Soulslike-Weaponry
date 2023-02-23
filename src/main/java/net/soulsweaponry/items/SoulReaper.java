@@ -61,7 +61,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     this.spawnParticles(world, vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                 }
 
-                world.playSound(player, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
                 if (power < 10) {
                     SoulReaperGhost entity = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
@@ -118,6 +118,9 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release_description_2").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA));
             tooltip.add(new LiteralText(kills).formatted(Formatting.WHITE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_1").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_2").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_3").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

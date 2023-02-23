@@ -297,6 +297,9 @@
     "tooltip.soulsweapons.soul_release_wither_description_1": "- Use to release a §4Wither Skull§r with your harvested",
     "tooltip.soulsweapons.soul_release_wither_description_2": "souls, every 3rd shot is §fCharged§r. Use again",
     "tooltip.soulsweapons.soul_release_wither_description_3": "to detonate previous projectile early.",
+    "tooltip.soulsweapons.collect_1": "Press V by default to collect the souls of your bound",
+    "tooltip.soulsweapons.collect_2": "summons back into your Soul Harvesting Weapon if in hand.",
+    "tooltip.soulsweapons.collect_3": "This includes everything from Remnants to the Soulmasses.",
     "tooltip.soulsweapons.lunar_herald": "Herald of Moonlight",
     "tooltip.soulsweapons.lunar_herald_description_1": "- Use to gain the §dLunar Herald§r effect. Hold",
     "tooltip.soulsweapons.lunar_herald_description_2": "attack to shoot moonlight beams with the effect.",
@@ -409,6 +412,7 @@
 
     "key.soulsweapons.return_freyr_sword": "Return Freyr Sword to owner",
     "key.soulsweapons.freyr_sword_stationary": "Freyr Sword switch between stationary or guarding",
+    "key.soulsweapons.collect_summons_soul_reaper": "Collect summons back to Soul Harvesting item if in hand",
 
     "advancements.soulsweapons.root.title": "Soulslike Weaponry",
     "advancements.soulsweapons.root.description": "Unique achievements for the worthy!",
