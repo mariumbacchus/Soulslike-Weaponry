@@ -133,6 +133,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         if (this.getOwner() == null || (this.getOwner() != null && this.getOwner().equals(player))) {
             if (!this.insertStack(player)) {
+                this.setPos(player.getX(), player.getEyeY(), player.getZ());
                 this.dropStack();
             }
             this.discard();
@@ -163,6 +164,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
                 if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
                     PlayerEntity player = (PlayerEntity) this.getOwner();
                     if (!this.insertStack(player)) {
+                        this.setPos(player.getX(), player.getEyeY(), player.getZ());
                         this.dropStack();
                     }
                 } else {
