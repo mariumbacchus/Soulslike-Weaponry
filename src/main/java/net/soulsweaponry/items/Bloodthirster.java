@@ -42,7 +42,7 @@ public class Bloodthirster extends SwordItem implements GeoItem {
         super.postHit(stack, target, attacker);
         if (attacker instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) attacker;
-            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
+            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
                 if (ConfigConstructor.lifesteal_item_heal_scales) {
@@ -51,7 +51,7 @@ public class Bloodthirster extends SwordItem implements GeoItem {
                 if (player.getHealth() == player.getMaxHealth() && ConfigConstructor.bloodthirster_overshields) {
                     healing = healing - 4 > 0 ? healing - 4 : 0;
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 60 + MathHelper.floor(healing*10), MathHelper.floor(healing)));
-                } else {
+                } else if (player.getHealth() < player.getMaxHealth()) {
                     attacker.heal(healing);
                 }
             }
