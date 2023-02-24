@@ -45,28 +45,22 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
         ItemStack stack = user.getStackInHand(hand);
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
         Optional<UUID> uuid = Optional.of(entity.getUuid());
-        boolean isAlreadyTracking = false;
-        for (Entry<?> entry : user.getDataTracker().getAllEntries()) {
-            if (entry.getData() == SUMMON_UUID) {
-                isAlreadyTracking = true;
-                if (user.getDataTracker().get(SUMMON_UUID).isPresent() && world instanceof ServerWorld) {
-                    Entity sword = ((ServerWorld)world).getEntity(user.getDataTracker().get(SUMMON_UUID).get());
-                    if (sword != null && sword instanceof FreyrSwordEntity) {
-                        return TypedActionResult.fail(stack);
-                    } else {
-                        user.getInventory().removeOne(stack);
-                        entity.setPos(user.getX(), user.getY(), user.getZ());
-                        user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
-                        entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
-                        world.spawnEntity(entity);
-                    }
+        try {
+            if (user.getDataTracker().get(SUMMON_UUID).isPresent() && world instanceof ServerWorld) {
+                Entity sword = ((ServerWorld)world).getEntity(user.getDataTracker().get(SUMMON_UUID).get());
+                if (sword != null && sword instanceof FreyrSwordEntity) {
+                    return TypedActionResult.fail(stack);
+                } else {
+                    user.getInventory().removeOne(stack);
+                    entity.setPos(user.getX(), user.getY(), user.getZ());
+                    user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
+                    entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
+                    world.spawnEntity(entity);
                 }
             }
-        }
-        if (!isAlreadyTracking) {
-            user.getDataTracker().startTracking(SUMMON_UUID, uuid);
-        } else {
             user.getDataTracker().set(SUMMON_UUID, uuid);
+        } catch (Exception e) {
+            user.getDataTracker().startTracking(SUMMON_UUID, uuid);
         }
         
         return TypedActionResult.success(stack);

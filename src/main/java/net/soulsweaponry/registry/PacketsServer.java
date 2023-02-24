@@ -19,6 +19,9 @@ import net.minecraft.entity.data.DataTracker.Entry;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.util.ParticleNetworking;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class PacketsServer {
 
     public static void initServer() {
@@ -36,14 +39,22 @@ public class PacketsServer {
                 ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
                 if (serverWorld != null) {
                     //NOTE: reading bufs does not work for some reason
-                    for (Entry<?> entry : player.getDataTracker().getAllEntries()) {
-                        if (entry.getData() == FreyrSword.SUMMON_UUID && player.getDataTracker().get(FreyrSword.SUMMON_UUID).isPresent() && player.getBlockPos() != null) {
-                            Entity sword = serverWorld.getEntity(player.getDataTracker().get(FreyrSword.SUMMON_UUID).get());
+                    try {
+                        Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
+                        if (op.isPresent() && player.getBlockPos() != null) {
+                            Entity sword = serverWorld.getEntity(op.get());
                             if (sword != null && sword instanceof FreyrSwordEntity) {
-                                sword.setPos(player.getX(), player.getY(), player.getZ());
-                                ((FreyrSwordEntity)sword).removeEntity();
+                                if (!((FreyrSwordEntity)sword).insertStack(player)) {
+                                    sword.setPos(player.getX(), player.getEyeY(), player.getZ());
+                                    ((FreyrSwordEntity)sword).dropStack();
+                                }
+                                sword.discard();
+                            } else {
+                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
                             }
                         }
+                    } catch (Exception e) {
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
                     }
                 }
             });
@@ -53,14 +64,19 @@ public class PacketsServer {
             server.execute(() -> {
                 ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
                 if (serverWorld != null) {
-                    for (Entry<?> entry : player.getDataTracker().getAllEntries()) {
-                        if (entry.getData() == FreyrSword.SUMMON_UUID && player.getDataTracker().get(FreyrSword.SUMMON_UUID).isPresent() && player.getBlockPos() != null) {
+                    try {
+                        Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
+                        if (op.isPresent() && player.getBlockPos() != null) {
                             Entity entity = serverWorld.getEntity(player.getDataTracker().get(FreyrSword.SUMMON_UUID).get());
                             if (entity != null && entity instanceof FreyrSwordEntity) {
                                 FreyrSwordEntity sword = ((FreyrSwordEntity)entity);
                                 sword.setStationaryPos(player.getBlockPos());
+                            } else {
+                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
                             }
                         }
+                    } catch (Exception e) {
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
                     }
                 }
             });
