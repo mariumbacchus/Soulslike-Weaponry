@@ -43,8 +43,10 @@ public class PacketsServer {
                         if (op.isPresent() && player.getBlockPos() != null) {
                             Entity sword = serverWorld.getEntity(op.get());
                             if (sword != null && sword instanceof FreyrSwordEntity) {
-                                sword.setPos(player.getX(), player.getY(), player.getZ());
-                                ((FreyrSwordEntity)sword).removeEntity();
+                                if (!((FreyrSwordEntity)sword).insertStack(player)) {
+                                    ((FreyrSwordEntity)sword).dropStack();
+                                }
+                                sword.discard();
                             } else {
                                 player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
                             }
