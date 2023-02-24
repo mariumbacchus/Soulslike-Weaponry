@@ -149,46 +149,52 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
                     this.setAnimationAttacking(false);
                 }
             }
-        } /* else {
-            if (this.age > this.getNoOwnerAge()) {
-                this.remove(RemovalReason.DISCARDED);
-            }
-        } */
+        }
     }
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         if (this.getOwner() == null || (this.getOwner() != null && this.getOwner().equals(player))) {
-            this.removeEntity();
+            if (!this.insertStack(player)) {
+                this.setPos(player.getX(), player.getEyeY(), player.getZ());
+                this.dropStack();
+            }
+            this.discard();
             return ActionResult.SUCCESS;
         }
         return ActionResult.FAIL;
     }
 
-    public void removeEntity() {
-        if (world.isClient) {
-            ((ClientWorld)world).removeEntity(this.getId(), RemovalReason.DISCARDED);
-        } else {
-            this.dropEquipment(DamageSource.GENERIC, 0, true);
-            this.remove(RemovalReason.DISCARDED);
+    public boolean insertStack(PlayerEntity player) {
+        int slot = player.getInventory().selectedSlot;
+        if (!player.getInventory().getMainHandStack().isEmpty()) {
+            slot = -1;
         }
+        return player.getInventory().insertStack(slot, this.asItemStack());
     }
 
-    @Override
-    public void onRemoved() {
-        super.onRemoved();
-        this.dropEquipment(DamageSource.GENERIC, 0, true);
+    public void dropStack() {
+        ItemEntity entity = this.dropStack(this.stack);
+        if (entity != null) entity.setCovetedItem();
     }
 
-    @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        this.stack.damage(10, this.getRandom(), null);
-        if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
-            ItemEntity entity = this.dropStack(this.stack);
-            if (entity != null) entity.setCovetedItem();
-        } else if (this.getBlockPos() != null) {
+    public void onDeath(DamageSource damageSource) {
+        if (!world.isClient && this.getBlockPos() != null) {
             this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
+            this.stack.damage(10, this.getRandom(), null);
+            if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
+                if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
+                    PlayerEntity player = (PlayerEntity) this.getOwner();
+                    if (!this.insertStack(player)) {
+                        this.setPos(player.getX(), player.getEyeY(), player.getZ());
+                        this.dropStack();
+                    }
+                } else {
+                    this.dropStack();
+                }
+            }
         }
+        super.onDeath(damageSource);
     }
 
     /**
@@ -205,7 +211,6 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        //Spawn particles around
         if (this.age % 4 == 0) {
             double random = this.getRandom().nextDouble();
             this.world.addParticle(ParticleTypes.GLOW, false, 
@@ -225,7 +230,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     /**
-     * When the owner disconnects, the entity will lose it's bond. It will then
+     * When the owner disconnects, the entity will lose its bond. It will then
      * despawn after 3 seconds.
      */
     public int getNoOwnerAge() {
