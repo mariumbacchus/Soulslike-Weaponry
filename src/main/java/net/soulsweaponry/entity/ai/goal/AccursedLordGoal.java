@@ -228,7 +228,7 @@ public class AccursedLordGoal extends Goal {
         if (this.attackStatus == 13 || this.attackStatus == 18 || this.attackStatus == 24) {
             this.summonLava(lavaRadius);
             if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.boss.getBlockPos(), 200);
-            this.boss.world.playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             this.lavaRadius++;
         }
         if (this.attackStatus >= 25) {
