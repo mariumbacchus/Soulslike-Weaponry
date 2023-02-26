@@ -18,7 +18,7 @@ public class PredicateRegistry {
     
     public static void initClient() {
 
-        PredicateRegistry.registerePull(WeaponRegistry.GALEFORCE);
+        PredicateRegistry.registerPull(WeaponRegistry.GALEFORCE);
         PredicateRegistry.registerPulling(WeaponRegistry.GALEFORCE);
 
         PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
@@ -29,6 +29,8 @@ public class PredicateRegistry {
         PredicateRegistry.registerThrowing(GunRegistry.GATLING_GUN);
         PredicateRegistry.registerThrowing(WeaponRegistry.LEVIATHAN_AXE);
         PredicateRegistry.registerThrowing(WeaponRegistry.MJOLNIR);
+        PredicateRegistry.registerThrowing(WeaponRegistry.MOONLIGHT_GREATSWORD);
+        PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD);
 
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SOUL_REAPER);
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.FORLORN_SCYTHE);
@@ -66,7 +68,7 @@ public class PredicateRegistry {
         });
     }
 
-    protected static void registerePull(Item item) {
+    protected static void registerPull(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("pull"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity == null) {
                 return 0.0F;
