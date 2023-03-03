@@ -104,6 +104,7 @@
     "item.soulsweapons.skofnung_stone": "Skofnung Stone",
     "item.soulsweapons.mjolnir": "Mjölnir",
     "item.soulsweapons.freyr_sword": "Sword of Freyr",
+    "item.soulsweapons.sting": "Sting",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -357,6 +358,8 @@
     "tooltip.soulsweapons.arkenplate": "Unbreakable",
     "tooltip.soulsweapons.arkenplate_description_1": "- When the user is under §c50% Health§r, gain",
     "tooltip.soulsweapons.arkenplate_description_2": "permanent §3Resistence II§r.",
+    "tooltip.soulsweapons.luminate": "Luminescence",
+    "tooltip.soulsweapons.luminate_description": "- Lights up when hostiles are around",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",

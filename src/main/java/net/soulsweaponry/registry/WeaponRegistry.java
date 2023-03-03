@@ -42,6 +42,7 @@ public class WeaponRegistry {
     public static ToolItem SKOFNUNG = new Skofnung(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem MJOLNIR = new Mjolnir(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem FREYR_SWORD = new FreyrSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.RARE));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -72,13 +73,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(SKOFNUNG, "skofnung");
         ItemRegistry.registerItem(MJOLNIR, "mjolnir");
         ItemRegistry.registerItem(FREYR_SWORD, "freyr_sword");
+        ItemRegistry.registerItem(STING, "sting");
     }
-    
-    public String[] weaponNames = {
-        "bloodthirster", "bluemoon_greatsword", "bluemoon_shortsword", "comet_spear", 
-        "darkin_blade", "dawnbreaker", "heap_of_raw_iron", "dragonslayer_swordspear",
-        "dragon_staff", "draugr_night", "forlorn_scythe", "rageblade", "lich_bane",
-        "moonlight_greatsword", "moonlight_shortsword", "nightfall", "soulreaper",
-        "whirligig_sawblade", "withered_wabbajack",
-    };
 }

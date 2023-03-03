@@ -44,6 +44,7 @@ public class RecipeRegistry {
     public static JsonObject MJOLNIR_RECIPE = null;
     public static JsonObject FREYR_SWORD_RECIPE = null;
     public static JsonObject DRAUGR_RECIPE = null;
+    public static JsonObject STING_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -522,6 +523,26 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_draugr);
                 register.add("draugr");
                 register.add(DRAUGR_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_sting) {
+                STING_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X'),
+                        Lists.newArrayList(
+                                new Identifier(ModId, "verglas"),
+                                new Identifier("minecraft", "stick")
+                        ),
+                        Lists.newArrayList("item", "item"),
+                        Lists.newArrayList(
+                                "#",
+                                "#",
+                                "X"
+                        ), new Identifier(ModId, "sting"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_sting);
+                register.add("sting");
+                register.add(STING_RECIPE);
                 recipes.add(register);
             }
         }
