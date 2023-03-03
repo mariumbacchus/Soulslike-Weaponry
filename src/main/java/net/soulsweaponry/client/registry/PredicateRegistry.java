@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.BossCompass;
 import net.soulsweaponry.items.Skofnung;
+import net.soulsweaponry.items.Sting;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -59,6 +60,16 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
                 boolean emp = ((Skofnung) itemStack.getItem()).isEmpowered(itemStack);
+                if (emp) {
+                    return 1.0F;
+                }
+            }
+            return 0.0f;
+        });
+
+        ModelPredicateProviderRegistry.register(WeaponRegistry.STING, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+            if (itemStack.getItem() instanceof Sting) {
+                boolean emp = ((Sting) itemStack.getItem()).isActive(itemStack);
                 if (emp) {
                     return 1.0F;
                 }

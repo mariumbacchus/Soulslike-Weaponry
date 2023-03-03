@@ -33,6 +33,7 @@ public class ConfigConstructor extends MidnightConfig {
     //@Entry public static boolean disable_recipe_pure_moonlight_shortsword = false;
     @Entry public static boolean disable_recipe_mjolnir = false;
     @Entry public static boolean disable_recipe_sword_of_freyr = false;
+    @Entry public static boolean disable_recipe_sting = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 10; 
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -111,6 +112,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int skofnung_disable_heal_duration = 100;
     @Entry public static int skofnung_stone_additional_empowered_strikes = 8;
     @Entry public static int soulreaper_damage = 11;
+    @Entry public static int sting_damage = 6;
     @Entry public static int sword_of_freyr_damage = 7;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static int whirligig_sawblade_damage = 8;
