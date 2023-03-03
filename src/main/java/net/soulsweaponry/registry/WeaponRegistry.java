@@ -7,31 +7,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.Bloodthirster;
-import net.soulsweaponry.items.BluemoonGreatsword;
-import net.soulsweaponry.items.BluemoonShortsword;
-import net.soulsweaponry.items.CometSpear;
-import net.soulsweaponry.items.DarkinBlade;
-import net.soulsweaponry.items.Dawnbreaker;
-import net.soulsweaponry.items.DragonStaff;
-import net.soulsweaponry.items.DragonslayerSwordBerserk;
-import net.soulsweaponry.items.DragonslayerSwordspear;
-import net.soulsweaponry.items.Draugr;
-import net.soulsweaponry.items.ForlornScythe;
-import net.soulsweaponry.items.FreyrSword;
-import net.soulsweaponry.items.Galeforce;
-import net.soulsweaponry.items.GuinsoosRageblade;
-import net.soulsweaponry.items.LeviathanAxe;
-import net.soulsweaponry.items.LichBane;
-import net.soulsweaponry.items.Mjolnir;
-import net.soulsweaponry.items.MoonlightGreatsword;
-import net.soulsweaponry.items.MoonlightShortsword;
-import net.soulsweaponry.items.Nightfall;
-import net.soulsweaponry.items.PureMoonlightGreatsword;
-import net.soulsweaponry.items.Skofnung;
-import net.soulsweaponry.items.SoulReaper;
-import net.soulsweaponry.items.WhirligigSawblade;
-import net.soulsweaponry.items.WitheredWabbajack;
+import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
 public class WeaponRegistry {
@@ -66,6 +42,7 @@ public class WeaponRegistry {
     public static ToolItem SKOFNUNG = new Skofnung(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static ToolItem MJOLNIR = new Mjolnir(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static ToolItem FREYR_SWORD = new FreyrSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
+    public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -96,13 +73,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(SKOFNUNG, "skofnung");
         ItemRegistry.registerItem(MJOLNIR, "mjolnir");
         ItemRegistry.registerItem(FREYR_SWORD, "freyr_sword");
+        ItemRegistry.registerItem(STING, "sting");
     }
-    
-    public String[] weaponNames = {
-        "bloodthirster", "bluemoon_greatsword", "bluemoon_shortsword", "comet_spear", 
-        "darkin_blade", "dawnbreaker", "heap_of_raw_iron", "dragonslayer_swordspear",
-        "dragon_staff", "draugr_night", "forlorn_scythe", "rageblade", "lich_bane",
-        "moonlight_greatsword", "moonlight_shortsword", "nightfall", "soulreaper",
-        "whirligig_sawblade", "withered_wabbajack",
-    };
 }
