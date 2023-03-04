@@ -34,6 +34,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_mjolnir = false;
     @Entry public static boolean disable_recipe_sword_of_freyr = false;
     @Entry public static boolean disable_recipe_sting = false;
+    @Entry public static boolean disable_recipe_featherlight = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 10; 
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -76,6 +77,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dragon_staff_use_time = 100;
     @Entry public static int draugr_damage_at_night = 10;
     @Entry public static int forlorn_scythe_damage = 11;
+    @Entry public static int featherlight_damage = 8;
+    @Entry public static float featherlight_attack_speed = 1.6f;
     @Entry public static float galeforce_bonus_damage = 1.0f;
     @Entry public static int galeforce_dash_cooldown = 50;
     @Entry public static int rageblade_damage = 7;
