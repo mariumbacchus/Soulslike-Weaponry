@@ -45,6 +45,7 @@ public class RecipeRegistry {
     public static JsonObject FREYR_SWORD_RECIPE = null;
     public static JsonObject DRAUGR_RECIPE = null;
     public static JsonObject STING_RECIPE = null;
+    public static JsonObject FEATHERLIGHT_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -543,6 +544,27 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_sting);
                 register.add("sting");
                 register.add(STING_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_featherlight) {
+                FEATHERLIGHT_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'O'),
+                        Lists.newArrayList(
+                                new Identifier("minecraft", "obsidian"),
+                                new Identifier("minecraft", "diamond_pickaxe"),
+                                new Identifier("minecraft", "amethyst_shard")
+                        ),
+                        Lists.newArrayList("item", "item", "item"),
+                        Lists.newArrayList(
+                                "#O#",
+                                "#O#",
+                                " X "
+                        ), new Identifier(ModId, "featherlight"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_featherlight);
+                register.add("featherlight");
+                register.add(FEATHERLIGHT_RECIPE);
                 recipes.add(register);
             }
         }
