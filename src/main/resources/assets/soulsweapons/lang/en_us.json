@@ -105,6 +105,7 @@
     "item.soulsweapons.mjolnir": "Mjölnir",
     "item.soulsweapons.freyr_sword": "Sword of Freyr",
     "item.soulsweapons.sting": "Sting",
+    "item.soulsweapons.featherlight": "Featherlight",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -360,6 +361,9 @@
     "tooltip.soulsweapons.arkenplate_description_2": "permanent §3Resistence II§r.",
     "tooltip.soulsweapons.luminate": "Luminescence",
     "tooltip.soulsweapons.luminate_description": "- Lights up when hostiles are around",
+    "tooltip.soulsweapons.featherlight": "Delicate Dragonglass",
+    "tooltip.soulsweapons.featherlight_description_1": "- Naturally light, resulting in high attack speed",
+    "tooltip.soulsweapons.featherlight_description_2": "while gaining the benefits of a heavy greatsword.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",

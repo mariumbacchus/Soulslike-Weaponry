@@ -43,6 +43,7 @@ public class WeaponRegistry {
     public static ToolItem MJOLNIR = new Mjolnir(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem FREYR_SWORD = new FreyrSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.RARE));
+    public static ToolItem FEATHERLIGHT = new Featherlight(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.RARE));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -74,5 +75,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(MJOLNIR, "mjolnir");
         ItemRegistry.registerItem(FREYR_SWORD, "freyr_sword");
         ItemRegistry.registerItem(STING, "sting");
+        ItemRegistry.registerItem(FEATHERLIGHT, "featherlight");
     }
 }
