@@ -46,6 +46,7 @@ public class RecipeRegistry {
     public static JsonObject DRAUGR_RECIPE = null;
     public static JsonObject STING_RECIPE = null;
     public static JsonObject FEATHERLIGHT_RECIPE = null;
+    public static JsonObject CRUCIBLE_SWORD_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -564,6 +565,18 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_featherlight);
                 register.add("featherlight");
                 register.add(FEATHERLIGHT_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_crucible_sword) {
+                CRUCIBLE_SWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
+                        "item", new Identifier("minecraft", "netherite_sword"),
+                        "tag", new Identifier(ModId, "lord_soul"),
+                        new Identifier(ModId, "crucible_sword"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_crucible_sword);
+                register.add("crucible_sword");
+                register.add(CRUCIBLE_SWORD_RECIPE);
                 recipes.add(register);
             }
         }

@@ -44,6 +44,7 @@ public class WeaponRegistry {
     public static ToolItem FREYR_SWORD = new FreyrSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem FEATHERLIGHT = new Featherlight(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.RARE));
+    public static ToolItem CRUCIBLE_SWORD = new CrucibleSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -76,5 +77,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(FREYR_SWORD, "freyr_sword");
         ItemRegistry.registerItem(STING, "sting");
         ItemRegistry.registerItem(FEATHERLIGHT, "featherlight");
+        ItemRegistry.registerItem(CRUCIBLE_SWORD, "crucible_sword");
     }
 }
