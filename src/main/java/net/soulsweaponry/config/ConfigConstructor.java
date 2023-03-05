@@ -35,6 +35,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_sword_of_freyr = false;
     @Entry public static boolean disable_recipe_sting = false;
     @Entry public static boolean disable_recipe_featherlight = false;
+    @Entry public static boolean disable_recipe_crucible_sword = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 10; 
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -56,6 +57,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_ability_damage = 10f;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
+    @Entry public static int crucible_sword_normal_damage = 9;
+    @Entry public static int crucible_sword_empowered_damage = 30;
+    @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static float darkin_blade_ability_damage = 12f;
     @Entry public static int darkin_blade_ability_cooldown = 150;
