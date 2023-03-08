@@ -81,7 +81,7 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(STING, "sting");
         ItemRegistry.registerItem(FEATHERLIGHT, "featherlight");
         ItemRegistry.registerItem(CRUCIBLE_SWORD, "crucible_sword");
-        ItemRegistry.registerItem(DARKIN_SCYTHE_PRE, "darkin_scythe_pre.json");
+        ItemRegistry.registerItem(DARKIN_SCYTHE_PRE, "darkin_scythe_pre");
         ItemRegistry.registerItem(DARKIN_SCYTHE_PRIME, "darkin_scythe");
         ItemRegistry.registerItem(SHADOW_ASSASSIN_SCYTHE, "shadow_assassin_scythe");
     }
