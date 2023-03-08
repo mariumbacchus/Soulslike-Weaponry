@@ -229,5 +229,17 @@
         "sounds": [
             "soulsweapons:knight_thrust_sword"
         ]
+    },
+    "slice_target": {
+        "subtitle": "subtitles.soulsweapons.slice_target",
+        "sounds": [
+            "soulsweapons:slice_target"
+        ]
+    },
+    "umbral_trespass_sound": {
+        "subtitle": "subtitles.soulsweapons.umbral_trespass_sound",
+        "sounds": [
+            "soulsweapons:umbral_trespass_sound"
+        ]
     }
 }

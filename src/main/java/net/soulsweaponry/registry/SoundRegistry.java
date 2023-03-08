@@ -45,6 +45,8 @@ public class SoundRegistry {
     public static final Identifier KNIGHT_CHARGE_SWORD_ID = registerId("knight_charge_sword");
     public static final Identifier KNIGHT_SWORD_SMASH_ID = registerId("knight_sword_smash");
     public static final Identifier KNIGHT_THRUST_SWORD_ID = registerId("knight_thrust_sword");
+    public static final Identifier SLICE_TARGET_ID = registerId("slice_target");
+    public static final Identifier UMBRAL_TRESPASS_ID = registerId("umbral_trespass_sound");
 
 	public static SoundEvent MOONLIGHT_BIG_EVENT = new SoundEvent(MOONLIGHT_BIG_SOUND_ID);
 	public static SoundEvent MOONLIGHT_SMALL_EVENT = new SoundEvent(MOONLIGHT_SMALL_SOUND_ID);
@@ -84,6 +86,8 @@ public class SoundRegistry {
     public static SoundEvent KNIGHT_THRUST_SWORD_EVENT = new SoundEvent(KNIGHT_THRUST_SWORD_ID);
     public static SoundEvent KNIGHT_SWORD_SMASH_EVENT = new SoundEvent(KNIGHT_SWORD_SMASH_ID);
     public static SoundEvent KNIGHT_CHARGE_SWORD_EVENT = new SoundEvent(KNIGHT_CHARGE_SWORD_ID);
+    public static SoundEvent SLICE_TARGET_EVENT = new SoundEvent(SLICE_TARGET_ID);
+    public static SoundEvent UMBRAL_TRESPASS_EVENT = new SoundEvent(UMBRAL_TRESPASS_ID);
 
 
 	public static void init() {
@@ -125,6 +129,8 @@ public class SoundRegistry {
         registerSound(KNIGHT_CHARGE_SWORD_ID, KNIGHT_CHARGE_SWORD_EVENT);
         registerSound(KNIGHT_SWORD_SMASH_ID, KNIGHT_SWORD_SMASH_EVENT);
         registerSound(KNIGHT_THRUST_SWORD_ID, KNIGHT_THRUST_SWORD_EVENT);
+        registerSound(SLICE_TARGET_ID, SLICE_TARGET_EVENT);
+        registerSound(UMBRAL_TRESPASS_ID, UMBRAL_TRESPASS_EVENT);
 	}
 
 	public static Identifier registerId(String name) {

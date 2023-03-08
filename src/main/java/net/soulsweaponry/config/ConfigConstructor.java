@@ -63,6 +63,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static float darkin_blade_ability_damage = 12f;
     @Entry public static int darkin_blade_ability_cooldown = 150;
+    @Entry public static int darkin_scythe_damage = 9;
+    @Entry public static int darkin_scythe_bonus_damage = 3;
+    @Entry public static int darkin_scythe_max_souls = 100;
+    @Entry public static float darkin_scythe_prime_ability_damage = 20f;
+    @Entry(min=0,max=100) public static float darkin_scythe_prime_ability_percent_health_damage = 10f;
+    @Entry public static int darkin_scythe_prime_ability_cooldown = 400;
+    @Entry public static float darkin_scythe_prime_heal_modifier = 0.25f;
+    @Entry public static int darkin_scythe_prime_ticks_before_dismount = 80;
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
     @Entry(min=0,max=1) public static double dawnbreaker_ability_chance_modifier = 0.0D;
@@ -114,6 +122,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
+    @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 3;
+    @Entry public static int shadow_assassin_scythe_shadow_step_ticks = 60;
+    @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 100;
+    @Entry public static float shadow_assassin_scythe_ability_damage = 40f;
+    @Entry public static int shadow_assassin_scythe_ability_cooldown = 300;
+    @Entry public static int shadow_assassin_scythe_ticks_before_dismount = 120;
     @Entry public static int skofnung_damage = 8;
     @Entry public static int skofnung_bonus_damage = 2;
     @Entry public static int skofnung_disable_heal_duration = 100;
