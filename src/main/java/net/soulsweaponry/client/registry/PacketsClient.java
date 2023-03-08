@@ -222,6 +222,18 @@ public class PacketsClient {
                 PacketsClient.particleOutburst(client.world, 500, particlesOut, target.getX(), target.getY(), target.getZ(), velDividers);
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.UMBRAL_TRESPASS_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            double eyeHeight = buf.readDouble();
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME};
+                float[][] velDividers = {
+                        {2, 2, 2}, {2, 2, 2}
+                };
+                PacketsClient.particleOutburst(client.world, 100, particles, target.getX(), eyeHeight, target.getZ(), velDividers);
+            });
+        });
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {
