@@ -44,21 +44,14 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-        if (this.world.isClient) {
-            return;
-        }
         Entity entity = entityHitResult.getEntity();
-        if (entity != null && entity instanceof LivingEntity && !(entity instanceof ChaosMonarch)) {
+        if (entity != null && entity instanceof LivingEntity) {
             LivingEntity target = (LivingEntity) entity;
-            for (ItemStack stack : target.getArmorItems()) {
-                if (!(stack.getItem() instanceof ChaosSet)) {
-                    target.damage(CustomDamageSource.shadowOrb(this, this.getOwner()), 5f);
-                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 100, 0));
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 200, 0));
-                }
-            }
+            target.damage(CustomDamageSource.shadowOrb(this, this.getOwner()), 5f);
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 100, 0));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 200, 0));
         }
+        super.onEntityHit(entityHitResult);
     }
 
     @Override
@@ -81,8 +74,19 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     }
 
     @Override
-    public boolean canHit() {
-        return false;
+    protected boolean canHit(Entity entity) {
+        if (entity instanceof ChaosMonarch) {
+            return false;
+        }
+        if (entity != null && entity instanceof LivingEntity) {
+            LivingEntity target = (LivingEntity) entity;
+            for (ItemStack stack : target.getArmorItems()) {
+                if (stack.getItem() instanceof ChaosSet) {
+                    return false;
+                }
+            }
+        }
+        return super.canHit(entity);
     }
 
     @Override

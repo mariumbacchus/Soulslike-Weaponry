@@ -45,6 +45,9 @@ public class WeaponRegistry {
     public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem FEATHERLIGHT = new Featherlight(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem CRUCIBLE_SWORD = new CrucibleSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -78,5 +81,8 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(STING, "sting");
         ItemRegistry.registerItem(FEATHERLIGHT, "featherlight");
         ItemRegistry.registerItem(CRUCIBLE_SWORD, "crucible_sword");
+        ItemRegistry.registerItem(DARKIN_SCYTHE_PRE, "darkin_scythe_pre.json");
+        ItemRegistry.registerItem(DARKIN_SCYTHE_PRIME, "darkin_scythe");
+        ItemRegistry.registerItem(SHADOW_ASSASSIN_SCYTHE, "shadow_assassin_scythe");
     }
 }

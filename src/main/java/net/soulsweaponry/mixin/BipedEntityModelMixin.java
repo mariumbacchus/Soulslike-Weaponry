@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.soulsweaponry.items.SoulHarvestingItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +20,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.SOUL_REAPER) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
+        if (entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
             if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
                 if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
@@ -35,7 +36,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     @Inject(at = @At("TAIL"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-            if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.FORLORN_SCYTHE) || entity.getHandItems().iterator().next().isOf(WeaponRegistry.SOUL_REAPER)) {
+            if (entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem) {
                 ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
             }
         }
