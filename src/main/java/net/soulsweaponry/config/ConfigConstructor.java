@@ -38,7 +38,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_crucible_sword = false;
     @Entry public static boolean disable_recipe_darkin_scythe = false;
 
-    @Entry(min=0,max=100) public static int withered_demon_spawnrate = 10; 
+    @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
     @Entry(min=0,max=100) public static int evil_forlorn_spawnrate = 10;
 
@@ -123,7 +123,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
-    @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 3;
+    @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 2;
     @Entry public static int shadow_assassin_scythe_shadow_step_ticks = 60;
     @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 100;
     @Entry public static float shadow_assassin_scythe_ability_damage = 40f;
