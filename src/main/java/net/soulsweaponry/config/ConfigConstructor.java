@@ -36,6 +36,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_sting = false;
     @Entry public static boolean disable_recipe_featherlight = false;
     @Entry public static boolean disable_recipe_crucible_sword = false;
+    @Entry public static boolean disable_recipe_darkin_scythe = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 10; 
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;

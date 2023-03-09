@@ -47,6 +47,7 @@ public class RecipeRegistry {
     public static JsonObject STING_RECIPE = null;
     public static JsonObject FEATHERLIGHT_RECIPE = null;
     public static JsonObject CRUCIBLE_SWORD_RECIPE = null;
+    public static JsonObject DARKIN_SCYTHE_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -578,6 +579,27 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_crucible_sword);
                 register.add("crucible_sword");
                 register.add(CRUCIBLE_SWORD_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_darkin_scythe) {
+                DARKIN_SCYTHE_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'O'),
+                        Lists.newArrayList(
+                                new Identifier(ModId, "crimson_ingot"),
+                                new Identifier("minecraft", "stick"),
+                                new Identifier(ModId, "lord_soul")
+                        ),
+                        Lists.newArrayList("item", "item", "tag"),
+                        Lists.newArrayList(
+                                " ##",
+                                "OX ",
+                                " X "
+                        ), new Identifier(ModId, "darkin_scythe_pre"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_darkin_scythe);
+                register.add("darkin_scythe_pre");
+                register.add(DARKIN_SCYTHE_RECIPE);
                 recipes.add(register);
             }
         }
