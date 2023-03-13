@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "soulsweapons:verglas_block"
+        }
+    ],
+    "result": {
+        "item": "soulsweapons:verglas",
+        "count": 9
+    }
+}
