@@ -116,8 +116,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release").formatted(Formatting.DARK_BLUE));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release_description_1").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA));
-            tooltip.add(new LiteralText(kills).formatted(Formatting.WHITE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA).append(new LiteralText(kills).formatted(Formatting.WHITE)));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_1").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_2").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_3").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
