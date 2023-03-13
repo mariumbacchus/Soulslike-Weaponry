@@ -1,6 +1,6 @@
 {   "parent": "block/block",
   "textures": {
-    "inner": "soulsweapons:block/verglas_block_inner",
+    "particle": "soulsweapons:block/verglas_block_inner",
     "outer": "soulsweapons:block/verglas_block_outer"
   },
   "elements": [
@@ -18,12 +18,12 @@
     {   "from": [ 1, 1, 1 ],
       "to": [ 15, 15, 15 ],
       "faces": {
-        "down":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"},
-        "up":    { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"},
-        "north": { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"},
-        "south": { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"},
-        "west":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"},
-        "east":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inner"}
+        "down":  { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"},
+        "up":    { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"},
+        "north": { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"},
+        "south": { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"},
+        "west":  { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"},
+        "east":  { "uv": [ 1, 1, 15, 15 ], "texture": "#particle"}
       }
     }
   ]
