@@ -3,14 +3,7 @@ package net.soulsweaponry.registry;
 import java.util.function.ToIntFunction;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MagmaBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
-import net.minecraft.block.OreBlock;
+import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -46,7 +39,7 @@ public class BlockRegistry {
     public static final Block MOONSTONE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block MOONSTONE_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block MOONSTONE_BLOCK = new Block(FabricBlockSettings.of(Material.AMETHYST).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool());
-    public static final AltarBlock ALTAR_BLOCK = new AltarBlock(FabricBlockSettings.of(Material.STONE).strength(30F, 800.0F).sounds(BlockSoundGroup.STONE).requiresTool());
+    public static final AltarBlock ALTAR_BLOCK = new AltarBlock(FabricBlockSettings.of(Material.STONE).strength(30F, 800.0F).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool());
     public static final WitheredBlock WITHERED_DIRT = new WitheredBlock(FabricBlockSettings.of(Material.SOIL).strength(0.3F).sounds(BlockSoundGroup.GRAVEL), Blocks.DIRT);
     public static final WitheredBlock WITHERED_GRASS_BLOCK = new WitheredBlock(FabricBlockSettings.of(Material.SOLID_ORGANIC).strength(0.5F).sounds(BlockSoundGroup.GRAVEL), Blocks.GRASS_BLOCK);
     public static final WitheredGrass WITHERED_GRASS = new WitheredGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS).offsetType(AbstractBlock.OffsetType.XYZ), Blocks.GRASS);
@@ -59,57 +52,42 @@ public class BlockRegistry {
     public static final BlackstonePedestal BLACKSTONE_PEDESTAL = new BlackstonePedestal(FabricBlockSettings.of(Material.STONE).strength(20.0f, 400.0f).sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block VERGLAS_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block VERGLAS_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
+    public static final Block VERGLAS_BLOCK = new TransparentBlock(FabricBlockSettings.of(Material.AMETHYST, MapColor.DARK_AQUA).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().requiresTool());
     public static final Block SOULFIRE_STAIN = new MagmaBlock(AbstractBlock.Settings.of(Material.STONE, MapColor.DARK_AQUA).requiresTool().luminance(state -> 3).ticksRandomly().strength(0.5f).allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true));
     public static final Block SOUL_LAMP = new SoulLampBlock(AbstractBlock.Settings.of(Material.REDSTONE_LAMP).luminance(BlockRegistry.createLightLevelFromLitBlockState(15)).strength(0.3f).sounds(BlockSoundGroup.GLASS).allowsSpawning((state, world, pos, type) -> true));
 
     public static void init() {
-        registerBlock(CRIMSON_OBSIDIAN, "crimson_obsidian");
-        registerBlock(INFUSED_BLACKSTONE, "infused_blackstone");
-        registerBlock(CRACKED_INFUSED_BLACKSTONE, "cracked_infused_blackstone");
-        registerBlock(MOONSTONE_ORE, "moonstone_ore");
-        registerBlock(MOONSTONE_ORE_DEEPSLATE, "moonstone_ore_deepslate");
-        registerBlock(MOONSTONE_BLOCK, "moonstone_block");
-        registerBlock(ALTAR_BLOCK, "altar_block");
-        registerBlock(WITHERED_DIRT, "withered_dirt");
-        registerBlock(WITHERED_GRASS_BLOCK, "withered_grass_block");
-        registerBlock(WITHERED_GRASS, "withered_grass");
-        registerBlock(WITHERED_BERRY_BUSH, "withered_berry_bush");
-        registerBlock(WITHERED_FERN, "withered_fern");
-        registerBlock(HYDRANGEA, "hydrangea");
-        registerBlock(WITHERED_TALL_GRASS, "withered_tall_grass");
-        registerBlock(WITHERED_LARGE_FERN, "withered_large_fern");
-        registerBlock(OLEANDER, "oleander");
-        registerBlock(BLACKSTONE_PEDESTAL, "blackstone_pedestal");
-        registerBlock(VERGLAS_ORE, "verglas_ore");
-        registerBlock(VERGLAS_ORE_DEEPSLATE, "verglas_ore_deepslate");
-        registerBlock(SOULFIRE_STAIN, "soulfire_stain");
-        registerBlock(SOUL_LAMP, "soul_lamp");
-
-        registerBlockItem(CRIMSON_OBSIDIAN, "crimson_obsidian");
-        registerBlockItem(INFUSED_BLACKSTONE, "infused_blackstone");
-        registerBlockItem(CRACKED_INFUSED_BLACKSTONE, "cracked_infused_blackstone");
-        registerBlockItem(MOONSTONE_ORE, "moonstone_ore");
-        registerBlockItem(MOONSTONE_ORE_DEEPSLATE, "moonstone_ore_deepslate");
-        registerBlockItem(MOONSTONE_BLOCK, "moonstone_block");
-        registerBlockItem(ALTAR_BLOCK, "altar_block");
-        registerBlockItem(WITHERED_DIRT, "withered_dirt");
-        registerBlockItem(WITHERED_GRASS_BLOCK, "withered_grass_block");
-        registerBlockItem(WITHERED_GRASS, "withered_grass");
-        registerBlockItem(WITHERED_BERRY_BUSH, "withered_berry_bush");
-        registerBlockItem(WITHERED_FERN, "withered_fern");
-        registerBlockItem(HYDRANGEA, "hydrangea");
-        registerBlockItem(WITHERED_TALL_GRASS, "withered_tall_grass");
-        registerBlockItem(WITHERED_LARGE_FERN, "withered_large_fern");
-        registerBlockItem(OLEANDER, "oleander");
-        registerBlockItem(BLACKSTONE_PEDESTAL, "blackstone_pedestal");
-        registerBlockItem(VERGLAS_ORE, "verglas_ore");
-        registerBlockItem(VERGLAS_ORE_DEEPSLATE, "verglas_ore_deepslate");
-        registerBlockItem(SOULFIRE_STAIN, "soulfire_stain");
-        registerBlockItem(SOUL_LAMP, "soul_lamp");
+        registerBlockAndItem(CRIMSON_OBSIDIAN, "crimson_obsidian");
+        registerBlockAndItem(INFUSED_BLACKSTONE, "infused_blackstone");
+        registerBlockAndItem(CRACKED_INFUSED_BLACKSTONE, "cracked_infused_blackstone");
+        registerBlockAndItem(MOONSTONE_ORE, "moonstone_ore");
+        registerBlockAndItem(MOONSTONE_ORE_DEEPSLATE, "moonstone_ore_deepslate");
+        registerBlockAndItem(MOONSTONE_BLOCK, "moonstone_block");
+        registerBlockAndItem(ALTAR_BLOCK, "altar_block");
+        registerBlockAndItem(WITHERED_DIRT, "withered_dirt");
+        registerBlockAndItem(WITHERED_GRASS_BLOCK, "withered_grass_block");
+        registerBlockAndItem(WITHERED_GRASS, "withered_grass");
+        registerBlockAndItem(WITHERED_BERRY_BUSH, "withered_berry_bush");
+        registerBlockAndItem(WITHERED_FERN, "withered_fern");
+        registerBlockAndItem(HYDRANGEA, "hydrangea");
+        registerBlockAndItem(WITHERED_TALL_GRASS, "withered_tall_grass");
+        registerBlockAndItem(WITHERED_LARGE_FERN, "withered_large_fern");
+        registerBlockAndItem(OLEANDER, "oleander");
+        registerBlockAndItem(BLACKSTONE_PEDESTAL, "blackstone_pedestal");
+        registerBlockAndItem(VERGLAS_ORE, "verglas_ore");
+        registerBlockAndItem(VERGLAS_ORE_DEEPSLATE, "verglas_ore_deepslate");
+        registerBlockAndItem(VERGLAS_BLOCK, "verglas_block");
+        registerBlockAndItem(SOULFIRE_STAIN, "soulfire_stain");
+        registerBlockAndItem(SOUL_LAMP, "soul_lamp");
     }
 
     private static ToIntFunction<BlockState> createLightLevelFromLitBlockState(int litLevel) {
         return state -> state.get(Properties.LIT) != false ? litLevel : 0;
+    }
+
+    public static <I extends Block> I registerBlockAndItem(I block, String name) {
+        registerBlockItem(block, name);
+        return Registry.register(Registry.BLOCK, new Identifier(SoulsWeaponry.ModId, name), block);
     }
 
     public static <I extends Block> I registerBlock(I block, String name) {
