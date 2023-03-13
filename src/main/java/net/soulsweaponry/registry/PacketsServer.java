@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -13,9 +14,7 @@ import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.items.FreyrSword;
-import net.soulsweaponry.items.MoonlightShortsword;
-import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.items.*;
 import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.Optional;
@@ -49,11 +48,11 @@ public class PacketsServer {
                                 }
                                 sword.discard();
                             } else {
-                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
+                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                             }
                         }
                     } catch (Exception e) {
-                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                     }
                 }
             });
@@ -71,11 +70,11 @@ public class PacketsServer {
                                 FreyrSwordEntity sword = ((FreyrSwordEntity)entity);
                                 sword.setStationaryPos(player.getBlockPos());
                             } else {
-                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
+                                player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                             }
                         }
                     } catch (Exception e) {
-                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"));
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                     }
                 }
             });
@@ -86,7 +85,8 @@ public class PacketsServer {
                 ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
                 if (serverWorld != null) {
                     for (Hand hand : Hand.values()) {
-                        if (player.getStackInHand(hand).getItem() instanceof SoulHarvestingItem) {
+                        Item handItem = player.getStackInHand(hand).getItem();
+                        if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
                             int collectedSouls = 0;
                             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
                                 if (entity instanceof Remnant && ((Remnant)entity).getOwner() == player) {
@@ -105,7 +105,7 @@ public class PacketsServer {
                             SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
                             String msg = collectedSouls == 0 ? "There were no bound allies to collect!" : "Collected " + collectedSouls + " souls back to the " + item.getName().getString();
                             item.addAmount(player.getStackInHand(hand), collectedSouls);
-                            player.sendMessage(Text.literal(msg));
+                            player.sendMessage(Text.literal(msg), true);
                         }
                     }
                 }
