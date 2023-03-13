@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -13,10 +14,8 @@ import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.items.FreyrSword;
-import net.soulsweaponry.items.MoonlightShortsword;
+import net.soulsweaponry.items.*;
 import net.minecraft.entity.data.DataTracker.Entry;
-import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.Optional;
@@ -87,7 +86,8 @@ public class PacketsServer {
                 ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
                 if (serverWorld != null) {
                     for (Hand hand : Hand.values()) {
-                        if (player.getStackInHand(hand).getItem() instanceof SoulHarvestingItem) {
+                        Item handItem = player.getStackInHand(hand).getItem();
+                        if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
                             int collectedSouls = 0;
                             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
                                 if (entity instanceof Remnant && ((Remnant)entity).getOwner() == player) {
