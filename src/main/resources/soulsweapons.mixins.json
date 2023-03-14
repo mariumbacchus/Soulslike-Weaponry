@@ -13,7 +13,8 @@
     "BowItemMixin",
     "ArrowProjectileMixin",
     "LivingEntityInvoker",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "EnchantmentHelperMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
