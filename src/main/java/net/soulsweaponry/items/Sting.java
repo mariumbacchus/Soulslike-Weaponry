@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -40,12 +41,6 @@ public class Sting extends SwordItem {
             }
         }
         return false;
-    }
-
-    @Override
-    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
-        super.onCraft(stack, world, player);
-        stack.addEnchantment(Enchantments.BANE_OF_ARTHROPODS, 4);
     }
 
     /* These methods would help the world remove and add light sources to and from blockstates.
@@ -84,6 +79,9 @@ public class Sting extends SwordItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.luminate").formatted(Formatting.AQUA));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.luminate_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods").formatted(Formatting.WHITE));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods_description_1").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(String.valueOf(ConfigConstructor.sting_bonus_arthropod_damage)).formatted(Formatting.AQUA)));
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

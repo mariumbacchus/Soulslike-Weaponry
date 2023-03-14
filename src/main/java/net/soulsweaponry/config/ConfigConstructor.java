@@ -135,6 +135,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int skofnung_stone_additional_empowered_strikes = 8;
     @Entry public static int soulreaper_damage = 11;
     @Entry public static int sting_damage = 6;
+    @Entry public static float sting_bonus_arthropod_damage = 4f;
     @Entry public static int sword_of_freyr_damage = 7;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static int whirligig_sawblade_damage = 8;

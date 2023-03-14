@@ -14,7 +14,9 @@
     "ArrowProjectileMixin",
     "LivingEntityInvoker",
     "PlayerEntityMixin",
-    "BrewingRecipeMixin"
+    "BrewingRecipeRegistryMixin",
+    "BrewingRecipeRegistryInvoker",
+    "EnchantmentHelperMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
