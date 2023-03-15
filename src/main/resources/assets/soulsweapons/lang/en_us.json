@@ -111,6 +111,8 @@
     "item.soulsweapons.darkin_scythe_pre": "The Darkin Scythe",
     "item.soulsweapons.darkin_scythe": "The Darkin Scythe",
     "item.soulsweapons.shadow_assassin_scythe": "Shadow Assassin Scythe",
+    "item.soulsweapons.kirkhammer": "Kirkhammer",
+    "item.soulsweapons.kirkhammer_silver_sword": "Kirkhammer's Silver Sword",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -226,6 +228,7 @@
     "subtitles.soulsweapons.knight_charge_sword": "Moonlight Sword charges up",
     "subtitles.soulsweapons.slice_target": "A mod was sliced",
     "subtitles.soulsweapons.umbral_trespass": "Umbral Trespass activates",
+    "subtitles.soulsweapons.trick_weapon": "Used Trick Weapon",
 
     "tooltip.soulsweapons.shift": "Hold [§eSHIFT§r] for Info",
     "tooltip.soulsweapons.magic_damage": "Spellblade",
@@ -394,6 +397,9 @@
     "tooltip.soulsweapons.umbral_trespass_description_1": "- Use while in combat to enter the soul of the target.",
     "tooltip.soulsweapons.umbral_trespass_description_2": "In this state, the user takes no damage. On dismount,",
     "tooltip.soulsweapons.umbral_trespass_description_3": "the user leaps out, and the target is dealt heavy damage.",
+    "tooltip.soulsweapons.trick_weapon": "Trick Weapon",
+    "tooltip.soulsweapons.trick_weapon_description_1": "- Use keybind to transform the weapon into a new form.",
+    "tooltip.soulsweapons.trick_weapon_description_2": "Default keybind is B, this can be changed in controls.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",
@@ -450,6 +456,7 @@
     "key.soulsweapons.return_freyr_sword": "Return Freyr Sword to owner",
     "key.soulsweapons.freyr_sword_stationary": "Freyr Sword switch between stationary or guarding",
     "key.soulsweapons.collect_summons_soul_reaper": "Collect summons back to Soul Harvesting item if in hand",
+    "key.soulsweapons.switch_weapon": "Transform held Trick Weapon",
 
     "advancements.soulsweapons.root.title": "Soulslike Weaponry",
     "advancements.soulsweapons.root.description": "Unique achievements for the worthy!",

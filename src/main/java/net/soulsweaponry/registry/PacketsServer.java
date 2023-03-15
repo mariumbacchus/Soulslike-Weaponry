@@ -3,13 +3,17 @@ package net.soulsweaponry.registry;
 import com.google.common.collect.Iterables;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -18,10 +22,16 @@ import net.soulsweaponry.items.*;
 import net.minecraft.entity.data.DataTracker.Entry;
 import net.soulsweaponry.util.ParticleNetworking;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 public class PacketsServer {
+
+    private static final TrickWeapon[] TRICK_WEAPONS = {
+            WeaponRegistry.KIRKHAMMER,
+            WeaponRegistry.KIRKHAMMER_SILVER_SWORD
+    };
 
     public static void initServer() {
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.MOONLIGHT, (server, player, handler, buf, responseSender) -> {
@@ -107,6 +117,33 @@ public class PacketsServer {
                             String msg = collectedSouls == 0 ? "There were no bound allies to collect!" : "Collected " + collectedSouls + " souls back to the " + item.getName().getString();
                             item.addAmount(player.getStackInHand(hand), collectedSouls);
                             player.sendMessage(Text.literal(msg), true);
+                        }
+                    }
+                }
+            });
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.SWITCH_TRICK_WEAPON, (server, player, handler, buf, responseSender) -> {
+            server.execute(() -> {
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                if (serverWorld != null) {
+                    for (Hand hand : Hand.values()) {
+                        Item handItem = player.getStackInHand(hand).getItem();
+                        if (handItem instanceof TrickWeapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
+                            ItemStack stack = player.getStackInHand(hand);
+                            TrickWeapon switchWeapon = TRICK_WEAPONS[((TrickWeapon) handItem).getSwitchWeaponIndex()];
+                            ItemStack newWeapon = new ItemStack(switchWeapon);
+                            Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
+                            for (Enchantment enchant : enchants.keySet()) {
+                                newWeapon.addEnchantment(enchant, enchants.get(enchant));
+                            }
+                            serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT, SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
+                            ParticleNetworking.sendServerParticlePacket(serverWorld, PacketRegistry.DARK_EXPLOSION_ID, player.getBlockPos(), 20);
+                            newWeapon.setDamage(stack.getDamage());
+                            int slot = player.getInventory().getSlotWithStack(stack);
+                            player.getInventory().removeOne(stack);
+                            player.getInventory().insertStack(slot, newWeapon);
+                            player.getItemCooldownManager().set(switchWeapon, 20);
                         }
                     }
                 }

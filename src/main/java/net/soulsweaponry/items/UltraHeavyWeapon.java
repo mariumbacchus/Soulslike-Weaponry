@@ -9,17 +9,21 @@ import net.minecraft.item.ToolMaterial;
 
 public class UltraHeavyWeapon extends SwordItem {
 
-    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+    private final boolean isHeavy;
+
+    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, boolean isHeavy) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.isHeavy = isHeavy;
     }
     
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-
-        if (attacker.hasStatusEffect(StatusEffects.STRENGTH)) {
+        if (this.isHeavy && attacker.hasStatusEffect(StatusEffects.STRENGTH)) {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 200, 1));
         }
+        return super.postHit(stack, target, attacker);
+    }
 
-        return true;
+    public boolean isHeavy() {
+        return this.isHeavy;
     }
 }

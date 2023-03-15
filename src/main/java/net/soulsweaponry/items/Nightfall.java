@@ -44,7 +44,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings, true);
     }
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
