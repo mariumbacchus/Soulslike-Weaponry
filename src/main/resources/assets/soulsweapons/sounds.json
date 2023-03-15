@@ -241,5 +241,11 @@
         "sounds": [
             "soulsweapons:umbral_trespass_sound"
         ]
+    },
+    "trick_weapon": {
+        "subtitle": "subtitles.soulsweapons.trick_weapon",
+        "sounds": [
+            "soulsweapons:trick_weapon"
+        ]
     }
 }

@@ -48,6 +48,7 @@ public class RecipeRegistry {
     public static JsonObject FEATHERLIGHT_RECIPE = null;
     public static JsonObject CRUCIBLE_SWORD_RECIPE = null;
     public static JsonObject DARKIN_SCYTHE_RECIPE = null;
+    public static JsonObject KIRKHAMMER_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -599,6 +600,26 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_darkin_scythe);
                 register.add("darkin_scythe_pre");
                 register.add(DARKIN_SCYTHE_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_kirkhammer) {
+                KIRKHAMMER_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X'),
+                        Lists.newArrayList(
+                                new Identifier("minecraft", "stone"),
+                                new Identifier("minecraft", "iron_sword")
+                        ),
+                        Lists.newArrayList("item", "item"),
+                        Lists.newArrayList(
+                                "###",
+                                "###",
+                                " X "
+                        ), new Identifier(ModId, "kirkhammer"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_kirkhammer);
+                register.add("kirkhammer");
+                register.add(KIRKHAMMER_RECIPE);
                 recipes.add(register);
             }
         }

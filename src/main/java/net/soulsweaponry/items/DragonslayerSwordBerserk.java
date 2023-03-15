@@ -25,7 +25,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon {
     
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, attackSpeed, settings, true);
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
