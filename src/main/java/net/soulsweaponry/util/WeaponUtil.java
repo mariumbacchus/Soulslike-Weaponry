@@ -4,6 +4,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.items.TrickWeapon;
+import net.soulsweaponry.registry.WeaponRegistry;
 
 public class WeaponUtil {
     
@@ -20,4 +22,12 @@ public class WeaponUtil {
         }
         return 0;
     }
+
+    /**
+     * Define all trick weapons here, which is gathered by PacketsServer to switch to the given weapon's index
+     */
+    public static final TrickWeapon[] TRICK_WEAPONS = {
+            WeaponRegistry.KIRKHAMMER,
+            WeaponRegistry.KIRKHAMMER_SILVER_SWORD
+    };
 }
