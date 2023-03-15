@@ -41,7 +41,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
     }
     
     public UseAction getUseAction(ItemStack stack) {

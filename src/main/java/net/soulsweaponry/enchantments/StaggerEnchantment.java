@@ -31,7 +31,8 @@ public class StaggerEnchantment extends Enchantment {
         if (target instanceof LivingEntity) {
             int random = user.getRandom().nextInt(10);
             int chance = level;
-            if (user.getItemsHand() instanceof UltraHeavyWeapon) {
+            if (user.getItemsHand().iterator().next().getItem() instanceof UltraHeavyWeapon
+                && ((UltraHeavyWeapon) user.getItemsHand().iterator().next().getItem()).isHeavy()) {
                 chance+= 2;
             }
             if (random < chance) {

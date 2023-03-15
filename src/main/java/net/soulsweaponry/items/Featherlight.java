@@ -16,7 +16,7 @@ import java.util.List;
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - ConfigConstructor.featherlight_attack_speed), settings);
+        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - ConfigConstructor.featherlight_attack_speed), settings, true);
     }
 
     @Override

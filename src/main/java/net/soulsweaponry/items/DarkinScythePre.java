@@ -78,7 +78,6 @@ public class DarkinScythePre extends SoulHarvestingItem {
                 }
                 world.playSound(null, entity.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 0.8f, 1f);
                 Item item = WeaponRegistry.DARKIN_SCYTHE_PRIME;
-                System.out.println(this.getDominantType(stack));
                 switch (this.getDominantType(stack)) {
                     case RED -> item = WeaponRegistry.DARKIN_SCYTHE_PRIME;
                     case BLUE -> item = WeaponRegistry.SHADOW_ASSASSIN_SCYTHE;

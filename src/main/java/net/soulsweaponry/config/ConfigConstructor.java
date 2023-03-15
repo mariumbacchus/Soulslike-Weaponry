@@ -37,6 +37,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_featherlight = false;
     @Entry public static boolean disable_recipe_crucible_sword = false;
     @Entry public static boolean disable_recipe_darkin_scythe = false;
+    @Entry public static boolean disable_recipe_kirkhammer = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -96,6 +97,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int galeforce_dash_cooldown = 50;
     @Entry public static int rageblade_damage = 7;
     @Entry public static boolean rageblade_haste_cap = true;
+    @Entry public static int kirkhammer_damage = 9;
+    @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static int leviathan_axe_return_speed = 5;

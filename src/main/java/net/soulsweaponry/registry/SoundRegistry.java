@@ -47,6 +47,7 @@ public class SoundRegistry {
     public static final Identifier KNIGHT_THRUST_SWORD_ID = registerId("knight_thrust_sword");
     public static final Identifier SLICE_TARGET_ID = registerId("slice_target");
     public static final Identifier UMBRAL_TRESPASS_ID = registerId("umbral_trespass_sound");
+    public static final Identifier TRICK_WEAPON_SOUND_ID = registerId("trick_weapon");
 
 	public static SoundEvent MOONLIGHT_BIG_EVENT = new SoundEvent(MOONLIGHT_BIG_SOUND_ID);
 	public static SoundEvent MOONLIGHT_SMALL_EVENT = new SoundEvent(MOONLIGHT_SMALL_SOUND_ID);
@@ -88,6 +89,7 @@ public class SoundRegistry {
     public static SoundEvent KNIGHT_CHARGE_SWORD_EVENT = new SoundEvent(KNIGHT_CHARGE_SWORD_ID);
     public static SoundEvent SLICE_TARGET_EVENT = new SoundEvent(SLICE_TARGET_ID);
     public static SoundEvent UMBRAL_TRESPASS_EVENT = new SoundEvent(UMBRAL_TRESPASS_ID);
+    public static SoundEvent TRICK_WEAPON_EVENT = new SoundEvent(TRICK_WEAPON_SOUND_ID);
 
 
 	public static void init() {
@@ -131,6 +133,7 @@ public class SoundRegistry {
         registerSound(KNIGHT_THRUST_SWORD_ID, KNIGHT_THRUST_SWORD_EVENT);
         registerSound(SLICE_TARGET_ID, SLICE_TARGET_EVENT);
         registerSound(UMBRAL_TRESPASS_ID, UMBRAL_TRESPASS_EVENT);
+        registerSound(TRICK_WEAPON_SOUND_ID, TRICK_WEAPON_EVENT);
 	}
 
 	public static Identifier registerId(String name) {
