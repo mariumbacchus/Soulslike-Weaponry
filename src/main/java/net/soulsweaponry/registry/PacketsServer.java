@@ -19,19 +19,15 @@ import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.items.*;
-import net.minecraft.entity.data.DataTracker.Entry;
 import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PacketsServer {
+import static net.soulsweaponry.util.WeaponUtil.TRICK_WEAPONS;
 
-    private static final TrickWeapon[] TRICK_WEAPONS = {
-            WeaponRegistry.KIRKHAMMER,
-            WeaponRegistry.KIRKHAMMER_SILVER_SWORD
-    };
+public class PacketsServer {
 
     public static void initServer() {
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.MOONLIGHT, (server, player, handler, buf, responseSender) -> {
