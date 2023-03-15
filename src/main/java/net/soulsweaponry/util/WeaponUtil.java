@@ -28,6 +28,6 @@ public class WeaponUtil {
      */
     public static final TrickWeapon[] TRICK_WEAPONS = {
             WeaponRegistry.KIRKHAMMER,
-            WeaponRegistry.KIRKHAMMER_SILVER_SWORD
+            WeaponRegistry.SILVER_SWORD
     };
 }
