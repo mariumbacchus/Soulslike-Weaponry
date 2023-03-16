@@ -118,6 +118,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.life_steal_description").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.sword_slam").formatted(Formatting.DARK_PURPLE));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.sword_slam_description").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

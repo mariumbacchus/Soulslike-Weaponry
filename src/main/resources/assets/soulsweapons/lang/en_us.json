@@ -113,6 +113,7 @@
     "item.soulsweapons.shadow_assassin_scythe": "Shadow Assassin Scythe",
     "item.soulsweapons.kirkhammer": "Kirkhammer",
     "item.soulsweapons.silver_sword": "Silver Sword",
+    "item.soulsweapons.holy_greatsword": "Ludwig's Holy Blade",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -398,8 +399,14 @@
     "tooltip.soulsweapons.umbral_trespass_description_2": "In this state, the user takes no damage. On dismount,",
     "tooltip.soulsweapons.umbral_trespass_description_3": "the user leaps out, and the target is dealt heavy damage.",
     "tooltip.soulsweapons.trick_weapon": "Trick Weapon",
-    "tooltip.soulsweapons.trick_weapon_description_1": "- Use keybind to transform the weapon into a new form.",
+    "tooltip.soulsweapons.trick_weapon_description_1": "- Use keybind to transform the weapon if in main hand.",
     "tooltip.soulsweapons.trick_weapon_description_2": "Default keybind is B, this can be changed in controls.",
+    "tooltip.soulsweapons.trick_weapon_description_3": "Weapon to transform to: ",
+    "tooltip.soulsweapons.heavy_weapon": "Ultra Heavy",
+    "tooltip.soulsweapons.heavy_weapon_description": "- Gain §6Haste§r post hit while having §4Strength§r effect.",
+    "tooltip.soulsweapons.righteous": "Righteous Vulnerability",
+    "tooltip.soulsweapons.righteous_description_1": "- Does increased damage against §fUndead§r.",
+    "tooltip.soulsweapons.righteous_description_2": "Scales with Fire Aspect, current bonus: ",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",

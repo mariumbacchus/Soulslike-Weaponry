@@ -25,6 +25,8 @@ public class Featherlight extends UltraHeavyWeapon {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.featherlight_description_1").formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.featherlight_description_2").formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
