@@ -52,6 +52,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon {
         if (Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
             tooltip.add(Text.translatable("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
