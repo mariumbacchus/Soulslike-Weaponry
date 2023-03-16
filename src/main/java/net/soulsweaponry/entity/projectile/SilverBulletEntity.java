@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -25,7 +24,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class SilverBulletEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class SilverBulletEntity extends NonArrowProjectile implements IAnimatable, IAnimationTickable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private int life;
