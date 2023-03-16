@@ -11,10 +11,12 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static net.soulsweaponry.util.WeaponUtil.TRICK_WEAPONS;
 
 public class TrickWeapon extends UltraHeavyWeapon {
 
@@ -47,12 +49,21 @@ public class TrickWeapon extends UltraHeavyWeapon {
         return this.undeadBonus;
     }
 
+    private Text getSwitchWeaponName(ItemStack stack) {
+        TrickWeapon switchWeapon = TRICK_WEAPONS[this.getSwitchWeaponIndex()];
+        if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
+            switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
+        }
+        return switchWeapon.getName();
+    }
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
             tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY).append(this.getSwitchWeaponName(stack).copy().formatted(Formatting.WHITE)));
             if (this.isHeavy()) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
