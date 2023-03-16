@@ -4,6 +4,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
 import net.minecraft.entity.ai.goal.TrackOwnerAttackerGoal;
@@ -32,13 +33,18 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
+import net.soulsweaponry.items.FreyrSword;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
@@ -127,6 +133,30 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getOwner() {
+        try {
+            UUID uUID = this.getOwnerUuid();
+            LivingEntity owner = uUID == null ? null : this.world.getPlayerByUuid(uUID);
+            if (owner instanceof PlayerEntity player) {
+                try {
+                    Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
+                    if (op.isPresent() && op.get() == this.getUuid()) {
+                        return owner;
+                    } else {
+                        return null;
+                    }
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        } catch (IllegalArgumentException var2) {
+            return null;
+        }
+        return null;
     }
 
     @Override
