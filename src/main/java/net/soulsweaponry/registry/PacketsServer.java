@@ -20,6 +20,7 @@ import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
 import java.util.Optional;
@@ -128,10 +129,16 @@ public class PacketsServer {
                         if (handItem instanceof TrickWeapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
                             ItemStack stack = player.getStackInHand(hand);
                             TrickWeapon switchWeapon = TRICK_WEAPONS[((TrickWeapon) handItem).getSwitchWeaponIndex()];
+                            if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
+                                switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
+                            }
                             ItemStack newWeapon = new ItemStack(switchWeapon);
                             Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
                             for (Enchantment enchant : enchants.keySet()) {
                                 newWeapon.addEnchantment(enchant, enchants.get(enchant));
+                            }
+                            if (newWeapon.hasNbt()) {
+                                newWeapon.getNbt().putInt(WeaponUtil.PREV_TRICK_WEAPON, ((TrickWeapon) handItem).getOwnWeaponIndex());
                             }
                             serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT, SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
                             ParticleNetworking.sendServerParticlePacket(serverWorld, PacketRegistry.DARK_EXPLOSION_ID, player.getBlockPos(), 20);

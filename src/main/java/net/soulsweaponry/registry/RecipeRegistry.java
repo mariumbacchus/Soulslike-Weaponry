@@ -49,6 +49,7 @@ public class RecipeRegistry {
     public static JsonObject CRUCIBLE_SWORD_RECIPE = null;
     public static JsonObject DARKIN_SCYTHE_RECIPE = null;
     public static JsonObject KIRKHAMMER_RECIPE = null;
+    public static JsonObject HOLY_GREATSWORD_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -620,6 +621,26 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_kirkhammer);
                 register.add("kirkhammer");
                 register.add(KIRKHAMMER_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_ludwigs_holy_blade) {
+                HOLY_GREATSWORD_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X'),
+                        Lists.newArrayList(
+                                new Identifier("minecraft", "iron_ingot"),
+                                new Identifier("minecraft", "iron_sword")
+                        ),
+                        Lists.newArrayList("item", "item"),
+                        Lists.newArrayList(
+                                " # ",
+                                "###",
+                                "#X#"
+                        ), new Identifier(ModId, "holy_greatsword"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_ludwigs_holy_blade);
+                register.add("holy_greatsword");
+                register.add(HOLY_GREATSWORD_RECIPE);
                 recipes.add(register);
             }
         }

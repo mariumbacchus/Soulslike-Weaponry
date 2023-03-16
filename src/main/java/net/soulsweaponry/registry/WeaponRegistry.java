@@ -48,8 +48,9 @@ public class WeaponRegistry {
     public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 0, -3f, new FabricItemSettings().rarity(Rarity.EPIC), 1, true);
-    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC), 0, false);
+    public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 0, -3f, new FabricItemSettings().rarity(Rarity.RARE), 1, 0, true, false);
+    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, -2.4f, new FabricItemSettings().rarity(Rarity.RARE), 0, 1, false, true);
+    public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, -2.8f, new FabricItemSettings().rarity(Rarity.RARE), 1, 2, false, true);
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -88,5 +89,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(SHADOW_ASSASSIN_SCYTHE, "shadow_assassin_scythe");
         ItemRegistry.registerItem(KIRKHAMMER, "kirkhammer");
         ItemRegistry.registerItem(SILVER_SWORD, "silver_sword");
+        ItemRegistry.registerItem(HOLY_GREATSWORD, "holy_greatsword");
     }
 }
