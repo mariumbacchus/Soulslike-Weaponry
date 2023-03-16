@@ -38,6 +38,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_crucible_sword = false;
     @Entry public static boolean disable_recipe_darkin_scythe = false;
     @Entry public static boolean disable_recipe_kirkhammer = false;
+    @Entry public static boolean disable_recipe_ludwigs_holy_blade = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -104,6 +105,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int leviathan_axe_return_speed = 5;
     @Entry public static int lich_bane_damage = 7;
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
+    @Entry public static int ludwigs_holy_greatsword = 8;
+    @Entry public static float righteous_undead_bonus_damage = 2f;
     @Entry public static int mjolnir_damage = 9;
     @Entry public static int mjolnir_rain_bonus_damage = 2;
     @Entry public static float mjolnir_smash_damage = 8f;
