@@ -88,7 +88,7 @@ public class HunterCannon extends GunItem {
             user.addVelocity(-(double)h, -(double)k, -(double)l);
 
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            user.getItemCooldownManager().set(this, ConfigConstructor.hunter_cannon_cooldown- 4*this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack)*50);
+            if (!user.isCreative()) user.getItemCooldownManager().set(this, ConfigConstructor.hunter_cannon_cooldown- 4*this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack)*50);
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 

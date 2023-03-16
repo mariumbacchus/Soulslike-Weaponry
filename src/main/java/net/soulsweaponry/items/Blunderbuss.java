@@ -87,7 +87,7 @@ public class Blunderbuss extends GunItem {
             playerEntity.addVelocity(-(double)h, -(double)k, -(double)l); */
 
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            user.getItemCooldownManager().set(this, ConfigConstructor.blunderbuss_cooldown - this.getReducedCooldown(stack));
+            if (!user.isCreative()) user.getItemCooldownManager().set(this, ConfigConstructor.blunderbuss_cooldown - this.getReducedCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
