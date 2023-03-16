@@ -22,7 +22,7 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 
-public class Cannonball extends PersistentProjectileEntity implements GeoEntity {
+public class Cannonball extends NonArrowProjectile implements GeoEntity {
 
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int life;

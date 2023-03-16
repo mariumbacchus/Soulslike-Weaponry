@@ -24,7 +24,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class SilverBulletEntity extends PersistentProjectileEntity implements GeoEntity {
+public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity {
 
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int life;
