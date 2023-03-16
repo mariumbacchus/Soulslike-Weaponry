@@ -136,6 +136,9 @@ public class PacketsServer {
                         for (Enchantment enchant : enchants.keySet()) {
                             newWeapon.addEnchantment(enchant, enchants.get(enchant));
                         }
+                        if (stack.hasCustomName()) {
+                            newWeapon.setCustomName(stack.getName());
+                        }
                         if (newWeapon.hasNbt()) {
                             newWeapon.getNbt().putInt(WeaponUtil.PREV_TRICK_WEAPON, ((TrickWeapon) handItem).getOwnWeaponIndex());
                         }
