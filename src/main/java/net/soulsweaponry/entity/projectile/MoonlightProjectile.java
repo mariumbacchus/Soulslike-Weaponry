@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
@@ -25,7 +26,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class MoonlightProjectile extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable{
+public class MoonlightProjectile extends NonArrowProjectile implements IAnimatable, IAnimationTickable{
     
     private static final TrackedData<Integer> POINTS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> TICK_PARTICLES = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
@@ -111,6 +112,14 @@ public class MoonlightProjectile extends PersistentProjectileEntity implements I
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
         this.discard();
+    }
+
+    @Override
+    public int getPunch() {
+        if (stackShotFrom != null) {
+            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, stackShotFrom);
+        }
+        return super.getPunch();
     }
 
     @Override
