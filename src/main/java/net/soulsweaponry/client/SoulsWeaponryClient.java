@@ -19,16 +19,7 @@ import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
-import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
-import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
-import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
-import net.soulsweaponry.client.renderer.item.DawnbreakerRenderer;
-import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
-import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
-import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
-import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
-import net.soulsweaponry.client.renderer.item.NightfallRenderer;
-import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
+import net.soulsweaponry.client.renderer.item.*;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -66,6 +57,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.LEVIATHAN_AXE, new LeviathanAxeRenderer());
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.MJOLNIR, new MjolnirItemRenderer());
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.FREYR_SWORD, new FreyrSwordItemRenderer());
+        GeoItemRenderer.registerItemRenderer(WeaponRegistry.DRAUPNIR_SPEAR, new DraupnirSpearItemRenderer());
 
         //Armor
         GeoArmorRenderer.registerArmorRenderer(new ChaosSetRenderer(), ItemRegistry.CHAOS_CROWN);

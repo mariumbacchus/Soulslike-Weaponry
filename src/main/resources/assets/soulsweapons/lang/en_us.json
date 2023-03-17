@@ -114,6 +114,7 @@
     "item.soulsweapons.kirkhammer": "Kirkhammer",
     "item.soulsweapons.silver_sword": "Silver Sword",
     "item.soulsweapons.holy_greatsword": "Ludwig's Holy Blade",
+    "item.soulsweapons.draupnir_spear": "Draupnir Spear",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -160,6 +161,7 @@
     "entity.soulsweapons.mjolnir_entity": "Mjölnir",
     "entity.soulsweapons.freyr_sword_entity": "Sword of Freyr",
     "entity.soulsweapons.shadow_orb_entity": "Shadow Orb",
+    "entity.soulsweapons.draupnir_spear_entity": "Draupnir Spear",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.obliterated": "%1$s was obliterated by %2$s",
@@ -407,6 +409,13 @@
     "tooltip.soulsweapons.righteous": "Righteous Vulnerability",
     "tooltip.soulsweapons.righteous_description_1": "- Does increased damage against §fUndead§r.",
     "tooltip.soulsweapons.righteous_description_2": "Scales with Fire Aspect, current bonus: ",
+    "tooltip.soulsweapons.detonate_spears": "Draupnir's Wail",
+    "tooltip.soulsweapons.detonate_spears_description_1": "- Press keybind to strike the ground, damaging all",
+    "tooltip.soulsweapons.detonate_spears_description_2": "nearby mobs and detonating all previously thrown",
+    "tooltip.soulsweapons.detonate_spears_description_3": "Draupnir Spears that exist with explosion power ",
+    "tooltip.soulsweapons.detonate_spears_description_4": "At power level over 2, all nearby targets are",
+    "tooltip.soulsweapons.detonate_spears_description_5": "affected by §3Weakness§r as well.",
+    "tooltip.soulsweapons.detonate_spears_description_6": "Keybind is LEFT_ALT by default, can be changed in controls.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",
@@ -464,6 +473,7 @@
     "key.soulsweapons.freyr_sword_stationary": "Freyr Sword switch between stationary or guarding",
     "key.soulsweapons.collect_summons_soul_reaper": "Collect summons back to Soul Harvesting item if in hand",
     "key.soulsweapons.switch_weapon": "Transform held Trick Weapon",
+    "key.soulsweapons.detonate_draupnir_spears": "Detonate Draupnir Spears",
 
     "advancements.soulsweapons.root.title": "Soulslike Weaponry",
     "advancements.soulsweapons.root.description": "Unique achievements for the worthy!",

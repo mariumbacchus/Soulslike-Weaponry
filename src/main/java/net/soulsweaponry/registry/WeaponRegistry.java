@@ -51,6 +51,7 @@ public class WeaponRegistry {
     public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 0, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 0, true, false);
     public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 0, 1, false, true);
     public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, -2.8f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 2, false, true);
+    public static ToolItem DRAUPNIR_SPEAR = new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
@@ -90,5 +91,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(KIRKHAMMER, "kirkhammer");
         ItemRegistry.registerItem(SILVER_SWORD, "silver_sword");
         ItemRegistry.registerItem(HOLY_GREATSWORD, "holy_greatsword");
+        ItemRegistry.registerItem(DRAUPNIR_SPEAR, "draupnir_spear");
     }
 }
