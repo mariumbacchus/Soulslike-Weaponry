@@ -28,12 +28,10 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class CometSpearEntity extends PersistentProjectileEntity implements GeoEntity {
 
-    private static TrackedData<Boolean> ENCHANTED;
+    private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack spearStack;
     private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
-    public int returnTimer;
-    private int lifeTicks = 100;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
         super(entityType, world);
@@ -53,12 +51,11 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
     }
 
     public void tick() {
-        this.lifeTicks--;
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
 
-        if (this.lifeTicks < 0) {
+        if (this.age > 100) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
@@ -93,8 +90,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         if (entity == null) {
             return;
         }
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity)entity;
+        if (entity instanceof LivingEntity livingEntity) {
             f += EnchantmentHelper.getAttackDamage(spearStack, livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
             float healthPercentLeft = livingEntity.getHealth()/livingEntity.getMaxHealth();
             if (healthPercentLeft < 0.2) {
@@ -110,8 +106,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
@@ -144,7 +139,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
     }
 
     static {
-        ENCHANTED = DataTracker.registerData(DragonslayerSwordspearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ENCHANTED = DataTracker.registerData(CometSpearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     @Override
