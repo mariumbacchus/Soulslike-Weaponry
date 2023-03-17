@@ -39,6 +39,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_darkin_scythe = false;
     @Entry public static boolean disable_recipe_kirkhammer = false;
     @Entry public static boolean disable_recipe_ludwigs_holy_blade = false;
+    @Entry public static boolean disable_recipe_draupnir_spear = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -55,7 +56,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int lifesteal_item_cooldown = 60;
     @Entry public static int bluemoon_greatsword_damage = 8;
     @Entry public static int bluemoon_shortsword_damage = 7;
-    @Entry public static int comet_spear_damage = 7;
+    @Entry public static int comet_spear_damage = 8;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
     @Entry public static float comet_spear_ability_damage = 10f;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
@@ -80,7 +81,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean dawnbreaker_affect_all_entities = false;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
-    @Entry public static int dragonslayer_swordspear_damage = 7;
+    @Entry public static int dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
     @Entry public static int dragonslayer_swordspear_lightning_amount = 1;
