@@ -50,6 +50,7 @@ public class RecipeRegistry {
     public static JsonObject DARKIN_SCYTHE_RECIPE = null;
     public static JsonObject KIRKHAMMER_RECIPE = null;
     public static JsonObject HOLY_GREATSWORD_RECIPE = null;
+    public static JsonObject DRAUPNIR_SPEAR_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -641,6 +642,27 @@ public class RecipeRegistry {
                 register.add(!ConfigConstructor.disable_recipe_ludwigs_holy_blade);
                 register.add("holy_greatsword");
                 register.add(HOLY_GREATSWORD_RECIPE);
+                recipes.add(register);
+            }
+            if (!ConfigConstructor.disable_recipe_draupnir_spear) {
+                DRAUPNIR_SPEAR_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'Y'),
+                        Lists.newArrayList(
+                                new Identifier("minecraft", "blaze_rod"),
+                                new Identifier("minecraft", "netherite_ingot"),
+                                new Identifier(ModId, "lord_soul")
+                        ),
+                        Lists.newArrayList("item", "item", "tag"),
+                        Lists.newArrayList(
+                                "X",
+                                "Y",
+                                "#"
+                        ), new Identifier(ModId, "draupnir_spear"));
+
+                ArrayList<Object> register = new ArrayList<>();
+                register.add(!ConfigConstructor.disable_recipe_draupnir_spear);
+                register.add("draupnir_spear");
+                register.add(DRAUPNIR_SPEAR_RECIPE);
                 recipes.add(register);
             }
         }
