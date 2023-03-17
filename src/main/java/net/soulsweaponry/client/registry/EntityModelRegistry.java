@@ -14,17 +14,7 @@ import net.soulsweaponry.client.renderer.entity.mobs.RemnantRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.ReturningKnightRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulmassRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.WitheredDemonRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.CannonballRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.ChargedArrowRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.CometSpearRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.DragonslayerSwordspearRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.LeviathanAxeEntityRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.MjolnirProjectileRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.MoonlightProjectileBigRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.MoonlightProjectileRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.ShadowOrbRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.SilverBulletRenderer;
-import net.soulsweaponry.client.renderer.entity.projectile.VerticalMoonlightProjectileRenderer;
+import net.soulsweaponry.client.renderer.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
 
 public class EntityModelRegistry {
@@ -55,5 +45,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.FREYR_SWORD_ENTITY_TYPE, FreyrSwordEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SHADOW_ORB, ShadowOrbRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONKNIGHT, MoonknightRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DRAUPNIR_SPEAR_TYPE, DraupnirSpearEntityRenderer::new);
     }
 }

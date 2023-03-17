@@ -26,15 +26,7 @@ import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.entity.mobs.WitheredDemon;
-import net.soulsweaponry.entity.projectile.Cannonball;
-import net.soulsweaponry.entity.projectile.ChargedArrow;
-import net.soulsweaponry.entity.projectile.CometSpearEntity;
-import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
-import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
-import net.soulsweaponry.entity.projectile.MjolnirProjectile;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.ShadowOrb;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
+import net.soulsweaponry.entity.projectile.*;
 import software.bernie.example.registry.EntityRegistryBuilder;
 
 public class EntityRegistry {
@@ -70,6 +62,7 @@ public class EntityRegistry {
     public static final EntityType<MjolnirProjectile> MJOLNIR_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "mjolnir_entity"), FabricEntityTypeBuilder.<MjolnirProjectile>create(SpawnGroup.MISC, MjolnirProjectile::new).dimensions(EntityDimensions.fixed(.75F, .75F)).trackRangeBlocks(30).trackedUpdateRate(20).build());
     public static final EntityType<FreyrSwordEntity> FREYR_SWORD_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "freyr_sword_entity"), FabricEntityTypeBuilder.<FreyrSwordEntity>create(SpawnGroup.MISC, FreyrSwordEntity::new).dimensions(EntityDimensions.fixed(.3F, 2F)).build());
     public static final EntityType<ShadowOrb> SHADOW_ORB = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "shadow_orb_entity"), FabricEntityTypeBuilder.<ShadowOrb>create(SpawnGroup.MISC, ShadowOrb::new).dimensions(EntityDimensions.fixed(0.5F, 0.5F)).trackRangeBlocks(10).trackedUpdateRate(30).build());
+    public static final EntityType<DraupnirSpearEntity> DRAUPNIR_SPEAR_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "draupnir_spear_entity"), FabricEntityTypeBuilder.<DraupnirSpearEntity>create(SpawnGroup.MISC, DraupnirSpearEntity::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeBlocks(30).trackedUpdateRate(30).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new Item.Settings().group(MAIN_GROUP));
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new Item.Settings().group(MAIN_GROUP));

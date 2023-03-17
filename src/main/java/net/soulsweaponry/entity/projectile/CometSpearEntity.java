@@ -29,12 +29,10 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class CometSpearEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
 
-    private static TrackedData<Boolean> ENCHANTED;
+    private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack spearStack;
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private boolean dealtDamage;
-    public int returnTimer;
-    private int lifeTicks = 100;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
         super(entityType, world);
@@ -54,12 +52,11 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
     }
 
     public void tick() {
-        this.lifeTicks--;
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
 
-        if (this.lifeTicks < 0) {
+        if (this.age > 100) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
@@ -99,8 +96,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
         if (entity == null) {
             return;
         }
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity)entity;
+        if (entity instanceof LivingEntity livingEntity) {
             f += EnchantmentHelper.getAttackDamage(spearStack, livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
             float healthPercentLeft = livingEntity.getHealth()/livingEntity.getMaxHealth();
             if (healthPercentLeft < 0.2) {
@@ -116,8 +112,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
@@ -150,7 +145,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
     }
 
     static {
-        ENCHANTED = DataTracker.registerData(DragonslayerSwordspearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        ENCHANTED = DataTracker.registerData(CometSpearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     @Override

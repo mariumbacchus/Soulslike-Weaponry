@@ -91,6 +91,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dragon_staff_cooldown = 100;
     @Entry public static int dragon_staff_use_time = 100;
     @Entry public static int draugr_damage_at_night = 10;
+    @Entry public static int draupnir_spear_damage = 8;
+    @Entry public static float draupnir_spear_projectile_damage = 10f;
+    @Entry public static float draupnir_spear_detonate_power = 1f;
+    @Entry public static int draupnir_spear_throw_cooldown = 40;
+    @Entry public static int draupnir_spear_detonate_cooldown = 100;
+    @Entry public static int draupnir_spear_max_age = 400;
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
