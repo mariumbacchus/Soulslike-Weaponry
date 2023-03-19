@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
@@ -255,7 +256,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            }
                         }
                     }
                 }
@@ -282,8 +285,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             if (this.unbreakableTicks == 38) {
                 this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
                 for (Entity entity : world.getOtherEntities(this, this.getBoundingBox().expand(20))) {
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity living = (LivingEntity) entity;
+                    if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0));
@@ -318,9 +320,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
             double d = this.random.nextGaussian() * 0.05D;
             double q = this.random.nextGaussian() * 0.05D;
             for(int i = 0; i < 2; ++i) {
-                double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + d;
-                double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + q;
-                double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+                double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
+                double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + q;
+                double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
@@ -346,9 +348,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 Random random = this.getRandom();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
@@ -471,56 +473,44 @@ public class Moonknight extends BossEntity implements GeoEntity {
         } else {
             if (this.isPhaseTwo()) {
                 switch (this.getPhaseTwoAttack()) {
-                    case BLINDING_LIGHT:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_2"));
-                        break;
-                    case CORE_BEAM:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
-                        break;
-                    case IDLE:
+                    case BLINDING_LIGHT ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_2"));
+                    case CORE_BEAM ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
+                    case IDLE -> {
                         if (this.isAttacking()) {
                             state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_2"));
                         } else {
                             state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_2"));
                         }
-                        break;
-                    case MOONFALL:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
-                        break;
-                    case MOONVEIL:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
-                        break;
-                    case SWORD_OF_LIGHT:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
-                        break;
-                    case THRUST:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
-                        break;
+                    }
+                    case MOONFALL ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
+                    case MOONVEIL ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
+                    case SWORD_OF_LIGHT ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
+                    case THRUST -> state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
                 }
             } else {
                 switch (this.getPhaseOneAttack()) {
-                    case BLINDING_LIGHT:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_1"));
-                        break;
-                    case IDLE:
+                    case BLINDING_LIGHT ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_1"));
+                    case IDLE -> {
                         if (this.isAttacking()) {
                             state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_1"));
                         } else {
                             state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_1"));
                         }
-                        break;
-                    case MACE_OF_SPADES:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
-                        break;
-                    case OBLITERATE:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
-                        break;
-                    case RUPTURE:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
-                        break;
-                    case SUMMON:
-                        state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
-                        break;
+                    }
+                    case MACE_OF_SPADES ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
+                    case OBLITERATE ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
+                    case RUPTURE ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
+                    case SUMMON ->
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
                 }
             }
         }

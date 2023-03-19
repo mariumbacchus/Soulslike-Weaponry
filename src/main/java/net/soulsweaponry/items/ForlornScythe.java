@@ -4,6 +4,7 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -18,7 +19,6 @@ import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -83,8 +83,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
         if (stack.hasNbt() && stack.getNbt().contains(PREV_UUID)) {
             UUID uuid = stack.getNbt().getUuid(PREV_UUID);
             Entity entity = world.getEntity(uuid);
-            if (entity != null && entity instanceof  WitherSkullEntity) {
-                WitherSkullEntity skull = (WitherSkullEntity) entity;
+            if (entity instanceof WitherSkullEntity skull) {
                 world.createExplosion(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isCharged() ? 2f : 1f, false, World.ExplosionSourceType.MOB);
                 skull.discard();
             }
@@ -99,9 +98,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     private boolean isCritical(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains(CRITICAL)) {
-            if (stack.getNbt().getInt(CRITICAL) >= 3) {
-                return true;
-            }
+            return stack.getNbt().getInt(CRITICAL) >= 3;
         } else {
             stack.getNbt().putInt(CRITICAL, 1);
         }
@@ -111,20 +108,9 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            String kills = "0";
-            if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-                kills = String.valueOf(stack.getNbt().getInt(KILLS));
-            }
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_wither").formatted(Formatting.DARK_RED));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_wither_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_wither_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_wither_description_3").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA).append(Text.literal(kills).formatted(Formatting.WHITE)));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_1").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_2").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_3").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,8 +65,7 @@ public class CometSpear extends SwordItem implements GeoItem {
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
+        if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
@@ -116,8 +114,7 @@ public class CometSpear extends SwordItem implements GeoItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
+        if (entity instanceof PlayerEntity player) {
             float power = ConfigConstructor.comet_spear_ability_damage;
             CometSpear.detonateGround(player, power, 0, 2, stack, world, false, 35);
         }
@@ -134,8 +131,7 @@ public class CometSpear extends SwordItem implements GeoItem {
             Box box = player.getBoundingBox().expand(expansion);
             List<Entity> entities = world.getOtherEntities(player, box);
             for (Entity targets : entities) {
-                if (targets instanceof LivingEntity) {
-                    LivingEntity livingEntity = (LivingEntity) targets;
+                if (targets instanceof LivingEntity livingEntity) {
                     livingEntity.damage(CustomDamageSource.obliterateDamageSource(player), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                     livingEntity.addVelocity(0, stack.getNbt().getFloat(FALL_DISTANCE)/launchDivisor, 0);
                     if (shouldHeal) player.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0));
@@ -192,15 +188,9 @@ public class CometSpear extends SwordItem implements GeoItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_3").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit").formatted(Formatting.DARK_RED));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CRIT, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

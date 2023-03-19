@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -39,11 +40,7 @@ public class Draugr extends SwordItem {
 
     private void refreshDayTime(World world, ItemStack stack) {
         if (stack.hasNbt()) {
-            if (world.getDimension().hasSkyLight() && world.getTimeOfDay() % 24000 > 13000 && world.getTimeOfDay() % 24000 < 23000) {
-                stack.getNbt().putBoolean(NIGHT, true);
-            } else {
-                stack.getNbt().putBoolean(NIGHT, false);
-            }
+            stack.getNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.getTimeOfDay() % 24000 > 13000 && world.getTimeOfDay() % 24000 < 23000);
         }
     }
 
@@ -71,8 +68,7 @@ public class Draugr extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.night_prowler").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.night_prowler_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NIGHT_PROWLER, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

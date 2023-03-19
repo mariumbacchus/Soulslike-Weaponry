@@ -234,6 +234,16 @@ public class PacketsClient {
                 PacketsClient.particleOutburst(client.world, 100, particles, target.getX(), eyeHeight, target.getZ(), velDividers);
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.MOONFALL_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            int points = buf.readInt();
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.NIGHTFALL_PARTICLE, new ItemStackParticleEffect(ParticleTypes.ITEM, Items.DIRT.getDefaultStack()), new ItemStackParticleEffect(ParticleTypes.ITEM, Items.STONE.getDefaultStack())};
+                float[][] velDividers = {{1, 8, 1}, {2, 8, 2}, {2, 8, 2}, {1, 2, 1}, {1, 2, 1}};
+                PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
+            });
+        });
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {

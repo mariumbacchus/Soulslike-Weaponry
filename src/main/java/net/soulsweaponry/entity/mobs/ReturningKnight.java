@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.mobs;
 import java.util.List;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
@@ -235,9 +236,9 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
@@ -258,9 +259,9 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
             double d = this.random.nextGaussian() * 0.05D;
             double e = this.random.nextGaussian() * 0.05D;
             for(int i = 0; i < 2; ++i) {
-                double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + d;
-                double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + e;
-                double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+                double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
+                double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
+                double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
@@ -306,7 +307,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -330,28 +331,21 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
         int j;
         int i;
+        int k;
         if (this.blockBreakingCooldown > 0) {
             --this.blockBreakingCooldown;
             if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 i = MathHelper.floor(this.getY());
                 j = MathHelper.floor(this.getX());
-                int k = MathHelper.floor(this.getZ());
-                boolean bl = false;
+                k = MathHelper.floor(this.getZ());
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            int o = j + l;
-                            int p = i + n;
-                            int q = k + m;
-                            BlockPos blockPos = new BlockPos(o, p, q);
-                            BlockState blockState = this.world.getBlockState(blockPos);
-                            if (!WitherEntity.canDestroy(blockState)) continue;
-                            bl = this.world.breakBlock(blockPos, true, this) || bl;
+                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            }
                         }
                     }
-                }
-                if (bl) {
-                    this.world.syncWorldEvent(null, WorldEvents.WITHER_BREAKS_BLOCK, this.getBlockPos(), 0);
                 }
             }
         }

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.soulsweaponry.client.renderer.item.DawnbreakerRenderer;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -58,7 +59,7 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                     double random = target.getRandom().nextDouble();
                     if (random < chance) {
                         if (!attacker.world.isClient) {
-                            if (attacker instanceof ServerPlayerEntity && !attacker.world.isClient) {
+                            if (attacker instanceof ServerPlayerEntity) {
                                 BlockPos pos = target.getBlockPos();
                                 ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, pos);
                             }
@@ -74,13 +75,12 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                         Box aoe = target.getBoundingBox().expand(10);
                         List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
                         boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
-                        for (int i = 0; i < entities.size(); i++) {
-                            if (entities.get(i) instanceof LivingEntity) {
-                                LivingEntity targetHit = (LivingEntity)entities.get(i);
+                        for (Entity entity : entities) {
+                            if (entity instanceof LivingEntity targetHit) {
                                 if (targetHit.isUndead() || bl) {
                                     if (!targetHit.equals(attacker)) {
-                                        targetHit.setOnFireFor(4 + 1 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.damage(DamageSource.mob(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5*EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                                        targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                                        targetHit.damage(DamageSource.mob(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
                                         targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
                                     }
                                 }
@@ -93,7 +93,7 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                 int amplifier = target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier();
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, amplifier + 1));
             } else {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, 0 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack)));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack)));
             }
         }
         return true;
@@ -102,12 +102,8 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

@@ -30,6 +30,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -68,13 +69,13 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
                     entity.setOwner(player);
                     world.spawnEntity(entity);
                     this.addAmount(stack, -3);
-                } else if (power >= 10 && power < 30) {
+                } else if (power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
                     this.addAmount(stack, -10);
-                } else if (power >= 30) {
+                } else {
                     Soulmass entity = new Soulmass(EntityRegistry.SOULMASS, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
@@ -96,9 +97,9 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
         double d = random.nextGaussian() * 0.05D;
         double e = random.nextGaussian() * 0.05D;
         for(int i = 0; i < 50; ++i) {
-            double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
             world.addParticle(ParticleTypes.SOUL, x, y, z, newX/8, newY/2, newZ/8);
             world.addParticle(ParticleTypes.DRAGON_BREATH, x, y, z, newX/8, newY/2, newZ/8);
         }
@@ -107,19 +108,9 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            String kills = "0";
-            if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-                kills = String.valueOf(stack.getNbt().getInt(KILLS));
-            }
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release").formatted(Formatting.DARK_BLUE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_release_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA).append(Text.literal(kills).formatted(Formatting.WHITE)));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_1").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_2").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.collect_3").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

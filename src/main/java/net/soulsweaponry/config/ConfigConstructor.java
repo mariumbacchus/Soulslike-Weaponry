@@ -30,7 +30,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_leviathan_axe = false;
     @Entry public static boolean disable_recipe_skofnung = false;
     @Entry public static boolean disable_recipe_pure_moonlight_greatsword = false;
-    //@Entry public static boolean disable_recipe_pure_moonlight_shortsword = false;
     @Entry public static boolean disable_recipe_mjolnir = false;
     @Entry public static boolean disable_recipe_sword_of_freyr = false;
     @Entry public static boolean disable_recipe_sting = false;
@@ -40,6 +39,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_kirkhammer = false;
     @Entry public static boolean disable_recipe_ludwigs_holy_blade = false;
     @Entry public static boolean disable_recipe_draupnir_spear = false;
+    @Entry public static boolean disable_recipe_holy_moonlight_sword = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -105,6 +105,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int galeforce_dash_cooldown = 50;
     @Entry public static int rageblade_damage = 7;
     @Entry public static boolean rageblade_haste_cap = true;
+    @Entry public static int holy_moonlight_greatsword_damage = 10;
+    @Entry public static int holy_moonlight_ability_charge_needed = 50;
+    @Entry public static int holy_moonlight_ability_charge_added_post_hit = 1;
+    @Entry public static float holy_moonlight_ability_damage = 20f;
+    @Entry public static float holy_moonlight_ability_knockup = 0.3f;
+    @Entry public static int holy_moonlight_ability_cooldown = 150;
+    @Entry public static int holy_moonlight_sword_damage = 8;
     @Entry public static int kirkhammer_damage = 9;
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static int leviathan_axe_damage = 10;
@@ -131,7 +138,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean moonlight_shortsword_enable_right_click = false;
     @Entry public static boolean moonlight_shortsword_enable_left_click = true;
     @Entry public static int nightfall_damage = 11;
-    @Entry public static float nightfall_ability_damage = 15.0f;
+    @Entry public static float nightfall_ability_damage = 18.0f;
     @Entry public static int nightfall_ability_shield_power = 2;
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;

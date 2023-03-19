@@ -40,7 +40,6 @@ public class RecipeRegistry {
     public static JsonObject LEVIATHAN_AXE_RIGHT = null;
     public static JsonObject SKOFNUNG_RECIPE = null;
     public static JsonObject PURE_MOONLIGHT_GREAT_RECIPE = null;
-    //public static JsonObject PURE_MOONLIGHT_SHORT_RECIPE = null;
     public static JsonObject MJOLNIR_RECIPE = null;
     public static JsonObject FREYR_SWORD_RECIPE = null;
     public static JsonObject DRAUGR_RECIPE = null;
@@ -51,6 +50,7 @@ public class RecipeRegistry {
     public static JsonObject KIRKHAMMER_RECIPE = null;
     public static JsonObject HOLY_GREATSWORD_RECIPE = null;
     public static JsonObject DRAUPNIR_SPEAR_RECIPE = null;
+    public static JsonObject HOLY_MOONLIGHT_SWORD_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
 
@@ -129,11 +129,7 @@ public class RecipeRegistry {
                         " / "
                 ), new Identifier(ModId, "bloodthirster"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_bloodthirster);
-                register.add("bloodthirster");
-                register.add(BLOODTHIRSTER_RECIPE);
-                recipes.add(register);
+                registerRecipe(BLOODTHIRSTER_RECIPE, "bloodthirster", ConfigConstructor.disable_recipe_bloodthirster);
             }
             if (!ConfigConstructor.disable_recipe_comet_spear) {
                 COMET_SPEAR_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -149,35 +145,23 @@ public class RecipeRegistry {
                         "#S "
                 ), new Identifier(ModId, "comet_spear"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_comet_spear);
-                register.add("comet_spear");
-                register.add(COMET_SPEAR_RECIPE);
-                recipes.add(register);
+                registerRecipe(COMET_SPEAR_RECIPE, "comet_spear", ConfigConstructor.disable_recipe_comet_spear);
             }
             if (!ConfigConstructor.disable_recipe_darkin_blade) {
                 DARKIN_BLADE_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "item", new Identifier(ModId, "bloodthirster"), 
                     "tag", new Identifier(ModId, "lord_soul"), 
                     new Identifier(ModId, "darkin_blade"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_darkin_blade);
-                register.add("darkin_blade");
-                register.add(DARKIN_BLADE_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(DARKIN_BLADE_RECIPE, "darkin_blade", ConfigConstructor.disable_recipe_darkin_blade);
             }
             if (!ConfigConstructor.disable_recipe_dawnbreaker) {
                 DAWNBREAKER_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "item", new Identifier("minecraft", "golden_sword"), 
                     "tag", new Identifier(ModId, "lord_soul"), 
                     new Identifier(ModId, "dawnbreaker"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_dawnbreaker);
-                register.add("dawnbreaker");
-                register.add(DAWNBREAKER_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(DAWNBREAKER_RECIPE, "dawnbreaker", ConfigConstructor.disable_recipe_dawnbreaker);
             }
             if (!ConfigConstructor.disable_recipe_dragon_staff) {
                 DRAGON_STAFF_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -192,11 +176,7 @@ public class RecipeRegistry {
                         "#"
                 ), new Identifier(ModId, "dragon_staff"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_dragon_staff);
-                register.add("dragon_staff");
-                register.add(DRAGON_STAFF_RECIPE);
-                recipes.add(register);
+                registerRecipe(DRAGON_STAFF_RECIPE, "dragon_staff", ConfigConstructor.disable_recipe_dragon_staff);
             }
             if (!ConfigConstructor.disable_recipe_heap_of_raw_iron) {
                 GUTS_SWORD_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -211,11 +191,7 @@ public class RecipeRegistry {
                         "#X#"
                 ), new Identifier(ModId, "guts_sword"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_heap_of_raw_iron);
-                register.add("guts_sword");
-                register.add(GUTS_SWORD_RECIPE);
-                recipes.add(register);
+                registerRecipe(GUTS_SWORD_RECIPE, "guts_sword", ConfigConstructor.disable_recipe_heap_of_raw_iron);
             }
             if (!ConfigConstructor.disable_recipe_dragonslayer_swordspear) {
                 DRAGONSLAYER_SWORDSPEAR_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -231,11 +207,7 @@ public class RecipeRegistry {
                         "G/G"
                 ), new Identifier(ModId, "dragonslayer_swordspear"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_dragonslayer_swordspear);
-                register.add("dragonslayer_swordspear");
-                register.add(DRAGONSLAYER_SWORDSPEAR_RECIPE);
-                recipes.add(register);
+                registerRecipe(DRAGONSLAYER_SWORDSPEAR_RECIPE, "dragonslayer_swordspear", ConfigConstructor.disable_recipe_dragonslayer_swordspear);
             }
             if (!ConfigConstructor.disable_recipe_galeforce) {
                 GALEFORCE_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -251,11 +223,7 @@ public class RecipeRegistry {
                         " #S"
                 ), new Identifier(ModId, "galeforce"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_galeforce);
-                register.add("galeforce");
-                register.add(GALEFORCE_RECIPE);
-                recipes.add(register);
+                registerRecipe(GALEFORCE_RECIPE, "galeforce", ConfigConstructor.disable_recipe_galeforce);
             }
             if (!ConfigConstructor.disable_recipe_lich_bane) {
                 LICH_BANE_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -272,23 +240,15 @@ public class RecipeRegistry {
                         "Fg "
                 ), new Identifier(ModId, "lich_bane"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_lich_bane);
-                register.add("lich_bane");
-                register.add(LICH_BANE_RECIPE);
-                recipes.add(register);
+                registerRecipe(LICH_BANE_RECIPE, "lich_bane", ConfigConstructor.disable_recipe_lich_bane);
             }
             if (!ConfigConstructor.disable_recipe_moonlight_greatsword) {
                 MOONLIGHT_GREATSWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "item", new Identifier(ModId, "bluemoon_greatsword"), 
                     "tag", new Identifier(ModId, "lord_soul"), 
                     new Identifier(ModId, "moonlight_greatsword"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_moonlight_greatsword);
-                register.add("moonlight_greatsword");
-                register.add(MOONLIGHT_GREATSWORD_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(MOONLIGHT_GREATSWORD_RECIPE, "moonlight_greatsword", ConfigConstructor.disable_recipe_moonlight_greatsword);
             }
             if (!ConfigConstructor.disable_recipe_moonlight_shortsword) {
                 MOONLIGHT_SHORTSWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
@@ -296,11 +256,7 @@ public class RecipeRegistry {
                     "tag", new Identifier(ModId, "lord_soul"), 
                     new Identifier(ModId, "moonlight_shortsword"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_moonlight_shortsword);
-                register.add("moonlight_shortsword");
-                register.add(MOONLIGHT_SHORTSWORD_RECIPE);
-                recipes.add(register);
+                registerRecipe(MOONLIGHT_SHORTSWORD_RECIPE, "moonlight_shortsword", ConfigConstructor.disable_recipe_moonlight_shortsword);
             }
             if (!ConfigConstructor.disable_recipe_nightfall) {
                 NIGHTFALL_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -317,11 +273,7 @@ public class RecipeRegistry {
                         " # "
                 ), new Identifier(ModId, "nightfall"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_nightfall);
-                register.add("nightfall");
-                register.add(NIGHTFALL_RECIPE);
-                recipes.add(register);
+                registerRecipe(NIGHTFALL_RECIPE, "nightfall", ConfigConstructor.disable_recipe_nightfall);
             }
             if (!ConfigConstructor.disable_recipe_rageblade) {
                 RAGEBLADE_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -337,11 +289,7 @@ public class RecipeRegistry {
                         "/  "
                 ), new Identifier(ModId, "rageblade"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_rageblade);
-                register.add("rageblade");
-                register.add(RAGEBLADE_RECIPE);
-                recipes.add(register);
+                registerRecipe(RAGEBLADE_RECIPE, "rageblade", ConfigConstructor.disable_recipe_rageblade);
             }
             if (!ConfigConstructor.disable_recipe_soul_reaper) {
                 SOUL_REAPER_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -357,11 +305,7 @@ public class RecipeRegistry {
                         " / "
                 ), new Identifier(ModId, "soul_reaper"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_soul_reaper);
-                register.add("soul_reaper");
-                register.add(SOUL_REAPER_RECIPE);
-                recipes.add(register);
+                registerRecipe(SOUL_REAPER_RECIPE, "soul_reaper", ConfigConstructor.disable_recipe_soul_reaper);
             }
             if (!ConfigConstructor.disable_recipe_whirligig_sawblade) {
                 WHIRLIGIG_SAWBLADE_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -377,11 +321,7 @@ public class RecipeRegistry {
                         "/i "
                 ), new Identifier(ModId, "whirligig_sawblade"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_whirligig_sawblade);
-                register.add("whirligig_sawblade");
-                register.add(WHIRLIGIG_SAWBLADE_RECIPE);
-                recipes.add(register);
+                registerRecipe(WHIRLIGIG_SAWBLADE_RECIPE, "whirligig_sawblade", ConfigConstructor.disable_recipe_whirligig_sawblade);
             }
             if (!ConfigConstructor.disable_recipe_withered_wabbajack) {
                 WABBAJACK_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -396,11 +336,7 @@ public class RecipeRegistry {
                         "#"
                 ), new Identifier(ModId, "withered_wabbajack"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_withered_wabbajack);
-                register.add("withered_wabbajack");
-                register.add(WABBAJACK_RECIPE);
-                recipes.add(register);
+                registerRecipe(WABBAJACK_RECIPE, "withered_wabbajack", ConfigConstructor.disable_recipe_withered_wabbajack);
             }
             if (!ConfigConstructor.disable_recipe_leviathan_axe) {
                 LEVIATHAN_AXE_LEFT = JsonCreator.createShapedRecipeJson(
@@ -416,11 +352,7 @@ public class RecipeRegistry {
                         " /"
                 ), new Identifier(ModId, "leviathan_axe"));
 
-                ArrayList<Object> register_left = new ArrayList<>();
-                register_left.add(!ConfigConstructor.disable_recipe_leviathan_axe);
-                register_left.add("leviathan_axe_left");
-                register_left.add(LEVIATHAN_AXE_LEFT);
-                recipes.add(register_left);
+                registerRecipe(LEVIATHAN_AXE_LEFT, "leviathan_axe_left", ConfigConstructor.disable_recipe_leviathan_axe);
 
                 LEVIATHAN_AXE_RIGHT = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('S', '#', '/'), 
@@ -435,48 +367,24 @@ public class RecipeRegistry {
                         "/ "
                 ), new Identifier(ModId, "leviathan_axe"));
 
-                ArrayList<Object> register_right = new ArrayList<>();
-                register_right.add(!ConfigConstructor.disable_recipe_leviathan_axe);
-                register_right.add("leviathan_axe_right");
-                register_right.add(LEVIATHAN_AXE_RIGHT);
-                recipes.add(register_right);
+                registerRecipe(LEVIATHAN_AXE_RIGHT, "leviathan_axe_right", ConfigConstructor.disable_recipe_leviathan_axe);
             }
             if (!ConfigConstructor.disable_recipe_skofnung) {
                 SKOFNUNG_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "item", new Identifier("minecraft", "iron_sword"), 
                     "tag", new Identifier(ModId, "lord_soul"), 
                     new Identifier(ModId, "skofnung"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_skofnung);
-                register.add("skofnung");
-                register.add(SKOFNUNG_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(SKOFNUNG_RECIPE, "skofnung", ConfigConstructor.disable_recipe_skofnung);
             }
             if (!ConfigConstructor.disable_recipe_pure_moonlight_greatsword) {
                 PURE_MOONLIGHT_GREAT_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "tag", new Identifier(ModId, "moonlight_sword"), 
                     "item", new Identifier(ModId, "essence_of_luminescence"), 
                     new Identifier(ModId, "pure_moonlight_greatsword"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_pure_moonlight_greatsword);
-                register.add("pure_moonlight_greatsword");
-                register.add(PURE_MOONLIGHT_GREAT_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(PURE_MOONLIGHT_GREAT_RECIPE, "pure_moonlight_greatsword", ConfigConstructor.disable_recipe_pure_moonlight_greatsword);
             }
-            /* if (!ConfigConstructor.disable_recipe_pure_moonlight_shortsword) {
-                PURE_MOONLIGHT_SHORT_RECIPE = JsonCreator.createSmithingRecipeJson(
-                    "item", new Identifier(ModId, "moonlight_shortsword"), 
-                    "item", new Identifier(ModId, "arkenstone"), 
-                    new Identifier(ModId, "pure_moonlight_shortsword"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_pure_moonlight_shortsword);
-                register.add("pure_moonlight_shortsword");
-                register.add(PURE_MOONLIGHT_SHORT_RECIPE);
-                recipes.add(register);
-            } */
             if (!ConfigConstructor.disable_recipe_mjolnir) {
                 MJOLNIR_RECIPE = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('#', 'X', 'O', 'Y'), 
@@ -492,11 +400,7 @@ public class RecipeRegistry {
                         " # "
                 ), new Identifier(ModId, "mjolnir"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_mjolnir);
-                register.add("mjolnir");
-                register.add(MJOLNIR_RECIPE);
-                recipes.add(register);
+                registerRecipe(MJOLNIR_RECIPE, "mjolnir", ConfigConstructor.disable_recipe_mjolnir);
             }
             if (!ConfigConstructor.disable_recipe_sword_of_freyr) {
                 FREYR_SWORD_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -513,23 +417,15 @@ public class RecipeRegistry {
                         "#O#"
                 ), new Identifier(ModId, "freyr_sword"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_sword_of_freyr);
-                register.add("freyr_sword");
-                register.add(FREYR_SWORD_RECIPE);
-                recipes.add(register);
+                registerRecipe(FREYR_SWORD_RECIPE, "freyr_sword", ConfigConstructor.disable_recipe_sword_of_freyr);
             }
             if (!ConfigConstructor.disable_recipe_draugr) {
                 DRAUGR_RECIPE = JsonCreator.createSmithingRecipeJson(
                     "item", new Identifier("minecraft", "iron_sword"), 
                     "item", new Identifier(ModId, "essence_of_eventide"), 
                     new Identifier(ModId, "draugr"));
-                
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_draugr);
-                register.add("draugr");
-                register.add(DRAUGR_RECIPE);
-                recipes.add(register);
+
+                registerRecipe(DRAUGR_RECIPE, "draugr", ConfigConstructor.disable_recipe_draugr);
             }
             if (!ConfigConstructor.disable_recipe_sting) {
                 STING_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -545,11 +441,7 @@ public class RecipeRegistry {
                                 "X"
                         ), new Identifier(ModId, "sting"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_sting);
-                register.add("sting");
-                register.add(STING_RECIPE);
-                recipes.add(register);
+                registerRecipe(STING_RECIPE, "sting", ConfigConstructor.disable_recipe_sting);
             }if (!ConfigConstructor.disable_recipe_featherlight) {
                 FEATHERLIGHT_RECIPE = JsonCreator.createShapedRecipeJson(
                         Lists.newArrayList('#', 'X', 'O'),
@@ -565,11 +457,7 @@ public class RecipeRegistry {
                                 " X "
                         ), new Identifier(ModId, "featherlight"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_featherlight);
-                register.add("featherlight");
-                register.add(FEATHERLIGHT_RECIPE);
-                recipes.add(register);
+                registerRecipe(FEATHERLIGHT_RECIPE, "featherlight", ConfigConstructor.disable_recipe_featherlight);
             }
             if (!ConfigConstructor.disable_recipe_crucible_sword) {
                 CRUCIBLE_SWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
@@ -577,11 +465,7 @@ public class RecipeRegistry {
                         "tag", new Identifier(ModId, "lord_soul"),
                         new Identifier(ModId, "crucible_sword"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_crucible_sword);
-                register.add("crucible_sword");
-                register.add(CRUCIBLE_SWORD_RECIPE);
-                recipes.add(register);
+                registerRecipe(CRUCIBLE_SWORD_RECIPE, "crucible_sword", ConfigConstructor.disable_recipe_crucible_sword);
             }
             if (!ConfigConstructor.disable_recipe_darkin_scythe) {
                 DARKIN_SCYTHE_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -598,11 +482,7 @@ public class RecipeRegistry {
                                 " X "
                         ), new Identifier(ModId, "darkin_scythe_pre"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_darkin_scythe);
-                register.add("darkin_scythe_pre");
-                register.add(DARKIN_SCYTHE_RECIPE);
-                recipes.add(register);
+                registerRecipe(DARKIN_SCYTHE_RECIPE, "darkin_scythe_pre", ConfigConstructor.disable_recipe_darkin_scythe);
             }
             if (!ConfigConstructor.disable_recipe_kirkhammer) {
                 KIRKHAMMER_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -618,11 +498,7 @@ public class RecipeRegistry {
                                 " X "
                         ), new Identifier(ModId, "kirkhammer"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_kirkhammer);
-                register.add("kirkhammer");
-                register.add(KIRKHAMMER_RECIPE);
-                recipes.add(register);
+                registerRecipe(KIRKHAMMER_RECIPE, "kirkhammer", ConfigConstructor.disable_recipe_kirkhammer);
             }
             if (!ConfigConstructor.disable_recipe_ludwigs_holy_blade) {
                 HOLY_GREATSWORD_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -638,11 +514,7 @@ public class RecipeRegistry {
                                 "#X#"
                         ), new Identifier(ModId, "holy_greatsword"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_ludwigs_holy_blade);
-                register.add("holy_greatsword");
-                register.add(HOLY_GREATSWORD_RECIPE);
-                recipes.add(register);
+                registerRecipe(HOLY_GREATSWORD_RECIPE, "holy_greatsword", ConfigConstructor.disable_recipe_ludwigs_holy_blade);
             }
             if (!ConfigConstructor.disable_recipe_draupnir_spear) {
                 DRAUPNIR_SPEAR_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -659,11 +531,15 @@ public class RecipeRegistry {
                                 "#"
                         ), new Identifier(ModId, "draupnir_spear"));
 
-                ArrayList<Object> register = new ArrayList<>();
-                register.add(!ConfigConstructor.disable_recipe_draupnir_spear);
-                register.add("draupnir_spear");
-                register.add(DRAUPNIR_SPEAR_RECIPE);
-                recipes.add(register);
+                registerRecipe(DRAUPNIR_SPEAR_RECIPE, "draupnir_spear", ConfigConstructor.disable_recipe_draupnir_spear);
+            }
+            if (!ConfigConstructor.disable_recipe_holy_moonlight_sword) {
+                HOLY_MOONLIGHT_SWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
+                        "item", new Identifier(ModId, "sting"),
+                        "tag", new Identifier(ModId, "lord_soul"),
+                        new Identifier(ModId, "holy_moonlight_sword"));
+
+                registerRecipe(HOLY_MOONLIGHT_SWORD_RECIPE, "holy_moonlight_sword", ConfigConstructor.disable_recipe_holy_moonlight_sword);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
@@ -677,5 +553,13 @@ public class RecipeRegistry {
             BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
                 list, new Identifier(ModId, "silver_bullet"), 10);
         }
+    }
+
+    private static void registerRecipe(JsonObject recipe, String name, boolean configBoolean) {
+        ArrayList<Object> register = new ArrayList<>();
+        register.add(!configBoolean);
+        register.add(name);
+        register.add(recipe);
+        recipes.add(register);
     }
 }
