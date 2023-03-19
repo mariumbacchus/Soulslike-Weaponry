@@ -19,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class MoonstoneRing extends Item {
 
@@ -38,9 +39,7 @@ public class MoonstoneRing extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

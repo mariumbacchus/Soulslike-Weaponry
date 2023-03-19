@@ -101,8 +101,7 @@ public class WhirligigSawblade extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade").formatted(Formatting.DARK_RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SAWBLADE, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

@@ -26,6 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class Galeforce extends BowItem {
 
@@ -107,8 +108,7 @@ public class Galeforce extends BowItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce").formatted(Formatting.AQUA));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.GALEFORCE, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

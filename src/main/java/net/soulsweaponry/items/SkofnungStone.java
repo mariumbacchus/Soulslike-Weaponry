@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class SkofnungStone extends Item {
 
@@ -65,9 +66,7 @@ public class SkofnungStone extends Item {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone").formatted(Formatting.LIGHT_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.skofnung_stone_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_DEBUFS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

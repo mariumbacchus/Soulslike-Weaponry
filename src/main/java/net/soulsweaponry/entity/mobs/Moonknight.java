@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.mobs;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
@@ -258,7 +259,9 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            }
                         }
                     }
                 }

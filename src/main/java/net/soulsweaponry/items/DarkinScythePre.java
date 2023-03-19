@@ -36,13 +36,14 @@ import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
-    private final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
+    public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
     private float attackSpeed;
 
     public DarkinScythePre(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -103,7 +104,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
         }
     }
 
-    private SoulType getDominantType(ItemStack stack) {
+    public SoulType getDominantType(ItemStack stack) {
         if (stack.hasNbt()) {
             int blue = stack.getNbt().contains(SoulType.BLUE.id) ? stack.getNbt().getInt(SoulType.BLUE.id) : 0;
             int red = stack.getNbt().contains(SoulType.RED.id) ? stack.getNbt().getInt(SoulType.RED.id) : 0;
@@ -148,18 +149,14 @@ public class DarkinScythePre extends SoulHarvestingItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation").formatted(Formatting.LIGHT_PURPLE));
-            for (int i = 1; i <= 8; i++) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation_description_" + i).formatted(Formatting.GRAY));
-            }
-            tooltip.add(new LiteralText(MathHelper.floor(((float)this.getSouls(stack)/MAX_SOULS)*100) + "%").formatted(this.getDominantType(stack).equals(SoulType.BLUE) ? Formatting.AQUA : Formatting.RED));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRANSFORMATION, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    enum SoulType {
+    public enum SoulType {
         RED("red_soul"), BLUE("blue_soul");
 
         String id;

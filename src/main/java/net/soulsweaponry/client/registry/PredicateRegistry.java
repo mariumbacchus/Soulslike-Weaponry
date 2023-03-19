@@ -14,6 +14,7 @@ import net.soulsweaponry.items.Sting;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class PredicateRegistry {
     
@@ -38,6 +39,9 @@ public class PredicateRegistry {
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRE);
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE);
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRIME);
+
+        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
+        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.DRAUGR, new Identifier("night"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity != null && livingEntity.world.getDimension().hasSkyLight() && livingEntity.world.getTimeOfDay() % 24000 > 13000 && livingEntity.world.getTimeOfDay() % 24000 < 23000) {
@@ -104,6 +108,15 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(item , new Identifier("bettercombat_hold"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (FabricLoader.getInstance().isModLoaded("bettercombat")) {
                 return 1.0F;
+            }
+            return 0.0f;
+        });
+    }
+
+    protected static void registerCharged(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+            if (WeaponUtil.isCharged(itemStack)) {
+                return 1.0f;
             }
             return 0.0f;
         });

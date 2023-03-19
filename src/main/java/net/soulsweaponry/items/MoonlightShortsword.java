@@ -25,6 +25,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class MoonlightShortsword extends SwordItem {
     
@@ -82,8 +83,7 @@ public class MoonlightShortsword extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_attack_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

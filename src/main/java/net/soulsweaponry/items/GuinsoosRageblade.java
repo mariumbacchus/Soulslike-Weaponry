@@ -19,6 +19,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class GuinsoosRageblade extends SwordItem {
     
@@ -51,12 +52,9 @@ public class GuinsoosRageblade extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.fury").formatted(Formatting.RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.fury_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.haste").formatted(Formatting.YELLOW));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.haste_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.flame_enraged").formatted(Formatting.GOLD));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.flame_enraged_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FURY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HASTE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FLAME_ENRAGED, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

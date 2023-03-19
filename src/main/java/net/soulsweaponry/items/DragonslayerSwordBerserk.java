@@ -22,6 +22,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon {
     
@@ -51,10 +52,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RAGE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

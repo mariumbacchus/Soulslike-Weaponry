@@ -31,6 +31,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -107,19 +108,9 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            String kills = "0";
-            if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-                kills = String.valueOf(stack.getNbt().getInt(KILLS));
-            }
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release").formatted(Formatting.DARK_BLUE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_release_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA).append(new LiteralText(kills).formatted(Formatting.WHITE)));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_1").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_2").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.collect_3").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

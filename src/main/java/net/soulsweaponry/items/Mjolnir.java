@@ -260,19 +260,11 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning").formatted(Formatting.GOLD));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_lightning_call_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_lightning_call_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_lightning_call_description_3").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_throw").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_throw_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.mjolnir_throw_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.returning").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.returning_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.weatherborn").formatted(Formatting.AQUA));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.weatherborn_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.off_hand_flight").formatted(Formatting.WHITE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.off_hand_flight_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

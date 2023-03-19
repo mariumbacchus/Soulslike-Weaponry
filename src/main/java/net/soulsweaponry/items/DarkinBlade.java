@@ -113,13 +113,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.omnivamp").formatted(Formatting.DARK_RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.omnivamp_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.life_steal_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.sword_slam").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.sword_slam_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

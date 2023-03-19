@@ -122,16 +122,8 @@ public class DraupnirSpear extends SwordItem implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.infinity").formatted(Formatting.WHITE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears").formatted(Formatting.RED));
-            for (int i = 1; i <= 5; i++) {
-                if (i == 3) tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).append(new LiteralText(String.valueOf(
-                                ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) / 2.5f)))
-                        .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
-                else tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
-            }
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_6").formatted(Formatting.DARK_GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

@@ -124,13 +124,8 @@ public class DragonStaff extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.dragon_staff").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.dragon_staff_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.dragon_staff_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.vengeful_fog").formatted(Formatting.LIGHT_PURPLE));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.vengeful_fog_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.vengeful_fog_description_2").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.vengeful_fog_description_3").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DRAGON_STAFF, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VENGEFUL_FOG, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }

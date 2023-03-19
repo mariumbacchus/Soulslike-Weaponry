@@ -35,6 +35,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class WitheredWabbajack extends SwordItem {
     
@@ -125,8 +126,8 @@ public class WitheredWabbajack extends SwordItem {
          * Finner ut total sjansen basert på modifiserte sjanser til prosjektilene.
          */
         int totalChance = 0;
-        for (int i = 0; i < projectileList.size(); i++) {
-            totalChance += (int)projectileList.get(i).get(2);
+        for (ArrayList<Object> objects : projectileList) {
+            totalChance += (int) objects.get(2);
         }
 
         /* 
@@ -176,7 +177,7 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
-    public static enum LuckType {
+    public enum LuckType {
         GOOD,
         NEUTRAL,
         BAD
@@ -185,11 +186,8 @@ public class WitheredWabbajack extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.wabbajack").formatted(Formatting.DARK_RED, Formatting.OBFUSCATED));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.wabbajack_description").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lucky").formatted(Formatting.DARK_GREEN));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lucky_description_1").formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.lucky_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
