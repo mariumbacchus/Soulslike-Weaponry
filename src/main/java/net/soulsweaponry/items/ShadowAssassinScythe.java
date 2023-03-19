@@ -32,7 +32,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     private static final String IN_COMBAT = "in_combat";
     private static final String JUST_ATTACKED = "just_attacked";
     private static final String COMBAT_TICKS = "combat_ticks";
-    private final int TICKS_FOR_BONUS = ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
+    public static final int TICKS_FOR_BONUS = ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, attackSpeed, settings, ConfigConstructor.shadow_assassin_scythe_ticks_before_dismount);
@@ -58,9 +58,8 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            ItemCooldownManager cooldownManager = player.getItemCooldownManager();
+        if (entity instanceof PlayerEntity player) {
+            var cooldownManager = player.getItemCooldownManager();
             if (this.justAttacked(stack) && entity.age % 10 == 0 && this.getCombatTicks(stack) > 0) {
                 this.addCombatTicks(stack, -10);
             }
@@ -141,16 +140,8 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            String seconds = String.valueOf(MathHelper.floor((float)TICKS_FOR_BONUS / 20f));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.early_combat").formatted(Formatting.AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.early_combat_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.early_combat_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.early_combat_description_3").formatted(Formatting.DARK_GRAY, Formatting.ITALIC).append(Text.literal(seconds).formatted(Formatting.AQUA)));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.umbral_trespass").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.umbral_trespass_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.umbral_trespass_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.umbral_trespass_description_3").formatted(Formatting.GRAY));
-
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHADOW_STEP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

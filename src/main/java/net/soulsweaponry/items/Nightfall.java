@@ -34,6 +34,7 @@ import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -101,7 +102,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         super.postHit(stack, target, attacker);
 
-        if (target.isUndead() && target.isDead()) {
+        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance) {
                 World world = attacker.getEntityWorld();
@@ -110,7 +111,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
                 entity.setOwner((PlayerEntity) attacker);
                 world.spawnEntity(entity);
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                if (!attacker.world.isClient && attacker instanceof PlayerEntity) {
+                if (!attacker.world.isClient) {
                     BlockPos pos = target.getBlockPos();
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
                 }
@@ -141,14 +142,10 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_summoner").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_summoner_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shield").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shield_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.obliterate").formatted(Formatting.DARK_BLUE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.obliterate_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

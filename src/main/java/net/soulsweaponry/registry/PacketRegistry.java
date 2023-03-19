@@ -27,6 +27,7 @@ public class PacketRegistry {
     public static final Identifier SOUL_FLAME_OUTBURST_ID = new Identifier(SoulsWeaponry.ModId, "soul_flame_outburst");
     public static final Identifier MJOLNIR_LEVIATHAN_AXE_COLLISION_ID = new Identifier(SoulsWeaponry.ModId, "mjolnir_leviathan_axe_collision");
     public static final Identifier UMBRAL_TRESPASS_ID = new Identifier(SoulsWeaponry.ModId, "umbral_trespass_id");
+    public static final Identifier MOONFALL_ID = new Identifier(SoulsWeaponry.ModId, "moonfall_id");
 
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
     public static final Identifier RETURN_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "check_can_freyr_return");

@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
@@ -11,6 +12,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +26,8 @@ public class TrickWeapon extends UltraHeavyWeapon {
             ConfigConstructor.kirkhammer_damage,
             ConfigConstructor.kirkhammer_silver_sword_damage,
             ConfigConstructor.ludwigs_holy_greatsword,
+            ConfigConstructor.holy_moonlight_greatsword_damage,
+            ConfigConstructor.holy_moonlight_sword_damage,
     };
 
     private final int switchWeaponIndex;
@@ -48,30 +52,26 @@ public class TrickWeapon extends UltraHeavyWeapon {
         return this.undeadBonus;
     }
 
-    private Text getSwitchWeaponName(ItemStack stack) {
-        TrickWeapon switchWeapon = TRICK_WEAPONS[this.getSwitchWeaponIndex()];
-        if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
-            switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD)) {
+            WeaponUtil.addCharge(stack, 3);
         }
-        return switchWeapon.getName();
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY).append(this.getSwitchWeaponName(stack).copy().formatted(Formatting.WHITE)));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
             if (this.isHeavy()) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description").formatted(Formatting.GRAY));
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
             }
             if (this.undeadBonus) {
-                int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + ConfigConstructor.righteous_undead_bonus_damage);
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(amount))));
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RIGHTEOUS, stack, tooltip);
+            }
+            if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD)) {
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
             }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));

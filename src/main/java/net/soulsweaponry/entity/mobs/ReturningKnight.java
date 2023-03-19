@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.mobs;
 import java.util.List;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
@@ -337,28 +338,21 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
         int j;
         int i;
+        int k;
         if (this.blockBreakingCooldown > 0) {
             --this.blockBreakingCooldown;
             if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 i = MathHelper.floor(this.getY());
                 j = MathHelper.floor(this.getX());
-                int k = MathHelper.floor(this.getZ());
-                boolean bl = false;
+                k = MathHelper.floor(this.getZ());
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            int o = j + l;
-                            int p = i + n;
-                            int q = k + m;
-                            BlockPos blockPos = new BlockPos(o, p, q);
-                            BlockState blockState = this.world.getBlockState(blockPos);
-                            if (!WitherEntity.canDestroy(blockState)) continue;
-                            bl = this.world.breakBlock(blockPos, true, this) || bl;
+                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            }
                         }
                     }
-                }
-                if (bl) {
-                    this.world.syncWorldEvent(null, WorldEvents.WITHER_BREAKS_BLOCK, this.getBlockPos(), 0);
                 }
             }
         }

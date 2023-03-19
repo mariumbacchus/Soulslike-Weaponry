@@ -45,10 +45,9 @@ public class Skofnung extends SwordItem {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, duration, 0));
-        if (this.isEmpowered(stack)) {
+        if (isEmpowered(stack)) {
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 80, 0));
-            if (attacker instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) attacker;
+            if (attacker instanceof PlayerEntity player) {
                 if (!player.getItemCooldownManager().isCoolingDown(this)) {
                     this.reduceEmpowered(stack, player.getWorld(), attacker);
                     player.getItemCooldownManager().set(this, 5);
@@ -63,7 +62,7 @@ public class Skofnung extends SwordItem {
     @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND && this.isEmpowered(stack)) {
+        if (slot == EquipmentSlot.MAINHAND && isEmpowered(stack)) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.4D, EntityAttributeModifier.Operation.ADDITION));
@@ -73,7 +72,7 @@ public class Skofnung extends SwordItem {
         return super.getAttributeModifiers(stack, slot);
     }
 
-    public boolean isEmpowered(ItemStack stack) {
+    public static boolean isEmpowered(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0) {
             return true;
         } else {
@@ -81,8 +80,8 @@ public class Skofnung extends SwordItem {
         }
     }
 
-    private Integer empAttacksLeft(ItemStack stack) {
-        if (this.isEmpowered(stack)) {
+    public static Integer empAttacksLeft(ItemStack stack) {
+        if (isEmpowered(stack)) {
             return stack.getNbt().getInt(EMPOWERED);
         } else {
             return 0;
@@ -90,7 +89,7 @@ public class Skofnung extends SwordItem {
     }
 
     private void reduceEmpowered(ItemStack stack, World world, LivingEntity attacker) {
-        if (this.isEmpowered(stack)) {
+        if (isEmpowered(stack)) {
             stack.getNbt().putInt(EMPOWERED, stack.getNbt().getInt(EMPOWERED) - 1);
             if (stack.getNbt().getInt(EMPOWERED) <= 0) {
                 world.playSound(null, attacker.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, .75f, 1f);
@@ -101,17 +100,9 @@ public class Skofnung extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disable_heal").formatted(Formatting.BOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disable_heal_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disable_heal_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.sharpen").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.sharpen_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.sharpen_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.sharpen_description_3").formatted(Formatting.GRAY));
-            if (this.isEmpowered(stack)) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA));
-                tooltip.add(Text.literal(this.empAttacksLeft(stack).toString() + "/8").formatted(Formatting.AQUA));
-            }
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_HEAL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHARPEN, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.IS_SHARPENED, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

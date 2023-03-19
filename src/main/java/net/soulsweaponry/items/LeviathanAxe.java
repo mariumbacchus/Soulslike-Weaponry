@@ -103,8 +103,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
         Box box = new Box(pos).expand(1D);
         List<Entity> entities = world.getOtherEntities(attacker, box);
         for (Entity entity : entities) {
-            if (entity instanceof LivingEntity && !(entity instanceof PlayerEntity)) {
-                LivingEntity livingEntity = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity && !(entity instanceof PlayerEntity)) {
                 livingEntity.damage(DamageSource.FREEZE, (amplifier + 1) * 1.5f);
                 livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
             }
@@ -119,15 +118,10 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.freeze").formatted(Formatting.AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.freeze_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.returning").formatted(Formatting.DARK_PURPLE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.returning_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY_THROW, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

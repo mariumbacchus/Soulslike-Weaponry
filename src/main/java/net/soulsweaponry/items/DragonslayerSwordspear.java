@@ -43,6 +43,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class DragonslayerSwordspear extends SwordItem {
 
@@ -61,8 +62,7 @@ public class DragonslayerSwordspear extends SwordItem {
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
+        if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 //float j = EnchantmentHelper.getAttackDamage(stack, user.getGroup());
@@ -90,9 +90,8 @@ public class DragonslayerSwordspear extends SwordItem {
                     Box chunkBox = new Box(user.getX() - 10, user.getY() - 5, user.getZ() - 10, user.getX() + 10, user.getY() + 5, user.getZ() + 10);
                     List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
                     //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items aswell!
-                    for (int j = 0; j < nearbyEntities.size(); j++) {
-                        if (nearbyEntities.get(j) instanceof LivingEntity && !(nearbyEntities.get(j) instanceof TameableEntity)) {
-                            LivingEntity target = (LivingEntity) nearbyEntities.get(j);
+                    for (Entity nearbyEntity : nearbyEntities) {
+                        if (nearbyEntity instanceof LivingEntity target && !(nearbyEntity instanceof TameableEntity)) {
                             if (world.isSkyVisible(target.getBlockPos())) {
                                 for (i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
                                     LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
@@ -107,7 +106,7 @@ public class DragonslayerSwordspear extends SwordItem {
                                 if (!world.isClient) {
                                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 20);
                                 }
-                            } 
+                            }
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
@@ -167,15 +166,11 @@ public class DragonslayerSwordspear extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn").formatted(Formatting.DARK_AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIGHTNING_CALL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.STORM_STOMP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

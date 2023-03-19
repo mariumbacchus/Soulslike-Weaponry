@@ -169,15 +169,9 @@ public class CometSpear extends SwordItem implements IAnimatable{
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall").formatted(Formatting.GOLD));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_2").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.grand_skyfall_description_3").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity").formatted(Formatting.WHITE));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.infinity_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit").formatted(Formatting.DARK_RED));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.crit_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CRIT, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

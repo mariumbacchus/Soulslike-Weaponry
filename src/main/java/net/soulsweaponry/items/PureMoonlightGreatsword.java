@@ -22,6 +22,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class PureMoonlightGreatsword extends SwordItem {
     
@@ -76,8 +77,7 @@ public class PureMoonlightGreatsword extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.pure_moonlight_description").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

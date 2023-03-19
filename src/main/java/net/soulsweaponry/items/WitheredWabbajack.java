@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class WitheredWabbajack extends SwordItem {
     
@@ -87,32 +88,32 @@ public class WitheredWabbajack extends SwordItem {
             {new WitheredWabbajackProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.GOOD},
         };
         ArrayList<ArrayList<Object>> projectileList = new ArrayList<>();
-        for (int i = 0; i < projectileTypes.length; i++) {
-            /* 
+        for (Object[] projectileType : projectileTypes) {
+            /*
              * Legger til definerte prosjektiler sammen med luck type i en ArrayList.
              */
             ArrayList<Object> list = new ArrayList<>();
-            list.add(projectileTypes[i][0]);
-            list.add(projectileTypes[i][1]);
-            /* 
+            list.add(projectileType[0]);
+            list.add(projectileType[1]);
+            /*
              * Legger til luckFactor basert på hva slags type prosjektil den er, om den er bra eller dårlig.
              */
             int luckFactor;
-            switch ((LuckType)list.get(1)) {
-                case BAD:
+            switch ((LuckType) list.get(1)) {
+                case BAD -> {
                     luckFactor = (10 - this.getLuckFactor(user));
                     list.add(luckFactor);
-                    break;
-                case GOOD:
+                }
+                case GOOD -> {
                     luckFactor = (10 + this.getLuckFactor(user));
                     list.add(luckFactor);
-                    break;
-                default:
+                }
+                default -> {
                     luckFactor = 10;
                     list.add(luckFactor);
-                    break;
+                }
             }
-            /* 
+            /*
              * Hvis luckFactor er mindre eller lik 0, legges ikke prosjektilen til listen.
              */
             if (!(luckFactor <= 0)) {
@@ -184,11 +185,8 @@ public class WitheredWabbajack extends SwordItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.wabbajack").formatted(Formatting.DARK_RED, Formatting.OBFUSCATED));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.wabbajack_description").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lucky").formatted(Formatting.DARK_GREEN));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lucky_description_1").formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.lucky_description_2").formatted(Formatting.GRAY));
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
