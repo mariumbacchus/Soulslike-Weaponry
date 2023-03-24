@@ -11,3 +11,7 @@ certain features.
 The mod is highly configurable, you can always edit 
 health of bosses, damage to weapons and other aspects
 in the config (config/soulsweapons.json).
+
+Mod pages:
+- https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry
+- https://modrinth.com/mod/mariums-soulslike-weaponry
