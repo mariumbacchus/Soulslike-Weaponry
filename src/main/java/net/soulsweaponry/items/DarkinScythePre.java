@@ -88,7 +88,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
                 for (Enchantment enchant : enchants.keySet()) {
                     newStack.addEnchantment(enchant, enchants.get(enchant));
                 }
-                player.getInventory().removeOne(stack);
+                player.getInventory().removeStack(slot);
                 player.getInventory().insertStack(slot, newStack);
             }
         }
