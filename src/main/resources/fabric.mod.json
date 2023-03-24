@@ -9,7 +9,8 @@
     "Marium"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry",
+    "issues": "https://github.com/mariumbacchus/Soulslike-Weaponry/issues"
   },
 
   "license": "CC0-1.0",
@@ -33,9 +34,8 @@
     "fabricloader": ">=0.14.6",
     "fabric": "*",
     "minecraft": "~1.19",
-    "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "java": ">=17",
+    "fabric-api": ">=0.74.0",
+    "geckolib": ">=4.0.3"
   }
 }
