@@ -100,11 +100,10 @@ public class WeaponUtil {
                 }
             }
             case CHARGE -> {
+                String current = MathHelper.floor((float) getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed * 100) + "%";
                 tooltip.add(Text.translatable("tooltip.soulsweapons.charge").formatted(Formatting.DARK_AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(getAddedCharge(stack))).formatted(Formatting.AQUA)));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_3").formatted(Formatting.DARK_GRAY).append(Text.literal(
-                        MathHelper.floor((float) getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed * 100) + "%").formatted(Formatting.AQUA)));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(current + " | " + getAddedCharge(stack)).formatted(Formatting.AQUA)));
             }
             case NEED_CHARGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.need_charge").formatted(Formatting.RED));
