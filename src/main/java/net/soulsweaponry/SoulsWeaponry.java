@@ -1,6 +1,9 @@
 package net.soulsweaponry;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
 import net.soulsweaponry.world.gen.OreGenerator;
 import org.slf4j.Logger;
@@ -61,9 +64,15 @@ public class SoulsWeaponry implements ModInitializer {
         OreGenerator.generateOres();
         LOGGER.info("Successfully registered SoulsWeapons content!");
         RecipeRegistry.init();
-        LOGGER.info("Successfully regitered recipes!");
+        LOGGER.info("Successfully registered recipes!");
         PacketsServer.initServer();
         ParticleRegistry.init();
+
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, "2D Weapon Models", ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in 2D model resourcepack!");
+        });
+
         LOGGER.info("Initializing done!");
     }
 }
