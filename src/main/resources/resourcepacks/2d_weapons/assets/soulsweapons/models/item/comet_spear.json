@@ -1,0 +1,36 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/comet_spear"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [-40, -90, 0],
+        "translation": [0.0, 2, 2.0],
+        "scale": [1.75, 1.75, 1]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [-40, 90, 0],
+        "translation": [0.0, 2.0, 2.0],
+        "scale": [1.75, 1.75, 1]
+      },
+      "firstperson_righthand": {
+        "rotation": [-45, -90, 0],
+        "translation": [1.0, -1.0, 0.0],
+        "scale": [1.75, 1.75, 1]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-40, 90, 0],
+        "translation": [0, -1.0, 0.0],
+        "scale": [1.75, 1.75, 1]
+      }
+    },
+    "overrides": [
+      {
+          "predicate": {
+              "throwing": 1
+          },
+          "model": "soulsweapons:item/comet_spear_throwing"
+      }
+  ]
+}

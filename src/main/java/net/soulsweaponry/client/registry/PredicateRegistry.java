@@ -33,6 +33,7 @@ public class PredicateRegistry {
         PredicateRegistry.registerThrowing(WeaponRegistry.MJOLNIR);
         PredicateRegistry.registerThrowing(WeaponRegistry.MOONLIGHT_GREATSWORD);
         PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD);
+        PredicateRegistry.registerThrowing(WeaponRegistry.DRAUPNIR_SPEAR);
 
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SOUL_REAPER);
         PredicateRegistry.registerBetterCombatHold(WeaponRegistry.FORLORN_SCYTHE);

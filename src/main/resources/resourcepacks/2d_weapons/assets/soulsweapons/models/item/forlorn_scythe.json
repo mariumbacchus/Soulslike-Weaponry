@@ -1,0 +1,36 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/forlorn_scythe"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [-95, -41, -54],
+        "translation": [1.0, 0, 2.0],
+        "scale": [2.25, 2.25, 1.25]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [-40, 90, 0],
+        "translation": [0.0, 2.0, 2.0],
+        "scale": [1.75, 1.75, 1]
+      },
+      "firstperson_righthand": {
+        "rotation": [-30, -90, 0],
+        "translation": [1.0, 3.0, 0.0],
+        "scale": [1.75, 1.75, 1]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-30, 90, 0],
+        "translation": [0, 3.0, 0.0],
+        "scale": [1.75, 1.75, 1]
+      }
+    },
+    "overrides": [
+      {
+          "predicate": {
+              "bettercombat_hold": 1
+          },
+          "model": "soulsweapons:item/forlorn_scythe_bettercombat"
+      }
+  ]
+}

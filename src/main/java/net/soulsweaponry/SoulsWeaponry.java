@@ -1,5 +1,8 @@
 package net.soulsweaponry;
 
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +56,15 @@ public class SoulsWeaponry implements ModInitializer {
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");
         RecipeRegistry.init();
-        LOGGER.info("Successfully regitered recipes!");
+        LOGGER.info("Successfully registered recipes!");
         PacketsServer.initServer();
         ParticleRegistry.init();
+
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, "2D Weapon Models", ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in 2D model resourcepack!");
+        });
+
         LOGGER.info("Initializing done!");
     }
 }
