@@ -21,6 +21,7 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -77,6 +78,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<BlockPos> STATIONARY = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Boolean> IS_STATIONARY = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final String STACK_NBT = "enchants_list";
 
     public FreyrSwordEntity(EntityType<? extends FreyrSwordEntity> entityType, World world) {
         super(entityType, world);
@@ -214,8 +216,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
             this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
             this.stack.damage(10, this.getRandom(), null);
             if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
-                if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
-                    PlayerEntity player = (PlayerEntity) this.getOwner();
+                if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
                     if (!this.insertStack(player)) {
                         this.setPos(player.getX(), player.getEyeY(), player.getZ());
                         this.dropStack();
@@ -235,8 +236,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
      * deciding whether it should stay behind the owner or not.
      */
     public boolean isBlockPosNullish(BlockPos pos) {
-        if (pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0) return true;
-        else return false;
+        return pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0;
     }
 
     @Override
@@ -353,5 +353,22 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     @Override
     protected boolean canStartRiding(Entity entity) {
         return false;
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        ItemStack itemStack = this.asItemStack();
+        if (itemStack.getNbt() != null) {
+            nbt.put(STACK_NBT, itemStack.getNbt());
+        }
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains(STACK_NBT)) {
+            this.stack.setNbt((NbtCompound) nbt.get(STACK_NBT));
+        }
     }
 }

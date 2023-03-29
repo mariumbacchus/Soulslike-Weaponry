@@ -55,7 +55,7 @@ public class PacketsServer {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                         if (op.isPresent() && player.getBlockPos() != null) {
                             Entity sword = serverWorld.getEntity(op.get());
-                            if (sword != null && sword instanceof FreyrSwordEntity) {
+                            if (sword instanceof FreyrSwordEntity) {
                                 if (!((FreyrSwordEntity)sword).insertStack(player)) {
                                     sword.setPos(player.getX(), player.getEyeY(), player.getZ());
                                     ((FreyrSwordEntity)sword).dropStack();
@@ -80,8 +80,7 @@ public class PacketsServer {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                         if (op.isPresent() && player.getBlockPos() != null) {
                             Entity entity = serverWorld.getEntity(player.getDataTracker().get(FreyrSword.SUMMON_UUID).get());
-                            if (entity != null && entity instanceof FreyrSwordEntity) {
-                                FreyrSwordEntity sword = ((FreyrSwordEntity)entity);
+                            if (entity instanceof FreyrSwordEntity sword) {
                                 sword.setStationaryPos(player.getBlockPos());
                             } else {
                                 player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
