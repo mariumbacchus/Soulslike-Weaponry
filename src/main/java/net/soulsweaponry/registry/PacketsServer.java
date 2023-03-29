@@ -55,7 +55,7 @@ public class PacketsServer {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                         if (op.isPresent() && player.getBlockPos() != null) {
                             Entity sword = serverWorld.getEntity(op.get());
-                            if (sword != null && sword instanceof FreyrSwordEntity) {
+                            if (sword instanceof FreyrSwordEntity) {
                                 if (!((FreyrSwordEntity)sword).insertStack(player)) {
                                     sword.setPos(player.getX(), player.getEyeY(), player.getZ());
                                     ((FreyrSwordEntity)sword).dropStack();
