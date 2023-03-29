@@ -80,7 +80,7 @@ public class PacketsServer {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                         if (op.isPresent() && player.getBlockPos() != null) {
                             Entity entity = serverWorld.getEntity(player.getDataTracker().get(FreyrSword.SUMMON_UUID).get());
-                            if (entity != null && entity instanceof FreyrSwordEntity) {
+                            if (entity instanceof FreyrSwordEntity) {
                                 FreyrSwordEntity sword = ((FreyrSwordEntity)entity);
                                 sword.setStationaryPos(player.getBlockPos());
                             } else {

@@ -90,7 +90,6 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<FreyrSwordEntity> attackController = new AnimationController<>(this, "attackController", 0, this::attack);
         AnimationController<FreyrSwordEntity> idleController = new AnimationController<>(this, "idleController", 0, this::idle);
-        //attackController.registerCustomInstructionListener(this::attackTargetListener); //Check GeoExampleEntity for more info/examples.
         controllers.add(attackController);
         controllers.add(idleController);
     }
