@@ -4,25 +4,25 @@
   "display": {
     "thirdperson_righthand": {
       "rotation": [
-        0,
+        180,
         0,
         90
       ],
       "translation": [
         0,
-        25,
+        -20,
         1.5
       ]
     },
     "thirdperson_lefthand": {
       "rotation": [
-        0,
+        180,
         0,
         -90
       ],
       "translation": [
         0,
-        25,
+        -20,
         1.5
       ]
     },
@@ -128,13 +128,5 @@
         0.5
       ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "throwing": 1
-      },
-      "model": "soulsweapons:item/draupnir_spear_throwing"
-    }
-  ]
+  }
 }
