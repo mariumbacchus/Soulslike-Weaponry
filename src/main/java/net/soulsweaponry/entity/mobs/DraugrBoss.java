@@ -3,6 +3,9 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+
+import java.util.Objects;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -21,6 +24,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -33,7 +37,6 @@ import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -51,173 +54,168 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     public int deathTicks;
     private int spawnTicks;
     private boolean shouldDisableShield = false;
+    private String weaponDamagedById = "none";
+    private static final String LAST_WEAPON_DAMAGED_BY = "last_weapon_damaged_by";
 
     public DraugrBoss(EntityType<? extends DraugrBoss> entityType, World world) {
         super(entityType, world, BossBar.Color.WHITE);
         this.setDrops(WeaponRegistry.DRAUGR);
     }
 
-    private static final TrackedData<Boolean> SHIELD_UP = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SHIELD_DOWN = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SHIELD_STANCE = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SHIELD_BASH = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> COUNTER = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> POSTURE_BREAK = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> DEATH = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SPAWN = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> IS_SHIELDING = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> POSTURE_BROKEN = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> STATES = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<BlockPos> POS = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Integer> SAME_WEAPON_COUNT = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.INTEGER);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        boolean shielding = event.getController().getCurrentAnimation() != null && event.getController().getCurrentAnimation().animationName.equals("start_block");
-        boolean stop_shielding = event.getController().getCurrentAnimation() != null && event.getController().getCurrentAnimation().animationName.equals("stop_block");
-        if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death", EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-        } else if (this.getSpawning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
-        } else if (this.getPostureBreak()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("posture_break"));
-            this.setShieldDown(false);
-            this.setShieldStance(false);
-        } else if (this.getShieldUp() && !this.getShieldStance()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_block"));
-            if (event.getController().getAnimationState().equals(AnimationState.Stopped)) this.setShieldStance(true);
-        } else if (this.getShieldStance() && this.getShieldDown()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("stop_block"));
-            if (event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-                this.setShieldDown(false);
-                this.setShieldStance(false);
-            }
-        } else if (this.getShieldBash() && !this.getCounter()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("shield_bash"));
-        } else if (this.getCounter() && !this.getShieldBash()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("counter"));
-        } else if (this.isAttacking() && !shielding && !stop_shielding/* && event.getController().getAnimationState().equals(AnimationState.Stopped) */) {
-            if (this.getShieldStance()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("block_stance"));
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
-            }
+        if (this.isPostureBroken()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("posture_break", EDefaultLoopTypes.LOOP));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            switch (this.getState()) {
+                case IDLE -> {
+                    if (this.isShielding()) {
+                        if (event.isMoving()) {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("block_stance", EDefaultLoopTypes.LOOP));
+                        } else {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_block", EDefaultLoopTypes.LOOP));
+                        }
+                    } else {
+                        if (event.isMoving()) {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", EDefaultLoopTypes.LOOP));
+                        } else {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", EDefaultLoopTypes.LOOP));
+                        }
+                    }
+                }
+                case SPAWN -> event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn", EDefaultLoopTypes.LOOP));
+                case DEATH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("death", EDefaultLoopTypes.LOOP));
+                case COUNTER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("counter", EDefaultLoopTypes.LOOP));
+                case SHIELD_BASH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("shield_bash", EDefaultLoopTypes.LOOP));
+                case SHIELD_VAULT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("shield_vault", EDefaultLoopTypes.LOOP));
+                case SWIPES -> event.getController().setAnimation(new AnimationBuilder().addAnimation("swipes", EDefaultLoopTypes.LOOP));
+                case BACKSTEP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("backstep_block", EDefaultLoopTypes.LOOP));
+                case HEAVY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("charged_attack", EDefaultLoopTypes.LOOP));
+                case GROUND_SLAM -> event.getController().setAnimation(new AnimationBuilder().addAnimation("ground_slam", EDefaultLoopTypes.LOOP));
+                case PARRY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("parry", EDefaultLoopTypes.LOOP));
+                case BATTLE_CRY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("battle_cry", EDefaultLoopTypes.LOOP));
+                case LEAP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("sword_leap", EDefaultLoopTypes.LOOP));
+                case RUN_THRUST -> event.getController().setAnimation(new AnimationBuilder().addAnimation("thrust_run", EDefaultLoopTypes.LOOP));
+            }
         }
         return PlayState.CONTINUE;
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.old_champions_remains_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, ConfigConstructor.old_champions_remains_generic_damage)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 6.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.old_champions_remains_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 6.0D);
     }
 
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(SHIELD_UP, Boolean.FALSE);
-        this.dataTracker.startTracking(SHIELD_DOWN, Boolean.FALSE);
-        this.dataTracker.startTracking(SHIELD_STANCE, Boolean.FALSE);
-        this.dataTracker.startTracking(SHIELD_BASH, Boolean.FALSE);
-        this.dataTracker.startTracking(COUNTER, Boolean.FALSE);
-        this.dataTracker.startTracking(POSTURE_BREAK, Boolean.FALSE);
-        this.dataTracker.startTracking(DEATH, Boolean.FALSE);
-        this.dataTracker.startTracking(SPAWN, Boolean.FALSE);
+        this.dataTracker.startTracking(IS_SHIELDING, Boolean.FALSE);
+        this.dataTracker.startTracking(POSTURE_BROKEN, Boolean.FALSE);
+        this.dataTracker.startTracking(STATES, 0);
+        this.dataTracker.startTracking(SAME_WEAPON_COUNT, 0);
+        this.dataTracker.startTracking(POS, new BlockPos(0,0,0));
     }
 
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new DraugrBossGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
-		super.initGoals();
-	}
-
-    public void setSpawning(boolean bl) {
-        this.dataTracker.set(SPAWN, bl);
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
+        super.initGoals();
     }
 
-    public boolean getSpawning() {
-        return this.dataTracker.get(SPAWN);
+    public void setShielding(boolean bl) {
+        this.dataTracker.set(IS_SHIELDING, bl);
     }
 
-    public void setShieldUp(boolean bl) {
-        this.dataTracker.set(SHIELD_UP, bl);
+    public boolean isShielding() {
+        return this.dataTracker.get(IS_SHIELDING);
     }
 
-    public boolean getShieldUp() {
-        return this.dataTracker.get(SHIELD_UP);
+    public void setPostureBroken(boolean bl) {
+        this.dataTracker.set(POSTURE_BROKEN, bl);
     }
 
-    public void setShieldDown(boolean bl) {
-        this.dataTracker.set(SHIELD_DOWN, bl);
+    public boolean isPostureBroken() {
+        return this.dataTracker.get(POSTURE_BROKEN);
     }
 
-    public boolean getShieldDown() {
-        return this.dataTracker.get(SHIELD_DOWN);
+    private void setSameWeaponCount(int amount) {
+        this.dataTracker.set(SAME_WEAPON_COUNT, amount);
     }
 
-    public void setShieldStance(boolean bl) {
-        this.dataTracker.set(SHIELD_STANCE, bl);
+    private void addSameWeaponCount() {
+        this.setSameWeaponCount(this.getSameWeaponCount() + 1);
     }
 
-    public boolean getShieldStance() {
-        return this.dataTracker.get(SHIELD_STANCE);
+    private int getSameWeaponCount() {
+        return this.dataTracker.get(SAME_WEAPON_COUNT);
     }
 
-    public void setShieldBash(boolean bl) {
-        this.dataTracker.set(SHIELD_BASH, bl);
+    public void setTargetPos(BlockPos pos) {
+        this.dataTracker.set(POS, pos);
     }
 
-    public boolean getShieldBash() {
-        return this.dataTracker.get(SHIELD_BASH);
+    public BlockPos getTargetPos() {
+        return this.dataTracker.get(POS);
     }
 
-    public void setCounter(boolean bl) {
-        this.dataTracker.set(COUNTER, bl);
+    public void setState(States attack) {
+        for (int i = 0; i < States.values().length; i++) {
+            if (States.values()[i].equals(attack)) {
+                this.dataTracker.set(STATES, i);
+            }
+        }
     }
 
-    public boolean getCounter() {
-        return this.dataTracker.get(COUNTER);
+    public States getState() {
+        return States.values()[this.dataTracker.get(STATES)];
     }
 
-    public void setPostureBreak(boolean bl) {
-        this.dataTracker.set(POSTURE_BREAK, bl);
+    public enum States {
+        IDLE, SPAWN, DEATH, COUNTER, SHIELD_BASH, SHIELD_VAULT, SWIPES, BACKSTEP, HEAVY, GROUND_SLAM,
+        PARRY, BATTLE_CRY, LEAP, RUN_THRUST
     }
 
-    public boolean getPostureBreak() {
-        return this.dataTracker.get(POSTURE_BREAK);
+    public void setSpawning() {
+        this.setState(States.SPAWN);
     }
 
-    public void setDeath(boolean bl) {
-        this.dataTracker.set(DEATH, bl);
-    }
-
-    public boolean getDeath() {
-        return this.dataTracker.get(DEATH);
+    public boolean isSpawning() {
+        return this.getState().equals(States.SPAWN);
     }
 
     public void tickMovement() {
         super.tickMovement();
-        
-        if (this.getSpawning()) {
+
+        if (this.isSpawning()) {
             this.spawnTicks++;
-            
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 50));
             for(int i = 0; i < 30; ++i) {
                 Random random = this.getRandom();
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
             }
-            
+
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 40) {
                 this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
@@ -231,12 +229,12 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
                 }
             }
             if (this.spawnTicks >= 70) {
-                this.setSpawning(false);
+                this.setState(States.IDLE);
             }
         }
 
         if (this.getHealth() <= this.getMaxHealth() / 2.0F) {
-            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 3));
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 0));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10, 1));
             for(int i = 0; i < 2; ++i) {
                 this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
@@ -247,6 +245,46 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
             for(int i = 0; i < 2; ++i) {
                 this.world.addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
+        }
+        if (this.isShielding()) this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 1));
+    }
+
+    /**
+     * For each hit the boss takes with the same weapon, the more resistant it grows against that weapon.
+     * The attacker has to switch between weapons to fully utilize their damage. When starting to become
+     * resistant, the damage sound changes from ENTITY_WITHER_SKELETON_HURT to ENTITY_ZOMBIE_ATTACK_IRON_DOOR.
+     * {@link net.soulsweaponry.items.TrickWeapon} come especially in handy here.
+     */
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (source.getAttacker() instanceof LivingEntity attacker) {
+            String item = attacker.getMainHandStack().getTranslationKey();
+            if (Objects.equals(this.weaponDamagedById, item)) {
+                this.addSameWeaponCount();
+            } else {
+                this.setSameWeaponCount(0);
+            }
+            if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
+                double x = this.getSameWeaponCount() - (ConfigConstructor.old_champions_remains_hits_before_growing_resistant -
+                        this.getSameWeaponCount() > 0 ? 1 : 0);
+                amount = (float) (amount * Math.pow((1f / 1.07f), x));
+            }
+            this.weaponDamagedById = item;
+        }
+        return super.damage(source, amount);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putString(LAST_WEAPON_DAMAGED_BY, this.weaponDamagedById);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains(LAST_WEAPON_DAMAGED_BY)) {
+            this.weaponDamagedById = nbt.getString(LAST_WEAPON_DAMAGED_BY);
         }
     }
 
@@ -278,7 +316,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     @Override
     public void onDeath(DamageSource source) {
         super.onDeath(source);
-        this.setDeath(true);
+        this.setState(States.DEATH);
         CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
         NightShade entity = new NightShade(world);
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
@@ -296,7 +334,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
         }
     }
 
@@ -316,7 +354,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -327,16 +365,16 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_WITHER_SKELETON_AMBIENT;
     }
-  
+
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_WITHER_SKELETON_HURT;
+        if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
+            return SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR;
+        } else {
+            return SoundEvents.ENTITY_WITHER_SKELETON_HURT;
+        }
     }
-  
+
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_WITHER_SKELETON_DEATH;
-    }
-  
-    SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_WITHER_SKELETON_STEP;
     }
 }
