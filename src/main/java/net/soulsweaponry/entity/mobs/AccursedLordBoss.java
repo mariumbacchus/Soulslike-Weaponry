@@ -49,7 +49,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
@@ -66,43 +66,22 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         return true;
     }
 
-    private PlayState attackAnimations(AnimationState state) {
+    private PlayState attackAnimations(AnimationState<?> state) {
         switch (this.getAttackAnimation()) {
-            case FIREBALLS:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
-                break;
-            case HAND_SLAM:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.groundSlamHand"));
-                break;
-            case HEATWAVE:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.explosion"));
-                break;
-            case PULL:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.pull"));
-                break;
-            case SPIN:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spin"));
-                break;
-            case SWORDSLAM:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.swordSlam"));
-                break;
-            case WITHERBALLS:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
-                break;
-            case DEATH:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.death"));
-                break;
-            case IDLE:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
-                break;
-            case SPAWN:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spawn"));
-                break;
-            default:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
-                break;
-            
-        }    
+            case FIREBALLS, WITHERBALLS ->
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
+            case HAND_SLAM ->
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.groundSlamHand"));
+            case HEATWAVE ->
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.explosion"));
+            case PULL -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.pull"));
+            case SPIN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spin"));
+            case SWORDSLAM ->
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.swordSlam"));
+            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.death"));
+            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spawn"));
+            default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
+        }
         return PlayState.CONTINUE;
     }
 
@@ -184,9 +163,9 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
             }
@@ -198,9 +177,8 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
-                for (int j = 0; j < nearbyEntities.size(); j++) {
-                    if (nearbyEntities.get(j) instanceof LivingEntity) {
-                        LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+                for (Entity nearbyEntity : nearbyEntities) {
+                    if (nearbyEntity instanceof LivingEntity closestTarget) {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
@@ -250,7 +228,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::attackAnimations));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::attackAnimations));
     }
 
     @Override
