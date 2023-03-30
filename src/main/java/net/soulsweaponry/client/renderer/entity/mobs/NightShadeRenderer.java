@@ -1,8 +1,10 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.NightShadeModel;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -33,5 +35,10 @@ public class NightShadeRenderer extends GeoEntityRenderer<NightShade> {
 
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
             entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+    }
+
+    @Override
+    public RenderLayer getRenderType(NightShade animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
+        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
     }
 }
