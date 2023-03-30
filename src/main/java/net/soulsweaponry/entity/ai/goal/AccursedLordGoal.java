@@ -109,51 +109,33 @@ public class AccursedLordGoal extends Goal {
         }
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         switch (attack) {
-            case FIREBALLS:
-                if (distanceToEntity < this.getFollowRange()*this.getFollowRange()) {
+            case FIREBALLS, WITHERBALLS -> {
+                if (distanceToEntity < this.getFollowRange() * this.getFollowRange()) {
                     this.boss.setAttackAnimation(attack);
                 }
-                break;
-            case HAND_SLAM:
+            }
+            case HAND_SLAM, HEATWAVE, SPIN -> {
                 if (distanceToEntity < 30f && this.specialCooldown < 0) {
                     this.boss.setAttackAnimation(attack);
-                } else if (this.attackCooldown < - 30 || this.specialCooldown > 10) {
+                } else if (this.attackCooldown < -30 || this.specialCooldown > 10) {
                     this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
                 }
-                break;
-            case HEATWAVE:
-                if (distanceToEntity < 30f && this.specialCooldown < 0) {
-                    this.boss.setAttackAnimation(attack);
-                } else if (this.attackCooldown < - 30 || this.specialCooldown > 10) {
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);                }
-                break;
-            case PULL:
-                if (distanceToEntity < this.getFollowRange()*this.getFollowRange()*2 && distanceToEntity > 60f) {
+            }
+            case PULL -> {
+                if (distanceToEntity < this.getFollowRange() * this.getFollowRange() * 2 && distanceToEntity > 60f) {
                     this.boss.setAttackAnimation(attack);
                 }
-                break;
-            case SPIN:
-                if (distanceToEntity < 30f && this.specialCooldown < 0) {
-                    this.boss.setAttackAnimation(attack);
-                } else if (this.attackCooldown < - 30 || this.specialCooldown > 10) {
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);                }
-                break;
-            case SWORDSLAM:
+            }
+            case SWORDSLAM -> {
                 if (distanceToEntity < 40f && !this.cordsRegistered && target.getBlockPos() != null) {
                     this.attackPos = target.getBlockPos();
                     this.cordsRegistered = true;
                     this.boss.setAttackAnimation(attack);
-                } else if (this.attackCooldown < - 30) {
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);                }
-                break;
-            case WITHERBALLS:
-                if (distanceToEntity < this.getFollowRange()*this.getFollowRange()) {
-                    this.boss.setAttackAnimation(attack);
+                } else if (this.attackCooldown < -30) {
+                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
                 }
-                break;
-            default:
-                this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
-                break;
+            }
+            default -> this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
         }
     }
 
@@ -190,30 +172,14 @@ public class AccursedLordGoal extends Goal {
                 this.checkAndSetAttack(null, target);
             }
             switch (this.boss.getAttackAnimation()) {
-                case FIREBALLS:
-                    this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.FIREBALLS);
-                    break;
-                case WITHERBALLS:
-                    this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.WITHERBALLS);
-                    break;
-                case HEATWAVE:
-                    this.heatWaveAttack();
-                    break;
-                case PULL:
-                    this.pullAttack(target);
-                    break;
-                case SPIN:
-                    this.spinAttack();
-                    break;
-                case SWORDSLAM:
-                    this.swordSlam();
-                    break;
-                case HAND_SLAM:
-                    this.handSlamLava();
-                    break;
-                default:
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
-                    break;
+                case FIREBALLS -> this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.FIREBALLS);
+                case WITHERBALLS -> this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.WITHERBALLS);
+                case HEATWAVE -> this.heatWaveAttack();
+                case PULL -> this.pullAttack(target);
+                case SPIN -> this.spinAttack();
+                case SWORDSLAM -> this.swordSlam();
+                case HAND_SLAM -> this.handSlamLava();
+                default -> this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
             }
 
             if (this.targetNotVisibleTicks < 5) {
@@ -260,9 +226,8 @@ public class AccursedLordGoal extends Goal {
         if (this.attackStatus >= 7 && this.attackStatus <= 40) {
             Box chunkBox = new Box(this.boss.getBlockPos()).expand(6);
             List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
-            for (int j = 0; j < nearbyEntities.size(); j++) {
-                if (nearbyEntities.get(j) instanceof LivingEntity) {
-                    LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+            for (Entity nearbyEntity : nearbyEntities) {
+                if (nearbyEntity instanceof LivingEntity closestTarget) {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
                     this.damageTarget(closestTarget, DamageSource.mob(this.boss), 10f);
@@ -285,9 +250,8 @@ public class AccursedLordGoal extends Goal {
             }
             Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
             List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
-            for (int j = 0; j < nearbyEntities.size(); j++) {
-                if (nearbyEntities.get(j) instanceof LivingEntity) {
-                    LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+            for (Entity nearbyEntity : nearbyEntities) {
+                if (nearbyEntity instanceof LivingEntity closestTarget) {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
                     closestTarget.takeKnockback(10F, -x, -z);
@@ -328,10 +292,10 @@ public class AccursedLordGoal extends Goal {
         List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
         if (this.attackStatus == 17) {
             if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
-            for (int i = 0; i < entities.size(); i++) {
-                if (entities.get(i) instanceof LivingEntity) {
-                    this.damageTarget((LivingEntity) entities.get(i), CustomDamageSource.obliterateDamageSource(this.boss), 30f);
-                    entities.get(i).setVelocity(entities.get(i).getVelocity().x, .3f, entities.get(i).getVelocity().z);
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity) {
+                    this.damageTarget((LivingEntity) entity, CustomDamageSource.obliterateDamageSource(this.boss), 30f);
+                    entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }
             this.boss.world.playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
@@ -354,15 +318,13 @@ public class AccursedLordGoal extends Goal {
             double h = Math.sqrt(Math.sqrt(distanceToEntity)) * 0.5D;
             this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
             for(int i = 0; i < fireSprayCount; ++i) {
-                ProjectileEntity projectile = new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
-                switch (entity) {
-                    case FIREBALLS:
-                        projectile = new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
-                        break;
-                    case WITHERBALLS:
-                        projectile = new ShadowOrb(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
-                        break;
-                }
+                new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                ProjectileEntity projectile = switch (entity) {
+                    case FIREBALLS ->
+                            new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                    case WITHERBALLS ->
+                            new ShadowOrb(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.world.spawnEntity(projectile);
             }
@@ -373,7 +335,7 @@ public class AccursedLordGoal extends Goal {
         }
     }
 
-    static enum BarrageProjectiles {
+    enum BarrageProjectiles {
         FIREBALLS,
         WITHERBALLS
     }

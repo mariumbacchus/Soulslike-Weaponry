@@ -186,8 +186,9 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static double old_champions_remains_health = 200D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
+    @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
-    @Entry(min=1) public static double old_champions_remains_generic_damage = 10D;
+    @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
     @Entry public static double frenzied_shade_health = 100D;
     @Entry(min=1) public static double frenzied_shade_generic_damage = 6D;
 

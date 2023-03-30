@@ -155,7 +155,7 @@ public class AltarBlock extends Block {
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-            boss.setSpawning(true);
+            boss.setSpawning();
             world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             world.spawnEntity(boss);
             world.removeBlock(pos, false);

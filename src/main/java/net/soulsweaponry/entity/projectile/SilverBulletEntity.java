@@ -70,8 +70,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (ConfigConstructor.can_projectiles_apply_posture_break && entityHitResult.getEntity() instanceof LivingEntity && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
-            LivingEntity target = (LivingEntity) entityHitResult.getEntity();
+        if (ConfigConstructor.can_projectiles_apply_posture_break && entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
             int random = this.random.nextInt(10);
             int chance = 2;
             int amplifier = 0;

@@ -72,41 +72,24 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
 
     private <E extends IAnimatable> PlayState attackAnimations(AnimationEvent<E> event) {
         switch (this.getAttackAnimation()) {
-            case FIREBALLS:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
-                break;
-            case HAND_SLAM:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.groundSlamHand"));
-                break;
-            case HEATWAVE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.explosion"));
-                break;
-            case PULL:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.pull"));
-                break;
-            case SPIN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spin"));
-                break;
-            case SWORDSLAM:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.swordSlam"));
-                break;
-            case WITHERBALLS:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
-                break;
-            case DEATH:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.death"));
-                break;
-            case IDLE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.idle"));
-                break;
-            case SPAWN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spawn"));
-                break;
-            default:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.idle"));
-                break;
-            
-        }    
+            case FIREBALLS, WITHERBALLS ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
+            case HAND_SLAM ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.groundSlamHand"));
+            case HEATWAVE ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.explosion"));
+            case PULL ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.pull"));
+            case SPIN ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spin"));
+            case SWORDSLAM ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.swordSlam"));
+            case DEATH ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.death"));
+            case SPAWN ->
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.spawn"));
+            default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.idle"));
+        }
         return PlayState.CONTINUE;
     }
 
@@ -139,7 +122,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, WitherEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -188,9 +171,9 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
             }
@@ -202,9 +185,8 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
                 this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
-                for (int j = 0; j < nearbyEntities.size(); j++) {
-                    if (nearbyEntities.get(j) instanceof LivingEntity) {
-                        LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+                for (Entity nearbyEntity : nearbyEntities) {
+                    if (nearbyEntity instanceof LivingEntity closestTarget) {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);

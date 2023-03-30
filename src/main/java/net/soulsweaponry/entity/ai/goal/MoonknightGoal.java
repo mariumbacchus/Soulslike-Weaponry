@@ -422,8 +422,6 @@ public class MoonknightGoal extends Goal {
             }
             this.boss.world.playSound(null, new BlockPos(spot), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             if (!this.boss.world.isClient) {
-                //ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, new BlockPos(spot), spot.getX(), (float)spot.getZ());
-                //ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, new BlockPos(spot), 200);
                 ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_FLAME_RUPTURE_ID, new BlockPos(spot), spot.getX(), (float)spot.getZ());
             }
             this.moonfallRuptureMod += 0.25D;
