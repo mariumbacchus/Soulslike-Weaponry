@@ -164,6 +164,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             if (postureBreakTimer < 0) {
                 this.boss.setPostureBroken(false);
             }
+            if (this.boss.isPostureBroken()) return;
 
             if (this.isTargetHealing(target) && this.boss.getState().equals(States.IDLE) && !this.boss.isPostureBroken()) {
                 if (this.boss.isShielding()) {
@@ -180,8 +181,6 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             if (this.attackCooldown < 0 && this.boss.getState().equals(States.IDLE) && !this.boss.isPostureBroken()) {
                 this.randomAttack(null, target, false);
             }
-
-            if (this.boss.isPostureBroken()) return;
 
             switch (this.boss.getState()) {
                 case COUNTER -> this.singleTarget(target, 30, new int[]{18}, 20f, 0, true, true, true);
