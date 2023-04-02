@@ -164,6 +164,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             if (postureBreakTimer < 0) {
                 this.boss.setPostureBroken(false);
             }
+            if (this.boss.isPostureBroken()) return;
 
             if (this.isTargetHealing(target) && this.boss.getState().equals(States.IDLE) && !this.boss.isPostureBroken()) {
                 if (this.boss.isShielding()) {
