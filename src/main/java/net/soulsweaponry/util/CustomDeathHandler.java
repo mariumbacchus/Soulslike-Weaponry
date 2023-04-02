@@ -13,7 +13,7 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 
 public class CustomDeathHandler {
 

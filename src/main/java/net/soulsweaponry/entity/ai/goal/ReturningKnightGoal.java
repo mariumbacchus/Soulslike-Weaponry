@@ -19,7 +19,7 @@ import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.EvilRemnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;

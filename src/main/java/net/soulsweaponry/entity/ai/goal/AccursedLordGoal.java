@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -24,7 +25,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 
@@ -323,7 +325,8 @@ public class AccursedLordGoal extends Goal {
                     case FIREBALLS ->
                             new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                     case WITHERBALLS ->
-                            new ShadowOrb(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                            new ShadowOrb(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f,
+                                    g + this.boss.getRandom().nextGaussian() * h, new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY});
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.world.spawnEntity(projectile);

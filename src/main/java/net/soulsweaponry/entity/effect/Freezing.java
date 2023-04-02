@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.items.LeviathanAxe;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.AnimatedDeathInterface;
 import net.soulsweaponry.util.ParticleNetworking;
 

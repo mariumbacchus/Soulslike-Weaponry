@@ -3,7 +3,6 @@ package net.soulsweaponry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,7 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.OreSpawnRegistry;
-import net.soulsweaponry.registry.PacketsServer;
+import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

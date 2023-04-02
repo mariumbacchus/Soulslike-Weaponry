@@ -45,7 +45,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 

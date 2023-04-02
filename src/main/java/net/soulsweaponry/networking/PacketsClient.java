@@ -1,4 +1,4 @@
-package net.soulsweaponry.client.registry;
+package net.soulsweaponry.networking;
 
 import java.util.Random;
 
@@ -10,7 +10,6 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.PacketRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 public class PacketsClient {
@@ -72,66 +71,50 @@ public class PacketsClient {
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, PacketsClient.randomParticle(), target.getX(), target.getY(), target.getZ(), 1f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, PacketsClient.randomParticle(), target.getX(), target.getY(), target.getZ(), 1f));
         });
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.BIG_TELEPORT_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
             DefaultParticleType[] particles = {ParticleTypes.PORTAL};
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + 3, target.getZ(), 4f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + 3, target.getZ(), 4f));
         });
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.DRAGON_BREATH_EXPLOSION_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
             DefaultParticleType[] particles = {ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH};
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + 3, target.getZ(), .5f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + 3, target.getZ(), .5f));
         });
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.DARK_EXPLOSION_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
             DefaultParticleType[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.SMOKE, ParticleTypes.POOF};
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), .25f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), .25f));
         });
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.SNOW_PARTICLES_ID, (client, handler, buf, responseSender) -> {
             BlockPos pos = buf.readBlockPos();
             double width = buf.readDouble();
             float height = buf.readFloat();
-            client.execute(() -> {
-                client.world.addParticle(ParticleTypes.SNOWFLAKE, PacketsClient.getParticleX(0.5D, pos, width), PacketsClient.getParticleY(pos, height), PacketsClient.getParticleZ(0.5D, pos, width), 0.0D, 0.0D, 0.0D);
-            });
+            client.execute(() -> client.world.addParticle(ParticleTypes.SNOWFLAKE, PacketsClient.getParticleX(0.5D, pos, width), PacketsClient.getParticleY(pos, height), PacketsClient.getParticleZ(0.5D, pos, width), 0.0D, 0.0D, 0.0D));
         });
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.ICE_PARTICLES_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
             ItemStackParticleEffect[] particles = {new ItemStackParticleEffect(ParticleTypes.ITEM, Items.ICE.getDefaultStack())};
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + .5f, target.getZ(), .75f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + .5f, target.getZ(), .75f));
         });
 
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.MOONLIGHT_PARTICLES_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             int points = buf.readInt();
             DefaultParticleType[] particles = {ParticleTypes.SOUL_FIRE_FLAME};
-            client.execute(() -> {
-                PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + .5f, target.getZ(), 1/8f);
-            });
+            client.execute(() -> PacketsClient.roundParticleOutburst(client.world, points, particles, target.getX(), target.getY() + .5f, target.getZ(), 1/8f));
         });
 
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.SWORD_SWIPE_ID, (client, handler, buf, responseSender) -> {
             BlockPos pos = buf.readBlockPos();
             double eyeHeight = buf.readDouble();
-            client.execute(() -> {
-                client.world.addParticle(ParticleTypes.SWEEP_ATTACK, true, pos.getX(), eyeHeight, pos.getZ(), 0, 0, 0);
-            });
+            client.execute(() -> client.world.addParticle(ParticleTypes.SWEEP_ATTACK, true, pos.getX(), eyeHeight, pos.getZ(), 0, 0, 0));
         });
 
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.OBLITERATE_ID, (client, handler, buf, responseSender) -> {
@@ -202,7 +185,7 @@ public class PacketsClient {
             });
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.SOUL_FLAME_OUTBURST_ID, (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.SOUL_FLAME_SMALL_OUTBURST_ID, (client, handler, buf, responseSender) -> {
             BlockPos target = buf.readBlockPos();
             double height = buf.readDouble();
             client.execute(() -> {
@@ -244,6 +227,27 @@ public class PacketsClient {
                 PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.CLAW_PARTICLES_ID, (client, handler, buf, responseSender) -> {
+            BlockPos pos = buf.readBlockPos();
+            client.execute(() -> {
+                for (int i = 0; i < 3; i++) {
+                    for (int j = -10; j <= 10; j++) {
+                        client.world.addParticle(ParticleTypes.GLOW, pos.getX(), pos.getY() + 0.3f + (float) i / 1.5f,
+                                pos.getZ() + (float) j / 10f, 0, 0, 0);
+                    }
+                }
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.SOUL_FLAME_BIG_OUTBURST_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            client.execute(() -> {
+                DefaultParticleType[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME};
+                float[][] velDividers = {{1, 1, 1}, {1, 1, 1}};
+                PacketsClient.particleOutburst(client.world, 500, particles, target.getX(), target.getY(), target.getZ(), velDividers);
+            });
+        });
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {
@@ -266,9 +270,9 @@ public class PacketsClient {
         double d = random.nextGaussian() * 0.05D;
         double e = random.nextGaussian() * 0.05D;
         for(int j = 0; j < particleNumber; ++j) {
-            double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
             for (int i = 0; i < particles.length; i++) {
                 world.addParticle(particles[i], x, y, z, newX/velDividers[i][0], newY/velDividers[i][1], newZ/velDividers[i][2]);
             }
@@ -280,9 +284,9 @@ public class PacketsClient {
         double d = random.nextGaussian() * 0.05D;
         double e = random.nextGaussian() * 0.05D;
         for(int j = 0; j < particleNumber; ++j) {
-            double newX = (random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d)*sizeModifier;
-            double newZ = (random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e)*sizeModifier;
-            double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+            double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d)*sizeModifier;
+            double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e)*sizeModifier;
+            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
             for (int i = 0; i < particles.length; i++) {
                 world.addParticle(particles[i], x, y, z, newX/velDividers[i][0], newY/velDividers[i][1], newZ/velDividers[i][2]);
             }
@@ -297,8 +301,8 @@ public class PacketsClient {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            for (int j = 0; j < particles.length; j++) {
-                world.addParticle(particles[j], true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
+            for (ParticleEffect particle : particles) {
+                world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
         } 
     }

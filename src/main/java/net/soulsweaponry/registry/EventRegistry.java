@@ -6,6 +6,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.events.AttemptAttackCallback;
+import net.soulsweaponry.networking.PacketRegistry;
 
 public class EventRegistry {
 
