@@ -22,7 +22,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.items.Mjolnir;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;

@@ -32,15 +32,13 @@
             }
           },
         "soulsweapons:night_shade": {
-            "trigger": "minecraft:player_killed_entity",
+            "trigger": "minecraft:inventory_changed",
             "conditions": {
-              "entity": [
+              "items": [
                 {
-                  "condition": "minecraft:entity_properties",
-                  "predicate": {
-                    "type": "soulsweapons:night_shade"
-                  },
-                  "entity": "this"
+                  "items": [
+                    "soulsweapons:essence_of_eventide"
+                  ]
                 }
               ]
             }

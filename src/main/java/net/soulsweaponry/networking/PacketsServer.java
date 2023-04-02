@@ -1,4 +1,4 @@
-package net.soulsweaponry.registry;
+package net.soulsweaponry.networking;
 
 import com.google.common.collect.Iterables;
 
@@ -24,6 +24,8 @@ import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 

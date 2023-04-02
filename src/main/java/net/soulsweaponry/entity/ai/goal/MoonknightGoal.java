@@ -33,7 +33,7 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
@@ -398,7 +398,7 @@ public class MoonknightGoal extends Goal {
                         ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 100, 0));
                     }
                 }
-                if (!boss.world.isClient) ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_FLAME_OUTBURST_ID, this.targetPos, this.height == 0 ? targetPos.getY() : this.height);
+                if (!boss.world.isClient) ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_FLAME_SMALL_OUTBURST_ID, this.targetPos, this.height == 0 ? targetPos.getY() : this.height);
             }
         }
         if (this.attackStatus >= 23) {

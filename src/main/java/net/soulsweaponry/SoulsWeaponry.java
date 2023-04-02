@@ -22,7 +22,7 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.OreSpawnRegistry;
-import net.soulsweaponry.registry.PacketsServer;
+import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

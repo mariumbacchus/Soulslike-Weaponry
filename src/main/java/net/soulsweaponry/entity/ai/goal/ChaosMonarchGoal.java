@@ -44,7 +44,7 @@ import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class ChaosMonarchGoal extends Goal {

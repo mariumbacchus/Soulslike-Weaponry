@@ -190,7 +190,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
     @Entry public static double frenzied_shade_health = 100D;
-    @Entry(min=1) public static double frenzied_shade_generic_damage = 6D;
+    @Entry public static float frenzied_shade_damage_modifier = 1f;
+    @Entry public static int frenzied_shade_cooldown = 10;
 
     @Entry public static double chaos_monarch_health = 400D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;

@@ -20,7 +20,7 @@ import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
@@ -164,6 +164,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             if (postureBreakTimer < 0) {
                 this.boss.setPostureBroken(false);
             }
+            if (this.boss.isPostureBroken()) return;
 
             if (this.isTargetHealing(target) && this.boss.getState().equals(States.IDLE) && !this.boss.isPostureBroken()) {
                 if (this.boss.isShielding()) {
@@ -182,12 +183,12 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             }
 
             switch (this.boss.getState()) {
-                case COUNTER -> this.singleTarget(target, 30, new int[]{18}, 22f, 0, true, true, true);
+                case COUNTER -> this.singleTarget(target, 30, new int[]{18}, 20f, 0, true, true, true);
                 case SHIELD_BASH -> this.singleTarget(target, 30, new int[]{18}, 10f, 4f, false, false, true);
-                case SHIELD_VAULT -> this.leapAttack(target, 12f, true);
+                case SHIELD_VAULT -> this.leapAttack(target, 10f, true);
                 case SWIPES -> {
                     int[] frames = {10, 18, 26};
-                    this.singleTarget(target, 33, frames, 18f, 0, false, false, false);
+                    this.singleTarget(target, 33, frames, 16f, 0, false, false, false);
                 }
                 case BACKSTEP -> this.backstep(target);
                 case HEAVY -> this.heavyBlow(target);
@@ -322,7 +323,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         }
         if (attackStatus == 13 && this.isInMeleeRange(target)) {
-            if (this.applyDamage(target, 18f)) {
+            if (this.applyDamage(target, 16f)) {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                 this.boss.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.world.isClient) {
@@ -340,10 +341,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         if (attackStatus == 1 && target.getBlockPos() != null) this.boss.setTargetPos(target.getBlockPos());
         BlockPos pos = this.boss.getTargetPos();
-        if (pos != null && this.isPosNotNullish(pos)) {
+        if (pos != null && isPosNotNullish(pos)) {
             this.boss.getLookControl().lookAt(pos.getX(), pos.getY(), pos.getZ());
         }
-        if (attackStatus == 24 && pos != null && this.isPosNotNullish(pos)) {
+        if (attackStatus == 24 && pos != null && isPosNotNullish(pos)) {
             this.boss.world.playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
             if (!this.boss.world.isClient)
                 ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, pos, 100);
@@ -359,7 +360,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private boolean isPosNotNullish(BlockPos pos) {
+    public static boolean isPosNotNullish(BlockPos pos) {
         return pos.getX() != 0 || pos.getY() != 0 || pos.getZ() != 0;
     }
 
