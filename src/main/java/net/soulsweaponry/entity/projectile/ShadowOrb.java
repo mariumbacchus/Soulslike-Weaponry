@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
@@ -15,10 +16,11 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
+import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.items.ChaosSet;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.PacketRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -28,28 +30,27 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final StatusEffect[] effects;
     
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
+        this.effects = new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY};
     }
 
-    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ) {
+    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ, StatusEffect[] effects) {
         super(EntityRegistry.SHADOW_ORB, owner, velocityX, velocityY, velocityZ, world);
-    }
-
-    public ShadowOrb(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-        super(EntityRegistry.SHADOW_ORB, x, y, z, velocityX, velocityY, velocityZ, world);
+        this.effects = effects;
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity != null && entity instanceof LivingEntity) {
-            LivingEntity target = (LivingEntity) entity;
+        if (entity instanceof LivingEntity target) {
             target.damage(CustomDamageSource.shadowOrb(this, this.getOwner()), 5f);
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 100, 0));
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 200, 0));
+            for (StatusEffect effect : this.effects) {
+                target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
+            }
         }
         super.onEntityHit(entityHitResult);
     }
@@ -75,11 +76,10 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     @Override
     protected boolean canHit(Entity entity) {
-        if (entity instanceof ChaosMonarch) {
+        if (entity instanceof ChaosMonarch || entity instanceof NightShade) {
             return false;
         }
-        if (entity != null && entity instanceof LivingEntity) {
-            LivingEntity target = (LivingEntity) entity;
+        if (entity instanceof LivingEntity target) {
             for (ItemStack stack : target.getArmorItems()) {
                 if (stack.getItem() instanceof ChaosSet) {
                     return false;

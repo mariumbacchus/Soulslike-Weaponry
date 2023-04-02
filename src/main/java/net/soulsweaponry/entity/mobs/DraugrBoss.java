@@ -316,7 +316,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, world);
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
         entity.setVelocity(0, .1f, 0);
-        entity.setSpawn(true);
+        entity.setSpawn();
         world.spawnEntity(entity);
     }
 
