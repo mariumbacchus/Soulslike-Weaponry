@@ -3,8 +3,6 @@ package net.soulsweaponry.entity.ai.goal;
 import java.util.EnumSet;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -37,6 +35,7 @@ import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
+import org.jetbrains.annotations.Nullable;
 
 public class MoonknightGoal extends Goal {
     

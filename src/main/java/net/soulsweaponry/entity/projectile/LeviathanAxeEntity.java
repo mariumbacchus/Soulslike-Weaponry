@@ -25,12 +25,11 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import javax.annotation.Nullable;
 
 public class LeviathanAxeEntity extends PersistentProjectileEntity implements IAnimatable {
 

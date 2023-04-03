@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -13,12 +11,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class MoonstoneRing extends Item {
 

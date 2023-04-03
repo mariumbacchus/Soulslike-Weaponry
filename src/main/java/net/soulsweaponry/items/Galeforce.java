@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -20,12 +18,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class Galeforce extends BowItem {
 

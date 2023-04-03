@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -35,6 +33,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class WitheredWabbajack extends SwordItem {
     

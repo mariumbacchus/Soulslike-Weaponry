@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -17,7 +15,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -31,6 +28,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class DragonStaff extends SwordItem {
 

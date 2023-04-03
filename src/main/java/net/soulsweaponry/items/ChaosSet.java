@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -33,6 +31,7 @@ import net.soulsweaponry.blocks.WitheredTallFlower;
 import net.soulsweaponry.blocks.WitheredTallGrass;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;

@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
@@ -43,6 +41,7 @@ import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class DragonslayerSwordspear extends SwordItem {
 

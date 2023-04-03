@@ -1,7 +1,6 @@
 package net.soulsweaponry.mixin;
 
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +30,8 @@ public abstract class MinecraftClientMixin {
     } */
 
     @Shadow public ClientWorld world;
-    @Shadow @Nullable public ClientPlayerEntity player;
+    @Shadow @Nullable
+    public ClientPlayerEntity player;
     @Shadow public GameOptions options;
     @Shadow public Mouse mouse;
 

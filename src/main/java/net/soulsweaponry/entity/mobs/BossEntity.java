@@ -3,8 +3,6 @@ package net.soulsweaponry.entity.mobs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
@@ -23,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.AnimatedDeathInterface;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BossEntity extends HostileEntity implements AnimatedDeathInterface {
     

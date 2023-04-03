@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -34,6 +32,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;

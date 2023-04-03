@@ -27,8 +27,8 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class HolyMoonlightGreatsword extends TrickWeapon {

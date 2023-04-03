@@ -1,7 +1,5 @@
 package net.soulsweaponry.entity.projectile;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -24,6 +22,7 @@ import net.soulsweaponry.items.Mjolnir;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
