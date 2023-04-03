@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.world.World;
@@ -21,16 +20,17 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class DayStalker extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
-    public int ticksUntillDead = 100; //1 sekund = 20 ticks
+    public int ticksUntillDead = 100;
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
-        this.experiencePoints = 500;
+        this.drops.add(WeaponRegistry.DAWNBREAKER);
+        this.drops.add(ItemRegistry.LORD_SOUL_ROSE); // add custom lord soul
     }
 
-    private PlayState attackAnimations(AnimationState state) {
+    private PlayState attackAnimations(AnimationState<?> state) {
         
         return PlayState.CONTINUE;
     }
@@ -68,7 +68,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return false;
+        return true;
     }
 
     @Override
@@ -83,25 +83,12 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public boolean disablesShield() {
-        return false;
-    }
-
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
-        ItemEntity[] mainLoot = {
-            this.dropItem(WeaponRegistry.DAWNBREAKER), 
-            this.dropItem(ItemRegistry.LORD_SOUL_ROSE)
-        };
-        for (int i = 0; i < mainLoot.length; i++) {
-            if (mainLoot[i] != null) {
-                mainLoot[i].setCovetedItem();
-            }
-        }
+        return true;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::attackAnimations));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::attackAnimations));
     }
 
     @Override
