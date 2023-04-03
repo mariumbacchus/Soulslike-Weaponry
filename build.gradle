@@ -1,4 +1,6 @@
 plugins {
+	// Cannot update to 1.1-SNAPSHOT because all the files handling client Screen are missing, resulting in items unable
+	// to check if SHIFT is being pressed. Too big off an inconvenience for an outdated MC version to find a work-around.
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 }
