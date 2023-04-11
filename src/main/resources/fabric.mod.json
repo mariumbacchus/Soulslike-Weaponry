@@ -17,6 +17,9 @@
 
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "net.soulsweaponry.datagen.DataGeneration"
+    ],
     "main": [
       "net.soulsweaponry.SoulsWeaponry"
     ],
