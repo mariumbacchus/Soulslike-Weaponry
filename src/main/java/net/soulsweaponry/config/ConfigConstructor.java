@@ -116,7 +116,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
-    @Entry public static int leviathan_axe_return_speed = 5;
+    @Entry public static double leviathan_axe_return_speed = 4D;
     @Entry public static int lich_bane_damage = 7;
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
     @Entry public static int ludwigs_holy_greatsword = 8;
@@ -127,7 +127,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_projectile_damage = 7f;
     @Entry public static int mjolnir_lightning_smash_cooldown = 200;
     @Entry public static int mjolnir_riptide_cooldown = 300;
-    @Entry public static int mjolnir_return_speed = 5;
+    @Entry public static double mjolnir_return_speed = 4D;
     @Entry public static int moonlight_greatsword_damage = 9;
     @Entry public static float moonlight_greatsword_projectile_damage = 8.0f;
     @Entry public static int pure_moonlight_greatsword_damage = 12;

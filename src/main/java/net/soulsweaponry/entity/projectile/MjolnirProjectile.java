@@ -52,7 +52,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
             this.dealtDamage = true;
         }
         Entity entity = this.getOwner();
-        int returnSpeed = MathHelper.floor(ConfigConstructor.mjolnir_return_speed + WeaponUtil.getEnchantDamageBonus(this.asItemStack()));
+        double returnSpeed = ConfigConstructor.mjolnir_return_speed + (double) WeaponUtil.getEnchantDamageBonus(this.asItemStack())/2;
         if ((this.dealtDamage || this.isNoClip()) && entity != null) {
             this.setNoClip(true);
             Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
@@ -73,11 +73,11 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
                     this.discard();
                 }
             }
-            this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * (double)returnSpeed, this.getZ());
+            this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
             if (this.world.isClient) {
                 this.lastRenderY = this.getY();
             }
-            double d = 0.05 * (double)returnSpeed;
+            double d = 0.05 * returnSpeed;
             this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
             if (this.returnTimer == 0) {
                 this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
