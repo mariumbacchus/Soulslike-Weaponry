@@ -303,6 +303,66 @@
             }
           ]
         }
+      },
+      "crucible_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:crucible_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "featherlight": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:featherlight"
+              ]
+            }
+          ]
+        }
+      },
+      "darkin_scythe": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkin_scythe_pre"
+              ]
+            }
+          ]
+        }
+      },
+      "draupnir_spear": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:draupnir_spear"
+              ]
+            }
+          ]
+        }
+      },
+      "holy_moonlight_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:holy_moonlight_sword"
+              ]
+            }
+          ]
+        }
       }
     },
   "requirements": [
@@ -327,6 +387,11 @@
       ["skofnung"],
       ["pure_moonlight"],
       ["mjolnir"],
-      ["freyr_sword"]
+      ["freyr_sword"],
+      ["crucible_sword"],
+      ["featherlight"],
+      ["darkin_scythe"],
+      ["draupnir_spear"],
+      ["holy_moonlight_sword"]
   ]
 }
