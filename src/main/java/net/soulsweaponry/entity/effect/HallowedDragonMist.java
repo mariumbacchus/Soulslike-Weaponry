@@ -28,10 +28,10 @@ public class HallowedDragonMist extends StatusEffect{
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity) {
             if (entity.getHealth() < entity.getMaxHealth()) {
-                ((PlayerEntity) entity).heal(amplifier + 1);
+                entity.heal(amplifier + 1);
             }
         } else {
-            entity.damage(DamageSource.MAGIC, 2.0F + (float) amplifier);
+            entity.damage(entity.world.getDamageSources().magic(), 2.0F + (float) amplifier);
         }
         
     }

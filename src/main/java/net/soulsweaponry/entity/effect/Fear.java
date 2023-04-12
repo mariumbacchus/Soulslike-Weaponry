@@ -27,8 +27,7 @@ public class Fear extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         this.destinationReset--;
-        if (entity instanceof MobEntity) {
-            MobEntity victim = (MobEntity)entity;
+        if (entity instanceof MobEntity victim) {
             if (destinationReset < 0) {
                 this.x = victim.getX() + victim.getRandom().nextBetween(-25, 25);
                 this.z = victim.getZ() + victim.getRandom().nextBetween(-25, 25);

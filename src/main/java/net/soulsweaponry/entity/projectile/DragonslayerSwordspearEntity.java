@@ -115,15 +115,14 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
             f += EnchantmentHelper.getAttackDamage(this.spearStack, ((LivingEntity) entity).getGroup());
         }
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = DamageSource.LIGHTNING_BOLT;
+        DamageSource damageSource = this.world.getDamageSources().lightningBolt();
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
@@ -138,7 +137,7 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
             BlockPos blockPos = entity.getBlockPos();
             if (this.world.isSkyVisible(blockPos)) {
                 for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
-                    LightningEntity lightningEntity = (LightningEntity)EntityType.LIGHTNING_BOLT.create(this.world);
+                    LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
                     this.world.spawnEntity(lightningEntity);

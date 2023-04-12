@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.world.ServerWorld;
@@ -21,7 +20,6 @@ import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class ReturningKnightGoal extends Goal {
@@ -129,10 +127,10 @@ public class ReturningKnightGoal extends Goal {
                     int healerNumber = this.boss.getRandom().nextInt(3 - 1) + 1;
                     for (int j = 0; j < enemyNumber; j++) {
                         EvilRemnant entity = new EvilRemnant(EntityRegistry.REMNANT, this.boss.world);    
-                        this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getY() - 3f, this.boss.getZ() + this.boss.getRandom().nextInt(32) - 16);
+                        this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getBlockY() - 3, this.boss.getBlockZ() + this.boss.getRandom().nextInt(32) - 16);
                         if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
                         //entity.setOwner(null);
-                        this.boss.world.playSound(null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                        this.boss.world.playSound(null, new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                         this.boss.world.spawnEntity(entity);
                         if (!this.boss.world.isClient) {
                             ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, this.pos, 100);
@@ -140,10 +138,10 @@ public class ReturningKnightGoal extends Goal {
                     }
                     for (int j = 0; j < healerNumber; j++) {
                         DarkSorcerer entity = new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.boss.world);  
-                        this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getY() - 3f, this.boss.getZ() + this.boss.getRandom().nextInt(32) - 16);
+                        this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getBlockY() - 3, this.boss.getBlockZ() + this.boss.getRandom().nextInt(32) - 16);
                         if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY() + .2f, this.pos.getZ());    
                         //entity.setOwner(null);
-                        this.boss.world.playSound(null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                        this.boss.world.playSound(null, new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                         this.boss.world.spawnEntity(entity);
                         if (!this.boss.world.isClient) {
                             ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, this.pos, 100);
@@ -179,10 +177,9 @@ public class ReturningKnightGoal extends Goal {
                 List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
                 if (this.attackStatus == 7) {
                     for (Entity entity : entities) {
-                        if (entity instanceof LivingEntity) {
-                            LivingEntity livingEntity = (LivingEntity) entity;
+                        if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.takeKnockback(2f, -(livingEntity.getX() - this.boss.getX()), -(livingEntity.getZ() - this.boss.getZ()));
-                            livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(20f));
+                            livingEntity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(20f));
                         }
                     }
                     this.boss.world.playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -193,10 +190,9 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 21 && this.targetPos != null) {
                     entities = this.boss.world.getOtherEntities(this.boss, new Box(this.targetPos).expand(3D));
                     for (Entity entity : entities) {
-                        if (entity instanceof LivingEntity) {
-                            LivingEntity livingEntity = (LivingEntity) entity;
+                        if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.addVelocity(0, 1, 0);
-                            livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(25f));
+                            livingEntity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(25f));
                         }
                     }
                     this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -225,16 +221,14 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
                 this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-                //this.boss.getMoveControl().moveTo(this.obliterateX, this.obliterateY, this.obliterateZ, 0.0D);
-                //Box aoe = new Box(obliterateX - 3, obliterateY - 2, obliterateZ - 3, obliterateX + 3, obliterateY + 2, obliterateZ + 3);
                 Box aoe = new Box(targetPos).expand(3D);
                 List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
                 
                 if (this.attackStatus == 18) { //23
-                    for (int i = 0; i < entities.size(); i++) {
-                        if (entities.get(i) instanceof LivingEntity) {
-                            entities.get(i).damage(CustomDamageSource.obliterateDamageSource(this.boss), this.getModifiedDamage(60f));
-                            entities.get(i).setVelocity(entities.get(i).getVelocity().x, 1, entities.get(i).getVelocity().z);
+                    for (Entity entity : entities) {
+                        if (entity instanceof LivingEntity) {
+                            entity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(60f));
+                            entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
                         }
                     }
                     this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -262,7 +256,7 @@ public class ReturningKnightGoal extends Goal {
                 double x = target.getX() - this.boss.getX();
                 double z = target.getZ() - this.boss.getZ();
                 if (attackStatus == 12 && distanceToEntity < 25f) {
-                    target.damage(DamageSource.mob(this.boss), this.getModifiedDamage(10f));
+                    target.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(10f));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
                     target.takeKnockback(2f, -x, -z);
@@ -292,12 +286,12 @@ public class ReturningKnightGoal extends Goal {
                     this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_STEP, SoundCategory.HOSTILE, 1f, 1f);
                 }
                 if (this.attackStatus == 52) {
-                    for (int i = 0; i < entities.size(); i++) {
-                        if (entities.get(i) instanceof LivingEntity) {
-                            entities.get(i).damage(DamageSource.mob(this.boss), this.getModifiedDamage(30f));
-                            entities.get(i).setVelocity(entities.get(i).getVelocity().x, 1.5f, entities.get(i).getVelocity().z);
+                    for (Entity entity : entities) {
+                        if (entity instanceof LivingEntity) {
+                            entity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
+                            entity.setVelocity(entity.getVelocity().x, 1.5f, entity.getVelocity().z);
                             if (!this.boss.world.isClient) {
-                                ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, entities.get(i).getBlockPos(), entities.get(i).getX(), (float)entities.get(i).getZ());
+                                ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, entity.getBlockPos(), entity.getX(), (float) entity.getZ());
                             }
                         }
                     }

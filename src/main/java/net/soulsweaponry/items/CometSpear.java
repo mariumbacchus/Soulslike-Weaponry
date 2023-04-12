@@ -35,7 +35,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -104,7 +103,7 @@ public class CometSpear extends SwordItem implements GeoItem {
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
-                    world.playSoundFromEntity((PlayerEntity)null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
             }
         }
@@ -131,9 +130,9 @@ public class CometSpear extends SwordItem implements GeoItem {
             List<Entity> entities = world.getOtherEntities(player, box);
             for (Entity targets : entities) {
                 if (targets instanceof LivingEntity livingEntity) {
-                    livingEntity.damage(CustomDamageSource.obliterateDamageSource(player), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
+                    livingEntity.damage(player.world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                     livingEntity.addVelocity(0, stack.getNbt().getFloat(FALL_DISTANCE)/launchDivisor, 0);
-                    if (shouldHeal) player.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0));
+                    if (shouldHeal) player.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? (float) WeaponUtil.getEnchantDamageBonus(stack)/2f : 0));
                 }
             }
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);

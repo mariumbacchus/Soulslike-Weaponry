@@ -1,30 +1,25 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.SoulRobesItem;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 
 public class ArmorRegistry {
 
-    public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
-
-    public static final Item SOUL_INGOT_HELMET = new ArmorItem(ModArmorMaterials.SOUL_INGOT, EquipmentSlot.HEAD, new FabricItemSettings());
-    public static final Item SOUL_INGOT_CHESTPLATE = new ArmorItem(ModArmorMaterials.SOUL_INGOT, EquipmentSlot.CHEST, new FabricItemSettings());
-    public static final Item SOUL_INGOT_LEGGINGS = new ArmorItem(ModArmorMaterials.SOUL_INGOT, EquipmentSlot.LEGS, new FabricItemSettings());
-    public static final Item SOUL_INGOT_BOOTS = new ArmorItem(ModArmorMaterials.SOUL_INGOT, EquipmentSlot.FEET, new FabricItemSettings());
-    public static final Item SOUL_ROBES_HELMET = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, EquipmentSlot.HEAD, new FabricItemSettings());
-    public static final Item SOUL_ROBES_CHESTPLATE = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, EquipmentSlot.CHEST, new FabricItemSettings());
-    public static final Item SOUL_ROBES_LEGGINGS = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, EquipmentSlot.LEGS, new FabricItemSettings());
-    public static final Item SOUL_ROBES_BOOTS = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, EquipmentSlot.FEET, new FabricItemSettings());
-    public static final Item FORLORN_HELMET = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, EquipmentSlot.HEAD, new FabricItemSettings());
-    public static final Item FORLORN_CHESTPLATE = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings());
-    public static final Item FORLORN_LEGGINGS = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, EquipmentSlot.LEGS, new FabricItemSettings());
-    public static final Item FORLORN_BOOTS = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, EquipmentSlot.FEET, new FabricItemSettings());
+    public static final Item SOUL_INGOT_HELMET = new ArmorItem(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.HELMET, new FabricItemSettings());
+    public static final Item SOUL_INGOT_CHESTPLATE = new ArmorItem(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
+    public static final Item SOUL_INGOT_LEGGINGS = new ArmorItem(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
+    public static final Item SOUL_INGOT_BOOTS = new ArmorItem(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.BOOTS, new FabricItemSettings());
+    public static final Item SOUL_ROBES_HELMET = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.HELMET, new FabricItemSettings());
+    public static final Item SOUL_ROBES_CHESTPLATE = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
+    public static final Item SOUL_ROBES_LEGGINGS = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
+    public static final Item SOUL_ROBES_BOOTS = new SoulRobesItem(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.BOOTS, new FabricItemSettings());
+    public static final Item FORLORN_HELMET = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.HELMET, new FabricItemSettings());
+    public static final Item FORLORN_CHESTPLATE = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
+    public static final Item FORLORN_LEGGINGS = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
+    public static final Item FORLORN_BOOTS = new ArmorItem(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.BOOTS, new FabricItemSettings());
 
     public static void init() {
         ItemRegistry.registerItem(SOUL_INGOT_HELMET, "soul_ingot_helmet");

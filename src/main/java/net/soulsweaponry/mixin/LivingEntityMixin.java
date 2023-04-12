@@ -24,27 +24,26 @@ import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin<T> {
     
-    @Inject(method = "modifyAppliedDamage", at = @At("TAIL"))
-    protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<T> infoReturnable) {
+    @Inject(method = "modifyAppliedDamage", at = @At("TAIL"), cancellable = true)
+    protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> infoReturnable) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
             float amountAdded = amount * ((amplifier + 1)*.2f);
             amount += amountAdded;
         }
-        if (source.isMagic() && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE) && !source.isOutOfWorld()) {
+        if (source.equals(entity.world.getDamageSources().magic()) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE) && !source.equals(entity.world.getDamageSources().outOfWorld())) {
             int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
             float amountReduced = amount * ((amplifier + 1)*.2f);
             amount -= amountReduced;
         }
-        if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isProjectile() && source.getAttacker() != null && source.getAttacker() instanceof LivingEntity) {
+        if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIndirect() && source.getAttacker() != null && source.getAttacker() instanceof LivingEntity) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
             float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
             float totalAdded = baseAdded * (amplifier + 1);
@@ -52,6 +51,7 @@ public class LivingEntityMixin<T> {
             entity.world.playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
         }
+        infoReturnable.setReturnValue(amount);
     }
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
@@ -63,11 +63,7 @@ public class LivingEntityMixin<T> {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<T> info) {
-        if (source == CustomDamageSource.TRUE_MAGIC) {
-            LivingEntity entity = (LivingEntity)(Object)this;
-            ((LivingEntityInvoker)entity).invokeApplyDamage(source, amount);
-        }
-        if (source.isFromFalling() && ((LivingEntity)(Object)this).hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
+        if (source.equals(((LivingEntity)(Object)this).world.getDamageSources().fall()) && ((LivingEntity)(Object)this).hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
             ((LivingEntity)(Object)this).removeStatusEffect(EffectRegistry.CALCULATED_FALL);
             //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
             ((LivingEntity)(Object)this).addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
@@ -96,14 +92,14 @@ public class LivingEntityMixin<T> {
                             cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
                         }
                     }
-                    target.damage(DamageSource.mob(player), damage);
+                    target.damage(player.world.getDamageSources().mobAttack(player), damage);
                     player.getDataTracker().set(SHOULD_DAMAGE_RIDING, false);
                     if (!player.world.isClient && player.getBlockPos() != null) {
                         player.world.playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
                         ParticleNetworking.specificServerParticlePacket((ServerWorld) player.world, PacketRegistry.UMBRAL_TRESPASS_ID, player.getBlockPos(), player.getEyeY());
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

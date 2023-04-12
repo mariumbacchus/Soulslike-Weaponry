@@ -34,11 +34,11 @@
 
   "depends": {
     "fabric-key-binding-api-v1": "*",
-    "fabricloader": ">=0.14.6",
+    "fabricloader": ">=0.14.19",
     "fabric": "*",
     "minecraft": "~1.19",
     "java": ">=17",
-    "fabric-api": ">=0.74.0",
-    "geckolib": ">=4.0.3"
+    "fabric-api": ">=0.78.0",
+    "geckolib": ">=4.1.3"
   }
 }

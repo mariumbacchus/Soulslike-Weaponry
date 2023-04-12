@@ -9,7 +9,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -45,13 +44,13 @@ public class WhirligigSawblade extends SwordItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        Vec3d vecBlocksAway = ((PlayerEntity)user).getRotationVector().multiply(5).add(((PlayerEntity)user).getPos());
+        Vec3d vecBlocksAway = user.getRotationVector().multiply(5).add(((PlayerEntity)user).getPos());
         Box chunkBox = new Box(user.getX(), user.getY(), user.getZ(), vecBlocksAway.x, vecBlocksAway.y + 1, vecBlocksAway.z);
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
         if (remainingUseTicks > 0) {
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity target) {
-                    target.damage(DamageSource.mob(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup())); //(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack))
+                    target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup())); //(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack))
                     target.takeKnockback(1F, 0, 0);
                     target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                     world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getY() + 1F, target.getZ(), target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5);

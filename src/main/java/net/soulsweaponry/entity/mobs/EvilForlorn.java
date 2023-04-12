@@ -49,7 +49,7 @@ public class EvilForlorn extends Forlorn {
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(4, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(4, (new RevengeGoal(this)).setGroupRevenge());
     }
 
     public static boolean canSpawn(EntityType<EvilForlorn> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {

@@ -6,7 +6,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -24,7 +23,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +51,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 int ruptures = 5 + WeaponUtil.getEnchantDamageBonus(stack);
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
-                BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
+                BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int)user.getY(), (int)vecBlocksAway.z);
                 if (stack.hasNbt()) {
                     Vec3d vec = player.getRotationVector().multiply(3);
                     int[] pos = {targetArea.getX(), targetArea.getY(), targetArea.getZ()};
@@ -68,7 +66,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 float power = ConfigConstructor.holy_moonlight_ability_damage;
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity) {
-                        entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(world.getDamageSources().mobAttack(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.addVelocity(0, this.getKnockup(stack), 0);
                     }
                 }
@@ -93,10 +91,10 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 Vec3d direction = new Vec3d(stack.getNbt().getDouble(SPOT_X), 0, stack.getNbt().getDouble(SPOT_Z)).multiply(mod);
                 BlockPos pos = new BlockPos(stack.getNbt().getIntArray(POS)[0], stack.getNbt().getIntArray(POS)[1], stack.getNbt().getIntArray(POS)[2]);
                 Vec3d targetArea = new Vec3d(pos.getX(), user.getY(), pos.getZ()).add(direction);
-                BlockPos blockPos = new BlockPos(targetArea);
+                BlockPos blockPos = new BlockPos((int)targetArea.getX(), (int)targetArea.getY(), (int)targetArea.getZ());
                 for (Entity e : world.getOtherEntities(user, new Box(blockPos).expand(2))) {
                     if (e instanceof LivingEntity) {
-                        e.damage(DamageSource.mob(user), this.getAbilityDamage((LivingEntity) e, stack));
+                        e.damage(world.getDamageSources().mobAttack(user), this.getAbilityDamage((LivingEntity) e, stack));
                         e.addVelocity(0, this.getKnockup(stack), 0);
                     }
                 }

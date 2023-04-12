@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -77,8 +76,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity) {
-            LivingEntity entity = ((LivingEntity)entityHitResult.getEntity());
+        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity entity && this.getOwner() instanceof LivingEntity) {
             int rng = this.random.nextInt(3);
             if (rng == 0) {
                 int duration = this.random.nextInt(160) + 40;
@@ -89,7 +87,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
             if (damage > this.getModifiedDamage(20)) {
                 this.world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             }
-            entity.damage(DamageSource.mob((LivingEntity)this.getOwner()), damage);
+            entity.damage(this.world.getDamageSources().mobAttack((LivingEntity)this.getOwner()), damage);
         }
     }
 
@@ -114,38 +112,38 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
             int rng = this.random.nextInt(6);
             for (int i = 0; i < amount; i++) {
                 switch (rng) {
-                    case 1:
+                    case 1 -> {
                         WitherSkeletonEntity skeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, this.world);
                         skeleton.setPos(this.getX(), this.getY(), this.getZ());
                         this.initEquip(skeleton);
                         this.world.spawnEntity(skeleton);
-                    break;
-                    case 2:
+                    }
+                    case 2 -> {
                         LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
                         lightningEntity.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(lightningEntity);
-                    break;
-                    case 3:
+                    }
+                    case 3 -> {
                         Entity hostile = randomHostile();
                         hostile.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(hostile);
-                    break;
-                    case 4:
+                    }
+                    case 4 -> {
                         Entity passive = randomPassive();
                         passive.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(passive);
-                    break;
-                    case 5:
-                        float power = this.random.nextFloat()*3;
-                        this.world.createExplosion(this, DamageSource.mob((LivingEntity)this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TNT);
-                    break;
-                    default:
-                    for (int j = 0; j < 2; j++) {
-                        BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
-                        chungus.setPos(this.getX(), this.getY(), this.getZ());
-                        this.world.spawnEntity(chungus);
                     }
-                    break;
+                    case 5 -> {
+                        float power = this.random.nextFloat() * 3;
+                        this.world.createExplosion(this, this.world.getDamageSources().mobAttack((LivingEntity) this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TNT);
+                    }
+                    default -> {
+                        for (int j = 0; j < 2; j++) {
+                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
+                            chungus.setPos(this.getX(), this.getY(), this.getZ());
+                            this.world.spawnEntity(chungus);
+                        }
+                    }
                 }
             }
         }
@@ -160,9 +158,9 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
             {Items.NETHERITE_BOOTS, EquipmentSlot.FEET},
             {Items.STONE_SWORD, EquipmentSlot.MAINHAND},
         };
-        for (int i = 0; i < equip.length; i++) {
+        for (Object[] objects : equip) {
             if (this.random.nextDouble() < 0.5f) {
-                entity.equipStack((EquipmentSlot) equip[i][1], new ItemStack((ItemConvertible) equip[i][0]));
+                entity.equipStack((EquipmentSlot) objects[1], new ItemStack((ItemConvertible) objects[0]));
             }
         }
     }

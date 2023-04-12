@@ -43,6 +43,6 @@ public class StaggerEnchantment extends Enchantment {
     }
 
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof UltraHeavyWeapon ? true : super.isAcceptableItem(stack);
+        return stack.getItem() instanceof UltraHeavyWeapon || super.isAcceptableItem(stack);
     }
 }

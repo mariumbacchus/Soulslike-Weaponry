@@ -41,7 +41,6 @@ import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -56,12 +55,12 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class Moonknight extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private int unbreakableTicks;
     private int phaseTransitionTicks;
-    private int phaseTransitionMaxTicks = 120;
+    private final int phaseTransitionMaxTicks = 120;
     private int blockBreakingCooldown;
 
     private static final TrackedData<Boolean> SPAWNING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -199,9 +198,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        if (source.equals(CustomDamageSource.BLEED)) {
-            return false;
-        }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
             this.initiatePhaseTwo(true);
             world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -335,11 +331,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     private boolean isPosNullish(BlockPos pos) {
-        if (pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0;
     }
 
     private void summonParticles() {
@@ -422,7 +414,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -443,10 +435,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
     }
 
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
-    }
-
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(SPAWNING, Boolean.FALSE);
@@ -461,7 +449,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(BEAM_HEIGHT, 0f);
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else if (this.getSpawning()) {

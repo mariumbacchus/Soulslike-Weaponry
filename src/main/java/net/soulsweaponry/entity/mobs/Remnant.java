@@ -23,6 +23,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -47,7 +48,7 @@ public class Remnant extends TameableEntity {
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
         this.targetSelector.add(3, new ActiveTargetGoal<MobEntity>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster 
             && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
-        this.targetSelector.add(4, new RevengeGoal(this, new Class[0]).setGroupRevenge());
+        this.targetSelector.add(4, new RevengeGoal(this).setGroupRevenge());
     }
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
@@ -76,7 +77,8 @@ public class Remnant extends TameableEntity {
             EquipmentSlot.LEGS,
             EquipmentSlot.FEET,
             EquipmentSlot.OFFHAND,
-            EquipmentSlot.MAINHAND, //trenger en mainhand for hvert sverd
+                //Needs a main-hand slot for each weapon
+            EquipmentSlot.MAINHAND,
             EquipmentSlot.MAINHAND,
             EquipmentSlot.MAINHAND,
         };
@@ -96,11 +98,7 @@ public class Remnant extends TameableEntity {
 
     @Override
     public void tickMovement() {
-        if (this.isInSittingPose()) {
-            this.setSneaking(true);
-        } else {
-            this.setSneaking(false);
-        }
+        this.setSneaking(this.isInSittingPose());
         super.tickMovement();
     }
 
@@ -110,7 +108,7 @@ public class Remnant extends TameableEntity {
             this.setSitting(!this.isSitting());
             this.jumping = false;
             this.navigation.stop();
-            this.setTarget((LivingEntity)null);
+            this.setTarget(null);
             return ActionResult.SUCCESS;
         }
         return super.interactMob(player, hand);
@@ -156,5 +154,10 @@ public class Remnant extends TameableEntity {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
     }
 }

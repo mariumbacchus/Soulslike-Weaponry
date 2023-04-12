@@ -176,7 +176,7 @@ public class PacketsServer {
                         float power = ConfigConstructor.draupnir_spear_projectile_damage;
                         for (Entity entity : entities) {
                             if (entity instanceof LivingEntity) {
-                                entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                                entity.damage(serverWorld.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                                 entity.addVelocity(0, .1f, 0);
                             }
                         }

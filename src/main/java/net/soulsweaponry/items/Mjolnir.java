@@ -21,7 +21,6 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity.PickupPermission;
 import net.minecraft.item.ItemStack;
@@ -89,7 +88,7 @@ public class Mjolnir extends SwordItem implements GeoItem {
             stack.getNbt().putIntArray(OWNERS_LAST_POS, new int[]{player.getBlockX(), player.getBlockY(), player.getBlockZ()});
         }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
-        float speed = WeaponUtil.getEnchantDamageBonus(stack)/5;
+        float speed = (float) WeaponUtil.getEnchantDamageBonus(stack)/5;
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(projectile);
@@ -125,7 +124,7 @@ public class Mjolnir extends SwordItem implements GeoItem {
         float power = ConfigConstructor.mjolnir_smash_damage;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
-                entity.damage(DamageSource.mob(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                entity.damage(world.getDamageSources().mobAttack(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                 entity.addVelocity(0, .25f, 0);
             }
         }
@@ -181,8 +180,8 @@ public class Mjolnir extends SwordItem implements GeoItem {
             double z0 = player.getZ();
             double x = x0 + r * Math.cos(theta * Math.PI / 180);
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
-            BlockPos pos = new BlockPos(x, player.getY(), z);
-            if (world.isSkyVisible(new BlockPos(x, player.getY(), z))) {
+            BlockPos pos = new BlockPos((int)x,(int) player.getY(),(int) z);
+            if (world.isSkyVisible(new BlockPos((int)x, (int)player.getY(), (int)z))) {
                 LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
                 entity.setPos(pos.getX(), pos.getY(), pos.getZ());
                 world.spawnEntity(entity);

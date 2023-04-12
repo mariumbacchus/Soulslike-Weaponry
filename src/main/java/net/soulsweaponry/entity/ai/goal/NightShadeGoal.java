@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.ai.goal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -65,7 +64,7 @@ public class NightShadeGoal extends Goal {
 
     private void damageTarget(LivingEntity target, float damage) {
         if (target instanceof NightShade) return;
-        target.damage(DamageSource.mob(this.boss), this.getModifiedDamage(damage));
+        target.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
     }
 
     private float getModifiedDamage(float damage) {

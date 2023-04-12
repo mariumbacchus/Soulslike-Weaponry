@@ -97,7 +97,7 @@ public class DragonslayerSwordspear extends SwordItem {
                                 double x = target.getX() - user.getX();
                                 double z = target.getX() - user.getX();
                                 target.takeKnockback(5F, -x, -z);
-                                target.damage(DamageSource.mob(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
+                                target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
                                 if (!world.isClient) {
                                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 20);
                                 }

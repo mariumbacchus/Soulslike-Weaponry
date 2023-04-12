@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -60,7 +59,7 @@ public class DarkSorcerer extends HostileEntity {
     }
 
     public void setBeamCords(double x, double y, double z) {
-        this.dataTracker.set(BEAM_CORDS, new BlockPos(x, y, z));
+        this.dataTracker.set(BEAM_CORDS, BlockPos.ofFloored(x, y, z));
     }
 
     public BlockPos getBeamCords() {
@@ -114,9 +113,9 @@ public class DarkSorcerer extends HostileEntity {
                 if (target instanceof ReturningKnight) {
                     if (distanceToEntity < 150f) {
                         this.user.setBeaming(true);
-                        this.user.setBeamCords(target.getX(), target.getEyeY(), target.getZ());
+                        this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (target.getHealth() < target.getMaxHealth()) {
-                            target.setHealth(target.getHealth() + .5F + ((ReturningKnight)target).getAttackingPlayers().size()/2);
+                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayers().size()/2f);
                         }
                     } else {
                         this.user.setBeaming(false);
@@ -125,9 +124,9 @@ public class DarkSorcerer extends HostileEntity {
                     //Damage target each second
                     if (distanceToEntity < 150f) {
                         this.user.setBeaming(true);
-                        this.user.setBeamCords(target.getX(), target.getEyeY(), target.getZ());
+                        this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (attackTicks < 0) {
-                            target.damage(DamageSource.mob(user), 2f);
+                            target.damage(this.user.world.getDamageSources().mobAttack(user), 2f);
                             attackTicks = 10;
                         }
                     } else {
@@ -165,9 +164,9 @@ public class DarkSorcerer extends HostileEntity {
 
             double dd = this.random.nextGaussian() * 0.05D;
             double ee = this.random.nextGaussian() * 0.05D;
-            double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + dd;
-            double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + ee;
-            double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+            double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + dd;
+            double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + ee;
+            double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
             float body = this.bodyYaw * 0.017453292F + MathHelper.cos((float)this.age * 0.6662F) * 0.25F;
             float cosBody = MathHelper.cos(body);
             float sinBody = MathHelper.sin(body);

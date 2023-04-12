@@ -27,7 +27,6 @@ import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class AccursedLordGoal extends Goal {
@@ -208,13 +207,12 @@ public class AccursedLordGoal extends Goal {
     }
 
     private void summonLava(int r) {
-        for (int theta = 0; theta < 360; theta++) {
+        for (int theta = 0; theta < 360; theta += 15) {
             double x0 = this.boss.getX();
             double z0 = this.boss.getZ();
             double x = x0 + r * Math.cos(theta * Math.PI / 180);
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
-
-            BlockPos pos = new BlockPos(x, this.boss.getY(), z);
+            BlockPos pos = BlockPos.ofFloored(x, this.boss.getY(), z);
             if (this.boss.world.getBlockState(pos).isAir()) {
                 this.boss.world.setBlockState(pos, Blocks.LAVA.getDefaultState());
                 this.boss.lavaPos.add(pos);
@@ -232,7 +230,7 @@ public class AccursedLordGoal extends Goal {
                 if (nearbyEntity instanceof LivingEntity closestTarget) {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
-                    this.damageTarget(closestTarget, DamageSource.mob(this.boss), 10f);
+                    this.damageTarget(closestTarget, this.boss.world.getDamageSources().mobAttack(this.boss), 10f);
                     closestTarget.takeKnockback(4F, -x, -z);
                 }
             }
@@ -257,7 +255,7 @@ public class AccursedLordGoal extends Goal {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
                     closestTarget.takeKnockback(10F, -x, -z);
-                    this.damageTarget(closestTarget, DamageSource.mob(this.boss), 50f);
+                    this.damageTarget(closestTarget, this.boss.world.getDamageSources().mobAttack(this.boss), 50f);
                 }
             }
             if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DAWNBREAKER_PACKET_ID, this.boss.getBlockPos());
@@ -274,7 +272,7 @@ public class AccursedLordGoal extends Goal {
         if (this.attackStatus == 20) {
             double x = target.getX() - (this.boss.getX());
             double z = target.getZ() - this.boss.getZ();
-            this.damageTarget(target, DamageSource.mob(this.boss), 5f);
+            this.damageTarget(target, this.boss.world.getDamageSources().mobAttack(this.boss), 5f);
             target.takeKnockback(5F, x, z);
         }
         if (this.attackStatus >= 25) {
@@ -296,7 +294,7 @@ public class AccursedLordGoal extends Goal {
             if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
-                    this.damageTarget((LivingEntity) entity, CustomDamageSource.obliterateDamageSource(this.boss), 30f);
+                    this.damageTarget((LivingEntity) entity, this.boss.world.getDamageSources().mobAttack(this.boss), 30f);
                     entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }

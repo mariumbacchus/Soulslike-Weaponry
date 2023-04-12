@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
+import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -28,7 +29,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class DragonStaff extends SwordItem {
@@ -43,9 +43,10 @@ public class DragonStaff extends SwordItem {
             Vec3d pov = user.getRotationVector();
             Vec3d particleSpawn = pov.multiply(1);
             Vec3d area = pov.multiply(10).add(user.getPos());
-            for (Entity entity : world.getOtherEntities(user, new Box(user.getBlockPos().add(0, 2, 0), new BlockPos(area)))) {
+            Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
+            for (Entity entity : world.getOtherEntities(user, new Box(user.getBlockPos().add(0, 2, 0), new BlockPos(on)))) {
                 if (entity instanceof LivingEntity) {
-                    entity.damage(CustomDamageSource.dragonMist(user), 2);
+                    entity.damage(world.getDamageSources().mobAttack(user), 2);
                     ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, ConfigConstructor.dragon_staff_aura_strength));
                 }
             }

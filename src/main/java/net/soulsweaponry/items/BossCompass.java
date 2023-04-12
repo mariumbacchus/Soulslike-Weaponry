@@ -8,8 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
@@ -42,9 +40,9 @@ public class BossCompass extends Item {
         } else if (world.getDimensionKey() == DimensionTypes.OVERWORLD) {
             optional = world.getRegistryManager().get(RegistryKeys.STRUCTURE).getEntryList(ModTags.Structures.CHAMPIONS_GRAVES);
         } else {
-            optional = null;
+            optional = Optional.empty();
         }
-        if (optional != null) {
+        if (optional.isPresent()) {
             Pair<BlockPos, RegistryEntry<Structure>> pair = world.getChunkManager().getChunkGenerator().locateStructure(world, optional.get(), center, 100, false);
             if (stack.getOrCreateNbt() != null) {
                 if (pair != null) {

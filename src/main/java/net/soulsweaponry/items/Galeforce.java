@@ -52,7 +52,7 @@ public class Galeforce extends BowItem {
                 playerEntity.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
             }
             boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemStack = playerEntity.getArrowType(stack);
+            ItemStack itemStack = playerEntity.getProjectileType(stack);
             if (!itemStack.isEmpty() || creativeAndInfinity) {
                 if (itemStack.isEmpty()) {
                     itemStack = new ItemStack(Items.ARROW);

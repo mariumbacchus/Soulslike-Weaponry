@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.mobs;
 
 import java.util.List;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
@@ -15,7 +14,6 @@ import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -37,13 +35,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -56,7 +52,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class ReturningKnight extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private int blockBreakingCooldown;
@@ -78,7 +74,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSpawning()) {
@@ -132,7 +128,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -272,9 +268,6 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         if (this.blockBreakingCooldown <= 0) {
             this.blockBreakingCooldown = 20;
         }
-        if (source.equals(CustomDamageSource.BLEED)) {
-            return false;
-        }
         if (this.isInvulnerableTo(source)) {
            return false;
         } else {
@@ -323,8 +316,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         Box chunkBox = this.getBoundingBox().expand(3);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
-            if (entity instanceof PersistentProjectileEntity) {
-                PersistentProjectileEntity projectile = (PersistentProjectileEntity) entity;
+            if (entity instanceof PersistentProjectileEntity projectile) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
             }
         }
@@ -361,9 +353,5 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     protected SoundEvent getDeathSound() {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
-    }
-
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
     }
 }

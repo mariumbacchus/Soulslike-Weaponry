@@ -13,7 +13,7 @@ public class DarkSorcererParentRenderer<T extends DarkSorcerer, M extends DarkSo
 
     public DarkSorcererParentRenderer(Context ctx, M model, M legsArmorModel, M bodyArmorModel) {
         super(ctx, model, 0.5F);
-        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel));
+        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel, ctx.getModelManager()));
     }
 
     public Identifier getTexture(T entity) {

@@ -23,7 +23,6 @@ import net.soulsweaponry.entity.effect.HallowedDragonMist;
 import net.soulsweaponry.entity.effect.LifeLeach;
 import net.soulsweaponry.entity.effect.PostureBreak;
 import net.soulsweaponry.entity.effect.Retribution;
-import net.soulsweaponry.util.CustomDamageSource;
 
 public class EffectRegistry {
 
@@ -98,8 +97,8 @@ public class EffectRegistry {
         
         @Override
         public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-            if (this == EffectRegistry.BLEED && !(entity instanceof AbstractSkeletonEntity || entity instanceof StrayEntity || entity instanceof SkeletonHorseEntity)) {
-                entity.damage(CustomDamageSource.BLEED, 1f + amplifier);
+            if (this == EffectRegistry.BLEED && !(entity instanceof AbstractSkeletonEntity || entity instanceof SkeletonHorseEntity)) {
+                entity.damage(entity.world.getDamageSources().generic(), 1f + amplifier);
             }
         }
     }

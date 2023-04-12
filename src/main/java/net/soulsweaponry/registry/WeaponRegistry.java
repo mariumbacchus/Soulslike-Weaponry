@@ -2,17 +2,13 @@ package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.Rarity;
-import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
 public class WeaponRegistry {
-    
-    public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
 
     public static ToolItem BLUEMOON_SHORTSWORD = new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem BLUEMOON_GREATSWORD = new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new FabricItemSettings().rarity(Rarity.RARE));

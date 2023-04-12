@@ -55,8 +55,9 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
             int power = this.getSouls(stack);
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
+                BlockPos on = new BlockPos((int)vecBlocksAway.getX(), (int)vecBlocksAway.getY(), (int)vecBlocksAway.getZ());
                 if (!world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, new BlockPos(vecBlocksAway), 50);
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, on, 50);
                 } else {
                     this.spawnParticles(world, vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                 }

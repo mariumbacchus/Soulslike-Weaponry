@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+    package net.soulsweaponry.items;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,11 +49,11 @@ public class ChaosSet extends ArmorItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    private HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
-    private HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
-    private HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
+    private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
+    private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
     
-    public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public ChaosSet(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT);
@@ -70,8 +70,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
+        if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
             }
@@ -88,33 +87,26 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         if (!entity.isOnGround()) {
             return;
         }
-        float f = Math.min(16, 3 + bonusRadius);
+        int f = Math.min(16, 3 + bonusRadius);
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-f, -1.0, -f), blockPos.add(f, -1.0, f))) {
+        for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-f, -1, -f), blockPos.add(f, -1, f))) {
             if (!world.getBlockState(blockPos2).isAir()) {
                 for (Block turnBlock : this.turnableBlocks.keySet()) {
                     if (world.getBlockState(blockPos2).getBlock() == turnBlock) {
                         BlockState blockState = this.turnableBlocks.get(turnBlock).getDefaultState();
-                        if (!blockPos2.isWithinDistance(entity.getPos(), (double)f)) continue;
+                        if (!blockPos2.isWithinDistance(entity.getPos(), f)) continue;
                         mutable.set(blockPos2.getX(), blockPos2.getY() + 1, blockPos2.getZ());
                         BlockState blockState2 = world.getBlockState(mutable);
                         if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
                         for (Block turnGrass : this.turnableGrass.keySet()) if (blockState2.isOf(turnGrass)) world.setBlockState(mutable, this.turnableGrass.get(turnGrass).getDefaultState());
                         for (Block turnTallPlant : this.turnableTallPlant.keySet()) if (blockState2.isOf(turnTallPlant)) {
                             world.removeBlock(mutable, false);
-                            //this.turnableTallPlant.get(turnTallPlant).placeThis(world, blockState2, mutable, 2, true);
                             TallPlantBlock.placeAt(world, this.turnableTallPlant.get(turnTallPlant).getDefaultState(), mutable, 2);
                         }
                         if (blockState2.isIn(BlockTags.TALL_FLOWERS)) {
                             world.removeBlock(mutable, false);
                             TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
                         }
-                        /* if (blockState2.isOf(Blocks.GRASS)) world.setBlockState(mutable, BlockRegistry.WITHERED_GRASS.getDefaultState());
-                        if (blockState2.isOf(Blocks.TALL_GRASS)) {
-                            world.removeBlock(mutable, false);
-                            BlockRegistry.WITHERED_TALL_GRASS.placeThis(world, blockState2, mutable, 2);
-                        }  */
-                        //if (!blockState2.isAir()/*  || blockState2.getBlock() == turnBlock */ || !blockState.canPlaceAt(world, blockPos2) || !world.canPlace(blockState, blockPos2, ShapeContext.absent())) continue;
                         world.setBlockState(blockPos2, blockState);
                         world.scheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
                     } else if (world.getBlockState(blockPos2).getBlock() == this.turnableBlocks.get(turnBlock)) {
@@ -141,7 +133,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         return !chest.isEmpty() && chest.isOf(ItemRegistry.ARKENPLATE) && player.getHealth() < player.getMaxHealth()/2;
     }
 
-	private PlayState predicate(AnimationState event) {
+	private PlayState predicate(AnimationState<?> event) {
         if (this == ItemRegistry.CHAOS_ROBES) {
             event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }

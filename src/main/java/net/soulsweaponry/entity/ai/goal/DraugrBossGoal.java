@@ -6,7 +6,6 @@ import java.util.Objects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -57,7 +56,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }
-        return target.damage(DamageSource.mob(this.boss), modified);
+        return target.damage(this.boss.world.getDamageSources().mobAttack(this.boss), modified);
     }
 
     @Override

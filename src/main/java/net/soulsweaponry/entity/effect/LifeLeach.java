@@ -25,7 +25,7 @@ public class LifeLeach extends StatusEffect {
 
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         LivingEntity target = entity.getAttacking();
-        if (target instanceof LivingEntity && target.hasStatusEffect(StatusEffects.WITHER)) {
+        if (target != null && target.hasStatusEffect(StatusEffects.WITHER)) {
             entity.heal(1 + target.getStatusEffect(StatusEffects.WITHER).getAmplifier());
         }
     }

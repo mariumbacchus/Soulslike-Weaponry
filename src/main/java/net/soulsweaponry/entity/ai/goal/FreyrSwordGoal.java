@@ -15,14 +15,13 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class FreyrSwordGoal extends Goal {
 
     private final FreyrSwordEntity entity;
     private int attackTicks;
-    private double[][] hitFrames = {{6, 1.0}, {13, 1.0}, {20, 1.1}, {29, 1.25}}; //Frames and damage modifier
+    private final double[][] hitFrames = {{6, 1.0}, {13, 1.0}, {20, 1.1}, {29, 1.25}}; //Frames and damage modifier
     /* private double[][] hitFrames = {
         {0.5417, 0.6667},
         {1.2083, 1.3333},
@@ -79,10 +78,10 @@ public class FreyrSwordGoal extends Goal {
         Vec3d vecTarget = this.entity.getRotationVector().add(target.getPos());
         this.entity.updatePosition(vecTarget.getX(), vecTarget.getY(), vecTarget.getZ());
         this.entity.setAnimationAttacking(true);
-        for (int i = 0; i < this.hitFrames.length; i++) {
-            if (this.attackTicks == this.hitFrames[i][0]) {
+        for (double[] hitFrame : this.hitFrames) {
+            if (this.attackTicks == hitFrame[0]) {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
-                if (target.damage(CustomDamageSource.summonDamageSource("freyr_sword", this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * this.hitFrames[i][1]))) {
+                if (target.damage(this.entity.world.getDamageSources().mobProjectile(this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
                     int fire = 0;
                     if ((fire = EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.entity.asItemStack())) > 0) {
                         target.setOnFireFor(fire * 4);

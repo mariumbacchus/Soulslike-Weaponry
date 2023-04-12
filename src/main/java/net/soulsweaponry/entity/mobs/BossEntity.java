@@ -97,7 +97,7 @@ public abstract class BossEntity extends HostileEntity implements AnimatedDeathI
 
     /**
      * Checks if the target is out of range and other players are closer. The boss will then switch targets.
-     * 
+     * <p>
      * EDIT: Did not work lol.
      */
     /* public void checkOtherTargets(LivingEntity target) {

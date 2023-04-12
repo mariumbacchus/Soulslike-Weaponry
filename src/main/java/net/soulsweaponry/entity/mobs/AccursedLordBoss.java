@@ -182,7 +182,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(DamageSource.mob(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
+                        closestTarget.damage(this.world.getDamageSources().mobAttack(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
                     }
                 }
                 if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DAWNBREAKER_PACKET_ID, this.getBlockPos());

@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -63,27 +62,23 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
         if (!this.world.isClient) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
-            if (owner != null && entity != null && entity instanceof LivingEntity && owner instanceof LivingEntity) {
-                LivingEntity target = (LivingEntity)entity;
-                LivingEntity user = (LivingEntity)owner;
+            if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
                 Random random = new Random();
                 int rng = random.nextInt(5) + 1;
                 int power = random.nextInt((75 + 5*this.getLuckFactor(user))) + this.getLuckFactor(user)*5;
                 int amplifier = random.nextInt(3 + this.getLuckFactor(user)) + this.getLuckFactor(user)/2;
                 int duration = random.nextInt(300 + this.getLuckFactor(user)*50) + this.getLuckFactor(user)*50;
                 switch (rng) {
-                    case 1: case 3:
-                        target.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(true), duration, amplifier));
-                    break;
-                    case 2:
-                        user.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(false), duration, amplifier));
-                    break;
-                    default:
+                    case 1, 3 ->
+                            target.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(true), duration, amplifier));
+                    case 2 ->
+                            user.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(false), duration, amplifier));
+                    default -> {
                         if (power > 50) {
                             world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                         }
-                        target.damage(DamageSource.MAGIC, power);
-                    break;
+                        target.damage(this.world.getDamageSources().magic(), power);
+                    }
                 }
             }
         }
@@ -110,99 +105,97 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             return;
         }
         switch (this.getCollisionEffectType(user)) {
-            case BATS:
-                for (int i = 0; i < power*2; i++) {
+            case BATS -> {
+                for (int i = 0; i < power * 2; i++) {
                     BatEntity bat = new BatEntity(EntityType.BAT, world);
                     bat.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(bat);
                 }
-                break;
-            case DARKNESS:
+            }
+            case DARKNESS -> {
                 world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE.value(), SoundCategory.AMBIENT, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 5, 1.2D, 1.2D, 1.2D, 0.0D);
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
-                break;
-            case LIGHTNING:
+            }
+            case LIGHTNING -> {
                 for (int i = 0; i < power; i++) {
                     LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case PARTICLES:
+            }
+            case PARTICLES -> {
                 if (!this.world.isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, this.getBlockPos(), 1000);
                 }
-                break;
-            case RANDOM_ENTITY:
+            }
+            case RANDOM_ENTITY -> {
                 for (int i = 0; i < power; i++) {
                     Entity entity = this.getRandomEntity();
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case SPECIFIC_ENTITY:
-                this.summonSpecificEntity(user, power);
-                break;
-            default:
+            }
+            case SPECIFIC_ENTITY -> this.summonSpecificEntity(user, power);
+            default -> {
                 boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
                 this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
-                break;
+            }
         }
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {
         switch (this.getSpecificEntityType(user)) {
-            case CATS:
+            case CATS -> {
                 for (int i = 0; i < power; i++) {
                     CatEntity entity = new CatEntity(EntityType.CAT, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case CREEPER:
+            }
+            case CREEPER -> {
                 for (int i = 0; i < power; i++) {
                     CreeperEntity entity = new CreeperEntity(EntityType.CREEPER, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case IRON_GOLEM:
+            }
+            case IRON_GOLEM -> {
                 for (int i = 0; i < power; i++) {
                     IronGolemEntity entity = new IronGolemEntity(EntityType.IRON_GOLEM, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case STRIDER:
+            }
+            case STRIDER -> {
                 for (int i = 0; i < power; i++) {
                     StriderEntity entity = new StriderEntity(EntityType.STRIDER, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case TRADER:
+            }
+            case TRADER -> {
                 for (int i = 0; i < power; i++) {
                     WanderingTraderEntity entity = new WanderingTraderEntity(EntityType.WANDERING_TRADER, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            case WITHER_SKELETON:
+            }
+            case WITHER_SKELETON -> {
                 for (int i = 0; i < power; i++) {
                     WitherSkeletonEntity entity = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, world);
                     entity.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.NETHERITE_AXE));
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
-            default:
+            }
+            default -> {
                 for (int i = 0; i < power; i++) {
                     SkeletonEntity entity = new SkeletonEntity(EntityType.SKELETON, world);
                     entity.setPos(this.getX(), this.getY(), this.getZ());
                     this.world.spawnEntity(entity);
                 }
-                break;
+            }
         }
     }
 
@@ -215,7 +208,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
     }
 
     private Object[][] getTriggerList() {
-        Object[][] triggers = {
+        return new Object[][]{
             {CollisionEffect.LIGHTNING, LuckType.GOOD},
             {CollisionEffect.RANDOM_ENTITY, LuckType.BAD},
             {CollisionEffect.SPECIFIC_ENTITY, LuckType.BAD},
@@ -224,11 +217,10 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             {CollisionEffect.DARKNESS, LuckType.BAD},
             {CollisionEffect.EXPLOSION, LuckType.GOOD},
         };
-        return triggers;
     }
 
     private Object[][] getSpecificEntityList() {
-        Object[][] entities = {
+        return new Object[][]{
             {SpecificEntities.CATS, LuckType.NEUTRAL},
             {SpecificEntities.CREEPER, LuckType.BAD},
             {SpecificEntities.STRIDER, LuckType.NEUTRAL},
@@ -237,10 +229,9 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             {SpecificEntities.WITHER_SKELETON, LuckType.BAD},
             {SpecificEntities.TRADER, LuckType.NEUTRAL},
         };
-        return entities;
     }
 
-    static enum CollisionEffect {
+    enum CollisionEffect {
         LIGHTNING,
         RANDOM_ENTITY,
         SPECIFIC_ENTITY,
@@ -250,7 +241,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
         EXPLOSION
     }
 
-    static enum SpecificEntities {
+    enum SpecificEntities {
         CATS,
         CREEPER,
         STRIDER,
@@ -285,52 +276,52 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
      */
     private Object randomFromList(LivingEntity user, Object[][] arr, boolean flipLuckTypes) {
         ArrayList<ArrayList<Object>> objectList = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
+        for (Object[] objects : arr) {
             ArrayList<Object> list = new ArrayList<>();
-            list.add(arr[i][0]);
-            list.add(arr[i][1]);
+            list.add(objects[0]);
+            list.add(objects[1]);
 
             int luckFactor;
             if (!flipLuckTypes) {
-                switch ((LuckType)list.get(1)) {
-                    case BAD:
+                switch ((LuckType) list.get(1)) {
+                    case BAD -> {
                         luckFactor = (10 - this.getLuckFactor(user));
                         list.add(luckFactor);
-                        break;
-                    case GOOD:
+                    }
+                    case GOOD -> {
                         luckFactor = (10 + this.getLuckFactor(user));
                         list.add(luckFactor);
-                        break;
-                    default:
+                    }
+                    default -> {
                         luckFactor = 10;
                         list.add(luckFactor);
-                        break;
+                    }
                 }
             } else {
-                switch ((LuckType)list.get(1)) {
-                    case GOOD:
+                switch ((LuckType) list.get(1)) {
+                    case GOOD -> {
                         luckFactor = (10 - this.getLuckFactor(user));
                         list.add(luckFactor);
-                        break;
-                    case BAD:
+                    }
+                    case BAD -> {
                         luckFactor = (10 + this.getLuckFactor(user));
                         list.add(luckFactor);
-                        break;
-                    default:
+                    }
+                    default -> {
                         luckFactor = 10;
                         list.add(luckFactor);
-                        break;
+                    }
                 }
             }
-            
+
             if (!(luckFactor <= 0)) {
                 objectList.add(list);
             }
         }
 
         int totalChance = 0;
-        for (int i = 0; i < objectList.size(); i++) {
-            totalChance += (int)objectList.get(i).get(2);
+        for (ArrayList<Object> objects : objectList) {
+            totalChance += (int) objects.get(2);
         }
 
         int random = new Random().nextInt(totalChance);
@@ -350,7 +341,7 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
     }
 
     private Object[][] getEffectList() {
-        Object[][] effects = {
+        return new Object[][]{
             {StatusEffects.BLINDNESS, LuckType.BAD},
             {StatusEffects.WITHER, LuckType.BAD},
             {StatusEffects.GLOWING, LuckType.BAD},
@@ -371,11 +362,10 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             {StatusEffects.POISON, LuckType.BAD},
             {StatusEffects.NAUSEA, LuckType.BAD}
         };
-        return effects;
     }
 
     private Object[][] getEntityList() {
-        Object[][] entities = {
+        return new Object[][]{
             {new CreeperEntity(EntityType.CREEPER, world), LuckType.BAD},
             {new ZombieEntity(EntityType.ZOMBIE, world), LuckType.BAD},
             {new CowEntity(EntityType.COW, world), LuckType.NEUTRAL},
@@ -391,7 +381,6 @@ public class WitheredWabbajackProjectile extends ExplosiveProjectileEntity {
             {new WanderingTraderEntity(EntityType.WANDERING_TRADER, world), LuckType.NEUTRAL},
             {new ChickenEntity(EntityType.CHICKEN, world), LuckType.NEUTRAL}
         };
-        return entities;
     }
 
     private int getLuckFactor(LivingEntity entity) {

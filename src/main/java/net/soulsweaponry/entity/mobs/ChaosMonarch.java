@@ -45,7 +45,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class ChaosMonarch extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
@@ -58,32 +58,16 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         this.setDrops(ItemRegistry.CHAOS_ROBES);
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         switch (this.getAttack()) {
-            case SPAWN:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
-            break;
-            case TELEPORT:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
-            break;
-            case MELEE:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
-            break;
-            case LIGHTNING:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
-            break;
-            case SHOOT:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
-            break;
-            case BARRAGE:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
-            break;
-            case DEATH:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
-            break;
-            default:
-                state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
-            break;
+            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+            case TELEPORT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
+            case MELEE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
+            case LIGHTNING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
+            case SHOOT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
+            case BARRAGE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
+            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+            default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -95,7 +79,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, AccursedLordBoss.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -197,8 +181,8 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            for (int j = 0; j < particles.length; j++) {
-                world.addParticle(particles[j], true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
+            for (DefaultParticleType particle : particles) {
+                world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
         } 
     }
@@ -276,7 +260,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override

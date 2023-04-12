@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -157,7 +156,7 @@ public class ChaosMonarchGoal extends Goal {
                     }
                     case SHOOT -> {
                         this.attackStatus++;
-                        if (this.attackStatus % 6 == 0) this.chaosSkull();
+                        if (this.attackStatus % 6 == 0) this.chaosSkull(target);
                         if (this.attackStatus >= 40) this.resetAttack(1);
                     }
                     case BARRAGE -> {
@@ -167,7 +166,7 @@ public class ChaosMonarchGoal extends Goal {
                             if (this.randomOrNot) {
                                 this.randomProjectiles();
                             } else {
-                                this.controlledProjectiles();
+                                this.controlledProjectiles(target);
                             }
                         }
                         if (this.attackStatus >= 30) this.resetAttack(1);
@@ -201,8 +200,6 @@ public class ChaosMonarchGoal extends Goal {
                 if (!this.boss.world.isClient)
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, blockPos, 100);
             }
-            default -> {
-            }
         }
     }
 
@@ -211,14 +208,13 @@ public class ChaosMonarchGoal extends Goal {
         List<Entity> intersectingEntities = this.boss.world.getOtherEntities(this.boss, box);
         for (Entity entity : intersectingEntities) {
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(damage));
+                livingEntity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
                 livingEntity.takeKnockback(this.boss.getRandom().nextDouble(), this.boss.getX() - livingEntity.getX(), this.boss.getZ() - livingEntity.getZ());
             }
         }
     }
 
-    private void chaosSkull() {
-        LivingEntity target = this.boss.getTarget();
+    private void chaosSkull(LivingEntity target) {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
@@ -228,8 +224,7 @@ public class ChaosMonarchGoal extends Goal {
         this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
     }
 
-    private void controlledProjectiles() {
-        LivingEntity target = this.boss.getTarget();
+    private void controlledProjectiles(LivingEntity target) {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
@@ -317,27 +312,13 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     private void spawnLightning(int multiplier) {
-        /* int rad = 5*multiplier;
-        for (int i = -rad; i <= rad; i++) {
-            for (int j = -rad; j <= rad; j++) {
-                if (i % rad == 0 && j % rad == 0) {
-                    int x = i + MathHelper.floor(this.boss.getX());
-                    int z = j + MathHelper.floor(this.boss.getZ());
-                    if (!this.boss.getBlockPos().equals(new BlockPos(x, this.boss.getY(), z))) {
-                        LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, this.boss.world);
-                        entity.setPos(x, this.boss.getY(), z);
-                        this.boss.world.spawnEntity(entity);
-                    }
-                }
-            }
-        } */
         int r = 5*multiplier;
         for (int theta = 0; theta < 360; theta+=30) {
             double x0 = this.boss.getX();
             double z0 = this.boss.getZ();
             double x = x0 + r * Math.cos(theta * Math.PI / 180);
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
-            BlockPos pos = new BlockPos(x, this.boss.getY(), z);
+            BlockPos pos = BlockPos.ofFloored(x, this.boss.getY(), z);
             LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, this.boss.world);
             entity.setPos(pos.getX(), pos.getY(), pos.getZ());
             this.boss.world.spawnEntity(entity);
@@ -381,13 +362,12 @@ public class ChaosMonarchGoal extends Goal {
         this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
         Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
         List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
-        for (int j = 0; j < nearbyEntities.size(); j++) {
-            if (nearbyEntities.get(j) instanceof LivingEntity) {
-                LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+        for (Entity nearbyEntity : nearbyEntities) {
+            if (nearbyEntity instanceof LivingEntity closestTarget) {
                 double x = closestTarget.getX() - (this.boss.getX());
                 double z = closestTarget.getZ() - this.boss.getZ();
                 closestTarget.takeKnockback(10F, -x, -z);
-                closestTarget.damage(DamageSource.mob(this.boss), this.getModifiedDamage(30f));
+                closestTarget.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
             }
         }
 

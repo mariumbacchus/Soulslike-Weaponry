@@ -30,6 +30,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
@@ -133,6 +134,11 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
     }
 
     @Nullable

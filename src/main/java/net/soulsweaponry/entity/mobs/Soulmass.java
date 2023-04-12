@@ -47,7 +47,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterface {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> CLAP = DataTracker.registerData(Soulmass.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -63,7 +63,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
         this.experiencePoints = 30;
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getSacrifice()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("sacrifice"));
         } else if (this.getStartBeam()) {
@@ -167,7 +167,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     }
 
     public void setBeamCords(double x, double y, double z) {
-        this.dataTracker.set(BEAM_CORDS, new BlockPos(x, y, z));
+        this.dataTracker.set(BEAM_CORDS, BlockPos.ofFloored(x, y, z));
     }
 
     public BlockPos getBeamCords() {
@@ -217,12 +217,12 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
-        for (int j = 0; j < nearbyEntities.size(); j++) {
-            if (nearbyEntities.get(j) instanceof HostileEntity) {
-                LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+        for (Entity nearbyEntity : nearbyEntities) {
+            if (nearbyEntity instanceof HostileEntity) {
+                LivingEntity closestTarget = (LivingEntity) nearbyEntity;
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
-                closestTarget.damage(DamageSource.MAGIC, 16F);
+                closestTarget.damage(this.world.getDamageSources().magic(), 16F);
             }
         }
     }
@@ -293,7 +293,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                 if (this.entity.getClap()) {
                     attackStatus++;
                     if (this.attackStatus == 5) {
-                        this.castSpell();
+                        this.castSpell(target);
                     } else if (this.attackStatus >= 20) {
                         this.entity.setClap(false);
                         this.resetCooldowns(0, 10);
@@ -303,15 +303,16 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                     attackStatus++;
                     if (this.attackStatus == 10) {
                         int[][] cords = {{4,4}, {-4,4}, {4,-4}, {-4,-4}};
-                        for (int i = 0; i < cords.length; i++) {
-                            BlockPos pos = new BlockPos(this.entity.getX() + cords[i][0], this.entity.getY(),this.entity.getZ() + cords[i][1]);
-                            if (!this.entity.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
+                        for (int[] cord : cords) {
+                            BlockPos pos = new BlockPos(this.entity.getBlockX() + cord[0], this.entity.getBlockY(), this.entity.getBlockZ() + cord[1]);
+                            if (!this.entity.world.isClient)
+                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
 
                             this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
-                            mob.setPos(this.entity.getX() + cords[i][0], this.entity.getY() + .1f, this.entity.getZ() + cords[i][1]);
+                            mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
-                                mob.setOwner((PlayerEntity)this.entity.getOwner());
+                                mob.setOwner((PlayerEntity) this.entity.getOwner());
                             }
                             this.entity.world.spawnEntity(mob);
                         }
@@ -335,9 +336,9 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                         this.entity.setStopBeam(true);
                         this.attackStatus = 0;
                     }
-                    this.entity.setBeamCords(target.getX(), target.getEyeY() - 1.5f, target.getZ());
+                    this.entity.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                     if (attackStatus % 5 == 0 && distanceToEntity < 130f) {
-                        target.damage(DamageSource.mob(this.entity), 6f);
+                        target.damage(this.entity.world.getDamageSources().mobAttack(this.entity), 6f);
                         this.entity.heal(2f);
                         this.entity.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                     }
@@ -354,8 +355,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
             }
         }
 
-        protected void castSpell() {
-            LivingEntity livingEntity = this.entity.getTarget();
+        protected void castSpell(LivingEntity livingEntity) {
             double d = Math.min(livingEntity.getY(), this.entity.getY());
             double e = Math.max(livingEntity.getY(), this.entity.getY()) + 1.0;
             float f = (float)MathHelper.atan2(livingEntity.getZ() - this.entity.getZ(), livingEntity.getX() - this.entity.getX());
@@ -373,15 +373,14 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
             } else {
                 for (int i = 0; i < 16; ++i) {
                     double h = 1.25 * (double)(i + 1);
-                    int j = 1 * i;
-                    this.conjureFangs(this.entity.getX() + (double)MathHelper.cos(f) * h, this.entity.getZ() + (double)MathHelper.sin(f) * h, d, e, f, j);
+                    this.conjureFangs(this.entity.getX() + (double)MathHelper.cos(f) * h, this.entity.getZ() + (double)MathHelper.sin(f) * h, d, e, f, i);
                 }
             }
         }
 
         @SuppressWarnings("all")
         private void conjureFangs(double x, double z, double maxY, double y, float yaw, int warmup) {
-            BlockPos blockPos = new BlockPos(x, y, z);
+            BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
             boolean bl = false;
             double d = 0.0;
             do {
@@ -464,7 +463,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     public void initEquip() {}
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override

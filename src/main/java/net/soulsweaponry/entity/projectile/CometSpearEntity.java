@@ -99,7 +99,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         }
 
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = DamageSource.thrownProjectile(this, entity2);
+        DamageSource damageSource = this.world.getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {

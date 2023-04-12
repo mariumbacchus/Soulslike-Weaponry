@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.effect;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -20,10 +19,6 @@ public class Decay extends StatusEffect {
 
     public Decay() {
         super(StatusEffectCategory.HARMFUL, 0x0e0024);
-    }
-
-    public int getTicks() {
-        return this.tickRate;
     }
 
     public int getFinalTickrate() {
@@ -58,7 +53,7 @@ public class Decay extends StatusEffect {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, amplifier));
             }
         } else if (!(entity instanceof BossEntity)) {
-            entity.damage(DamageSource.WITHER, amplifier*2 + 2);
+            entity.damage(entity.world.getDamageSources().wither(), amplifier*2 + 2);
         }
     }
 }

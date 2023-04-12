@@ -1,6 +1,6 @@
 package net.soulsweaponry.items.material;
 
-import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -37,13 +37,13 @@ public enum ModArmorMaterials implements ArmorMaterial {
     }
 
     @Override
-    public int getDurability(EquipmentSlot slot) {
-        return this.baseDurability[slot.getEntitySlotId()];
+    public int getDurability(ArmorItem.Type slot) {
+        return this.baseDurability[slot.getEquipmentSlot().getEntitySlotId()];
     }
 
     @Override
-    public int getProtectionAmount(EquipmentSlot slot) {
-        return this.protectionAmounts[slot.getEntitySlotId()];
+    public int getProtection(ArmorItem.Type slot) {
+        return this.protectionAmounts[slot.getEquipmentSlot().getEntitySlotId()];
     }
 
     @Override

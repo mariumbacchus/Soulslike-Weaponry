@@ -72,7 +72,7 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
                     stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
                 }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
-                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
+                float speed = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
@@ -108,7 +108,7 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
         List<Entity> entities = world.getOtherEntities(attacker, box);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity && !(entity instanceof PlayerEntity)) {
-                livingEntity.damage(DamageSource.FREEZE, (amplifier + 1) * 1.5f);
+                livingEntity.damage(world.getDamageSources().freeze(), (amplifier + 1) * 1.5f);
                 livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
             }
         }

@@ -79,7 +79,7 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                                 if (targetHit.isUndead() || bl) {
                                     if (!targetHit.equals(attacker)) {
                                         targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.damage(DamageSource.mob(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                                        targetHit.damage(attacker.world.getDamageSources().mobAttack(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
                                         targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
                                     }
                                 }

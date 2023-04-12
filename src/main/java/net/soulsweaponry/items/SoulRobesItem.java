@@ -14,7 +14,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 
 public class SoulRobesItem  extends ArmorItem {
 
-    public SoulRobesItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public SoulRobesItem(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
     
@@ -22,8 +22,7 @@ public class SoulRobesItem  extends ArmorItem {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
+        if (entity instanceof PlayerEntity player) {
             if (this.hasFullSet(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0));
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, 1));

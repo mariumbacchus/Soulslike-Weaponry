@@ -28,11 +28,10 @@ public class ArrowProjectileMixin {
     @Inject(at = @At("TAIL"), method = "onEntityHit")
     private void interceptOnHit(EntityHitResult entityHitResult, CallbackInfo info) {
         PersistentProjectileEntity projectile = ((PersistentProjectileEntity)(Object)this);
-        if (ConfigConstructor.can_projectiles_apply_posture_break && projectile instanceof ArrowEntity && projectile.getOwner() != null && entityHitResult.getEntity() instanceof LivingEntity && projectile.getOwner() instanceof PlayerEntity) {
+        if (ConfigConstructor.can_projectiles_apply_posture_break && projectile instanceof ArrowEntity && projectile.getOwner() != null && entityHitResult.getEntity() instanceof LivingEntity target && projectile.getOwner() instanceof PlayerEntity) {
             double random = new Random().nextDouble();
-            double chance = 0;
-            int amplifier = 0;
-            LivingEntity target = (LivingEntity) entityHitResult.getEntity();
+            double chance;
+            int amplifier;
             for (ItemStack stack : ((ArrowEntity)(Object) this).getOwner().getHandItems()) {
                 if (stack.getItem() instanceof BowItem && EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack) > 0) {
                     chance = (double)EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack)/12;

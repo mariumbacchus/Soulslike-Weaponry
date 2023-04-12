@@ -122,7 +122,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    private PlayState predicate(AnimationState event){
+    private PlayState predicate(AnimationState<?> event){
         event.getController().setAnimation(RawAnimation.begin().then("heartbeat", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }

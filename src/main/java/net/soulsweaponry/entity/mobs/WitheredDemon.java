@@ -48,7 +48,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedDeathInterface {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -60,7 +60,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
         this.experiencePoints = 20;
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSwingArm()) {
@@ -98,7 +98,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     public boolean isFireImmune() {
@@ -123,7 +123,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
-        this.targetSelector.add(3, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -139,8 +139,8 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
 
     @Override
     public boolean canSpawn(WorldView view) {
-        BlockPos blockUnderEntity = new BlockPos(this.getX(), this.getY() - 1, this.getZ());
-        BlockPos positionEntity = new BlockPos(this.getX(), this.getY(), this.getZ());
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox()) 
             && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
             && !world.getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
@@ -189,7 +189,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(DamageSource.mob(this), g);
+        boolean bl = target.damage(this.world.getDamageSources().mobAttack(this), g);
         if (bl) {
            target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
            this.applyDamageEffects(this, target);
