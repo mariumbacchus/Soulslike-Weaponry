@@ -545,5 +545,9 @@
     "advancements.soulsweapons.dream_on.title": "Dream On",
     "advancements.soulsweapons.dream_on.description": "Fall at least 50 blocks and survive thanks to Calculated Fall status effect.",
     "advancements.soulsweapons.moonknight.title": "Blue Steel",
-    "advancements.soulsweapons.moonknight.description": "Return the Essence of Eventide to it's rightful body, and defeat the godlike being that appears."
+    "advancements.soulsweapons.moonknight.description": "Return the Essence of Eventide to it's rightful body, and defeat the godlike being that appears.",
+    "advancements.soulsweapons.trickweapon.title": "Switcharoo!",
+    "advancements.soulsweapons.trickweapon.description": "Acquire your first trickweapon, a weapon that can transform itself into other weaponry!",
+    "advancements.soulsweapons.transform_scythe.title": "Winner takes all",
+    "advancements.soulsweapons.transform_scythe.description": "Feed the Darkin Scythe enough souls to transform itself into a new empowered form."
 }
