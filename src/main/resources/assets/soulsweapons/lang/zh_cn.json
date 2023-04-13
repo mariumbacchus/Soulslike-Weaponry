@@ -45,7 +45,7 @@
     "item.soulsweapons.essence_of_eventide": "日暮精粹",
     "item.soulsweapons.essence_of_luminescence": "昏光精粹",
     "item.soulsweapons.chaos_crown": "混沌之冠",
-    "item.soulsweapons.chaos_robes": "混沌斗篷",
+    "item.soulsweapons.chaos_helmet": "混沌斗篷",
     "item.soulsweapons.arkenplate": "阿肯胸甲",
     "item.soulsweapons.chaos_robes": "混沌披肩",
     "item.soulsweapons.moonstone_ring": "月光石戒指",
@@ -531,7 +531,7 @@
     "advancements.soulsweapons.verglas.title": "伪造之水",
     "advancements.soulsweapons.verglas.description": "获得雾凇石，一种冰冷、光滑的材料，似乎有一些特殊的液体被困在里面。",
     "advancements.soulsweapons.leviathan_axe.title": "给予或夺取",
-    "advancements.soulsweapons.leviathan_axe.description": "获得利维坦之斧"
+    "advancements.soulsweapons.leviathan_axe.description": "获得利维坦之斧",
     "advancements.soulsweapons.dream_on.title": "Dream On",
     "advancements.soulsweapons.dream_on.description": "Fall at least 50 blocks and survive thanks to Calculated Fall status effect.",
     "advancements.soulsweapons.moonknight.title": "Blue Steel",
