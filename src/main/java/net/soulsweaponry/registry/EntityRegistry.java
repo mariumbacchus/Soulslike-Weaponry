@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -32,8 +31,7 @@ import net.soulsweaponry.entity.projectile.*;
 
 public class EntityRegistry {
 
-    private static String ModId = SoulsWeaponry.ModId;
-    public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
+    private static final String ModId = SoulsWeaponry.ModId;
     public static final EntityType<WitheredDemon> WITHERED_DEMON = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "withered_demon"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, WitheredDemon::new).dimensions(EntityDimensions.fixed(1F, 2F)).build());
     public static final EntityType<AccursedLordBoss> ACCURSED_LORD_BOSS = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "accursed_lord_boss"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, AccursedLordBoss::new).dimensions(EntityDimensions.fixed(3F, 6F)).build());
     public static final EntityType<DraugrBoss> DRAUGR_BOSS = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "draugr_boss"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DraugrBoss::new).dimensions(EntityDimensions.fixed(1.5F, 3F)).build());

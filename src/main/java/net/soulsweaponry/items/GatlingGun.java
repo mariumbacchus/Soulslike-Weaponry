@@ -30,8 +30,7 @@ public class GatlingGun extends GunItem {
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (remainingUseTicks < this.getMaxUseTime(stack) - this.startupCooldownVariable(stack) && remainingUseTicks % (8 - EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack)) == 0) {
-            if (user instanceof PlayerEntity) {
-                PlayerEntity playerEntity = (PlayerEntity)user;
+            if (user instanceof PlayerEntity playerEntity) {
                 boolean bl = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
                 ItemStack itemStack = playerEntity.getProjectileType(stack);
                 if (!itemStack.isEmpty() || bl) {
