@@ -32,27 +32,29 @@ public abstract class LivingEntityMixin<T> {
 
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
-    @Inject(method = "applyEnchantmentsToDamage", at = @At("TAIL"))
-    protected void applyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<T> infoReturnable) {
+    @Inject(method = "applyEnchantmentsToDamage", at = @At("TAIL"), cancellable = true)
+    protected void applyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
+        float newAmount = info.getReturnValue();
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
-            float amountAdded = amount * ((amplifier + 1)*.2f);
-            amount += amountAdded;
+            float amountAdded = newAmount * ((amplifier + 1)*.2f);
+            newAmount += amountAdded;
         }
         if (source.isMagic() && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE) && !source.isOutOfWorld()) {
             int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
-            float amountReduced = amount * ((amplifier + 1)*.2f);
-            amount -= amountReduced;
+            float amountReduced = newAmount * ((amplifier + 1)*.2f);
+            newAmount -= amountReduced;
         }
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isProjectile() && source.getAttacker() != null && source.getAttacker() instanceof LivingEntity) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
             float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
             float totalAdded = baseAdded * (amplifier + 1);
-            amount += totalAdded;
+            newAmount += totalAdded;
             entity.world.playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
         }
+        info.setReturnValue(newAmount);
     }
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)

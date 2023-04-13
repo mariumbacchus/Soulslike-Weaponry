@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -29,5 +30,8 @@ public class EntityMixin {
 
         register(EntityRegistry.EVIL_FORLORN, SpawnRestriction.Location.ON_GROUND,
         Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EvilForlorn::canSpawn);
+
+        register(EntityRegistry.DARK_SORCERER, SpawnRestriction.Location.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, DarkSorcerer::canSpawn);
     }
 }

@@ -1,10 +1,13 @@
 package net.soulsweaponry.entity.mobs;
 
 import java.util.EnumSet;
+import java.util.Random;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
@@ -24,6 +27,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ArmorRegistry;
 
@@ -43,6 +48,10 @@ public class DarkSorcerer extends HostileEntity {
         .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+    }
+
+    public static boolean canSpawn(EntityType<? extends HostileEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+        return world.getBlockState(pos.down()).isOf(Blocks.DEEPSLATE_TILES) && world.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     protected void initDataTracker() {
@@ -116,7 +125,7 @@ public class DarkSorcerer extends HostileEntity {
                         this.user.setBeaming(true);
                         this.user.setBeamCords(target.getX(), target.getEyeY(), target.getZ());
                         if (target.getHealth() < target.getMaxHealth()) {
-                            target.setHealth(target.getHealth() + .5F + ((ReturningKnight)target).getAttackingPlayers().size()/2);
+                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayers().size()/2);
                         }
                     } else {
                         this.user.setBeaming(false);
@@ -165,9 +174,9 @@ public class DarkSorcerer extends HostileEntity {
 
             double dd = this.random.nextGaussian() * 0.05D;
             double ee = this.random.nextGaussian() * 0.05D;
-            double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + dd;
-            double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + ee;
-            double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+            double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + dd;
+            double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + ee;
+            double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
             float body = this.bodyYaw * 0.017453292F + MathHelper.cos((float)this.age * 0.6662F) * 0.25F;
             float cosBody = MathHelper.cos(body);
             float sinBody = MathHelper.sin(body);
