@@ -248,7 +248,7 @@
     "tooltip.soulsweapons.overheal": "过量治疗",
     "tooltip.soulsweapons.overheal_description": "- 满生命值给予§e护盾§r而非治疗",
     "tooltip.soulsweapons.omnivamp": "全能吸血",
-    "tooltip.soulsweapons.omnivamp_description": "- 根据§5猛击§r击中的目标数为使用者提供§c回复§r",
+    "tooltip.soulsweapons.omnivamp_description": "- 根据§5技能§r击中的目标数为使用者§c回复生命§r",
     "tooltip.soulsweapons.sword_slam": "猛击",
     "tooltip.soulsweapons.sword_slam_description": "- 蓄力后跃起，随后猛击地面造成范围伤害",
     "tooltip.soulsweapons.flame_enraged": "淬火",
