@@ -27,7 +27,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -176,10 +175,8 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
-    public static enum LuckType {
-        GOOD,
-        NEUTRAL,
-        BAD
+    public enum LuckType {
+        GOOD, NEUTRAL, BAD
     }
 
     @Override
