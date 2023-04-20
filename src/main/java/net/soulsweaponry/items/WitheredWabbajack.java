@@ -175,10 +175,8 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
-    public static enum LuckType {
-        GOOD,
-        NEUTRAL,
-        BAD
+    public enum LuckType {
+        GOOD, NEUTRAL, BAD
     }
 
     @Override
