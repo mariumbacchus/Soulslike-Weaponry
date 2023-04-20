@@ -24,7 +24,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -124,8 +123,8 @@ public class WitheredWabbajack extends SwordItem {
          * Finner ut total sjansen basert på modifiserte sjanser til prosjektilene.
          */
         int totalChance = 0;
-        for (int i = 0; i < projectileList.size(); i++) {
-            totalChance += (int)projectileList.get(i).get(2);
+        for (ArrayList<Object> objects : projectileList) {
+            totalChance += (int) objects.get(2);
         }
 
         /* 
@@ -175,10 +174,8 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
-    public static enum LuckType {
-        GOOD,
-        NEUTRAL,
-        BAD
+    public enum LuckType {
+        GOOD, NEUTRAL, BAD
     }
 
     @Override
