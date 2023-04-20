@@ -27,7 +27,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -89,32 +88,32 @@ public class WitheredWabbajack extends SwordItem {
             {new WitheredWabbajackProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.GOOD},
         };
         ArrayList<ArrayList<Object>> projectileList = new ArrayList<>();
-        for (int i = 0; i < projectileTypes.length; i++) {
-            /* 
+        for (Object[] projectileType : projectileTypes) {
+            /*
              * Legger til definerte prosjektiler sammen med luck type i en ArrayList.
              */
             ArrayList<Object> list = new ArrayList<>();
-            list.add(projectileTypes[i][0]);
-            list.add(projectileTypes[i][1]);
-            /* 
+            list.add(projectileType[0]);
+            list.add(projectileType[1]);
+            /*
              * Legger til luckFactor basert på hva slags type prosjektil den er, om den er bra eller dårlig.
              */
             int luckFactor;
-            switch ((LuckType)list.get(1)) {
-                case BAD:
+            switch ((LuckType) list.get(1)) {
+                case BAD -> {
                     luckFactor = (10 - this.getLuckFactor(user));
                     list.add(luckFactor);
-                    break;
-                case GOOD:
+                }
+                case GOOD -> {
                     luckFactor = (10 + this.getLuckFactor(user));
                     list.add(luckFactor);
-                    break;
-                default:
+                }
+                default -> {
                     luckFactor = 10;
                     list.add(luckFactor);
-                    break;
+                }
             }
-            /* 
+            /*
              * Hvis luckFactor er mindre eller lik 0, legges ikke prosjektilen til listen.
              */
             if (!(luckFactor <= 0)) {
@@ -178,9 +177,7 @@ public class WitheredWabbajack extends SwordItem {
     }
 
     public enum LuckType {
-        GOOD,
-        NEUTRAL,
-        BAD
+        GOOD, NEUTRAL, BAD
     }
 
     @Override
