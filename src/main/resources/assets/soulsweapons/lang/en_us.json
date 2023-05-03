@@ -233,7 +233,7 @@
     "subtitles.soulsweapons.knight_sword_smash": "Moonfall",
     "subtitles.soulsweapons.knight_charge_sword": "Moonlight Sword charges up",
     "subtitles.soulsweapons.slice_target": "A mod was sliced",
-    "subtitles.soulsweapons.umbral_trespass": "Umbral Trespass activates",
+    "subtitles.soulsweapons.umbral_trespass_sound": "Umbral Trespass activates",
     "subtitles.soulsweapons.trick_weapon": "Used Trick Weapon",
 
     "tooltip.soulsweapons.shift": "Hold [§eSHIFT§r] for Info",
@@ -470,6 +470,7 @@
     "tooltip.soulsweapons.chaos_crown_lore_1": "With all knowledge gone with time, it is impossible to know if",
     "tooltip.soulsweapons.chaos_crown_lore_2": "the Monarch's intentions were always so evil. Not much remains",
     "tooltip.soulsweapons.chaos_crown_lore_3": "of his own empire either, after all...",
+    "tooltip.soulsweapons.shard_of_uncertainty.part_1": "It seems to perfectly fit in a certain pedestal...",
 
     "enchantment.soulsweapons.fast_hands": "Fast Hands",
     "enchantment.soulsweapons.fast_hands.desc": "Reduce charge time for Guns and Bows (model doesn't change).",

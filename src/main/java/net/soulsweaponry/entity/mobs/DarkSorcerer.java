@@ -1,18 +1,9 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.EnumSet;
-import java.util.Random;
-
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -28,9 +19,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+
+import java.util.EnumSet;
 
 public class DarkSorcerer extends HostileEntity {
 
@@ -50,8 +44,14 @@ public class DarkSorcerer extends HostileEntity {
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
-    public static boolean canSpawn(EntityType<? extends HostileEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return world.getBlockState(pos.down()).isOf(Blocks.DEEPSLATE_TILES) && world.getDifficulty() != Difficulty.PEACEFUL;
+    @Override
+    public boolean canSpawn(WorldView view) {
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
+                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
+                && world.getDifficulty() != Difficulty.PEACEFUL
+                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.DARK_SORCERER);
     }
 
     protected void initDataTracker() {

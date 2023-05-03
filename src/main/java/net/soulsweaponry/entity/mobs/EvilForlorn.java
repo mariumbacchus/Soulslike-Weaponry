@@ -1,15 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.Random;
-
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -20,9 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EntityRegistry;
 
 public class EvilForlorn extends Forlorn {
 
@@ -50,11 +43,7 @@ public class EvilForlorn extends Forlorn {
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(4, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
-    }
-
-    public static boolean canSpawn(EntityType<EvilForlorn> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return EvilForlorn.getSpawnable() && world.getDifficulty() != Difficulty.PEACEFUL;
+        this.targetSelector.add(4, (new RevengeGoal(this)).setGroupRevenge());
     }
 
     @Override
@@ -69,11 +58,14 @@ public class EvilForlorn extends Forlorn {
     }
 
     @Override
-    public boolean canSpawn(WorldView world) {
-        return world.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox());
-    }
-
-    public static boolean getSpawnable() {
-        return EvilForlorn.canSpawn;
+    public boolean canSpawn(WorldView view) {
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
+                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
+                && world.getDifficulty() != Difficulty.PEACEFUL
+                && (world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SAND) || world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SOIL))
+                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.EVIL_FORLORN)
+                && EvilForlorn.canSpawn;
     }
 }

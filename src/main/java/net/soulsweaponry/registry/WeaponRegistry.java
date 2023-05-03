@@ -45,9 +45,9 @@ public class WeaponRegistry {
     public static ToolItem STING = new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
     public static ToolItem FEATHERLIGHT = new Featherlight(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
     public static ToolItem CRUCIBLE_SWORD = new CrucibleSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
-    public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
-    public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
+    public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
+    public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 0, -3f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 0, true, false);
     public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 0, 1, false, true);
     public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, -2.8f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 2, false, true);

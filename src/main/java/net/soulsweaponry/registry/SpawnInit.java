@@ -36,23 +36,17 @@ public class SpawnInit {
     private static void normalSpawn() {
         Predicate<BiomeSelectionContext> biomeSelectorChungus = (context) -> {
             RegistryKey<Biome> category = context.getBiomeKey();
-            return category == BiomeKeys.FOREST; //&& category != Biome.Category.NETHER && category != Biome.Category.THEEND 
-                //&& category != Biome.Category.MUSHROOM && category != Biome.Category.DESERT 
-                //&& category != Biome.Category.OCEAN && category != Biome.Category.MESA 
-                //&& category != Biome.Category.JUNGLE && category != Biome.Category.BEACH 
-                //&& category != Biome.Category.SWAMP && category != Biome.Category.UNDERGROUND;  
+            return category == BiomeKeys.FOREST;
         };
 
         Predicate<BiomeSelectionContext> biomeSelectorDemon = (context) -> {
             RegistryKey<Biome> category = context.getBiomeKey();
             return category == BiomeKeys.CRIMSON_FOREST;
-                
         };
 
         Predicate<BiomeSelectionContext> biomeSelectorForlorn = (context) -> {
             RegistryKey<Biome> category = context.getBiomeKey();
             return category == BiomeKeys.SOUL_SAND_VALLEY;
-                
         };
 
         addSpawn(biomeSelectorChungus, EntityRegistry.BIG_CHUNGUS.getSpawnGroup(),

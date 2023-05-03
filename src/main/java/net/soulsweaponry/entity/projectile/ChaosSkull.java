@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -39,6 +40,7 @@ import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.SwordItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -53,6 +55,8 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+
+import java.util.HashMap;
 
 public class ChaosSkull extends ExplosiveProjectileEntity {
 
@@ -78,8 +82,7 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity && this.getOwner() instanceof LivingEntity) {
-            LivingEntity entity = ((LivingEntity)entityHitResult.getEntity());
+        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity entity && this.getOwner() instanceof LivingEntity) {
             int rng = this.random.nextInt(3);
             if (rng == 0) {
                 int duration = this.random.nextInt(160) + 40;
@@ -115,55 +118,58 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
             int rng = this.random.nextInt(6);
             for (int i = 0; i < amount; i++) {
                 switch (rng) {
-                    case 1:
+                    case 1 -> {
                         WitherSkeletonEntity skeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, this.world);
                         skeleton.setPos(this.getX(), this.getY(), this.getZ());
                         this.initEquip(skeleton);
                         this.world.spawnEntity(skeleton);
-                    break;
-                    case 2:
+                    }
+                    case 2 -> {
                         LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
                         lightningEntity.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(lightningEntity);
-                    break;
-                    case 3:
+                    }
+                    case 3 -> {
                         Entity hostile = randomHostile();
                         hostile.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(hostile);
-                    break;
-                    case 4:
+                    }
+                    case 4 -> {
                         Entity passive = randomPassive();
                         passive.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(passive);
-                    break;
-                    case 5:
-                        float power = this.random.nextFloat()*3;
-                        this.world.createExplosion(this, DamageSource.explosion((LivingEntity)this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, DestructionType.DESTROY);
-                    break;
-                    default:
-                    for (int j = 0; j < 2; j++) {
-                        BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
-                        chungus.setPos(this.getX(), this.getY(), this.getZ());
-                        this.world.spawnEntity(chungus);
                     }
-                    break;
+                    case 5 -> {
+                        float power = this.random.nextFloat() * 3;
+                        this.world.createExplosion(this, DamageSource.explosion((LivingEntity) this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, DestructionType.DESTROY);
+                    }
+                    default -> {
+                        for (int j = 0; j < 2; j++) {
+                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
+                            chungus.setPos(this.getX(), this.getY(), this.getZ());
+                            this.world.spawnEntity(chungus);
+                        }
+                    }
                 }
             }
         }
         this.finisher();
     }
 
-    public void initEquip(LivingEntity entity) {
-        Object[][] equip = {
-            {Items.NETHERITE_HELMET, EquipmentSlot.HEAD},
-            {Items.NETHERITE_CHESTPLATE, EquipmentSlot.CHEST},
-            {Items.NETHERITE_LEGGINGS, EquipmentSlot.LEGS},
-            {Items.NETHERITE_BOOTS, EquipmentSlot.FEET},
-            {Items.STONE_SWORD, EquipmentSlot.MAINHAND},
-        };
-        for (int i = 0; i < equip.length; i++) {
-            if (this.random.nextDouble() < 0.5f) {
-                entity.equipStack((EquipmentSlot) equip[i][1], new ItemStack((ItemConvertible) equip[i][0]));
+    private void initEquip(LivingEntity entity) {
+        HashMap<ItemStack, EquipmentSlot> equip = new HashMap<>();
+        equip.put(new ItemStack(Items.NETHERITE_HELMET), EquipmentSlot.HEAD);
+        equip.put(new ItemStack(Items.NETHERITE_CHESTPLATE), EquipmentSlot.CHEST);
+        equip.put(new ItemStack(Items.NETHERITE_LEGGINGS), EquipmentSlot.LEGS);
+        equip.put(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET);
+        equip.put(new ItemStack(Items.STONE_SWORD), EquipmentSlot.MAINHAND);
+        for (ItemStack stack : equip.keySet()) {
+            if (entity.getRandom().nextDouble() < 0.5D) {
+                if (!(stack.getItem() instanceof SwordItem)) {
+                    stack.addEnchantment(Enchantments.PROTECTION, 2);
+                    stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+                }
+                entity.equipStack(equip.get(stack), stack);
             }
         }
     }

@@ -93,8 +93,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 int times = stack.getNbt().getInt(RUPTURES);
                 Vec3d direction = new Vec3d(stack.getNbt().getDouble(SPOT_X), 0, stack.getNbt().getDouble(SPOT_Z)).multiply(mod);
                 BlockPos pos = new BlockPos(stack.getNbt().getIntArray(POS)[0], stack.getNbt().getIntArray(POS)[1], stack.getNbt().getIntArray(POS)[2]);
-                Vec3d targetArea = new Vec3d(pos.getX(), user.getY(), pos.getZ()).add(direction);
-                BlockPos blockPos = new BlockPos(targetArea);
+                Vec3d targetArea = new Vec3d(pos.getX(), user.getY() - 5, pos.getZ()).add(direction);
+                BlockPos blockPos = this.getAlteredPos(world, new BlockPos(targetArea));
                 for (Entity e : world.getOtherEntities(user, new Box(blockPos).expand(2))) {
                     if (e instanceof LivingEntity) {
                         e.damage(DamageSource.mob(user), this.getAbilityDamage((LivingEntity) e, stack));
@@ -113,6 +113,10 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 }
             }
         }
+    }
+
+    private BlockPos getAlteredPos(World world, BlockPos start) {
+        return world.getBlockState(start).isAir() ? start : this.getAlteredPos(world, start.add(0, 1, 0));
     }
 
     @Override
