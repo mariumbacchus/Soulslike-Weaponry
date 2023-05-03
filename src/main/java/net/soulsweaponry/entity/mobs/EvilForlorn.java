@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EntityRegistry;
 
 public class EvilForlorn extends Forlorn {
 
@@ -52,10 +54,6 @@ public class EvilForlorn extends Forlorn {
         this.targetSelector.add(4, (new RevengeGoal(this)).setGroupRevenge());
     }
 
-    public static boolean canSpawn(EntityType<EvilForlorn> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return EvilForlorn.getSpawnable() && world.getDifficulty() != Difficulty.PEACEFUL;
-    }
-
     @Override
     public void tick() {
         super.tick();
@@ -68,11 +66,14 @@ public class EvilForlorn extends Forlorn {
     }
 
     @Override
-    public boolean canSpawn(WorldView world) {
-        return world.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox());
-    }
-
-    public static boolean getSpawnable() {
-        return EvilForlorn.canSpawn;
+    public boolean canSpawn(WorldView view) {
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
+                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
+                && world.getDifficulty() != Difficulty.PEACEFUL
+                && (world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SAND) || world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SOIL))
+                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.EVIL_FORLORN)
+                && EvilForlorn.canSpawn;
     }
 }

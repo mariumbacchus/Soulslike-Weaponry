@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,7 +75,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                player.addVelocity(0, 1, 0);
+                Vec3d rotation = player.getRotationVector().multiply(1f);
+                player.addVelocity(rotation.getX(), 1, rotation.getZ());
                 player.world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                 duration = MathHelper.floor(duration/1.5);
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, 0));

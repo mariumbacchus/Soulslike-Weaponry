@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -38,6 +39,7 @@ import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.SwordItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -51,6 +53,8 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+
+import java.util.HashMap;
 
 public class ChaosSkull extends ExplosiveProjectileEntity {
 
@@ -150,17 +154,20 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
         this.finisher();
     }
 
-    public void initEquip(LivingEntity entity) {
-        Object[][] equip = {
-            {Items.NETHERITE_HELMET, EquipmentSlot.HEAD},
-            {Items.NETHERITE_CHESTPLATE, EquipmentSlot.CHEST},
-            {Items.NETHERITE_LEGGINGS, EquipmentSlot.LEGS},
-            {Items.NETHERITE_BOOTS, EquipmentSlot.FEET},
-            {Items.STONE_SWORD, EquipmentSlot.MAINHAND},
-        };
-        for (Object[] objects : equip) {
-            if (this.random.nextDouble() < 0.5f) {
-                entity.equipStack((EquipmentSlot) objects[1], new ItemStack((ItemConvertible) objects[0]));
+    private void initEquip(LivingEntity entity) {
+        HashMap<ItemStack, EquipmentSlot> equip = new HashMap<>();
+        equip.put(new ItemStack(Items.NETHERITE_HELMET), EquipmentSlot.HEAD);
+        equip.put(new ItemStack(Items.NETHERITE_CHESTPLATE), EquipmentSlot.CHEST);
+        equip.put(new ItemStack(Items.NETHERITE_LEGGINGS), EquipmentSlot.LEGS);
+        equip.put(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET);
+        equip.put(new ItemStack(Items.STONE_SWORD), EquipmentSlot.MAINHAND);
+        for (ItemStack stack : equip.keySet()) {
+            if (entity.getRandom().nextDouble() < 0.5D) {
+                if (!(stack.getItem() instanceof SwordItem)) {
+                    stack.addEnchantment(Enchantments.PROTECTION, 2);
+                    stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+                }
+                entity.equipStack(equip.get(stack), stack);
             }
         }
     }

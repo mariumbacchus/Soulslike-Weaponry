@@ -157,6 +157,14 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     && <-- stops evaluating if the first operand evaluates to false since the result will be false */
 
     @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (source == (this.world.getDamageSources().lightningBolt())) {
+            return false;
+        }
+        return super.damage(source, amount);
+    }
+
+    @Override
     protected void mobTick() {
         super.mobTick();
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
