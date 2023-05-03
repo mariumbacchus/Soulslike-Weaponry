@@ -33,23 +33,7 @@ public class Galeforce extends BowItem {
     
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 50, 3));
-            if (playerEntity.getOffHandStack().isOf(this)) {
-                float f = playerEntity.getYaw();
-                float g = playerEntity.getPitch();
-                float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                float k = -MathHelper.sin(g * 0.017453292F);
-                float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                float m = MathHelper.sqrt(h * h + k * k + l * l);
-                float n = 3.0F * ((1.0F + 1F) / 4.0F);
-                h *= n / m;
-                k *= n / m;
-                l *= n / m;
-                playerEntity.addVelocity((double)h, (double)k, (double)l);
-                playerEntity.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
-            }
+        if (user instanceof PlayerEntity playerEntity) {
             boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getArrowType(stack);
             if (!itemStack.isEmpty() || creativeAndInfinity) {
@@ -60,6 +44,22 @@ public class Galeforce extends BowItem {
                 int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
                 float pullProgress = getPullProgress(maxUseTime);
                 if (!((double)pullProgress < 0.1D)) {
+                    user.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 50, 3));
+                    if (playerEntity.getOffHandStack().isOf(this)) {
+                        float f = playerEntity.getYaw();
+                        float g = playerEntity.getPitch();
+                        float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
+                        float k = -MathHelper.sin(g * 0.017453292F);
+                        float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
+                        float m = MathHelper.sqrt(h * h + k * k + l * l);
+                        float n = 3.0F * ((1.0F + 1F) / 4.0F);
+                        h *= n / m;
+                        k *= n / m;
+                        l *= n / m;
+                        playerEntity.addVelocity((double)h, (double)k, (double)l);
+                        playerEntity.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
+                    }
+
                     boolean bl2 = creativeAndInfinity && itemStack.isOf(Items.ARROW);
                     if (!world.isClient) {
                         ChargedArrow chargedArrow = new ChargedArrow(world, user, itemStack);
@@ -89,7 +89,7 @@ public class Galeforce extends BowItem {
                         }                    
                         world.spawnEntity(chargedArrow);               
                     }
-                    world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + pullProgress * 0.5F);
+                    world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + pullProgress * 0.5F);
                     if (!bl2 && !playerEntity.getAbilities().creativeMode) {
                         itemStack.decrement(1);
                         if (itemStack.isEmpty()) {

@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -51,8 +52,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         super.postHit(stack, target, attacker);
-        if (attacker instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) attacker;
+        if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
@@ -66,12 +66,12 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     }
     
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) user;
+        if (user instanceof PlayerEntity player) {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                player.addVelocity(0, 1, 0);
+                Vec3d rotation = player.getRotationVector().multiply(1f);
+                player.addVelocity(rotation.getX(), 1, rotation.getZ());
                 player.world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                 duration = MathHelper.floor(duration/1.5);
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, 0));
@@ -89,8 +89,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
+        if (entity instanceof PlayerEntity player) {
             float power = ConfigConstructor.darkin_blade_ability_damage;
             CometSpear.detonateGround(player, power, 3, 1.75f, stack, world, true, 25);
         }

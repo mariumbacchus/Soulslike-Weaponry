@@ -44,7 +44,7 @@ public class ItemRegistry {
     public static final Item SILVER_BULLET = new Item(new Item.Settings().group(MAIN_GROUP).maxCount(20));
     public static final Item BOSS_COMPASS = new BossCompass(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE));
     public static final Item MOONSTONE_RING = new MoonstoneRing(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).maxDamage(25));
-    public static final Item SHARD_OF_UNCERTAINTY = new Item(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof());
+    public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "shard_of_uncertainty", 1);
     public static final Item VERGLAS = new Item(new Item.Settings().group(MAIN_GROUP));
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20).group(MAIN_GROUP));
 
