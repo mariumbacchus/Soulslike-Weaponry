@@ -30,7 +30,9 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 
 public class DarkSorcerer extends HostileEntity {
 
@@ -50,8 +52,14 @@ public class DarkSorcerer extends HostileEntity {
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
-    public static boolean canSpawn(EntityType<? extends HostileEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return world.getBlockState(pos.down()).isOf(Blocks.DEEPSLATE_TILES) && world.getDifficulty() != Difficulty.PEACEFUL;
+    @Override
+    public boolean canSpawn(WorldView view) {
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
+                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
+                && world.getDifficulty() != Difficulty.PEACEFUL
+                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.DARK_SORCERER);
     }
 
     protected void initDataTracker() {

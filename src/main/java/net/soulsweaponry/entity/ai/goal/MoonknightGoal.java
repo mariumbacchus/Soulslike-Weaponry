@@ -1,11 +1,6 @@
 package net.soulsweaponry.entity.ai.goal;
 
-import java.util.EnumSet;
-import java.util.Objects;
-
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -13,7 +8,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
@@ -24,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.EvilRemnant;
 import net.soulsweaponry.entity.mobs.Moonknight;
@@ -31,16 +26,21 @@ import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseOne;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class MoonknightGoal extends Goal {
     
-    private Moonknight boss;
+    private final Moonknight boss;
     private int attackStatus;
     private int attackCooldown;
     private int specialCooldown;
@@ -523,20 +523,22 @@ public class MoonknightGoal extends Goal {
     private void ruptureLogic() {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-        if (attackStatus == 42 || attackStatus == 67) {
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_STEP, SoundCategory.HOSTILE, 1f, 1f);
+        if (attackStatus == 21 || attackStatus == 33) {
+            for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
+                this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+            }
         }
         if (this.attackStatus == 52) {
             for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
                 if (entity instanceof LivingEntity && !(entity instanceof EvilRemnant)) {
                     entity.damage(DamageSource.mob(boss), this.getModifiedDamage(35f));
                     entity.addVelocity(0, 1.0, 0);
+                    this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                     if (!this.boss.world.isClient) {
                         ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, entity.getBlockPos(), entity.getX(), (float)entity.getZ());
                     }
                 }
             }
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus >= 70) {
             this.resetAttack(0.5f, true, 1f);
@@ -590,7 +592,7 @@ public class MoonknightGoal extends Goal {
                 this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(20) - 10, this.boss.getY() - 2f, this.boss.getZ() + this.boss.getRandom().nextInt(20) - 10);
                 if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY() + .1f, this.pos.getZ());
                 this.initEquip(entity);
-                this.boss.world.playSound(null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 this.boss.world.spawnEntity(entity);
                 if (!this.boss.world.isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 100);
@@ -600,6 +602,7 @@ public class MoonknightGoal extends Goal {
                 ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, target.getBlockPos(), target.getX(), (float) target.getZ());
             }
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 140, 1));
+            this.boss.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 0.7f, 1f);
         }
         if (this.attackStatus >= 48) {
             this.resetAttack(1f, true, 2f);
@@ -623,14 +626,16 @@ public class MoonknightGoal extends Goal {
     }
 
     private void initEquip(LivingEntity entity) {
-        Object[][] equip = {
-            {Items.NETHERITE_HELMET, EquipmentSlot.HEAD},
-            {Items.NETHERITE_CHESTPLATE, EquipmentSlot.CHEST},
-            {Items.NETHERITE_LEGGINGS, EquipmentSlot.LEGS},
-            {Items.NETHERITE_BOOTS, EquipmentSlot.FEET},
-        };
-        for (Object[] objects : equip) {
-            entity.equipStack((EquipmentSlot) objects[1], new ItemStack((ItemConvertible) objects[0]));
+        HashMap<ItemStack, EquipmentSlot> equip = new HashMap<>();
+        equip.put(new ItemStack(Items.NETHERITE_HELMET), EquipmentSlot.HEAD);
+        equip.put(new ItemStack(Items.NETHERITE_CHESTPLATE), EquipmentSlot.CHEST);
+        equip.put(new ItemStack(Items.NETHERITE_LEGGINGS), EquipmentSlot.LEGS);
+        equip.put(new ItemStack(Items.NETHERITE_BOOTS), EquipmentSlot.FEET);
+        for (ItemStack stack : equip.keySet()) {
+            stack.addEnchantment(Enchantments.PROTECTION, 2);
+            stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+            entity.equipStack(equip.get(stack), stack);
         }
+        entity.setHealth(entity.getMaxHealth() * 1.5f);
     }
 }
