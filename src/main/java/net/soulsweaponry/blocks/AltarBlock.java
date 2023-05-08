@@ -2,7 +2,7 @@ package net.soulsweaponry.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ import java.util.List;
 
 public class AltarBlock extends Block {
 
-    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final DirectionProperty FACING = FacingBlock.FACING;
 
     public AltarBlock(Settings settings) {
         super(settings);

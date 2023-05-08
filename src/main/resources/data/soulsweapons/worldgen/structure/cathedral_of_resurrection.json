@@ -11,7 +11,7 @@
             "spawns": [
                 {
                     "type": "soulsweapons:dark_sorcerer",
-                    "weight": 20,
+                    "weight": 100,
                     "minCount": 1,
                     "maxCount": 4
                 }
