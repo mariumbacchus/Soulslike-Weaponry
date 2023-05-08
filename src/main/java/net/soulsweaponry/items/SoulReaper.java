@@ -65,7 +65,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     entity.setOwner(player);
                     world.spawnEntity(entity);
                     this.addAmount(stack, -3);
-                } else if (power < 30) {
+                } else if (player.isSneaking() || power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);

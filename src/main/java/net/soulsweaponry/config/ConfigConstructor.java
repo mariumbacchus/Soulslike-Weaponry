@@ -43,7 +43,7 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
-    @Entry(min=0,max=100) public static int evil_forlorn_spawnrate = 10;
+    @Entry(min=0,max=100) public static int evil_forlorn_spawnrate = 20;
 
     @Entry public static boolean can_withered_demon_spawn = true;
     @Entry public static boolean can_moderatly_sized_chungus_spawn = true;
