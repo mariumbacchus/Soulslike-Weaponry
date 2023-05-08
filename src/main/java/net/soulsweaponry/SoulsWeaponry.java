@@ -45,6 +45,7 @@ public class SoulsWeaponry implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        long start = System.currentTimeMillis();
         MidnightConfig.init(ModId, ConfigConstructor.class);
         LOGGER.info("Config initialized!");
         GeckoLib.initialize();
@@ -73,6 +74,7 @@ public class SoulsWeaponry implements ModInitializer {
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
 
-        LOGGER.info("Initializing done!");
+        long end = System.currentTimeMillis();
+        LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");
     }
 }

@@ -169,8 +169,12 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
-                for (int i = 1; i <= 8; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                if (Screen.hasControlDown()) {
+                    for (int i = 1; i <= 8; i++) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                    }
+                } else {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
             }
         } else {
