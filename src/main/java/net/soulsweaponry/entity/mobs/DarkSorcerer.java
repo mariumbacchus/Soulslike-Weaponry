@@ -1,8 +1,10 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -19,12 +21,13 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.EnumSet;
+import java.util.Random;
 
 public class DarkSorcerer extends HostileEntity {
 
@@ -47,11 +50,13 @@ public class DarkSorcerer extends HostileEntity {
     @Override
     public boolean canSpawn(WorldView view) {
         BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
-        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
-                && world.getDifficulty() != Difficulty.PEACEFUL
-                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.DARK_SORCERER);
+                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
+                && this.world.getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
+    }
+
+    public static boolean canSpawn(EntityType<DarkSorcerer> darkSorcererEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return serverWorldAccess.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     protected void initDataTracker() {

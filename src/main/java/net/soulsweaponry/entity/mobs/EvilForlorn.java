@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -12,10 +13,12 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.EntityRegistry;
+
+import java.util.Random;
 
 public class EvilForlorn extends Forlorn {
 
@@ -50,6 +53,9 @@ public class EvilForlorn extends Forlorn {
     public void tick() {
         super.tick();
         this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+        if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
+            this.discard();
+        }
     }
 
     @Override
@@ -59,13 +65,14 @@ public class EvilForlorn extends Forlorn {
 
     @Override
     public boolean canSpawn(WorldView view) {
-        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
-        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
+                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
                 && world.getDifficulty() != Difficulty.PEACEFUL
-                && (world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SAND) || world.getBlockState(positionEntity.down()).isOf(Blocks.SOUL_SOIL))
-                && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.EVIL_FORLORN)
-                && EvilForlorn.canSpawn;
+                && world.getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
+                && this.getBlockY() < 100 && this.getBlockY() > 40;
+    }
+
+    public static boolean canSpawn(EntityType<EvilForlorn> evilForlornEntityType, ServerWorldAccess world, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return EvilForlorn.canSpawn;
     }
 }

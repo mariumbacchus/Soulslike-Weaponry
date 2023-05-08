@@ -1,13 +1,8 @@
 package net.soulsweaponry.blocks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -30,9 +25,14 @@ import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.registry.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 public class AltarBlock extends Block {
 
-    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final DirectionProperty FACING = FacingBlock.FACING;
 
     public AltarBlock(Settings settings) {
         super(settings);

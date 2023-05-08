@@ -65,13 +65,13 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     entity.setOwner(player);
                     world.spawnEntity(entity);
                     this.addAmount(stack, -3);
-                } else if (power >= 10 && power < 30) {
+                } else if (player.isSneaking() || power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
                     this.addAmount(stack, -10);
-                } else if (power >= 30) {
+                } else {
                     Soulmass entity = new Soulmass(EntityRegistry.SOULMASS, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
@@ -93,9 +93,9 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
         double d = random.nextGaussian() * 0.05D;
         double e = random.nextGaussian() * 0.05D;
         for(int i = 0; i < 50; ++i) {
-            double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
             world.addParticle(ParticleTypes.SOUL, x, y, z, newX/8, newY/2, newZ/8);
             world.addParticle(ParticleTypes.DRAGON_BREATH, x, y, z, newX/8, newY/2, newZ/8);
         }
