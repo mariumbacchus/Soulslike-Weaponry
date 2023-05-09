@@ -165,6 +165,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int withered_wabbajack_damage = 8;
 
     @Entry public static boolean can_projectiles_apply_posture_break = true;
+    @Entry public static int silver_bullet_undead_bonus_damage = 4;
     @Entry public static int blunderbuss_damage = 4;
     @Entry public static int blunderbuss_cooldown = 80;
     @Entry public static int gatling_gun_damage = 1;
