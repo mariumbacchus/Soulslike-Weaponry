@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -27,7 +28,6 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 public class SilverBulletEntity extends NonArrowProjectile implements IAnimatable, IAnimationTickable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private int life;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -56,6 +56,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
         }
         Vec3d vec3d = this.getVelocity();
         this.setVelocity(vec3d.x, vec3d.y + (double)0.045f, vec3d.z);
+        if (this.age > 200 && !world.isClient) {
+            this.discard();
+        }
     }
 
     public boolean isFireImmune() {
@@ -69,6 +72,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (entityHitResult.getEntity() instanceof LivingEntity && ((LivingEntity) entityHitResult.getEntity()).getGroup().equals(EntityGroup.UNDEAD)) {
+            this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
+        }
         super.onEntityHit(entityHitResult);
         if (ConfigConstructor.can_projectiles_apply_posture_break && entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
             int random = this.random.nextInt(10);
@@ -88,14 +94,6 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
             }
         }
         this.discard();
-    }
-
-    @Override
-    protected void age() {
-        ++this.life;
-        if (this.life >= 200) {
-            this.discard();
-        }
     }
 
     @Override
