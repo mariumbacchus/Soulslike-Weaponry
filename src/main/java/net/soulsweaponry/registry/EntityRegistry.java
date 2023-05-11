@@ -12,21 +12,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.AccursedLordBoss;
-import net.soulsweaponry.entity.mobs.BigChungus;
-import net.soulsweaponry.entity.mobs.ChaosMonarch;
-import net.soulsweaponry.entity.mobs.DarkSorcerer;
-import net.soulsweaponry.entity.mobs.DraugrBoss;
-import net.soulsweaponry.entity.mobs.EvilForlorn;
-import net.soulsweaponry.entity.mobs.Forlorn;
-import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.entity.mobs.Moonknight;
-import net.soulsweaponry.entity.mobs.NightShade;
-import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entity.mobs.ReturningKnight;
-import net.soulsweaponry.entity.mobs.SoulReaperGhost;
-import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.entity.mobs.WitheredDemon;
+import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
 
 public class EntityRegistry {
@@ -46,6 +32,7 @@ public class EntityRegistry {
     public static final EntityType<Soulmass> SOULMASS = Registry.register(Registries.ENTITY_TYPE ,new Identifier(ModId, "soulmass"), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, Soulmass::new).dimensions(EntityDimensions.fixed(2.7F, 3.5F)).build());
     public static final EntityType<ChaosMonarch> CHAOS_MONARCH = Registry.register(Registries.ENTITY_TYPE ,new Identifier(ModId, "chaos_monarch"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ChaosMonarch::new).dimensions(EntityDimensions.fixed(2.5F, 6F)).build());
     public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registries.ENTITY_TYPE ,new Identifier(ModId, "moonknight"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, Moonknight::new).dimensions(EntityDimensions.fixed(3F, 8F)).build());
+    public static final EntityType<FrostGiant> FROST_GIANT = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "frost_giant"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, FrostGiant::new).dimensions(EntityDimensions.fixed(1.25F, 2.6F)).build());
 
     //public static final EntityType<DayStalker> DAY_STALKER = EntityRegistryBuilder.<DayStalker>createBuilder(new Identifier(ModId, "day_stalker")).category(SpawnGroup.MONSTER).entity(DayStalker::new).dimensions(EntityDimensions.changing(4F, 8F)).build();
     //public static final EntityType<NightProwler> NIGHT_PROWLER = EntityRegistryBuilder.<NightProwler>createBuilder(new Identifier(ModId, "night_prowler")).category(SpawnGroup.MONSTER).entity(NightProwler::new).dimensions(EntityDimensions.changing(4F, 8F)).build();
@@ -73,11 +60,12 @@ public class EntityRegistry {
     public static final Item DARK_SORCERER_SPAWN_EGG = new SpawnEggItem(DARK_SORCERER, 0, 2572343, new FabricItemSettings());
     public static final Item BIG_CHUNGUS_SPAWN_EGG = new SpawnEggItem(BIG_CHUNGUS, 12636653, 0, new FabricItemSettings());
     public static final Item SOUL_REAPER_GHOST_SPAWN_EGG = new SpawnEggItem(SOUL_REAPER_GHOST, 13480150, 13200614, new FabricItemSettings());
-    public static final Item FORLORN_SPAWN_EGG = new SpawnEggItem(FORLORN, 	4859716, 	5701896, new FabricItemSettings());
+    public static final Item FORLORN_SPAWN_EGG = new SpawnEggItem(FORLORN, 4859716, 5701896, new FabricItemSettings());
     public static final Item EVIL_FORLORN_SPAWN_EGG = new SpawnEggItem(EVIL_FORLORN, 5701896, 4859716, new FabricItemSettings());
     public static final Item SOULMASS_SPAWN_EGG = new SpawnEggItem(SOULMASS, 4494266, 9658504, new FabricItemSettings());
     public static final Item CHAOS_MONARCH_SPAWN_EGG = new SpawnEggItem(CHAOS_MONARCH, 4325468, 0, new FabricItemSettings());
     public static final Item MOONKNIGHT_SPAWN_EGG = new SpawnEggItem(MOONKNIGHT, 13357520, 390585, new FabricItemSettings());
+    public static final Item FROST_GIANT_SPAWN_EGG = new SpawnEggItem(FROST_GIANT, 0x02523f, 0x46dffa, new FabricItemSettings());
 
     public static void init() {
         FabricDefaultAttributeRegistry.register(WITHERED_DEMON, WitheredDemon.createDemonAttributes());
@@ -95,6 +83,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(CHAOS_MONARCH, ChaosMonarch.createBossAttributes());
         FabricDefaultAttributeRegistry.register(FREYR_SWORD_ENTITY_TYPE, FreyrSwordEntity.createEntityAttributes());
         FabricDefaultAttributeRegistry.register(MOONKNIGHT, Moonknight.createBossAttributes());
+        FabricDefaultAttributeRegistry.register(FROST_GIANT, FrostGiant.createGiantAttributes());
 
         //FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createHostileAttributes());
         //FabricDefaultAttributeRegistry.register(NIGHT_PROWLER, NightProwler.createHostileAttributes());
@@ -113,5 +102,6 @@ public class EntityRegistry {
         ItemRegistry.registerItem(SOULMASS_SPAWN_EGG, "soulmass_spawn_egg");
         ItemRegistry.registerItem(CHAOS_MONARCH_SPAWN_EGG, "chaos_monarch_spawn_egg");
         ItemRegistry.registerItem(MOONKNIGHT_SPAWN_EGG, "moonknight_spawn_egg");
+        ItemRegistry.registerItem(FROST_GIANT_SPAWN_EGG, "frost_giant_spawn_egg");
     }
 }

@@ -97,6 +97,11 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     }
 
     @Override
+    public int getSoulAmount() {
+        return 30;
+    }
+
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(CLAP, Boolean.FALSE);

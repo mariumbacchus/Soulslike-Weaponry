@@ -117,6 +117,7 @@
     "item.soulsweapons.draupnir_spear": "Draupnir Spear",
     "item.soulsweapons.holy_moonlight_greatsword": "Holy Moonlight Greatsword",
     "item.soulsweapons.holy_moonlight_sword": "Holy Moonlight Sword",
+    "item.soulsweapons.frostmourne": "Frostmourne",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -132,6 +133,7 @@
     "item.soulsweapons.soulmass_spawn_egg": "Soulmass Spawn Egg",
     "item.soulsweapons.chaos_monarch_spawn_egg": "Monarch of Chaos Spawn Egg",
     "item.soulsweapons.moonknight_spawn_egg": "Fallen Icon Spawn Egg",
+    "item.soulsweapons.frost_giant_spawn_egg": "Frost Giant Spawn Egg",
     
     "entity.soulsweapons.big_chungus": "Moderately Sized Chungus",
     "entity.soulsweapons.withered_demon": "Withered Demon",
@@ -150,6 +152,7 @@
     "entity.soulsweapons.moonknight_phase_2": "Harbinger of Moonlight",
     "entity.soulsweapons.day_stalker": "Day Stalker",
     "entity.soulsweapons.night_prowler": "Night Prowler",
+    "entity.soulsweapons.frost_giant": "Frost Giant",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",

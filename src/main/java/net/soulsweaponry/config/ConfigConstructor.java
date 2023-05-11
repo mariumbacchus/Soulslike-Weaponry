@@ -101,6 +101,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
+    @Entry public static int frostmourne_damage = 11;
     @Entry public static float galeforce_bonus_damage = 1.0f;
     @Entry public static int galeforce_dash_cooldown = 50;
     @Entry public static int rageblade_damage = 7;

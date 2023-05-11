@@ -31,7 +31,12 @@ public class Forlorn extends Remnant {
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
-    
+
+    @Override
+    public int getSoulAmount() {
+        return 10;
+    }
+
     public static void initEquip(LivingEntity entity) {
         if (entity.getRandom().nextBoolean()) {
             entity.equipStack(EquipmentSlot.MAINHAND,new ItemStack(WeaponRegistry.FORLORN_SCYTHE));

@@ -90,6 +90,10 @@ public class Remnant extends TameableEntity {
         }
     }
 
+    public int getSoulAmount() {
+        return 3;
+    }
+
     @Override
     public boolean damage(DamageSource source, float amount) {
         this.setSitting(false);

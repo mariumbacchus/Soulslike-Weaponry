@@ -114,7 +114,6 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
 
     private BlockPos getAlteredPos(World world, BlockPos start) {
         return world.getBlockState(start).isAir() ? start : this.getAlteredPos(world, start.add(0, 1, 0));
-
     }
 
     @Override
