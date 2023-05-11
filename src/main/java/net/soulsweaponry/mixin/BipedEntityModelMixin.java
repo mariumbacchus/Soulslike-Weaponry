@@ -20,7 +20,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        if (entity.getItemsHand().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getItemsHand().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)
+        if ((entity.getItemsHand().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getItemsHand().iterator().next().isOf(WeaponRegistry.GUTS_SWORD))
                 && !entity.getItemsHand().iterator().next().isOf(WeaponRegistry.FROSTMOURNE)) {
             if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
                 if (entity.getItemsHand().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
