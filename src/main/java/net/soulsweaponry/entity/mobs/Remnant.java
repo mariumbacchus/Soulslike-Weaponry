@@ -45,9 +45,9 @@ public class Remnant extends TameableEntity {
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<MobEntity>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster 
-            && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
-        this.targetSelector.add(4, new RevengeGoal(this, new Class[0]).setGroupRevenge());
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster
+                && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
+        this.targetSelector.add(4, new RevengeGoal(this).setGroupRevenge());
     }
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
@@ -56,6 +56,10 @@ public class Remnant extends TameableEntity {
         .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+    }
+
+    public int getSoulAmount() {
+        return 3;
     }
 
     public void initEquip() {
@@ -96,11 +100,7 @@ public class Remnant extends TameableEntity {
 
     @Override
     public void tickMovement() {
-        if (this.isInSittingPose()) {
-            this.setSneaking(true);
-        } else {
-            this.setSneaking(false);
-        }
+        this.setSneaking(this.isInSittingPose());
         super.tickMovement();
     }
 
@@ -110,7 +110,7 @@ public class Remnant extends TameableEntity {
             this.setSitting(!this.isSitting());
             this.jumping = false;
             this.navigation.stop();
-            this.setTarget((LivingEntity)null);
+            this.setTarget(null);
             return ActionResult.SUCCESS;
         }
         return super.interactMob(player, hand);

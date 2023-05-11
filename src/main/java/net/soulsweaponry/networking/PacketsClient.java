@@ -248,6 +248,16 @@ public class PacketsClient {
                 PacketsClient.particleOutburst(client.world, 500, particles, target.getX(), target.getY(), target.getZ(), velDividers);
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.ICE_SMASH_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            int points = buf.readInt();
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.CLOUD, ParticleTypes.SOUL, new ItemStackParticleEffect(ParticleTypes.ITEM, Items.ICE.getDefaultStack())};
+                float[][] velDividers = {{1, 8, 1}, {2, 8, 2}, {1, 1, 1}};
+                PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
+            });
+        });
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {
