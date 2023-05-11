@@ -20,8 +20,8 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        if (entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)
-            && !entity.getHandItems().iterator().next().isOf(WeaponRegistry.FROSTMOURNE)) {
+        if ((entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD))
+                && !entity.getHandItems().iterator().next().isOf(WeaponRegistry.FROSTMOURNE)) {
             if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
                 if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
