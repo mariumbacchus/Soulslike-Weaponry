@@ -43,4 +43,9 @@ public class Forlorn extends Remnant {
         entity.equipStack(EquipmentSlot.LEGS,new ItemStack(ArmorRegistry.FORLORN_LEGGINGS));
         entity.equipStack(EquipmentSlot.FEET,new ItemStack(ArmorRegistry.FORLORN_BOOTS));
     }
+
+    @Override
+    public int getSoulAmount() {
+        return 10;
+    }
 }

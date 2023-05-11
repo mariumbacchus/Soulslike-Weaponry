@@ -118,6 +118,11 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
         .add(EntityAttributes.GENERIC_ARMOR, 4.0D);
     }
 
+    @Override
+    public int getSoulAmount() {
+        return 30;
+    }
+
     public void setClap(boolean bl) {
         this.dataTracker.set(CLAP, bl);
     }

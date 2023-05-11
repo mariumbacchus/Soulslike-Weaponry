@@ -1,7 +1,6 @@
 package net.soulsweaponry.networking;
 
 import com.google.common.collect.Iterables;
-
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,10 +17,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -81,9 +78,8 @@ public class PacketsServer {
                     try {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                         if (op.isPresent() && player.getBlockPos() != null) {
-                            Entity entity = serverWorld.getEntity(player.getDataTracker().get(FreyrSword.SUMMON_UUID).get());
-                            if (entity instanceof FreyrSwordEntity) {
-                                FreyrSwordEntity sword = ((FreyrSwordEntity)entity);
+                            Entity entity = serverWorld.getEntity(op.get());
+                            if (entity instanceof FreyrSwordEntity sword) {
                                 sword.setStationaryPos(player.getBlockPos());
                             } else {
                                 player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
@@ -105,14 +101,8 @@ public class PacketsServer {
                         if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
                             int collectedSouls = 0;
                             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
-                                if (entity instanceof Remnant && ((Remnant)entity).getOwner() == player) {
-                                    if (entity instanceof Soulmass) {
-                                        collectedSouls += 30;
-                                    } else if (entity instanceof Forlorn) {
-                                        collectedSouls += 10;
-                                    } else {
-                                        collectedSouls += 3;
-                                    }
+                                if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
+                                    collectedSouls = remnant.getSoulAmount();
                                     ParticleNetworking.sendServerParticlePacket(serverWorld, PacketRegistry.DARK_EXPLOSION_ID, entity.getBlockPos(), 10);
                                     serverWorld.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0.7f);
                                     entity.discard();
@@ -185,8 +175,7 @@ public class PacketsServer {
 
                         if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
                             int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
-                            for (int i = 0; i < ids.length; i++) {
-                                int id = ids[i];
+                            for (int id : ids) {
                                 Entity entity = serverWorld.getEntityById(id);
                                 if (entity instanceof DraupnirSpearEntity spear) {
                                     spear.detonate();
