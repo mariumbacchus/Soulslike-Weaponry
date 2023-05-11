@@ -1,19 +1,7 @@
 package net.soulsweaponry.client.registry;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.soulsweaponry.client.renderer.entity.mobs.AccursedLordBossRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.BigChungusRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.ChaosMonarchRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.DarkSorcererRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.DraugrBossRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.ForlornRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.FreyrSwordEntityRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.MoonknightRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.NightShadeRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.RemnantRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.ReturningKnightRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.SoulmassRenderer;
-import net.soulsweaponry.client.renderer.entity.mobs.WitheredDemonRenderer;
+import net.soulsweaponry.client.renderer.entity.mobs.*;
 import net.soulsweaponry.client.renderer.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
 
@@ -46,5 +34,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.SHADOW_ORB, ShadowOrbRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONKNIGHT, MoonknightRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.DRAUPNIR_SPEAR_TYPE, DraupnirSpearEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.FROST_GIANT, FrostGiantRenderer::new);
     }
 }

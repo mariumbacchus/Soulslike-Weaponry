@@ -96,12 +96,12 @@ public class Remnant extends TameableEntity {
 
     @Override
     public void tickMovement() {
-        if (this.isInSittingPose()) {
-            this.setSneaking(true);
-        } else {
-            this.setSneaking(false);
-        }
+        this.setSneaking(this.isInSittingPose());
         super.tickMovement();
+    }
+
+    public int getSoulAmount() {
+        return 3;
     }
 
     @Override

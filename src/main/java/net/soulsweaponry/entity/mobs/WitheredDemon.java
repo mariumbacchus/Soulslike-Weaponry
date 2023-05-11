@@ -1,23 +1,9 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.EnumSet;
-import java.util.Random;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.ai.pathing.Path;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -47,9 +33,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.Random;
+
 public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -125,7 +113,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
-        this.targetSelector.add(3, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -211,7 +199,6 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
 
     static class DemonAttackGoal extends MeleeAttackGoal {
         private final WitheredDemon mob;
-        private int cooldown;
         private int attackStatus;
 
         public DemonAttackGoal(WitheredDemon mob, double speed, boolean pauseWhenMobIdle) {
@@ -222,7 +209,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         @Override
         protected void attack(LivingEntity target, double squaredDistance) {
             double attackDistance = this.getSquaredMaxAttackDistance(target);
-            if (squaredDistance <= attackDistance && this.cooldown <= 0) {
+            if (squaredDistance <= attackDistance && this.getCooldown() <= 0) {
                 this.mob.setSwingArm(true);
             }
 
@@ -236,94 +223,6 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
                     this.attackStatus = 0;
                     this.resetCooldown();
                 }
-            }
-        }
-    }
-
-    static class WitheredDemonGoal extends Goal {
-        private final WitheredDemon mob;
-        private double movementSpeed;
-        private int targetNotVisibleTicks;
-        private int attackCooldown;
-        private int attackStatus;
-        private double attackRange;
-        private Path path;
-
-        public WitheredDemonGoal(WitheredDemon mob, double movementSpeed, double attackRange) {
-            this.mob = mob;
-            this.movementSpeed = movementSpeed;
-            this.attackRange = attackRange;
-            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
-        }
-
-        @Override
-        public boolean canStart() {
-            LivingEntity target = this.mob.getTarget();
-            if (target == null) {
-                return false;
-            }
-            if (!target.isAlive()) {
-                return false;
-            }
-            this.path = this.mob.getNavigation().findPathTo(target, 0);
-            if (this.path != null) {
-                return true;
-            }
-            return target != null && target.isAlive() && this.mob.canTarget(target);
-        }
-
-        @Override
-        public void start() {
-            this.mob.getNavigation().startMovingAlong(this.path, this.movementSpeed);
-            this.mob.setAttacking(true);
-            this.attackCooldown = 10;
-            this.attackStatus = 0;
-        }
-
-        @Override
-        public void stop() {
-            super.stop();
-            this.mob.setAttacking(false);
-            this.mob.setSwingArm(false);
-            this.attackCooldown = 10;
-            this.attackStatus = 0;
-        }
-
-        public void tick() {
-            this.attackCooldown--;
-            LivingEntity target = this.mob.getTarget();
-            double distanceToEntity = this.mob.squaredDistanceTo(target);
-
-            if (target != null) {
-                this.mob.getLookControl().lookAt(target, 30.0f, 30.0f);
-
-                boolean entityInSight = this.mob.getVisibilityCache().canSee(target);
-                if (entityInSight) {
-                    this.targetNotVisibleTicks = 0;
-                } else {
-                    ++this.targetNotVisibleTicks;
-                }
-                
-                if (this.targetNotVisibleTicks < 5 && distanceToEntity > attackRange) {
-                    this.mob.getMoveControl().moveTo(target.getX(), target.getY(), target.getZ(), this.movementSpeed);
-                }
-
-                if (attackCooldown < 0 && distanceToEntity <= attackRange) {
-                    this.mob.setSwingArm(true);
-                }
-                if (this.mob.getSwingArm()) {
-                    this.attackStatus++;
-                    if (attackStatus == 5 && distanceToEntity < attackRange) {
-                        this.mob.tryAttack(target);
-                    }
-                    if (attackStatus >= 15) {
-                        this.mob.setSwingArm(false);
-                        this.attackStatus = 0;
-                        this.attackCooldown = 10;
-                    }
-                }
-
-                super.tick();
             }
         }
     }
