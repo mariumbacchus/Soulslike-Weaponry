@@ -32,7 +32,7 @@ public class RimeSpectreModel extends AnimatedGeoModel<RimeSpectre>{
     @Override
 	public void setCustomAnimations(RimeSpectre entity, int uniqueID, AnimationEvent customPredicate) {
 		super.setCustomAnimations(entity, uniqueID, customPredicate);
-		IBone head = this.getAnimationProcessor().getBone("h_head");
+		IBone head = this.getAnimationProcessor().getBone("head");
 
 		EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
 		if (head != null) {
