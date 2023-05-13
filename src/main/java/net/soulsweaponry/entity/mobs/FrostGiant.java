@@ -60,7 +60,8 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 5, false, false, entity -> !this.isTamed()));
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 5, false, false, entity -> !this.isTamed()
+                || !(this.getOwner() instanceof PlayerEntity)));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false,
                 entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
         this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
@@ -86,6 +87,7 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
     @Override
     public boolean damage(DamageSource source, float amount) {
         float x = amount;
+        if (source.isOf(DamageTypes.FREEZE)) return false;
         if (this.isFireDamage(source)) {
             x *= 2;
         }
@@ -178,7 +180,6 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
     @Override
     public void tick() {
         super.tick();
-        System.out.println(this.getOwner());
         if (this.hasStatusEffect(EffectRegistry.FREEZING)) this.removeStatusEffect(EffectRegistry.FREEZING);
     }
 

@@ -2,12 +2,8 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.mob.SkeletonEntity;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -22,6 +18,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FrostGiant;
+import net.soulsweaponry.entity.mobs.Remnant;
+import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -49,10 +47,12 @@ public class Frostmourne extends SoulHarvestingItem {
         ItemStack stack = user.getStackInHand(hand);
         if (this.getSouls(stack) >= 5) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
-            BlockPos on = BlockPos.ofFloored(vecBlocksAway); // TODO add physical damage immune, but magic sensetive ghost
-            FrostGiant entity = new FrostGiant(EntityRegistry.FROST_GIANT, world);//user.getRandom().nextBoolean() ? new SkeletonEntity(EntityType.SKELETON, world) : new ZombieEntity(EntityType.ZOMBIE, world);
+            BlockPos on = BlockPos.ofFloored(vecBlocksAway);
+            Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT, world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE, world);
             entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
             entity.setOwner(user);
+            if (entity instanceof RimeSpectre) entity.addVelocity(0, 0.1f, 0);
+            entity.setTamed(true);
             world.spawnEntity(entity);
             this.addAmount(stack, -5);
             world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
