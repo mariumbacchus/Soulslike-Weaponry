@@ -134,6 +134,7 @@
     "item.soulsweapons.chaos_monarch_spawn_egg": "Monarch of Chaos Spawn Egg",
     "item.soulsweapons.moonknight_spawn_egg": "Fallen Icon Spawn Egg",
     "item.soulsweapons.frost_giant_spawn_egg": "Frost Giant Spawn Egg",
+    "item.soulsweapons.rime_spectre_spawn_egg": "Rime Spectre Spawn Egg",
     
     "entity.soulsweapons.big_chungus": "Moderately Sized Chungus",
     "entity.soulsweapons.withered_demon": "Withered Demon",
@@ -153,6 +154,7 @@
     "entity.soulsweapons.day_stalker": "Day Stalker",
     "entity.soulsweapons.night_prowler": "Night Prowler",
     "entity.soulsweapons.frost_giant": "Frost Giant",
+    "entity.soulsweapons.rime_spectre": "Rime Spectre",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",

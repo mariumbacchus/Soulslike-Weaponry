@@ -35,6 +35,7 @@ public class EntityRegistry {
     public static final EntityType<ChaosMonarch> CHAOS_MONARCH = Registry.register(Registry.ENTITY_TYPE ,new Identifier(ModId, "chaos_monarch"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ChaosMonarch::new).dimensions(EntityDimensions.fixed(2.5F, 6F)).build());
     public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registry.ENTITY_TYPE ,new Identifier(ModId, "moonknight"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, Moonknight::new).dimensions(EntityDimensions.fixed(3F, 8F)).build());
     public static final EntityType<FrostGiant> FROST_GIANT = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "frost_giant"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, FrostGiant::new).dimensions(EntityDimensions.fixed(1.25F, 2.6F)).build());
+    public static final EntityType<RimeSpectre> RIME_SPECTRE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "rime_spectre"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RimeSpectre::new).dimensions(EntityDimensions.fixed(1F, 2F)).build());
 
     public static final EntityType<DayStalker> DAY_STALKER = EntityRegistryBuilder.<DayStalker>createBuilder(new Identifier(ModId, "day_stalker")).category(SpawnGroup.MONSTER).entity(DayStalker::new).dimensions(EntityDimensions.changing(4F, 8F)).build();
     public static final EntityType<NightProwler> NIGHT_PROWLER = EntityRegistryBuilder.<NightProwler>createBuilder(new Identifier(ModId, "night_prowler")).category(SpawnGroup.MONSTER).entity(NightProwler::new).dimensions(EntityDimensions.changing(4F, 8F)).build();
@@ -68,6 +69,7 @@ public class EntityRegistry {
     public static final Item CHAOS_MONARCH_SPAWN_EGG = new SpawnEggItem(CHAOS_MONARCH, 4325468, 0, new Item.Settings().group(MAIN_GROUP));
     public static final Item MOONKNIGHT_SPAWN_EGG = new SpawnEggItem(MOONKNIGHT, 13357520, 390585, new Item.Settings().group(MAIN_GROUP));
     public static final Item FROST_GIANT_SPAWN_EGG = new SpawnEggItem(FROST_GIANT, 0x02523f, 0x46dffa, new Item.Settings().group(MAIN_GROUP));
+    public static final Item RIME_SPECTRE_SPAWN_EGG = new SpawnEggItem(RIME_SPECTRE, 0x6ae6fc, 0x064854, new Item.Settings().group(MAIN_GROUP));
 
     public static void init() {
         FabricDefaultAttributeRegistry.register(WITHERED_DEMON, WitheredDemon.createDemonAttributes());
@@ -86,6 +88,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(FREYR_SWORD_ENTITY_TYPE, FreyrSwordEntity.createEntityAttributes());
         FabricDefaultAttributeRegistry.register(MOONKNIGHT, Moonknight.createBossAttributes());
         FabricDefaultAttributeRegistry.register(FROST_GIANT, FrostGiant.createGiantAttributes());
+        FabricDefaultAttributeRegistry.register(RIME_SPECTRE, RimeSpectre.createSpectreAttributes());
 
         FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createHostileAttributes());
         FabricDefaultAttributeRegistry.register(NIGHT_PROWLER, NightProwler.createHostileAttributes());
@@ -105,5 +108,6 @@ public class EntityRegistry {
         ItemRegistry.registerItem(CHAOS_MONARCH_SPAWN_EGG, "chaos_monarch_spawn_egg");
         ItemRegistry.registerItem(MOONKNIGHT_SPAWN_EGG, "moonknight_spawn_egg");
         ItemRegistry.registerItem(FROST_GIANT_SPAWN_EGG, "frost_giant_spawn_egg");
+        ItemRegistry.registerItem(RIME_SPECTRE_SPAWN_EGG, "rime_spectre_spawn_egg");
     }
 }
