@@ -35,5 +35,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOONKNIGHT, MoonknightRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.DRAUPNIR_SPEAR_TYPE, DraupnirSpearEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.FROST_GIANT, FrostGiantRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.RIME_SPECTRE, RimeSpectreRenderer::new);
     }
 }

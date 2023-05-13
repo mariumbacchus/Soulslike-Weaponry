@@ -261,7 +261,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         return SoundRegistry.DEMON_BOSS_DEATH_EVENT;
     }
 
-    public static enum AccursedLordAnimations {
+    public enum AccursedLordAnimations {
         SWORDSLAM,
         FIREBALLS,
         PULL,
