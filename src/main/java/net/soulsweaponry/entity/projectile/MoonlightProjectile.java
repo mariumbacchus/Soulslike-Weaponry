@@ -32,7 +32,7 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     private static final TrackedData<Integer> MAX_AGE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HUGE_EXPLOSION = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ROTATE_STATE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stackShotFrom;
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -100,11 +100,6 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
         if (this.age > this.getMaxAge()) {
             this.discard(); 
         }
-    }
-
-    @Override
-    public boolean isAttackable() {
-        return false;
     }
 
     @Override

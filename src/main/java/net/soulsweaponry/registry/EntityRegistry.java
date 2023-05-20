@@ -12,6 +12,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
 
@@ -51,6 +52,10 @@ public class EntityRegistry {
     public static final EntityType<FreyrSwordEntity> FREYR_SWORD_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "freyr_sword_entity"), FabricEntityTypeBuilder.<FreyrSwordEntity>create(SpawnGroup.MISC, FreyrSwordEntity::new).dimensions(EntityDimensions.fixed(.3F, 2F)).build());
     public static final EntityType<ShadowOrb> SHADOW_ORB = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "shadow_orb_entity"), FabricEntityTypeBuilder.<ShadowOrb>create(SpawnGroup.MISC, ShadowOrb::new).dimensions(EntityDimensions.fixed(0.5F, 0.5F)).trackRangeBlocks(10).trackedUpdateRate(30).build());
     public static final EntityType<DraupnirSpearEntity> DRAUPNIR_SPEAR_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "draupnir_spear_entity"), FabricEntityTypeBuilder.<DraupnirSpearEntity>create(SpawnGroup.MISC, DraupnirSpearEntity::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeBlocks(30).trackedUpdateRate(30).build());
+    public static final EntityType<AreaEffectSphere> AREA_EFFECT_SPHERE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "area_effect_sphere"), FabricEntityTypeBuilder.<AreaEffectSphere>create(SpawnGroup.MISC, AreaEffectSphere::new).dimensions(EntityDimensions.changing(3F, 3F)).fireImmune().trackRangeBlocks(30).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<DragonStaffProjectile> DRAGON_STAFF_PROJECTILE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "dragon_staff_projectile"), FabricEntityTypeBuilder.<DragonStaffProjectile>create(SpawnGroup.MISC, DragonStaffProjectile::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(10).build());
+    public static final EntityType<WitheredWabbajackProjectile> WITHERED_WABBAJACK_PROJECTILE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "withered_wabbajack_projectile"), FabricEntityTypeBuilder.<WitheredWabbajackProjectile>create(SpawnGroup.MISC, WitheredWabbajackProjectile::new).dimensions(EntityDimensions.fixed(0.3125f, 0.3125f)).trackRangeChunks(4).trackedUpdateRate(10).build());
+    public static final EntityType<ChaosSkull> CHAOS_SKULL = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "chaos_skull"), FabricEntityTypeBuilder.<ChaosSkull>create(SpawnGroup.MISC, ChaosSkull::new).dimensions(EntityDimensions.fixed(0.4f, 0.4f)).trackRangeChunks(4).trackedUpdateRate(10).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());

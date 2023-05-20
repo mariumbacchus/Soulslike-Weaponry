@@ -313,7 +313,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
             if (attackStatus >= 15) {
                 this.mob.setShootingParticle(true);
                 if (attackStatus % 2 == 0) {
-                    Box box = new Box(target.getBlockPos(), this.mob.getBlockPos()).expand(3D);
+                    Box box = new Box(target.getBlockPos(), this.mob.getBlockPos().add(0, 1, 0)).expand(1D);
                     for (Entity entity : this.mob.world.getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
                             living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 2));

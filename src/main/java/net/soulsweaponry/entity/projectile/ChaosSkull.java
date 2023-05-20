@@ -1,66 +1,57 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.BlazeEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.DrownedEntity;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.SilverfishEntity;
-import net.minecraft.entity.mob.SkeletonEntity;
-import net.minecraft.entity.mob.SlimeEntity;
-import net.minecraft.entity.mob.SpiderEntity;
-import net.minecraft.entity.mob.WitchEntity;
-import net.minecraft.entity.mob.WitherSkeletonEntity;
-import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.CodEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.GlowSquidEntity;
-import net.minecraft.entity.passive.HorseEntity;
-import net.minecraft.entity.passive.LlamaEntity;
-import net.minecraft.entity.passive.MooshroomEntity;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.entity.passive.PolarBearEntity;
-import net.minecraft.entity.passive.PufferfishEntity;
-import net.minecraft.entity.passive.RabbitEntity;
-import net.minecraft.entity.passive.SalmonEntity;
-import net.minecraft.entity.passive.WanderingTraderEntity;
-import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
-import net.minecraft.item.ItemConvertible;
+import net.minecraft.entity.mob.*;
+import net.minecraft.entity.passive.*;
+import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BigChungus;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.HashMap;
 
-public class ChaosSkull extends ExplosiveProjectileEntity {
+public class ChaosSkull extends WitherSkullEntity {
+
+    public ChaosSkull(EntityType<ChaosSkull> chaosSkullEntityType, World world) {
+        super(chaosSkullEntityType, world);
+    }
 
     public ChaosSkull(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
-        super(EntityType.WITHER_SKULL, x, y, z, directionX, directionY, directionZ, world);
+        super(EntityRegistry.CHAOS_SKULL, world);
+        this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
+        this.refreshPosition();
+        double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
+        if (d != 0.0) {
+            this.powerX = directionX / d * 0.1;
+            this.powerY = directionY / d * 0.1;
+            this.powerZ = directionZ / d * 0.1;
+        }
+    }
+
+    @Override
+    protected float getDrag() {
+        return 1f;
     }
 
     private float getModifiedDamage(float damage) {
@@ -80,7 +71,6 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
      */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
         if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity entity && this.getOwner() instanceof LivingEntity) {
             int rng = this.random.nextInt(3);
             if (rng == 0) {
@@ -111,7 +101,17 @@ public class ChaosSkull extends ExplosiveProjectileEntity {
      */
     @Override
     protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
+        HitResult.Type type = hitResult.getType();
+        if (type == HitResult.Type.ENTITY) {
+            this.onEntityHit((EntityHitResult)hitResult);
+            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
+        } else if (type == HitResult.Type.BLOCK) {
+            BlockHitResult blockHitResult = (BlockHitResult)hitResult;
+            this.onBlockHit(blockHitResult);
+            BlockPos blockPos = blockHitResult.getBlockPos();
+            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
+        }
+
         if (this.getOwner() instanceof LivingEntity) {
             int amount = this.random.nextInt(5) + 1;
             int rng = this.random.nextInt(6);

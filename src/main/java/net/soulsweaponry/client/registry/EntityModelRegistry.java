@@ -1,6 +1,9 @@
 package net.soulsweaponry.client.registry;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.DragonFireballEntityRenderer;
+import net.minecraft.client.render.entity.EmptyEntityRenderer;
+import net.minecraft.client.render.entity.WitherSkullEntityRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.*;
 import net.soulsweaponry.client.renderer.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -36,6 +39,10 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.DRAUPNIR_SPEAR_TYPE, DraupnirSpearEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.FROST_GIANT, FrostGiantRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.RIME_SPECTRE, RimeSpectreRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.AREA_EFFECT_SPHERE, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DRAGON_STAFF_PROJECTILE, DragonFireballEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, WitherSkullEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.CHAOS_SKULL, WitherSkullEntityRenderer::new);
 
         //EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
         //EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
