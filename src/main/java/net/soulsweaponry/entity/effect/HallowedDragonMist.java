@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.effect;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Tameable;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -26,13 +27,12 @@ public class HallowedDragonMist extends StatusEffect{
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        if (entity instanceof PlayerEntity) {
+        if (entity instanceof PlayerEntity || (entity instanceof Tameable tamed && tamed.getOwner() instanceof PlayerEntity)) {
             if (entity.getHealth() < entity.getMaxHealth()) {
-                ((PlayerEntity) entity).heal(amplifier + 1);
+                entity.heal(amplifier + 1);
             }
         } else {
             entity.damage(DamageSource.MAGIC, 2.0F + (float) amplifier);
         }
-        
     }
 }

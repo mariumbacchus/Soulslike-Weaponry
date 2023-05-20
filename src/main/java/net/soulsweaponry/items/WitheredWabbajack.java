@@ -46,7 +46,10 @@ public class WitheredWabbajack extends SwordItem {
         world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClient) {
             Vec3d look = user.getRotationVector();
-            ProjectileEntity entity = this.calculateProjectile(user, world, look);
+            ProjectileEntity entity = this.calculateProjectile(user, world, look, itemStack);
+            if (entity instanceof DragonStaffProjectile dragonStaffProjectile) {
+                dragonStaffProjectile.setRadius(2f + user.getRandom().nextFloat() * this.getLuckFactor(user));
+            }
             entity.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
             world.spawnEntity(entity);
@@ -68,14 +71,11 @@ public class WitheredWabbajack extends SwordItem {
      * 0 and the total sum of all the chances of all the projectiles combined. It chooses the projectile by constantly
      * changing the range based on the current projectile's chance and the previous projectile's chance.
      */
-    private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look) {
-        /* 
-         * Generisk oversikt over alle prosjektiler sammen med luck type, om de er bra eller dårlig.
-         */
+    private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look, ItemStack stack) {
         int power = new Random().nextInt((6 + this.getLuckFactor(user)) - this.getLuckFactor(user)) + this.getLuckFactor(user);
         Object[][] projectileTypes = {
             {new ArrowEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new DragonStaffProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.NEUTRAL},
+            {new DragonStaffProjectile(world, user, stack), LuckType.NEUTRAL},
             {new EggEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
             {new EnderPearlEntity(world, user), LuckType.BAD},
             {new ExperienceBottleEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},

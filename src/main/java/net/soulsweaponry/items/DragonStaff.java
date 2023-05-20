@@ -84,8 +84,7 @@ public class DragonStaff extends SwordItem {
             if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(itemStack)*2);
             world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!world.isClient) {
-                Vec3d look = user.getRotationVector();
-                DragonStaffProjectile fireball = new DragonStaffProjectile(world, user, look.getX(), look.getY(), look.getZ());
+                DragonStaffProjectile fireball = new DragonStaffProjectile(world, user, itemStack);
                 fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
                 fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 world.spawnEntity(fireball);

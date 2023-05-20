@@ -40,10 +40,15 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class WitheredWabbajackProjectile extends WitherSkullEntity {
+
+    public WitheredWabbajackProjectile(EntityType<? extends WitheredWabbajackProjectile> entityType, World world) {
+        super(entityType, world);
+    }
 
     public WitheredWabbajackProjectile(World world, LivingEntity owner, double directionX, double directionY, double directionZ) {
         this(owner.getX(), owner.getY(), owner.getZ(), directionX, directionY, directionZ, world);
@@ -52,7 +57,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     public WitheredWabbajackProjectile(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
-        super(EntityType.WITHER_SKULL, world);
+        super(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
         double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
@@ -105,6 +110,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.age > 100) {
+            this.discard();
         }
     }
 
