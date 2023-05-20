@@ -1,9 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -18,7 +14,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -32,6 +27,9 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class DragonStaff extends SwordItem {
 
@@ -87,8 +85,7 @@ public class DragonStaff extends SwordItem {
             if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(itemStack)*2);
             world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!world.isClient) {
-                Vec3d look = user.getRotationVector();
-                DragonStaffProjectile fireball = new DragonStaffProjectile(world, user, look.getX(), look.getY(), look.getZ());
+                DragonStaffProjectile fireball = new DragonStaffProjectile(world, user, itemStack);
                 fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
                 fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 world.spawnEntity(fireball);
