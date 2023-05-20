@@ -103,11 +103,6 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     }
 
     @Override
-    public boolean isAttackable() {
-        return false;
-    }
-
-    @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
         this.discard();

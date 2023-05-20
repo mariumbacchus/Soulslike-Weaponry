@@ -155,6 +155,10 @@
     "entity.soulsweapons.night_prowler": "Night Prowler",
     "entity.soulsweapons.frost_giant": "Frost Giant",
     "entity.soulsweapons.rime_spectre": "Rime Spectre",
+    "entity.soulsweapons.area_effect_sphere": "Area Effect Sphere",
+    "entity.soulsweapons.dragon_staff_projectile": "Dragon Staff Projectile",
+    "entity.soulsweapons.withered_wabbajack_projectile": "Withered Wabbajack Projectile",
+    "entity.soulsweapons.chaos_skull": "Chaos Skull",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",

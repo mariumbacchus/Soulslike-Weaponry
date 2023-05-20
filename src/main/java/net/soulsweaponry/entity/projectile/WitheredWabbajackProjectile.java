@@ -1,26 +1,12 @@
 package net.soulsweaponry.entity.projectile;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.CodEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.PufferfishEntity;
-import net.minecraft.entity.passive.SalmonEntity;
-import net.minecraft.entity.passive.StriderEntity;
-import net.minecraft.entity.passive.TropicalFishEntity;
-import net.minecraft.entity.passive.WanderingTraderEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -38,10 +24,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class WitheredWabbajackProjectile extends WitherSkullEntity {
+
+    public WitheredWabbajackProjectile(EntityType<? extends WitheredWabbajackProjectile> entityType, World world) {
+        super(entityType, world);
+    }
     
     public WitheredWabbajackProjectile(World world, LivingEntity owner, double directionX, double directionY, double directionZ) {
         this(owner.getX(), owner.getY(), owner.getZ(), directionX, directionY, directionZ, world);
@@ -50,7 +44,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     public WitheredWabbajackProjectile(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
-        super(EntityType.WITHER_SKULL, world);
+        super(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
         double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
@@ -103,6 +97,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.age > 100) {
+            this.discard();
         }
     }
 

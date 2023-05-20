@@ -4,6 +4,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.server.world.ServerWorld;
+import net.soulsweaponry.entity.mobs.FrostGiant;
+import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.AnimatedDeathInterface;
@@ -17,17 +19,13 @@ public class Freezing extends StatusEffect {
     
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        int k = 1 >> amplifier;
-         if (k > 0) {
-            return duration % k == 0;
-         } else {
-            return true;
-         }
+        return true;
     }
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         int ticks = entity.getFrozenTicks();
+        if (entity instanceof FrostGiant || entity instanceof RimeSpectre) return;
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
         if (!entity.world.isClient) {
