@@ -113,7 +113,7 @@ public class ChaosSkull extends WitherSkullEntity {
             this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
         }
 
-        if (this.getOwner() instanceof LivingEntity) {
+        if (this.getOwner() instanceof LivingEntity && !this.world.isClient) {
             int amount = this.random.nextInt(5) + 1;
             int rng = this.random.nextInt(6);
             for (int i = 0; i < amount; i++) {
@@ -129,16 +129,8 @@ public class ChaosSkull extends WitherSkullEntity {
                         lightningEntity.setPos(this.getX(), this.getY(), this.getZ());
                         this.world.spawnEntity(lightningEntity);
                     }
-                    case 3 -> {
-                        Entity hostile = randomHostile();
-                        hostile.setPos(this.getX(), this.getY(), this.getZ());
-                        this.world.spawnEntity(hostile);
-                    }
-                    case 4 -> {
-                        Entity passive = randomPassive();
-                        passive.setPos(this.getX(), this.getY(), this.getZ());
-                        this.world.spawnEntity(passive);
-                    }
+                    case 3 -> this.randomHostile().spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
+                    case 4 -> this.randomPassive().spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
                     case 5 -> {
                         float power = this.random.nextFloat() * 3;
                         this.world.createExplosion(this, DamageSource.explosion((LivingEntity) this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, DestructionType.DESTROY);
@@ -219,40 +211,20 @@ public class ChaosSkull extends WitherSkullEntity {
         }
     }
 
-    private Entity randomHostile() {
-        Entity[] hostileEntities = {
-            new BlazeEntity(EntityType.BLAZE, this.world),
-            new CreeperEntity(EntityType.CREEPER, this.world),
-            new DrownedEntity(EntityType.DROWNED, this.world),
-            new EndermanEntity(EntityType.ENDERMAN, this.world),
-            new SilverfishEntity(EntityType.SILVERFISH, this.world),
-            new SkeletonEntity(EntityType.SKELETON, this.world),
-            new SlimeEntity(EntityType.SLIME, this.world),
-            new SpiderEntity(EntityType.SPIDER, this.world),
-            new WitchEntity(EntityType.WITCH, this.world),
-            new WitherSkeletonEntity(EntityType.WITHER_SKELETON, this.world),
-            new ZombieEntity(EntityType.ZOMBIE, this.world),
+    private EntityType<?> randomHostile() {
+        EntityType<?>[] hostileEntities = {
+                EntityType.BLAZE, EntityType.CREEPER, EntityType.DROWNED, EntityType.ENDERMAN, EntityType.SILVERFISH,
+                EntityType.SKELETON, EntityType.SLIME, EntityType.SPIDER, EntityType.WITCH, EntityType.WITHER_SKELETON,
+                EntityType.ZOMBIE
         };
         return hostileEntities[this.random.nextInt(hostileEntities.length)];
     }
 
-    private Entity randomPassive() {
-        Entity[] passiveEntities = {
-            new BatEntity(EntityType.BAT, this.world),
-            new BeeEntity(EntityType.BEE, this.world),
-            new ChickenEntity(EntityType.CHICKEN, this.world),
-            new CodEntity(EntityType.COD, this.world),
-            new CowEntity(EntityType.COW, this.world),
-            new GlowSquidEntity(EntityType.GLOW_SQUID, this.world),
-            new HorseEntity(EntityType.HORSE, this.world),
-            new LlamaEntity(EntityType.LLAMA, this.world),
-            new WanderingTraderEntity(EntityType.WANDERING_TRADER, this.world),
-            new MooshroomEntity(EntityType.MOOSHROOM, this.world),
-            new PigEntity(EntityType.PIG, this.world),
-            new PolarBearEntity(EntityType.POLAR_BEAR, this.world),
-            new PufferfishEntity(EntityType.PUFFERFISH, this.world),
-            new RabbitEntity(EntityType.RABBIT, this.world),
-            new SalmonEntity(EntityType.SALMON, this.world),
+    private EntityType<?> randomPassive() {
+        EntityType<?>[] passiveEntities = {
+                EntityType.BAT, EntityType.BEE, EntityType.CHICKEN, EntityType.COD, EntityType.COW, EntityType.GLOW_SQUID,
+                EntityType.HORSE, EntityType.LLAMA, EntityType.WANDERING_TRADER, EntityType.MOOSHROOM, EntityType.PIG,
+                EntityType.POLAR_BEAR, EntityType.PUFFERFISH, EntityType.RABBIT, EntityType.SALMON
         };
         return passiveEntities[this.random.nextInt(passiveEntities.length)];
     }

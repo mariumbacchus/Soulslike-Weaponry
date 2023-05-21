@@ -1,31 +1,15 @@
 package net.soulsweaponry.entity.projectile;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.CodEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.PufferfishEntity;
-import net.minecraft.entity.passive.SalmonEntity;
-import net.minecraft.entity.passive.StriderEntity;
-import net.minecraft.entity.passive.TropicalFishEntity;
-import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -43,6 +27,9 @@ import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
@@ -169,7 +156,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             case DARKNESS -> {
                 world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE, SoundCategory.AMBIENT, 1f, 1f);
-                ((ServerWorld) world).spawnParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 5, 1.2D, 1.2D, 1.2D, 0.0D);
+                world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WARDEN_EMERGE, SoundCategory.HOSTILE, 1f, 1f);
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
             }
             case LIGHTNING -> {
@@ -184,13 +171,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, this.getBlockPos(), 1000);
                 }
             }
-            case RANDOM_ENTITY -> {
-                for (int i = 0; i < power; i++) {
-                    Entity entity = this.getRandomEntity();
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
+            case RANDOM_ENTITY -> this.summonRandomEntity(user, power);
             case SPECIFIC_ENTITY -> this.summonSpecificEntity(user, power);
             default -> {
                 boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
@@ -200,56 +181,19 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {
-        switch (this.getSpecificEntityType(user)) {
-            case CATS -> {
-                for (int i = 0; i < power; i++) {
-                    CatEntity entity = new CatEntity(EntityType.CAT, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
+        if (!this.world.isClient) {
+            EntityType<?> type = this.getEntityType(user);
+            for (int i = 0; i < power; i++) {
+                type.spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
             }
-            case CREEPER -> {
-                for (int i = 0; i < power; i++) {
-                    CreeperEntity entity = new CreeperEntity(EntityType.CREEPER, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
-            case IRON_GOLEM -> {
-                for (int i = 0; i < power; i++) {
-                    IronGolemEntity entity = new IronGolemEntity(EntityType.IRON_GOLEM, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
-            case STRIDER -> {
-                for (int i = 0; i < power; i++) {
-                    StriderEntity entity = new StriderEntity(EntityType.STRIDER, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
-            case TRADER -> {
-                for (int i = 0; i < power; i++) {
-                    WanderingTraderEntity entity = new WanderingTraderEntity(EntityType.WANDERING_TRADER, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
-            case WITHER_SKELETON -> {
-                for (int i = 0; i < power; i++) {
-                    WitherSkeletonEntity entity = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, world);
-                    entity.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.NETHERITE_AXE));
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
-            }
-            default -> {
-                for (int i = 0; i < power; i++) {
-                    SkeletonEntity entity = new SkeletonEntity(EntityType.SKELETON, world);
-                    entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
-                }
+        }
+    }
+
+    private void summonRandomEntity(LivingEntity user, int power) {
+        if (!this.world.isClient) {
+            for (int i = 0; i < power; i++) {
+                EntityType<?> type = this.getEntityType(user);
+                type.spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
             }
         }
     }
@@ -263,8 +207,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         return (CollisionEffect) this.randomFromList(user, this.getTriggerList(), false);
     }
 
-    private SpecificEntities getSpecificEntityType(LivingEntity user) {
-        return (SpecificEntities) this.randomFromList(user, this.getSpecificEntityList(), false);
+    private EntityType<?> getEntityType(LivingEntity user) {
+        return (EntityType<?>) this.randomFromList(user, this.getEntityList(), false);
     }
 
     private Object[][] getTriggerList() {
@@ -279,33 +223,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         };
     }
 
-    private Object[][] getSpecificEntityList() {
-        return new Object[][]{
-                {SpecificEntities.CATS, LuckType.NEUTRAL},
-                {SpecificEntities.CREEPER, LuckType.BAD},
-                {SpecificEntities.STRIDER, LuckType.NEUTRAL},
-                {SpecificEntities.SKELETON, LuckType.BAD},
-                {SpecificEntities.IRON_GOLEM, LuckType.GOOD},
-                {SpecificEntities.WITHER_SKELETON, LuckType.BAD},
-                {SpecificEntities.TRADER, LuckType.NEUTRAL},
-        };
-    }
-
     enum CollisionEffect {
         LIGHTNING, RANDOM_ENTITY, SPECIFIC_ENTITY, BATS, PARTICLES, DARKNESS, EXPLOSION
-    }
-
-    enum SpecificEntities {
-        CATS, CREEPER, STRIDER, SKELETON, IRON_GOLEM, WITHER_SKELETON, TRADER
-    }
-
-    private Entity getRandomEntity() {
-        if (this.getOwner() instanceof LivingEntity) {
-            return (Entity) this.randomFromList((LivingEntity)this.getOwner(), this.getEntityList(), false);
-        } else {
-            //Chicken as default incase nothing works
-            return new ChickenEntity(EntityType.CHICKEN, world);
-        }
     }
 
     private StatusEffect getRandomEffect(boolean flipLuckTypes) {
@@ -414,20 +333,23 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     private Object[][] getEntityList() {
         return new Object[][]{
-                {new CreeperEntity(EntityType.CREEPER, world), LuckType.BAD},
-                {new ZombieEntity(EntityType.ZOMBIE, world), LuckType.BAD},
-                {new CowEntity(EntityType.COW, world), LuckType.NEUTRAL},
-                {new CodEntity(EntityType.COD, world), LuckType.NEUTRAL},
-                {new EndermiteEntity(EntityType.ENDERMITE, world), LuckType.BAD},
-                {new BeeEntity(EntityType.BEE, world), LuckType.BAD},
-                {new ExperienceOrbEntity(EntityType.EXPERIENCE_ORB, world), LuckType.GOOD},
-                {new SalmonEntity(EntityType.SALMON, world), LuckType.NEUTRAL},
-                {new PufferfishEntity(EntityType.PUFFERFISH, world), LuckType.BAD},
-                {new VexEntity(EntityType.VEX, world), LuckType.BAD},
-                {new SkeletonEntity(EntityType.SKELETON, world), LuckType.BAD},
-                {new TropicalFishEntity(EntityType.TROPICAL_FISH, world), LuckType.NEUTRAL},
-                {new WanderingTraderEntity(EntityType.WANDERING_TRADER, world), LuckType.NEUTRAL},
-                {new ChickenEntity(EntityType.CHICKEN, world), LuckType.NEUTRAL}
+                {EntityType.CREEPER, LuckType.BAD},
+                {EntityType.ZOMBIE, LuckType.BAD},
+                {EntityType.COW, LuckType.NEUTRAL},
+                {EntityType.COD, LuckType.NEUTRAL},
+                {EntityType.ENDERMITE, LuckType.BAD},
+                {EntityType.BEE, LuckType.BAD},
+                {EntityType.EXPERIENCE_ORB, LuckType.GOOD},
+                {EntityType.SALMON, LuckType.NEUTRAL},
+                {EntityType.PUFFERFISH, LuckType.BAD},
+                {EntityType.VEX, LuckType.BAD},
+                {EntityType.SKELETON, LuckType.BAD},
+                {EntityType.TROPICAL_FISH, LuckType.NEUTRAL},
+                {EntityType.WANDERING_TRADER, LuckType.NEUTRAL},
+                {EntityType.CHICKEN, LuckType.NEUTRAL},
+                {EntityType.SHEEP, LuckType.NEUTRAL},
+                {EntityType.DROWNED, LuckType.NEUTRAL},
+                {EntityType.GUARDIAN, LuckType.NEUTRAL},
         };
     }
 
