@@ -30,6 +30,7 @@ import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
 
@@ -290,10 +291,10 @@ public class MoonknightGoal extends Goal {
                 this.boss.setBeamLocation(targetPos);
                 this.boss.setBeamLength(range);
                 if (this.attackStatus % 2 == 0) {
-                    this.boss.world.createExplosion(boss, this.boss.world.getDamageSources().mobAttack(boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
+                    this.boss.world.createExplosion(boss, CustomDamageSource.create(this.boss.world, CustomDamageSource.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
                     for (Entity entity : this.boss.world.getOtherEntities(boss, new Box(targetPos, this.boss.getBlockPos().add(0, 4, 0)))) {
                         if (entity instanceof LivingEntity) {
-                            entity.damage(this.boss.world.getDamageSources().mobAttack(boss), this.getModifiedDamage(20f));
+                            entity.damage(CustomDamageSource.create(this.boss.world, CustomDamageSource.BEAM, this.boss), this.getModifiedDamage(20f));
                             entity.setOnFireFor(4);
                         }
                     }
@@ -451,7 +452,7 @@ public class MoonknightGoal extends Goal {
     private void smashGround(float damage, SoundEvent sound, boolean isSoundDelayed) {
         for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(this.targetPos).expand(3))) {
             if (entity instanceof LivingEntity) {
-                entity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
+                entity.damage(CustomDamageSource.create(this.boss.world, CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(damage));
                 entity.addVelocity(0, 1, 0);
             }
         }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Blocks;
@@ -294,7 +295,7 @@ public class AccursedLordGoal extends Goal {
             if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
-                    this.damageTarget((LivingEntity) entity, this.boss.world.getDamageSources().mobAttack(this.boss), 30f);
+                    this.damageTarget((LivingEntity) entity, CustomDamageSource.create(this.boss.world, CustomDamageSource.OBLITERATED, this.boss), 30f);
                     entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.screen.Screen;
@@ -78,7 +79,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(player.getActiveHand());
                 });
@@ -89,7 +90,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity) {
-                        entity.damage(world.getDamageSources().mobAttack(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                     }
                 }

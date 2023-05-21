@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -66,7 +67,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 float power = ConfigConstructor.holy_moonlight_ability_damage;
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity) {
-                        entity.damage(world.getDamageSources().mobAttack(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.addVelocity(0, this.getKnockup(stack), 0);
                     }
                 }

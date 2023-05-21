@@ -20,6 +20,7 @@ import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class ReturningKnightGoal extends Goal {
@@ -228,7 +229,7 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 18) { //23
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity) {
-                            entity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(60f));
+                            entity.damage(CustomDamageSource.create(this.boss.world, CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
                         }
                     }

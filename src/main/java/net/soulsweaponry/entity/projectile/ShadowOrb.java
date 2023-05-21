@@ -21,6 +21,7 @@ import net.soulsweaponry.items.ChaosSet;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleNetworking;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -46,7 +47,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
-            target.damage(this.world.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 5f);
+            target.damage(CustomDamageSource.create(this.world, CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
             for (StatusEffect effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }

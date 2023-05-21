@@ -10,5 +10,5 @@ import net.minecraft.entity.damage.DamageSource;
 public interface LivingEntityInvoker {
     
     @Invoker("applyDamage")
-    public void invokeApplyDamage(DamageSource source, float amount);
+    void invokeApplyDamage(DamageSource source, float amount);
 }

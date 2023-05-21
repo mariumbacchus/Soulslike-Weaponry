@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
+import net.soulsweaponry.util.CustomDamageSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -130,7 +131,7 @@ public class CometSpear extends SwordItem implements GeoItem {
             List<Entity> entities = world.getOtherEntities(player, box);
             for (Entity targets : entities) {
                 if (targets instanceof LivingEntity livingEntity) {
-                    livingEntity.damage(player.world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
+                    livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                     livingEntity.addVelocity(0, stack.getNbt().getFloat(FALL_DISTANCE)/launchDivisor, 0);
                     if (shouldHeal) player.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? (float) WeaponUtil.getEnchantDamageBonus(stack)/2f : 0));
                 }
