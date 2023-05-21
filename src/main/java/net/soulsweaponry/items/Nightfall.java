@@ -79,7 +79,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(player.getActiveHand());
                 });
