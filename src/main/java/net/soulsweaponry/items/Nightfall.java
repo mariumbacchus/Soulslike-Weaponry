@@ -72,11 +72,10 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) user;
+        if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(player.getActiveHand());
                 });
@@ -85,10 +84,10 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
                 Box aoe = new Box(targetArea).expand(3);
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = ConfigConstructor.nightfall_ability_damage;
-                for (int j = 0; j < entities.size(); j++) {
-                    if (entities.get(j) instanceof LivingEntity) {
-                        entities.get(j).damage(CustomDamageSource.obliterateDamageSource(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entities.get(j)).getGroup()));
-                        entities.get(j).setVelocity(entities.get(j).getVelocity().x, .5f, entities.get(j).getVelocity().z);
+                for (Entity entity : entities) {
+                    if (entity instanceof LivingEntity) {
+                        entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                     }
                 }
                 player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -104,14 +103,14 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
 
         if (target.isUndead() && target.isDead()) {
             double chance = new Random().nextDouble();
-            if (chance < ConfigConstructor.nightfall_summon_chance) {
+            if (chance < ConfigConstructor.nightfall_summon_chance && attacker instanceof PlayerEntity player) {
                 World world = attacker.getEntityWorld();
                 Remnant entity = new Remnant(EntityRegistry.REMNANT, world);
                 entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
-                entity.setOwner((PlayerEntity) attacker);
+                entity.setOwner(player);
                 world.spawnEntity(entity);
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                if (!attacker.world.isClient && attacker instanceof PlayerEntity) {
+                if (!attacker.world.isClient) {
                     BlockPos pos = target.getBlockPos();
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
                 }
