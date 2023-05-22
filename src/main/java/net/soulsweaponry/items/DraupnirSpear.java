@@ -3,22 +3,30 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
+import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -33,7 +41,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DraupnirSpear extends SwordItem implements GeoItem {
+public class DraupnirSpear extends SwordItem implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -100,7 +108,7 @@ public class DraupnirSpear extends SwordItem implements GeoItem {
         return 72000;
     }
 
-    private PlayState predicate(AnimationState event){
+    private PlayState predicate(AnimationState<?> event){
         event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
@@ -141,5 +149,33 @@ public class DraupnirSpear extends SwordItem implements GeoItem {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+            Box box = player.getBoundingBox().expand(3);
+            List<Entity> entities = world.getOtherEntities(player, box);
+            float power = ConfigConstructor.draupnir_spear_projectile_damage;
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity) {
+                    entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                    entity.addVelocity(0, .1f, 0);
+                }
+            }
+            ParticleNetworking.specificServerParticlePacket(world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), 0.5D);
+            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
+            if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
+                int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
+                for (int id : ids) {
+                    Entity entity = world.getEntityById(id);
+                    if (entity instanceof DraupnirSpearEntity spear) {
+                        spear.detonate();
+                    }
+                }
+                stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
+            }
+        }
     }
 }

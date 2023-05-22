@@ -17,14 +17,14 @@ public class KeyBindRegistry {
     private static KeyBinding stationaryFreyrSword;
     private static KeyBinding collectSummons;
     private static KeyBinding switchWeapon;
-    private static KeyBinding detonateDraupnirSpears;
+    private static KeyBinding keybindAbility;
 
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
         stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_Z);
         collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
         switchWeapon = registerKeyboard("switch_weapon", GLFW.GLFW_KEY_B);
-        detonateDraupnirSpears = registerKeyboard("detonate_draupnir_spears", GLFW.GLFW_KEY_LEFT_ALT);
+        keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
@@ -47,8 +47,8 @@ public class KeyBindRegistry {
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (detonateDraupnirSpears.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.DETONATE_DRAUPNIR_SPEAR, PacketByteBufs.empty());
+            while (keybindAbility.wasPressed()) {
+                ClientPlayNetworking.send(PacketRegistry.KEYBIND_ABILITY, PacketByteBufs.empty());
             }
         });
     }
