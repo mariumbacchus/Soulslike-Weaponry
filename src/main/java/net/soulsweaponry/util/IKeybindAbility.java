@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

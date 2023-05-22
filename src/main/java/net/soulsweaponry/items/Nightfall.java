@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.screen.Screen;

@@ -24,6 +24,7 @@ import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
