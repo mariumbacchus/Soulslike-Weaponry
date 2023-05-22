@@ -2,7 +2,6 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +11,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -45,7 +45,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
                 p_220045_0_.sendToolBreakStatus(user.getActiveHand());
             });
             user.getItemCooldownManager().set(this, ConfigConstructor.heap_of_raw_iron_cooldown);
-            int power = 1 + (int) Math.floor(EnchantmentHelper.getAttackDamage(stack, user.getGroup())/2);
+            int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 200, power));
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 0));
 
