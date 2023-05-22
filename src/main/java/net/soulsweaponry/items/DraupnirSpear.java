@@ -3,24 +3,29 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
+import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -36,7 +41,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DraupnirSpear extends SwordItem implements IAnimatable {
+public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbility {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final String SPEARS_ID = "thrown_spears_id";
@@ -74,7 +79,7 @@ public class DraupnirSpear extends SwordItem implements IAnimatable {
         }
     }
 
-    public static List<Integer> arrayToList(int array[]) {
+    public static List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
         for (int t : array) {
             list.add(t);
@@ -126,5 +131,33 @@ public class DraupnirSpear extends SwordItem implements IAnimatable {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+            Box box = player.getBoundingBox().expand(3);
+            List<Entity> entities = world.getOtherEntities(player, box);
+            float power = ConfigConstructor.draupnir_spear_projectile_damage;
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity) {
+                    entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                    entity.addVelocity(0, .1f, 0);
+                }
+            }
+            ParticleNetworking.specificServerParticlePacket(world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), 0.5D);
+            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
+            if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
+                int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
+                for (int id : ids) {
+                    Entity entity = world.getEntityById(id);
+                    if (entity instanceof DraupnirSpearEntity spear) {
+                        spear.detonate();
+                    }
+                }
+                stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
+            }
+        }
     }
 }

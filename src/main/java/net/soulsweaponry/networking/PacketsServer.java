@@ -23,6 +23,7 @@ import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -155,34 +156,14 @@ public class PacketsServer {
             });
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.DETONATE_DRAUPNIR_SPEAR, (server, player, handler, buf, responseSender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.KEYBIND_ABILITY, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
                 ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
                 if (serverWorld != null) {
-                    ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
-                    if (stack.isOf(WeaponRegistry.DRAUPNIR_SPEAR) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                        Box box = player.getBoundingBox().expand(3);
-                        List<Entity> entities = serverWorld.getOtherEntities(player, box);
-                        float power = ConfigConstructor.draupnir_spear_projectile_damage;
-                        for (Entity entity : entities) {
-                            if (entity instanceof LivingEntity) {
-                                entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
-                                entity.addVelocity(0, .1f, 0);
-                            }
-                        }
-                        ParticleNetworking.specificServerParticlePacket(serverWorld, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), 0.5D);
-                        serverWorld.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-
-                        if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
-                            int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
-                            for (int id : ids) {
-                                Entity entity = serverWorld.getEntityById(id);
-                                if (entity instanceof DraupnirSpearEntity spear) {
-                                    spear.detonate();
-                                }
-                            }
-                            stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
-                            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
+                    for (Hand hand : Hand.values()) {
+                        ItemStack stack = player.getStackInHand(hand);
+                        if (stack.getItem() instanceof IKeybindAbility keybindItem) {
+                            keybindItem.useKeybindAbility(serverWorld, stack, player);
                         }
                     }
                 }
