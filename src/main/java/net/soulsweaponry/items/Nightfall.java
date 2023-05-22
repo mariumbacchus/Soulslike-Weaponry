@@ -33,6 +33,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -40,7 +41,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
+public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybindAbility {
     
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
@@ -50,24 +51,12 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (user.isSneaking()) {
-            user.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, itemStack) * 100));
-            itemStack.damage(3, (LivingEntity)user, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-            });
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
-            world.playSound(user, user.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-
+        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
+            return TypedActionResult.fail(itemStack);
+        }
+        else {
+            user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
-        } else {
-            if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-                return TypedActionResult.fail(itemStack);
-            } 
-             else {
-                user.setCurrentHand(hand);
-                return TypedActionResult.success(itemStack);
-            }
         }
     }
 
@@ -99,8 +88,6 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-
         if (target.isUndead() && target.isDead()) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance && attacker instanceof PlayerEntity player) {
@@ -116,8 +103,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
                 }
             }
         }
-        
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     public UseAction getUseAction(ItemStack stack) {
@@ -149,5 +135,18 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (!player.getItemCooldownManager().isCoolingDown(this)) {
+            player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
+            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> {
+                p_220045_0_.sendToolBreakStatus(player.getActiveHand());
+            });
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
+            world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+        }
     }
 }

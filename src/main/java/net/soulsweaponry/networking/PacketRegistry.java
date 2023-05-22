@@ -37,5 +37,5 @@ public class PacketRegistry {
     public static final Identifier STATIONARY_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "switch_stationary_freyr");
     public static final Identifier COLLECT_SUMMONS = new Identifier(SoulsWeaponry.ModId, "collect_summons_to_soul_reaper");
     public static final Identifier SWITCH_TRICK_WEAPON = new Identifier(SoulsWeaponry.ModId, "switch_trick_weapon");
-    public static final Identifier DETONATE_DRAUPNIR_SPEAR = new Identifier(SoulsWeaponry.ModId, "detonate_draupnir_spear");
+    public static final Identifier KEYBIND_ABILITY = new Identifier(SoulsWeaponry.ModId, "keybind_ability");
 }

@@ -192,6 +192,7 @@ public class WeaponUtil {
             case RAGE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
             }
             case LIGHTNING_CALL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
@@ -229,7 +230,7 @@ public class WeaponUtil {
                             .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
                     else tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_6").formatted(Formatting.DARK_GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
             }
             case FEATHERLIGHT -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE));
@@ -350,6 +351,7 @@ public class WeaponUtil {
             case SHIELD -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.shield").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.shield_description").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
             }
             case OBLITERATE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.obliterate").formatted(Formatting.DARK_BLUE));
