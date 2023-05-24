@@ -11,6 +11,8 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.util.IEntityDataSaver;
+import net.soulsweaponry.util.ParryData;
 
 public class PacketsClient {
 
@@ -258,6 +260,8 @@ public class PacketsClient {
                 PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (client, handler, buf, responseSender) -> ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt()));
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {

@@ -7,19 +7,19 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.ParticleNetworking;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -158,6 +158,19 @@ public class PacketsServer {
                         if (stack.getItem() instanceof IKeybindAbility keybindItem) {
                             keybindItem.useKeybindAbility(serverWorld, stack, player);
                         }
+                    }
+                }
+            });
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (server, player, handler, buf, responseSender) -> {
+            server.execute(() -> {
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                if (serverWorld != null) {
+                    if (ConfigConstructor.enable_shield_parry && player.getStackInHand(Hand.OFF_HAND).getItem() instanceof ShieldItem item && !player.getItemCooldownManager().isCoolingDown(item)) {
+                        ParryData.setParryFrames((IEntityDataSaver) player, 1);
+                        ParryData.syncFrames(ParryData.getParryFrames(player), player);
+                        player.getItemCooldownManager().set(item, player.isCreative() ? 10 : ConfigConstructor.shield_parry_cooldown);
                     }
                 }
             });

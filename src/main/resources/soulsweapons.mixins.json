@@ -4,19 +4,22 @@
   "package": "net.soulsweaponry.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ToolItemMixin",
-    "WitherEntityMixin",
-    "EnderDragonEntityMixin",
-    "RecipeManagerMixin",
-    "LivingEntityMixin",
-    "BowItemMixin",
     "ArrowProjectileMixin",
+    "BowItemMixin",
+    "EnchantmentHelperMixin",
+    "EnderDragonEntityMixin",
+    "EntityDataSaverMixin",
     "LivingEntityInvoker",
+    "LivingEntityMixin",
     "PlayerEntityMixin",
-    "EnchantmentHelperMixin"
+    "RecipeManagerMixin",
+    "ShieldItemMixin",
+    "ToolItemMixin",
+    "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
+    "HeldItemRendererMixin",
     "MinecraftClientMixin"
   ],
   "injectors": {
