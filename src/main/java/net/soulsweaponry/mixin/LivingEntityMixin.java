@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.entity.effect.StatusEffects;
 import net.soulsweaponry.networking.PacketRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,6 +53,9 @@ public class LivingEntityMixin<T> {
             newAmount += totalAdded;
             entity.world.playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
+            if (entity.hasStatusEffect(StatusEffects.SLOWNESS) && entity.getStatusEffect(StatusEffects.SLOWNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.SLOWNESS);
+            if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
+            if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE) && entity.getStatusEffect(StatusEffects.MINING_FATIGUE).getDuration() < 100) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
         }
         info.setReturnValue(newAmount);
     }
@@ -63,7 +67,7 @@ public class LivingEntityMixin<T> {
         }
     }
 
-    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "damage", at = @At("HEAD"))
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<T> info) {
         if (source == CustomDamageSource.TRUE_MAGIC) {
             LivingEntity entity = (LivingEntity)(Object)this;
@@ -104,7 +108,7 @@ public class LivingEntityMixin<T> {
                         ParticleNetworking.specificServerParticlePacket((ServerWorld) player.world, PacketRegistry.UMBRAL_TRESPASS_ID, player.getBlockPos(), player.getEyeY());
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

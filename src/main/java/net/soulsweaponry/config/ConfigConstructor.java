@@ -165,6 +165,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int whirligig_sawblade_use_time = 100;
     @Entry public static int withered_wabbajack_damage = 8;
 
+    @Entry public static boolean enable_shield_parry = true;
+    @Entry public static int shield_parry_cooldown = 40;
+    @Entry(min=2) public static int shield_parry_max_animation_frames = 10;
+    @Entry(min=2) public static int shield_parry_frames = 3;
     @Entry public static boolean can_projectiles_apply_posture_break = true;
     @Entry public static int silver_bullet_undead_bonus_damage = 4;
     @Entry public static int blunderbuss_damage = 4;
