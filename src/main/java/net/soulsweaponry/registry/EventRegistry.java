@@ -1,11 +1,13 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.events.AttemptAttackCallback;
+import net.soulsweaponry.events.PlayerTickHandler;
 import net.soulsweaponry.networking.PacketRegistry;
 
 public class EventRegistry {
@@ -22,5 +24,7 @@ public class EventRegistry {
             }
             return ActionResult.PASS;
         });
+
+        ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
     }
 }

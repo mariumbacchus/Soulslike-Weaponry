@@ -18,6 +18,7 @@ public class KeyBindRegistry {
     private static KeyBinding collectSummons;
     private static KeyBinding switchWeapon;
     private static KeyBinding keybindAbility;
+    private static KeyBinding parry;
 
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
@@ -25,6 +26,7 @@ public class KeyBindRegistry {
         collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
         switchWeapon = registerKeyboard("switch_weapon", GLFW.GLFW_KEY_B);
         keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
+        parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
@@ -49,6 +51,11 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keybindAbility.wasPressed()) {
                 ClientPlayNetworking.send(PacketRegistry.KEYBIND_ABILITY, PacketByteBufs.empty());
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (parry.wasPressed()) {
+                ClientPlayNetworking.send(PacketRegistry.PARRY, PacketByteBufs.empty());
             }
         });
     }
