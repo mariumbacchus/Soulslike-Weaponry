@@ -2,6 +2,7 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -53,6 +54,9 @@ public abstract class LivingEntityMixin<T> {
             newAmount += totalAdded;
             entity.world.playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
+            if (entity.hasStatusEffect(StatusEffects.SLOWNESS) && entity.getStatusEffect(StatusEffects.SLOWNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.SLOWNESS);
+            if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
+            if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE) && entity.getStatusEffect(StatusEffects.MINING_FATIGUE).getDuration() < 100) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
         }
         info.setReturnValue(newAmount);
     }
@@ -64,7 +68,7 @@ public abstract class LivingEntityMixin<T> {
         }
     }
 
-    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "damage", at = @At("HEAD"))
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<T> info) {
         if (source == CustomDamageSource.TRUE_MAGIC) {
             LivingEntity entity = (LivingEntity)(Object)this;
@@ -106,7 +110,7 @@ public abstract class LivingEntityMixin<T> {
                         ParticleNetworking.specificServerParticlePacket((ServerWorld) player.world, PacketRegistry.UMBRAL_TRESPASS_ID, player.getBlockPos(), player.getEyeY());
                     }
                 }
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
     }
 }
