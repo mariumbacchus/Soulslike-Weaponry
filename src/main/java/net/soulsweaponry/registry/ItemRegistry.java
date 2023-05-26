@@ -13,13 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.BossCompass;
-import net.soulsweaponry.items.ChaosSet;
-import net.soulsweaponry.items.LoreItem;
-import net.soulsweaponry.items.ModHoe;
-import net.soulsweaponry.items.ModMusicDiscs;
-import net.soulsweaponry.items.MoonstoneRing;
-import net.soulsweaponry.items.SkofnungStone;
+import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
@@ -61,7 +55,7 @@ public class ItemRegistry {
     public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item CHAOS_ORB = new Item(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
+    public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
 
     public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1), 112);
 
