@@ -247,5 +247,11 @@
         "sounds": [
             "soulsweapons:trick_weapon"
         ]
+    },
+    "hard_boss_spawn": {
+        "subtitle": "subtitles.soulsweapons.hard_boss_spawn",
+        "sounds": [
+            "soulsweapons:hard_boss_spawn"
+        ]
     }
 }

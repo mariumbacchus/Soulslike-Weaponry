@@ -23,7 +23,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Cannonball extends NonArrowProjectile implements IAnimatable, IAnimationTickable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private int life;
 
     public Cannonball(EntityType<? extends Cannonball> entityType, World world) {
@@ -70,8 +70,7 @@ public class Cannonball extends NonArrowProjectile implements IAnimatable, IAnim
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (entityHitResult.getEntity() instanceof LivingEntity && this.getOwner() instanceof PlayerEntity) {
-            LivingEntity target = (LivingEntity) entityHitResult.getEntity();
+        if (entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() instanceof PlayerEntity) {
             int random = this.random.nextInt(10) + 1;
             int level = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, ((PlayerEntity )this.getOwner()).getMainHandStack());
 
@@ -79,7 +78,7 @@ public class Cannonball extends NonArrowProjectile implements IAnimatable, IAnim
                 if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
                     target.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, 0 + level));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, level));
             }
         }
         this.discard();

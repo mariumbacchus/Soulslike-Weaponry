@@ -43,5 +43,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.DRAGON_STAFF_PROJECTILE, DragonFireballEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, WitherSkullEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHAOS_SKULL, WitherSkullEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.CHAOS_ORB_ENTITY, ChaosOrbRenderer::new);
     }
 }
