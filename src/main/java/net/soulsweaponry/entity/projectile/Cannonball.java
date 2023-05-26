@@ -5,26 +5,24 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
 
 public class Cannonball extends NonArrowProjectile implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int life;
 
     public Cannonball(EntityType<? extends Cannonball> entityType, World world) {
@@ -71,8 +69,7 @@ public class Cannonball extends NonArrowProjectile implements GeoEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (entityHitResult.getEntity() instanceof LivingEntity && this.getOwner() instanceof PlayerEntity) {
-            LivingEntity target = (LivingEntity) entityHitResult.getEntity();
+        if (entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() instanceof PlayerEntity) {
             int random = this.random.nextInt(10) + 1;
             int level = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, ((PlayerEntity )this.getOwner()).getMainHandStack());
 
@@ -80,7 +77,7 @@ public class Cannonball extends NonArrowProjectile implements GeoEntity {
                 if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
                     target.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, 0 + level));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, level));
             }
         }
         this.discard();

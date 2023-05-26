@@ -159,6 +159,7 @@
     "entity.soulsweapons.dragon_staff_projectile": "Dragon Staff Projectile",
     "entity.soulsweapons.withered_wabbajack_projectile": "Withered Wabbajack Projectile",
     "entity.soulsweapons.chaos_skull": "Chaos Skull",
+    "entity.soulsweapons.chaos_orb_entity": "Chaos Orb",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",
@@ -245,6 +246,7 @@
     "subtitles.soulsweapons.slice_target": "A mod was sliced",
     "subtitles.soulsweapons.umbral_trespass_sound": "Umbral Trespass activates",
     "subtitles.soulsweapons.trick_weapon": "Used Trick Weapon",
+    "subtitles.soulsweapons.hard_boss_spawn": "Challenging boss was summoned",
 
     "tooltip.soulsweapons.shift": "Hold [§eSHIFT§r] for Info",
     "tooltip.soulsweapons.control": "Hold [§eCTRL§r] for Lore",
