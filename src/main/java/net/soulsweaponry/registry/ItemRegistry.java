@@ -58,7 +58,7 @@ public class ItemRegistry {
     public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
-    public static final Item CHAOS_ORB = new Item(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
     public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
 
