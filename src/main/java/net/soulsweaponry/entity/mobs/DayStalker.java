@@ -87,6 +87,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return 1;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::attackAnimations));
     }

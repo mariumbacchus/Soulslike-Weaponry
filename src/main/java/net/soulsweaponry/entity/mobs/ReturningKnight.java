@@ -1,28 +1,20 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.List;
-
-import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -37,7 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -54,9 +45,11 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.List;
+
 public class ReturningKnight extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private int blockBreakingCooldown;
@@ -78,7 +71,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSpawning()) {
@@ -132,7 +125,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -292,6 +285,11 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.returning_knight_health;
+    }
+
+    @Override
     public boolean isUndead() {
         return true;
     }
@@ -323,8 +321,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         Box chunkBox = this.getBoundingBox().expand(3);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
-            if (entity instanceof PersistentProjectileEntity) {
-                PersistentProjectileEntity projectile = (PersistentProjectileEntity) entity;
+            if (entity instanceof PersistentProjectileEntity projectile) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
             }
         }
@@ -361,9 +358,5 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     protected SoundEvent getDeathSound() {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
-    }
-
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
     }
 }

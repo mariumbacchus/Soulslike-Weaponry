@@ -56,7 +56,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class Moonknight extends BossEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private int unbreakableTicks;
@@ -335,11 +335,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     private boolean isPosNullish(BlockPos pos) {
-        if (pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0;
     }
 
     private void summonParticles() {
@@ -405,6 +401,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.fallen_icon_health;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         controllers.add(controller);
@@ -422,7 +423,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -443,10 +444,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
     }
 
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
-    }
-
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(SPAWNING, Boolean.FALSE);
@@ -461,7 +458,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(BEAM_HEIGHT, 0f);
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else if (this.getSpawning()) {
