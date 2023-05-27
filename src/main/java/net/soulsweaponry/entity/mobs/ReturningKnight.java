@@ -1,28 +1,20 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.List;
-
-import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -37,7 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -54,6 +45,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.List;
 
 public class ReturningKnight extends BossEntity implements IAnimatable, IAnimationTickable {
 
@@ -133,7 +126,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -237,9 +230,9 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
@@ -260,9 +253,9 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
             double d = this.random.nextGaussian() * 0.05D;
             double e = this.random.nextGaussian() * 0.05D;
             for(int i = 0; i < 2; ++i) {
-                double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + d;
-                double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + e;
-                double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+                double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
+                double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
+                double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
@@ -290,6 +283,11 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     @Override
     public boolean disablesShield() {
         return true;
+    }
+
+    @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.returning_knight_health;
     }
 
     @Override
@@ -330,8 +328,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         Box chunkBox = this.getBoundingBox().expand(3);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
-            if (entity instanceof PersistentProjectileEntity) {
-                PersistentProjectileEntity projectile = (PersistentProjectileEntity) entity;
+            if (entity instanceof PersistentProjectileEntity projectile) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
             }
         }
@@ -368,9 +365,5 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
     protected SoundEvent getDeathSound() {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
-    }
-
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
     }
 }

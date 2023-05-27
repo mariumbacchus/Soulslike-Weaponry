@@ -61,30 +61,14 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         switch (this.getAttack()) {
-            case SPAWN:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
-            break;
-            case TELEPORT:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("teleport"));
-            break;
-            case MELEE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("swing_staff"));
-            break;
-            case LIGHTNING:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("lightning_call"));
-            break;
-            case SHOOT:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("shoot"));
-            break;
-            case BARRAGE:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("barrage"));
-            break;
-            case DEATH:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
-            break;
-            default:
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
-            break;
+            case SPAWN -> event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
+            case TELEPORT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("teleport"));
+            case MELEE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("swing_staff"));
+            case LIGHTNING -> event.getController().setAnimation(new AnimationBuilder().addAnimation("lightning_call"));
+            case SHOOT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("shoot"));
+            case BARRAGE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("barrage"));
+            case DEATH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -96,7 +80,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, AccursedLordBoss.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -206,8 +190,8 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            for (int j = 0; j < particles.length; j++) {
-                world.addParticle(particles[j], true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
+            for (DefaultParticleType particle : particles) {
+                world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
         } 
     }
@@ -242,15 +226,8 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         return Attack.values()[this.dataTracker.get(ATTACK)];
     }
 
-    public static enum Attack {
-        IDLE,
-        SPAWN,
-        TELEPORT,
-        MELEE,
-        LIGHTNING,
-        SHOOT,
-        BARRAGE,
-        DEATH
+    public enum Attack {
+        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
     }
 
     public Vec3d getRotationVec(float pitch, float yaw) {
@@ -266,6 +243,11 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     @Override
     public boolean disablesShield() {
         return true;
+    }
+
+    @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.chaos_monarch_health;
     }
 
     @Override

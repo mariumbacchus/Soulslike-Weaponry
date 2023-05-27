@@ -88,6 +88,11 @@ public class NightProwler extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return 1;
+    }
+
+    @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
     }
