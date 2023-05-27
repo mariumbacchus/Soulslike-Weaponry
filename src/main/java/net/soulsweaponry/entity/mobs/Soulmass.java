@@ -315,6 +315,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
 
                             this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
+                            mob.setSoulAmount(0);
                             mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
                                 mob.setOwner((PlayerEntity) this.entity.getOwner());
