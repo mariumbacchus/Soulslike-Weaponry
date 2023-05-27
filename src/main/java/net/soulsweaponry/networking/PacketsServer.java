@@ -96,7 +96,7 @@ public class PacketsServer {
                             int collectedSouls = 0;
                             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
                                 if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
-                                    collectedSouls = remnant.getSoulAmount();
+                                    collectedSouls += remnant.getSoulAmount();
                                     ParticleNetworking.sendServerParticlePacket(serverWorld, PacketRegistry.DARK_EXPLOSION_ID, entity.getBlockPos(), 10);
                                     serverWorld.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0.7f);
                                     entity.discard();
