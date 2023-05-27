@@ -397,6 +397,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.fallen_icon_health;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         controllers.add(controller);

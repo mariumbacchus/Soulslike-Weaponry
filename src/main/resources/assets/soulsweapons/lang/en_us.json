@@ -156,10 +156,6 @@
     "entity.soulsweapons.frost_giant": "Frost Giant",
     "entity.soulsweapons.rime_spectre": "Rime Spectre",
     "entity.soulsweapons.area_effect_sphere": "Area Effect Sphere",
-    "entity.soulsweapons.dragon_staff_projectile": "Dragon Staff Projectile",
-    "entity.soulsweapons.withered_wabbajack_projectile": "Withered Wabbajack Projectile",
-    "entity.soulsweapons.chaos_skull": "Chaos Skull",
-    "entity.soulsweapons.chaos_orb_entity": "Chaos Orb",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",
@@ -174,6 +170,10 @@
     "entity.soulsweapons.freyr_sword_entity": "Sword of Freyr",
     "entity.soulsweapons.shadow_orb_entity": "Shadow Orb",
     "entity.soulsweapons.draupnir_spear_entity": "Draupnir Spear",
+    "entity.soulsweapons.dragon_staff_projectile": "Dragon Staff Projectile",
+    "entity.soulsweapons.withered_wabbajack_projectile": "Withered Wabbajack Projectile",
+    "entity.soulsweapons.chaos_skull": "Chaos Skull",
+    "entity.soulsweapons.chaos_orb_entity": "Chaos Orb",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",

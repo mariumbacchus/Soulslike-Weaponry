@@ -225,15 +225,8 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         return Attack.values()[this.dataTracker.get(ATTACK)];
     }
 
-    public static enum Attack {
-        IDLE,
-        SPAWN,
-        TELEPORT,
-        MELEE,
-        LIGHTNING,
-        SHOOT,
-        BARRAGE,
-        DEATH
+    public enum Attack {
+        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
     }
 
     public Vec3d getRotationVec(float pitch, float yaw) {
@@ -249,6 +242,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     @Override
     public boolean disablesShield() {
         return true;
+    }
+
+    @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.chaos_monarch_health;
     }
 
     @Override

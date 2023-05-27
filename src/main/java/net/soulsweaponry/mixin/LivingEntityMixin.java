@@ -2,6 +2,7 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
+import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.networking.PacketRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -107,6 +108,13 @@ public class LivingEntityMixin<T> {
                 }
             } catch (Exception ignored) {
             }
+        }
+    }
+
+    @Inject(method = "getMaxHealth", at = @At("HEAD"), cancellable = true)
+    protected void interceptGetMaxHealth(CallbackInfoReturnable<Float> infoReturnable) {
+        if (((LivingEntity)(Object)this) instanceof BossEntity boss) {
+            infoReturnable.setReturnValue((float) boss.getBossMaxHealth());
         }
     }
 }
