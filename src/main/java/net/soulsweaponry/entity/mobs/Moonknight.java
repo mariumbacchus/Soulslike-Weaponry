@@ -58,7 +58,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Moonknight extends BossEntity implements IAnimatable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
     private int spawnTicks;
     private int unbreakableTicks;
@@ -287,8 +287,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
             if (this.unbreakableTicks == 38) {
                 this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
                 for (Entity entity : world.getOtherEntities(this, this.getBoundingBox().expand(20))) {
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity living = (LivingEntity) entity;
+                    if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0));
@@ -323,9 +322,9 @@ public class Moonknight extends BossEntity implements IAnimatable {
             double d = this.random.nextGaussian() * 0.05D;
             double q = this.random.nextGaussian() * 0.05D;
             for(int i = 0; i < 2; ++i) {
-                double newX = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + d;
-                double newZ = this.random.nextDouble() - 1D * 0.5D + this.random.nextGaussian() * 0.15D + q;
-                double newY = this.random.nextDouble() - 1D * 0.5D + this.random.nextDouble() * 0.5D;
+                double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
+                double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + q;
+                double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
@@ -342,11 +341,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     private boolean isPosNullish(BlockPos pos) {
-        if (pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0;
     }
 
     private void summonParticles() {
@@ -355,9 +350,9 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 Random random = this.getRandom();
                 double d = random.nextGaussian() * 0.05D;
                 double e = random.nextGaussian() * 0.05D;
-                double newX = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + d;
-                double newZ = random.nextDouble() - 1D * 0.5D + random.nextGaussian() * 0.15D + e;
-                double newY = random.nextDouble() - 1D * 0.5D + random.nextDouble() * 0.5D;
+                double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+                double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+                double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
                 world.addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
                 world.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
@@ -412,6 +407,11 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.fallen_icon_health;
+    }
+
+    @Override
     public void registerControllers(AnimationData data) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);  
@@ -429,7 +429,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(5, (new RevengeGoal(this, new Class[0])).setGroupRevenge());
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
 
@@ -448,10 +448,6 @@ public class Moonknight extends BossEntity implements IAnimatable {
 
     protected SoundEvent getDeathSound() {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
-    }
-
-    protected SoundEvent getStepSound() {
-        return SoundEvents.ENTITY_IRON_GOLEM_STEP;
     }
 
     protected void initDataTracker() {
@@ -480,79 +476,57 @@ public class Moonknight extends BossEntity implements IAnimatable {
         } else {
             if (this.isPhaseTwo()) {
                 switch (this.getPhaseTwoAttack()) {
-                    case BLINDING_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_2"));
-                        break;
-                    case CORE_BEAM:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("core_beam_phase_2"));
-                        break;
-                    case IDLE:
+                    case BLINDING_LIGHT ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_2"));
+                    case CORE_BEAM ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("core_beam_phase_2"));
+                    case IDLE -> {
                         if (this.isAttacking()) {
                             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_2"));
                         } else {
                             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_2"));
                         }
-                        break;
-                    case MOONFALL:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_2"));
-                        break;
-                    case MOONVEIL:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("moon_explosion_phase_2"));
-                        break;
-                    case SWORD_OF_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("sword_of_light_phase_2"));
-                        break;
-                    case THRUST:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("thrust_phase_2"));
-                        break;
+                    }
+                    case MOONFALL ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_2"));
+                    case MOONVEIL ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("moon_explosion_phase_2"));
+                    case SWORD_OF_LIGHT ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("sword_of_light_phase_2"));
+                    case THRUST ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("thrust_phase_2"));
                 }
             } else {
                 switch (this.getPhaseOneAttack()) {
-                    case BLINDING_LIGHT:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_1"));
-                        break;
-                    case IDLE:
+                    case BLINDING_LIGHT ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_1"));
+                    case IDLE -> {
                         if (this.isAttacking()) {
                             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_1"));
                         } else {
                             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_1"));
                         }
-                        break;
-                    case MACE_OF_SPADES:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades_phase_1"));
-                        break;
-                    case OBLITERATE:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_1"));
-                        break;
-                    case RUPTURE:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture_phase_1"));
-                        break;
-                    case SUMMON:
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors_phase_1"));
-                        break;
+                    }
+                    case MACE_OF_SPADES ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades_phase_1"));
+                    case OBLITERATE ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_1"));
+                    case RUPTURE ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture_phase_1"));
+                    case SUMMON ->
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors_phase_1"));
                 }
             }
         }
         return PlayState.CONTINUE;
     }
 
-    public static enum MoonknightPhaseOne {
-        IDLE,
-        MACE_OF_SPADES,
-        OBLITERATE,
-        SUMMON,
-        RUPTURE,
-        BLINDING_LIGHT,
+    public enum MoonknightPhaseOne {
+        IDLE, MACE_OF_SPADES, OBLITERATE, SUMMON, RUPTURE, BLINDING_LIGHT,
     }
 
-    public static enum MoonknightPhaseTwo {
-        IDLE,
-        SWORD_OF_LIGHT,
-        MOONFALL,
-        MOONVEIL,
-        THRUST,
-        BLINDING_LIGHT,
-        CORE_BEAM,
+    public enum MoonknightPhaseTwo {
+        IDLE, SWORD_OF_LIGHT, MOONFALL, MOONVEIL, THRUST, BLINDING_LIGHT, CORE_BEAM,
     }
     /* 
      * NB!!! So there was a bug in the Goal class where while using a certain attack, all attacks would stop.

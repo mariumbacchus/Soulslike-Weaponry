@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.ParticleNetworking;
@@ -111,6 +112,13 @@ public abstract class LivingEntityMixin<T> {
                     }
                 }
             } catch (Exception ignored) {}
+        }
+    }
+
+    @Inject(method = "getMaxHealth", at = @At("HEAD"), cancellable = true)
+    protected void interceptGetMaxHealth(CallbackInfoReturnable<Float> infoReturnable) {
+        if (((LivingEntity)(Object)this) instanceof BossEntity boss) {
+            infoReturnable.setReturnValue((float) boss.getBossMaxHealth());
         }
     }
 }

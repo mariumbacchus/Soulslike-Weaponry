@@ -235,6 +235,11 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.decaying_king_health;
+    }
+
+    @Override
     public int tickTimer() {
         return age;
     }

@@ -327,6 +327,11 @@ public class NightShade extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public double getBossMaxHealth() {
+        return ConfigConstructor.frenzied_shade_health;
+    }
+
+    @Override
     public AnimationFactory getFactory() {
         return factory;
     }
