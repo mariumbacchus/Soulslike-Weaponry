@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -28,6 +29,8 @@ import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 public class Remnant extends TameableEntity {
+
+    private int soulAmount = 3;
 
     public Remnant(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -101,7 +104,11 @@ public class Remnant extends TameableEntity {
     }
 
     public int getSoulAmount() {
-        return 3;
+        return this.soulAmount;
+    }
+
+    public void setSoulAmount(int amount) {
+        this.soulAmount = amount;
     }
 
     @Override
@@ -156,5 +163,19 @@ public class Remnant extends TameableEntity {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("soul_amount")) {
+            this.soulAmount = nbt.getInt("soul_amount");
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("soul_amount", this.soulAmount);
     }
 }

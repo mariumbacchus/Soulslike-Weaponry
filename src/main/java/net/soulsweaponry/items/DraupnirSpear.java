@@ -66,7 +66,7 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
                     List<Integer> ids = new ArrayList<>();
                     if (stack.getNbt().contains(SPEARS_ID)) {
                         int[] arr = stack.getNbt().getIntArray(SPEARS_ID);
-                        ids = arrayToList(arr);
+                        ids = WeaponUtil.arrayToList(arr);
                     }
                     ids.add(entity.getId());
                     stack.getNbt().putIntArray(SPEARS_ID, ids);
@@ -78,14 +78,6 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
                 });
             }
         }
-    }
-
-    public static List<Integer> arrayToList(int[] array) {
-        List<Integer> list = new ArrayList<>();
-        for (int t : array) {
-            list.add(t);
-        }
-        return list;
     }
 
     @Override

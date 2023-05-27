@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -39,6 +41,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.AnimatedDeathInterface;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -52,8 +55,9 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
+    private List<Integer> summonIds = new ArrayList<>();
 
     private static final TrackedData<Boolean> CLAP = DataTracker.registerData(Soulmass.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> SMASH = DataTracker.registerData(Soulmass.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -227,14 +231,44 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
-        for (int j = 0; j < nearbyEntities.size(); j++) {
-            if (nearbyEntities.get(j) instanceof HostileEntity) {
-                LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+        for (Entity nearbyEntity : nearbyEntities) {
+            if (nearbyEntity instanceof HostileEntity) {
+                LivingEntity closestTarget = (LivingEntity) nearbyEntity;
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
                 closestTarget.damage(DamageSource.MAGIC, 16F);
             }
         }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putIntArray("summon_ids", this.summonIds);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("summon_ids")) {
+            this.summonIds = WeaponUtil.arrayToList(nbt.getIntArray("summon_ids"));
+        }
+    }
+
+    public void addSummonIds(int id) {
+        this.summonIds.add(id);
+    }
+
+    public boolean hasSummonsAlive() {
+        if (!this.world.isClient) {
+            for (int id : summonIds) {
+                if (world.getEntityById(id) != null) {
+                    return true;
+                }
+            }
+        }
+        this.summonIds.clear();
+        return false;
     }
 
     static class SoulmassGoal extends Goal {
@@ -287,7 +321,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                 if (this.attackCooldown < 0) {
                     if (this.nextAttack > 1) {
                         this.entity.setClap(true);
-                    } else if (this.uniqueCooldown > 10 && this.nextAttack <= 1) {
+                    } else if (this.uniqueCooldown > 10) {
                         this.newAttack();
                     }
                     if (this.uniqueCooldown < 0) {
@@ -295,7 +329,12 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                             this.entity.setStartBeam(true);
                             this.resetCooldowns(80, 50);
                         } else if (this.nextAttack == 1) {
-                            this.entity.setSmash(true);
+                            if (!this.entity.hasSummonsAlive()) {
+                                this.entity.setSmash(true);
+                            } else {
+                                this.entity.setSmash(false);
+                                this.newAttack();
+                            }
                         }
                     }
                 }
@@ -303,7 +342,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                 if (this.entity.getClap()) {
                     attackStatus++;
                     if (this.attackStatus == 5) {
-                        this.castSpell();
+                        this.castSpell(target);
                     } else if (this.attackStatus >= 20) {
                         this.entity.setClap(false);
                         this.resetCooldowns(0, 10);
@@ -313,15 +352,18 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                     attackStatus++;
                     if (this.attackStatus == 10) {
                         int[][] cords = {{4,4}, {-4,4}, {4,-4}, {-4,-4}};
-                        for (int i = 0; i < cords.length; i++) {
-                            BlockPos pos = new BlockPos(this.entity.getX() + cords[i][0], this.entity.getY(),this.entity.getZ() + cords[i][1]);
-                            if (!this.entity.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
+                        for (int[] cord : cords) {
+                            BlockPos pos = new BlockPos(this.entity.getX() + cord[0], this.entity.getY(), this.entity.getZ() + cord[1]);
+                            if (!this.entity.world.isClient)
+                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
 
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
+                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.6f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
-                            mob.setPos(this.entity.getX() + cords[i][0], this.entity.getY() + .1f, this.entity.getZ() + cords[i][1]);
+                            mob.setSoulAmount(0);
+                            this.entity.addSummonIds(mob.getId());
+                            mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
-                                mob.setOwner((PlayerEntity)this.entity.getOwner());
+                                mob.setOwner((PlayerEntity) this.entity.getOwner());
                             }
                             this.entity.world.spawnEntity(mob);
                         }
@@ -364,8 +406,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             }
         }
 
-        protected void castSpell() {
-            LivingEntity livingEntity = this.entity.getTarget();
+        protected void castSpell(LivingEntity livingEntity) {
             double d = Math.min(livingEntity.getY(), this.entity.getY());
             double e = Math.max(livingEntity.getY(), this.entity.getY()) + 1.0;
             float f = (float)MathHelper.atan2(livingEntity.getZ() - this.entity.getZ(), livingEntity.getX() - this.entity.getX());
@@ -383,8 +424,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             } else {
                 for (int i = 0; i < 16; ++i) {
                     double h = 1.25 * (double)(i + 1);
-                    int j = 1 * i;
-                    this.conjureFangs(this.entity.getX() + (double)MathHelper.cos(f) * h, this.entity.getZ() + (double)MathHelper.sin(f) * h, d, e, f, j);
+                    this.conjureFangs(this.entity.getX() + (double)MathHelper.cos(f) * h, this.entity.getZ() + (double)MathHelper.sin(f) * h, d, e, f, i);
                 }
             }
         }

@@ -16,6 +16,7 @@ import net.soulsweaponry.items.Skofnung;
 import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.registry.WeaponRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.soulsweaponry.items.SoulHarvestingItem.KILLS;
@@ -89,6 +90,14 @@ public class WeaponUtil {
 
     public static int getAddedCharge(ItemStack stack) {
         return (ConfigConstructor.holy_moonlight_ability_charge_added_post_hit + WeaponUtil.getEnchantDamageBonus(stack)) * (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD) ? 3 : 1);
+    }
+
+    public static List<Integer> arrayToList(int[] array) {
+        List<Integer> list = new ArrayList<>();
+        for (int t : array) {
+            list.add(t);
+        }
+        return list;
     }
 
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
