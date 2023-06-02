@@ -13,9 +13,7 @@ import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class DayStalker extends BossEntity implements GeoEntity {
@@ -30,8 +28,19 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.drops.add(ItemRegistry.LORD_SOUL_ROSE); // add custom lord soul
     }
 
-    private PlayState attackAnimations(AnimationState<?> state) {
-        
+    private PlayState chains(AnimationState<?> state) {
+        state.getController().setAnimation(RawAnimation.begin().then("idle_chains_2", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+    }
+
+
+    private PlayState idles(AnimationState<?> state) {
+        state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+    }
+    //Testing animations, more will come soon.
+    private PlayState attacks(AnimationState<?> state) {
+        state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -93,7 +102,9 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 0, this::attackAnimations));
+        controllers.add(new AnimationController<>(this, "idles", 0, this::idles));
+        controllers.add(new AnimationController<>(this, "attacks", 0, this::attacks));
+        controllers.add(new AnimationController<>(this, "chains", 0, this::chains));
     }
 
     @Override
