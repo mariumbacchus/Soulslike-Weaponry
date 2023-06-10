@@ -45,7 +45,7 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.CHAOS_SKULL, WitherSkullEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHAOS_ORB_ENTITY, ChaosOrbRenderer::new);
 
-        //EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
         //EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
     }
 }

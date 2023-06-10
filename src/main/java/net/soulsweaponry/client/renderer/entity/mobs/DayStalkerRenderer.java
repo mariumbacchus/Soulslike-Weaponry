@@ -1,8 +1,10 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -18,7 +20,17 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
 
     public DayStalkerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DayStalkerModel());
-        this.shadowRadius = 0.7F;
+        this.shadowRadius = 1F;
+    }
+
+    @Override
+    public GeoEntityRenderer<DayStalker> withScale(float scale) {
+        return super.withScale(0.75f);
+    }
+
+    @Override
+    public RenderLayer getRenderType(DayStalker animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
+        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
     }
     
     @Override
