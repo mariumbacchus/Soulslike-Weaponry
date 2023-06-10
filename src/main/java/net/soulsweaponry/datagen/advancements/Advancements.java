@@ -1,19 +1,16 @@
 package net.soulsweaponry.datagen.advancements;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.potion.Potion;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.item.EnchantmentPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.RecipeRegistry;
@@ -29,7 +26,6 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     public void accept(Consumer<Advancement> consumer) {
         Advancement recipeRoot = Advancement.Builder.create().criterion("impossible",
                 new ImpossibleCriterion.Conditions()).build(consumer, new Identifier(MOD_ID, "recipe_root").toString());
-        // ./gradlew runDatagenClient
         for (Item[] items : RecipeRegistry.recipeAdvancements.keySet()) {
             Identifier id = RecipeRegistry.recipeAdvancements.get(items);
             Advancement.Builder.create()
