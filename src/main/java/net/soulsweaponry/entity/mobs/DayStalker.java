@@ -5,6 +5,9 @@ import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -21,6 +24,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     public int ticksUntillDead = 100;
+    private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
@@ -28,19 +33,77 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.drops.add(ItemRegistry.LORD_SOUL_ROSE); // add custom lord soul
     }
 
+    public void setAttackAnimation(Attacks attack) {
+        for (int i = 0; i < AccursedLordBoss.AccursedLordAnimations.values().length; i++) {
+            if (Attacks.values()[i].equals(attack)) {
+                this.dataTracker.set(ATTACKS, i);
+            }
+        }
+    }
+
+    public Attacks getAttackAnimation() {
+        return Attacks.values()[this.dataTracker.get(ATTACKS)];
+    }
+
+    public boolean isPhaseTwo() {
+        return this.dataTracker.get(PHASE_2);
+    }
+
+    public void setPhaseTwo(boolean bl) {
+        this.dataTracker.set(PHASE_2, bl);
+    }
+
     private PlayState chains(AnimationState<?> state) {
-        state.getController().setAnimation(RawAnimation.begin().then("idle_chains_2", Animation.LoopType.LOOP));
+        if (this.isPhaseTwo()) {
+            state.getController().setAnimation(RawAnimation.begin().then("idle_chains_2", Animation.LoopType.LOOP));
+        }
         return PlayState.CONTINUE;
     }
 
 
     private PlayState idles(AnimationState<?> state) {
-        state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
+        if (this.isPhaseTwo()) {
+            state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
+        } else {
+            state.getController().setAnimation(RawAnimation.begin().then("idle_1", Animation.LoopType.LOOP));
+        }
         return PlayState.CONTINUE;
     }
-    //Testing animations, more will come soon.
+
     private PlayState attacks(AnimationState<?> state) {
-        state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
+        //state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
+        switch (this.getAttackAnimation()) {
+            case DEATH -> {
+            }
+            case START_PHASE_2 -> {
+            }
+            case AIR_COMBUSTION -> {
+            }
+            case DECIMATE -> {
+            }
+            case DAWNBREAKER -> {
+            }
+            case CHAOS_STORM -> {
+            }
+            case FLAMETHROWER -> {
+            }
+            case SUNFIRE_RUSH -> {
+            }
+            case CONFLAGRATION -> {
+            }
+            case FLAMES_EDGE -> {
+            }
+            case RADIANCE -> {
+            }
+            case WARMTH -> {
+            }
+            case OVERHEAT -> {
+            }
+            case INFERNO -> {
+            }
+            case FLAMES_REACH -> {
+            }
+        }
         return PlayState.CONTINUE;
     }
 
@@ -110,5 +173,17 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(ATTACKS, 0);
+        this.dataTracker.startTracking(PHASE_2, false);
+    }
+
+    enum Attacks {
+        IDLE, DEATH, START_PHASE_2, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
+        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH
     }
 }

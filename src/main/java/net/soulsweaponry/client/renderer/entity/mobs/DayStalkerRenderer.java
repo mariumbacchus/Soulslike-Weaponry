@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
@@ -26,6 +27,11 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     @Override
     public RenderLayer getRenderType(DayStalker animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
         return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+    }
+
+    @Override
+    public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, DayStalker animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+        super.scaleModelForRender(0.75f, 0.75f, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }
 
     @Override
