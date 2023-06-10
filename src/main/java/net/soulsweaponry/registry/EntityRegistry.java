@@ -5,12 +5,14 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.datagen.models.ModelProvider;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
@@ -37,7 +39,8 @@ public class EntityRegistry {
     public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registry.ENTITY_TYPE ,new Identifier(ModId, "moonknight"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, Moonknight::new).dimensions(EntityDimensions.fixed(3F, 8F)).build());
     public static final EntityType<FrostGiant> FROST_GIANT = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "frost_giant"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, FrostGiant::new).dimensions(EntityDimensions.fixed(1.25F, 2.6F)).build());
     public static final EntityType<RimeSpectre> RIME_SPECTRE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "rime_spectre"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RimeSpectre::new).dimensions(EntityDimensions.fixed(1F, 2F)).build());
-    public static final EntityType<DayStalker> DAY_STALKER = EntityRegistryBuilder.<DayStalker>createBuilder(new Identifier(ModId, "day_stalker")).category(SpawnGroup.MONSTER).entity(DayStalker::new).dimensions(EntityDimensions.changing(3.75F, 6F)).build();
+    public static final EntityType<DayStalker> DAY_STALKER = registerWithSpawnEgg(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DayStalker::new).dimensions(EntityDimensions.changing(3.5F, 5.5F)).build(), "day_stalker", 0x212121, 0xff8000);
+    //public static final EntityType<DayStalker> DAY_STALKER = EntityRegistryBuilder.<DayStalker>createBuilder(new Identifier(ModId, "day_stalker")).category(SpawnGroup.MONSTER).entity(DayStalker::new).dimensions(EntityDimensions.changing(3.75F, 6F)).build();
 
     public static final EntityType<MoonlightProjectile> MOONLIGHT_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "moonlight_projectile"), FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<MoonlightProjectile> MOONLIGHT_BIG_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, "big_moonlight_projectile"), FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(2F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
@@ -93,7 +96,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(MOONKNIGHT, Moonknight.createBossAttributes());
         FabricDefaultAttributeRegistry.register(FROST_GIANT, FrostGiant.createGiantAttributes());
         FabricDefaultAttributeRegistry.register(RIME_SPECTRE, RimeSpectre.createSpectreAttributes());
-        FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createHostileAttributes());
+        FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createBossAttributes());
 
         ItemRegistry.registerItem(WITHERED_DEMON_SPAWN_EGG, "withered_demon_spawn_egg");
         ItemRegistry.registerItem(ACCURSED_LORD_BOSS_SPAWN_EGG, "accursed_lord_boss_spawn_egg");
@@ -111,5 +114,12 @@ public class EntityRegistry {
         ItemRegistry.registerItem(MOONKNIGHT_SPAWN_EGG, "moonknight_spawn_egg");
         ItemRegistry.registerItem(FROST_GIANT_SPAWN_EGG, "frost_giant_spawn_egg");
         ItemRegistry.registerItem(RIME_SPECTRE_SPAWN_EGG, "rime_spectre_spawn_egg");
+    }
+
+    private static <I extends PathAwareEntity> EntityType<I> registerWithSpawnEgg(EntityType<I> type, String id, int primaryColor, int secondaryColor) {
+        Item egg = new SpawnEggItem(type, primaryColor, secondaryColor, new Item.Settings().group(MAIN_GROUP));
+        ItemRegistry.registerItem(egg, id + "_spawn_egg");
+        ModelProvider.ITEMS.put(egg, ModelProvider.SPAWN_EGG);
+        return Registry.register(Registry.ENTITY_TYPE, new Identifier(ModId, id), type);
     }
 }

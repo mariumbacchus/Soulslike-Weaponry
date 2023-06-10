@@ -26,7 +26,6 @@ public class Advancements implements Consumer<Consumer<Advancement>> {
     public void accept(Consumer<Advancement> consumer) {
         Advancement recipeRoot = Advancement.Builder.create().criterion("impossible",
                 new ImpossibleCriterion.Conditions()).build(consumer, new Identifier(MOD_ID, "recipe_root").toString());
-        // ./gradlew runDatagenClient
         for (Item[] items : RecipeRegistry.recipeAdvancements.keySet()) {
             Identifier id = RecipeRegistry.recipeAdvancements.get(items);
             Advancement.Builder.create()

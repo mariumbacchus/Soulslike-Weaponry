@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:recipe_root",
+  "rewards": {
+    "recipes": [
+      "soulsweapons:lich_bane_recipe"
+    ]
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:lord_soul_purple",
+              "soulsweapons:lord_soul_white",
+              "soulsweapons:lord_soul_dark",
+              "soulsweapons:lord_soul_void",
+              "soulsweapons:lord_soul_rose",
+              "soulsweapons:lord_soul_red"
+            ]
+          }
+        ]
+      }
+    },
+    "has_advancement": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "soulsweapons:lich_bane_recipe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "has_advancement"
+    ]
+  ]
+}
