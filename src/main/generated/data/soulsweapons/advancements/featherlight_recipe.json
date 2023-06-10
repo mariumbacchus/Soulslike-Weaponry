@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:recipe_root",
+  "criteria": {
+    "has_advancement": {
+      "conditions": {
+        "recipe": "soulsweapons:featherlight_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:amethyst_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "has_advancement"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "soulsweapons:featherlight_recipe"
+    ]
+  }
+}

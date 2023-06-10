@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:recipe_root",
+  "criteria": {
+    "has_advancement": {
+      "conditions": {
+        "recipe": "soulsweapons:withered_wabbajack_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wither_skeleton_skull"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "has_advancement"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "soulsweapons:withered_wabbajack_recipe"
+    ]
+  }
+}

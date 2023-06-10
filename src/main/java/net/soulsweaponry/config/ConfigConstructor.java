@@ -208,4 +208,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_2 = 0;
     @Entry(min=0) public static int fallen_icon_special_cooldown_ticks = 50;
     @Entry(min=0) public static float fallen_icon_damage_modifier = 1f;
+
+    @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
 }

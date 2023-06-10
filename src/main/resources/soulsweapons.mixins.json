@@ -11,6 +11,7 @@
     "EntityDataSaverMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
+    "ModelInvoker",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "ShieldItemMixin",

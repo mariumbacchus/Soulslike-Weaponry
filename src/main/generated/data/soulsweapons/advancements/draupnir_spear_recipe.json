@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:recipe_root",
+  "criteria": {
+    "has_advancement": {
+      "conditions": {
+        "recipe": "soulsweapons:draupnir_spear_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:lord_soul_rose",
+              "soulsweapons:lord_soul_void",
+              "soulsweapons:lord_soul_red",
+              "soulsweapons:lord_soul_purple",
+              "soulsweapons:lord_soul_dark",
+              "soulsweapons:lord_soul_white"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "has_advancement"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "soulsweapons:draupnir_spear_recipe"
+    ]
+  }
+}
