@@ -16,12 +16,12 @@ public class DayStalkerModel extends AnimatedGeoModel<DayStalker>{
     @Override
     public Identifier getTextureResource(DayStalker object)
     {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/day_stalker_texture.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/entity/day_stalker.png");
     }
 
     @Override
     public Identifier getAnimationResource(DayStalker object)
     {
-        return null;//new Identifier(SoulsWeaponry.ModId, "animations/accursed_lord.animation.json");
+        return new Identifier(SoulsWeaponry.ModId, "animations/day_stalker.animation.json");
     }
 }

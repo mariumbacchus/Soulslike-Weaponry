@@ -5,6 +5,9 @@ import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -12,6 +15,8 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -23,6 +28,8 @@ public class DayStalker extends BossEntity implements IAnimatable {
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
     public int ticksUntillDead = 100;
+    private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
@@ -30,8 +37,77 @@ public class DayStalker extends BossEntity implements IAnimatable {
         this.drops.add(ItemRegistry.LORD_SOUL_ROSE); // make custom rose
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        
+    public void setAttackAnimation(Attacks attack) {
+        for (int i = 0; i < AccursedLordBoss.AccursedLordAnimations.values().length; i++) {
+            if (Attacks.values()[i].equals(attack)) {
+                this.dataTracker.set(ATTACKS, i);
+            }
+        }
+    }
+
+    public Attacks getAttackAnimation() {
+        return Attacks.values()[this.dataTracker.get(ATTACKS)];
+    }
+
+    public boolean isPhaseTwo() {
+        return this.dataTracker.get(PHASE_2);
+    }
+
+    public void setPhaseTwo(boolean bl) {
+        this.dataTracker.set(PHASE_2, bl);
+    }
+
+    private <E extends IAnimatable> PlayState chains(AnimationEvent<E> event) {
+        if (this.isPhaseTwo()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_chains_2", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState idles(AnimationEvent<E> event) {
+        if (this.isPhaseTwo()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_2", ILoopType.EDefaultLoopTypes.LOOP));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_1", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
+        //event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.model.shootFireMouth"));
+        //state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
+        switch (this.getAttackAnimation()) {
+            case DEATH -> {
+            }
+            case START_PHASE_2 -> {
+            }
+            case AIR_COMBUSTION -> {
+            }
+            case DECIMATE -> {
+            }
+            case DAWNBREAKER -> {
+            }
+            case CHAOS_STORM -> {
+            }
+            case FLAMETHROWER -> {
+            }
+            case SUNFIRE_RUSH -> {
+            }
+            case CONFLAGRATION -> {
+            }
+            case FLAMES_EDGE -> {
+            }
+            case RADIANCE -> {
+            }
+            case WARMTH -> {
+            }
+            case OVERHEAT -> {
+            }
+            case INFERNO -> {
+            }
+            case FLAMES_REACH -> {
+            }
+        }
         return PlayState.CONTINUE;
     }
 
@@ -92,11 +168,25 @@ public class DayStalker extends BossEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+        data.addAnimationController(new AnimationController<>(this, "idles", 0, this::idles));
+        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attacks));
+        data.addAnimationController(new AnimationController<>(this, "chains", 0, this::chains));
     }
 
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(ATTACKS, 0);
+        this.dataTracker.startTracking(PHASE_2, false);
+    }
+
+    enum Attacks {
+        IDLE, DEATH, START_PHASE_2, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
+        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH
     }
 }
