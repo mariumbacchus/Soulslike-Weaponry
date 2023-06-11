@@ -28,6 +28,7 @@
     "item.soulsweapons.lord_soul_dark": "Lord Soul",
     "item.soulsweapons.lord_soul_purple": "Lord Soul",
     "item.soulsweapons.lord_soul_white": "Lord Soul",
+    "item.soulsweapons.lord_soul_day_stalker": "Lord Soul",
     "item.soulsweapons.chaos_orb": "Chaos Orb",
     "item.soulsweapons.chungus_emerald": "Chungus Emerald",
     "item.soulsweapons.demon_heart": "Demon Heart",
@@ -466,6 +467,8 @@
     "tooltip.soulsweapons.lord_soul_white.part_1": "So close to purity, yet there is a glimpse of",
     "tooltip.soulsweapons.lord_soul_white.part_2": "darkness within. You feel a frighteningly",
     "tooltip.soulsweapons.lord_soul_white.part_3": "strong sense of ambition. He is not done.",
+    "tooltip.soulsweapons.lord_soul_day_stalker.part_1": "You feel a sense of relief. Finally,",
+    "tooltip.soulsweapons.lord_soul_day_stalker.part_2": "it has been freed from it's shackles.",
 
     "tooltip.soulsweapons.essence_of_eventide.part_1": "You feel a strong sense of longing, as if it",
     "tooltip.soulsweapons.essence_of_eventide.part_2": "desperately wants to return to something.",

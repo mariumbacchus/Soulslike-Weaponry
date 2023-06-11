@@ -24,6 +24,7 @@ public class ItemRegistry {
     public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_rose", 2);
     public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_purple", 3);
     public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_white", 3);
+    public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_day_stalker", 2);
     public static final Item LOST_SOUL = new Item(new FabricItemSettings().rarity(Rarity.RARE));
     public static final Item MOONSTONE = new Item(new FabricItemSettings());
     public static final Item CHUNGUS_EMERALD = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON));
@@ -63,6 +64,7 @@ public class ItemRegistry {
         registerLoreItem(LORD_SOUL_ROSE);
         registerLoreItem(LORD_SOUL_PURPLE);
         registerLoreItem(LORD_SOUL_WHITE);
+        registerLoreItem(LORD_SOUL_DAY_STALKER);
         registerItem(LOST_SOUL, "lost_soul");
         registerItem(MOONSTONE, "moonstone");
         registerItem(CHUNGUS_EMERALD, "chungus_emerald");
