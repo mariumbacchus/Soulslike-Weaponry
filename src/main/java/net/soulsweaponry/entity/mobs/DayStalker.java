@@ -11,6 +11,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -27,14 +28,15 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
-    public int ticksUntillDead = 100;
+    public final int ticksUntillDead = 100;
+    private double attackAniTick;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
         this.drops.add(WeaponRegistry.DAWNBREAKER);
-        this.drops.add(ItemRegistry.LORD_SOUL_ROSE); // add custom lord soul
+        this.drops.add(ItemRegistry.LORD_SOUL_DAY_STALKER);
     }
 
     public void setAttackAnimation(Attacks attack) {
@@ -73,7 +75,15 @@ public class DayStalker extends BossEntity implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
+    /*
+     * NOTE
+     *
+     * this.animationTick is only visible if !world.isClient
+     *
+     */
+
     private PlayState attacks(AnimationState<?> state) {
+        this.attackAniTick = state.animationTick;
         //state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
         switch (this.getAttackAnimation()) {
             case DEATH -> {
@@ -128,12 +138,12 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public int getTicksUntilDeath() {
-        return 0;
+        return this.ticksUntillDead;
     }
 
     @Override
     public int getDeathTicks() {
-        return 0;
+        return this.deathTicks;
     }
 
     @Override
@@ -163,7 +173,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public double getBossMaxHealth() {
-        return 1;
+        return ConfigConstructor.day_stalker_health;
     }
 
     @Override
@@ -198,5 +208,19 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
                 .add(EntityAttributes.GENERIC_ARMOR, 10.0D);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putDouble("attack_animation_ticks", this.attackAniTick);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("attack_animation_ticks")) {
+            this.attackAniTick = nbt.getDouble("attack_animation_ticks");
+        }
     }
 }
