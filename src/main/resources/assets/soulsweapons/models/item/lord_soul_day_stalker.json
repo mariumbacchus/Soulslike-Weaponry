@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "soulsweapons:item/lord_soul_white"
+        "layer0": "soulsweapons:item/lord_soul_day_stalker"
     }
 }
