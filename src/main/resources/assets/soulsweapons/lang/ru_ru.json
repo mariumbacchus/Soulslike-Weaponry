@@ -237,6 +237,7 @@
     "subtitles.soulsweapons.trick_weapon": "Использовано оружие уловка",
 
     "tooltip.soulsweapons.shift": "Удерживай [§eSHIFT§r] для получения информации",
+    "tooltip.soulsweapons.control": "Удерживай [§eCTRL§r] для преданий",
     "tooltip.soulsweapons.magic_damage": "Магический Клинок",
     "tooltip.soulsweapons.magic_damage_description_1": "- Когда у цели больше §c33% здоровья§r, наносите",
     "tooltip.soulsweapons.magic_damage_description_2": "бонусный §9магический урон §r в зависимости от",
@@ -470,6 +471,7 @@
     "tooltip.soulsweapons.chaos_crown_lore_1": "Учитывая, что все знания ушли со временем, невозможно сказать,",
     "tooltip.soulsweapons.chaos_crown_lore_2": "всегда ли намерения монарха были такими злыми. В конце концов,",
     "tooltip.soulsweapons.chaos_crown_lore_3": "от его собственной империи тоже мало что осталось...",
+    "tooltip.soulsweapons.shard_of_uncertainty.part_1": "Кажется, он идеально вписывается в какой - то пьедестал...",
     
     "enchantment.soulsweapons.fast_hands": "Быстрые Руки",
     "enchantment.soulsweapons.fast_hands.desc": "Сокращает время перезарядки оружий и луков. (Модель не меняется).",
@@ -546,4 +548,8 @@
     "advancements.soulsweapons.dream_on.description": "Упади не менее чем с 50 блоков и выживи благодаря эффекту расчитанному статуса падения",
     "advancements.soulsweapons.moonknight.title": "Синяя Сталь",
     "advancements.soulsweapons.moonknight.description": "Верните эссенцию вечера в её законное тело и победите появившееся богоподобное существо"
+    "advancements.soulsweapons.trickweapon.title": "Переключайся!",
+    "advancements.soulsweapons.trickweapon.description": "Приобретите свое первое оружие обманку, которое может трансформироваться в другое вооружение!",
+    "advancements.soulsweapons.transform_scythe.title": "Победитель Забирает Всё",
+    "advancements.soulsweapons.transform_scythe.description": "Накормите Косу Даркина достаточным количеством душ, чтобы она преобразилась в новую, наделённую силой форму."
 }
