@@ -337,7 +337,7 @@ public class AccursedLordGoal extends Goal {
         }
     }
 
-    static enum BarrageProjectiles {
+    enum BarrageProjectiles {
         FIREBALLS,
         WITHERBALLS
     }

@@ -19,6 +19,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -124,7 +125,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
                 return;
             }
             int points = MathHelper.floor(this.getRadius() * 6.7f);
-            this.circle(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f);
+            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, ParticleTypes.DRAGON_BREATH, this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();
@@ -212,7 +213,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
         }
     }
 
-    public void circle(World world, double x, double y, double z, double points, float sizeModifier) {
+    public static void randomParticleBox(World world, double x, double y, double z, double points, float sizeModifier, ParticleEffect particle, Random random) {
         double phi = Math.PI * (3. - Math.sqrt(5.));
         for (int i = 0; i < points; i++) {
             double velocityY = 1 - (i/(points - 1)) * 2;
@@ -220,8 +221,8 @@ public class AreaEffectSphere extends Entity implements Ownable {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.DRAGON_BREATH, true, x + velocityX*sizeModifier + this.random.nextGaussian(),
-                    y + velocityY*sizeModifier + this.random.nextGaussian(), z + velocityZ*sizeModifier + this.random.nextGaussian(),
+            world.addParticle(particle, true, x + velocityX*sizeModifier + random.nextGaussian(),
+                    y + velocityY*sizeModifier + random.nextGaussian(), z + velocityZ*sizeModifier + random.nextGaussian(),
                     0, 0, 0);
         }
     }
