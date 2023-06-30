@@ -56,7 +56,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }
-        return target.damage(this.boss.world.getDamageSources().mobAttack(this.boss), modified);
+        return target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), modified);
     }
 
     @Override
@@ -212,9 +212,9 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         for (int frame : frames) {
             if (attackStatus == frame && this.isInMeleeRange(target)) {
                 if (this.applyDamage(target, damage)) {
-                    this.boss.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
-                    if (!this.boss.world.isClient) {
-                        ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                    this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
+                    if (!this.boss.getWorld().isClient) {
+                        ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
                     }
                     if (applyBleed) target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                     if (knockback > 0) {
@@ -240,14 +240,14 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             this.boss.addVelocity(e/4, 0.35D, g/4);
         }
         if (attackStatus == 26) {
-            this.boss.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             if (this.isInMeleeRange(target)) {
                 if (this.applyDamage(target, damage)) {
                     if (stunTarget) {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 10));
                     }
-                    if (!this.boss.world.isClient) {
-                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 10);
+                    if (!this.boss.getWorld().isClient) {
+                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 10);
                     }
                 }
             }
@@ -262,7 +262,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         this.singleTarget(target, 40, frame, 18f, 0, false, true, false);
         if (attackStatus == 8 && this.isInMeleeRange(target)) {
             if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
-                this.boss.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.HOSTILE, .5f, 1f);
+                this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             }
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 40, 0));
         }
@@ -271,15 +271,15 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     private void aoe(int maxTicks, int frame, float damage, float knockback, StatusEffect[] effects, double boxSize, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
-        if (effects.length > 0 && (attackStatus == 12 || attackStatus == 20)) this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        if (effects.length > 0 && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         if (attackStatus == frame) {
             if (damage > 0) {
-                if (!this.boss.world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.OBLITERATE_ID, this.boss.getBlockPos(), 200);
+                if (!this.boss.getWorld().isClient) {
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.OBLITERATE_ID, this.boss.getBlockPos(), 200);
                 }
-                this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 0.8f, 1f);
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 0.8f, 1f);
             }
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(boxSize))) {
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(boxSize))) {
                 if (entity instanceof LivingEntity living) {
                     for (StatusEffect effect : effects) {
                         living.addStatusEffect(new StatusEffectInstance(effect, 200, 0));
@@ -324,9 +324,9 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (attackStatus == 13 && this.isInMeleeRange(target)) {
             if (this.applyDamage(target, 16f)) {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
-                this.boss.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
-                if (!this.boss.world.isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
+                if (!this.boss.getWorld().isClient) {
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
                 }
             }
         }
@@ -344,10 +344,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             this.boss.getLookControl().lookAt(pos.getX(), pos.getY(), pos.getZ());
         }
         if (attackStatus == 24 && pos != null && isPosNotNullish(pos)) {
-            this.boss.world.playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-            if (!this.boss.world.isClient)
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, pos, 100);
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(pos).expand(1D))) {
+            this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
+            if (!this.boss.getWorld().isClient)
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, pos, 100);
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {
                     this.applyDamage(living, 25f);
                     living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));

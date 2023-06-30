@@ -32,13 +32,13 @@ public class ArrowProjectileMixin {
             double random = new Random().nextDouble();
             double chance;
             int amplifier;
-            for (ItemStack stack : ((ArrowEntity)(Object) this).getOwner().getHandItems()) {
+            for (ItemStack stack : projectile.getOwner().getHandItems()) {
                 if (stack.getItem() instanceof BowItem && EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack) > 0) {
                     chance = (double)EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack)/12;
                     amplifier = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
                     if (chance > random) {
                         if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
-                            target.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                            target.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                         }
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, amplifier));
                     }

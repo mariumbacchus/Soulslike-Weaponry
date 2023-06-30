@@ -24,7 +24,7 @@ public class WitheredBlock extends Block {
 
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
-    private Block replacedBlock;
+    private final Block replacedBlock;
 
     public WitheredBlock(Settings settings, Block replacedBlock) {
         super(settings);

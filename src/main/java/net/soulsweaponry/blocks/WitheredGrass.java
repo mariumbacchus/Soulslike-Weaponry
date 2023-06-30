@@ -23,7 +23,7 @@ public class WitheredGrass extends FernBlock {
     protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
-    private Block replacedBlock;
+    private final Block replacedBlock;
 
     public WitheredGrass(Settings settings, Block replacedBlock) {
         super(settings);

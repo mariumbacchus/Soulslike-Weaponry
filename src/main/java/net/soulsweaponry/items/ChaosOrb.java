@@ -19,22 +19,23 @@ public class ChaosOrb extends Item {
         super(settings);
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (!world.isClient) {
-            ChaosOrbEntity orb = new ChaosOrbEntity(EntityRegistry.CHAOS_ORB_ENTITY, world);
-            orb.setPosition(user.getX(), user.getEyeY(), user.getZ());
-            world.emitGameEvent(GameEvent.PROJECTILE_SHOOT, orb.getPos(), GameEvent.Emitter.of(user));
-            world.spawnEntity(orb);
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_EYE_LAUNCH, SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-            if (!user.getAbilities().creativeMode) {
-                stack.decrement(1);
-            }
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            user.swingHand(hand, true);
-            return TypedActionResult.success(stack);
-        }
-        return TypedActionResult.consume(stack);
-    }
+    // DISABLED FOR EARLY RELEASE
+//    @Override
+//    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+//        ItemStack stack = user.getStackInHand(hand);
+//        if (!world.isClient) {
+//            ChaosOrbEntity orb = new ChaosOrbEntity(EntityRegistry.CHAOS_ORB_ENTITY, world);
+//            orb.setPosition(user.getX(), user.getEyeY(), user.getZ());
+//            world.emitGameEvent(GameEvent.PROJECTILE_SHOOT, orb.getPos(), GameEvent.Emitter.of(user));
+//            world.spawnEntity(orb);
+//            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_EYE_LAUNCH, SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
+//            if (!user.getAbilities().creativeMode) {
+//                stack.decrement(1);
+//            }
+//            user.incrementStat(Stats.USED.getOrCreateStat(this));
+//            user.swingHand(hand, true);
+//            return TypedActionResult.success(stack);
+//        }
+//        return TypedActionResult.consume(stack);
+//    }
 }

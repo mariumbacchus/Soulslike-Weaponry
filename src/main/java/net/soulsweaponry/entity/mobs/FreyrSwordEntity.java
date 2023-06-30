@@ -146,7 +146,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public LivingEntity getOwner() {
         try {
             UUID uUID = this.getOwnerUuid();
-            LivingEntity owner = uUID == null ? null : this.world.getPlayerByUuid(uUID);
+            LivingEntity owner = uUID == null ? null : this.getWorld().getPlayerByUuid(uUID);
             if (owner instanceof PlayerEntity player) {
                 try {
                     Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
@@ -193,8 +193,8 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        if (!world.isClient && this.getBlockPos() != null) {
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
+        if (!getWorld().isClient && this.getBlockPos() != null) {
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
             this.stack.damage(10, this.getRandom(), null);
             if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
                 if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
@@ -230,7 +230,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         super.tickMovement();
         if (this.age % 4 == 0) {
             double random = this.getRandom().nextDouble();
-            this.world.addParticle(ParticleTypes.GLOW, false, 
+            this.getWorld().addParticle(ParticleTypes.GLOW, false,
                 this.getX() + random/4 - random/8, this.getEyeY() - random*6 + random*6/2, this.getZ() + random/4 - random/8, 
                 random/16 - random/32, random - random/2, random/16 - random/32);
         }

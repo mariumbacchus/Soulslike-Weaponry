@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -20,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.EntityRegistry;
 
 public class EvilForlorn extends Forlorn {
 
@@ -55,7 +55,7 @@ public class EvilForlorn extends Forlorn {
     public void tick() {
         super.tick();
         this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
-        if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
+        if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && !getWorld().isClient) {
             this.discard();
         }
     }
@@ -67,10 +67,11 @@ public class EvilForlorn extends Forlorn {
 
     @Override
     public boolean canSpawn(WorldView view) {
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
-                && world.getDifficulty() != Difficulty.PEACEFUL
-                && world.getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
+        BlockState state = this.getWorld().getBlockState(this.getBlockPos());
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+                && state.getBlock().canMobSpawnInside(state)
+                && getWorld().getDifficulty() != Difficulty.PEACEFUL
+                && getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

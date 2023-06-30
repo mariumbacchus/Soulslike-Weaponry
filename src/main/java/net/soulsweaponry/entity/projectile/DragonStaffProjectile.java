@@ -46,20 +46,20 @@ public class DragonStaffProjectile extends DragonFireballEntity {
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             this.onEntityHit((EntityHitResult)hitResult);
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult)hitResult;
             this.onBlockHit(blockHitResult);
             BlockPos blockPos = blockHitResult.getBlockPos();
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         this.detonate();
     }
 
     private void detonate() {
-        if (!this.world.isClient) {
-            List<LivingEntity> list = this.world.getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(4.0, 2.0, 4.0));
-            AreaEffectSphere areaEffectCloudEntity = new AreaEffectSphere(this.world, this.getX(), this.getY(), this.getZ());
+        if (!this.getWorld().isClient) {
+            List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(4.0, 2.0, 4.0));
+            AreaEffectSphere areaEffectCloudEntity = new AreaEffectSphere(this.getWorld(), this.getX(), this.getY(), this.getZ());
             Entity entity = this.getOwner();
             if (entity instanceof LivingEntity) {
                 areaEffectCloudEntity.setOwner((LivingEntity)entity);
@@ -77,8 +77,8 @@ public class DragonStaffProjectile extends DragonFireballEntity {
                     break;
                 }
             }
-            this.world.syncWorldEvent(WorldEvents.DRAGON_BREATH_CLOUD_SPAWNS, this.getBlockPos(), this.isSilent() ? -1 : 1);
-            this.world.spawnEntity(areaEffectCloudEntity);
+            this.getWorld().syncWorldEvent(WorldEvents.DRAGON_BREATH_CLOUD_SPAWNS, this.getBlockPos(), this.isSilent() ? -1 : 1);
+            this.getWorld().spawnEntity(areaEffectCloudEntity);
             this.discard();
         }
     }

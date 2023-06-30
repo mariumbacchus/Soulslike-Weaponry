@@ -15,7 +15,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -57,20 +56,13 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                     double chance = ConfigConstructor.dawnbreaker_ability_chance_modifier + 1 - (Math.pow(.75, (double)target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
                     double random = target.getRandom().nextDouble();
                     if (random < chance) {
-                        if (!attacker.world.isClient) {
+                        if (!attacker.getWorld().isClient) {
                             if (attacker instanceof ServerPlayerEntity) {
                                 BlockPos pos = target.getBlockPos();
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, pos);
+                                ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.getWorld(), PacketRegistry.DAWNBREAKER_PACKET_ID, pos);
                             }
                         }
-                        target.world.playSound(
-                            null,
-                            target.getBlockPos(),
-                            SoundRegistry.DAWNBREAKER_EVENT,
-                            SoundCategory.HOSTILE,
-                            2f,
-                            1f
-                        );
+                        target.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
                         Box aoe = target.getBoundingBox().expand(10);
                         List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
                         boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
@@ -79,7 +71,7 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
                                 if (targetHit.isUndead() || bl) {
                                     if (!targetHit.equals(attacker)) {
                                         targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.damage(attacker.world.getDamageSources().mobAttack(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                                        targetHit.damage(attacker.getWorld().getDamageSources().mobAttack(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
                                         targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
                                     }
                                 }

@@ -32,9 +32,9 @@ public class RecipeManagerMixin {
                 map.put(new Identifier(SoulsWeaponry.ModId, "gatling_gun"), RecipeRegistry.GATLING_GUN_RECIPE);
                 map.put(new Identifier(SoulsWeaponry.ModId, "blunderbuss"), RecipeRegistry.BLUNDERBUSS_RECIPE);
             }
-            for (int i = 0; i < recipes.size(); i++) {
-                if ((boolean) recipes.get(i).get(0)) {
-                    map.put(new Identifier(SoulsWeaponry.ModId, (String) recipes.get(i).get(1)), (JsonObject) recipes.get(i).get(2));
+            for (ArrayList<Object> recipe : recipes) {
+                if ((boolean) recipe.get(0)) {
+                    map.put(new Identifier(SoulsWeaponry.ModId, (String) recipe.get(1)), (JsonObject) recipe.get(2));
                 }
             }
         }

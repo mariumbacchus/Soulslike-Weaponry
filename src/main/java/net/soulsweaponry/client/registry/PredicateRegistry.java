@@ -47,7 +47,7 @@ public class PredicateRegistry {
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.DRAUGR, new Identifier("night"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity != null && livingEntity.world.getDimension().hasSkyLight() && livingEntity.world.getTimeOfDay() % 24000 > 13000 && livingEntity.world.getTimeOfDay() % 24000 < 23000) {
+            if (livingEntity != null && livingEntity.getWorld().getDimension().hasSkyLight() && livingEntity.getWorld().getTimeOfDay() % 24000 > 13000 && livingEntity.getWorld().getTimeOfDay() % 24000 < 23000) {
                 if (itemStack.getEnchantments().size() > 0) {
                     return 0.5F;
                 }
@@ -67,7 +67,7 @@ public class PredicateRegistry {
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
-                boolean emp = ((Skofnung) itemStack.getItem()).isEmpowered(itemStack);
+                boolean emp = Skofnung.isEmpowered(itemStack);
                 if (emp) {
                     return 1.0F;
                 }

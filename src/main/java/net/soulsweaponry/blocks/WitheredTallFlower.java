@@ -25,7 +25,7 @@ import net.minecraft.world.World;
  */
 public class WitheredTallFlower extends WitheredTallGrass {
 
-    private StatusEffect effect;
+    private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, StatusEffect effect) {

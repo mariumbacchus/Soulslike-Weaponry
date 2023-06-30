@@ -46,9 +46,9 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
             i = (int)Math.min(l + (long)i, Integer.MAX_VALUE);
         }
         if ((entity2 = this.getOwner()) == null) {
-            damageSource = this.world.getDamageSources().arrow(this, this);
+            damageSource = this.getWorld().getDamageSources().arrow(this, this);
         } else {
-            damageSource = this.world.getDamageSources().arrow(this, entity2);
+            damageSource = this.getWorld().getDamageSources().arrow(this, entity2);
             if (entity2 instanceof LivingEntity) {
                 ((LivingEntity)entity2).onAttacking(entity);
             }
@@ -70,7 +70,7 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
                         livingEntity.addVelocity(vec3d.x, 0.1, vec3d.z);
                     }
                 }
-                if (!this.world.isClient && entity2 instanceof LivingEntity) {
+                if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity);
                 }
@@ -88,7 +88,7 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
             this.setVelocity(this.getVelocity().multiply(-0.1));
             this.setYaw(this.getYaw() + 180.0f);
             this.prevYaw += 180.0f;
-            if (!this.world.isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
+            if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
                 if (this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1f);
                 }

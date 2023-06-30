@@ -60,7 +60,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
@@ -83,15 +83,15 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                                 ItemStack separate = itemStack.copy();
                                 living.dropStack(separate);
                                 itemStack.decrement(1);
-                                world.playSound(null, living.getBlockPos(), SoundEvents.ENTITY_ARMOR_STAND_BREAK, SoundCategory.PLAYERS, 1f, 1f);
+                                getWorld().playSound(null, living.getBlockPos(), SoundEvents.ENTITY_ARMOR_STAND_BREAK, SoundCategory.PLAYERS, 1f, 1f);
                             }
                         });
                     }
                     default -> {
                         if (power > 50) {
-                            world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                            getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                         }
-                        target.damage(this.world.getDamageSources().magic(), power);
+                        target.damage(this.getWorld().getDamageSources().magic(), power);
                     }
                 }
             }
@@ -111,12 +111,12 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             this.onEntityHit((EntityHitResult)hitResult);
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult)hitResult;
             this.onBlockHit(blockHitResult);
             BlockPos blockPos = blockHitResult.getBlockPos();
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         if (this.getOwner() != null && this.getOwner() instanceof LivingEntity) {
             this.randomCollisionEffect((LivingEntity)this.getOwner());
@@ -131,15 +131,15 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             boolean isWarden = this.random.nextBoolean();
             for (int i = 0; i < 3; i++) {
                 if (isWarden) {
-                    WardenEntity warden = new WardenEntity(EntityType.WARDEN, world);
-                    warden.initialize((ServerWorldAccess) world, world.getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null, null);
+                    WardenEntity warden = new WardenEntity(EntityType.WARDEN, getWorld());
+                    warden.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null, null);
                     warden.setPos(this.getX(), this.getY(), this.getZ());
                     warden.increaseAngerAt(user, 80, true);
-                    world.spawnEntity(warden);
+                    getWorld().spawnEntity(warden);
                 } else {
-                    WitherEntity boss = new WitherEntity(EntityType.WITHER, world);
+                    WitherEntity boss = new WitherEntity(EntityType.WITHER, getWorld());
                     boss.setPos(this.getX(), this.getY(), this.getZ());
-                    world.spawnEntity(boss);
+                    getWorld().spawnEntity(boss);
                 }
             }
             return;
@@ -147,51 +147,51 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         switch (this.getCollisionEffectType(user)) {
             case BATS -> {
                 for (int i = 0; i < power * 2; i++) {
-                    BatEntity bat = new BatEntity(EntityType.BAT, world);
+                    BatEntity bat = new BatEntity(EntityType.BAT, getWorld());
                     bat.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(bat);
+                    this.getWorld().spawnEntity(bat);
                 }
             }
             case DARKNESS -> {
-                world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE.value(), SoundCategory.AMBIENT, 1f, 1f);
-                world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WARDEN_EMERGE, SoundCategory.HOSTILE, 1f, 1f);
+                getWorld().playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE.value(), SoundCategory.AMBIENT, 1f, 1f);
+                getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WARDEN_EMERGE, SoundCategory.HOSTILE, 1f, 1f);
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
             }
             case LIGHTNING -> {
                 for (int i = 0; i < power; i++) {
-                    LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+                    LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, getWorld());
                     entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
+                    this.getWorld().spawnEntity(entity);
                 }
             }
             case PARTICLES -> {
-                if (!this.world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, this.getBlockPos(), 1000);
+                if (!this.getWorld().isClient) {
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, this.getBlockPos(), 1000);
                 }
             }
             case RANDOM_ENTITY -> this.summonRandomEntity(user, power);
             case SPECIFIC_ENTITY -> this.summonSpecificEntity(user, power);
             default -> {
-                boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-                this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
+                boolean bl = getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+                this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
             }
         }
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             EntityType<?> type = this.getEntityType(user);
             for (int i = 0; i < power; i++) {
-                type.spawn((ServerWorld) this.world, this.getBlockPos(), SpawnReason.EVENT);
+                type.spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
             }
         }
     }
 
     private void summonRandomEntity(LivingEntity user, int power) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             for (int i = 0; i < power; i++) {
                 EntityType<?> type = this.getEntityType(user);
-                type.spawn((ServerWorld) this.world, this.getBlockPos(), SpawnReason.EVENT);
+                type.spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
             }
         }
     }

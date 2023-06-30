@@ -129,12 +129,13 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
     public boolean canSpawn(WorldView view) {
         BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
         BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox()) 
-            && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
-            && !world.getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
-            && world.getDifficulty() != Difficulty.PEACEFUL
-            && world.getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
-            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON)
+        BlockState state = this.getWorld().getBlockState(positionEntity);
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+            && state.getBlock().canMobSpawnInside(state)
+            && !getWorld().getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
+            && getWorld().getDifficulty() != Difficulty.PEACEFUL
+            && getWorld().getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
+            && this.getWorld().getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON)
             && this.isSpawnable();
     }
 
@@ -167,8 +168,8 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -177,7 +178,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(this.world.getDamageSources().mobAttack(this), g);
+        boolean bl = target.damage(this.getWorld().getDamageSources().mobAttack(this), g);
         if (bl) {
            target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
            this.applyDamageEffects(this, target);
@@ -225,7 +226,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, AnimatedD
         Random random = new Random();
         double ran = random.nextDouble();
         if (ran < 0.05D) {
-            this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 1.4F, this.getZ(), ran - 0.025D, ran - 0.025D, ran - 0.025D);
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 1.4F, this.getZ(), ran - 0.025D, ran - 0.025D, ran - 0.025D);
         }
     }
 

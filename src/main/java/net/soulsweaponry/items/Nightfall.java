@@ -83,7 +83,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                     }
                 }
-                player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (!world.isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.OBLITERATE_ID, targetArea, 200);
                 }
@@ -101,9 +101,9 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                 entity.setOwner((PlayerEntity) attacker);
                 world.spawnEntity(entity);
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                if (!attacker.world.isClient) {
+                if (!attacker.getWorld().isClient) {
                     BlockPos pos = target.getBlockPos();
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.getWorld(), PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
                 }
             }
         }

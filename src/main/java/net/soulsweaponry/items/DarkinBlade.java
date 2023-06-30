@@ -77,7 +77,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());
-                player.world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                 duration = MathHelper.floor(duration/1.5);
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, 0));
             }

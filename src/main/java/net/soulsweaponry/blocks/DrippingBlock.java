@@ -10,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 
 public class DrippingBlock extends Block {
 
-    private ParticleEffect particle;
+    private final ParticleEffect particle;
 
     public DrippingBlock(Settings settings, ParticleEffect particle) {
         super(settings);

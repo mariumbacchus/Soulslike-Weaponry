@@ -17,6 +17,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -56,6 +57,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         this.setDrops(ItemRegistry.LORD_SOUL_VOID);
         this.setDrops(ItemRegistry.CHAOS_CROWN);
         this.setDrops(ItemRegistry.CHAOS_ROBES);
+        this.setDrops(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
     }
 
     private PlayState predicate(AnimationState<?> state) {
@@ -118,9 +120,9 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -137,7 +139,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
             }
             if (this.spawnTicks == 40) {
                 this.particleExplosion(dragonParticles, .5f);
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_DEATH, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_DEATH, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 60) {
                 this.setAttack(0);;
@@ -158,7 +160,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (source == (this.world.getDamageSources().lightningBolt())) {
+        if (source == (this.getWorld().getDamageSources().lightningBolt())) {
             return false;
         }
         return super.damage(source, amount);
@@ -169,7 +171,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         super.mobTick();
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
         if (this.hasStatusEffect(StatusEffects.LEVITATION)) this.removeStatusEffect(StatusEffects.LEVITATION);
-        this.turnBlocks(this.world, this.getBlockPos());
+        this.turnBlocks(this.getWorld(), this.getBlockPos());
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
@@ -178,7 +180,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     private void particleExplosion(DefaultParticleType[] particles, float sizeModifier) {
-        this.roundParticleOutburst(this.world, 1000, particles, this.getX(), this.getY() + 3, this.getZ(), sizeModifier);
+        this.roundParticleOutburst(this.getWorld(), 1000, particles, this.getX(), this.getY() + 3, this.getZ(), sizeModifier);
     }
 
     public void roundParticleOutburst(World world, double points, DefaultParticleType[] particles, double x, double y, double z, float sizeModifier) {

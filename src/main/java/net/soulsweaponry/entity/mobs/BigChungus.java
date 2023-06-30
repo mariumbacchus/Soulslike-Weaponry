@@ -60,9 +60,10 @@ public class BigChungus extends HostileEntity {
     public boolean canSpawn(WorldView view) {
         BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
         BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-        return view.doesNotIntersectEntities(this) && this.world.isNight() && !world.containsFluid(this.getBoundingBox()) 
-            && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
-            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.BIG_CHUNGUS)
+        BlockState state = this.getWorld().getBlockState(positionEntity);
+        return view.doesNotIntersectEntities(this) && this.getWorld().isNight() && !getWorld().containsFluid(this.getBoundingBox())
+            && state.getBlock().canMobSpawnInside(state)
+            && this.getWorld().getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.BIG_CHUNGUS)
             && this.isSpawnable();
     }
 

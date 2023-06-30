@@ -52,7 +52,7 @@ public class LivingEntityMixin<T> {
             float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
             float totalAdded = baseAdded * (amplifier + 1);
             newAmount += totalAdded;
-            entity.world.playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
+            entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
             if (entity.hasStatusEffect(StatusEffects.SLOWNESS) && entity.getStatusEffect(StatusEffects.SLOWNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.SLOWNESS);
             if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
@@ -99,11 +99,11 @@ public class LivingEntityMixin<T> {
                             cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
                         }
                     }
-                    target.damage(player.world.getDamageSources().mobAttack(player), damage);
+                    target.damage(player.getWorld().getDamageSources().mobAttack(player), damage);
                     player.getDataTracker().set(SHOULD_DAMAGE_RIDING, false);
-                    if (!player.world.isClient && player.getBlockPos() != null) {
-                        player.world.playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
-                        ParticleNetworking.specificServerParticlePacket((ServerWorld) player.world, PacketRegistry.UMBRAL_TRESPASS_ID, player.getBlockPos(), player.getEyeY());
+                    if (!player.getWorld().isClient && player.getBlockPos() != null) {
+                        player.getWorld().playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
+                        ParticleNetworking.specificServerParticlePacket((ServerWorld) player.getWorld(), PacketRegistry.UMBRAL_TRESPASS_ID, player.getBlockPos(), player.getEyeY());
                     }
                 }
             } catch (Exception ignored) {

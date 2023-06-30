@@ -108,7 +108,7 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
         double f = vec3d.y;
         double g = vec3d.z;
         for (int i = 0; i < this.getTickParticleAmount(); ++i) {
-            this.world.addParticle(this.getTrailParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
+            this.getWorld().addParticle(this.getTrailParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
         }
 
         if (this.age > this.getMaxAge()) {
@@ -158,17 +158,17 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             if (this.dataTracker.get(HUGE_EXPLOSION)) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
             } else {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.MOONLIGHT_PARTICLES_ID, this.getBlockPos(), this.getMaxParticlePoints());
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.MOONLIGHT_PARTICLES_ID, this.getBlockPos(), this.getMaxParticlePoints());
             }
         } else {
             if (this.dataTracker.get(HUGE_EXPLOSION)) {
-                this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), 750, 0.5f);
+                this.detonateEntity(getWorld(), this.getX(), this.getY(), this.getZ(), 750, 0.5f);
             } else {
-                this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
+                this.detonateEntity(getWorld(), this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
             }
         }
     }

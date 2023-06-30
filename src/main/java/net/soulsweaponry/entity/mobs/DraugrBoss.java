@@ -207,16 +207,16 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
+                getWorld().addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
             }
             
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 40) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks == 48 || this.spawnTicks == 55) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                for (Entity entity : this.world.getOtherEntities(this, getBoundingBox().expand(10f))) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                for (Entity entity : this.getWorld().getOtherEntities(this, getBoundingBox().expand(10f))) {
                     if (entity instanceof LivingEntity) {
                         ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 0));
                         ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 0));
@@ -232,13 +232,13 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 0));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10, 1));
             for(int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
-        } else if (this.world.isSkyVisible(this.getBlockPos())) {
+        } else if (this.getWorld().isSkyVisible(this.getBlockPos())) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 1));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 10, 1));
             for(int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
             }
         }
         if (this.isShielding()) this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 1));
@@ -312,12 +312,12 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setState(States.DEATH);
-        CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
-        NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, world);
+        CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
+        NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, getWorld());
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
         entity.setVelocity(0, .1f, 0);
         entity.setSpawn();
-        world.spawnEntity(entity);
+        getWorld().spawnEntity(entity);
     }
 
     @Override
@@ -327,8 +327,8 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             this.remove(RemovalReason.KILLED);
         }
     }

@@ -64,20 +64,20 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
                     int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
                     vec3d = new Vec3d(pos[0], pos[1], pos[2]).subtract(this.getPos());
                     if (vec3d.getX() == pos[0] && vec3d.getY() == pos[1] && vec3d.getZ() == pos[2]) {
-                        if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                        if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
                             this.dropStack(this.asItemStack(), 0.1f);
                         }
                         this.discard();
                     }
                 } else {
-                    if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                    if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
                         this.dropStack(this.asItemStack(), 0.1f);
                     }
                     this.discard();
                 }
             }
             this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
-            if (this.world.isClient) {
+            if (this.getWorld().isClient) {
                 this.lastRenderY = this.getY();
             }
             double d = 0.05 * returnSpeed;
@@ -97,7 +97,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.mjolnir_projectile_damage;
         if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
-        DamageSource damageSource = this.world.getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
@@ -115,13 +115,13 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
         float g = 1.0f;
         int strikes = 1;
-        if (this.world instanceof ServerWorld && this.world.isSkyVisible(blockPos = entity.getBlockPos())) {
-            if (this.world.isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
+        if (this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = entity.getBlockPos())) {
+            if (this.getWorld().isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
             for (int i = 0; i < strikes; i++) {
-                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
+                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                 lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
-                this.world.spawnEntity(lightningEntity);
+                this.getWorld().spawnEntity(lightningEntity);
             }
             soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
             g = 5.0f;

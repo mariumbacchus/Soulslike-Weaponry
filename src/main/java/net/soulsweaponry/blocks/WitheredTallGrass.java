@@ -78,10 +78,7 @@ public class WitheredTallGrass extends TallPlantBlock {
     protected boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         mutable.set((Vec3i)pos, Direction.DOWN);
-        if (!(world.getBlockState(mutable).getBlock() instanceof WitheredBlock)) {
-            return true;
-        }
-        return false;
+        return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock);
     }
 
     public void turnBack(BlockState state, World world, BlockPos pos) {

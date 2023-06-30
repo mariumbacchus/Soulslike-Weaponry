@@ -150,9 +150,9 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -235,12 +235,12 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
             
             if (this.spawnTicks % 10 == 0) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
                 this.setSpawning(false);
@@ -258,7 +258,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
     }
@@ -319,7 +319,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         //Reflect all projectiles
         //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
         Box chunkBox = this.getBoundingBox().expand(3);
-        List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
+        List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
             if (entity instanceof PersistentProjectileEntity projectile) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
@@ -331,15 +331,15 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         int k;
         if (this.blockBreakingCooldown > 0) {
             --this.blockBreakingCooldown;
-            if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+            if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 i = MathHelper.floor(this.getY());
                 j = MathHelper.floor(this.getX());
                 k = MathHelper.floor(this.getZ());
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
                             }
                         }
                     }

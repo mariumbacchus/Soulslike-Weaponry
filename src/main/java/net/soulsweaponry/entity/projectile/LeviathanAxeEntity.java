@@ -60,7 +60,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.leviathan_axe_projectile_damage;
         if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
-        DamageSource damageSource = this.world.getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
@@ -74,11 +74,11 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
                 this.onHit(livingEntity2);
             }
         }
-        if (!world.isClient && entity instanceof MjolnirProjectile) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, this.getBlockPos());
-            this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.BLOCK);
+        if (!getWorld().isClient && entity instanceof MjolnirProjectile) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, this.getBlockPos());
+            this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.BLOCK);
         }
-        LeviathanAxe.iceExplosion(world, this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
+        LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
     }
 
@@ -96,20 +96,20 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
                     int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
                     vec3d = new Vec3d(pos[0], pos[1], pos[2]).subtract(this.getPos());
                     if (vec3d.getX() == pos[0] && vec3d.getY() == pos[1] && vec3d.getZ() == pos[2]) {
-                        if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                        if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
                             this.dropStack(this.asItemStack(), 0.1f);
                         }
                         this.discard();
                     }
                 } else {
-                    if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                    if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
                         this.dropStack(this.asItemStack(), 0.1f);
                     }
                     this.discard();
                 }
             }
             this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
-            if (this.world.isClient) {
+            if (this.getWorld().isClient) {
                 this.lastRenderY = this.getY();
             }
             double d = 0.05 * returnSpeed;

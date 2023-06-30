@@ -4,6 +4,9 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.soulsweaponry.world.gen.OreGenerator;
 import org.slf4j.Logger;
@@ -26,22 +29,18 @@ import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.SpawnInit;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.GeckoLib;
+
+import java.util.ArrayList;
 
 public class SoulsWeaponry implements ModInitializer {
 
     public static final String ModId = "soulsweapons";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
     public static ItemGroup MAIN_GROUP;
-    //FabricItemGroupBuilder.build(new Identifier(ModId, "general"), () -> new ItemStack(ItemRegistry.MOONSTONE));
-    public static void registerItemGroup() {
-        MAIN_GROUP = FabricItemGroup.builder(new Identifier(ModId, "general"))
-                .displayName(Text.translatable("itemGroup.soulsweapons.general"))
-                .icon(() -> new ItemStack(ItemRegistry.MOONSTONE)).build();
-    }
+    public static final ArrayList<Item> ITEM_GROUP_LIST = new ArrayList<>();
 
     @Override
     public void onInitialize() {
@@ -50,7 +49,6 @@ public class SoulsWeaponry implements ModInitializer {
         LOGGER.info("Config initialized!");
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");
-        registerItemGroup();
         BlockRegistry.init();
         ItemRegistry.init();
         EffectRegistry.init();
@@ -72,6 +70,14 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
+
+        Registry.register(Registries.ITEM_GROUP, new Identifier(ModId, "general"),
+                FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))
+                        .icon(() -> new ItemStack(ItemRegistry.MOONSTONE)).entries(((displayContext, entries) -> {
+                            for (Item item : ITEM_GROUP_LIST) {
+                                entries.add(item);
+                            }
+                        })).build());
 
         long end = System.currentTimeMillis();
         LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");

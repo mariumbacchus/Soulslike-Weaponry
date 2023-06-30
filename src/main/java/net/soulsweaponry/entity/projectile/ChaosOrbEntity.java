@@ -44,7 +44,7 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
         double e = this.getY() + vec3d.y + 0.1f;
         double f = this.getZ() + vec3d.z;
         double g = vec3d.horizontalLength();
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             double h = this.getX() - d;
             double i = this.getZ() - f;
             float j = (float)Math.sqrt(h * h + i * i);
@@ -60,18 +60,18 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
         }
         if (this.isTouchingWater()) {
             for (int p = 0; p < 4; ++p) {
-                this.world.addParticle(ParticleTypes.BUBBLE, d - vec3d.x * 0.25, e - vec3d.y * 0.25, f - vec3d.z * 0.25, vec3d.x, vec3d.y, vec3d.z);
+                this.getWorld().addParticle(ParticleTypes.BUBBLE, d - vec3d.x * 0.25, e - vec3d.y * 0.25, f - vec3d.z * 0.25, vec3d.x, vec3d.y, vec3d.z);
             }
         } else {
-            this.world.addParticle(ParticleTypes.PORTAL, d - vec3d.x * 0.25 + this.random.nextDouble() * 0.6 - 0.3, e - vec3d.y * 0.25 - 0.5, f - vec3d.z * 0.25 + this.random.nextDouble() * 0.6 - 0.3, vec3d.x, vec3d.y, vec3d.z);
+            this.getWorld().addParticle(ParticleTypes.PORTAL, d - vec3d.x * 0.25 + this.random.nextDouble() * 0.6 - 0.3, e - vec3d.y * 0.25 - 0.5, f - vec3d.z * 0.25 + this.random.nextDouble() * 0.6 - 0.3, vec3d.x, vec3d.y, vec3d.z);
         }
-        if (!this.world.isClient && world instanceof ServerWorld) {
+        if (!this.getWorld().isClient && getWorld() instanceof ServerWorld) {
             this.setPosition(d, e, f);
             ++this.lifespan;
-            if (this.lifespan > 100 && !this.world.isClient) {
+            if (this.lifespan > 100 && !this.getWorld().isClient) {
                 this.playSound(SoundEvents.ENTITY_ENDER_EYE_DEATH, 1.0f, 1.0f);
                 this.discard();
-                this.world.syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
+                this.getWorld().syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
 
                 for (int i = -1; i < 2; i += 2) {
                     // TODO: Filler until right bosses are made.
@@ -80,8 +80,8 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
 //                    boss.setVelocity((float) i / 5f, 0.1f, - (float) i / 5f);
 //                    boss.setSpawn();
 //                    world.spawnEntity(boss);
-                    for (ServerPlayerEntity player : ((ServerWorld) world).getPlayers()) {
-                        world.playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT, SoundCategory.HOSTILE, 0.3f, 1f);
+                    for (ServerPlayerEntity player : ((ServerWorld) getWorld()).getPlayers()) {
+                        getWorld().playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT, SoundCategory.HOSTILE, 0.3f, 1f);
                     }
                 }
             }

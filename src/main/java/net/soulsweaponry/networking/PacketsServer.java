@@ -32,7 +32,7 @@ public class PacketsServer {
     public static void initServer() {
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.MOONLIGHT, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     MoonlightShortsword.summonSmallProjectile(serverWorld, player);
                 }
@@ -41,7 +41,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.RETURN_FREYR_SWORD, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     //NOTE: reading bufs does not work for some reason
                     try {
@@ -67,7 +67,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.STATIONARY_FREYR_SWORD, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     try {
                         Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
@@ -88,7 +88,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.COLLECT_SUMMONS, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     for (Hand hand : Hand.values()) {
                         Item handItem = player.getStackInHand(hand).getItem();
@@ -114,7 +114,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.SWITCH_TRICK_WEAPON, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     Item handItem = player.getStackInHand(Hand.MAIN_HAND).getItem();
                     if (handItem instanceof TrickWeapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
@@ -151,7 +151,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.KEYBIND_ABILITY, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
@@ -165,7 +165,7 @@ public class PacketsServer {
 
         ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (server, player, handler, buf, responseSender) -> {
             server.execute(() -> {
-                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
+                ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
                 if (serverWorld != null) {
                     if (ConfigConstructor.enable_shield_parry && player.getStackInHand(Hand.OFF_HAND).getItem() instanceof ShieldItem item && !player.getItemCooldownManager().isCoolingDown(item)) {
                         ParryData.setParryFrames((IEntityDataSaver) player, 1);

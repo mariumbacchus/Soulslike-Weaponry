@@ -98,9 +98,9 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -166,26 +166,26 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
+                getWorld().addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
             }
             
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 70) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks > 110 && this.spawnTicks <= 112) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
-                List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
+                List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
                 for (Entity nearbyEntity : nearbyEntities) {
                     if (nearbyEntity instanceof LivingEntity closestTarget) {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(this.world.getDamageSources().mobAttack(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
+                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
                     }
                 }
-                if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DAWNBREAKER_PACKET_ID, this.getBlockPos());
+                if (!this.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DAWNBREAKER_PACKET_ID, this.getBlockPos());
             }
             if (this.spawnTicks >= 125) {
                 this.setAttackAnimation(AccursedLordAnimations.IDLE);
@@ -195,8 +195,8 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     public void removePlacedLava() {
         for (BlockPos pos : this.lavaPos) {
-            if (this.world.getBlockState(pos).isOf(Blocks.LAVA)) {
-                this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            if (this.getWorld().getBlockState(pos).isOf(Blocks.LAVA)) {
+                this.getWorld().setBlockState(pos, Blocks.AIR.getDefaultState());
             }
         }
         this.lavaPos.clear();

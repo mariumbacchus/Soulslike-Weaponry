@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 public class WitheredFlower extends WitherRoseBlock {
 
     private Block flowerToReplace;
-    private StatusEffect effect;
+    private final StatusEffect effect;
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
@@ -64,7 +64,7 @@ public class WitheredFlower extends WitherRoseBlock {
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {
         int i = state.get(AGE);
         if (i < 3) {
-            world.setBlockState(pos, (BlockState)state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
         this.turnBack(state, world, pos);
@@ -72,7 +72,7 @@ public class WitheredFlower extends WitherRoseBlock {
     }
 
     public void resetAge(BlockState state, World world, BlockPos pos) {
-        world.setBlockState(pos, (BlockState)state.with(AGE, 0), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos, state.with(AGE, 0), Block.NOTIFY_LISTENERS);
     }
 
     @Override
@@ -85,11 +85,8 @@ public class WitheredFlower extends WitherRoseBlock {
 
     protected boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        mutable.set((Vec3i)pos, Direction.DOWN);
-        if (!(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).get(CANNOT_TURN)) {
-            return true;
-        }
-        return false;
+        mutable.set(pos, Direction.DOWN);
+        return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).get(CANNOT_TURN);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class Decay extends StatusEffect {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, amplifier));
             }
         } else if (!(entity instanceof BossEntity)) {
-            entity.damage(entity.world.getDamageSources().wither(), amplifier*2 + 2);
+            entity.damage(entity.getWorld().getDamageSources().wither(), amplifier*2 + 2);
         }
     }
 }

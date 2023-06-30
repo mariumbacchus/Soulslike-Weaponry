@@ -115,17 +115,17 @@ public class ChaosMonarchGoal extends Goal {
                     case TELEPORT -> {
                         this.attackStatus++;
                         if (this.attackStatus % 2 == 0 && this.attackStatus < 10) {
-                            if (!this.boss.world.isClient)
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.BIG_TELEPORT_ID, this.boss.getBlockPos(), 1000);
+                            if (!this.boss.getWorld().isClient)
+                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.BIG_TELEPORT_ID, this.boss.getBlockPos(), 1000);
                         }
                         if (this.attackStatus == 23) {
-                            this.boss.world.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+                            this.boss.getWorld().playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
                             boolean bl = this.teleportAway();
                             if (!bl) {
                                 this.explode();
                             } else {
-                                if (!this.boss.world.isClient)
-                                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DRAGON_BREATH_EXPLOSION_ID, this.boss.getBlockPos(), 1000);
+                                if (!this.boss.getWorld().isClient)
+                                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DRAGON_BREATH_EXPLOSION_ID, this.boss.getBlockPos(), 1000);
                             }
                         }
                         if (this.attackStatus >= 30) {
@@ -148,7 +148,7 @@ public class ChaosMonarchGoal extends Goal {
                         this.attackStatus++;
                         int[] triggers = {15, 20, 25};
                         if (this.attackStatus == 5)
-                            this.boss.world.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.0f, 1.5f);
+                            this.boss.getWorld().playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.0f, 1.5f);
                         for (int i = 1; i < triggers.length + 1; i++) {
                             if (attackStatus == triggers[i - 1]) this.spawnLightning(i);
                         }
@@ -162,7 +162,7 @@ public class ChaosMonarchGoal extends Goal {
                     case BARRAGE -> {
                         this.attackStatus++;
                         if (this.attackStatus >= 9 && this.attackStatus < 25) {
-                            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
+                            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
                             if (this.randomOrNot) {
                                 this.randomProjectiles();
                             } else {
@@ -187,28 +187,28 @@ public class ChaosMonarchGoal extends Goal {
     private void hitBox(BlockPos blockPos, HitboxType type) {
         switch (type) {
             case SWIPE -> {
-                this.boss.world.playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
+                this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                 this.generateHitbox(blockPos, 3, 15f);
             }
             case THRUST -> {
-                this.boss.world.playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.HOSTILE, 1f, 1f);
+                this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.HOSTILE, 1f, 1f);
                 this.generateHitbox(blockPos, 2, 20);
             }
             case BONK -> {
                 this.generateHitbox(blockPos, 2, 30f);
-                this.boss.world.playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-                if (!this.boss.world.isClient)
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, blockPos, 100);
+                this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
+                if (!this.boss.getWorld().isClient)
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, blockPos, 100);
             }
         }
     }
 
     private void generateHitbox(BlockPos blockPos, double expand, float damage) {
         Box box = new Box(blockPos).expand(expand);
-        List<Entity> intersectingEntities = this.boss.world.getOtherEntities(this.boss, box);
+        List<Entity> intersectingEntities = this.boss.getWorld().getOtherEntities(this.boss, box);
         for (Entity entity : intersectingEntities) {
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
+                livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
                 livingEntity.takeKnockback(this.boss.getRandom().nextDouble(), this.boss.getX() - livingEntity.getX(), this.boss.getZ() - livingEntity.getZ());
             }
         }
@@ -218,10 +218,10 @@ public class ChaosMonarchGoal extends Goal {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
-        ChaosSkull skull = new ChaosSkull(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f + 1, g, this.boss.world);
+        ChaosSkull skull = new ChaosSkull(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f + 1, g, this.boss.getWorld());
         skull.setOwner(this.boss);
-        this.boss.world.spawnEntity(skull);
-        this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.getWorld().spawnEntity(skull);
+        this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
     }
 
     private void controlledProjectiles(LivingEntity target) {
@@ -231,38 +231,38 @@ public class ChaosMonarchGoal extends Goal {
         Vec3d vel = new Vec3d(e, f, g).multiply(0.15D);
         switch (controlledProjectile) {
             case 1 -> {
-                ShulkerBulletEntity bullet = new ShulkerBulletEntity(this.boss.world, this.boss, target, this.boss.getMovementDirection().getAxis());
+                ShulkerBulletEntity bullet = new ShulkerBulletEntity(this.boss.getWorld(), this.boss, target, this.boss.getMovementDirection().getAxis());
                 bullet.setPosition(this.getBossPos());
-                this.boss.world.spawnEntity(bullet);
+                this.boss.getWorld().spawnEntity(bullet);
             }
             case 2 -> {
-                ExperienceBottleEntity bottle = new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.world);
+                ExperienceBottleEntity bottle = new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld());
                 bottle.setPosition(this.getBossPos());
                 bottle.setVelocity(vel);
-                this.boss.world.spawnEntity(bottle);
+                this.boss.getWorld().spawnEntity(bottle);
             }
             case 3 -> {
                 if (this.attackStatus % 2 == 0 && this.attackStatus > 18) {
-                    FireballEntity fireball = new FireballEntity(this.boss.world, this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
+                    FireballEntity fireball = new FireballEntity(this.boss.getWorld(), this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
                     fireball.setPosition(this.getBossPos());
-                    this.boss.world.spawnEntity(fireball);
+                    this.boss.getWorld().spawnEntity(fireball);
                 } else if (this.attackStatus < 16) {
-                    SmallFireballEntity fireball = new SmallFireballEntity(this.boss.world, this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f, g);
-                    this.boss.world.spawnEntity(fireball);
+                    SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f, g);
+                    this.boss.getWorld().spawnEntity(fireball);
                 }
             }
             case 4 -> {
-                SnowballEntity snow = new SnowballEntity(EntityType.SNOWBALL, this.boss.world);
+                SnowballEntity snow = new SnowballEntity(EntityType.SNOWBALL, this.boss.getWorld());
                 snow.setPosition(this.getBossPos());
                 snow.setVelocity(vel);
-                this.boss.world.spawnEntity(snow);
+                this.boss.getWorld().spawnEntity(snow);
             }
             default -> {
-                SpectralArrowEntity arrow = new SpectralArrowEntity(EntityType.SPECTRAL_ARROW, this.boss.world);
+                SpectralArrowEntity arrow = new SpectralArrowEntity(EntityType.SPECTRAL_ARROW, this.boss.getWorld());
                 arrow.setPosition(this.getBossPos());
                 arrow.setDamage(8f);
                 arrow.setVelocity(vel.getX(), vel.getY() + .2f, vel.getZ());
-                this.boss.world.spawnEntity(arrow);
+                this.boss.getWorld().spawnEntity(arrow);
             }
         }
     }
@@ -273,24 +273,24 @@ public class ChaosMonarchGoal extends Goal {
 
     private void randomProjectiles() {
         ProjectileEntity[] projectiles = {
-            new ArrowEntity(this.boss.world, this.boss),
-            new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.world),
-            new FireballEntity(EntityType.FIREBALL, this.boss.world),
-            new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.world),
-            new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.world),
-            new SpectralArrowEntity(this.boss.world, this.boss),
-            new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.world),
-            new EggEntity(EntityType.EGG, this.boss.world),
-            new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.world),
-            new SnowballEntity(EntityType.SNOWBALL, this.boss.world),
-            new TridentEntity(EntityType.TRIDENT, this.boss.world),
+            new ArrowEntity(this.boss.getWorld(), this.boss),
+            new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.getWorld()),
+            new FireballEntity(EntityType.FIREBALL, this.boss.getWorld()),
+            new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.getWorld()),
+            new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.getWorld()),
+            new SpectralArrowEntity(this.boss.getWorld(), this.boss),
+            new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.getWorld()),
+            new EggEntity(EntityType.EGG, this.boss.getWorld()),
+            new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld()),
+            new SnowballEntity(EntityType.SNOWBALL, this.boss.getWorld()),
+            new TridentEntity(EntityType.TRIDENT, this.boss.getWorld()),
             //Mod projectiles
-            new Cannonball(EntityRegistry.CANNONBALL, this.boss.world),
-            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.world),
-            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.world),
-            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.world),
-            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.world),
-            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.world)
+            new Cannonball(EntityRegistry.CANNONBALL, this.boss.getWorld()),
+            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
+            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
+            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),
+            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld()),
+            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld())
         };
         if (this.boss.getTarget() != null) {
             LivingEntity target = this.boss.getTarget();
@@ -300,14 +300,14 @@ public class ChaosMonarchGoal extends Goal {
             int random = this.boss.getRandom().nextInt(projectiles.length);
             ProjectileEntity entity = projectiles[random];
             if (entity instanceof FireballEntity) {
-                entity = new FireballEntity(this.boss.world, this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
+                entity = new FireballEntity(this.boss.getWorld(), this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
             }
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             if (entity instanceof PersistentProjectileEntity) {
                 ((PersistentProjectileEntity)entity).setDamage(6f);
             }
             entity.setVelocity(new Vec3d(e, f + 1, g).multiply(0.15D));
-            this.boss.world.spawnEntity(entity);
+            this.boss.getWorld().spawnEntity(entity);
         }
     }
 
@@ -319,14 +319,14 @@ public class ChaosMonarchGoal extends Goal {
             double x = x0 + r * Math.cos(theta * Math.PI / 180);
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
             BlockPos pos = BlockPos.ofFloored(x, this.boss.getY(), z);
-            LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, this.boss.world);
+            LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, this.boss.getWorld());
             entity.setPos(pos.getX(), pos.getY(), pos.getZ());
-            this.boss.world.spawnEntity(entity);
+            this.boss.getWorld().spawnEntity(entity);
         }
     }
 
     protected boolean teleportAway() {
-        if (this.boss.world.isClient() || !this.boss.isAlive()) {
+        if (this.boss.getWorld().isClient() || !this.boss.isAlive()) {
             return false;
         }
         double d = this.boss.getX() + (this.boss.getRandom().nextDouble() - 0.5) * 64.0;
@@ -337,11 +337,11 @@ public class ChaosMonarchGoal extends Goal {
 
     private boolean teleportTo(double x, double y, double z) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
-        while (mutable.getY() > this.boss.world.getBottomY() && !this.boss.world.getBlockState(mutable).getMaterial().blocksMovement()) {
+        while (mutable.getY() > this.boss.getWorld().getBottomY() && !this.boss.getWorld().getBlockState(mutable).blocksMovement()) {
             mutable.move(Direction.DOWN);
         }
-        BlockState blockState = this.boss.world.getBlockState(mutable);
-        boolean bl = blockState.getMaterial().blocksMovement();
+        BlockState blockState = this.boss.getWorld().getBlockState(mutable);
+        boolean bl = blockState.blocksMovement();
         boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
         if (!bl || bl2) {
             return false;
@@ -349,9 +349,9 @@ public class ChaosMonarchGoal extends Goal {
         Vec3d vec3d = this.boss.getPos();
         boolean bl3 = this.boss.teleport(x, y, z, true);
         if (bl3) {
-            this.boss.world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this.boss));
+            this.boss.getWorld().emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this.boss));
             if (!this.boss.isSilent()) {
-                this.boss.world.playSound(null, this.boss.prevX, this.boss.prevY, this.boss.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+                this.boss.getWorld().playSound(null, this.boss.prevX, this.boss.prevY, this.boss.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
                 this.boss.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
             }
         }
@@ -359,19 +359,19 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     private void explode() {
-        this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
+        this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
         Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
-        List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
+        List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
         for (Entity nearbyEntity : nearbyEntities) {
             if (nearbyEntity instanceof LivingEntity closestTarget) {
                 double x = closestTarget.getX() - (this.boss.getX());
                 double z = closestTarget.getZ() - this.boss.getZ();
                 closestTarget.takeKnockback(10F, -x, -z);
-                closestTarget.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
+                closestTarget.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
             }
         }
 
-        if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.boss.getBlockPos(), true);
+        if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.boss.getBlockPos(), true);
     }
 
     static enum HitboxType {

@@ -47,7 +47,7 @@ public class Cannonball extends NonArrowProjectile implements GeoEntity {
             double f = vec3d.y;
             double g = vec3d.z;
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
+                this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
             }
         }
         Vec3d vec3d = this.getVelocity();
@@ -75,7 +75,7 @@ public class Cannonball extends NonArrowProjectile implements GeoEntity {
 
             if (random < 4 + level * 3) {
                 if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
-                    target.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                    target.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, level));
             }

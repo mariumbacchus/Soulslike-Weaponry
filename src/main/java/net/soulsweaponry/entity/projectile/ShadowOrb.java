@@ -47,7 +47,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
-            target.damage(CustomDamageSource.create(this.world, CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
+            target.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
             for (StatusEffect effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }
@@ -62,14 +62,14 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         double d = this.getX() + vec3d.x;
         double e = this.getY() + vec3d.y;
         double f = this.getZ() + vec3d.z;
-        this.world.addParticle(ParticleTypes.ENTITY_EFFECT, d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
+        this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.world.isClient) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 10);
+        if (!this.getWorld().isClient) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 10);
             this.discard();
         }
     }

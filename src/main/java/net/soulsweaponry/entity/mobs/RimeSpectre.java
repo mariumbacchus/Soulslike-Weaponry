@@ -202,7 +202,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
         super.tick();
         this.noClip = false;
         this.setNoGravity(true);
-        for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox().expand(6D))) {
+        for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(6D))) {
             if (entity instanceof LivingEntity target && !this.isOwner(target) && !this.isTeammate(target)) {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 20, 0));
             }
@@ -219,7 +219,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
     @Override
     public void tickMovement() {
         super.tickMovement();
-        this.world.addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        this.getWorld().addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         if (this.getShootingParticle()) {
             BlockPos pos = this.getShootPos();
             double distanceToEntity = this.squaredDistanceTo(pos.getX(), pos.getY() + 0.5f, pos.getZ());
@@ -228,8 +228,8 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
                 double f = pos.getY() + 0.5f - this.getBodyY(1.0D);
                 double g = pos.getZ() - this.getZ();
                 double h = Math.sqrt(Math.sqrt(distanceToEntity)) * 0.5D;
-                if (this.world.isClient) {
-                    world.addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getEyeY(), this.getZ(), (e + this.getRandom().nextGaussian() * h)/4f, (f + this.getRandom().nextGaussian())/4f, (g + this.getRandom().nextGaussian() * h)/4f);
+                if (this.getWorld().isClient) {
+                    getWorld().addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getEyeY(), this.getZ(), (e + this.getRandom().nextGaussian() * h)/4f, (f + this.getRandom().nextGaussian())/4f, (g + this.getRandom().nextGaussian() * h)/4f);
                 }
             }
         }
@@ -238,13 +238,13 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            if (!world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            if (!getWorld().isClient) {
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
             }
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -315,10 +315,10 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
                 this.mob.setShootingParticle(true);
                 if (attackStatus % 2 == 0) {
                     Box box = new Box(target.getBlockPos(), this.mob.getBlockPos().add(0, 1, 0)).expand(1D);
-                    for (Entity entity : this.mob.world.getOtherEntities(this.mob, box)) {
+                    for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
                             living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 2));
-                            living.damage(mob.world.getDamageSources().mobAttack(this.mob), 2f);
+                            living.damage(mob.getWorld().getDamageSources().mobAttack(this.mob), 2f);
                         }
                     }
                 }

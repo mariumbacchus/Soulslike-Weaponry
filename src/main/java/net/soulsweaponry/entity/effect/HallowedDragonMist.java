@@ -32,7 +32,7 @@ public class HallowedDragonMist extends StatusEffect{
                 entity.heal(amplifier + 1);
             }
         } else {
-            entity.damage(CustomDamageSource.create(entity.world, CustomDamageSource.DRAGON_MIST), 2.0F + (float) amplifier);
+            entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.DRAGON_MIST), 2.0F + (float) amplifier);
         }
     }
 }

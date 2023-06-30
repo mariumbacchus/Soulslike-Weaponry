@@ -200,7 +200,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
             this.initiatePhaseTwo(true);
-            world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             return false;
         }
         if (this.isInvulnerableTo(source)) {
@@ -208,7 +208,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity && entity.getBlockPos() != null) {
-                if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DARK_EXPLOSION_ID, entity.getBlockPos(), 10);
+                if (!this.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, entity.getBlockPos(), 10);
                 return false;
             }
             return super.damage(source, amount);
@@ -229,7 +229,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+                CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
                 this.setPhaseTwo(true);
@@ -245,15 +245,15 @@ public class Moonknight extends BossEntity implements GeoEntity {
         int k;
         if (this.blockBreakingCooldown > 0) {
             --this.blockBreakingCooldown;
-            if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+            if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 i = MathHelper.floor(this.getY());
                 j = MathHelper.floor(this.getX());
                 k = MathHelper.floor(this.getZ());
                 for (int l = -3; l <= 3; ++l) {
                     for (int m = -3; m <= 3; ++m) {
                         for (int n = 0; n <= 8; ++n) {
-                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                            if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
                             }
                         }
                     }
@@ -269,7 +269,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             this.spawnTicks++;
             this.summonParticles();
             if (this.spawnTicks % 10 == 0) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
                 this.setSpawning(false);
@@ -279,8 +279,8 @@ public class Moonknight extends BossEntity implements GeoEntity {
         if (!this.isDead() && !this.isPhaseTwo() && this.getUnbreakable()) {
             this.unbreakableTicks++;
             if (this.unbreakableTicks == 38) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
-                for (Entity entity : world.getOtherEntities(this, this.getBoundingBox().expand(20))) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
+                for (Entity entity : getWorld().getOtherEntities(this, this.getBoundingBox().expand(20))) {
                     if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 400, 1));
@@ -306,12 +306,12 @@ public class Moonknight extends BossEntity implements GeoEntity {
             int points = 50;
             for (int i = 0; i < 10; i++) {
                 length += (this.getBeamLength()/100f) + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
+                this.getWorld().addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10);
                 //Looks like wind blows particles away
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
             }
             double d = this.random.nextGaussian() * 0.05D;
             double q = this.random.nextGaussian() * 0.05D;
@@ -319,13 +319,13 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + q;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
         if (this.isPhaseTwo() && !this.isDead() && this.isSwordCharging()) {
             if (this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.IDLE)) this.setChargingSword(false);
             for (int i = 0; i < 100; i++) {
-                this.world.addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
+                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
             }
         }
     }
@@ -335,7 +335,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     private void summonParticles() {
-        if (world.isClient) {
+        if (getWorld().isClient) {
             for(int i = 0; i < 50; ++i) {
                 Random random = this.getRandom();
                 double d = random.nextGaussian() * 0.05D;
@@ -343,11 +343,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
         } else {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.OBLITERATE_ID, this.getBlockPos(), 50);
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.OBLITERATE_ID, this.getBlockPos(), 50);
         }
     }
 
@@ -368,10 +368,10 @@ public class Moonknight extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == 40 && this.getBlockPos() != null) this.world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks == 40 && this.getBlockPos() != null) this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }

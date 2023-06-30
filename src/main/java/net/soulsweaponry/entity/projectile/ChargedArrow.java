@@ -37,7 +37,7 @@ public class ChargedArrow extends PersistentProjectileEntity {
             double f = vec3d.y;
             double g = vec3d.z;
             for (int i = 0; i < 4; ++i) {
-                this.world.addParticle(this.getParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
+                this.getWorld().addParticle(this.getParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
             }
         }
         super.tick();

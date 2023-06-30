@@ -99,10 +99,10 @@ public class EffectRegistry {
         @Override
         public void applyUpdateEffect(LivingEntity entity, int amplifier) {
             if (this == EffectRegistry.BLEED && !(entity instanceof AbstractSkeletonEntity || entity instanceof SkeletonHorseEntity)) {
-                entity.damage(CustomDamageSource.create(entity.world, CustomDamageSource.BLEED), 1f + amplifier);
+                entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), 1f + amplifier);
             }
             if (this == EffectRegistry.BLOODTHIRSTY) {
-                entity.damage(entity.world.getDamageSources().wither(), 1f);
+                entity.damage(entity.getWorld().getDamageSources().wither(), 1f);
             }
         }
     }

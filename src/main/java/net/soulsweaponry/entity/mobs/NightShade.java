@@ -131,30 +131,30 @@ public class NightShade extends BossEntity implements GeoEntity {
             }
         }
         for(int i = 0; i < 3; ++i) {
-            this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+            this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
         if (!this.isCopy && !this.hasDupliated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
+                CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
-                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
+                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.getWorld());
                     copy.setCopy(true);
                     copy.setPos(this.getX(), this.getY(), this.getZ());
                     copy.setVelocity((float) i / 10f, (float) i / 10f, - (float) i / 10f);
                     copy.setSpawn();
                     copy.setTarget(this.getTarget());
-                    world.spawnEntity(copy);
+                    getWorld().spawnEntity(copy);
 
-                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
+                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE, this.getWorld());
                     copy2.setCopy(true);
                     copy2.setPos(this.getX(), this.getY(), this.getZ());
                     copy2.setVelocity(- (float) i / 10f, (float) i / 10f,  (float) i / 10f);
                     copy2.setSpawn();
                     copy2.setTarget(this.getTarget());
-                    world.spawnEntity(copy2);
+                    getWorld().spawnEntity(copy2);
                 }
             }
             if (this.duplicateTicks >= 60) {
@@ -187,16 +187,16 @@ public class NightShade extends BossEntity implements GeoEntity {
     public void updatePostDeath() {
         this.deathTicks++;
         if (this.deathTicks % 30 == 0) {
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
         }
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             if (this.isCopy) {
-                this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+                this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
                 this.remove(RemovalReason.KILLED);
                 return;
             }
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }

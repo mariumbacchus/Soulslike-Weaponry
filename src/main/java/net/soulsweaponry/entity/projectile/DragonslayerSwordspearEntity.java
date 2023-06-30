@@ -29,7 +29,6 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
     private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack spearStack;
     private boolean dealtDamage;
-    public int returnTimer;
 
     public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world) {
         super(entityType, world);
@@ -115,7 +114,7 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
             f += EnchantmentHelper.getAttackDamage(this.spearStack, ((LivingEntity) entity).getGroup());
         }
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.world.getDamageSources().lightningBolt();
+        DamageSource damageSource = this.getWorld().getDamageSources().lightningBolt();
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
@@ -133,14 +132,14 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
 
         this.setVelocity(this.getVelocity().multiply(-0.01D, -0.1D, -0.01D));
         float g = 1.0F;
-        if (!world.isClient) {
+        if (!getWorld().isClient) {
             BlockPos blockPos = entity.getBlockPos();
-            if (this.world.isSkyVisible(blockPos)) {
+            if (this.getWorld().isSkyVisible(blockPos)) {
                 for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
-                    LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
+                    LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
-                    this.world.spawnEntity(lightningEntity);
+                    this.getWorld().spawnEntity(lightningEntity);
                     soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
                     g = 5.0F;
                 }

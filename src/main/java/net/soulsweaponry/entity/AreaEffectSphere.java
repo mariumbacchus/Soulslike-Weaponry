@@ -71,7 +71,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
     }
 
     public void setRadius(float radius) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.getDataTracker().set(RADIUS, MathHelper.clamp(radius, 0.0F, 32.0F));
         }
     }
@@ -120,12 +120,12 @@ public class AreaEffectSphere extends Entity implements Ownable {
         super.tick();
         boolean bl = this.isWaiting();
         float f = this.getRadius();
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             if (bl && this.random.nextBoolean()) {
                 return;
             }
             int points = MathHelper.floor(this.getRadius() * 6.7f);
-            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, ParticleTypes.DRAGON_BREATH, this.random);
+            randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, ParticleTypes.DRAGON_BREATH, this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();
@@ -157,7 +157,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
                 if (list.isEmpty()) {
                     this.affectedEntities.clear();
                 } else {
-                    List<LivingEntity> list2 = this.world.getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
+                    List<LivingEntity> list2 = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
                     if (!list2.isEmpty()) {
                         Iterator<LivingEntity> var27 = list2.iterator();
 
@@ -266,8 +266,8 @@ public class AreaEffectSphere extends Entity implements Ownable {
 
     @Nullable
     public LivingEntity getOwner() {
-        if (this.owner == null && this.ownerUuid != null && this.world instanceof ServerWorld) {
-            Entity entity = ((ServerWorld)this.world).getEntity(this.ownerUuid);
+        if (this.owner == null && this.ownerUuid != null && this.getWorld() instanceof ServerWorld) {
+            Entity entity = ((ServerWorld)this.getWorld()).getEntity(this.ownerUuid);
             if (entity instanceof LivingEntity) {
                 this.owner = (LivingEntity)entity;
             }

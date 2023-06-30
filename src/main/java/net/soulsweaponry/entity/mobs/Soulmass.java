@@ -215,9 +215,9 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.sacrificeEvent();
             this.remove(RemovalReason.KILLED);
         }
@@ -225,13 +225,13 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
 
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
-        List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
+        List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
         for (Entity nearbyEntity : nearbyEntities) {
             if (nearbyEntity instanceof HostileEntity) {
                 LivingEntity closestTarget = (LivingEntity) nearbyEntity;
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
-                closestTarget.damage(this.world.getDamageSources().magic(), 16F);
+                closestTarget.damage(this.getWorld().getDamageSources().magic(), 16F);
             }
         }
     }
@@ -255,9 +255,9 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     }
 
     public boolean hasSummonsAlive() {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             for (int id : summonIds) {
-                if (world.getEntityById(id) != null) {
+                if (getWorld().getEntityById(id) != null) {
                     return true;
                 }
             }
@@ -349,18 +349,18 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                         int[][] cords = {{4,4}, {-4,4}, {4,-4}, {-4,-4}};
                         for (int[] cord : cords) {
                             BlockPos pos = new BlockPos(this.entity.getBlockX() + cord[0], this.entity.getBlockY(), this.entity.getBlockZ() + cord[1]);
-                            if (!this.entity.world.isClient)
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
+                            if (!this.entity.getWorld().isClient)
+                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.getWorld(), PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
 
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.6f, 1f);
-                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
+                            this.entity.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.6f, 1f);
+                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.getWorld());
                             mob.setSoulAmount(0);
                             this.entity.addSummonIds(mob.getId());
                             mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
                                 mob.setOwner((PlayerEntity) this.entity.getOwner());
                             }
-                            this.entity.world.spawnEntity(mob);
+                            this.entity.getWorld().spawnEntity(mob);
                         }
                     } else if (this.attackStatus >= 20) {
                         this.entity.setSmash(false);
@@ -384,9 +384,9 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                     }
                     this.entity.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                     if (attackStatus % 5 == 0 && distanceToEntity < 130f) {
-                        target.damage(this.entity.world.getDamageSources().mobAttack(this.entity), 6f);
+                        target.damage(this.entity.getWorld().getDamageSources().mobAttack(this.entity), 6f);
                         this.entity.heal(2f);
-                        this.entity.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
+                        this.entity.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                     }
                 }
                 if (this.entity.getStopBeam()) {
@@ -434,15 +434,15 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
                 VoxelShape voxelShape;
                 BlockPos blockPos2;
                 BlockState blockState;
-                if (!(blockState = this.entity.world.getBlockState(blockPos2 = blockPos.down())).isSideSolidFullSquare(this.entity.world, blockPos2, Direction.UP)) continue;
-                if (!this.entity.world.isAir(blockPos) && !(voxelShape = (blockState2 = this.entity.world.getBlockState(blockPos)).getCollisionShape(this.entity.world, blockPos)).isEmpty()) {
+                if (!(blockState = this.entity.getWorld().getBlockState(blockPos2 = blockPos.down())).isSideSolidFullSquare(this.entity.getWorld(), blockPos2, Direction.UP)) continue;
+                if (!this.entity.getWorld().isAir(blockPos) && !(voxelShape = (blockState2 = this.entity.getWorld().getBlockState(blockPos)).getCollisionShape(this.entity.getWorld(), blockPos)).isEmpty()) {
                     d = voxelShape.getMax(Direction.Axis.Y);
                 }
                 bl = true;
                 break;
             } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
             if (bl) {
-                this.entity.world.spawnEntity(new EvokerFangsEntity(this.entity.world, x, (double)blockPos.getY() + d, z, yaw, warmup, this.entity));
+                this.entity.getWorld().spawnEntity(new EvokerFangsEntity(this.entity.getWorld(), x, (double)blockPos.getY() + d, z, yaw, warmup, this.entity));
             }
         }
     }
@@ -450,14 +450,14 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
     @Override
     public void tickMovement() {
         super.tickMovement();
-        this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.isSneaking() && !this.isDead()) {
-            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            this.soulCircle(this.getWorld(), this.getX(), this.getEyeY() + 1.0F, this.getZ());
             if (this.getHealth() < this.getMaxHealth()) this.heal(1f);
         } else if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
@@ -470,14 +470,14 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
             double j = this.random.nextDouble();
             for (int i = 0; i < 10; i++) {
                 j += .5f + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
-                this.world.addParticle(ParticleTypes.SOUL, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.SOUL, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
             }
-            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            this.soulCircle(this.getWorld(), this.getX(), this.getEyeY() + 1.0F, this.getZ());
         }
     }
 
-    public void soulCircle(World world, double x, double y, double z) {        
+    public void soulCircle(World world, double x, double y, double z) {
         double points = 30;
         double phi = Math.PI * (3. - Math.sqrt(5.));
         for (int i = 0; i < points; i++) {
@@ -486,7 +486,7 @@ public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterfa
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, x + velocityX/2, y + velocityY/2, z + velocityZ/2, 0, 0, 0);
+            getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, x + velocityX/2, y + velocityY/2, z + velocityZ/2, 0, 0, 0);
         } 
     }
 

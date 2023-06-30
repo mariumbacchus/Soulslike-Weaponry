@@ -78,9 +78,9 @@ public class ChaosSkull extends WitherSkullEntity {
             }
             float damage = this.getModifiedDamage(this.random.nextInt(30) + 1);
             if (damage > this.getModifiedDamage(20)) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             }
-            entity.damage(this.world.getDamageSources().mobAttack((LivingEntity)this.getOwner()), damage);
+            entity.damage(this.getWorld().getDamageSources().mobAttack((LivingEntity)this.getOwner()), damage);
         }
     }
 
@@ -102,41 +102,41 @@ public class ChaosSkull extends WitherSkullEntity {
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             this.onEntityHit((EntityHitResult)hitResult);
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult)hitResult;
             this.onBlockHit(blockHitResult);
             BlockPos blockPos = blockHitResult.getBlockPos();
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
 
-        if (this.getOwner() instanceof LivingEntity && !this.world.isClient) {
+        if (this.getOwner() instanceof LivingEntity && !this.getWorld().isClient) {
             int amount = this.random.nextInt(5) + 1;
             int rng = this.random.nextInt(6);
             for (int i = 0; i < amount; i++) {
                 switch (rng) {
                     case 1 -> {
-                        WitherSkeletonEntity skeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, this.world);
+                        WitherSkeletonEntity skeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, this.getWorld());
                         skeleton.setPos(this.getX(), this.getY(), this.getZ());
                         this.initEquip(skeleton);
-                        this.world.spawnEntity(skeleton);
+                        this.getWorld().spawnEntity(skeleton);
                     }
                     case 2 -> {
-                        LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+                        LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, getWorld());
                         lightningEntity.setPos(this.getX(), this.getY(), this.getZ());
-                        this.world.spawnEntity(lightningEntity);
+                        this.getWorld().spawnEntity(lightningEntity);
                     }
-                    case 3 -> this.randomHostile().spawn((ServerWorld) this.world, this.getBlockPos(), SpawnReason.EVENT);
-                    case 4 -> this.randomPassive().spawn((ServerWorld) this.world, this.getBlockPos(), SpawnReason.EVENT);
+                    case 3 -> this.randomHostile().spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
+                    case 4 -> this.randomPassive().spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
                     case 5 -> {
                         float power = this.random.nextFloat() * 3;
-                        this.world.createExplosion(this, this.world.getDamageSources().mobAttack((LivingEntity) this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TNT);
+                        this.getWorld().createExplosion(this, this.getWorld().getDamageSources().mobAttack((LivingEntity) this.getOwner()), new ExplosionBehavior(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TNT);
                     }
                     default -> {
                         for (int j = 0; j < 2; j++) {
-                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
+                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.getWorld());
                             chungus.setPos(this.getX(), this.getY(), this.getZ());
-                            this.world.spawnEntity(chungus);
+                            this.getWorld().spawnEntity(chungus);
                         }
                     }
                 }
@@ -164,8 +164,8 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     private void finisher() {
-        this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-        if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 100);
+        this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
+        if (!this.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 100);
         this.discard();
     }
 

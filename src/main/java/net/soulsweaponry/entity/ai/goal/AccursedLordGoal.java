@@ -195,8 +195,8 @@ public class AccursedLordGoal extends Goal {
         this.attackStatus++;
         if (this.attackStatus == 13 || this.attackStatus == 18 || this.attackStatus == 24) {
             this.summonLava(lavaRadius);
-            if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.boss.getBlockPos(), 200);
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.boss.getBlockPos(), 200);
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             this.lavaRadius++;
         }
         if (this.attackStatus >= 25) {
@@ -214,8 +214,8 @@ public class AccursedLordGoal extends Goal {
             double x = x0 + r * Math.cos(theta * Math.PI / 180);
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
             BlockPos pos = BlockPos.ofFloored(x, this.boss.getY(), z);
-            if (this.boss.world.getBlockState(pos).isAir()) {
-                this.boss.world.setBlockState(pos, Blocks.LAVA.getDefaultState());
+            if (this.boss.getWorld().getBlockState(pos).isAir()) {
+                this.boss.getWorld().setBlockState(pos, Blocks.LAVA.getDefaultState());
                 this.boss.lavaPos.add(pos);
             }
         }
@@ -226,12 +226,12 @@ public class AccursedLordGoal extends Goal {
         this.attackStatus++;
         if (this.attackStatus >= 7 && this.attackStatus <= 40) {
             Box chunkBox = new Box(this.boss.getBlockPos()).expand(6);
-            List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
+            List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity closestTarget) {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
-                    this.damageTarget(closestTarget, this.boss.world.getDamageSources().mobAttack(this.boss), 10f);
+                    this.damageTarget(closestTarget, this.boss.getWorld().getDamageSources().mobAttack(this.boss), 10f);
                     closestTarget.takeKnockback(4F, -x, -z);
                 }
             }
@@ -247,19 +247,19 @@ public class AccursedLordGoal extends Goal {
         this.attackStatus++;
         if (this.attackStatus >= 16 && this.attackStatus <= 18) {
             if (this.attackStatus == 17) {
-                this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
             }
             Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
-            List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
+            List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity closestTarget) {
                     double x = closestTarget.getX() - (this.boss.getX());
                     double z = closestTarget.getZ() - this.boss.getZ();
                     closestTarget.takeKnockback(10F, -x, -z);
-                    this.damageTarget(closestTarget, this.boss.world.getDamageSources().mobAttack(this.boss), 50f);
+                    this.damageTarget(closestTarget, this.boss.getWorld().getDamageSources().mobAttack(this.boss), 50f);
                 }
             }
-            if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DAWNBREAKER_PACKET_ID, this.boss.getBlockPos());
+            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DAWNBREAKER_PACKET_ID, this.boss.getBlockPos());
         }
         if (this.attackStatus >= 30) {
             this.resetAttackCooldown(1.5f);
@@ -273,7 +273,7 @@ public class AccursedLordGoal extends Goal {
         if (this.attackStatus == 20) {
             double x = target.getX() - (this.boss.getX());
             double z = target.getZ() - this.boss.getZ();
-            this.damageTarget(target, this.boss.world.getDamageSources().mobAttack(this.boss), 5f);
+            this.damageTarget(target, this.boss.getWorld().getDamageSources().mobAttack(this.boss), 5f);
             target.takeKnockback(5F, x, z);
         }
         if (this.attackStatus >= 25) {
@@ -290,16 +290,16 @@ public class AccursedLordGoal extends Goal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         
         Box aoe = new Box(this.attackPos).expand(3);
-        List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
+        List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
         if (this.attackStatus == 17) {
-            if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
+            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
-                    this.damageTarget((LivingEntity) entity, CustomDamageSource.create(this.boss.world, CustomDamageSource.OBLITERATED, this.boss), 30f);
+                    this.damageTarget((LivingEntity) entity, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), 30f);
                     entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }
-            this.boss.world.playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus >= 20) {
             this.resetAttackCooldown(.5f);
@@ -317,18 +317,18 @@ public class AccursedLordGoal extends Goal {
         double g = target.getZ() - this.boss.getZ();
         if (this.attackStatus % 2 == 0 && this.attackStatus > 8) {
             double h = Math.sqrt(Math.sqrt(distanceToEntity)) * 0.5D;
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
             for(int i = 0; i < fireSprayCount; ++i) {
-                new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                 ProjectileEntity projectile = switch (entity) {
                     case FIREBALLS ->
-                            new SmallFireballEntity(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                            new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                     case WITHERBALLS ->
-                            new ShadowOrb(this.boss.world, this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
+                            new ShadowOrb(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
                                     new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY});
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
-                this.boss.world.spawnEntity(projectile);
+                this.boss.getWorld().spawnEntity(projectile);
             }
         }
         if (this.attackStatus >= 30) {

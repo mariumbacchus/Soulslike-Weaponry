@@ -61,9 +61,9 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
     public void tick() {
         super.tick();
         float radius = this.getRadius();
-        if (world.isClient && this.random.nextBoolean()) {
+        if (getWorld().isClient && this.random.nextBoolean()) {
             int points = MathHelper.floor(this.getRadius() * 4f);
-            AreaEffectSphere.randomParticleBox(this.world, this.getX(), this.getY() + this.getRadius()/2, this.getZ(), points, this.getRadius() * 0.5f, ParticleTypes.FLAME, this.random);
+            AreaEffectSphere.randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getRadius()/2, this.getZ(), points, this.getRadius() * 0.5f, ParticleTypes.FLAME, this.random);
         }
         if (this.radiusGrowth != 0.0F) {
             radius += this.radiusGrowth;
@@ -74,7 +74,7 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
             this.setRadius(radius);
         }
         Entity target;
-        if (!this.world.isClient && this.age >= this.getMaxAge() && !this.hasChangedCourse && (target = this.getSavedTarget((ServerWorld) this.world)) != null) {
+        if (!this.getWorld().isClient && this.age >= this.getMaxAge() && !this.hasChangedCourse && (target = this.getSavedTarget((ServerWorld) this.getWorld())) != null) {
             double f = target.getX() - this.getX();
             double g = target.getBodyY(0.5) - (this.getBodyY(0.5D));
             double h = target.getZ() - this.getZ();
@@ -84,8 +84,8 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
         if (this.age >= this.getMaxAge() * 3) {
             this.detonate();
         }
-        if (!(this.getOwner() instanceof DayStalker) && !this.world.isClient) {
-            for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox())) {
+        if (!(this.getOwner() instanceof DayStalker) && !this.getWorld().isClient) {
+            for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
                 if (entity instanceof LivingEntity) {
                     this.detonate();
                 }
@@ -108,7 +108,7 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
         if (type == HitResult.Type.ENTITY) {
             if (((EntityHitResult) hitResult).getEntity() instanceof PlayerEntity player) {
                 if (ParryData.successfulParry(player, false, this.getDamageSources().explosion(this, this.getOwner()))) {
-                    if (!this.world.isClient) {
+                    if (!this.getWorld().isClient) {
                         Vec3d vec3d = player.getRotationVector();
                         this.setVelocity(vec3d);
                         this.powerX = vec3d.x * 0.1;
@@ -120,20 +120,20 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
                 }
             }
             this.onEntityHit((EntityHitResult)hitResult);
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult)hitResult;
             this.onBlockHit(blockHitResult);
             BlockPos blockPos = blockHitResult.getBlockPos();
-            this.world.emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.world.getBlockState(blockPos)));
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         this.detonate();
     }
 
     private void detonate() {
-        if (!this.world.isClient) {
-            boolean bl = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), this.getExplosionPower(), bl, World.ExplosionSourceType.MOB);
+        if (!this.getWorld().isClient) {
+            boolean bl = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), this.getExplosionPower(), bl, World.ExplosionSourceType.MOB);
             this.discard();
         }
     }
@@ -146,7 +146,7 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
     }
 
     public void setRadius(float radius) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.getDataTracker().set(RADIUS, MathHelper.clamp(radius, 0.0F, 32.0F));
         }
     }

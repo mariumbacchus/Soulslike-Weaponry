@@ -184,9 +184,9 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -337,14 +337,14 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     public boolean isEmpowered() {
-        return (!this.world.isClient && this.world.isDay()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
     }
 
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (!this.world.isClient) {
-            LivingEntity partner = this.getPartner((ServerWorld) this.world);
+        if (!this.getWorld().isClient) {
+            LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.setInitiatePhaseTwo(true);
             }
@@ -361,11 +361,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
             if (this.phaseTwoTicks == 76) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.phaseTwoTicks == 81) {
-                if (!world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
+                if (!getWorld().isClient) {
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
                 placeHolder.aoe(4D, 50f, 4f);
@@ -386,7 +386,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getParticleState() == 1 && this.world.isClient) {
+        if (this.getParticleState() == 1 && this.getWorld().isClient) {
             Vec3d pos = this.getFlamethrowerTarget().toCenterPos();
             double e = pos.getX() - (this.getX());
             double f = pos.getY() + 1D - this.getBodyY(1.0D);
@@ -397,7 +397,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 double velX = e + this.getRandom().nextGaussian()/2 * h;
                 double velY = f + this.getRandom().nextGaussian()/2 * h;
                 double velZ = g + this.getRandom().nextGaussian()/2 * h;
-                this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
+                this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
             }
         }
         if (this.getAttackAnimation().equals(Attacks.FLAMES_EDGE)) {
@@ -408,11 +408,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);
                 double z = z0 + r * Math.sin(theta * Math.PI / 180);
                 if (this.getParticleState() == 2 && this.age % 8 == 0) {
-                    this.world.addParticle(ParticleTypes.FLAME, x, this.getBodyY(0.5D), z, 0, 0, 0);
+                    this.getWorld().addParticle(ParticleTypes.FLAME, x, this.getBodyY(0.5D), z, 0, 0, 0);
                 } else if (this.getParticleState() == 3) {
-                    this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.getBodyY(0.5D), z,
+                    this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.getBodyY(0.5D), z,
                             this.random.nextGaussian()/8, this.random.nextGaussian()/8, this.random.nextGaussian()/8);
-                    this.world.addParticle(ParticleTypes.LARGE_SMOKE, x, this.getBodyY(0.5D), z,
+                    this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, x, this.getBodyY(0.5D), z,
                             0, 0.2f, 0);
                 }
             }

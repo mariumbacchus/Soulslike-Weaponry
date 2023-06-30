@@ -125,8 +125,8 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
 
     @Override
     public void tickMovement() {
-        if (this.world.isClient) {
-            this.world.addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
+        if (this.getWorld().isClient) {
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
         }
         super.tickMovement();
     }
@@ -139,7 +139,7 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     @Override
     public void onSpawnPacket(EntitySpawnS2CPacket packet) {
         super.onSpawnPacket(packet);
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             this.particleExplosion();
         }
     }
@@ -155,7 +155,7 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             this.particleExplosion();
         }
         this.discard();
@@ -187,7 +187,7 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.FLAME, true, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
+            getWorld().addParticle(ParticleTypes.FLAME, true, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
         }
     }
 
@@ -248,10 +248,10 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             double f = livingEntity.getBodyY(0.5) - this.entity.getBodyY(0.5);
             double g = livingEntity.getZ() - this.entity.getZ();
             if (this.attackStatus == 7 || this.attackStatus == 15 || this.attackStatus == 21) {
-                this.entity.world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.world, this.entity, e, f, g);
+                this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
+                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.getWorld(), this.entity, e, f, g);
                 smallFireballEntity.setPosition(smallFireballEntity.getX(), this.entity.getBodyY(0.5f), smallFireballEntity.getZ());
-                this.entity.world.spawnEntity(smallFireballEntity);
+                this.entity.getWorld().spawnEntity(smallFireballEntity);
             }
             if (this.attackStatus >= 28) {
                 this.reset();
@@ -260,11 +260,11 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
 
         private void buff() {
             this.attackStatus++;
-            if (attackStatus == 1) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
-            if (attackStatus == 30) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 1) this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 30) this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             if (this.attackStatus == 35) {
                 boolean bl = this.entity.isTamed() && this.entity.getOwner() != null;
-                    for (Entity en : this.entity.world.getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
+                    for (Entity en : this.entity.getWorld().getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
                         if (en instanceof LivingEntity living) {
                             if (bl && !(living instanceof HostileEntity)) {
                                 this.addEffects(living);

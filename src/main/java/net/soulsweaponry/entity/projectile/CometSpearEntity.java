@@ -30,7 +30,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
 
     private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack spearStack;
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
@@ -99,7 +99,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         }
 
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.world.getDamageSources().thrown(this, entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {

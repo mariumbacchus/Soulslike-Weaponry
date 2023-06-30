@@ -1,7 +1,6 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
@@ -15,8 +14,6 @@ import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
 public class ItemRegistry {
-  
-    public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
 
     public static final LoreItem LORD_SOUL_RED = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_red", 3);
     public static final LoreItem LORD_SOUL_DARK = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_dark", 3);
@@ -99,12 +96,12 @@ public class ItemRegistry {
     }
 
   public static <I extends Item> I registerItem(I item, String name) {
-      ItemGroupEvents.modifyEntriesEvent(MAIN_GROUP).register(entries -> entries.add(item));
+      SoulsWeaponry.ITEM_GROUP_LIST.add(item);
 		return Registry.register(Registries.ITEM, new Identifier(SoulsWeaponry.ModId, name), item);
 	}
 
   public static <I extends LoreItem> I registerLoreItem(I item) {
-      ItemGroupEvents.modifyEntriesEvent(MAIN_GROUP).register(entries -> entries.add(item));
+      SoulsWeaponry.ITEM_GROUP_LIST.add(item);
 		return Registry.register(Registries.ITEM, new Identifier(SoulsWeaponry.ModId, item.getIdName()), item);
 	}
 }

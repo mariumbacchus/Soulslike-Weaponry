@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -50,9 +51,10 @@ public class DarkSorcerer extends HostileEntity {
     @Override
     public boolean canSpawn(WorldView view) {
         BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
-                && this.world.getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
+        BlockState state = this.getWorld().getBlockState(this.getBlockPos());
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+                && state.getBlock().canMobSpawnInside(state)
+                && this.getWorld().getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
     }
 
     protected void initDataTracker() {
@@ -141,7 +143,7 @@ public class DarkSorcerer extends HostileEntity {
                         this.user.setBeaming(true);
                         this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (attackTicks < 0) {
-                            target.damage(this.user.world.getDamageSources().mobAttack(user), 2f);
+                            target.damage(this.user.getWorld().getDamageSources().mobAttack(user), 2f);
                             attackTicks = 10;
                         }
                     } else {
@@ -173,8 +175,8 @@ public class DarkSorcerer extends HostileEntity {
             double length = this.random.nextDouble();
             for (int i = 0; i < 10; i++) {
                 length += .5f + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
-                this.world.addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
             }
 
             double dd = this.random.nextGaussian() * 0.05D;
@@ -185,8 +187,8 @@ public class DarkSorcerer extends HostileEntity {
             float body = this.bodyYaw * 0.017453292F + MathHelper.cos((float)this.age * 0.6662F) * 0.25F;
             float cosBody = MathHelper.cos(body);
             float sinBody = MathHelper.sin(body);
-            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
-            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
         }
         super.tickMovement();
     }

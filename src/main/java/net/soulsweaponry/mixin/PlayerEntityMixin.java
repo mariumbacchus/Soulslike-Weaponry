@@ -52,14 +52,14 @@ public class PlayerEntityMixin {
         } catch (Exception ignored) {}
         int frames = ParryData.getParryFrames(player);
         if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
-            player.world.sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
+            player.getWorld().sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
             if (source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity) {
                 info.setReturnValue(false);
                 return;
             }
             if (source.getAttacker() instanceof LivingEntity attacker) {
                 if (!attacker.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
-                    attacker.world.playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                    attacker.getWorld().playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, 0));
                 info.setReturnValue(false);

@@ -301,7 +301,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.boss.isPartner(target) || target instanceof WarmthEntity) {
             return false;
         }
-        if (target.damage(this.boss.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
+        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
             if (this.boss.isEmpowered()) {
                 target.setOnFireFor(2);
             }
@@ -319,19 +319,19 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.boss.getLookControl().lookAt(this.boss.getTargetPos().toCenterPos());
         if (this.attackStatus >= 16 && this.attackStatus <= 25 && this.attackStatus % 4 == 0) {
-            this.boss.world.playSound(null, this.boss.getTargetPos(), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
-            this.boss.world.playSound(null, this.boss.getTargetPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getTargetPos(), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getTargetPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus >= 20 && this.attackStatus <= 36) {
-            if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.PRE_EXPLOSION_ID, this.boss.getTargetPos());
+            if (!this.boss.getWorld().isClient) {
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.PRE_EXPLOSION_ID, this.boss.getTargetPos());
             }
         }
         if (this.attackStatus == 37) {
-            if (!this.boss.world.isClient) {
-                this.boss.world.playSound(null, this.boss.getTargetPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.AIR_COMBUSTION_ID, this.boss.getTargetPos(), 100);
-                for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(this.boss.getTargetPos()).expand(this.boss.isPhaseTwo() ? 2D : 1D))) {
+            if (!this.boss.getWorld().isClient) {
+                this.boss.getWorld().playSound(null, this.boss.getTargetPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.AIR_COMBUSTION_ID, this.boss.getTargetPos(), 100);
+                for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(this.boss.getTargetPos()).expand(this.boss.isPhaseTwo() ? 2D : 1D))) {
                     if (entity instanceof LivingEntity living) {
                         this.damageTarget(living, 35f);
                     }
@@ -362,7 +362,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                     double h = 1.25 * (double)(i + 1);
                     BlockPos p = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
                     if (p != null) {
-                        this.boss.world.setBlockState(p, Blocks.FIRE.getDefaultState());
+                        this.boss.getWorld().setBlockState(p, Blocks.FIRE.getDefaultState());
                     }
                 }
             }
@@ -378,11 +378,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         double x = target.getX() - (this.boss.getX());
         double y = target.getEyeY() - this.boss.getBodyY(1f);
         double z = target.getZ() - this.boss.getZ();
-        this.boss.world.playSound(null, this.boss.getBlockPos(), sound, SoundCategory.HOSTILE, 1f, 1f);
-        if (target.getBlockPos() != null) this.boss.world.playSound(null, target.getBlockPos(), sound, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.getWorld().playSound(null, this.boss.getBlockPos(), sound, SoundCategory.HOSTILE, 1f, 1f);
+        if (target.getBlockPos() != null) this.boss.getWorld().playSound(null, target.getBlockPos(), sound, SoundCategory.HOSTILE, 1f, 1f);
         projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
         projectile.setVelocity(x, y, z, 1.5f, 1f);
-        this.boss.world.spawnEntity(projectile);
+        this.boss.getWorld().spawnEntity(projectile);
     }
 
     /**
@@ -400,8 +400,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         do {
             VoxelShape voxelShape;
             BlockPos blockPos2;
-            if (!this.boss.world.getBlockState(blockPos2 = blockPos.down()).isSideSolidFullSquare(this.boss.world, blockPos2, Direction.UP)) continue;
-            if (!this.boss.world.isAir(blockPos) && !(voxelShape = this.boss.world.getBlockState(blockPos).getCollisionShape(this.boss.world, blockPos)).isEmpty()) {
+            if (!this.boss.getWorld().getBlockState(blockPos2 = blockPos.down()).isSideSolidFullSquare(this.boss.getWorld(), blockPos2, Direction.UP)) continue;
+            if (!this.boss.getWorld().isAir(blockPos) && !(voxelShape = this.boss.getWorld().getBlockState(blockPos).getCollisionShape(this.boss.getWorld(), blockPos)).isEmpty()) {
                 d = voxelShape.getMax(Direction.Axis.Y);
             }
             bl = true;
@@ -425,22 +425,22 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             int y = this.boss.getBlockY();
             int z = this.boss.getBlockZ() + this.boss.getRandom().nextInt(16) - 8;
             BlockPos randomPos = new BlockPos(x, y, z);
-            if (!this.boss.world.getBlockState(randomPos).isAir()) {
+            if (!this.boss.getWorld().getBlockState(randomPos).isAir()) {
                 randomPos = randomPos.up();
-            } else if (this.boss.world.getBlockState(randomPos.down()).isAir()) {
+            } else if (this.boss.getWorld().getBlockState(randomPos.down()).isAir()) {
                 randomPos = randomPos.down();
             }
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(randomPos).expand(1D))) {
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(randomPos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {
                     this.damageTarget(living, 48f);
                 }
             }
-            if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.FLAME_RUPTURE_ID, randomPos);
+            if (!this.boss.getWorld().isClient) {
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.FLAME_RUPTURE_ID, randomPos);
             }
             this.playSound(randomPos, SoundRegistry.DAY_STALKER_CHAOS_STORM, 1f, 1f);
-            if (this.boss.world.getBlockState(randomPos).isAir()) {
-                this.boss.world.setBlockState(randomPos, Blocks.FIRE.getDefaultState());
+            if (this.boss.getWorld().getBlockState(randomPos).isAir()) {
+                this.boss.getWorld().setBlockState(randomPos, Blocks.FIRE.getDefaultState());
             }
         }
         this.checkAndReset(10, this.boss.isPhaseTwo() ? 0 : 100);
@@ -453,8 +453,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 10f + (float)this.attackStatus/2f);
-                if (!this.boss.world.isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                if (!this.boss.getWorld().isClient) {
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
                 }
             }
             if (this.boss.isPhaseTwo()) {
@@ -465,8 +465,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.75f);
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 25f);
-                if (!this.boss.world.isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                if (!this.boss.getWorld().isClient) {
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
                 }
             }
             if (this.boss.isPhaseTwo()) {
@@ -478,7 +478,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
 
     private void shootSunlight(LivingEntity target, int typeIndex, float damage, MoonlightProjectile.RotationState rotationState) {
         if (typeIndex == 0) {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL, this.boss.world, this.boss);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL, this.boss.getWorld(), this.boss);
             if (this.boss.isEmpowered()) projectile.applyFireTicks(20);
             projectile.setAgeAndPoints(15, 30, 2);
             projectile.setDamage(this.getModifiedDamage(damage));
@@ -487,7 +487,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             projectile.setTrailParticleType(ParticleTypes.WAX_ON);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         } else if (typeIndex == 1) {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_BIG, this.boss.world, this.boss);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_BIG, this.boss.getWorld(), this.boss);
             if (this.boss.isEmpowered()) projectile.applyFireTicks(40);
             projectile.setAgeAndPoints(30, 150, 2);
             projectile.setDamage(this.getModifiedDamage(damage));
@@ -496,7 +496,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             projectile.setTrailParticleType(ParticleTypes.WAX_ON);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         } else {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE, this.boss.world, this.boss);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE, this.boss.getWorld(), this.boss);
             if (this.boss.isEmpowered()) projectile.applyFireTicks(60);
             projectile.setAgeAndPoints(30, 75, 5);
             projectile.setDamage(this.getModifiedDamage(damage));
@@ -528,7 +528,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.boss.setParticleState(1);
             if (this.attackStatus % 4 == 0) {
                 Box box = new Box(targetPos.toCenterPos(), this.boss.getPos()).expand(1D);
-                for (Entity entity : this.boss.world.getOtherEntities(this.boss, box)) {
+                for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                     if (entity instanceof LivingEntity living && !this.boss.isPartner(living)) {
                         living.damage(this.boss.getDamageSources().magic(), this.getModifiedDamage(this.boss.isPhaseTwo() ? 2f : 1f));
                         living.setOnFireFor(3);
@@ -601,7 +601,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             double z = target.getBlockZ() - this.boss.getBlockZ();
             pos = this.getPosBetweenTwoPos(maxDistance, distanceToTarget, new Vec3d(x, y, z));
         }
-        for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(pos).expand(expansion))) {
+        for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(expansion))) {
             if (entity instanceof LivingEntity living) {
                 this.damageTarget(living, damage);
             }
@@ -630,18 +630,18 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 double f = target.getX() - this.boss.getX();
                 double g = target.getBodyY(0.5) - (this.boss.getEyeY() + 1.5D);
                 double h = target.getZ() - this.boss.getZ();
-                UntargetableFireball fireballEntity = new UntargetableFireball(this.boss.world, this.boss, f, g, h, 2);
+                UntargetableFireball fireballEntity = new UntargetableFireball(this.boss.getWorld(), this.boss, f, g, h, 2);
                 fireballEntity.setPosition(this.boss.getX(), this.boss.getEyeY() + 1D, fireballEntity.getZ());
-                this.boss.world.spawnEntity(fireballEntity);
+                this.boss.getWorld().spawnEntity(fireballEntity);
             }
         } else {
             this.boss.getNavigation().stop();
             if (this.attackStatus == 15) {
-                GrowingFireball fireballEntity = new GrowingFireball(this.boss.world, this.boss);
+                GrowingFireball fireballEntity = new GrowingFireball(this.boss.getWorld(), this.boss);
                 fireballEntity.setPosition(this.boss.getX(), this.boss.getEyeY() + 4D, this.boss.getZ());
                 fireballEntity.setTargetUuid(target.getUuid());
                 fireballEntity.setRadiusGrowth(5f / (float) fireballEntity.getMaxAge());
-                this.boss.world.spawnEntity(fireballEntity);
+                this.boss.getWorld().spawnEntity(fireballEntity);
             }
         }
         this.checkAndReset(phase2 ? 20 : 40, phase2 ? 160 : 0);
@@ -655,12 +655,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             double y = target.getEyeY() - this.boss.getBodyY(1f);
             double z = target.getZ() - this.boss.getZ();
             Vec3d vec3d = this.boss.getRotationVec(1.0f);
-            SmallFireballEntity fireball = new SmallFireballEntity(this.boss.world, this.boss.getX(), this.boss.getY(), this.boss.getZ(), x, y, z);
+            SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getY(), this.boss.getZ(), x, y, z);
             fireball.setPosition(this.boss.getX() + vec3d.x * this.boss.getRandom().nextInt(6) * (this.boss.getRandom().nextBoolean() ? -1 : 1),
                     this.boss.getBodyY(0.5) + this.boss.getRandom().nextInt(4) - 1,
                     this.boss.getZ() + vec3d.z * this.boss.getRandom().nextInt(6) * (this.boss.getRandom().nextBoolean() ? -1 : 1));
-            this.boss.world.spawnEntity(fireball);
-            if (this.attackStatus % 4 == 0) this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().spawnEntity(fireball);
+            if (this.attackStatus % 4 == 0) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
         }
         this.checkAndReset(this.boss.isPhaseTwo() ? 40 : 1, 0);
     }
@@ -699,7 +699,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     public void aoe(double expansion, float damage, float knockback) {
-        for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(expansion))) {
+        for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(expansion))) {
             if (entity instanceof LivingEntity target) {
                 if (this.damageTarget(target, damage) && knockback > 0) {
                     double x = target.getX() - this.boss.getX();
@@ -717,7 +717,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(null, SoundRegistry.DAY_STALKER_RADIANCE, 1f, 1f);
         }
         if (this.attackStatus == 80) {
-            CustomDeathHandler.deathExplosionEvent(this.boss.world, this.boss.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.boss.getWorld(), this.boss.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
             this.aoe(4D, 60f, 4f);
         }
         this.checkAndReset(40, 200);
@@ -726,14 +726,14 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void warmth() {
         this.attackStatus++;
         if (this.attackStatus == 84) {
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.HOSTILE, 1f, 1f);
             for (int i = 0; i < 4; i++) {
-                WarmthEntity entity = new WarmthEntity(EntityRegistry.WARMTH_ENTITY, this.boss.world);
+                WarmthEntity entity = new WarmthEntity(EntityRegistry.WARMTH_ENTITY, this.boss.getWorld());
                 Vec3d pos = new Vec3d(this.boss.getX() + this.boss.getRandom().nextBetween(2, 5) * (this.boss.getRandom().nextBoolean() ? -1 : 1),
                         this.boss.getY() + this.boss.getRandom().nextInt(4) + 2,
                         this.boss.getZ() + this.boss.getRandom().nextBetween(2, 5) * (this.boss.getRandom().nextBoolean() ? -1 : 1));
                 entity.setPosition(this.getAirBlockPos(pos, 0));
-                this.boss.world.spawnEntity(entity);
+                this.boss.getWorld().spawnEntity(entity);
             }
         }
         this.checkAndReset(20, 160);
@@ -743,8 +743,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 1) {
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.OVERHEAT_CHARGE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-            this.boss.world.playSound(null, target.getBlockPos(), SoundRegistry.OVERHEAT_CHARGE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.OVERHEAT_CHARGE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.OVERHEAT_CHARGE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus <= 57) {
             this.targetMaxY = Math.min(target.getY(), this.boss.getY());
@@ -760,15 +760,15 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 double h = 1.25 * (double)(i + 1);
                 BlockPos pos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
                 if (pos != null) {
-                    if (!this.boss.world.isClient) {
-                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.FLAME_RUPTURE_ID, pos);
+                    if (!this.boss.getWorld().isClient) {
+                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.FLAME_RUPTURE_ID, pos);
                     }
-                    this.boss.world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                    this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                 }
             }
             BlockPos lastPos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * 1.25 * (double)(length + 1), this.boss.getZ() + (double)MathHelper.sin(f) * 1.25 * (double)(length + 1), d, e);
             if (lastPos != null) {
-                for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(this.boss.getPos().add(0, 2, 0), lastPos.toCenterPos()).expand(1D))) {
+                for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(this.boss.getPos().add(0, 2, 0), lastPos.toCenterPos()).expand(1D))) {
                     if (entity instanceof LivingEntity living) {
                         this.damageTarget(living, 40f);
                     }
@@ -782,6 +782,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 23) {
+            this.playSound(null, SoundEvents.ENTITY_BLAZE_SHOOT, 1f, 1f);
             this.boss.setFlying(true);
             this.boss.addVelocity(0, 0.75f, 0);
         }
@@ -791,12 +792,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= 70 && this.attackStatus <= 100) {
             if (this.boss.isOnGround() && !this.hasExploded) {
-                this.boss.world.createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 6f, World.ExplosionSourceType.NONE);
+                this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 6f, World.ExplosionSourceType.NONE);
                 this.hasExploded = true;
             }
         }
         if (this.attackStatus == 125) {
-            this.boss.world.createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8f, World.ExplosionSourceType.NONE);
+            this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8f, World.ExplosionSourceType.NONE);
         }
         this.checkAndReset(30, 0);
     }
@@ -822,7 +823,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 targetPos = new BlockPos(newX, newY, newZ);
             }
             Box box = new Box(targetPos.toCenterPos(), this.boss.getPos()).expand(1D);
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, box)) {
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                 if (entity instanceof LivingEntity living) {
                     this.damageTarget(living, 20f);
                     double x = target.getX() - (this.boss.getX());
@@ -835,11 +836,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus == 43) {
             Vec3d vec3d = this.boss.getRotationVec(1.0f);
             BlockPos pos = BlockPos.ofFloored(new Vec3d(this.boss.getBlockX() + vec3d.x * 3, this.boss.getBlockY(), this.boss.getBlockZ() + vec3d.z * 3));
-            if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, pos, 150);
+            if (!this.boss.getWorld().isClient) {
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, pos, 150);
             }
             this.playSound(pos, SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(pos).expand(3D))) {
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(3D))) {
                 if (entity instanceof LivingEntity living) {
                     this.damageTarget(living, 25f);
                 }
@@ -857,11 +858,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
      */
     private void playSound(@Nullable  BlockPos pos, SoundEvent sound, float volume, float pitch) {
         if (pos == null) pos = this.boss.getBlockPos();
-        this.boss.world.playSound(null, pos, sound, SoundCategory.HOSTILE, volume, pitch);
+        this.boss.getWorld().playSound(null, pos, sound, SoundCategory.HOSTILE, volume, pitch);
     }
 
     private Vec3d getAirBlockPos(Vec3d start, int counter) {
-        if (this.boss.world.getBlockState(BlockPos.ofFloored(start)).isAir() || counter >= 5) {
+        if (this.boss.getWorld().getBlockState(BlockPos.ofFloored(start)).isAir() || counter >= 5) {
             return start;
         } else {
             return getAirBlockPos(start.add(0, 1, 0), counter + 1);

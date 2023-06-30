@@ -71,8 +71,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                         entity.addVelocity(0, this.getKnockup(stack), 0);
                     }
                 }
-                player.world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                player.world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                 if (!world.isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.MOONFALL_ID, targetArea, 100);
                 }

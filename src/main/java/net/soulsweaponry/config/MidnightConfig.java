@@ -9,7 +9,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
@@ -18,7 +18,6 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -42,17 +41,12 @@ import java.util.regex.Pattern;
 
 /** MidnightConfig v2.2.0 by TeamMidnightDust & Motschen
  *  Single class config library - feel free to copy!
- *
- *  Based on https://github.com/Minenash/TinyConfig
+ * <p>
+ *  Based on <a href="https://github.com/Minenash/TinyConfig">...</a>
  *  Credits to Minenash */
 
 /*
-    Edited method calls to correct method names:
-        - method_46434 -> dimensions()
-        - method_46431 -> build()
-        - method_46430 -> builder()
-        - method_46419 -> setY()
-        - drawCenteredText -> drawCenteredTextWithShadow
+    Edited to fit 1.20 version. Changed all necessary implementations to get from the new DrawnContext file.
  */
 @SuppressWarnings("unchecked")
 public abstract class MidnightConfig {
@@ -327,10 +321,10 @@ public abstract class MidnightConfig {
 
         }
         @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            this.renderBackground(matrices);
-            this.list.render(matrices, mouseX, mouseY, delta);
-            drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 15, 0xFFFFFF);
+        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            this.renderBackground(context);
+            this.list.render(context, mouseX, mouseY, delta);
+            context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 15, 0xFFFFFF);
 
             for (EntryInfo info : entries) {
                 if (info.id.equals(modid)) {
@@ -340,17 +334,17 @@ public abstract class MidnightConfig {
                         Text name = Text.translatable(this.translationPrefix + info.field.getName());
                         String key = translationPrefix + info.field.getName() + ".tooltip";
 
-                        if (info.error != null && text.equals(name)) renderTooltip(matrices, info.error.getValue(), mouseX, mouseY);
+                        if (info.error != null && text.equals(name)) context.drawTooltip(this.textRenderer, info.error.getValue(), mouseX, mouseY);
                         else if (I18n.hasTranslation(key) && text.equals(name)) {
                             List<Text> list = new ArrayList<>();
                             for (String str : I18n.translate(key).split("\n"))
                                 list.add(Text.literal(str));
-                            renderTooltip(matrices, list, mouseX, mouseY);
+                            context.drawTooltip(this.textRenderer, list, mouseX, mouseY);
                         }
                     }
                 }
             }
-            super.render(matrices,mouseX,mouseY,delta);
+            super.render(context,mouseX,mouseY,delta);
         }
     }
     @Environment(EnvType.CLIENT)
@@ -397,11 +391,11 @@ public abstract class MidnightConfig {
         public static ButtonEntry create(List<ClickableWidget> buttons, Text text, EntryInfo info) {
             return new ButtonEntry(buttons, text, info);
         }
-        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            buttons.forEach(b -> { b.setY(y); b.render(matrices, mouseX, mouseY, tickDelta); });
+        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            buttons.forEach(b -> { b.setY(y); b.render(context, mouseX, mouseY, tickDelta); });
             if (text != null && (!text.getString().contains("spacer") || !buttons.isEmpty())) {
-                if (info.centered) textRenderer.drawWithShadow(matrices, text, MinecraftClient.getInstance().getWindow().getScaledWidth() / 2f - (textRenderer.getWidth(text) / 2f), y + 5, 0xFFFFFF);
-                else DrawableHelper.drawTextWithShadow(matrices, textRenderer, text, 12, y + 5, 0xFFFFFF);
+                if (info.centered) context.drawTextWithShadow(textRenderer, text, (int) (MinecraftClient.getInstance().getWindow().getScaledWidth() / 2f - (textRenderer.getWidth(text) / 2f)), y + 5, 0xFFFFFF);
+                else context.drawTextWithShadow(textRenderer, text, 12, y + 5, 0xFFFFFF);
             }
         }
         public List<? extends Element> children() {return children;}

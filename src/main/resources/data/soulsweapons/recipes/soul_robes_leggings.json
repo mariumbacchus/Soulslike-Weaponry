@@ -1,12 +1,20 @@
 {
-    "type": "minecraft:smithing",
-    "base": {
-        "item": "minecraft:leather_leggings"
-    },
-    "addition": {
-        "item": "soulsweapons:soul_ingot"
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#L#",
+        "L L",
+        "L L"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:soul_ingot"
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
     },
     "result": {
-        "item": "soulsweapons:soul_robes_leggings"
+        "item": "soulsweapons:soul_robes_leggings",
+        "count": 1
     }
 }

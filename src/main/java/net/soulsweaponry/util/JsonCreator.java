@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancement.Advancement;
-import net.minecraft.loot.condition.LootConditionManager;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.util.Identifier;
 
 public class JsonCreator {
@@ -65,7 +62,7 @@ public class JsonCreator {
     public static JsonObject createSmithingRecipeJson(String baseType, Identifier baseIdentifier, String additionType, Identifier additionIdentifier, Identifier output) {
         
         JsonObject json = new JsonObject();
-        json.addProperty("type", "minecraft:smithing");
+        json.addProperty("type", "minecraft:smithing_transform");
 
         JsonObject baseJson = new JsonObject();
         baseJson.addProperty(baseType, baseIdentifier.toString());
@@ -78,6 +75,10 @@ public class JsonCreator {
         JsonObject result = new JsonObject();
         result.addProperty("item", output.toString());
         json.add("result", result);
+
+        JsonObject template = new JsonObject();
+        template.addProperty("item", "minecraft:netherite_upgrade_smithing_template");
+        json.add("template", template);
         
         return json;
     }
@@ -141,57 +142,5 @@ public class JsonCreator {
         json.addProperty("cookingtime", cookingtime);
         
         return json;
-    }
-
-    public static JsonObject createRecipeBookAdvancement(Identifier recipeIdentifier, Identifier triggerItem, boolean isItemTag) {
-        JsonObject json = new JsonObject();
-        json.addProperty("parent", "recipes/root");
-
-        JsonObject additionJson = new JsonObject();
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add(recipeIdentifier.toString());
-        additionJson.add("recipes", jsonArray);
-        json.add("rewards", additionJson);
-
-        JsonObject conditions = new JsonObject();
-        if (isItemTag) {
-            conditions.addProperty("tag", triggerItem.toString());
-        } else {
-            JsonArray items = new JsonArray();
-            JsonArray item = new JsonArray();
-            item.add(triggerItem.toString());
-            JsonObject itemObject = new JsonObject();
-            itemObject.add("items", item);
-            items.add(itemObject);
-            conditions.add("items", items);
-        }
-
-        JsonObject hasItem = new JsonObject();
-        hasItem.addProperty("trigger", "inventory_changed");
-        hasItem.add("conditions", conditions);
-
-        JsonObject hasRecipeAlready = new JsonObject();
-        hasRecipeAlready.addProperty("trigger", "minecraft:recipe_unlocked");
-        JsonObject condition = new JsonObject();
-        condition.addProperty("recipe", recipeIdentifier.toString());
-        hasRecipeAlready.add("conditions", condition);
-
-        JsonObject overallCriteria = new JsonObject();
-        overallCriteria.add("has_item", hasItem);
-        overallCriteria.add("has_recipe", hasRecipeAlready);
-        json.add("criteria", overallCriteria);
-
-        JsonArray requirements = new JsonArray();
-        JsonArray list = new JsonArray();
-        list.add("has_item");
-        list.add("has_recipe");
-        requirements.add(list);
-        json.add("requirements", requirements);
-
-        return json;
-    }
-
-    public static Advancement.Builder buildAdvancement(JsonObject recipeBookObject, Identifier advancementId) {
-        return Advancement.Builder.fromJson(recipeBookObject, new AdvancementEntityPredicateDeserializer(advancementId, new LootConditionManager()));
     }
 }

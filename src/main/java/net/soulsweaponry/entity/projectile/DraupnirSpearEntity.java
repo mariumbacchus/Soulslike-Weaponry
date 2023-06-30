@@ -49,11 +49,11 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
     }
 
     public void detonate() {
-        if (this.getOwner() != null && this.getBlockPos() != null && !world.isClient) {
+        if (this.getOwner() != null && this.getBlockPos() != null && !getWorld().isClient) {
             float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.NONE);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.NONE);
             if (power > 2f) {
-                for (Entity entity : world.getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
+                for (Entity entity : getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
                     if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 100, MathHelper.floor(power - 2)));
                     }
@@ -75,7 +75,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
         }
 
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.world.getDamageSources().thrown(this, entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {

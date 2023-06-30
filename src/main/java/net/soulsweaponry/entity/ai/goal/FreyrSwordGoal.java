@@ -68,7 +68,7 @@ public class FreyrSwordGoal extends Goal {
     public void tick() {
         LivingEntity target = this.entity.getTarget();
         if (target != null) {
-            this.attackTarget(target, this.entity.world);
+            this.attackTarget(target, this.entity.getWorld());
         }
     }
 
@@ -82,7 +82,7 @@ public class FreyrSwordGoal extends Goal {
         for (double[] hitFrame : this.hitFrames) {
             if (this.attackTicks == hitFrame[0]) {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
-                if (target.damage(CustomDamageSource.create(this.entity.world, CustomDamageSource.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
+                if (target.damage(CustomDamageSource.create(this.entity.getWorld(), CustomDamageSource.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
                     int fire = 0;
                     if ((fire = EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.entity.asItemStack())) > 0) {
                         target.setOnFireFor(fire * 4);

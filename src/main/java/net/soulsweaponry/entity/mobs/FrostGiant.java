@@ -96,20 +96,20 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        LeviathanAxe.iceExplosion(this.world, this.getBlockPos(), null, 1);
+        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), null, 1);
         super.onDeath(damageSource);
     }
 
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            if (!world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            if (!getWorld().isClient) {
+                ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
             }
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -244,17 +244,17 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
                     this.attackStatus++;
                     this.mob.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 20));
                     if (this.attackStatus == 32) {
-                        for (Entity entity : this.mob.world.getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
+                        for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
                             if (entity instanceof LivingEntity living && !this.isOwner(living)) {
                                 if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
                             }
                         }
-                        if (!this.mob.world.isClient) {
-                            ParticleNetworking.sendServerParticlePacket((ServerWorld) mob.world, PacketRegistry.ICE_SMASH_ID, this.mob.getBlockPos(), 100);
+                        if (!this.mob.getWorld().isClient) {
+                            ParticleNetworking.sendServerParticlePacket((ServerWorld) mob.getWorld(), PacketRegistry.ICE_SMASH_ID, this.mob.getBlockPos(), 100);
                         }
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                     }
                     if (attackStatus >= 51) {
                         this.mob.setSmash(false);
