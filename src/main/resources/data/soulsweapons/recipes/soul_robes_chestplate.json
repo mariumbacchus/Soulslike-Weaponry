@@ -1,12 +1,20 @@
 {
-    "type": "minecraft:smithing",
-    "base": {
-        "item": "minecraft:leather_chestplate"
-    },
-    "addition": {
-        "item": "soulsweapons:soul_ingot"
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "L#L",
+        "LLL"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:soul_ingot"
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
     },
     "result": {
-        "item": "soulsweapons:soul_robes_chestplate"
+        "item": "soulsweapons:soul_robes_chestplate",
+        "count": 1
     }
 }

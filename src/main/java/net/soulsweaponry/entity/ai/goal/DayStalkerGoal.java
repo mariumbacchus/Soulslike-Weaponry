@@ -782,6 +782,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 23) {
+            this.playSound(null, SoundEvents.ENTITY_BLAZE_SHOOT, 1f, 1f);
             this.boss.setFlying(true);
             this.boss.addVelocity(0, 0.75f, 0);
         }
