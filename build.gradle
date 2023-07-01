@@ -50,12 +50,12 @@ dependencies {
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20:${project.geckolib_version}"
 	
 	//Runtime only
-	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntimeOnly("maven.modrinth:better-combat:${project.better_combat}-fabric")
-	modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
-	modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
+//	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+//		exclude(group: "net.fabricmc.fabric-api")
+//	}
+//	modRuntimeOnly("maven.modrinth:better-combat:${project.better_combat}-fabric")
+//	modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
+//	modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
 }
 
 loom {
