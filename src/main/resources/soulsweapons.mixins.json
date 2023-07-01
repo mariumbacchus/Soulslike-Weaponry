@@ -14,14 +14,14 @@
     "ModelInvoker",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
-    "ShieldItemMixin",
     "ToolItemMixin",
     "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
     "HeldItemRendererMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "ShieldItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
