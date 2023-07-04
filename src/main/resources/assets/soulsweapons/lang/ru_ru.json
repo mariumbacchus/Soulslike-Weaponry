@@ -120,7 +120,6 @@
 
     "item.soulsweapons.big_chungus_spawn_egg": "Яйцо призыва Чунгуса Среднего Размера",
     "item.soulsweapons.withered_demon_spawn_egg": "Яйцо призыва Иссохшего Демона",
-    "item.soulsweapons.ghost_warrior_spawn_egg": "Яйцо призыва Призрачного Воина",
     "item.soulsweapons.remnant_spawn_egg": "Яйцо призыва Останков",
     "item.soulsweapons.dark_sorcerer_spawn_egg": "Яйцо призыва Тёмный Колдун",
     "item.soulsweapons.accursed_lord_boss_spawn_egg": "Яйцо призыва Разлагающийся Король",
@@ -233,7 +232,7 @@
     "subtitles.soulsweapons.knight_sword_smash": "Падение луны",
     "subtitles.soulsweapons.knight_charge_sword": "Меч лунного света заряжается",
     "subtitles.soulsweapons.slice_target": "Мод был нарезан",
-    "subtitles.soulsweapons.umbral_trespass": "Нарушение границ активируется",
+    "subtitles.soulsweapons.umbral_trespass_sound": "Нарушение границ активируется",
     "subtitles.soulsweapons.trick_weapon": "Использовано оружие уловка",
 
     "tooltip.soulsweapons.shift": "Удерживай [§eSHIFT§r] для получения информации",
@@ -419,7 +418,7 @@
     "tooltip.soulsweapons.detonate_spears_description_3": "thrown §6Draupnir Spears§r that exist with explosion power ",
     "tooltip.soulsweapons.detonate_spears_description_4": "At power level over 2, all nearby targets are",
     "tooltip.soulsweapons.detonate_spears_description_5": "affected by §3Weakness§r as well.",
-    "tooltip.soulsweapons.detonate_spears_description_6": "Keybind is LEFT_ALT by default, can be changed in controls.",
+    "tooltip.soulsweapons.keybind_ability": "Ability Keybind is LEFT_ALT by default, can be changed in controls.",
     "tooltip.soulsweapons.moonfall": "Moonfall",
     "tooltip.soulsweapons.moonfall_description_1": "- Charge the weapon and smash the ground, causing",
     "tooltip.soulsweapons.moonfall_description_2": "ruptures down the aimed path with distance based",
@@ -488,7 +487,8 @@
     "key.soulsweapons.freyr_sword_stationary": "Переключение режима меча Фрейра",
     "key.soulsweapons.collect_summons_soul_reaper": "Собрать призраков обратно в жнец душ, если он есть в руках",
     "key.soulsweapons.switch_weapon": "Преобразовать удерживаемое оружие в оружие для уловки",
-    "key.soulsweapons.detonate_draupnir_spears": "Взорвать копья Драупнира",
+    "key.soulsweapons.keybind_ability": "Use weapon's special ability",
+    "key.soulsweapons.parry": "Parry with shield",
 
     "advancements.soulsweapons.root.title": "Soulslike Weaponry",
     "advancements.soulsweapons.root.description": "Уникальные достижения для достойных!",
@@ -531,7 +531,7 @@
     "advancements.soulsweapons.all_weapons.title": "Мастер за работой",
     "advancements.soulsweapons.all_weapons.description": "Получите все создаваемое легендарное оружие из этого мода",
     "advancements.soulsweapons.draugr_boss.title": "Беспокойный лунатик",
-    "advancements.soulsweapons.draugr_boss.description": "Победите Старого Чемпиона и существо, которое завладело его остатками"
+    "advancements.soulsweapons.draugr_boss.description": "Победите Старого Чемпиона и существо, которое завладело его остатками",
     "advancements.soulsweapons.uncertainty.title": "Разрушительные Тенденции",
     "advancements.soulsweapons.uncertainty.description": "Получите осколок неопределённости",
     "advancements.soulsweapons.ender_of_world_ender.title": "Конец Света в Мире Края",
