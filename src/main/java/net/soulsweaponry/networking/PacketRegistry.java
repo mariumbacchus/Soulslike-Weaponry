@@ -31,6 +31,9 @@ public class PacketRegistry {
     public static final Identifier MOONFALL_ID = new Identifier(SoulsWeaponry.ModId, "moonfall_id");
     public static final Identifier CLAW_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "claw_particles_id");
     public static final Identifier ICE_SMASH_ID = new Identifier(SoulsWeaponry.ModId, "ice_smash_id");
+    public static final Identifier PRE_EXPLOSION_ID = new Identifier(SoulsWeaponry.ModId, "pre_explosion_id");
+    public static final Identifier AIR_COMBUSTION_ID = new Identifier(SoulsWeaponry.ModId, "air_combustion_id");
+    public static final Identifier FLAME_RUPTURE_ID = new Identifier(SoulsWeaponry.ModId, "flame_rupture");
 
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
     public static final Identifier RETURN_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "check_can_freyr_return");

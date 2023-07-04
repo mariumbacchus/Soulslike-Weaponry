@@ -1,0 +1,82 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "main",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "1",
+					"parent": "main",
+					"pivot": [0, 3, 0],
+					"cubes": [
+						{
+							"origin": [-3, 0, -3],
+							"size": [6, 6, 6],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [6, 6]},
+								"east": {"uv": [0, 6], "uv_size": [6, 6]},
+								"south": {"uv": [6, 0], "uv_size": [6, 6]},
+								"west": {"uv": [6, 6], "uv_size": [6, 6]},
+								"up": {"uv": [0, 12], "uv_size": [6, 6]},
+								"down": {"uv": [12, 6], "uv_size": [6, -6]}
+							}
+						}
+					]
+				},
+				{
+					"name": "2",
+					"parent": "main",
+					"pivot": [0, 3, 0],
+					"cubes": [
+						{
+							"origin": [-3, 0, -3],
+							"size": [6, 6, 6],
+							"pivot": [0, 3, 0],
+							"rotation": [0, -45, -45],
+							"uv": {
+								"north": {"uv": [6, 12], "uv_size": [6, 6]},
+								"east": {"uv": [12, 6], "uv_size": [6, 6]},
+								"south": {"uv": [12, 12], "uv_size": [6, 6]},
+								"west": {"uv": [0, 18], "uv_size": [6, 6]},
+								"up": {"uv": [18, 0], "uv_size": [6, 6]},
+								"down": {"uv": [6, 24], "uv_size": [6, -6]}
+							}
+						}
+					]
+				},
+				{
+					"name": "3",
+					"parent": "main",
+					"pivot": [0, 3, 0],
+					"cubes": [
+						{
+							"origin": [-3, 0, -3],
+							"size": [6, 6, 6],
+							"pivot": [0, 3, 0],
+							"rotation": [0, 45, 45],
+							"uv": {
+								"north": {"uv": [18, 6], "uv_size": [6, 6]},
+								"east": {"uv": [12, 18], "uv_size": [6, 6]},
+								"south": {"uv": [18, 12], "uv_size": [6, 6]},
+								"west": {"uv": [18, 18], "uv_size": [6, 6]},
+								"up": {"uv": [0, 24], "uv_size": [6, 6]},
+								"down": {"uv": [24, 6], "uv_size": [6, -6]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

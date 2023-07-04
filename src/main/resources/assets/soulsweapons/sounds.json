@@ -253,5 +253,77 @@
         "sounds": [
             "soulsweapons:hard_boss_spawn"
         ]
+    },
+    "warmth_buff": {
+        "subtitle": "subtitles.soulsweapons.warmth_buff",
+        "sounds": [
+            "soulsweapons:warmth_buff"
+        ]
+    },
+    "warmth_die": {
+        "subtitle": "subtitles.soulsweapons.warmth_die",
+        "sounds": [
+            "soulsweapons:warmth_die"
+        ]
+    },
+    "overheat_charge": {
+        "subtitle": "subtitles.soulsweapons.overheat_charge",
+        "sounds": [
+            "soulsweapons:overheat_charge"
+        ]
+    },
+    "day_stalker_decimate": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_decimate",
+        "sounds": [
+            "soulsweapons:day_stalker_decimate"
+        ]
+    },
+    "day_stalker_chaos_storm": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_chaos_storm",
+        "sounds": [
+            "soulsweapons:day_stalker_chaos_storm"
+        ]
+    },
+    "day_stalker_spin_normal": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_spin_normal",
+        "sounds": [
+            "soulsweapons:day_stalker_spin_normal"
+        ]
+    },
+    "day_stalker_spin_empowered": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_spin_empowered",
+        "sounds": [
+            "soulsweapons:day_stalker_spin_empowered"
+        ]
+    },
+    "day_stalker_radiance": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_radiance",
+        "sounds": [
+            "soulsweapons:day_stalker_radiance"
+        ]
+    },
+    "day_stalker_windup": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_windup",
+        "sounds": [
+            "soulsweapons:day_stalker_windup"
+        ]
+    },
+    "day_stalker_pull": {
+        "subtitle": "subtitles.soulsweapons.day_stalker_pull",
+        "sounds": [
+            "soulsweapons:day_stalker_pull"
+        ]
+    },
+    "hard_boss_death_short": {
+        "subtitle": "subtitles.soulsweapons.hard_boss_death_short",
+        "sounds": [
+            "soulsweapons:hard_boss_death_short"
+        ]
+    },
+    "hard_boss_death_long": {
+        "subtitle": "subtitles.soulsweapons.hard_boss_death_long",
+        "sounds": [
+            "soulsweapons:hard_boss_death_long"
+        ]
     }
 }

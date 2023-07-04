@@ -32,20 +32,18 @@ public class MoonlightProjectileBigModel extends AnimatedGeoModel<MoonlightProje
 
 		if (bone != null) {
             switch (entity.getRotateState()) {
-                case NORMAL:
-                    break;
-                case SWIPE_FROM_LEFT:
+                case SWIPE_FROM_LEFT -> {
                     bone.setRotationX(90 * ((float) Math.PI / 180F));
                     bone.setRotationY(-40 * ((float) Math.PI / 180F));
                     bone.setRotationZ(-90 * ((float) Math.PI / 180F));
-                    break;
-                case SWIPE_FROM_RIGHT:
+                }
+                case SWIPE_FROM_RIGHT -> {
                     bone.setRotationX(-90 * ((float) Math.PI / 180F));
-			        bone.setRotationY(-30 * ((float) Math.PI / 180F));
-			        bone.setRotationZ(90 * ((float) Math.PI / 180F));
-                    break;
-                default:
-                    break;
+                    bone.setRotationY(-30 * ((float) Math.PI / 180F));
+                    bone.setRotationZ(90 * ((float) Math.PI / 180F));
+                }
+                default -> {
+                }
             }
 		}
 	}
