@@ -246,7 +246,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attackAnimations));    
+        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attackAnimations));
     }
 
     @Override

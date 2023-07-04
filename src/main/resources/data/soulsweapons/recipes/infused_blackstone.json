@@ -1,10 +1,17 @@
 {
-    "type": "minecraft:smithing",
-    "base": {
-        "item": "minecraft:polished_blackstone_bricks"
-    },
-    "addition": {
-        "item": "soulsweapons:lost_soul"
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "#C#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:lost_soul"
+        },
+        "C": {
+            "item": "minecraft:polished_blackstone_bricks"
+        }
     },
     "result": {
         "item": "soulsweapons:infused_blackstone"

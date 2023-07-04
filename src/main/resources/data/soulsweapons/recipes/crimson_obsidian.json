@@ -1,11 +1,13 @@
 {
-    "type": "minecraft:smithing",
-    "base": {
-        "item": "minecraft:obsidian"
-    },
-    "addition": {
-        "item": "soulsweapons:crimson_ingot"
-    },
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "soulsweapons:crimson_ingot"
+        },
+        {
+            "item": "minecraft:obsidian"
+        }
+    ],
     "result": {
         "item": "soulsweapons:crimson_obsidian"
     }

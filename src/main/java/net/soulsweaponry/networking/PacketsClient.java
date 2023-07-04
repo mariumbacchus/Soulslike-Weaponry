@@ -3,12 +3,14 @@ package net.soulsweaponry.networking;
 import java.util.Random;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.item.Items;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.IEntityDataSaver;
@@ -258,6 +260,39 @@ public class PacketsClient {
                 ParticleEffect[] particles = {ParticleTypes.CLOUD, ParticleTypes.SOUL, new ItemStackParticleEffect(ParticleTypes.ITEM, Items.ICE.getDefaultStack())};
                 float[][] velDividers = {{1, 8, 1}, {2, 8, 2}, {1, 1, 1}};
                 PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.PRE_EXPLOSION_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            Vec3d center = Vec3d.ofCenter(target);
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.FLAME};
+                float[][] velDividers = {{10, 10, 10}};
+                PacketsClient.particleOutburst(client.world, 5, particles, center.getX(), center.getY(), center.getZ(), velDividers);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.AIR_COMBUSTION_ID, (client, handler, buf, responseSender) -> {
+            Vec3d target = Vec3d.ofCenter(buf.readBlockPos());
+            int points = buf.readInt();
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME};
+                float[][] velDividers = {{3, 3, 3}, {3, 3, 3}};
+                Particle particle = client.particleManager.addParticle(ParticleTypes.FLASH, target.getX(), target.getY(), target.getZ(), 0.0, 0.0, 0.0);
+                particle.setColor(0.788f, 0.25f, 0f);
+                PacketsClient.particleOutburst(client.world, points, particles, target.getX(), target.getY(), target.getZ(), velDividers);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.FLAME_RUPTURE_ID, (client, handler, buf, responseSender) -> {
+            Vec3d vec = Vec3d.ofCenter(buf.readBlockPos());
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.FLAME, ParticleTypes.FLAME, ParticleTypes.WAX_ON};
+                float[][] velDividers = {
+                        {4, 0.5f, 4}, {4, 0.5f, 4}, {0.1f, 0.01f, 0.1f}
+                };
+                PacketsClient.particleOutburst(client.world, 200, particles, vec.getX(), vec.getY(), vec.getZ(), velDividers);
             });
         });
 

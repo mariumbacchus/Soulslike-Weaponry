@@ -1,5 +1,9 @@
 package net.soulsweaponry.entity.projectile;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.logging.LogUtils;
+import net.minecraft.command.argument.ParticleEffectArgumentType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -9,6 +13,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -20,6 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import org.slf4j.Logger;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -27,12 +33,16 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class MoonlightProjectile extends NonArrowProjectile implements IAnimatable, IAnimationTickable{
-    
+
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final TrackedData<Integer> POINTS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> TICK_PARTICLES = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> MAX_AGE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HUGE_EXPLOSION = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ROTATE_STATE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<ParticleEffect> EXPLOSION_PARTICLE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
+    private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
+    private static final TrackedData<Integer> APPLY_FIRE_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private ItemStack stackShotFrom;
 
@@ -52,6 +62,9 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         this.dataTracker.startTracking(MAX_AGE, 30);
         this.dataTracker.startTracking(HUGE_EXPLOSION, false);
         this.dataTracker.startTracking(ROTATE_STATE, 0);
+        this.dataTracker.startTracking(EXPLOSION_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME);
+        this.dataTracker.startTracking(TRAIL_PARTICLE, ParticleTypes.GLOW);
+        this.dataTracker.startTracking(APPLY_FIRE_TICKS, 0);
     }
 
     public void setAgeAndPoints(int maxAge, int explosionPoints, int tickParticleAmount) {
@@ -95,11 +108,11 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         double f = vec3d.y;
         double g = vec3d.z;
         for (int i = 0; i < this.getTickParticleAmount(); ++i) {
-            this.world.addParticle(this.getParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
+            this.world.addParticle(this.getTrailParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
         }
 
         if (this.age > this.getMaxAge()) {
-            this.discard(); 
+            this.discard();
         }
     }
 
@@ -124,6 +137,9 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
             this.setDamage(this.getDamage() + (bonus >= 5 ? bonus * 0.7f : bonus));
         }
         super.onEntityHit(entityHitResult);
+        if (this.getFireTicksOnHit() > 0 && entityHitResult.getEntity() != null) {
+            entityHitResult.getEntity().setFireTicks(this.getFireTicksOnHit());
+        }
         this.discard();
     }
 
@@ -135,8 +151,8 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
-        } 
+            world.addParticle(this.getExplosionParticleType(), true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
+        }
     }
 
     @Override
@@ -162,12 +178,13 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         return SoundEvents.ENTITY_GENERIC_EXPLODE;
     }
 
-    protected ParticleEffect getParticleType() {
-        return ParticleTypes.GLOW;
-    }
-
     protected float getDragInWater() {
         return 1.01F;
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return true;
     }
 
     protected ItemStack asItemStack() {
@@ -194,7 +211,61 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         return this.factory;
     }
 
-    public static enum RotationState {
+    public void setExplosionParticleType(ParticleEffect particle) {
+        this.getDataTracker().set(EXPLOSION_PARTICLE, particle);
+    }
+
+    public ParticleEffect getExplosionParticleType() {
+        return this.getDataTracker().get(EXPLOSION_PARTICLE);
+    }
+
+    public void setTrailParticleType(ParticleEffect particle) {
+        this.getDataTracker().set(TRAIL_PARTICLE, particle);
+    }
+
+    public ParticleEffect getTrailParticleType() {
+        return this.getDataTracker().get(TRAIL_PARTICLE);
+    }
+
+    public void applyFireTicks(int ticks) {
+        this.dataTracker.set(APPLY_FIRE_TICKS, ticks);
+    }
+
+    public int getFireTicksOnHit() {
+        return this.dataTracker.get(APPLY_FIRE_TICKS);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putString("Particle", this.getExplosionParticleType().asString());
+        nbt.putString("TrailParticle", this.getExplosionParticleType().asString());
+        nbt.putInt("FireTicksOnHit", this.getFireTicksOnHit());
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("Particle", 8)) {
+            try {
+                this.setExplosionParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle"))));
+            } catch (CommandSyntaxException var5) {
+                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("Particle"), var5);
+            }
+        }
+        if (nbt.contains("TrailParticle", 8)) {
+            try {
+                this.setTrailParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("TrailParticle"))));
+            } catch (CommandSyntaxException var5) {
+                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("TrailParticle"), var5);
+            }
+        }
+        if (nbt.contains("FireTicksOnHit")) {
+            this.applyFireTicks(nbt.getInt("FireTicksOnHit"));
+        }
+    }
+
+    public enum RotationState {
         NORMAL,
         SWIPE_FROM_RIGHT,
         SWIPE_FROM_LEFT

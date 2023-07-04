@@ -25,7 +25,6 @@ import net.soulsweaponry.registry.OreSpawnRegistry;
 import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.SpawnInit;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib3.GeckoLib;
@@ -47,7 +46,6 @@ public class SoulsWeaponry implements ModInitializer {
         EnchantRegistry.init();
         EntityRegistry.init();
         EventRegistry.init();
-        SoundRegistry.init();
         SpawnInit.init();
         WeaponRegistry.init();
         ArmorRegistry.init();
