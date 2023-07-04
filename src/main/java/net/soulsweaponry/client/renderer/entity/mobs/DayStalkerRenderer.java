@@ -24,11 +24,6 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     }
 
     @Override
-    public GeoEntityRenderer<DayStalker> withScale(float scale) {
-        return super.withScale(0.75f);
-    }
-
-    @Override
     public RenderLayer getRenderType(DayStalker animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
         return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
     }
