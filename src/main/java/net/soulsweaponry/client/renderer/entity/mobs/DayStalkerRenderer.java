@@ -17,7 +17,7 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     int[] rgbColorTwo = {250, 186, 132};
     int[] rgbColorThree = {72, 63, 98};
     int[] rgbColorFour = {40, 34, 59};
-    double[] translation = {0, 4, 0};
+    double[] translation = {0, 2.5D, 0};
 
     public DayStalkerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DayStalkerModel());
