@@ -91,7 +91,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void checkAndSetAttack(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         int rand = this.boss.getRandom().nextInt(DayStalker.ATTACKS_LENGTH);
-        DayStalker.Attacks attack = DayStalker.Attacks.FLAMETHROWER;//DayStalker.Attacks.values()[rand];
+        DayStalker.Attacks attack = DayStalker.Attacks.values()[rand];
         switch (attack) {
             case AIR_COMBUSTION -> this.boss.setAttackAnimation(attack);
             case BLAZE_BARRAGE, SUNFIRE_RUSH -> {
