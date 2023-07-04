@@ -9,12 +9,12 @@ public class GrowingFireballModel extends AnimatedGeoModel<GrowingFireball> {
 
     @Override
     public Identifier getAnimationFileLocation(GrowingFireball animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/growing_fireball.animation.json");
+        return new Identifier(SoulsWeaponry.ModId, "animations/growing_fireball.animation.json");
     }
 
     @Override
     public Identifier getModelLocation(GrowingFireball object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/growing_fireball.geo.json");
+        return new Identifier(SoulsWeaponry.ModId, "geo/growing_fireball.geo.json");
     }
 
     @Override

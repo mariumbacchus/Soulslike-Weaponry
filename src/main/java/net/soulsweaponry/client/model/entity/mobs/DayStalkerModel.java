@@ -28,7 +28,7 @@ public class DayStalkerModel extends AnimatedGeoModel<DayStalker>{
         return new Identifier(SoulsWeaponry.ModId, "animations/day_stalker.animation.json");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked"})
     @Override
     public void setCustomAnimations(DayStalker animatable, int instanceId, AnimationEvent customPredicate) {
         super.setCustomAnimations(animatable, instanceId, customPredicate);

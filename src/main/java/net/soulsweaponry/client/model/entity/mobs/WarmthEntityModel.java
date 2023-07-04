@@ -9,12 +9,12 @@ public class WarmthEntityModel extends AnimatedGeoModel<WarmthEntity> {
 
     @Override
     public Identifier getAnimationFileLocation(WarmthEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/warmth_entity.animation.json");
+        return new Identifier(SoulsWeaponry.ModId, "animations/warmth_entity.animation.json");
     }
 
     @Override
     public Identifier getModelLocation(WarmthEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/warmth_entity.geo.json");
+        return new Identifier(SoulsWeaponry.ModId, "geo/warmth_entity.geo.json");
 
     }
 

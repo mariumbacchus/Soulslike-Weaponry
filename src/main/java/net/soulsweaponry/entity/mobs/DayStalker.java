@@ -112,6 +112,9 @@ public class DayStalker extends BossEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState idles(AnimationEvent<E> event) {
+        if (this.isInitiatingPhaseTwo()) {
+            return PlayState.STOP;
+        }
         if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("death_2", ILoopType.EDefaultLoopTypes.LOOP));
@@ -119,6 +122,12 @@ public class DayStalker extends BossEntity implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("death_1", ILoopType.EDefaultLoopTypes.LOOP));
             }
         } else {
+            // NOTE:
+            // Old geckolib doesn't manage to play multiple animations at the same time, apparently.
+            // If the idle animations play during attacks, it messes things up.
+            if (!this.getAttackAnimation().equals(Attacks.IDLE)) {
+                return PlayState.STOP;
+            }
             if (!this.isInitiatingPhaseTwo()) {
                 if (this.isPhaseTwo()) {
                     if (!this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
