@@ -2,15 +2,12 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "# #",
-        "L#L",
-        "LLL"
+        "###",
+        "###"
     ],
     "key": {
         "#": {
             "item": "soulsweapons:soul_ingot"
-        },
-        "L": {
-            "item": "minecraft:leather"
         }
     },
     "result": {
