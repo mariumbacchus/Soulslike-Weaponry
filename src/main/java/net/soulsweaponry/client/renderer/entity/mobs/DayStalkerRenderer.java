@@ -8,7 +8,6 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
@@ -30,11 +29,6 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     }
 
     @Override
-    public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, DayStalker animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
-        super.scaleModelForRender(0.75f, 0.75f, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
-    }
-
-    @Override
     protected float getDeathMaxRotation(DayStalker entityLivingBaseIn) {
         return 0f;
     }
@@ -42,6 +36,7 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     @Override
     public void render(DayStalker entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
+        stack.scale(0.75f, 0.75f, 0.75f);
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 

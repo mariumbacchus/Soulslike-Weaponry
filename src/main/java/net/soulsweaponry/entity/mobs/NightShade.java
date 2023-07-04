@@ -1,15 +1,9 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -24,9 +18,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
@@ -38,6 +35,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class NightShade extends BossEntity implements GeoEntity {
@@ -46,7 +44,7 @@ public class NightShade extends BossEntity implements GeoEntity {
     public int deathTicks;
     private boolean isCopy = false;
     private boolean healthUpdated = false;
-    private boolean hasDupliated = false;
+    private boolean hasDuplicated = false;
     private int duplicateTicks;
 
     protected static final TrackedData<Integer> ATTACK_STATE = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.INTEGER);
@@ -73,6 +71,7 @@ public class NightShade extends BossEntity implements GeoEntity {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(4, new NightShadeGoal(this));
+        this.goalSelector.add(7, new Emerge());
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
@@ -133,7 +132,7 @@ public class NightShade extends BossEntity implements GeoEntity {
         for(int i = 0; i < 3; ++i) {
             this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
-        if (!this.isCopy && !this.hasDupliated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
+        if (!this.isCopy && !this.hasDuplicated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
@@ -158,7 +157,7 @@ public class NightShade extends BossEntity implements GeoEntity {
                 }
             }
             if (this.duplicateTicks >= 60) {
-                this.hasDupliated = true;
+                this.hasDuplicated = true;
                 this.setAttackState(AttackStates.IDLE);
             }
         }
@@ -258,6 +257,29 @@ public class NightShade extends BossEntity implements GeoEntity {
         }
     }
 
+    class Emerge extends Goal {
+        @Override
+        public boolean canStart() {
+            return NightShade.this.getTarget() == null;
+        }
+
+        @Override
+        public void tick() {
+            if (NightShade.this.getTarget() == null && this.isInsideWall()) {
+                NightShade.this.setVelocity(0, 0.1f, 0);
+            }
+        }
+
+        private boolean isInsideWall() {
+            float f = NightShade.this.getDimensions(EntityPose.STANDING).width * 0.8f;
+            Box box = Box.of(NightShade.this.getEyePos(), f, 1.0E-6, f);
+            return BlockPos.stream(box).anyMatch(pos -> {
+                BlockState blockState = NightShade.this.getWorld().getBlockState(pos);
+                return !blockState.isAir() && blockState.shouldSuffocate(NightShade.this.getWorld(), pos) && VoxelShapes.matchesAnywhere(blockState.getCollisionShape(NightShade.this.getWorld(), pos).offset(pos.getX(), pos.getY(), pos.getZ()), VoxelShapes.cuboid(box), BooleanBiFunction.AND);
+            });
+        }
+    }
+
     private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
@@ -288,7 +310,7 @@ public class NightShade extends BossEntity implements GeoEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("is_copy", this.isCopy);
-        nbt.putBoolean("has_duplicated", this.hasDupliated);
+        nbt.putBoolean("has_duplicated", this.hasDuplicated);
         nbt.putBoolean("has_health_updated", this.healthUpdated);
     }
 
@@ -296,7 +318,7 @@ public class NightShade extends BossEntity implements GeoEntity {
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("has_duplicated")) {
-            this.hasDupliated = nbt.getBoolean("has_duplicated");
+            this.hasDuplicated = nbt.getBoolean("has_duplicated");
         }
         if (nbt.contains("is_copy")) this.isCopy = nbt.getBoolean("is_copy");
         if (nbt.contains("has_health_updated")) this.healthUpdated = nbt.getBoolean("has_health_updated");

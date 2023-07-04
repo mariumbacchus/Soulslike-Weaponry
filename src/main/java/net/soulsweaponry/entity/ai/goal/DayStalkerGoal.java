@@ -514,10 +514,10 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             double length = 260D;
             if (distance < length) {
                 this.boss.setFlamethrowerTarget(target.getBlockPos());
-                targetPos = new BlockPos(target.getBlockX(), (int) target.getBodyY(0.5D), target.getBlockZ());
+                targetPos = new BlockPos(target.getBlockX(), (int) target.getBodyY(1D), target.getBlockZ());
             } else {
                 double x = target.getBlockX() - this.boss.getBlockX();
-                double y = target.getBodyY(0.5D) - this.boss.getBlockY();
+                double y = target.getBodyY(1D) - this.boss.getBlockY();
                 double z = target.getBlockZ() - this.boss.getBlockZ();
                 int newX = MathHelper.floor(this.getPointBetweenTwoPos(length, distance, x, this.boss.getBlockX()));
                 int newY = MathHelper.ceil(this.getPointBetweenTwoPos(length, distance, y, this.boss.getBlockY()));
