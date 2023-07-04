@@ -26,7 +26,6 @@ import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.SpawnInit;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.GeckoLib;
@@ -36,7 +35,7 @@ public class SoulsWeaponry implements ModInitializer {
     public static final String ModId = "soulsweapons";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
     public static ItemGroup MAIN_GROUP;
-    //FabricItemGroupBuilder.build(new Identifier(ModId, "general"), () -> new ItemStack(ItemRegistry.MOONSTONE));
+
     public static void registerItemGroup() {
         MAIN_GROUP = FabricItemGroup.builder(new Identifier(ModId, "general"))
                 .displayName(Text.translatable("itemGroup.soulsweapons.general"))
@@ -57,7 +56,6 @@ public class SoulsWeaponry implements ModInitializer {
         EnchantRegistry.init();
         EntityRegistry.init();
         EventRegistry.init();
-        SoundRegistry.init();
         SpawnInit.init();
         WeaponRegistry.init();
         ArmorRegistry.init();

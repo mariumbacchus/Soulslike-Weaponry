@@ -16,14 +16,10 @@ public class MoonlightProjectileBigRenderer extends GeoProjectileRenderer<Moonli
     protected void applyRotations(MoonlightProjectile animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
         super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
         switch (animatable.getRotateState()) {
-            case SWIPE_FROM_LEFT:
-                matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(45.0F));
-                break;
-            case SWIPE_FROM_RIGHT:
-                matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-45.0F));
-                break;
-            default:
-                break;
+            case SWIPE_FROM_LEFT -> matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(45.0F));
+            case SWIPE_FROM_RIGHT -> matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-45.0F));
+            default -> {
+            }
         }
     }
 }

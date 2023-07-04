@@ -2,6 +2,7 @@ package net.soulsweaponry.util;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -36,6 +37,15 @@ public class ParryData {
 
     public static int getParryFrames(PlayerEntity player) {
         return ((IEntityDataSaver)player).getPersistentData().getInt(PARRY_FRAMES_ID);
+    }
+
+    public static boolean successfulParry(PlayerEntity player, boolean checkIfCanBeParried, DamageSource source) {
+        int frames = ParryData.getParryFrames(player);
+        boolean bl = true;
+        if (checkIfCanBeParried) {
+            bl = !source.isUnblockable();
+        }
+        return frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && bl;
     }
 
     public static void syncFrames(int frames, ServerPlayerEntity player) {

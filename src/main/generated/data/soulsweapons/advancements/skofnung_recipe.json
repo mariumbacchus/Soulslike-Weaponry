@@ -13,12 +13,12 @@
           {
             "items": [
               "soulsweapons:lord_soul_white",
-              "soulsweapons:lord_soul_purple",
-              "soulsweapons:lord_soul_dark",
               "soulsweapons:lord_soul_void",
-              "soulsweapons:lord_soul_day_stalker",
+              "soulsweapons:lord_soul_red",
               "soulsweapons:lord_soul_rose",
-              "soulsweapons:lord_soul_red"
+              "soulsweapons:lord_soul_day_stalker",
+              "soulsweapons:lord_soul_purple",
+              "soulsweapons:lord_soul_dark"
             ]
           }
         ]

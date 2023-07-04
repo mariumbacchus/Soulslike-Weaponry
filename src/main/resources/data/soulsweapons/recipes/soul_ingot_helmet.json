@@ -1,15 +1,19 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "XXX",
-        "X X"
+        "#L#",
+        "L L"
     ],
     "key": {
-        "X": {
+        "#": {
             "item": "soulsweapons:soul_ingot"
+        },
+        "L": {
+            "item": "minecraft:leather"
         }
     },
     "result": {
-        "item": "soulsweapons:soul_ingot_helmet"
+        "item": "soulsweapons:soul_ingot_helmet",
+        "count": 1
     }
 }

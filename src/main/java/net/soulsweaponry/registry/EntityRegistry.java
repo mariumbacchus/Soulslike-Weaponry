@@ -3,6 +3,7 @@ package net.soulsweaponry.registry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -37,14 +38,17 @@ public class EntityRegistry {
     public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registries.ENTITY_TYPE ,new Identifier(ModId, "moonknight"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, Moonknight::new).dimensions(EntityDimensions.fixed(3F, 8F)).build());
     public static final EntityType<FrostGiant> FROST_GIANT = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "frost_giant"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, FrostGiant::new).dimensions(EntityDimensions.fixed(1.25F, 2.6F)).build());
     public static final EntityType<RimeSpectre> RIME_SPECTRE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "rime_spectre"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RimeSpectre::new).dimensions(EntityDimensions.fixed(1F, 2F)).build());
-
     public static final EntityType<DayStalker> DAY_STALKER = registerWithSpawnEgg(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DayStalker::new).dimensions(EntityDimensions.changing(3.5F, 5.5F)).build(), "day_stalker", 0x212121, 0xff8000);
+    public static final EntityType<WarmthEntity> WARMTH_ENTITY = registerWithSpawnEgg(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, WarmthEntity::new).dimensions(EntityDimensions.changing(1f, 1f)).build(), "warmth_entity", 0xdb8700, 0xfff7eb);
     //public static final EntityType<DayStalker> DAY_STALKER = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "day_stalker"), FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DayStalker::new).dimensions(EntityDimensions.changing(3.75F, 6F)).build());
     //public static final EntityType<NightProwler> NIGHT_PROWLER = EntityRegistryBuilder.<NightProwler>createBuilder(new Identifier(ModId, "night_prowler")).category(SpawnGroup.MONSTER).entity(NightProwler::new).dimensions(EntityDimensions.changing(4F, 8F)).build();
 
     public static final EntityType<MoonlightProjectile> MOONLIGHT_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "moonlight_projectile"), FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<MoonlightProjectile> MOONLIGHT_BIG_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "big_moonlight_projectile"), FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(2F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<MoonlightProjectile> VERTICAL_MOONLIGHT_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "vertical_moonlight_projectile"), FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(1F, 3F)).trackRangeChunks(4).trackedUpdateRate(20).build());
+    public static final EntityType<MoonlightProjectile> SUNLIGHT_PROJECTILE_SMALL = registerEntity("sunlight_projectile_small", FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
+    public static final EntityType<MoonlightProjectile> SUNLIGHT_PROJECTILE_BIG = registerEntity("sunlight_projectile_big", FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(2F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
+    public static final EntityType<MoonlightProjectile> VERTICAL_SUNLIGHT_PROJECTILE = registerEntity("vertical_sunlight_projectile", FabricEntityTypeBuilder.<MoonlightProjectile>create(SpawnGroup.MISC, MoonlightProjectile::new).dimensions(EntityDimensions.fixed(1F, 3F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<DragonslayerSwordspearEntity> SWORDSPEAR_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "swordspear_entity"), FabricEntityTypeBuilder.<DragonslayerSwordspearEntity>create(SpawnGroup.MISC, DragonslayerSwordspearEntity::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<CometSpearEntity> COMET_SPEAR_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "comet_spear_entity"), FabricEntityTypeBuilder.<CometSpearEntity>create(SpawnGroup.MISC, CometSpearEntity::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<ChargedArrow> CHARGED_ARROW_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "charged_arrow_entity"), FabricEntityTypeBuilder.<ChargedArrow>create(SpawnGroup.MISC, ChargedArrow::new).dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeChunks(4).trackedUpdateRate(20).build());
@@ -60,6 +64,7 @@ public class EntityRegistry {
     public static final EntityType<WitheredWabbajackProjectile> WITHERED_WABBAJACK_PROJECTILE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "withered_wabbajack_projectile"), FabricEntityTypeBuilder.<WitheredWabbajackProjectile>create(SpawnGroup.MISC, WitheredWabbajackProjectile::new).dimensions(EntityDimensions.fixed(0.3125f, 0.3125f)).trackRangeChunks(4).trackedUpdateRate(10).build());
     public static final EntityType<ChaosSkull> CHAOS_SKULL = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "chaos_skull"), FabricEntityTypeBuilder.<ChaosSkull>create(SpawnGroup.MISC, ChaosSkull::new).dimensions(EntityDimensions.fixed(0.4f, 0.4f)).trackRangeChunks(4).trackedUpdateRate(10).build());
     public static final EntityType<ChaosOrbEntity> CHAOS_ORB_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "chaos_orb_entity"), FabricEntityTypeBuilder.<ChaosOrbEntity>create(SpawnGroup.MISC, ChaosOrbEntity::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(10).build());
+    public static final EntityType<GrowingFireball> GROWING_FIREBALL_ENTITY = registerEntity("growing_fireball", FabricEntityTypeBuilder.<GrowingFireball>create(SpawnGroup.MISC, GrowingFireball::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).trackRangeChunks(10).trackedUpdateRate(20).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());
@@ -96,6 +101,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(MOONKNIGHT, Moonknight.createBossAttributes());
         FabricDefaultAttributeRegistry.register(FROST_GIANT, FrostGiant.createGiantAttributes());
         FabricDefaultAttributeRegistry.register(RIME_SPECTRE, RimeSpectre.createSpectreAttributes());
+        FabricDefaultAttributeRegistry.register(WARMTH_ENTITY, WarmthEntity.createEntityAttributes());
 
         FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createBossAttributes());
         //FabricDefaultAttributeRegistry.register(NIGHT_PROWLER, NightProwler.createHostileAttributes());
@@ -123,5 +129,9 @@ public class EntityRegistry {
         ItemRegistry.registerItem(egg, id + "_spawn_egg");
         ModelProvider.ITEMS.put(egg, ModelProvider.SPAWN_EGG);
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, id), type);
+    }
+
+    private static <E extends Entity> EntityType<E> registerEntity(String id, EntityType<E> entity) {
+        return Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, id), entity);
     }
 }
