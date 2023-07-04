@@ -36,7 +36,6 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     @Override
     public void render(DayStalker entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
-        stack.scale(0.75f, 0.75f, 0.75f);
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 

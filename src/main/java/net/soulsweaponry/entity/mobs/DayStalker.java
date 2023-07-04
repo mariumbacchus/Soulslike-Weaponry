@@ -397,7 +397,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 double velX = e + this.getRandom().nextGaussian()/2 * h;
                 double velY = f + this.getRandom().nextGaussian()/2 * h;
                 double velZ = g + this.getRandom().nextGaussian()/2 * h;
-                this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY() - 1f, this.getZ(), velX / 10, velY / 10, velZ / 10);
+                this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
             }
         }
         if (this.getAttackAnimation().equals(Attacks.FLAMES_EDGE)) {
