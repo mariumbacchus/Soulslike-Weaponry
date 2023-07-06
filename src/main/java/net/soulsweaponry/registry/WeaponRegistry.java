@@ -31,8 +31,8 @@ public class WeaponRegistry {
     public static ToolItem TRANSLUCENT_GLAIVE = new SwordItem(ModToolMaterials.LOST_SOUL, 7, -2.6F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 8, -2.8F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem DRAUGR = new Draugr(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static ToolItem DAWNBREAKER = new Dawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static ToolItem SOUL_REAPER = new SoulReaper(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem DAWNBREAKER = new Dawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
+    public static ToolItem SOUL_REAPER = new SoulReaper(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem FORLORN_SCYTHE = new ForlornScythe(ModToolMaterials.LOST_SOUL, -3f, new FabricItemSettings().rarity(Rarity.UNCOMMON));
     public static ToolItem LEVIATHAN_AXE = new LeviathanAxe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem SKOFNUNG = new Skofnung(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
@@ -51,7 +51,7 @@ public class WeaponRegistry {
     public static TrickWeapon HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC), 4);
     public static TrickWeapon HOLY_MOONLIGHT_SWORD = new TrickWeapon(ModToolMaterials.MOONSTONE_OR_VERGLAS, 4, -2.4f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC), 3, 4, false, true);
     public static Frostmourne FROSTMOURNE = new Frostmourne(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
-    public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
 
 
     public static void init() {
