@@ -119,6 +119,7 @@
     "item.soulsweapons.holy_moonlight_greatsword": "Holy Moonlight Greatsword",
     "item.soulsweapons.holy_moonlight_sword": "Holy Moonlight Sword",
     "item.soulsweapons.frostmourne": "Frostmourne",
+    "item.soulsweapons.master_sword": "Master Sword",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -468,6 +469,9 @@
     "tooltip.soulsweapons.parry_description_3": "opponent that tries to damage you.",
     "tooltip.soulsweapons.parry_description_4": "Parry Keybind is RIGHT_ALT by default,",
     "tooltip.soulsweapons.parry_description_5": "can be changed in controls.",
+    "tooltip.soulsweapons.skyward_strikes": "Skyward Strikes",
+    "tooltip.soulsweapons.skyward_strikes_description_1": "- While at full §cHealth§r, use to",
+    "tooltip.soulsweapons.skyward_strikes_description_2": "shoot strong §3Moonlight Beams§r.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",

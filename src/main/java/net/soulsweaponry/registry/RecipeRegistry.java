@@ -54,6 +54,7 @@ public class RecipeRegistry {
     public static JsonObject HOLY_GREATSWORD_RECIPE = null;
     public static JsonObject DRAUPNIR_SPEAR_RECIPE = null;
     public static JsonObject HOLY_MOONLIGHT_SWORD_RECIPE = null;
+    public static JsonObject MASTER_SWORD_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -543,6 +544,14 @@ public class RecipeRegistry {
                         new Identifier(ModId, "holy_moonlight_sword"));
 
                 registerAndBookLordSoul(HOLY_MOONLIGHT_SWORD_RECIPE, "holy_moonlight_sword", ConfigConstructor.disable_recipe_holy_moonlight_sword);
+            }
+            if (!ConfigConstructor.disable_recipe_master_sword) {
+                MASTER_SWORD_RECIPE = JsonCreator.createSmithingRecipeJson(
+                        "item", new Identifier("minecraft", "diamond_sword"),
+                        "tag", new Identifier(ModId, "lord_soul"),
+                        new Identifier(ModId, "master_sword"));
+
+                registerAndBookLordSoul(MASTER_SWORD_RECIPE, "master_sword", ConfigConstructor.disable_recipe_master_sword);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
