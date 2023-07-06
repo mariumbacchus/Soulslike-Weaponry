@@ -51,6 +51,7 @@ public class WeaponRegistry {
     public static TrickWeapon HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC), 4);
     public static TrickWeapon HOLY_MOONLIGHT_SWORD = new TrickWeapon(ModToolMaterials.MOONSTONE_OR_VERGLAS, 4, -2.4f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC), 3, 4, false, true);
     public static Frostmourne FROSTMOURNE = new Frostmourne(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f,  new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
+    public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
 
 
     public static void init() {
@@ -95,5 +96,6 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(HOLY_MOONLIGHT_GREATSWORD, "holy_moonlight_greatsword");
         ItemRegistry.registerItem(HOLY_MOONLIGHT_SWORD, "holy_moonlight_sword");
         ItemRegistry.registerItem(FROSTMOURNE, "frostmourne");
+        ItemRegistry.registerItem(MASTER_SWORD, "master_sword");
     }
 }
