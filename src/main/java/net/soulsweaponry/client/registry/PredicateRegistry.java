@@ -57,7 +57,7 @@ public class PredicateRegistry {
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
-                boolean emp = ((Skofnung) itemStack.getItem()).isEmpowered(itemStack);
+                boolean emp = Skofnung.isEmpowered(itemStack);
                 if (emp) {
                     return 1.0F;
                 }
@@ -76,6 +76,13 @@ public class PredicateRegistry {
         });
 
         BossCompassPredicate.init();
+
+        ModelPredicateProviderRegistry.register(WeaponRegistry.MASTER_SWORD, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+            if (itemStack.isOf(WeaponRegistry.MASTER_SWORD) && livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth()) {
+                return 1.0f;
+            }
+            return 0.0f;
+        });
     }
 
     protected static void registerPulling(Item item) {
