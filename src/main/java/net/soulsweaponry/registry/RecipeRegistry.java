@@ -55,6 +55,7 @@ public class RecipeRegistry {
     public static JsonObject DRAUPNIR_SPEAR_RECIPE = null;
     public static JsonObject HOLY_MOONLIGHT_SWORD_RECIPE = null;
     public static JsonObject MASTER_SWORD_RECIPE = null;
+    public static JsonObject FROSTMOURNE_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -552,6 +553,22 @@ public class RecipeRegistry {
                         new Identifier(ModId, "master_sword"));
 
                 registerAndBookLordSoul(MASTER_SWORD_RECIPE, "master_sword", ConfigConstructor.disable_recipe_master_sword);
+            }
+            if (!ConfigConstructor.disable_recipe_frostmourne) {
+                FROSTMOURNE_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'Y'),
+                        Lists.newArrayList(
+                                new Identifier(ModId, "soul_ingot"),
+                                new Identifier(ModId, "verglas"),
+                                new Identifier(ModId, "lord_soul")
+                        ),
+                        Lists.newArrayList("item", "item", "tag"),
+                        Lists.newArrayList(
+                                "  X",
+                                "#X ",
+                                "Y# "
+                        ), new Identifier(ModId, "frostmourne"));
+                registerAndBookLordSoul(FROSTMOURNE_RECIPE, "frostmourne", ConfigConstructor.disable_recipe_frostmourne);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
