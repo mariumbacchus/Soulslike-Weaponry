@@ -49,7 +49,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean can_withered_demon_spawn = true;
     @Entry public static boolean can_moderatly_sized_chungus_spawn = true;
     @Entry public static boolean can_evil_forlorn_spawn = true;
-    
+
+    @Entry public static boolean can_bosses_break_blocks = true;
+
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;
     @Entry public static int lifesteal_item_base_healing = 2;
