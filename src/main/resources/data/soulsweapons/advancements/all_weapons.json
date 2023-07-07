@@ -334,7 +334,7 @@
           "items": [
             {
               "items": [
-                "soulsweapons:darkin_scythe_pre"
+                "soulsweapons:darkin_scythe"
               ]
             }
           ]
@@ -359,6 +359,54 @@
             {
               "items": [
                 "soulsweapons:holy_moonlight_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "darkin_scythe_pre": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkin_scythe_pre"
+              ]
+            }
+          ]
+        }
+      },
+      "shadow_assassin_scythe": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:shadow_assassin_scythe"
+              ]
+            }
+          ]
+        }
+      },
+      "frostmourne": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:frostmourne"
+              ]
+            }
+          ]
+        }
+      },
+      "master_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:master_sword"
               ]
             }
           ]
@@ -391,7 +439,11 @@
       ["crucible_sword"],
       ["featherlight"],
       ["darkin_scythe"],
+      ["darkin_scythe_pre"],
+      ["shadow_assassin_scythe"],
       ["draupnir_spear"],
-      ["holy_moonlight_sword"]
+      ["holy_moonlight_sword"],
+      ["frostmourne"],
+      ["master_sword"]
   ]
 }
