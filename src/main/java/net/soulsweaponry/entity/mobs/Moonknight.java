@@ -240,20 +240,22 @@ public class Moonknight extends BossEntity implements GeoEntity {
             }
         }
         
-        int j;
-        int i;
-        int k;
-        if (this.blockBreakingCooldown > 0) {
-            --this.blockBreakingCooldown;
-            if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-                i = MathHelper.floor(this.getY());
-                j = MathHelper.floor(this.getX());
-                k = MathHelper.floor(this.getZ());
-                for (int l = -3; l <= 3; ++l) {
-                    for (int m = -3; m <= 3; ++m) {
-                        for (int n = 0; n <= 8; ++n) {
-                            if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+        if (ConfigConstructor.can_bosses_break_blocks) {
+            int j;
+            int i;
+            int k;
+            if (this.blockBreakingCooldown > 0) {
+                --this.blockBreakingCooldown;
+                if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                    i = MathHelper.floor(this.getY());
+                    j = MathHelper.floor(this.getX());
+                    k = MathHelper.floor(this.getZ());
+                    for (int l = -3; l <= 3; ++l) {
+                        for (int m = -3; m <= 3; ++m) {
+                            for (int n = 0; n <= 8; ++n) {
+                                if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                    this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                                }
                             }
                         }
                     }
