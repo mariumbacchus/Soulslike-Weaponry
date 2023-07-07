@@ -41,6 +41,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_draupnir_spear = false;
     @Entry public static boolean disable_recipe_holy_moonlight_sword = false;
     @Entry public static boolean disable_recipe_master_sword = false;
+    @Entry public static boolean disable_recipe_frostmourne = true;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
