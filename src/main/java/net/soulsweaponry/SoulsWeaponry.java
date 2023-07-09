@@ -1,5 +1,6 @@
 package net.soulsweaponry;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -8,6 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
+import net.minecraft.util.Rarity;
+import net.soulsweaponry.items.TestItem;
+import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.world.gen.OreGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +74,10 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.RARE)), "test_item");
+        }
 
         Registry.register(Registries.ITEM_GROUP, new Identifier(ModId, "general"),
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))
