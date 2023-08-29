@@ -17,13 +17,36 @@ public class TestItem extends SwordItem {
     }
 
     @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 99999999;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (world.isClient) {
 
+            // This will make an X shape of two half circles where the user is facing (only rotates Y axis)
+            for (int t = -90; t < 90; t++) {
+                double rad = Math.toRadians(t);
+                float yaw = (float) Math.toRadians(user.getYaw() + 90);
+                double x1 = 3 * Math.cos(rad);
+                double y1 = 3 * Math.sin(rad);
+                double z1 = 3 * Math.sin(rad);
+                Vec3d vec1 = new Vec3d(x1, y1, z1).rotateY(-yaw).add(user.getEyePos()); //.add(user.getCameraPosVec(0))
+
+                double x2 = 3 * Math.cos(rad);
+                double y2 = 3 * Math.sin(rad);
+                double z2 = -3 * Math.sin(rad);
+                Vec3d vec2 = new Vec3d(x2, y2, z2).rotateY(-yaw).add(user.getEyePos());
+
+                world.addParticle(ParticleTypes.FLAME, vec1.x, vec1.y, vec1.z, 0, 0, 0);
+                world.addParticle(ParticleTypes.FLAME, vec2.x, vec2.y, vec2.z, 0, 0, 0);
+            }
+
             // Second one that actually makes an arc
-            Vec3d a = user.getPos();
-            Vec3d b = user.getPos().add(-2, 0, -4);
+            /*Vec3d a = user.getPos();
+            Vec3d b = user.getEyePos().add(-2, 0, -4);
             Vec3d c = user.getRotationVector().multiply(5).add(user.getPos());
             Vec3d o = a.add(c).multiply(0.5D);
             double r = a.distanceTo(o);
@@ -51,26 +74,24 @@ public class TestItem extends SwordItem {
                 double z = o.getZ() + r * Math.sin(t);
                 t = t + segAngle;
                 world.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
-            }
+            }*/
 
             // First one that somewhat worked, but at the same time not at all
-//            Vec3d start = user.getEyePos();
-//            Vec3d end = start.add(user.getRotationVector().multiply(5));
-//            Vec3d center = start.add(end).multiply(0.5D);
-//            double r = start.distanceTo(center);
-//
-//            Vec3d n = start.crossProduct(end);
-//            Vec3d X = start.multiply((1D / start.length()));
-//            double yNorm = n.crossProduct(start).length();
-//            Vec3d Y = n.crossProduct(start).multiply(1D / yNorm);
-//            // t = degrees, by getting rid of the radian conversion (Math.PI/180), it will always generate a full circle based on number of points
-//            for (int t = 0; t < 360; t++) {
-//                Vec3d vec1 = X.multiply(r * Math.cos(t * Math.PI/180));
-//                Vec3d vec2 = Y.multiply(r * Math.sin(t * Math.PI/180));
-//                Vec3d vec = start.add(vec1.add(vec2));
-//                world.addParticle(ParticleTypes.FLAME, vec.getX(), vec.getY(), vec.getZ(), 0, 0, 0);
-//            }
-//            System.out.println(user.getRotationVector());
+            /*Vec3d start = user.getEyePos();
+            Vec3d end = start.add(user.getRotationVector().multiply(5));
+            Vec3d center = start.add(end).multiply(0.5D);
+            double r = start.distanceTo(center);
+
+            Vec3d n = start.crossProduct(end);
+            Vec3d X = start.multiply((1D / start.length()));
+            double yNorm = n.crossProduct(start).length();
+            Vec3d Y = n.crossProduct(start).multiply(1D / yNorm);
+            for (int t = 0; t < 180; t++) {
+                Vec3d vec1 = X.multiply(r * Math.cos(t * Math.PI/180));
+                Vec3d vec2 = Y.multiply(r * Math.sin(t * Math.PI/180));
+                Vec3d vec = start.add(vec1.add(vec2));
+                world.addParticle(ParticleTypes.FLAME, vec.getX(), vec.getY(), vec.getZ(), 0, 0, 0);
+            }*/
 
             // I call this; The Orange
 //            Vec3d[] rotations = {
@@ -115,11 +136,11 @@ public class TestItem extends SwordItem {
         return TypedActionResult.fail(stack);
     }
 
-    private double orientedAngle(double x1, double y1, double x2, double y2) {
+    /*private double orientedAngle(double x1, double y1, double x2, double y2) {
         double t = Math.atan2(x1*y2 - y1*x2, x1*x2 + y1*y2);
         if (t < 0) {
             t = t + 2 * Math.PI;
         }
         return t;
-    }
+    }*/
 }
