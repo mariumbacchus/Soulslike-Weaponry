@@ -1,9 +1,6 @@
 {
     "type": "minecraft:jigsaw",
-    "biomes": [
-        "minecraft:meadow",
-        "minecraft:plains"
-    ],
+    "biomes": "#minecraft:is_hill",
     "step": "surface_structures",
     "spawn_overrides": {
         "monster": {
