@@ -55,7 +55,7 @@ public class ItemRegistry {
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
-    public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
+    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
 
     public static void init() {
         registerLoreItem(LORD_SOUL_RED);
