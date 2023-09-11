@@ -30,7 +30,7 @@ import net.soulsweaponry.util.CustomDamageSource;
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin<T> {
+public abstract class LivingEntityMixin {
 
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
@@ -69,8 +69,8 @@ public abstract class LivingEntityMixin<T> {
         }
     }
 
-    @Inject(method = "damage", at = @At("HEAD"))
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<T> info) {
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         if (source == CustomDamageSource.TRUE_MAGIC) {
             LivingEntity entity = (LivingEntity)(Object)this;
             ((LivingEntityInvoker)entity).invokeApplyDamage(source, amount);
@@ -79,6 +79,7 @@ public abstract class LivingEntityMixin<T> {
             ((LivingEntity)(Object)this).removeStatusEffect(EffectRegistry.CALCULATED_FALL);
             //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
             ((LivingEntity)(Object)this).addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
+            info.setReturnValue(false);
             info.cancel();
         }
     }
