@@ -3,12 +3,7 @@ package net.soulsweaponry.registry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
@@ -58,7 +53,7 @@ public class ItemRegistry {
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
 
-    public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1), 112);
+    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1), 112);
 
     public static void init() {
         registerLoreItem(LORD_SOUL_RED);
