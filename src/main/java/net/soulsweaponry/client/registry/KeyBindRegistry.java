@@ -55,7 +55,9 @@ public class KeyBindRegistry {
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (parry.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.PARRY, PacketByteBufs.empty());
+                try {
+                    ClientPlayNetworking.send(PacketRegistry.PARRY, PacketByteBufs.empty());
+                } catch (Exception ignored) {}
             }
         });
     }

@@ -4,7 +4,7 @@
       "start_pool": "soulsweapons:decaying_kingdom",
       "size": 1
     },
-    "biomes": "minecraft:nether_wastes",
+    "biomes": "#minecraft:is_nether",
     "adapt_noise": true,
     "spawn_overrides": {}
 }
