@@ -31,7 +31,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin<T> {
+public class LivingEntityMixin {
 
     @Inject(method = "modifyAppliedDamage", at = @At("TAIL"), cancellable = true)
     protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
@@ -68,12 +68,13 @@ public class LivingEntityMixin<T> {
         }
     }
 
-    @Inject(method = "damage", at = @At("HEAD"))
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<T> info) {
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         if (source.isOf(DamageTypes.FALL) && ((LivingEntity)(Object)this).hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
             ((LivingEntity)(Object)this).removeStatusEffect(EffectRegistry.CALCULATED_FALL);
             //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
             ((LivingEntity)(Object)this).addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
+            info.setReturnValue(false);
             info.cancel();
         }
     }
