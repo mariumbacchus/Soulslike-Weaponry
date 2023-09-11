@@ -296,7 +296,13 @@ public class PacketsClient {
             });
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (client, handler, buf, responseSender) -> ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt()));
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (client, handler, buf, responseSender) -> {
+            try {
+                if (client.player != null) {
+                    ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
+                }
+            } catch (Exception ignored) {}
+        });
     }
 
     private static double getParticleX(double widthScale, BlockPos pos, double width) {
