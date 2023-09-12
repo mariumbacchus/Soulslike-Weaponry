@@ -72,6 +72,7 @@ public class PlayerEntityMixin {
                     attacker.world.playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, 0));
+                attacker.takeKnockback(0.4f,  player.getX() - attacker.getX(), player.getZ() - attacker.getZ());
                 info.setReturnValue(false);
             }
         }
