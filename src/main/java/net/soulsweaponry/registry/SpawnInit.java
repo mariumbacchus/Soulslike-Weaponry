@@ -19,7 +19,7 @@ public class SpawnInit {
     public static int spawnRateForlorn = ConfigConstructor.evil_forlorn_spawnrate;
 
     public static void init() {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.CRIMSON_FOREST), SpawnGroup.MONSTER, EntityRegistry.WITHERED_DEMON, spawnRateDemon, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.foundInTheNether(), SpawnGroup.MONSTER, EntityRegistry.WITHERED_DEMON, spawnRateDemon, 1, 1);
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.FOREST), SpawnGroup.MONSTER, EntityRegistry.BIG_CHUNGUS, spawnRateChungus, 4, 8);
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.NETHER_WASTES), SpawnGroup.MONSTER, EntityRegistry.EVIL_FORLORN, spawnRateForlorn, 1, 1);
 
