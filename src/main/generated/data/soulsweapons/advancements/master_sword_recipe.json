@@ -2,7 +2,7 @@
   "parent": "soulsweapons:recipe_root",
   "rewards": {
     "recipes": [
-      "soulsweapons:galeforce_recipe"
+      "soulsweapons:master_sword_recipe"
     ]
   },
   "criteria": {
@@ -27,7 +27,7 @@
     "has_advancement": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulsweapons:galeforce_recipe"
+        "recipe": "soulsweapons:master_sword_recipe"
       }
     }
   },
