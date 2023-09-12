@@ -30,5 +30,6 @@
     "recipes": [
       "soulsweapons:pure_moonlight_greatsword_recipe"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

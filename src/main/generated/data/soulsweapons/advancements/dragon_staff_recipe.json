@@ -30,5 +30,6 @@
     "recipes": [
       "soulsweapons:dragon_staff_recipe"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

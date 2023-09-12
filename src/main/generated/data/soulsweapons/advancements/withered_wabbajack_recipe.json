@@ -30,5 +30,6 @@
     "recipes": [
       "soulsweapons:withered_wabbajack_recipe"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

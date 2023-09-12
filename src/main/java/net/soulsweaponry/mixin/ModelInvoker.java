@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface ModelInvoker {
 
     @Invoker("item")
-    public static Model invokeItemModelBuilder(String parent, TextureKey... requiredTextureKeys) {
+    static Model invokeItemModelBuilder(String parent, TextureKey... requiredTextureKeys) {
         throw new AssertionError();
     }
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "soulsweapons:guts_sword_recipe"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "soulsweapons:bloodthirster_recipe"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }
