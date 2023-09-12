@@ -3,7 +3,7 @@
   "criteria": {
     "has_advancement": {
       "conditions": {
-        "recipe": "soulsweapons:holy_moonlight_sword_recipe"
+        "recipe": "soulsweapons:master_sword_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -34,7 +34,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:holy_moonlight_sword_recipe"
+      "soulsweapons:master_sword_recipe"
     ]
   }
 }

@@ -14,7 +14,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.datagen.models.ModelProvider;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
@@ -127,7 +126,10 @@ public class EntityRegistry {
     private static <I extends PathAwareEntity> EntityType<I> registerWithSpawnEgg(EntityType<I> type, String id, int primaryColor, int secondaryColor) {
         Item egg = new SpawnEggItem(type, primaryColor, secondaryColor, new FabricItemSettings());
         ItemRegistry.registerItem(egg, id + "_spawn_egg");
-        ModelProvider.ITEMS.put(egg, ModelProvider.SPAWN_EGG);
+        /*
+         * Due to bug regarding Valhelsia Core redirecting the mixin used in the model provider, the generation of model jsons has been deprecated.
+         * ModelProvider.ITEMS.put(egg, ModelProvider.SPAWN_EGG);
+         */
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, id), type);
     }
 
