@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -14,6 +15,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,7 +26,9 @@ import static net.soulsweaponry.items.UmbralTrespassItem.TICKS_BEFORE_DISMOUNT;
 
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin {
+public abstract class PlayerEntityMixin {
+
+    @Shadow public abstract void attack(Entity target);
 
     @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
@@ -62,6 +66,7 @@ public class PlayerEntityMixin {
                     attacker.getWorld().playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 }
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, 0));
+                attacker.takeKnockback(0.4f,  player.getX() - attacker.getX(), player.getZ() - attacker.getZ());
                 info.setReturnValue(false);
             }
         }
