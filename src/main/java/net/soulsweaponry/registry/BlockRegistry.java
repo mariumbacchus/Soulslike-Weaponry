@@ -47,9 +47,6 @@ public class BlockRegistry {
     public static final Block VERGLAS_BLOCK = new TransparentBlock(FabricBlockSettings.of(Material.AMETHYST, MapColor.DARK_AQUA).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().requiresTool());
     public static final Block SOULFIRE_STAIN = new MagmaBlock(AbstractBlock.Settings.of(Material.STONE, MapColor.DARK_AQUA).requiresTool().luminance(state -> 3).ticksRandomly().strength(0.5f).allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true));
     public static final Block SOUL_LAMP = new SoulLampBlock(AbstractBlock.Settings.of(Material.REDSTONE_LAMP).luminance(BlockRegistry.createLightLevelFromLitBlockState(15)).strength(0.3f).sounds(BlockSoundGroup.GLASS).allowsSpawning((state, world, pos, type) -> true));
-    public static final Block IRON_SKULL = new SkullBlock(ModSkullType.IRON_SKULL, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0f));
-    public static final Block IRON_SKULL_WALL = new WallSkullBlock(ModSkullType.IRON_SKULL, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0f).dropsLike(IRON_SKULL));
-    // TODO: add renderer and stuff for custom iron skull texture and such
 
     public static void init() {
         registerBlockAndItem(CRIMSON_OBSIDIAN, "crimson_obsidian");
@@ -74,8 +71,6 @@ public class BlockRegistry {
         registerBlockAndItem(VERGLAS_BLOCK, "verglas_block");
         registerBlockAndItem(SOULFIRE_STAIN, "soulfire_stain");
         registerBlockAndItem(SOUL_LAMP, "soul_lamp");
-        registerBlockAndItem(IRON_SKULL, "iron_skull");
-        registerBlockAndItem(IRON_SKULL_WALL, "iron_skull_wall");
     }
 
     private static ToIntFunction<BlockState> createLightLevelFromLitBlockState(int litLevel) {

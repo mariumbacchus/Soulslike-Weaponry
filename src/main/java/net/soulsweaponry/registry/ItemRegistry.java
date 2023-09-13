@@ -40,6 +40,7 @@ public class ItemRegistry {
     public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "shard_of_uncertainty", 1);
     public static final Item VERGLAS = new Item(new Item.Settings().group(MAIN_GROUP));
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20).group(MAIN_GROUP));
+    public static final Item IRON_SKULL = new Item(new Item.Settings().group(MAIN_GROUP));
 
     public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new Item.Settings().group(MAIN_GROUP));
     public static final Item MOONSTONE_PICKAXE = new ModTools.ModPickaxe(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings().group(MAIN_GROUP));
@@ -80,6 +81,7 @@ public class ItemRegistry {
         registerItem(SHARD_OF_UNCERTAINTY, "shard_of_uncertainty");
         registerItem(VERGLAS, "verglas");
         registerItem(SKOFNUNG_STONE, "skofnung_stone");
+        registerItem(IRON_SKULL, "iron_skull");
 
         registerItem(MOONSTONE_SHOVEL, "moonstone_shovel");
         registerItem(MOONSTONE_PICKAXE, "moonstone_pickaxe");
