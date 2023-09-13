@@ -531,9 +531,9 @@
     "category.soulsweapons.main": "Marium's Soulslike Weaponry",
 
     "key.soulsweapons.return_freyr_sword": "Return Freyr Sword to owner",
-    "key.soulsweapons.freyr_sword_stationary": "Freyr Sword switch between stationary or guarding",
-    "key.soulsweapons.collect_summons_soul_reaper": "Collect summons back to Soul Harvesting item if in hand",
-    "key.soulsweapons.switch_weapon": "Transform held Trick Weapon",
+    "key.soulsweapons.freyr_sword_stationary": "Freyr Sword stationary or guarding",
+    "key.soulsweapons.collect_summons_soul_reaper": "Collect summons to item",
+    "key.soulsweapons.switch_weapon": "Transform Trick Weapon",
     "key.soulsweapons.keybind_ability": "Use weapon's special ability",
     "key.soulsweapons.parry": "Parry with shield",
 
