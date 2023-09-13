@@ -29,6 +29,7 @@
     "item.soulsweapons.lord_soul_purple": "Lord Soul",
     "item.soulsweapons.lord_soul_white": "Lord Soul",
     "item.soulsweapons.lord_soul_day_stalker": "Lord Soul",
+    "item.soulsweapons.lord_soul_night_prowler": "Lord Soul",
     "item.soulsweapons.chaos_orb": "Chaos Orb",
     "item.soulsweapons.chungus_emerald": "Chungus Emerald",
     "item.soulsweapons.demon_heart": "Demon Heart",
@@ -140,6 +141,7 @@
     "item.soulsweapons.frost_giant_spawn_egg": "Frost Giant Spawn Egg",
     "item.soulsweapons.rime_spectre_spawn_egg": "Rime Spectre Spawn Egg",
     "item.soulsweapons.day_stalker_spawn_egg": "Day Stalker Spawn Egg",
+    "item.soulsweapons.night_prowler_spawn_egg": "Night Prowler Spawn Egg",
     "item.soulsweapons.warmth_entity_spawn_egg": "Sphere of Warmth Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "Moderately Sized Chungus",
@@ -493,6 +495,9 @@
     "tooltip.soulsweapons.lord_soul_white.part_3": "strong sense of ambition. He is not done.",
     "tooltip.soulsweapons.lord_soul_day_stalker.part_1": "You feel a sense of relief. Finally,",
     "tooltip.soulsweapons.lord_soul_day_stalker.part_2": "it has been freed from it's shackles.",
+    "tooltip.soulsweapons.lord_soul_night_prowler.part_1": "A great soul containing ceaseless",
+    "tooltip.soulsweapons.lord_soul_night_prowler.part_2": "rage. Maybe that is what fuels it",
+    "tooltip.soulsweapons.lord_soul_night_prowler.part_3": "with all that power.",
 
     "tooltip.soulsweapons.essence_of_eventide.part_1": "You feel a strong sense of longing, as if it",
     "tooltip.soulsweapons.essence_of_eventide.part_2": "desperately wants to return to something.",
