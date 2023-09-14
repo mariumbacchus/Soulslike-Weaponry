@@ -516,7 +516,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
         if (this.getAttackAnimation().equals(Attacks.OVERHEAT)) {
             amount = amount * 0.6f;
         }
-        if (source.isProjectile()) {
+        if (source.isProjectile() && !this.isFlying()) {
             amount = amount * 0.75f;
         }
         return super.damage(source, amount);

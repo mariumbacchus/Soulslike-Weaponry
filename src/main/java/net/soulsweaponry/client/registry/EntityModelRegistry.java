@@ -49,7 +49,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE, VerticalSunlightProjectileRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.GROWING_FIREBALL_ENTITY, GrowingFireballRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.WARMTH_ENTITY, WarmthEntityRenderer::new);
-
         EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
     }
