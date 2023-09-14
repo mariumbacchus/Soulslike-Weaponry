@@ -217,4 +217,6 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
+    @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
+    @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
 }

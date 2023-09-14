@@ -592,7 +592,8 @@ public class RecipeRegistry {
     private static void registerAndBookLordSoul(JsonObject recipe, String name, boolean configBoolean) {
         registerRecipe(recipe, name, configBoolean);
         addToRecipeBook(new Identifier(ModId, name + "_recipe"), ItemRegistry.LORD_SOUL_DARK, ItemRegistry.LORD_SOUL_PURPLE, ItemRegistry.LORD_SOUL_RED,
-                ItemRegistry.LORD_SOUL_ROSE, ItemRegistry.LORD_SOUL_VOID, ItemRegistry.LORD_SOUL_WHITE, ItemRegistry.LORD_SOUL_DAY_STALKER);
+                ItemRegistry.LORD_SOUL_ROSE, ItemRegistry.LORD_SOUL_VOID, ItemRegistry.LORD_SOUL_WHITE, ItemRegistry.LORD_SOUL_DAY_STALKER,
+                ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
     }
 
     private static void registerRecipe(JsonObject recipe, String name, boolean configBoolean) {
