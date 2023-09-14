@@ -18,7 +18,7 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
 
     public NightProwlerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new NightProwlerModel());
-        this.shadowRadius = 0.7F;
+        this.shadowRadius = 1F;
     }
     
     @Override
