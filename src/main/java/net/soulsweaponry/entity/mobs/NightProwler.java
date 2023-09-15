@@ -14,13 +14,20 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -30,9 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Optional;
@@ -88,7 +93,43 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     private PlayState attacks(AnimationState<?> state) {
-        //TODO add attack animations
+        if (this.isDead()) return PlayState.STOP;
+        if (this.isInitiatingPhaseTwo()) {
+            state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
+        } else {
+            if (!this.isPhaseTwo()) {
+                switch (this.getAttackAnimation()) {
+                    case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_1", Animation.LoopType.LOOP));
+                    case REAPING_SLASH -> state.getController().setAnimation(RawAnimation.begin().then("reaping_slash_1", Animation.LoopType.LOOP));
+                    case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_1", Animation.LoopType.LOOP));
+                    case RIPPLE_FANG -> state.getController().setAnimation(RawAnimation.begin().then("ripple_fang_1", Animation.LoopType.LOOP));
+                    case BLADES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("blades_reach_1", Animation.LoopType.LOOP));
+                    case SOUL_REAPER -> state.getController().setAnimation(RawAnimation.begin().then("soul_reaper_1", Animation.LoopType.LOOP));
+                    case DIMINISHING_LIGHT -> state.getController().setAnimation(RawAnimation.begin().then("diminishing_light_1", Animation.LoopType.LOOP));
+                    case DARKNESS_RISE -> state.getController().setAnimation(RawAnimation.begin().then("darkness_rise_1", Animation.LoopType.LOOP));
+                    case ENGULF -> state.getController().setAnimation(RawAnimation.begin().then("engulf_1", Animation.LoopType.LOOP));
+                    case BLACKFLAME_SNAKE -> state.getController().setAnimation(RawAnimation.begin().then("blackflame_snake_1", Animation.LoopType.LOOP));
+                    case DEATHBRINGERS_GRASP -> state.getController().setAnimation(RawAnimation.begin().then("deaths_grasp_1", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_1", Animation.LoopType.LOOP));
+                }
+            } else {
+                switch (this.getAttackAnimation()) {
+                    case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_2", Animation.LoopType.LOOP));
+                    case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_2", Animation.LoopType.LOOP));
+                    case RIPPLE_FANG -> state.getController().setAnimation(RawAnimation.begin().then("ripple_fang_2", Animation.LoopType.LOOP));
+                    case BLADES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("blades_reach_2", Animation.LoopType.LOOP));
+                    case SOUL_REAPER -> state.getController().setAnimation(RawAnimation.begin().then("soul_reaper_2", Animation.LoopType.LOOP));
+                    case DIMINISHING_LIGHT -> state.getController().setAnimation(RawAnimation.begin().then("diminishing_light_2", Animation.LoopType.LOOP));
+                    case DARKNESS_RISE -> state.getController().setAnimation(RawAnimation.begin().then("darkness_rise_2", Animation.LoopType.LOOP));
+                    case ECLIPSE -> state.getController().setAnimation(RawAnimation.begin().then("eclipse_2", Animation.LoopType.LOOP));
+                    case ENGULF -> state.getController().setAnimation(RawAnimation.begin().then("engulf_2", Animation.LoopType.LOOP));
+                    case BLACKFLAME_SNAKE -> state.getController().setAnimation(RawAnimation.begin().then("blackflame_snake_2", Animation.LoopType.LOOP));
+                    case LUNAR_DISPLACEMENT -> state.getController().setAnimation(RawAnimation.begin().then("lunar_displacement_2", Animation.LoopType.LOOP));
+                    case DEATHBRINGERS_GRASP -> state.getController().setAnimation(RawAnimation.begin().then("deaths_grasp_2", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_2", Animation.LoopType.LOOP));
+                }
+            }
+        }
         return PlayState.CONTINUE;
     }
 
@@ -266,7 +307,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 this.setInitiatePhaseTwo(true);
             }
         }
-        // TODO heal når noe dør rundt
+        // TODO heal når noe dør rundt (kanskje lage mixin hvor når den dør sjekker den rundt seg om night prowler er rundt?) idk
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
@@ -279,8 +320,8 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 if (!getWorld().isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
                 }
-//                DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
-//                placeHolder.aoe(4D, 50f, 4f); TODO explode, damage entities
+                DayStalkerGoal placeHolder = new DayStalkerGoal(EntityRegistry.DAY_STALKER.create(this.getWorld()), 1D, true);
+                placeHolder.aoe(4D, 50f, 4f);
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
@@ -300,14 +341,62 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        // TODO teleport away or closer if not attacking and getting hit?
         if (source.isFromFalling()) {
             return false;
+        }
+        //TODO test if teleport away or too target works
+        if (this.isPhaseTwo() && this.getAttackAnimation().equals(Attacks.IDLE) && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance
+                && source.getAttacker() instanceof LivingEntity attacker) {
+            if (this.squaredDistanceTo(attacker) > 300D) {
+                double x = attacker.getX() + this.random.nextInt(12) - 6;
+                double y = attacker.getY();
+                double z = attacker.getX() + this.random.nextInt(12) - 6;
+                if (this.teleportTo(x, y, z)) {
+                    return false;
+                } else {
+                    if (this.teleportAway()) {
+                        return false;
+                    }
+                }
+            }
         }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
             amount = amount * 0.75f;
         }
         return super.damage(source, amount);
+    }
+
+    public boolean teleportTo(double x, double y, double z) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
+        while (mutable.getY() > this.getWorld().getBottomY() && !this.getWorld().getBlockState(mutable).getMaterial().blocksMovement()) {
+            mutable.move(Direction.DOWN);
+        }
+        BlockState blockState = this.getWorld().getBlockState(mutable);
+        boolean bl = blockState.getMaterial().blocksMovement();
+        boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
+        if (!bl || bl2) {
+            return false;
+        }
+        Vec3d vec3d = this.getPos();
+        boolean bl3 = this.teleport(x, y, z, true);
+        if (bl3) {
+            this.getWorld().emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this));
+            if (!this.isSilent()) {
+                this.getWorld().playSound(null, this.prevX, this.prevY, this.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+                this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            }
+        }
+        return bl3;
+    }
+
+    public boolean teleportAway() {
+        if (this.getWorld().isClient() || !this.isAlive()) {
+            return false;
+        }
+        double d = this.getX() + (this.getRandom().nextDouble() - 0.5) * 16;
+        double e = this.getY() + (double)(this.getRandom().nextInt(16) - 4);
+        double f = this.getZ() + (this.getRandom().nextDouble() - 0.5) * 16;
+        return this.teleportTo(d, e, f);
     }
 
     public void setRemainingAniTicks(int ticks) {
