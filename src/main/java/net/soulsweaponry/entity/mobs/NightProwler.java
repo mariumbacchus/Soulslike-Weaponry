@@ -17,10 +17,17 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -29,6 +36,8 @@ import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -88,7 +97,43 @@ public class NightProwler extends BossEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
-        //TODO add attack animations
+        if (this.isDead()) return PlayState.STOP;
+        if (this.isInitiatingPhaseTwo()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_phase_2", ILoopType.EDefaultLoopTypes.LOOP));
+        } else {
+            if (!this.isPhaseTwo()) {
+                switch (this.getAttackAnimation()) {
+                    case TRINITY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("trinity_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case REAPING_SLASH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("reaping_slash_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case NIGHTS_EMBRACE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("nights_embrace_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case RIPPLE_FANG -> event.getController().setAnimation(new AnimationBuilder().addAnimation("ripple_fang_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case BLADES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blades_reach_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case SOUL_REAPER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_reaper_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DIMINISHING_LIGHT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("diminishing_light_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DARKNESS_RISE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("darkness_rise_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case ENGULF -> event.getController().setAnimation(new AnimationBuilder().addAnimation("engulf_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case BLACKFLAME_SNAKE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blackflame_snake_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DEATHBRINGERS_GRASP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("deaths_grasp_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_1", ILoopType.EDefaultLoopTypes.LOOP));
+                }
+            } else {
+                switch (this.getAttackAnimation()) {
+                    case TRINITY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("trinity_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case NIGHTS_EMBRACE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("nights_embrace_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case RIPPLE_FANG -> event.getController().setAnimation(new AnimationBuilder().addAnimation("ripple_fang_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case BLADES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blades_reach_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case SOUL_REAPER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_reaper_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DIMINISHING_LIGHT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("diminishing_light_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DARKNESS_RISE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("darkness_rise_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case ECLIPSE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("eclipse_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case ENGULF -> event.getController().setAnimation(new AnimationBuilder().addAnimation("engulf_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case BLACKFLAME_SNAKE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blackflame_snake_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case LUNAR_DISPLACEMENT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("lunar_displacement_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case DEATHBRINGERS_GRASP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("deaths_grasp_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_2", ILoopType.EDefaultLoopTypes.LOOP));
+                }
+            }
+        }
         return PlayState.CONTINUE;
     }
 
@@ -266,7 +311,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 this.setInitiatePhaseTwo(true);
             }
         }
-        // TODO heal når noe dør rundt
+        // TODO heal når noe dør rundt (kanskje lage mixin hvor når den dør sjekker den rundt seg om night prowler er rundt?) idk
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
@@ -279,8 +324,8 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 if (!getWorld().isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
                 }
-//                DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
-//                placeHolder.aoe(4D, 50f, 4f); TODO explode, damage entities
+                DayStalkerGoal placeHolder = new DayStalkerGoal(EntityRegistry.DAY_STALKER.create(this.getWorld()), 1D, true);
+                placeHolder.aoe(4D, 50f, 4f);
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
@@ -300,14 +345,62 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        // TODO teleport away or closer if not attacking and getting hit?
         if (source.isFromFalling()) {
             return false;
+        }
+        //TODO test if teleport away or too target works
+        if (this.isPhaseTwo() && this.getAttackAnimation().equals(Attacks.IDLE) && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance
+                && source.getAttacker() instanceof LivingEntity attacker) {
+            if (this.squaredDistanceTo(attacker) > 300D) {
+                double x = attacker.getX() + this.random.nextInt(12) - 6;
+                double y = attacker.getY();
+                double z = attacker.getX() + this.random.nextInt(12) - 6;
+                if (this.teleportTo(x, y, z)) {
+                    return false;
+                } else {
+                    if (this.teleportAway()) {
+                        return false;
+                    }
+                }
+            }
         }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
             amount = amount * 0.75f;
         }
         return super.damage(source, amount);
+    }
+
+    public boolean teleportTo(double x, double y, double z) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
+        while (mutable.getY() > this.getWorld().getBottomY() && !this.getWorld().getBlockState(mutable).getMaterial().blocksMovement()) {
+            mutable.move(Direction.DOWN);
+        }
+        BlockState blockState = this.getWorld().getBlockState(mutable);
+        boolean bl = blockState.getMaterial().blocksMovement();
+        boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
+        if (!bl || bl2) {
+            return false;
+        }
+        Vec3d vec3d = this.getPos();
+        boolean bl3 = this.teleport(x, y, z, true);
+        if (bl3) {
+            this.getWorld().emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this));
+            if (!this.isSilent()) {
+                this.getWorld().playSound(null, this.prevX, this.prevY, this.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
+                this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            }
+        }
+        return bl3;
+    }
+
+    public boolean teleportAway() {
+        if (this.getWorld().isClient() || !this.isAlive()) {
+            return false;
+        }
+        double d = this.getX() + (this.getRandom().nextDouble() - 0.5) * 16;
+        double e = this.getY() + (double)(this.getRandom().nextInt(16) - 4);
+        double f = this.getZ() + (this.getRandom().nextDouble() - 0.5) * 16;
+        return this.teleportTo(d, e, f);
     }
 
     public void setRemainingAniTicks(int ticks) {
