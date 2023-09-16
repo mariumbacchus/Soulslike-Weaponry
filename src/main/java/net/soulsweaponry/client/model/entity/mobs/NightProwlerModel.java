@@ -25,7 +25,7 @@ public class NightProwlerModel extends AnimatedGeoModel<NightProwler>{
         return new Identifier(SoulsWeaponry.ModId, "animations/night_prowler.animation.json");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked"})
     @Override
     public void setCustomAnimations(NightProwler entity, int uniqueID, AnimationEvent customPredicate) {
         super.setCustomAnimations(entity, uniqueID, customPredicate);
