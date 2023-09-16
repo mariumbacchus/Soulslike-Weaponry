@@ -15,6 +15,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -135,12 +136,32 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     private PlayState idle(AnimationState<?> state) {
-        //TODO add idle animations
+        if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
+            if (this.isPhaseTwo()) {
+                state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
+            } else {
+                state.getController().setAnimation(RawAnimation.begin().then("death_1", Animation.LoopType.LOOP));
+            }
+        } else {
+            if (!this.isInitiatingPhaseTwo()) {
+                if (this.isPhaseTwo()) {
+                    state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
+                } else {
+                    if (this.getAttackAnimation().equals(Attacks.IDLE)) {
+                        state.getController().setAnimation(RawAnimation.begin().then("idle_1", Animation.LoopType.LOOP));
+                    } else {
+                        state.getController().setAnimation(RawAnimation.begin().then("wings_1", Animation.LoopType.LOOP));
+                    }
+                }
+            }
+        }
         return PlayState.CONTINUE;
     }
 
     private PlayState cape(AnimationState<?> state) {
-        //TODO add cape animations
+        if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
+            state.getController().setAnimation(RawAnimation.begin().then("cape_2", Animation.LoopType.LOOP));
+        }
         return PlayState.CONTINUE;
     }
 
@@ -223,7 +244,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     public boolean isEmpowered() {
-        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isNight()) || this.isPhaseTwo();
     }
 
     @Override
@@ -319,7 +340,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             }
             if (this.phaseTwoTicks == 81) {
                 if (!getWorld().isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
+                    ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(EntityRegistry.DAY_STALKER.create(this.getWorld()), 1D, true);
                 placeHolder.aoe(4D, 50f, 4f);
@@ -345,19 +366,19 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (source.isOf(DamageTypes.FALL)) {
             return false;
         }
-        //TODO test if teleport away or too target works
-        if (this.isPhaseTwo() && this.getAttackAnimation().equals(Attacks.IDLE) && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance
+        if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
+                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 2 : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
-            if (this.squaredDistanceTo(attacker) > 300D) {
+            if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
                 double y = attacker.getY();
-                double z = attacker.getX() + this.random.nextInt(12) - 6;
+                double z = attacker.getZ() + this.random.nextInt(12) - 6;
                 if (this.teleportTo(x, y, z)) {
                     return false;
-                } else {
-                    if (this.teleportAway()) {
-                        return false;
-                    }
+                }
+            } else {
+                if (this.teleportAway()) {
+                    return false;
                 }
             }
         }
@@ -394,9 +415,9 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (this.getWorld().isClient() || !this.isAlive()) {
             return false;
         }
-        double d = this.getX() + (this.getRandom().nextDouble() - 0.5) * 16;
+        double d = this.getX() + (this.getRandom().nextDouble() - 0.5) * 32;
         double e = this.getY() + (double)(this.getRandom().nextInt(16) - 4);
-        double f = this.getZ() + (this.getRandom().nextDouble() - 0.5) * 16;
+        double f = this.getZ() + (this.getRandom().nextDouble() - 0.5) * 32;
         return this.teleportTo(d, e, f);
     }
 
