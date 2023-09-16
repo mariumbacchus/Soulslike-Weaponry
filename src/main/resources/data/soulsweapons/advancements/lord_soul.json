@@ -19,7 +19,11 @@
       "soul": {
         "trigger": "minecraft:inventory_changed",
         "conditions": {
-          "tag": "#soulsweapons:items/lord_soul"
+          "items": [
+            {
+              "tag": "soulsweapons:lord_soul"
+            }
+          ]
         }
       }
     },

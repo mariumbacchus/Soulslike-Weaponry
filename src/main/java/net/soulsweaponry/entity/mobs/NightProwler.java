@@ -376,9 +376,10 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (source.isFromFalling()) {
             return false;
         }
-        if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance
+        if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) &&
+                this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isProjectile() ? 2 : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
-            if (this.squaredDistanceTo(attacker) > 300D) {
+            if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
                 double y = attacker.getY();
                 double z = attacker.getZ() + this.random.nextInt(12) - 6;
