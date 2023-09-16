@@ -504,7 +504,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (this.getAttackAnimation().equals(Attacks.OVERHEAT)) {
             amount = amount * 0.6f;
         }
-        if (source.isProjectile() && !this.isFlying()) {
+        if (this.isEmpowered() && source.isProjectile() && !this.isFlying()) {
             amount = amount * 0.75f;
         }
         return super.damage(source, amount);
