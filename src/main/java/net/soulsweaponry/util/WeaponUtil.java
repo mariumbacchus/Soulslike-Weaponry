@@ -115,7 +115,7 @@ public class WeaponUtil {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                            .append(new TranslatableText(KeyBindRegistry.switchWeapon.getBoundKeyTranslationKey())));
+                            .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
                             .append(getSwitchWeaponName(stack, weapon).copy().formatted(Formatting.WHITE)));
                 }
@@ -445,7 +445,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.skyward_strikes_description_2").formatted(Formatting.GRAY));
             }
             case KEYBIND_ABILITY -> tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY)
-                    .append(new TranslatableText(KeyBindRegistry.keybindAbility.getBoundKeyTranslationKey())));
+                    .append(KeyBindRegistry.keybindAbility.getBoundKeyLocalizedText()));
         }
     }
 
