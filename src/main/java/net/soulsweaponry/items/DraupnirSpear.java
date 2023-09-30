@@ -2,7 +2,9 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -144,7 +146,7 @@ public class DraupnirSpear extends SwordItem implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             Box box = player.getBoundingBox().expand(3);
             List<Entity> entities = world.getOtherEntities(player, box);
@@ -169,5 +171,9 @@ public class DraupnirSpear extends SwordItem implements GeoItem, IKeybindAbility
                 stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
             }
         }
+    }
+
+    @Override
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 }
