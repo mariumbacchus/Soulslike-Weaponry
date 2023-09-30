@@ -156,7 +156,7 @@ public class PacketsServer {
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (stack.getItem() instanceof IKeybindAbility keybindItem) {
-                            keybindItem.useKeybindAbility(serverWorld, stack, player);
+                            keybindItem.useKeybindAbilityServer(serverWorld, stack, player);
                         }
                     }
                 }
