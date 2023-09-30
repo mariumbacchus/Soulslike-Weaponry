@@ -2,6 +2,8 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +42,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, player, (p_220045_0_) -> {
                 p_220045_0_.sendToolBreakStatus(player.getActiveHand());
@@ -52,5 +54,9 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .75f, 1f);
         }
+    }
+
+    @Override
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 }

@@ -5,29 +5,35 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 
 public class ChargedArrow extends PersistentProjectileEntity {
 
-    private ItemStack stack;
+    private final ItemStack stack;
+    private boolean scaleDamageHp;
 
     public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world) {
         super(entityType, world);
         this.stack = new ItemStack(Items.ARROW);
+        this.scaleDamageHp = false;
     }
   
-    public ChargedArrow(World world, double x, double y, double z) {
+    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
         super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world);
         this.stack = new ItemStack(Items.ARROW);
+        this.scaleDamageHp = scaleDamageHp;
     }
   
-    public ChargedArrow(World world, LivingEntity owner, ItemStack stack) {
+    public ChargedArrow(World world, LivingEntity owner, ItemStack stack, boolean scaleDamageHp) {
         super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world);
         this.stack = stack.copy();
+        this.scaleDamageHp = scaleDamageHp;
     }
   
     public void tick() {
@@ -43,8 +49,32 @@ public class ChargedArrow extends PersistentProjectileEntity {
         super.tick();
     }
 
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("scaleDmg")) {
+            this.scaleDamageHp = nbt.getBoolean("scaleDmg");
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("scaleDmg", this.scaleDamageHp);
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (this.scaleDamageHp && entityHitResult.getEntity() instanceof LivingEntity target) {
+            float percentMissingHp = 100f - (target.getHealth() / target.getMaxHealth()) * 100f;
+            float increase = 1f + (percentMissingHp / 100f);
+            this.setDamage(this.getDamage() * increase);
+        }
+        super.onEntityHit(entityHitResult);
+    }
+
     protected ParticleEffect getParticleType() {
-        return ParticleTypes.GLOW; //wax_on
+        return ParticleTypes.GLOW;
     }
 
     protected ItemStack asItemStack() {

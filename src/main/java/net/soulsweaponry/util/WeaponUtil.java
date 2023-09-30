@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
+import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.ShadowAssassinScythe;
@@ -100,14 +101,23 @@ public class WeaponUtil {
         return list;
     }
 
+    public static void addTooltip(List<Text> tooltip, String id, Formatting formatting, int lines) {
+        tooltip.add(new TranslatableText("tooltip.soulsweapons." + id).formatted(formatting));
+        for (int i = 1; i <= lines; i++) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons." + id + "_description_" + i).formatted(Formatting.GRAY));
+        }
+    }
+
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {
                 if (stack.getItem() instanceof TrickWeapon weapon) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY).append(getSwitchWeaponName(stack, weapon).copy().formatted(Formatting.WHITE)));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
+                            .append(new TranslatableText(KeyBindRegistry.switchWeapon.getBoundKeyTranslationKey())));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
+                            .append(getSwitchWeaponName(stack, weapon).copy().formatted(Formatting.WHITE)));
                 }
             }
             case CHARGE -> {
@@ -201,7 +211,7 @@ public class WeaponUtil {
             case RAGE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case LIGHTNING_CALL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
@@ -239,7 +249,7 @@ public class WeaponUtil {
                             .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
                     else tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case FEATHERLIGHT -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE));
@@ -285,8 +295,8 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.freyr_sword_note_5").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
             }
             case GALEFORCE -> {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce").formatted(Formatting.AQUA));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.galeforce_description").formatted(Formatting.GRAY));
+                WeaponUtil.addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case FURY -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.fury").formatted(Formatting.RED));
@@ -360,7 +370,7 @@ public class WeaponUtil {
             case SHIELD -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.shield").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.shield_description").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case OBLITERATE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.obliterate").formatted(Formatting.DARK_BLUE));
@@ -434,6 +444,8 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.skyward_strikes_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.skyward_strikes_description_2").formatted(Formatting.GRAY));
             }
+            case KEYBIND_ABILITY -> tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY)
+                    .append(new TranslatableText(KeyBindRegistry.keybindAbility.getBoundKeyTranslationKey())));
         }
     }
 
@@ -444,6 +456,7 @@ public class WeaponUtil {
         SOUL_RELEASE, SOUL_RELEASE_WITHER, COLLECT, SUMMON_WEAPON, GALEFORCE, FURY, HASTE, FLAME_ENRAGED, RETURNING,
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
-        SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES
+        SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
+        KEYBIND_ABILITY
     }
 }
