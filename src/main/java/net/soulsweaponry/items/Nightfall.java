@@ -5,6 +5,8 @@ import java.util.Random;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -136,7 +138,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     @Override
-    public void useKeybindAbility(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> {
@@ -146,5 +148,9 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
             world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         }
+    }
+
+    @Override
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 }
