@@ -117,7 +117,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    private PlayState predicate(AnimationState event){
+    private PlayState predicate(AnimationState<?> event){
         event.getController().setAnimation(RawAnimation.begin().then("low_souls", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }

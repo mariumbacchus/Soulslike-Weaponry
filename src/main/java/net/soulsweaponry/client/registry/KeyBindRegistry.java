@@ -1,5 +1,7 @@
 package net.soulsweaponry.client.registry;
 
+import net.minecraft.util.Hand;
+import net.soulsweaponry.util.IKeybindAbility;
 import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -16,8 +18,8 @@ public class KeyBindRegistry {
     private static KeyBinding returnFreyrSword;
     private static KeyBinding stationaryFreyrSword;
     private static KeyBinding collectSummons;
-    private static KeyBinding switchWeapon;
-    private static KeyBinding keybindAbility;
+    public static KeyBinding switchWeapon;
+    public static KeyBinding keybindAbility;
     private static KeyBinding parry;
 
     public static void initClient() {
@@ -51,6 +53,11 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keybindAbility.wasPressed()) {
                 ClientPlayNetworking.send(PacketRegistry.KEYBIND_ABILITY, PacketByteBufs.empty());
+                for (Hand hand : Hand.values()) {
+                    if (client.player != null && client.player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
+                        abilityItem.useKeybindAbilityClient(client.world, client.player.getStackInHand(hand), client.player);
+                    }
+                }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

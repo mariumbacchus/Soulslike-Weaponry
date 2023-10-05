@@ -22,6 +22,8 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.soulsweaponry.config.ConfigConstructor;
 
+import java.util.Collections;
+
 public class EvilForlorn extends Forlorn {
 
     public static boolean canSpawn = ConfigConstructor.can_evil_forlorn_spawn;
@@ -29,7 +31,7 @@ public class EvilForlorn extends Forlorn {
     public EvilForlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.setTamed(false);
-        Forlorn.initEquip(this);
+        Forlorn.initEquip(this, Collections.emptyMap());
         this.experiencePoints = 20;
     }
 

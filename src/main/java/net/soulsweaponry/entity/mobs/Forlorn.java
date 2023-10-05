@@ -1,5 +1,7 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -12,11 +14,15 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Forlorn extends Remnant {
     
     public Forlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-        Forlorn.initEquip(this);
+        Forlorn.initEquip(this, Collections.emptyMap());
     }
 
     @Override
@@ -37,15 +43,25 @@ public class Forlorn extends Remnant {
         return 10;
     }
 
-    public static void initEquip(LivingEntity entity) {
+    public static void initEquip(LivingEntity entity, Map<Enchantment, Integer> enchants) {
+        HashMap<EquipmentSlot, ItemStack> equip = new HashMap<>();
         if (entity.getRandom().nextBoolean()) {
-            entity.equipStack(EquipmentSlot.MAINHAND,new ItemStack(WeaponRegistry.FORLORN_SCYTHE));
+            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.FORLORN_SCYTHE));
         } else {
-            entity.equipStack(EquipmentSlot.MAINHAND,new ItemStack(WeaponRegistry.GUTS_SWORD));
+            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.GUTS_SWORD));
         }
-        entity.equipStack(EquipmentSlot.HEAD,new ItemStack(ArmorRegistry.FORLORN_HELMET));
-        entity.equipStack(EquipmentSlot.CHEST,new ItemStack(ArmorRegistry.FORLORN_CHESTPLATE));
-        entity.equipStack(EquipmentSlot.LEGS,new ItemStack(ArmorRegistry.FORLORN_LEGGINGS));
-        entity.equipStack(EquipmentSlot.FEET,new ItemStack(ArmorRegistry.FORLORN_BOOTS));
+        equip.put(EquipmentSlot.HEAD, new ItemStack(ArmorRegistry.FORLORN_HELMET));
+        equip.put(EquipmentSlot.CHEST, new ItemStack(ArmorRegistry.FORLORN_CHESTPLATE));
+        equip.put(EquipmentSlot.LEGS, new ItemStack(ArmorRegistry.FORLORN_LEGGINGS));
+        equip.put(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.FORLORN_BOOTS));
+        for (EquipmentSlot slot : equip.keySet()) {
+            ItemStack item = equip.get(slot);
+            for (Enchantment enchant : enchants.keySet()) {
+                if (enchant.isAcceptableItem(item)) {
+                    item.addEnchantment(enchant, enchants.get(enchant));
+                }
+            }
+            entity.equipStack(slot, item);
+        }
     }
 }

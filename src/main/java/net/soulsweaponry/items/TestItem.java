@@ -7,8 +7,10 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.registry.ParticleRegistry;
 
 public class TestItem extends SwordItem {
 
@@ -27,6 +29,7 @@ public class TestItem extends SwordItem {
         if (world.isClient) {
 
             // This will make an X shape of two half circles where the user is facing (only rotates Y axis)
+            /*
             for (int t = -90; t < 90; t++) {
                 double rad = Math.toRadians(t);
                 float yaw = (float) Math.toRadians(user.getYaw() + 90);
@@ -43,6 +46,87 @@ public class TestItem extends SwordItem {
                 world.addParticle(ParticleTypes.FLAME, vec1.x, vec1.y, vec1.z, 0, 0, 0);
                 world.addParticle(ParticleTypes.FLAME, vec2.x, vec2.y, vec2.z, 0, 0, 0);
             }
+            */
+
+            // This will grant coordinates in a half circle with two quarter circles to the left and right no matter where
+            // the user is facing.
+            /*
+            float r = 10;
+            double yaw = user.getYaw() + 90;
+            double ra = Math.toRadians(yaw);
+            Vec3d s = user.getPos().add(Math.cos(ra) * r, 0, Math.sin(ra) * r);
+            Vec3d endLeft = null;
+            Vec3d endRight = null;
+            for (int i = 90; i < 270; i++) {
+                if (i % 8 == 0) {
+                    double rad = Math.toRadians(yaw + i);
+                    double x = r * Math.cos(rad);
+                    double z = r * Math.sin(rad);
+                    Vec3d pos = new Vec3d(x, 0, z).add(s);
+                    world.addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
+                    if (i == 264) {
+                        endLeft = pos;
+                    }
+                    if (i == 96) {
+                        endRight = pos;
+                    }
+                }
+            }
+
+            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, endLeft.getX(), endLeft.getY(), endLeft.getZ(), 0, 0, 0);
+            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, endRight.getX(), endRight.getY(), endRight.getZ(), 0, 0, 0);
+
+            //This will make a line from one point to the other
+            Vec3d start = endLeft;
+            Vec3d slutt = user.getPos().add(30, 0, 0);
+            Vec3d mellom = new Vec3d(slutt.getX() - start.getX(), slutt.getY() - start.getY(), slutt.getZ() - start.getZ());
+            int len = MathHelper.floor(mellom.length());
+            for (int i = 0; i < len; i++) {
+                start = start.add(mellom.multiply((double) 1 / len));
+                world.addParticle(ParticleRegistry.PURPLE_FLAME, start.getX(), start.getY(), start.getZ(), 0, 0, 0);
+            }
+            Vec3d start2 = endRight;
+            Vec3d mellom2 = new Vec3d(slutt.getX() - start2.getX(), slutt.getY() - start2.getY(), slutt.getZ() - start2.getZ());
+            int len2 = MathHelper.floor(mellom2.length());
+            for (int i = 0; i < len2; i++) {
+                start2 = start2.add(mellom2.multiply((double) 1 / len2));
+                world.addParticle(ParticleRegistry.PURPLE_FLAME, start2.getX(), start2.getY(), start2.getZ(), 0, 0, 0);
+            }
+            */
+
+            // Creates spirals upwards, used when something dies within Night Prowlers Eclipse attack, and therefore heals it.
+            /*
+            float r = 1f;
+            for (int theta = 0; theta < 360; theta++) {
+                if (theta % 2 == 0) {
+                    double x0 = user.getX();
+                    double y0 = user.getY() + 3;
+                    double z0 = user.getZ();
+                    double x = x0 + r * Math.cos(theta * Math.PI / 180);
+                    double z = z0 + r * Math.sin(theta * Math.PI / 180);
+                    if (user.isSneaking()) {
+                        world.addParticle(ParticleRegistry.DAZZLING_PARTICLE, x, user.getY() + theta * Math.PI/180, z,
+                                user.getRandom().nextGaussian()/100f, user.getRandom().nextGaussian()/100f, user.getRandom().nextGaussian()/100f);
+                        world.addParticle(ParticleRegistry.DARK_STAR, x, y0 + r * Math.tan(theta * Math.PI / 180), z,
+                                user.getRandom().nextGaussian()/100f, user.getRandom().nextGaussian()/100f, user.getRandom().nextGaussian()/100f);
+                    } else {
+                        world.addParticle(ParticleRegistry.DAZZLING_PARTICLE, x, user.getY() + theta * Math.PI/180, z,
+                                0, 0, 0);
+                        world.addParticle(ParticleRegistry.DARK_STAR, x, y0 + r * Math.tan(theta * Math.PI / 180), z,
+                                0, 0, 0);
+                    }
+                }
+            }
+             */
+
+//            yaw = user.getYaw() + 90;
+//            for (int i = 180; i < 270; i++) {
+//                double rad = Math.toRadians(yaw + i);
+//                double x = r * Math.cos(rad);
+//                double z = r * Math.sin(rad);
+//                Vec3d pos = new Vec3d(x, 0, z).add(s);
+//                world.addParticle(ParticleTypes.FLAME, pos.getX(), user.getY(), pos.getZ(), 0, 0, 0);
+//            }
 
             // Second one that actually makes an arc
             /*Vec3d a = user.getPos();
@@ -119,17 +203,6 @@ public class TestItem extends SwordItem {
 //                    Vec3d vec = start.add(vec1.add(vec2));
 //                    world.addParticle(ParticleTypes.FLAME, vec.getX(), vec.getY(), vec.getZ(), 0, 0, 0);
 //                }
-//            }
-
-            // A scuffed one that made other cool particle effects
-//            for (int theta = 0; theta < 360; theta++) {
-//                double x0 = user.getX();
-//                double y0 = user.getY();
-//                double z0 = user.getZ();
-//                double x = x0 + r * Math.cos(theta * Math.PI / 180);
-//                double z = z0 + r * Math.sin(theta * Math.PI / 180);
-//                //world.addParticle(ParticleTypes.FLAME, x, user.getY() + theta * Math.PI/180, z, 0, 0, 0);
-//                //world.addParticle(ParticleTypes.FLAME, x, y0 + r * Math.tan(theta * Math.PI / 180);, z, 0, 0, 0);
 //            }
             return TypedActionResult.success(stack);
         }

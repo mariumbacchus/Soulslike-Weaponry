@@ -75,7 +75,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.goalSelector.add(2, new DayStalkerGoal(this, 0.75D, true));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
