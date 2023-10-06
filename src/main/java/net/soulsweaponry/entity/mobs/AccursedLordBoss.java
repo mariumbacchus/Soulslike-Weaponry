@@ -267,15 +267,6 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     }
 
     public enum AccursedLordAnimations {
-        SWORDSLAM,
-        FIREBALLS,
-        PULL,
-        HEATWAVE,
-        SPIN,
-        WITHERBALLS,
-        HAND_SLAM,
-        SPAWN,
-        DEATH,
-        IDLE
+        SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN, DEATH, IDLE
     }
 }

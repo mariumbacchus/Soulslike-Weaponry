@@ -1,10 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -12,23 +10,27 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
+import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
+import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +45,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 public class NightProwler extends BossEntity implements IAnimatable {
@@ -51,6 +54,9 @@ public class NightProwler extends BossEntity implements IAnimatable {
     public int deathTicks;
     public int phaseTwoTicks;
     public int phaseTwoMaxTransitionTicks = 120;
+    public int darknessRiseTicks;
+    private int[] aliveSummons = new int[0];
+    @Nullable private BlackflameSnakeLogic blackflameSnakeLogic = null;
     public static final int ATTACKS_LENGTH = Attacks.values().length;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -61,6 +67,9 @@ public class NightProwler extends BossEntity implements IAnimatable {
     private static final TrackedData<BlockPos> TARGET_POS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Boolean> CHASE_TARGET = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> WAIT_ANIMATION = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> SPAWN_PARTICLES_STATE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> DARKNESS_RISE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
+
 
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
         super(entityType, world, Color.PURPLE);
@@ -71,7 +80,12 @@ public class NightProwler extends BossEntity implements IAnimatable {
 
     @Override
     protected void initGoals() {
-        //TODO add goals
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(2, new NightProwlerGoal(this, 0.75D, true));
+        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(8, new LookAroundGoal(this));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
+        this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
     public void setAttackAnimation(NightProwler.Attacks attack) {
@@ -97,7 +111,8 @@ public class NightProwler extends BossEntity implements IAnimatable {
     private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
         if (this.isDead()) return PlayState.STOP;
         if (this.isInitiatingPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_phase_2", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_phase_2", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            return PlayState.CONTINUE;
         } else {
             if (!this.isPhaseTwo()) {
                 switch (this.getAttackAnimation()) {
@@ -146,21 +161,13 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("death_1", ILoopType.EDefaultLoopTypes.LOOP));
             }
         } else {
-            // NOTE:
-            // Old geckolib doesn't manage to play multiple animations at the same time, apparently.
-            // If the idle animations play during attacks, it messes things up.
             if (!this.getAttackAnimation().equals(Attacks.IDLE)) {
                 return PlayState.STOP;
-            }
-            if (!this.isInitiatingPhaseTwo()) {
+            } else {
                 if (this.isPhaseTwo()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("wings_2", ILoopType.EDefaultLoopTypes.LOOP));
                 } else {
-                    if (this.getAttackAnimation().equals(Attacks.IDLE)) {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("wings_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    }
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("wings_1", ILoopType.EDefaultLoopTypes.LOOP));
                 }
             }
         }
@@ -174,6 +181,20 @@ public class NightProwler extends BossEntity implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
+    private <E extends IAnimatable> PlayState flying(AnimationEvent<E> event) {
+        if (!this.isFlying()) {
+            return PlayState.STOP;
+        } else {
+            if (this.isPhaseTwo()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("flying_2", ILoopType.EDefaultLoopTypes.LOOP));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("flying_1", ILoopType.EDefaultLoopTypes.LOOP));
+            }
+        }
+        return PlayState.CONTINUE;
+    }
+
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(ATTACKS, 0);
@@ -185,14 +206,16 @@ public class NightProwler extends BossEntity implements IAnimatable {
         this.dataTracker.startTracking(TARGET_POS, new BlockPos(0, 0, 0));
         this.dataTracker.startTracking(CHASE_TARGET, true);
         this.dataTracker.startTracking(WAIT_ANIMATION, false);
+        this.dataTracker.startTracking(SPAWN_PARTICLES_STATE, 0);
+        this.dataTracker.startTracking(DARKNESS_RISE, false);
     }
 
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+        if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -214,6 +237,14 @@ public class NightProwler extends BossEntity implements IAnimatable {
         return this.getPartnerUuid() != null && living.getUuid() != null && this.getPartnerUuid().equals(living.getUuid());
     }
 
+    public int[] getAliveSummonsList() {
+        return this.aliveSummons;
+    }
+
+    public void setAliveSummons(int[] aliveSummonsList) {
+        this.aliveSummons = aliveSummonsList;
+    }
+
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -224,6 +255,8 @@ public class NightProwler extends BossEntity implements IAnimatable {
         nbt.putInt("remaining_ani_ticks", this.getRemainingAniTicks());
         nbt.putBoolean("is_flying", this.isFlying());
         nbt.putBoolean("chase_target", this.shouldChaseTarget());
+        nbt.putIntArray("summons", this.getAliveSummonsList());
+        nbt.putInt("darknessTicks", this.getDarknessRiseTicks());
     }
 
     @Override
@@ -250,17 +283,22 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (nbt.contains("chase_target")) {
             this.setChaseTarget(nbt.getBoolean("chase_target"));
         }
+        if (nbt.contains("summons")) {
+            this.setAliveSummons(nbt.getIntArray("summons"));
+        }
+        if (nbt.contains("darknessTicks")) {
+            this.setDarknessRiseTicks(nbt.getInt("darknessTicks"));
+        }
     }
 
     public boolean isEmpowered() {
-        return (!this.getWorld().isClient && this.getWorld().isNight()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
         return this.isPhaseTwo() ? SoundRegistry.HARD_BOSS_DEATH_LONG : SoundRegistry.HARD_BOSS_DEATH_SHORT;
     }
-
 
     @Override
     public int getTicksUntilDeath() {
@@ -309,7 +347,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 6D)
+                .add(EntityAttributes.GENERIC_ARMOR, 10D)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
     }
 
@@ -318,11 +356,12 @@ public class NightProwler extends BossEntity implements IAnimatable {
         data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attacks));
         data.addAnimationController(new AnimationController<>(this, "idle", 0, this::idle));
         data.addAnimationController(new AnimationController<>(this, "cape", 0, this::cape));
+        data.addAnimationController(new AnimationController<>(this, "flying", 0, this::flying));
     }
 
     @Override
     public AnimationFactory getFactory() {
-        return this.factory;
+        return factory;
     }
 
     public enum Attacks {
@@ -339,21 +378,21 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 this.setInitiatePhaseTwo(true);
             }
         }
-        // TODO heal når noe dør rundt (kanskje lage mixin hvor når den dør sjekker den rundt seg om night prowler er rundt?) idk
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
-            if (this.phaseTwoTicks == 76) {
-                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE, SoundCategory.HOSTILE, 1f, 1f);
+            if (this.phaseTwoTicks == 78) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.PARTNER_DIES, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.phaseTwoTicks == 81) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 if (!getWorld().isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
                 }
-                DayStalkerGoal placeHolder = new DayStalkerGoal(EntityRegistry.DAY_STALKER.create(this.getWorld()), 1D, true);
-                placeHolder.aoe(4D, 50f, 4f);
+                NightProwlerGoal placeHolder = new NightProwlerGoal(this, 1D, true);
+                placeHolder.aoe(this.getBoundingBox().expand(4D), 50f, 4f, true);
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
@@ -365,6 +404,29 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (this.getRemainingAniTicks() <= 0 && this.shouldWaitAnimation()) {
             this.setWaitAnimation(false);
             this.setAttackAnimation(NightProwler.Attacks.IDLE);
+            this.getNavigation().stop();
+        }
+        if (this.getDarknessRise()) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1));
+            this.darknessRiseTicks++;
+            float r = 4.5f;
+            Box box = new Box(this.getPos().add(r, 1, r), this.getPos().add(-r, -1, -r));
+            for (Entity entity : this.getWorld().getOtherEntities(this, box)) {
+                if (this.darknessRiseTicks % 4 == 0 && entity instanceof LivingEntity living) {
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 60, 0));
+                    living.damage(DamageSource.MAGIC, 1f);
+                }
+            }
+            if (this.getDarknessRiseTicks() >= (this.isPhaseTwo() ? 200 : 120)) {
+                this.setDarknessRise(false);
+                this.darknessRiseTicks = 0;
+            }
+        }
+        if (this.getBlackflameSnakeLogic() != null) {
+            this.getBlackflameSnakeLogic().tick(this.getWorld());
+            if (this.getBlackflameSnakeLogic().isFinished()) {
+                this.setBlackflameSnakeLogic(null);
+            }
         }
     }
 
@@ -392,8 +454,16 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 }
             }
         }
+        if (this.isEmpowered() && source.isProjectile() && this.getHealth() < this.getMaxHealth() / 2f) {
+            this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
+            this.heal(5f);
+            return false;
+        }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
             amount = amount * 0.75f;
+        }
+        if (source.isExplosive()) {
+            amount = amount * 0.25f;
         }
         return super.damage(source, amount);
     }
@@ -428,7 +498,6 @@ public class NightProwler extends BossEntity implements IAnimatable {
         double f = this.getZ() + (this.getRandom().nextDouble() - 0.5) * 32;
         return this.teleportTo(d, e, f);
     }
-
 
     public void setRemainingAniTicks(int ticks) {
         this.dataTracker.set(REMAINING_ANI_TICKS, ticks);
@@ -476,6 +545,143 @@ public class NightProwler extends BossEntity implements IAnimatable {
 
     public boolean shouldWaitAnimation() {
         return this.dataTracker.get(WAIT_ANIMATION);
+    }
+
+    /**
+     * Sets particle state.
+     * <p>- 0 is idle or false</p>
+     * <p>- 1 is TRINITY</p>
+     * <p>- 2 is SOUL_REAPER/ENGULF slam attack</p>
+     * <p>- 3 is SOUL_REAPER X-slash attack</p>
+     * <p>- 4 is ECLIPSE giant circle</p>
+     * @param type Set the particle state
+     */
+    public void setParticleState(int type) {
+        this.dataTracker.set(SPAWN_PARTICLES_STATE, type);
+    }
+
+    public int getParticleState() {
+        return this.dataTracker.get(SPAWN_PARTICLES_STATE);
+    }
+
+    public void setDarknessRise(boolean bl) {
+        this.dataTracker.set(DARKNESS_RISE, bl);
+    }
+
+    public boolean getDarknessRise() {
+        return this.dataTracker.get(DARKNESS_RISE);
+    }
+
+    public void setDarknessRiseTicks(int ticks) {
+        this.darknessRiseTicks = ticks;
+    }
+
+    public int getDarknessRiseTicks() {
+        return this.darknessRiseTicks;
+    }
+
+    public void setBlackflameSnakeLogic(@Nullable BlackflameSnakeLogic object) {
+        this.blackflameSnakeLogic = object;
+    }
+
+    @Nullable
+    public BlackflameSnakeLogic getBlackflameSnakeLogic() {
+        return this.blackflameSnakeLogic;
+    }
+
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (this.getWorld().isClient) {
+            switch (this.getParticleState()) {
+                case 1 -> {
+                    if (this.getTargetPos() != null) {
+                        for (int i = 0; i < 500; ++i) {
+                            Random random = this.getRandom();
+                            Vec3d pos = Vec3d.ofCenter(this.getTargetPos());
+                            double d = random.nextGaussian() * 0.05D;
+                            double e = random.nextGaussian() * 0.05D;
+                            double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d);
+                            double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e);
+                            double newY = (random.nextDouble() - 0.5D + random.nextDouble() * 0.5D) / 2;
+                            this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                        }
+                    }
+                }
+                case 2 -> {
+                    if (this.getTargetPos() != null) {
+                        for (int i = 0; i < 250; ++i) {
+                            Random random = this.getRandom();
+                            Vec3d pos = Vec3d.ofCenter(this.getTargetPos());
+                            double d = random.nextGaussian() * 0.05D;
+                            double e = random.nextGaussian() * 0.05D;
+                            double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d) / 2;
+                            double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e) / 2;
+                            double newY = (random.nextDouble() - 0.5D + random.nextDouble() * 0.5D) / 4;
+                            this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                        }
+                    }
+                }
+                case 3 -> {
+                    for (int t = -90; t < 90; t++) {
+                        double rad = Math.toRadians(t);
+                        int out = 4;
+                        float yaw = (float) Math.toRadians(this.getYaw() + 90);
+                        double x1 = out * Math.cos(rad);
+                        double y1 = out * Math.sin(rad);
+                        double z1 = out * Math.sin(rad);
+                        Vec3d vec1 = new Vec3d(x1, y1, z1).rotateY(-yaw).add(this.getEyePos().add(0, -1, 0));
+
+                        double x2 = out * Math.cos(rad);
+                        double y2 = out * Math.sin(rad);
+                        double z2 = -out * Math.sin(rad);
+                        Vec3d vec2 = new Vec3d(x2, y2, z2).rotateY(-yaw).add(this.getEyePos().add(0, -1, 0));
+
+                        int div = 75;
+                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR, vec1.x, vec1.y, vec1.z,
+                                this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                        this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE, vec2.x, vec2.y, vec2.z,
+                                this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                    }
+                }
+                case 4 -> {
+                    double phi = Math.PI * (3. - Math.sqrt(5.));
+                    int points = 600;
+                    int div = 60;
+                    float sizeMod = 15f;
+                    for (int i = 0; i < points; i++) {
+                        double y = 1 - ((double) i /(points - 1)) * 2;
+                        double radius = Math.sqrt(1 - y*y);
+                        double theta = phi * i;
+                        double x = Math.cos(theta) * radius;
+                        double z = Math.sin(theta) * radius;
+                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR, true, x * sizeMod + this.getX(), y * sizeMod + this.getY(), z * sizeMod + this.getZ(),
+                                this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                    }
+                }
+                default -> {}
+            }
+            if (this.getDarknessRise()) {
+                int div = 30;
+                for (int i = 0; i < 12; i++) {
+                    float r = i / 2f;
+                    for (int theta = 0; theta < 360; theta++) {
+                        if (theta % 8 == 0) {
+                            double x0 = this.getX();
+                            double z0 = this.getZ();
+                            double x = x0 + r * Math.cos(theta * Math.PI / 180);
+                            double z = z0 + r * Math.sin(theta * Math.PI / 180);
+                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR, x, this.getY() + 0.1f, z,
+                                    this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
