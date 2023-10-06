@@ -126,7 +126,7 @@ public class AreaEffectSphere extends Entity {
                 return;
             }
             int points = MathHelper.floor(this.getRadius() * 6.7f);
-            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, ParticleTypes.DRAGON_BREATH, this.random);
+            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();

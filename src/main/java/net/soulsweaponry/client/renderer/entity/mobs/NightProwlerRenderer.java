@@ -14,7 +14,7 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
     int[] rgbColorTwo = {147, 188, 210};
     int[] rgbColorThree = {221, 255, 254};
     int[] rgbColorFour = {235, 185, 232};
-    double[] translation = {0, 4, 0};
+    double[] translation = {0, 3, 0};
 
     public NightProwlerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new NightProwlerModel());

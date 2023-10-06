@@ -25,10 +25,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.EvilRemnant;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseOne;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
+import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -531,7 +531,7 @@ public class MoonknightGoal extends Goal {
         }
         if (this.attackStatus == 52) {
             for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
-                if (entity instanceof LivingEntity && !(entity instanceof EvilRemnant)) {
+                if (entity instanceof LivingEntity && !(entity instanceof Remnant remnant && remnant.isOwner(this.boss))) {
                     entity.damage(DamageSource.mob(boss), this.getModifiedDamage(35f));
                     entity.addVelocity(0, 1.0, 0);
                     this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
@@ -589,7 +589,7 @@ public class MoonknightGoal extends Goal {
         if (this.attackStatus == 30) {
             int enemyNumber = this.boss.getRandom().nextInt(6 - 3) + 3;
             for (int j = 0; j < enemyNumber; j++) {
-                EvilRemnant entity = new EvilRemnant(EntityRegistry.REMNANT, this.boss.world);    
+                Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
                 this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(20) - 10, this.boss.getY() - 2f, this.boss.getZ() + this.boss.getRandom().nextInt(20) - 10);
                 if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY() + .1f, this.pos.getZ());
                 this.initEquip(entity);

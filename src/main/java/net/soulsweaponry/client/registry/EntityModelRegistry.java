@@ -51,5 +51,12 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.WARMTH_ENTITY, WarmthEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.DAY_STALKER, DayStalkerRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.NIGHT_PROWLER, NightProwlerRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.NIGHT_SKULL, NightSkullRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.FOG_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.BLACKFLAME_SNAKE_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.NO_DRAG_WITHER_SKULL, WitherSkullEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DEATH_SPIRAL_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.NIGHTS_EDGE, NightsEdgeRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.NIGHT_WAVE, EmptyEntityRenderer::new);
     }
 }
