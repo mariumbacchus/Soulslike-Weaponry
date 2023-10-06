@@ -34,23 +34,31 @@ public class Remnant extends TameableEntity {
 
     public Remnant(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-        this.setTamed(true);
+        this.setTamed(false);
         this.initEquip();
     }
     
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
-        this.goalSelector.add(5, new MeleeAttackGoal(this, 1D, false));
+        this.goalSelector.add(5, new MeleeAttackGoal(this, 1D, true));
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster
-                && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
-        this.targetSelector.add(4, new RevengeGoal(this).setGroupRevenge());
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
+                || !(this.getOwner() instanceof PlayerEntity)));
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, Remnant.class, true, entity -> !this.isTamed()
+                && (entity instanceof Remnant remnant && remnant.isTamed())));
+        this.targetSelector.add(5, new ActiveTargetGoal<>(this, MobEntity.class, true, entity -> entity instanceof Monster
+                && !(entity instanceof CreeperEntity) && this.isTamed() && !this.isTeammate(entity)));
+        if (!this.isTamed()) {
+            this.targetSelector.add(6, new RevengeGoal(this, ReturningKnight.class, Moonknight.class, Remnant.class, DayStalker.class, NightProwler.class).setGroupRevenge());
+        } else {
+            this.targetSelector.add(6, new RevengeGoal(this).setGroupRevenge());
+        }
     }
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {

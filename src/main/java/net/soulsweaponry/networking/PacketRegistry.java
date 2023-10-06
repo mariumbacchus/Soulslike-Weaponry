@@ -34,6 +34,8 @@ public class PacketRegistry {
     public static final Identifier PRE_EXPLOSION_ID = new Identifier(SoulsWeaponry.ModId, "pre_explosion_id");
     public static final Identifier AIR_COMBUSTION_ID = new Identifier(SoulsWeaponry.ModId, "air_combustion_id");
     public static final Identifier FLAME_RUPTURE_ID = new Identifier(SoulsWeaponry.ModId, "flame_rupture");
+    public static final Identifier TRINITY_FLASH_ID = new Identifier(SoulsWeaponry.ModId, "trinity_flash_id");
+    public static final Identifier BLACKFLAME_SNAKE_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "blackflame_snake_particles_id");
 
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
     public static final Identifier RETURN_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "check_can_freyr_return");

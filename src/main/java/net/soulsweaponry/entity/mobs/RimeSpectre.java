@@ -64,9 +64,9 @@ public class RimeSpectre extends Remnant implements GeoEntity, AnimatedDeathInte
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 5, false, false, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
-        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false,
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
                 entity -> this.isTamed() && entity instanceof Monster && !this.isTeammate(entity)));
         this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
     }

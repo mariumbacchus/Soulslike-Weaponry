@@ -49,9 +49,9 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
         this.goalSelector.add(4, new WarmthEntityGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 5, false, false, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
-        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false,
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
                 entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
     }
 

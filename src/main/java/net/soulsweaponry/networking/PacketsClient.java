@@ -10,6 +10,7 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -303,6 +304,33 @@ public class PacketsClient {
                     ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
                 }
             } catch (Exception ignored) {}
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.TRINITY_FLASH_ID, (client, handler, buf, responseSender) -> {
+            BlockPos pos = buf.readBlockPos();
+            Vec3d target = pos.toCenterPos();
+            client.execute(() -> {
+                Particle particle1 = client.particleManager.addParticle(ParticleTypes.FLASH, target.getX(), target.getY(), target.getZ(), 0.0, 0.0, 0.0);
+                Particle particle2 = client.particleManager.addParticle(ParticleTypes.FLASH, target.getX(), target.getY(), target.getZ(), 0.0, 0.0, 0.0);
+                particle1.setColor(142f/255f, 107f/255f, 1f);
+                particle2.setColor(72f/255f, 0f, 140f/255f);
+                Box box = new Box(pos);
+                particle1.setBoundingBox(box.expand(10D));
+                particle2.setBoundingBox(box.expand(2D));
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.BLACKFLAME_SNAKE_PARTICLES_ID, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            double x = buf.readDouble();
+            float z = buf.readFloat();
+            client.execute(() -> {
+                ParticleEffect[] particles = {ParticleTypes.LARGE_SMOKE, ParticleRegistry.DAZZLING_PARTICLE, ParticleRegistry.DARK_STAR};
+                float[][] velDividers = {
+                        {2, 0.5f, 2}, {2, 0.5f, 2}, {2, 0.5f, 2}
+                };
+                PacketsClient.particleOutburst(client.world, 200, particles, x, target.getY(), z, velDividers);
+            });
         });
     }
 
