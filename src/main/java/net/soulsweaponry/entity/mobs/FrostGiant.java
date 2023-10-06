@@ -60,10 +60,16 @@ public class FrostGiant extends Remnant implements GeoEntity, AnimatedDeathInter
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, 5, false, false, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
-        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false,
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
                 entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
+        /* For when the other boss that summons this is implemented.
+        * if (!this.isTamed()) {
+            this.targetSelector.add(5, new RevengeGoal(this, EndBoss.class).setGroupRevenge());
+        } else {
+            this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
+        }*/
         this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
     }
 

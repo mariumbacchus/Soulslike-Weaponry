@@ -325,5 +325,48 @@
         "sounds": [
             "soulsweapons:hard_boss_death_long"
         ]
+    },
+    "scythe_swipe": {
+        "subtitle": "subtitles.soulsweapons.scythe_swipe",
+        "sounds": [
+            "soulsweapons:scythe_swipe"
+        ]
+    },
+    "night_skull_die": {
+        "subtitle": "subtitles.soulsweapons.night_skull_die",
+        "sounds": [
+            "soulsweapons:night_skull_die1",
+            "soulsweapons:night_skull_die2"
+        ]
+    },
+    "engulf": {
+        "subtitle": "subtitles.soulsweapons.engulf",
+        "sounds": [
+            "soulsweapons:engulf"
+        ]
+    },
+    "night_prowler_scream": {
+        "subtitle": "subtitles.soulsweapons.night_prowler_scream",
+        "sounds": [
+            "soulsweapons:night_prowler_scream"
+        ]
+    },
+    "partner_dies": {
+        "subtitle": "subtitles.soulsweapons.partner_dies",
+        "sounds": [
+            "soulsweapons:partner_dies"
+        ]
+    },
+    "darkness_rise": {
+        "subtitle": "subtitles.soulsweapons.darkness_rise",
+        "sounds": [
+            "soulsweapons:darkness_rise"
+        ]
+    },
+    "trinity": {
+        "subtitle": "subtitles.soulsweapons.trinity",
+        "sounds": [
+            "soulsweapons:trinity"
+        ]
     }
 }

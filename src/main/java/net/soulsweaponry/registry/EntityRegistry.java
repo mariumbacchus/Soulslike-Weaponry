@@ -15,6 +15,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.AreaEffectSphere;
+import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
 
@@ -63,6 +64,13 @@ public class EntityRegistry {
     public static final EntityType<ChaosSkull> CHAOS_SKULL = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "chaos_skull"), FabricEntityTypeBuilder.<ChaosSkull>create(SpawnGroup.MISC, ChaosSkull::new).dimensions(EntityDimensions.fixed(0.4f, 0.4f)).trackRangeChunks(4).trackedUpdateRate(10).build());
     public static final EntityType<ChaosOrbEntity> CHAOS_ORB_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "chaos_orb_entity"), FabricEntityTypeBuilder.<ChaosOrbEntity>create(SpawnGroup.MISC, ChaosOrbEntity::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(10).build());
     public static final EntityType<GrowingFireball> GROWING_FIREBALL_ENTITY = registerEntity("growing_fireball", FabricEntityTypeBuilder.<GrowingFireball>create(SpawnGroup.MISC, GrowingFireball::new).dimensions(EntityDimensions.changing(0.5f, 0.5f)).trackRangeChunks(10).trackedUpdateRate(20).build());
+    public static final EntityType<NightSkull> NIGHT_SKULL = registerEntity("night_skull", FabricEntityTypeBuilder.<NightSkull>create(SpawnGroup.MISC, NightSkull::new).dimensions(EntityDimensions.changing(0.5f, 0.75f)).trackRangeChunks(15).trackedUpdateRate(20).build());
+    public static final EntityType<FogEntity> FOG_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "fog_entity"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, FogEntity::new).dimensions(EntityDimensions.changing(8f, 3f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<BlackflameSnakeEntity> BLACKFLAME_SNAKE_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "blackflame_snake_entity"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, BlackflameSnakeEntity::new).dimensions(EntityDimensions.fixed(2f, 2f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<NoDragWitherSkull> NO_DRAG_WITHER_SKULL = registerEntity("no_drag_wither_skull", FabricEntityTypeBuilder.create(SpawnGroup.MISC, NoDragWitherSkull::new).dimensions(EntityDimensions.fixed(0.3125f, 0.3125f)).trackRangeChunks(15).trackedUpdateRate(20).build());
+    public static final EntityType<NightProwlerGoal.DeathSpiralEntity> DEATH_SPIRAL_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "death_spiral"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, NightProwlerGoal.DeathSpiralEntity::new).dimensions(EntityDimensions.fixed(2f, 2f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<NightsEdge> NIGHTS_EDGE = registerEntity("nights_edge", FabricEntityTypeBuilder.create(SpawnGroup.MISC, NightsEdge::new).dimensions(EntityDimensions.fixed(0.75f, 2f)).trackRangeChunks(6).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<NightWaveEntity> NIGHT_WAVE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "night_wave"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, NightWaveEntity::new).dimensions(EntityDimensions.fixed(3.5f, 1f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());
@@ -102,6 +110,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(WARMTH_ENTITY, WarmthEntity.createEntityAttributes());
         FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createBossAttributes());
         FabricDefaultAttributeRegistry.register(NIGHT_PROWLER, NightProwler.createBossAttributes());
+        FabricDefaultAttributeRegistry.register(NIGHTS_EDGE, NightsEdge.createAttributes());
 
         ItemRegistry.registerItem(WITHERED_DEMON_SPAWN_EGG, "withered_demon_spawn_egg");
         ItemRegistry.registerItem(ACCURSED_LORD_BOSS_SPAWN_EGG, "accursed_lord_boss_spawn_egg");

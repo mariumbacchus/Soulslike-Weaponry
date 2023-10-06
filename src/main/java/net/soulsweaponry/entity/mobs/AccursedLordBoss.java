@@ -253,16 +253,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         return SoundRegistry.DEMON_BOSS_DEATH_EVENT;
     }
 
-    public static enum AccursedLordAnimations {
-        SWORDSLAM,
-        FIREBALLS,
-        PULL,
-        HEATWAVE,
-        SPIN,
-        WITHERBALLS,
-        HAND_SLAM,
-        SPAWN,
-        DEATH,
-        IDLE
+    public enum AccursedLordAnimations {
+        SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN, DEATH, IDLE
     }
 }

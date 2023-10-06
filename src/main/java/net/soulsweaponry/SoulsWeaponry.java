@@ -66,7 +66,6 @@ public class SoulsWeaponry implements ModInitializer {
         RecipeRegistry.init();
         LOGGER.info("Successfully registered recipes!");
         PacketsServer.initServer();
-        ParticleRegistry.init();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);

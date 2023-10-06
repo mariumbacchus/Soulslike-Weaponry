@@ -62,6 +62,13 @@ public class SoundRegistry {
     public static SoundEvent DAY_STALKER_PULL = registerSound("day_stalker_pull");
     public static SoundEvent HARD_BOSS_DEATH_SHORT = registerSound("hard_boss_death_short");
     public static SoundEvent HARD_BOSS_DEATH_LONG = registerSound("hard_boss_death_long");
+    public static SoundEvent SCYTHE_SWIPE = registerSound("scythe_swipe");
+    public static SoundEvent NIGHT_SKULL_DIE = registerSound("night_skull_die");
+    public static SoundEvent ENGULF = registerSound("engulf");
+    public static SoundEvent NIGHT_PROWLER_SCREAM = registerSound("night_prowler_scream");
+    public static SoundEvent PARTNER_DIES = registerSound("partner_dies");
+    public static SoundEvent DARKNESS_RISE = registerSound("darkness_rise");
+    public static SoundEvent TRINITY = registerSound("trinity");
 
 	public static Identifier registerId(String name) {
 		return new Identifier(SoulsWeaponry.ModId + ":" + name);

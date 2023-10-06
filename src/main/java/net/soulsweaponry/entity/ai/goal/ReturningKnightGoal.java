@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
-import net.soulsweaponry.entity.mobs.EvilRemnant;
+import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
@@ -127,7 +127,7 @@ public class ReturningKnightGoal extends Goal {
                     int enemyNumber = this.boss.getRandom().nextInt(5 - 2) + 2;
                     int healerNumber = this.boss.getRandom().nextInt(3 - 1) + 1;
                     for (int j = 0; j < enemyNumber; j++) {
-                        EvilRemnant entity = new EvilRemnant(EntityRegistry.REMNANT, this.boss.world);    
+                        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
                         this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getBlockY() - 3, this.boss.getBlockZ() + this.boss.getRandom().nextInt(32) - 16);
                         if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
                         //entity.setOwner(null);

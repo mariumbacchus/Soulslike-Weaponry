@@ -105,7 +105,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
     }
 
     public boolean isWaiting() {
-        return (Boolean)this.getDataTracker().get(WAITING);
+        return this.getDataTracker().get(WAITING);
     }
 
     public int getDuration() {
@@ -125,7 +125,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
                 return;
             }
             int points = MathHelper.floor(this.getRadius() * 6.7f);
-            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, ParticleTypes.DRAGON_BREATH, this.random);
+            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();
