@@ -1,6 +1,9 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -13,7 +16,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -41,8 +43,9 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
     @Nullable
     private UUID ownerUuid;
     private int warmup;
-    public int maxTicks = 20;
+    public int maxTicks = 15;
     private int ticksLeft = maxTicks;
+    private float damage = 15f;
     private boolean startedAttack;
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(NightsEdge.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -133,7 +136,11 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
     }
 
     private float getDamage() {
-        return 15.69f * ConfigConstructor.night_prowler_damage_modifier;
+        return this.damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     @Override
@@ -159,12 +166,16 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
         if (nbt.containsUuid("Owner")) {
             this.ownerUuid = nbt.getUuid("Owner");
         }
+        if (nbt.contains("Damage")) {
+            this.damage = nbt.getFloat("Damage");
+        }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("Warmup", this.warmup);
+        nbt.putFloat("Damage", this.damage);
         if (this.ownerUuid != null) {
             nbt.putUuid("Owner", this.ownerUuid);
         }

@@ -446,6 +446,13 @@ public class WeaponUtil {
             }
             case KEYBIND_ABILITY -> tooltip.add(new TranslatableText("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY)
                     .append(KeyBindRegistry.keybindAbility.getBoundKeyLocalizedText()));
+            case NIGHTS_EDGE -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.nights_edge").formatted(Formatting.DARK_PURPLE));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.nights_edge_description_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.nights_edge_description_2").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.nights_edge_description_3").formatted(Formatting.GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
         }
     }
 
@@ -457,6 +464,6 @@ public class WeaponUtil {
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
-        KEYBIND_ABILITY
+        KEYBIND_ABILITY, NIGHTS_EDGE
     }
 }
