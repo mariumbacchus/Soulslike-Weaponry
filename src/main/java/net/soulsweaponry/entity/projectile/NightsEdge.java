@@ -38,8 +38,9 @@ public class NightsEdge extends PathAwareEntity implements GeoEntity {
     @Nullable
     private UUID ownerUuid;
     private int warmup;
-    public int maxTicks = 20;
+    public int maxTicks = 15;
     private int ticksLeft = maxTicks;
+    private float damage = 15f;
     private boolean startedAttack;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(NightsEdge.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -130,7 +131,11 @@ public class NightsEdge extends PathAwareEntity implements GeoEntity {
     }
 
     private float getDamage() {
-        return 15.69f * ConfigConstructor.night_prowler_damage_modifier;
+        return this.damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     @Override
@@ -156,12 +161,16 @@ public class NightsEdge extends PathAwareEntity implements GeoEntity {
         if (nbt.containsUuid("Owner")) {
             this.ownerUuid = nbt.getUuid("Owner");
         }
+        if (nbt.contains("Damage")) {
+            this.damage = nbt.getFloat("Damage");
+        }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("Warmup", this.warmup);
+        nbt.putFloat("Damage", this.damage);
         if (this.ownerUuid != null) {
             nbt.putUuid("Owner", this.ownerUuid);
         }
