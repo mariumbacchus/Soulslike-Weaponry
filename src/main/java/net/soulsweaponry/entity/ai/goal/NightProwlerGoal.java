@@ -92,7 +92,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     private void checkAndSetAttack(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         int rand = this.boss.getRandom().nextInt(NightProwler.ATTACKS_LENGTH);
-        NightProwler.Attacks attack = NightProwler.Attacks.TRINITY;//NightProwler.Attacks.values()[rand];
+        NightProwler.Attacks attack = NightProwler.Attacks.RIPPLE_FANG;//NightProwler.Attacks.values()[rand];
         switch (attack) {
             case TRINITY -> {
                 if (this.isInMeleeRange(target) || this.boss.isFlying()) {
@@ -565,6 +565,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE, this.boss.getWorld());
                 edge.setOwner(this.boss);
                 edge.setWarmup(warmup);
+                edge.setDamage(this.getModifiedDamage(15.69f));
                 edge.setYaw(yaw * 57.295776F);
                 edge.setPos(x, (double)blockPos.getY() + d, z);
                 this.boss.getWorld().spawnEntity(edge);

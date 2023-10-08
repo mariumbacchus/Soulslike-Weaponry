@@ -42,6 +42,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_holy_moonlight_sword = false;
     @Entry public static boolean disable_recipe_master_sword = false;
     @Entry public static boolean disable_recipe_frostmourne = true;
+    @Entry public static boolean disable_recipe_nights_edge = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -150,6 +151,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
+    @Entry public static int nights_edge_weapon_damage = 9;
+    @Entry public static int nights_edge_ability_cooldown = 120;
+    @Entry public static float nights_edge_ability_damage = 10f;
     @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 2;
     @Entry public static int shadow_assassin_scythe_shadow_step_ticks = 60;
     @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 100;
