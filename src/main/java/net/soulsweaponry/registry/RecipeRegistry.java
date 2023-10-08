@@ -56,6 +56,7 @@ public class RecipeRegistry {
     public static JsonObject HOLY_MOONLIGHT_SWORD_RECIPE = null;
     public static JsonObject MASTER_SWORD_RECIPE = null;
     public static JsonObject FROSTMOURNE_RECIPE = null;
+    public static JsonObject NIGHTS_EDGE_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -569,6 +570,23 @@ public class RecipeRegistry {
                                 "Y# "
                         ), new Identifier(ModId, "frostmourne"));
                 registerAndBookLordSoul(FROSTMOURNE_RECIPE, "frostmourne", ConfigConstructor.disable_recipe_frostmourne);
+            }
+            if (!ConfigConstructor.disable_recipe_nights_edge) {
+                NIGHTS_EDGE_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('/', 'X', 'Y', '#'),
+                        Lists.newArrayList(
+                                new Identifier("stick"),
+                                new Identifier(ModId, "moonstone"),
+                                new Identifier(ModId, "lord_soul_night_prowler"),
+                                new Identifier(ModId, "soul_ingot")
+                        ),
+                        Lists.newArrayList("item", "item", "item", "item"),
+                        Lists.newArrayList(
+                                " XX",
+                                "#YX",
+                                "/# "
+                        ), new Identifier(ModId, "nights_edge_item"));
+                registerAndAddToBook(NIGHTS_EDGE_RECIPE, "nights_edge_item", ConfigConstructor.disable_recipe_nights_edge, ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
