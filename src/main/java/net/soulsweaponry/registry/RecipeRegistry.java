@@ -57,6 +57,7 @@ public class RecipeRegistry {
     public static JsonObject MASTER_SWORD_RECIPE = null;
     public static JsonObject FROSTMOURNE_RECIPE = null;
     public static JsonObject NIGHTS_EDGE_RECIPE = null;
+    public static JsonObject EMPOWERED_DAWNBREAKER_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -587,6 +588,13 @@ public class RecipeRegistry {
                                 "/# "
                         ), new Identifier(ModId, "nights_edge_item"));
                 registerAndAddToBook(NIGHTS_EDGE_RECIPE, "nights_edge_item", ConfigConstructor.disable_recipe_nights_edge, ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
+            }
+            if (!ConfigConstructor.disable_recipe_empowered_dawnbreaker) {
+                EMPOWERED_DAWNBREAKER_RECIPE = JsonCreator.createSmithingRecipeJson(
+                        "item", new Identifier(ModId, "dawnbreaker"),
+                        "item", new Identifier(ModId, "lord_soul_day_stalker"),
+                        new Identifier(ModId, "empowered_dawnbreaker"));
+                registerAndAddToBook(EMPOWERED_DAWNBREAKER_RECIPE, "empowered_dawnbreaker", ConfigConstructor.disable_recipe_empowered_dawnbreaker, ItemRegistry.LORD_SOUL_DAY_STALKER);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {

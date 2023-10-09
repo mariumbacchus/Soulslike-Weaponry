@@ -43,6 +43,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_master_sword = false;
     @Entry public static boolean disable_recipe_frostmourne = true;
     @Entry public static boolean disable_recipe_nights_edge = false;
+    @Entry public static boolean disable_recipe_empowered_dawnbreaker = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -84,6 +85,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
     @Entry(min=0,max=1) public static double dawnbreaker_ability_chance_modifier = 0.0D;
     @Entry public static boolean dawnbreaker_affect_all_entities = false;
+    @Entry public static int empowered_dawnbreaker_damage = 10;
+    @Entry public static float empowered_dawnbreaker_ability_damage = 15f;
+    @Entry public static int empowered_dawnbreaker_ability_cooldown = 180;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
     @Entry public static int dragonslayer_swordspear_damage = 8;
@@ -151,7 +155,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
-    @Entry public static int nights_edge_weapon_damage = 9;
+    @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static int nights_edge_ability_cooldown = 120;
     @Entry public static float nights_edge_ability_damage = 10f;
     @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 2;
