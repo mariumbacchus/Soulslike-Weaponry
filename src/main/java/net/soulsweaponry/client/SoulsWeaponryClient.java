@@ -58,6 +58,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.MJOLNIR, new MjolnirItemRenderer());
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.FREYR_SWORD, new FreyrSwordItemRenderer());
         GeoItemRenderer.registerItemRenderer(WeaponRegistry.DRAUPNIR_SPEAR, new DraupnirSpearItemRenderer());
+        GeoItemRenderer.registerItemRenderer(WeaponRegistry.EMPOWERED_DAWNBREAKER, new EmpoweredDawnbreakerRenderer());
 
         //Armor
         GeoArmorRenderer.registerArmorRenderer(new ChaosSetRenderer(), ItemRegistry.CHAOS_CROWN);
