@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -43,5 +44,10 @@ public class InvisibleEntity extends PersistentProjectileEntity {
     @Override
     protected ItemStack asItemStack() {
         return null;
+    }
+
+    @Override
+    protected boolean tryPickup(PlayerEntity player) {
+        return false;
     }
 }

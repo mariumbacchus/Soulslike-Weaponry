@@ -124,6 +124,7 @@
     "item.soulsweapons.frostmourne": "Frostmourne",
     "item.soulsweapons.master_sword": "Master Sword",
     "item.soulsweapons.nights_edge_item": "Night's Edge",
+    "item.soulsweapons.empowered_dawnbreaker": "Genesis Fracture",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -195,6 +196,7 @@
     "entity.soulsweapons.death_spiral": "Death Spiral",
     "entity.soulsweapons.nights_edge": "Night's Edge",
     "entity.soulsweapons.night_wave": "Night Wave",
+    "entity.soulsweapons.flame_pillar": "Flame Pillar",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",
@@ -497,9 +499,12 @@
     "tooltip.soulsweapons.skyward_strikes_description_1": "- While at full §cHealth§r, use to",
     "tooltip.soulsweapons.skyward_strikes_description_2": "shoot strong §3Moonlight Beams§r.",
     "tooltip.soulsweapons.nights_edge": "§cEdge§r of §3Night§r",
-    "tooltip.soulsweapons.nights_edge_description_1": "- Use to summon a line of §dEdges of Night§r",
+    "tooltip.soulsweapons.nights_edge_description_1": "- Use to summon a line of §dEdges of Night§r.",
     "tooltip.soulsweapons.nights_edge_description_2": "- Press keybind to summon a circle of",
-    "tooltip.soulsweapons.nights_edge_description_3": "§dEdges of Night§r around yourself",
+    "tooltip.soulsweapons.nights_edge_description_3": "§dEdges of Night§r around yourself.",
+    "tooltip.soulsweapons.chaos_storm": "Chaos Storm",
+    "tooltip.soulsweapons.chaos_storm_description_1": "- Charge sword to unleash §cFlame Pillars§r",
+    "tooltip.soulsweapons.chaos_storm_description_2": "randomly around you.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",
