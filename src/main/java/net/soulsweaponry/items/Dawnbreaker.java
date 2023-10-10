@@ -38,64 +38,13 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Dawnbreaker extends SwordItem implements GeoItem {
+public class Dawnbreaker extends AbstractDawnbreaker {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     
     public Dawnbreaker(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.dawnbreaker_damage, attackSpeed, settings);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-        target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        if (target.isUndead() || ConfigConstructor.dawnbreaker_affect_all_entities) {
-            if (target.isDead()) {
-                if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
-                    double chance = ConfigConstructor.dawnbreaker_ability_chance_modifier + 1 - (Math.pow(.75, (double)target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
-                    double random = target.getRandom().nextDouble();
-                    if (random < chance) {
-                        if (!attacker.world.isClient) {
-                            if (attacker instanceof ServerPlayerEntity) {
-                                BlockPos pos = target.getBlockPos();
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, pos);
-                            }
-                        }
-                        target.world.playSound(
-                            null,
-                            target.getBlockPos(),
-                            SoundRegistry.DAWNBREAKER_EVENT,
-                            SoundCategory.HOSTILE,
-                            2f,
-                            1f
-                        );
-                        Box aoe = target.getBoundingBox().expand(10);
-                        List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
-                        boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
-                        for (Entity entity : entities) {
-                            if (entity instanceof LivingEntity targetHit) {
-                                if (targetHit.isUndead() || bl) {
-                                    if (!targetHit.equals(attacker)) {
-                                        targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.damage(DamageSource.mob(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
-                int amplifier = target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier();
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, amplifier + 1));
-            } else {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack)));
-            }
-        }
-        return true;
     }
 
     @Override
@@ -108,9 +57,6 @@ public class Dawnbreaker extends SwordItem implements GeoItem {
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

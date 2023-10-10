@@ -111,10 +111,14 @@ public class NightsEdge extends PathAwareEntity implements GeoEntity {
         LivingEntity livingEntity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && target != livingEntity) {
             if (livingEntity == null) {
-                target.damage(DamageSource.MAGIC, this.getDamage());
+                if (target.damage(DamageSource.MAGIC, this.getDamage())) {
+                    target.addVelocity(0, 0.5f, 0);
+                }
             } else {
                 if (!livingEntity.isTeammate(target)) {
-                    target.damage(DamageSource.magic(this, livingEntity), this.getDamage());
+                    if (target.damage(DamageSource.magic(this, livingEntity), this.getDamage())) {
+                        target.addVelocity(0, 0.5f, 0);
+                    }
                 }
             }
         }
