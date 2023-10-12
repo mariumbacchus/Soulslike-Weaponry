@@ -220,6 +220,7 @@
     "effect.soulsweapons.disable_heal": "Cursed Wounds",
     "effect.soulsweapons.bleed": "Bleed",
     "effect.soulsweapons.calculated_fall": "Calculated Fall",
+    "effect.soulsweapons.veil_of_fire": "Veil of Fire",
 
     "item.minecraft.potion.effect.warding": "Potion of Magical Warding",
     "item.minecraft.splash_potion.effect.warding": "Splash Potion of Magical Warding",
@@ -503,6 +504,10 @@
     "tooltip.soulsweapons.chaos_storm": "Chaos Storm",
     "tooltip.soulsweapons.chaos_storm_description_1": "- Charge sword to unleash §cFlame Pillars§r",
     "tooltip.soulsweapons.chaos_storm_description_2": "randomly around you.",
+    "tooltip.soulsweapons.veil_of_fire": "Veil of Fire",
+    "tooltip.soulsweapons.veil_of_fire_description_1": "- Press ability keybind to unleash §dMeridia's Retribution§r",
+    "tooltip.soulsweapons.veil_of_fire_description_2": "and apply §6Veil of Fire§r effect on yourself that will",
+    "tooltip.soulsweapons.veil_of_fire_description_3": "continuously apply fire damage to nearby mobs.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",

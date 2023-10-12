@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.mob.MobEntity;
+import net.soulsweaponry.entity.mobs.BossEntity;
 
 public class Fear extends StatusEffect {
     int destinationReset;
@@ -24,11 +25,11 @@ public class Fear extends StatusEffect {
          }
     }
 
+    //TODO rework
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         this.destinationReset--;
-        if (entity instanceof MobEntity) {
-            MobEntity victim = (MobEntity)entity;
+        if (!(entity instanceof BossEntity) && entity instanceof MobEntity victim) {
             if (destinationReset < 0) {
                 this.x = victim.getX() + victim.getRandom().nextInt(25 - (-25)) + 25;
                 this.z = victim.getZ() + victim.getRandom().nextInt(25 - (-25)) + 25;

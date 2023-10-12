@@ -35,6 +35,7 @@ public class NightsEdgeItem extends SwordItem implements IKeybindAbility {
     public NightsEdgeItem(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, attackSpeed, settings);
     }
+    //TODO add another ability (more lowkey one) since empowered dawnbreaker has two
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {

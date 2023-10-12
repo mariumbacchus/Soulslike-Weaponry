@@ -458,6 +458,13 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_storm_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_storm_description_2").formatted(Formatting.GRAY));
             }
+            case VEIL_OF_FIRE -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.veil_of_fire").formatted(Formatting.GOLD).formatted(Formatting.BOLD));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.veil_of_fire_description_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.veil_of_fire_description_2").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.veil_of_fire_description_3").formatted(Formatting.GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
         }
     }
 
@@ -469,6 +476,6 @@ public class WeaponUtil {
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
-        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM
+        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE
     }
 }

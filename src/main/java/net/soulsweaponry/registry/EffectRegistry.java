@@ -29,6 +29,7 @@ public class EffectRegistry {
     public static final StatusEffect DISABLE_HEAL = new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d);
     public static final StatusEffect BLEED = new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xba0c00);
     public static final StatusEffect CALCULATED_FALL = new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff);
+    public static final StatusEffect VEIL_OF_FIRE = registerEffect(new VeilOfFire(), "veil_of_fire");
 
     public static final Potion WARDING = new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000));
     public static final Potion STRONG_WARDING = new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1));
