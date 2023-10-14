@@ -39,12 +39,6 @@ public class SkofnungStone extends Item {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-
-        /* if (user.hasStatusEffect(EffectRegistry.DISABLE_HEAL)) {
-            user.removeStatusEffect(EffectRegistry.DISABLE_HEAL);
-            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-            shouldDamage = true;
-        } */
         for (StatusEffect effect : this.harmfulEffects()) {
             if (user.hasStatusEffect(effect)) {
                 user.removeStatusEffect(effect);
@@ -72,7 +66,7 @@ public class SkofnungStone extends Item {
     }
 
     public StatusEffect[] harmfulEffects() {
-        return new StatusEffect[]{
+        return new StatusEffect[] {
             StatusEffects.BLINDNESS,
             StatusEffects.DARKNESS,
             StatusEffects.HUNGER,
@@ -92,6 +86,7 @@ public class SkofnungStone extends Item {
             EffectRegistry.FREEZING,
             EffectRegistry.DECAY,
             EffectRegistry.RETRIBUTION,
+            EffectRegistry.BLIGHT,
         };
     }
 }

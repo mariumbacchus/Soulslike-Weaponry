@@ -2,23 +2,29 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.FlamePillar;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -34,7 +40,7 @@ import java.util.function.Supplier;
 /**
  * Also known as "Genesis Fracture"
  */
-public class EmpoweredDawnbreaker extends AbstractDawnbreaker {
+public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -99,6 +105,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHAOS_STORM, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VEIL_OF_FIRE, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
@@ -135,5 +142,34 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker {
     @Override
     public int getMaxUseTime(ItemStack stack) {
         return 72000;
+    }
+
+    @Override
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (!player.getItemCooldownManager().isCoolingDown(this)) {
+            AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
+            player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
+        }
+        /*
+        NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little
+        too laggy with the particles from the explosion.
+        double phi = Math.PI * (3. - Math.sqrt(5.));
+        float points = 90;
+        for (int i = 0; i < points; i++) {
+            double y = 1 - (i/(points - 1)) * 2;
+            double radius = Math.sqrt(1 - y*y);
+            double theta = phi * i;
+            double x = Math.cos(theta) * radius;
+            double z = Math.sin(theta) * radius;
+            AgingSmallFireball entity = new AgingSmallFireball(world, player, x, y, z);
+            entity.setPos(player.getX(), player.getEyeY(), player.getZ());
+            world.spawnEntity(entity);
+        }
+         */
+    }
+
+    @Override
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 }
