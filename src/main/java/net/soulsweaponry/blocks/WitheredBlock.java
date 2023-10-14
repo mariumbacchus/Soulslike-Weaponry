@@ -24,18 +24,18 @@ public class WitheredBlock extends Block {
 
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
-    private Block replacedBlock;
+    private final Block replacedBlock;
 
     public WitheredBlock(Settings settings, Block replacedBlock) {
         super(settings);
         this.replacedBlock = replacedBlock;
-        this.setDefaultState((BlockState)((BlockState)this.stateManager.getDefaultState()).with(AGE, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(AGE, 0));
     }
 
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 40, 0));
+        if (entity instanceof LivingEntity living) {
+            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 40, 0));
         }
         super.onSteppedOn(world, pos, state, entity);
     }
@@ -57,7 +57,7 @@ public class WitheredBlock extends Block {
         if ((random.nextInt(3) == 0 || this.canTurn(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             for (Direction direction : Direction.values()) {
-                mutable.set((Vec3i)pos, direction);
+                mutable.set(pos, direction);
                 BlockState blockState = world.getBlockState(mutable);
                 if (!blockState.isOf(this) || this.increaseAge(blockState, world, mutable)) continue;
                 world.createAndScheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
@@ -70,7 +70,7 @@ public class WitheredBlock extends Block {
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {
         int i = state.get(AGE);
         if (i < 3) {
-            world.setBlockState(pos, (BlockState)state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
         this.turnBack(state, world, pos);

@@ -42,24 +42,7 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
                     double chance = ConfigConstructor.dawnbreaker_ability_chance_modifier + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
                     double random = target.getRandom().nextDouble();
                     if (random < chance) {
-                        if (!attacker.world.isClient && attacker instanceof ServerPlayerEntity) {
-                            ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, target.getBlockPos());
-                        }
-                        target.world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
-                        Box aoe = target.getBoundingBox().expand(10);
-                        List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
-                        boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
-                        for (Entity entity : entities) {
-                            if (entity instanceof LivingEntity targetHit) {
-                                if (targetHit.isUndead() || bl) {
-                                    if (!targetHit.equals(attacker)) {
-                                        targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.damage(DamageSource.explosion(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                                        targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
-                                    }
-                                }
-                            }
-                        }
+                        AbstractDawnbreaker.dawnbreakerEvent(target, attacker, stack);
                     }
                 }
             }
@@ -71,5 +54,32 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
             }
         }
         return super.postHit(stack, target, attacker);
+    }
+
+    /**
+     * Excecutes the dawnbreaker explosion.
+     * @param target the position of where the explosion and sound will come from the target's position
+     * @param attacker damage and effects will not apply to attacker
+     * @param stack used to gather damage buffs
+     */
+    public static void dawnbreakerEvent(LivingEntity target, LivingEntity attacker, ItemStack stack) {
+        if (!attacker.world.isClient && attacker instanceof ServerPlayerEntity) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, target.getBlockPos());
+        }
+        target.world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
+        Box aoe = target.getBoundingBox().expand(10);
+        List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
+        boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
+        for (Entity entity : entities) {
+            if (entity instanceof LivingEntity targetHit) {
+                if (targetHit.isUndead() || bl) {
+                    if (!targetHit.equals(attacker)) {
+                        targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                        targetHit.damage(DamageSource.explosion(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                        targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
+                    }
+                }
+            }
+        }
     }
 }

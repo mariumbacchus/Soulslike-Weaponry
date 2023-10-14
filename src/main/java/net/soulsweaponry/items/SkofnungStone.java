@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.effect.StatusEffect;
@@ -12,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -20,6 +17,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.List;
 
 public class SkofnungStone extends Item {
 
@@ -40,12 +39,6 @@ public class SkofnungStone extends Item {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-
-        /* if (user.hasStatusEffect(EffectRegistry.DISABLE_HEAL)) {
-            user.removeStatusEffect(EffectRegistry.DISABLE_HEAL);
-            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-            shouldDamage = true;
-        } */
         for (StatusEffect effect : this.harmfulEffects()) {
             if (user.hasStatusEffect(effect)) {
                 user.removeStatusEffect(effect);
@@ -73,7 +66,7 @@ public class SkofnungStone extends Item {
     }
 
     public StatusEffect[] harmfulEffects() {
-        StatusEffect[] arr = {
+        return new StatusEffect[]{
             StatusEffects.BLINDNESS,
             StatusEffects.DARKNESS,
             StatusEffects.HUNGER,
@@ -93,7 +86,7 @@ public class SkofnungStone extends Item {
             EffectRegistry.FREEZING,
             EffectRegistry.DECAY,
             EffectRegistry.RETRIBUTION,
+            EffectRegistry.BLIGHT,
         };
-        return arr;
     }
 }
