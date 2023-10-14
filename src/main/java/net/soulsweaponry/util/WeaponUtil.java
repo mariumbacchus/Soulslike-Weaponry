@@ -398,8 +398,7 @@ public class WeaponUtil {
             }
             case IS_SHARPENED -> {
                 if (Skofnung.isEmpowered(stack)) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA));
-                    tooltip.add(Text.literal(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA).append(Text.literal(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA)));
                 }
             }
             case DISABLE_DEBUFS -> {
