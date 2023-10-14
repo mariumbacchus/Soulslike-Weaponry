@@ -5,6 +5,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -23,6 +24,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
@@ -35,16 +37,30 @@ public class NightsEdgeItem extends SwordItem implements IKeybindAbility {
     public NightsEdgeItem(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, attackSpeed, settings);
     }
-    //TODO add another ability (more lowkey one) since empowered dawnbreaker has two
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLIGHT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (target.hasStatusEffect(EffectRegistry.BLIGHT)) {
+            int amp = target.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier();
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, 60, amp + 1));
+            if (amp >= 10) {
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 80, 0));
+            }
+        } else {
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, 60, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
+        }
+        return super.postHit(stack, target, attacker);
     }
 
     @Override

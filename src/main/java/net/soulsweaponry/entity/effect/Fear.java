@@ -25,7 +25,6 @@ public class Fear extends StatusEffect {
          }
     }
 
-    //TODO rework
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         this.destinationReset--;

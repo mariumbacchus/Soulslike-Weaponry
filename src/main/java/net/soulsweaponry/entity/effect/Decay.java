@@ -49,16 +49,12 @@ public class Decay extends StatusEffect {
                 for (EquipmentSlot slot : slots) {
                     ItemStack stack = player.getEquippedStack(slot);
                     if (!stack.isOf(ItemRegistry.CHAOS_ROBES)) {
-                        stack.damage(amplifier + 1, player, (p_220045_0_) -> {
-                            p_220045_0_.sendEquipmentBreakStatus(slot);
-                        });
+                        stack.damage(amplifier + 1, player, (p_220045_0_) -> p_220045_0_.sendEquipmentBreakStatus(slot));
                     }
                 }
             } else {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, amplifier));
             }
-        } else if (!(entity instanceof BossEntity)) {
-            entity.damage(DamageSource.WITHER, amplifier*2 + 2);
         }
     }
 }

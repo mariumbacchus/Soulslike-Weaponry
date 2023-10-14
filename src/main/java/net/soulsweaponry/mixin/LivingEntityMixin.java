@@ -59,6 +59,13 @@ public abstract class LivingEntityMixin {
             if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
             if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE) && entity.getStatusEffect(StatusEffects.MINING_FATIGUE).getDuration() < 100) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
         }
+        if (entity.hasStatusEffect(EffectRegistry.BLIGHT) && entity.getArmor() > 0) {
+            int amplifier = entity.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier() + 1; // ln(0) does not end well!
+            int armorValue = entity.getArmor();
+            // Original value increases in % based on f(x) = (ln(x) * y) / 8, where x is the amplifier level, y is the armor of the target.
+            double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
+            newAmount += increase;
+        }
         info.setReturnValue(newAmount);
     }
 

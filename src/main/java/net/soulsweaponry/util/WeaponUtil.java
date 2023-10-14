@@ -400,8 +400,7 @@ public class WeaponUtil {
             }
             case IS_SHARPENED -> {
                 if (Skofnung.isEmpowered(stack)) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA));
-                    tooltip.add(new LiteralText(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA).append(new LiteralText(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA)));
                 }
             }
             case DISABLE_DEBUFS -> {
@@ -465,6 +464,13 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.veil_of_fire_description_3").formatted(Formatting.GRAY));
                 WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
+            case BLIGHT -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.blight").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.BOLD));
+                for (int i = 1; i <= 5; i++) {
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.blight_description_" + i).formatted(Formatting.GRAY));
+                }
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.blight_description_6").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            }
         }
     }
 
@@ -476,6 +482,6 @@ public class WeaponUtil {
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
-        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE
+        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT
     }
 }

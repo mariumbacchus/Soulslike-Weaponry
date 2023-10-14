@@ -7,57 +7,44 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
+import net.soulsweaponry.mixin.BrewingRecipeRegistryInvoker;
 import net.soulsweaponry.util.CustomDamageSource;
 
 public class EffectRegistry {
 
-    public static final StatusEffect HALLOWED_DRAGON_MIST = new HallowedDragonMist();
-    public static final StatusEffect BLOODTHIRSTY = new DefaultStatusEffect(StatusEffectCategory.NEUTRAL, 0x630109);
-    public static final StatusEffect POSTURE_BREAK = new PostureBreak();
-    public static final StatusEffect LIFE_LEACH = new LifeLeach();
-    public static final StatusEffect RETRIBUTION = new Retribution();
-    public static final StatusEffect FEAR = new Fear();
-    public static final StatusEffect DECAY = new Decay();
-    public static final StatusEffect MAGIC_RESISTANCE = new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff);
-    public static final StatusEffect MOON_HERALD = new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x03e8fc);
-    public static final StatusEffect FREEZING = new Freezing();
-    public static final StatusEffect DISABLE_HEAL = new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d);
-    public static final StatusEffect BLEED = new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xba0c00);
-    public static final StatusEffect CALCULATED_FALL = new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff);
+    public static final StatusEffect HALLOWED_DRAGON_MIST = registerEffect(new HallowedDragonMist(), "hallowed_dragon_mist");
+    public static final StatusEffect BLOODTHIRSTY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.NEUTRAL, 0x630109), "bloodthirsty");
+    public static final StatusEffect POSTURE_BREAK = registerEffect(new PostureBreak(), "posture_break");
+    public static final StatusEffect LIFE_LEACH = registerEffect(new LifeLeach(), "life_leach");
+    public static final StatusEffect RETRIBUTION = registerEffect(new Retribution(), "retribution");
+    public static final StatusEffect FEAR = registerEffect(new Fear(), "fear");
+    public static final StatusEffect DECAY = registerEffect(new Decay(), "decay");
+    public static final StatusEffect MAGIC_RESISTANCE = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff), "magic_resistance");
+    public static final StatusEffect MOON_HERALD = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x03e8fc), "moon_herald");
+    public static final StatusEffect FREEZING = registerEffect(new Freezing(), "freezing");
+    public static final StatusEffect DISABLE_HEAL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d), "disable_heal");
+    public static final StatusEffect BLEED = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xba0c00), "bleed");
+    public static final StatusEffect CALCULATED_FALL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff), "calculated_fall");
     public static final StatusEffect VEIL_OF_FIRE = registerEffect(new VeilOfFire(), "veil_of_fire");
+    public static final StatusEffect BLIGHT = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c), "blight");
 
-    public static final Potion WARDING = new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000));
-    public static final Potion STRONG_WARDING = new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1));
-    public static final Potion LONG_WARDING = new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000));
+    public static final Potion WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
+    public static final Potion STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
+    public static final Potion LONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000)), "long_warding");
+    public static final Potion TAINTED_AMBROSIA = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0)), "tainted_ambrosia");
 
     public static void init() {
-        registerEffect(HALLOWED_DRAGON_MIST, "hallowed_dragon_mist");
-        registerEffect(BLOODTHIRSTY, "bloodthirsty");
-        registerEffect(POSTURE_BREAK, "posture_break");
-        registerEffect(LIFE_LEACH, "life_leach");
-        registerEffect(RETRIBUTION, "retribution");
-        registerEffect(FEAR, "fear");
-        registerEffect(DECAY, "decay");
-        registerEffect(MAGIC_RESISTANCE, "magic_resistance");
-        registerEffect(MOON_HERALD, "moon_herald");
-        registerEffect(FREEZING, "freezing");
-        registerEffect(DISABLE_HEAL, "disable_heal");
-        registerEffect(BLEED, "bleed");
-        registerEffect(CALCULATED_FALL, "calculated_fall");
-
-        registerPotion(WARDING, "warding");
-        registerPotion(STRONG_WARDING, "strong_warding");
-        registerPotion(LONG_WARDING, "long_warding");
-
-        /* BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.asItem(), WARDING);
-        BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), WARDING);
-        BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.GLOWSTONE_DUST, STRONG_WARDING);
-        BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING); */
+        BrewingRecipeRegistryInvoker.invokeRegisterPotionRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.asItem(), EffectRegistry.WARDING);
+        BrewingRecipeRegistryInvoker.invokeRegisterPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), EffectRegistry.TAINTED_AMBROSIA);
+        BrewingRecipeRegistryInvoker.invokeRegisterPotionRecipe(EffectRegistry.WARDING, Items.GLOWSTONE_DUST, EffectRegistry.STRONG_WARDING);
+        BrewingRecipeRegistryInvoker.invokeRegisterPotionRecipe(EffectRegistry.WARDING, Items.REDSTONE, EffectRegistry.LONG_WARDING);
     }
 
     public static <I extends StatusEffect> I registerEffect(I effect, String name) {

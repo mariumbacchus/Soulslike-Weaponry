@@ -13,7 +13,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -41,12 +40,6 @@ public class SkofnungStone extends Item {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-
-        /* if (user.hasStatusEffect(EffectRegistry.DISABLE_HEAL)) {
-            user.removeStatusEffect(EffectRegistry.DISABLE_HEAL);
-            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-            shouldDamage = true;
-        } */
         for (StatusEffect effect : this.harmfulEffects()) {
             if (user.hasStatusEffect(effect)) {
                 user.removeStatusEffect(effect);
@@ -74,7 +67,7 @@ public class SkofnungStone extends Item {
     }
 
     public StatusEffect[] harmfulEffects() {
-        StatusEffect[] arr = {
+        return new StatusEffect[]{
             StatusEffects.BLINDNESS,
             StatusEffects.HUNGER,
             StatusEffects.INSTANT_DAMAGE,
@@ -93,7 +86,7 @@ public class SkofnungStone extends Item {
             EffectRegistry.FREEZING,
             EffectRegistry.DECAY,
             EffectRegistry.RETRIBUTION,
+            EffectRegistry.BLIGHT,
         };
-        return arr;
     }
 }

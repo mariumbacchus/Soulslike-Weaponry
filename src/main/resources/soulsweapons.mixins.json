@@ -7,7 +7,6 @@
     "ArrowProjectileMixin",
     "BowItemMixin",
     "BrewingRecipeRegistryInvoker",
-    "BrewingRecipeRegistryMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
