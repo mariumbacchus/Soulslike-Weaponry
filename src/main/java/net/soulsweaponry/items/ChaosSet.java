@@ -45,9 +45,9 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 public class ChaosSet extends ArmorItem implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
-    private HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
-    private HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
+    private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
+    private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
     
     public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
         super(material, slot, settings);
@@ -66,13 +66,19 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
+        if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
             }
             if (this.isRobesEquipped(player)) {
                 this.turnBlocks(player, world, player.getBlockPos(), 0);
+                if (player.age % 40 == 0) {
+                    for (LivingEntity target : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(3D))) {
+                        if (!(target instanceof PlayerEntity) && target != player) {
+                            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 1));
+                        }
+                    }
+                }
             }
             if (this.isChestActive(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
@@ -170,6 +176,8 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
             } else if (stack.isOf(ItemRegistry.ARKENPLATE)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
