@@ -398,8 +398,7 @@ public class WeaponUtil {
             }
             case IS_SHARPENED -> {
                 if (Skofnung.isEmpowered(stack)) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA));
-                    tooltip.add(Text.literal(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.empowered").formatted(Formatting.AQUA).append(Text.literal(Skofnung.empAttacksLeft(stack) + "/8").formatted(Formatting.AQUA)));
                 }
             }
             case DISABLE_DEBUFS -> {
@@ -456,6 +455,20 @@ public class WeaponUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm_description_2").formatted(Formatting.GRAY));
             }
+            case VEIL_OF_FIRE -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire").formatted(Formatting.GOLD).formatted(Formatting.BOLD));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_3").formatted(Formatting.GRAY));
+                WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
+            case BLIGHT -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.blight").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.BOLD));
+                for (int i = 1; i <= 5; i++) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.blight_description_" + i).formatted(Formatting.GRAY));
+                }
+                tooltip.add(Text.translatable("tooltip.soulsweapons.blight_description_6").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            }
         }
     }
 
@@ -467,6 +480,6 @@ public class WeaponUtil {
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
-        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM
+        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT
     }
 }
