@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
@@ -11,9 +12,11 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -163,14 +166,29 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         if (source == (this.getWorld().getDamageSources().lightningBolt())) {
             return false;
         }
+        if (source.isOf(DamageTypes.WITHER)) {
+            return false;
+        }
         return super.damage(source, amount);
     }
 
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
-        if (this.hasStatusEffect(StatusEffects.LEVITATION)) this.removeStatusEffect(StatusEffects.LEVITATION);
+        if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {
+            this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
+            for (LivingEntity target : this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(3D))) {
+                if (!(target instanceof PlayerEntity) && target != this) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 3));
+                }
+            }
+        }
+        if (this.hasStatusEffect(StatusEffects.LEVITATION)) {
+            this.removeStatusEffect(StatusEffects.LEVITATION);
+        }
+        if (this.hasStatusEffect(StatusEffects.WITHER)) {
+            this.removeStatusEffect(StatusEffects.WITHER);
+        }
         this.turnBlocks(this.getWorld(), this.getBlockPos());
     }
 

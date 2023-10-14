@@ -76,6 +76,13 @@ public class ChaosSet extends ArmorItem implements GeoItem {
             }
             if (this.isRobesEquipped(player)) {
                 this.turnBlocks(player, world, player.getBlockPos(), 0);
+                if (player.age % 40 == 0) {
+                    for (LivingEntity target : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(3D))) {
+                        if (!(target instanceof PlayerEntity) && target != player) {
+                            target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 1));
+                        }
+                    }
+                }
             }
             if (this.isChestActive(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
@@ -165,6 +172,8 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
             } else if (stack.isOf(ItemRegistry.ARKENPLATE)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));

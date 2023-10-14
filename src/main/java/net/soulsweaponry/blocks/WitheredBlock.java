@@ -22,14 +22,13 @@ import net.soulsweaponry.registry.EffectRegistry;
 
 public class WitheredBlock extends Block {
 
-    public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
     private final Block replacedBlock;
 
     public WitheredBlock(Settings settings, Block replacedBlock) {
         super(settings);
         this.replacedBlock = replacedBlock;
-        this.setDefaultState((BlockState)((BlockState)this.stateManager.getDefaultState()).with(AGE, 0));
+        this.setDefaultState(this.stateManager.getDefaultState().with(AGE, 0));
     }
 
     @Override
@@ -70,7 +69,7 @@ public class WitheredBlock extends Block {
     protected boolean increaseAge(BlockState state, World world, BlockPos pos) {
         int i = state.get(AGE);
         if (i < 3) {
-            world.setBlockState(pos, (BlockState)state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
         this.turnBack(state, world, pos);
@@ -78,7 +77,7 @@ public class WitheredBlock extends Block {
     }
 
     public void resetAge(BlockState state, World world, BlockPos pos) {
-        world.setBlockState(pos, (BlockState)state.with(AGE, 0), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos, state.with(AGE, 0), Block.NOTIFY_LISTENERS);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class WitheredBlock extends Block {
         int i = 0;
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         for (Direction direction : Direction.values()) {
-            mutable.set((Vec3i)pos, direction);
+            mutable.set(pos, direction);
             if (!world.getBlockState(mutable).isOf(this) || ++i < maxNeighbors) continue;
             return false;
         }

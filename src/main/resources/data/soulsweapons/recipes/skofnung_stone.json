@@ -1,15 +1,18 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "###",
-        "#O#",
-        "###"
+        "#C#",
+        "CDC",
+        "#C#"
     ],
     "key": {
         "#": {
             "item": "soulsweapons:lost_soul"
         },
-        "O": {
+        "C": {
+            "item": "soulsweapons:moonstone"
+        },
+        "D": {
             "item": "soulsweapons:verglas"
         }
     },
