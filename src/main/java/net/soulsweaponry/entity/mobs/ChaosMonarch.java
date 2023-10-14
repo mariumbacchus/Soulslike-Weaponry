@@ -163,6 +163,9 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         if (source == DamageSource.LIGHTNING_BOLT) {
             return false;
         }
+        if (source.equals(DamageSource.WITHER)) {
+            return false;
+        }
         return super.damage(source, amount);
     }
 
