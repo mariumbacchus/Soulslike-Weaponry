@@ -173,13 +173,16 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {
             this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
             for (LivingEntity target : this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(3D))) {
-                if (!(target instanceof PlayerEntity)) {
+                if (!(target instanceof PlayerEntity) && target != this) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 3));
                 }
             }
         }
         if (this.hasStatusEffect(StatusEffects.LEVITATION)) {
             this.removeStatusEffect(StatusEffects.LEVITATION);
+        }
+        if (this.hasStatusEffect(StatusEffects.WITHER)) {
+            this.removeStatusEffect(StatusEffects.WITHER);
         }
         this.turnBlocks(this.world, this.getBlockPos());
     }
