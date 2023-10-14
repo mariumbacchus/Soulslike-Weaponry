@@ -1,8 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.HashMap;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,23 +21,20 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.soulsweaponry.blocks.WitheredBlock;
-import net.soulsweaponry.blocks.WitheredFlower;
-import net.soulsweaponry.blocks.WitheredGrass;
-import net.soulsweaponry.blocks.WitheredTallFlower;
-import net.soulsweaponry.blocks.WitheredTallGrass;
+import net.soulsweaponry.blocks.*;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class ChaosSet extends ArmorItem implements IAnimatable {
 
@@ -146,7 +140,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
 		//LivingEntity livingEntity = event.getExtraDataOfType(LivingEntity.class).get(0);
         if (this == ItemRegistry.CHAOS_ROBES) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", EDefaultLoopTypes.LOOP));
+            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", EDefaultLoopTypes.LOOP)); Doesn't work for some reason.
         }
 		return PlayState.CONTINUE;
 	}

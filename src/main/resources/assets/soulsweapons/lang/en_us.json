@@ -390,6 +390,8 @@
     "tooltip.soulsweapons.chaos_robes": "Corruption",
     "tooltip.soulsweapons.chaos_robes_description_1": "- Equip to §5Wither§r all nearby Grass",
     "tooltip.soulsweapons.chaos_robes_description_2": "and Dirt blocks for a short duration.",
+    "tooltip.soulsweapons.chaos_robes_description_3": "- Every 2 seconds, apply §5Wither§r to",
+    "tooltip.soulsweapons.chaos_robes_description_4": "nearby non-player entities.",
     "tooltip.soulsweapons.freeze": "Frost Runes",
     "tooltip.soulsweapons.freeze_description": "- Apply §bPermafrost§r on enemies post hit.",
     "tooltip.soulsweapons.permafrost": "Icicle Explosion",
