@@ -175,5 +175,12 @@ public class PacketsServer {
                 }
             });
         });
+
+        ServerPlayNetworking.registerGlobalReceiver(PacketRegistry.POSTURE, (server, player, handler, buf, responseSender) -> server.execute(() -> {
+            ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getServerWorld()).orNull();
+            if (serverWorld != null) {
+                PostureData.syncData(PostureData.getPosture(player), player);
+            }
+        }));
     }
 }

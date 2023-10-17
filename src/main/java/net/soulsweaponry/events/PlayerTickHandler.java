@@ -5,6 +5,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.util.IEntityDataSaver;
 import net.soulsweaponry.util.ParryData;
+import net.soulsweaponry.util.PostureData;
 
 public class PlayerTickHandler implements ServerTickEvents.StartTick {
 

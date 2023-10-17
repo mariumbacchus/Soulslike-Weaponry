@@ -1,9 +1,11 @@
 package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.util.ActionResult;
 import net.soulsweaponry.entity.mobs.BossEntity;
+import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,14 +20,12 @@ import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.ParticleNetworking;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
@@ -33,39 +33,14 @@ import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
+    /*
+     * NB! Only called if the damage is bigger than 0 (decimals count)
+     */
     @Inject(method = "modifyAppliedDamage", at = @At("TAIL"), cancellable = true)
     protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         float newAmount = info.getReturnValue();
-        if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
-            float amountAdded = newAmount * ((amplifier + 1)*.2f);
-            newAmount += amountAdded;
-        }
-        if ((source.isOf(DamageTypes.INDIRECT_MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
-            float amountReduced = newAmount * ((amplifier + 1)*.2f);
-            newAmount -= amountReduced;
-        }
-        if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIndirect() && source.getAttacker() != null && source.getAttacker() instanceof LivingEntity) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
-            float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
-            float totalAdded = baseAdded * (amplifier + 1);
-            newAmount += totalAdded;
-            entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
-            entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
-            if (entity.hasStatusEffect(StatusEffects.SLOWNESS) && entity.getStatusEffect(StatusEffects.SLOWNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.SLOWNESS);
-            if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
-            if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE) && entity.getStatusEffect(StatusEffects.MINING_FATIGUE).getDuration() < 100) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
-        }
-        if (entity.hasStatusEffect(EffectRegistry.BLIGHT) && entity.getArmor() > 0) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier() + 1; // ln(0) does not end well!
-            int armorValue = entity.getArmor();
-            // Original value increases in % based on f(x) = (ln(x) * y) / 8, where x is the amplifier level, y is the armor of the target.
-            double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
-            newAmount += increase;
-        }
-        info.setReturnValue(newAmount);
+        info.setReturnValue(ModifyDamageUtil.modifyDamageTaken(entity, newAmount, source));
     }
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
@@ -123,6 +98,14 @@ public class LivingEntityMixin {
     protected void interceptGetMaxHealth(CallbackInfoReturnable<Float> infoReturnable) {
         if (((LivingEntity)(Object)this) instanceof BossEntity boss) {
             infoReturnable.setReturnValue((float) boss.getBossMaxHealth());
+        }
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"), cancellable = true)
+    private void interceptTick(CallbackInfo info) {
+        ActionResult result = LivingEntityTickCallback.EVENT.invoker().tick((LivingEntity)(Object) this);
+        if (result == ActionResult.FAIL) {
+            info.cancel();
         }
     }
 }
