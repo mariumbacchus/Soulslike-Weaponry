@@ -4,10 +4,12 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
 import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
@@ -42,11 +44,13 @@ public class SoulsWeaponryClient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);
+
+        HudRenderCallback.EVENT.register(new PostureHudOverlay());
         
         EntityModelRegistry.initClient();
         PredicateRegistry.initClient();
         PacketsClient.initClient();
         KeyBindRegistry.initClient();
-        ParticleClientRegistry.initClient();        
+        ParticleClientRegistry.initClient();
     }
 }

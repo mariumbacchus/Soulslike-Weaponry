@@ -575,7 +575,7 @@
     "enchantment.soulsweapons.visceral": "Posture Breaker",
     "enchantment.soulsweapons.visceral.desc": "Increases chance for Posture Break on Silver Bullets, halfed for Arrows.",
     "enchantment.soulsweapons.stagger": "Stagger",
-    "enchantment.soulsweapons.stagger.desc": "Chance to heavily slow targets a short while.",
+    "enchantment.soulsweapons.stagger.desc": "Apply Posture Loss to target. At max, Posture Break.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 

@@ -44,4 +44,5 @@ public class PacketRegistry {
     public static final Identifier SWITCH_TRICK_WEAPON = new Identifier(SoulsWeaponry.ModId, "switch_trick_weapon");
     public static final Identifier KEYBIND_ABILITY = new Identifier(SoulsWeaponry.ModId, "keybind_ability");
     public static final Identifier PARRY = new Identifier(SoulsWeaponry.ModId, "parry_keybind");
+    public static final Identifier POSTURE = new Identifier(SoulsWeaponry.ModId, "posture");
 }
