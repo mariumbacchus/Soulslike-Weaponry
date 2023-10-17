@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.IEntityDataSaver;
 import net.soulsweaponry.util.ParryData;
+import net.soulsweaponry.util.PostureData;
 
 public class PacketsClient {
 
@@ -299,11 +300,14 @@ public class PacketsClient {
         });
 
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.PARRY, (client, handler, buf, responseSender) -> {
-            try {
-                if (client.player != null) {
-                    ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
-                }
-            } catch (Exception ignored) {}
+            if (client.player != null) {
+                ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.POSTURE, (client, handler, buf, responseSender) -> {
+            if (client.player != null) {
+                ((IEntityDataSaver)client.player).getPersistentData().putInt(PostureData.POSTURE_ID, buf.readInt());
+            }
         });
 
         ClientPlayNetworking.registerGlobalReceiver(PacketRegistry.TRINITY_FLASH_ID, (client, handler, buf, responseSender) -> {
