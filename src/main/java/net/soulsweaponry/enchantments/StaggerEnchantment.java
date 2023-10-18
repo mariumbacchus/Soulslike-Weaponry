@@ -5,10 +5,11 @@ import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.util.IEntityDataSaver;
+import net.soulsweaponry.util.PostureData;
 
 public class StaggerEnchantment extends Enchantment {
 
@@ -28,21 +29,18 @@ public class StaggerEnchantment extends Enchantment {
 
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-        if (target instanceof LivingEntity) {
-            int random = user.getRandom().nextInt(10);
-            int chance = level;
-            if (user.getHandItems().iterator().next().getItem() instanceof UltraHeavyWeapon
-                    && ((UltraHeavyWeapon) user.getHandItems().iterator().next().getItem()).isHeavy()) {
-                chance+= 2;
+        if (target instanceof LivingEntity living && !living.isDead()) {
+            int postureLoss = 5;
+            if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof UltraHeavyWeapon heavy && heavy.isHeavy()) {
+                postureLoss *= 2;
             }
-            if (random < chance) {
-                ((LivingEntity) target).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, level));
-            }
+            postureLoss *= level;
+            PostureData.addPosture((IEntityDataSaver) living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
     }
 
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof UltraHeavyWeapon ? true : super.isAcceptableItem(stack);
+        return stack.getItem() instanceof UltraHeavyWeapon || super.isAcceptableItem(stack);
     }
 }

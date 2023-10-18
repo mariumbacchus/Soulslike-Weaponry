@@ -1,30 +1,13 @@
 package net.soulsweaponry.registry;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.soulsweaponry.events.AttemptAttackCallback;
-import net.soulsweaponry.events.PlayerTickHandler;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.events.*;
 
 public class EventRegistry {
 
     public static void init() {
-        AttemptAttackCallback.EVENT.register((player, world) -> {
-            for (Hand hand : Hand.values()) {
-                if (player.hasStatusEffect(EffectRegistry.MOON_HERALD) || player.getStackInHand(hand).isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
-                    if (world.isClient) {
-                        PacketByteBuf buf = PacketByteBufs.create();
-                        ClientPlayNetworking.send(PacketRegistry.MOONLIGHT, buf);
-                    }
-                }
-            }
-            return ActionResult.PASS;
-        });
-
+        AttemptAttackCallback.EVENT.register(new AttemptAttackHandler());
         ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
+        LivingEntityTickCallback.EVENT.register(new LivingEntityTickHandler());
     }
 }
