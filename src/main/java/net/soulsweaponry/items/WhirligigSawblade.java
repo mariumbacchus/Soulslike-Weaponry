@@ -1,9 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +14,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -28,6 +23,9 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class WhirligigSawblade extends SwordItem {
 
@@ -47,13 +45,12 @@ public class WhirligigSawblade extends SwordItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        Vec3d vecBlocksAway = ((PlayerEntity)user).getRotationVector().multiply(5).add(((PlayerEntity)user).getPos());
+        Vec3d vecBlocksAway = user.getRotationVector().multiply(5).add(user.getPos());
         Box chunkBox = new Box(user.getX(), user.getY(), user.getZ(), vecBlocksAway.x, vecBlocksAway.y + 1, vecBlocksAway.z);
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
         if (remainingUseTicks > 0) {
-            for (int j = 0; j < nearbyEntities.size(); j++) {
-                if (nearbyEntities.get(j) instanceof LivingEntity) {
-                    LivingEntity target = (LivingEntity) nearbyEntities.get(j);
+            for (Entity nearbyEntity : nearbyEntities) {
+                if (nearbyEntity instanceof LivingEntity target) {
                     target.damage(DamageSource.mob(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup())); //(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack))
                     target.takeKnockback(1F, 0, 0);
                     target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));

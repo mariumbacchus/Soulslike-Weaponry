@@ -184,15 +184,20 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int shield_parry_cooldown = 40;
     @Entry(min=2) public static int shield_parry_max_animation_frames = 10;
     @Entry(min=2) public static int shield_parry_frames = 3;
-    @Entry public static boolean can_projectiles_apply_posture_break = true;
+    @Entry public static boolean can_projectiles_apply_posture_loss = true;
     @Entry public static int silver_bullet_undead_bonus_damage = 4;
     @Entry public static int blunderbuss_damage = 4;
+    @Entry public static int blunderbuss_posture_loss = 15;
     @Entry public static int blunderbuss_cooldown = 80;
     @Entry public static int gatling_gun_damage = 1;
-    @Entry public static int gatling_gun_startup_time = 60;
+    @Entry public static int gatling_gun_posture_loss = 4;
+    @Entry public static int gatling_gun_max_time = 100;
+    @Entry public static int gatling_gun_cooldown = 120;
     @Entry public static int hunter_cannon_damage = 10;
+    @Entry public static int hunter_cannon_posture_loss = 35;
     @Entry public static int hunter_cannon_cooldown = 300;
     @Entry public static int hunter_pistol_damage = 2;
+    @Entry public static int hunter_pistol_posture_loss = 21;
     @Entry public static int hunter_pistol_cooldown = 50;
 
     @Entry(min=1, max=1000000) public static double decaying_king_health = 500D;

@@ -419,7 +419,8 @@ public class WeaponUtil {
             }
             case SAWBLADE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade").formatted(Formatting.DARK_RED));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade_description").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade_description_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade_description_2").formatted(Formatting.GRAY));
             }
             case WABBAJACK -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.wabbajack").formatted(Formatting.DARK_RED, Formatting.OBFUSCATED));

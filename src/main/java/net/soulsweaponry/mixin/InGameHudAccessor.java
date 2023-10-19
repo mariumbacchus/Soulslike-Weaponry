@@ -9,5 +9,5 @@ import net.minecraft.util.Identifier;
 @Mixin(InGameHud.class)
 public interface InGameHudAccessor {
     @Invoker("renderOverlay")
-    public void invokeRenderOverlay(Identifier texture, float opacity);
+    void invokeRenderOverlay(Identifier texture, float opacity);
 }
