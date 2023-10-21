@@ -15,12 +15,19 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public class HunterPistol extends GunItem {
 
     public HunterPistol(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public int getPostureLoss(ItemStack stack) {
+        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        return ConfigConstructor.hunter_pistol_posture_loss + lvl * 3;
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -49,7 +56,7 @@ public class HunterPistol extends GunItem {
             entity.setPos(user.getX(), user.getEyeY(), user.getZ());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-
+            entity.setPostureLoss(this.getPostureLoss(stack));
             entity.setDamage(power);
             if (punch > 0) {
                 entity.setPunch(punch);
@@ -63,7 +70,6 @@ public class HunterPistol extends GunItem {
             stack.damage(1, user, (p_220045_0_) -> {
                 p_220045_0_.sendToolBreakStatus(user.getActiveHand());
             });
-            //world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
             if (!bl2 && !user.getAbilities().creativeMode) {
                 itemStack.decrement(1);
                 if (itemStack.isEmpty()) {

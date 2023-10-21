@@ -48,9 +48,8 @@ public class WhirligigSawblade extends SwordItem {
         Box chunkBox = new Box(user.getX(), user.getY(), user.getZ(), vecBlocksAway.x, vecBlocksAway.y + 1, vecBlocksAway.z);
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
         if (remainingUseTicks > 0) {
-            for (int j = 0; j < nearbyEntities.size(); j++) {
-                if (nearbyEntities.get(j) instanceof LivingEntity) {
-                    LivingEntity target = (LivingEntity) nearbyEntities.get(j);
+            for (Entity nearbyEntity : nearbyEntities) {
+                if (nearbyEntity instanceof LivingEntity target) {
                     target.damage(DamageSource.mob(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup())); //(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack))
                     target.takeKnockback(1F, 0, 0);
                     target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
