@@ -45,7 +45,7 @@ public class WhirligigSawblade extends SwordItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        Vec3d vecBlocksAway = ((PlayerEntity)user).getRotationVector().multiply(5).add(((PlayerEntity)user).getPos());
+        Vec3d vecBlocksAway = user.getRotationVector().multiply(5).add(user.getPos());
         Box chunkBox = new Box(user.getX(), user.getY(), user.getZ(), vecBlocksAway.x, vecBlocksAway.y + 1, vecBlocksAway.z);
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
         if (remainingUseTicks > 0) {

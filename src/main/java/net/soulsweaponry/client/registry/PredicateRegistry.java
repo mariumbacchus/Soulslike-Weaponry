@@ -4,7 +4,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,6 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.BossCompass;
 import net.soulsweaponry.items.Skofnung;
 import net.soulsweaponry.items.Sting;
-import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -108,7 +106,7 @@ public class PredicateRegistry {
             if (livingEntity == null) {
                 return 0.0F;
             }
-            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F - 2*EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, itemStack));
+            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F);
         });
     }
 

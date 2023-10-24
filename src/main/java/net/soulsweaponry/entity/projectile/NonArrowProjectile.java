@@ -62,8 +62,7 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
             if (bl) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity) {
                 if (this.getPunch() > 0) {
                     double d = Math.max(0.0, 1.0 - livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
                     Vec3d vec3d = this.getVelocity().multiply(1.0, 0.0, 1.0).normalize().multiply((double)this.getPunch() * 0.6 * d);
@@ -76,11 +75,11 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity);
                 }
                 this.onHit(livingEntity);
-                if (entity2 != null && livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
+                if (livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
                     ((ServerPlayerEntity)entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
             }
-            this.playSound(this.getSound(), 1.0f, 1.2f / (this.random.nextFloat() * 0.2f + 0.9f));
+            this.playSound(this.getSound(), 1.0f, 1.0f - (this.random.nextFloat() / 2f));
             if (this.getPierceLevel() <= 0) {
                 this.discard();
             }
