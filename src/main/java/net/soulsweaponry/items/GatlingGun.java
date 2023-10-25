@@ -23,7 +23,7 @@ public class GatlingGun extends GunItem {
 
     public GatlingGun(Settings settings) {
         super(settings);
-    }//TODO fiks at den bugger ut mens holder
+    }
 
     @Override
     public int getPostureLoss(ItemStack stack) {
@@ -67,10 +67,6 @@ public class GatlingGun extends GunItem {
                     }
                     world.spawnEntity(entity);
                     world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                    if (stack.hasNbt() && stack.getNbt().contains("damageAmount")) {
-                        stack.getNbt().putInt("damageAmount", stack.getNbt().getInt("damageAmount") + 1);
-                    }
-
                     if (!bl2 && !playerEntity.getAbilities().creativeMode) {
                         itemStack.decrement(1);
                         if (itemStack.isEmpty()) {
@@ -103,23 +99,14 @@ public class GatlingGun extends GunItem {
 
     private void stop(LivingEntity user, ItemStack stack, World world) {
         world.playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-        int damageAmount = 1;
-        if (stack.hasNbt() && stack.getNbt().contains("damageAmount")) {
-            damageAmount = stack.getNbt().getInt("damageAmount");
-        }
         if (user instanceof PlayerEntity player) {
             player.getItemCooldownManager().set(this, player.isCreative() ? 20 : ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30);
-            stack.damage(damageAmount, player, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(user.getActiveHand());;
-            });
+            stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
         }
     }
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.hasNbt()) {
-            itemStack.getNbt().putInt("damageAmount", 0);
-        }
         world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
