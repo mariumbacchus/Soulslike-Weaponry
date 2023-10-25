@@ -190,7 +190,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int blunderbuss_posture_loss = 15;
     @Entry public static int blunderbuss_cooldown = 80;
     @Entry public static int gatling_gun_damage = 1;
-    @Entry public static int gatling_gun_startup_time = 60;
     @Entry public static int gatling_gun_posture_loss = 4;
     @Entry public static int gatling_gun_max_time = 100;
     @Entry public static int gatling_gun_cooldown = 120;
