@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 
@@ -21,6 +22,12 @@ public class Blunderbuss extends GunItem {
 
     public Blunderbuss(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public int getPostureLoss(ItemStack stack) {
+        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        return ConfigConstructor.blunderbuss_posture_loss + lvl * 2;
     }
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -42,7 +49,7 @@ public class Blunderbuss extends GunItem {
                 entity.setPos(user.getX(), user.getEyeY(), user.getZ());
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-
+                entity.setPostureLoss(this.getPostureLoss(stack));
                 entity.setDamage(ConfigConstructor.blunderbuss_damage + power);
                 if (punch > 0) {
                     entity.setPunch(punch);
@@ -59,33 +66,14 @@ public class Blunderbuss extends GunItem {
                     world.addParticle(ParticleTypes.SMOKE, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .5, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .5);
                 }
             }
-
             world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-            
-            stack.damage(1, user, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-            });
-
-            //world.playSound((PlayerEntity)null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+            stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             if (!bl2 && !user.getAbilities().creativeMode) {
                 itemStack.decrement(1);
                 if (itemStack.isEmpty()) {
                     user.getInventory().removeOne(itemStack);
                 }
             }
-
-            /* float f = playerEntity.getYaw();
-            float g = playerEntity.getPitch();
-            float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float k = -MathHelper.sin(g * 0.017453292F);
-            float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float m = MathHelper.sqrt(h * h + k * k + l * l);
-            float n = 2.0F * ((1.0F + 1F) / 4.0F);
-            h *= n / m;
-            k *= n / m;
-            l *= n / m;
-            playerEntity.addVelocity(-(double)h, -(double)k, -(double)l); */
-
             user.incrementStat(Stats.USED.getOrCreateStat(this));
             if (!user.isCreative()) user.getItemCooldownManager().set(this, ConfigConstructor.blunderbuss_cooldown - this.getReducedCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());

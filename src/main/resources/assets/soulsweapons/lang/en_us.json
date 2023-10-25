@@ -342,7 +342,8 @@
     "tooltip.soulsweapons.night_prowler": "Night Stalker",
     "tooltip.soulsweapons.night_prowler_description": "- Massive §9Attack Damage§r during the §1Night§1.",
     "tooltip.soulsweapons.sawblade": "Rip and Tear",
-    "tooltip.soulsweapons.sawblade_description": "- Hold to decimate targets ahead.",
+    "tooltip.soulsweapons.sawblade_description_1": "- Use to decimate targets ahead.",
+    "tooltip.soulsweapons.sawblade_description_2": "- Make targets hit §cBleed§r.",
     "tooltip.soulsweapons.moonlight": "Moonlight",
     "tooltip.soulsweapons.moonlight_description": "- Use to summon §3Moonlight Beams§r.",
     "tooltip.soulsweapons.moonlight_attack_description": "- Attack to summon §3Moonlight Beams§r.",
@@ -571,11 +572,11 @@
     "tooltip.soulsweapons.shard_of_uncertainty.part_1": "It seems to perfectly fit in a certain pedestal...",
 
     "enchantment.soulsweapons.fast_hands": "Fast Hands",
-    "enchantment.soulsweapons.fast_hands.desc": "Reduce charge time for Guns and Bows (model doesn't change).",
+    "enchantment.soulsweapons.fast_hands.desc": "Reduce charge time or increase use time for Guns.",
     "enchantment.soulsweapons.visceral": "Posture Breaker",
-    "enchantment.soulsweapons.visceral.desc": "Increases chance for Posture Break on Silver Bullets, halfed for Arrows.",
+    "enchantment.soulsweapons.visceral.desc": "Increases 'Posture Loss' Silver Bullets apply.",
     "enchantment.soulsweapons.stagger": "Stagger",
-    "enchantment.soulsweapons.stagger.desc": "Apply Posture Loss to target. At max, Posture Break.",
+    "enchantment.soulsweapons.stagger.desc": "Apply 'Posture Loss' on target. At max loss, Posture Break target.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 

@@ -1,24 +1,21 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.GunItem;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EnchantRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.IEntityDataSaver;
+import net.soulsweaponry.util.PostureData;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -27,6 +24,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private int postureLoss;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -55,9 +53,14 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
         }
         Vec3d vec3d = this.getVelocity();
         this.setVelocity(vec3d.x, vec3d.y + (double)0.045f, vec3d.z);
-        if (this.age > 200 && !world.isClient) {
+        if (this.age > this.getMaxAge()) {
             this.discard();
         }
+    }
+
+    @Override
+    protected SoundEvent getHitSound() {
+        return SoundEvents.BLOCK_STONE_BREAK;
     }
 
     public boolean isFireImmune() {
@@ -71,28 +74,18 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() instanceof LivingEntity && ((LivingEntity) entityHitResult.getEntity()).getGroup().equals(EntityGroup.UNDEAD)) {
-            this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
+        if (ConfigConstructor.can_projectiles_apply_posture_loss && entityHitResult.getEntity() instanceof LivingEntity target) {
+            PostureData.addPosture((IEntityDataSaver) target, this.getPostureLoss());
+            if (target.isUndead()) {
+                this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
+            }
         }
         super.onEntityHit(entityHitResult);
-        if (ConfigConstructor.can_projectiles_apply_posture_break && entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() != null && this.getOwner() instanceof PlayerEntity) {
-            int random = this.random.nextInt(10);
-            int chance = 2;
-            int amplifier = 0;
-            for (ItemStack stack : this.getOwner().getHandItems()) {
-                if (stack.getItem() instanceof GunItem) {
-                    chance = 2 + EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-                    amplifier = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-                }
-            }
-            if (random < chance) {
-                if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
-                    target.world.playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
-                }
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK, 60, amplifier));
-            }
-        }
         this.discard();
+    }
+
+    public int getMaxAge() {
+        return 200;
     }
 
     @Override
@@ -106,7 +99,28 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
 
     @Override
     protected ItemStack asItemStack() {
-        return null;
+        return ItemRegistry.SILVER_BULLET.getDefaultStack();
     }
-    
+
+    public void setPostureLoss(int postureLoss) {
+        this.postureLoss = postureLoss;
+    }
+
+    public int getPostureLoss() {
+        return postureLoss;
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("postureLoss")) {
+            this.setPostureLoss(nbt.getInt("postureLoss"));
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("postureLoss", this.getPostureLoss());
+    }
 }

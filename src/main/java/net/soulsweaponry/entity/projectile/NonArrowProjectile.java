@@ -79,7 +79,7 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
                     ((ServerPlayerEntity)entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
             }
-            this.playSound(this.getSound(), 1.0f, 1.2f / (this.random.nextFloat() * 0.2f + 0.9f));
+            this.playSound(this.getSound(), 1.0f, 1.0f - (this.random.nextFloat() / 2f));
             if (this.getPierceLevel() <= 0) {
                 this.discard();
             }
