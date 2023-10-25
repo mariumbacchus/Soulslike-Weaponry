@@ -23,6 +23,6 @@ public class FastHandsEnchantment extends Enchantment {
     }
 
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof GunItem || super.isAcceptableItem(stack);
+        return stack.getItem() instanceof GunItem;
     }
 }
