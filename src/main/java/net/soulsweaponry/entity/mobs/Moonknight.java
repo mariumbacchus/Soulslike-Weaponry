@@ -79,7 +79,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.setDrops(WeaponRegistry.MOONLIGHT_GREATSWORD);
         this.setDrops(ItemRegistry.LORD_SOUL_WHITE);
         this.setDrops(ItemRegistry.ESSENCE_OF_LUMINESCENCE);
-        this.setDrops(ItemRegistry.ARKENSTONE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
