@@ -320,6 +320,11 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         return this.factory;
     }
 
+    @Override
+    public int getXp() {
+        return ConfigConstructor.returning_knight_xp;
+    }
+
     protected void mobTick() {
         super.mobTick();
         

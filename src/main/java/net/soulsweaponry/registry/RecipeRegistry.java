@@ -22,6 +22,7 @@ public class RecipeRegistry {
     public static JsonObject HUNTER_PISTOL_RECIPE = null;
     public static JsonObject GATLING_GUN_RECIPE = null;
     public static JsonObject BLUNDERBUSS_RECIPE = null;
+    public static JsonObject SILVER_BULLET_RECIPE = null;
 
     public static JsonObject BLOODTHIRSTER_RECIPE = null;
     public static JsonObject COMET_SPEAR_RECIPE = null;
@@ -122,6 +123,14 @@ public class RecipeRegistry {
                                 "SGi",
                                 "S i"
                         ), new Identifier(ModId, "blunderbuss"));
+
+                ArrayList<ArrayList<Object>> list = new ArrayList<>();
+                list.add(Lists.newArrayList("item", new Identifier("iron_ingot")));
+                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+                SILVER_BULLET_RECIPE = JsonCreator.createShapelessRecipeJson(
+                        list, new Identifier(ModId, "silver_bullet"), 10);
+                registerAndAddToBook(SILVER_BULLET_RECIPE, "silver_bullet", ConfigConstructor.disable_gun_recipes, ItemRegistry.LOST_SOUL);
             }
             if (!ConfigConstructor.disable_recipe_bloodthirster) {
                 BLOODTHIRSTER_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -602,11 +611,14 @@ public class RecipeRegistry {
                     "item", new Identifier("bewitchment", "demon_heart"),
                     new Identifier(ModId, "molten_demon_heart"), 0.1, 200);
 
-            ArrayList<ArrayList<Object>> list = new ArrayList<>();
-            list.add(Lists.newArrayList("item", new Identifier("bewitchment", "silver_ingot")));
-            list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
-            BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
-                    list, new Identifier(ModId, "silver_bullet"), 10);
+            if (!ConfigConstructor.disable_gun_recipes) {
+                ArrayList<ArrayList<Object>> list = new ArrayList<>();
+                list.add(Lists.newArrayList("item", new Identifier("bewitchment", "silver_ingot")));
+                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+                BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
+                        list, new Identifier(ModId, "silver_bullet"), 10);
+            }
         }
     }
 
