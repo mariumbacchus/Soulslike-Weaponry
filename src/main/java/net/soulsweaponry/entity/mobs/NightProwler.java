@@ -365,6 +365,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.night_prowler_xp;
+    }
+
+    @Override
     protected void mobTick() {
         super.mobTick();
         if (!this.getWorld().isClient) {

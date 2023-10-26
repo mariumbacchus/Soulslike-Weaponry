@@ -30,8 +30,10 @@ public abstract class BossEntity extends HostileEntity implements AnimatedDeathI
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
         this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), barColor, Style.NOTCHED_10)).setDarkenSky(true);
-        this.experiencePoints = 500;
+        this.experiencePoints = this.getXp();
     }
+
+    public abstract int getXp();
 
     protected void setDrops(Item item) {
         this.drops.add(item);
