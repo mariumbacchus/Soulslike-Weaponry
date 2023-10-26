@@ -97,23 +97,6 @@ public abstract class BossEntity extends HostileEntity implements AnimatedDeathI
         return players;
     }
 
-    /**
-     * Checks if the target is out of range and other players are closer. The boss will then switch targets.
-     * 
-     * EDIT: Did not work lol.
-     */
-    /* public void checkOtherTargets(LivingEntity target) {
-        if (target != null) {
-            double distance = this.squaredDistanceTo(target);
-            if (distance > 320 && this.getAttackingPlayers().size() > 0) {
-                for (PlayerEntity newTarget : this.getAttackingPlayers()) {
-                    this.setTarget(newTarget);
-                    return;
-                }
-            }
-        }
-    } */
-
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
