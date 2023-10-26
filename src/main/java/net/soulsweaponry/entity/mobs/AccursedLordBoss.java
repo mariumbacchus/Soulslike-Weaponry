@@ -94,7 +94,12 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     public int getDeathTicks() {
         return this.deathTicks;
     }
-    
+
+    @Override
+    public int getXp() {
+        return ConfigConstructor.decaying_king_xp;
+    }
+
     @Override
     public void updatePostDeath() {
         this.deathTicks++;

@@ -173,6 +173,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.chaos_monarch_xp;
+    }
+
+    @Override
     protected void mobTick() {
         super.mobTick();
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {

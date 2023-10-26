@@ -276,6 +276,11 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.old_champions_remains_xp;
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains(LAST_WEAPON_DAMAGED_BY)) {
