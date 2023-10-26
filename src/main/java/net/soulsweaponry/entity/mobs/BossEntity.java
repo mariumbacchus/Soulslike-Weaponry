@@ -30,8 +30,10 @@ public abstract class BossEntity extends HostileEntity implements AnimatedDeathI
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
         this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), barColor, Style.NOTCHED_10)).setDarkenSky(true);
-        this.experiencePoints = 500;
+        this.experiencePoints = this.getXp();
     }
+
+    public abstract int getXp();
 
     protected void setDrops(Item item) {
         this.drops.add(item);
@@ -94,23 +96,6 @@ public abstract class BossEntity extends HostileEntity implements AnimatedDeathI
         }
         return players;
     }
-
-    /**
-     * Checks if the target is out of range and other players are closer. The boss will then switch targets.
-     * <p>
-     * EDIT: Did not work lol.
-     */
-    /* public void checkOtherTargets(LivingEntity target) {
-        if (target != null) {
-            double distance = this.squaredDistanceTo(target);
-            if (distance > 320 && this.getAttackingPlayers().size() > 0) {
-                for (PlayerEntity newTarget : this.getAttackingPlayers()) {
-                    this.setTarget(newTarget);
-                    return;
-                }
-            }
-        }
-    } */
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
