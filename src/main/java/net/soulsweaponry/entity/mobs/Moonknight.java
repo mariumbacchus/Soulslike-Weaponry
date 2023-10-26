@@ -222,6 +222,11 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.fallen_icon_xp;
+    }
+
+    @Override
     protected void mobTick() {
         super.mobTick();
         if (this.isInitiatingPhaseTwo()) {

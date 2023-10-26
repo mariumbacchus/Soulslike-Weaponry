@@ -351,6 +351,11 @@ public class DayStalker extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.day_stalker_xp;
+    }
+
+    @Override
     protected void mobTick() {
         super.mobTick();
         if (!this.world.isClient) {

@@ -318,6 +318,11 @@ public class NightShade extends BossEntity implements IAnimatable {
     }
 
     @Override
+    public int getXp() {
+        return ConfigConstructor.frenzied_shade_xp;
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("has_duplicated")) {

@@ -204,34 +204,42 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int decaying_king_attack_cooldown_ticks = 20;
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
     @Entry(min=0) public static float decaying_king_damage_modifier = 1f;
+    @Entry(min=0) public static int decaying_king_xp = 500;
 
     @Entry(min=1, max=1000000) public static double returning_knight_health = 400D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
     @Entry(min=0) public static float returning_knight_damage_modifier = 1f;
+    @Entry(min=0) public static int returning_knight_xp = 500;
 
     @Entry(min=1, max=1000000) public static double old_champions_remains_health = 200D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
     @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
+    @Entry public static int old_champions_remains_xp = 200;
     @Entry(min=1, max=1000000) public static double frenzied_shade_health = 100D;
     @Entry public static float frenzied_shade_damage_modifier = 1f;
     @Entry public static int frenzied_shade_cooldown = 10;
+    @Entry public static int frenzied_shade_xp = 400;
 
     @Entry(min=1, max=1000000) public static double chaos_monarch_health = 400D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
+    @Entry(min=0) public static int chaos_monarch_xp = 500;
 
     @Entry(min=1, max=1000000) public static double fallen_icon_health = 500D;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_1 = 30;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_2 = 0;
     @Entry(min=0) public static int fallen_icon_special_cooldown_ticks = 50;
     @Entry(min=0) public static float fallen_icon_damage_modifier = 1f;
+    @Entry(min=0) public static int fallen_icon_xp = 600;
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
+    @Entry(min=0) public static int day_stalker_xp = 500;
     @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static double night_prowler_teleport_chance = 0.3D;
+    @Entry(min=0) public static int night_prowler_xp = 500;
 }
