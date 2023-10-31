@@ -4,7 +4,6 @@
   "package": "net.soulsweaponry.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "BowItemMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
