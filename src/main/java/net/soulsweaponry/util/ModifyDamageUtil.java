@@ -8,6 +8,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -50,6 +52,10 @@ public class ModifyDamageUtil {
             // Original value increases in % based on f(x) = (ln(x) * y) / 8, where x is the amplifier level, y is the armor of the target.
             double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
             newAmount += increase;
+        }
+        if (source.getSource() instanceof KrakenSlayerProjectile projectile) {
+            float trueDamage = projectile.getTrueDamage();
+            newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
         }
         return newAmount;
     }
