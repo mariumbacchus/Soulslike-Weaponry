@@ -411,6 +411,42 @@
             }
           ]
         }
+      },
+      "nights_edge": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:nights_edge_item"
+              ]
+            }
+          ]
+        }
+      },
+      "empowered_dawnbreaker": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:empowered_dawnbreaker"
+              ]
+            }
+          ]
+        }
+      },
+      "kraken_slayer": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:kraken_slayer"
+              ]
+            }
+          ]
+        }
       }
     },
   "requirements": [
@@ -444,6 +480,9 @@
       ["draupnir_spear"],
       ["holy_moonlight_sword"],
       ["frostmourne"],
-      ["master_sword"]
+      ["master_sword"],
+      ["nights_edge"],
+      ["empowered_dawnbreaker"],
+      ["kraken_slayer"]
   ]
 }

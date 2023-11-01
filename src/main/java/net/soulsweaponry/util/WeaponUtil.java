@@ -472,6 +472,24 @@ public class WeaponUtil {
                 }
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.blight_description_6").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
             }
+            case FAST_PULL -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));
+            }
+            case SLOW_PULL -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_1").formatted(Formatting.GRAY));
+            }
+            case THIRD_SHOT -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot").formatted(Formatting.GOLD));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_1").formatted(Formatting.GRAY));
+                tooltip.add(new LiteralText(String.valueOf(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack)))
+                        .formatted(Formatting.WHITE)
+                        .append(new TranslatableText("tooltip.soulsweapons.third_shot_2").formatted(Formatting.GRAY)));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_3").formatted(Formatting.GRAY)
+                        .append(new LiteralText(MathHelper.floor((1f - ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier) * 100) + "%"))
+                        .formatted(Formatting.DARK_GRAY));
+            }
         }
     }
 
@@ -483,6 +501,6 @@ public class WeaponUtil {
         HEAVY_THROW, PERMAFROST, FREEZE, MAGIC_DAMAGE, MJOLNIR_LIGHTNING, OFF_HAND_FLIGHT, THROW_LIGHTNING, MOONLIGHT,
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
-        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT
+        KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT, FAST_PULL, THIRD_SHOT, SLOW_PULL
     }
 }

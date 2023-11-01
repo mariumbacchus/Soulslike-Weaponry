@@ -59,5 +59,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.NIGHTS_EDGE, NightsEdgeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.NIGHT_WAVE, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.FLAME_PILLAR, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, KrakenSlayerProjectileRenderer::new);
     }
 }

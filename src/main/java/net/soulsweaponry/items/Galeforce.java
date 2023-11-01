@@ -31,7 +31,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class Galeforce extends BowItem implements IKeybindAbility {
+public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     public Galeforce(Settings settings) {
         super(settings);
@@ -48,7 +48,7 @@ public class Galeforce extends BowItem implements IKeybindAbility {
                 }
 
                 int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
-                float pullProgress = getPullProgress(maxUseTime);
+                float pullProgress = BowItem.getPullProgress(maxUseTime);
                 if (!((double)pullProgress < 0.1D)) {
                     if (!world.isClient) {
                         this.shootArrow((ServerWorld) world, stack, itemStack, playerEntity, pullProgress, false, null);
@@ -89,9 +89,7 @@ public class Galeforce extends BowItem implements IKeybindAbility {
         if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) {
             chargedArrow.setOnFireFor(8);
         }
-        stack.damage(1, player, (p_220045_0_) -> {
-            p_220045_0_.sendToolBreakStatus(player.getActiveHand());
-        });
+        stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
 
         boolean creativeAndInfinity = player.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         boolean bl2 = creativeAndInfinity && arrowStack.isOf(Items.ARROW);
@@ -140,5 +138,10 @@ public class Galeforce extends BowItem implements IKeybindAbility {
             l *= n / m;
             player.addVelocity(h, k, l);
         }
+    }
+
+    @Override
+    public float getReducedPullTime() {
+        return 0;
     }
 }
