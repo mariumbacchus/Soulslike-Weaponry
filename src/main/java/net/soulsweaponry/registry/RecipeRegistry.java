@@ -59,6 +59,7 @@ public class RecipeRegistry {
     public static JsonObject FROSTMOURNE_RECIPE = null;
     public static JsonObject NIGHTS_EDGE_RECIPE = null;
     public static JsonObject EMPOWERED_DAWNBREAKER_RECIPE = null;
+    public static JsonObject KRAKEN_SLAYER_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -604,6 +605,23 @@ public class RecipeRegistry {
                         "item", new Identifier(ModId, "lord_soul_day_stalker"),
                         new Identifier(ModId, "empowered_dawnbreaker"));
                 registerAndAddToBook(EMPOWERED_DAWNBREAKER_RECIPE, "empowered_dawnbreaker", ConfigConstructor.disable_recipe_empowered_dawnbreaker, ItemRegistry.LORD_SOUL_DAY_STALKER);
+            }
+            if (!ConfigConstructor.disable_recipe_kraken_slayer) {
+                KRAKEN_SLAYER_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'Y', 'A'),
+                        Lists.newArrayList(
+                                new Identifier("iron_ingot"),
+                                new Identifier("gold_block"),
+                                new Identifier(ModId, "lord_soul"),
+                                new Identifier("arrow")
+                        ),
+                        Lists.newArrayList("item", "item", "tag", "item"),
+                        Lists.newArrayList(
+                                "A# ",
+                                "#Y#",
+                                " #X"
+                        ), new Identifier(ModId, "kraken_slayer"));
+                registerAndBookLordSoul(KRAKEN_SLAYER_RECIPE, "kraken_slayer", ConfigConstructor.disable_recipe_kraken_slayer);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
