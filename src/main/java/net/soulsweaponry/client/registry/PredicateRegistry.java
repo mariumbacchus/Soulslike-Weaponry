@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.BossCompass;
+import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.items.Skofnung;
 import net.soulsweaponry.items.Sting;
 import net.soulsweaponry.registry.GunRegistry;
@@ -22,6 +23,8 @@ public class PredicateRegistry {
 
         PredicateRegistry.registerPull(WeaponRegistry.GALEFORCE);
         PredicateRegistry.registerPulling(WeaponRegistry.GALEFORCE);
+        PredicateRegistry.registerPull(WeaponRegistry.KRAKEN_SLAYER);
+        PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER);
 
         PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
         PredicateRegistry.registerThrowing(WeaponRegistry.NIGHTFALL);
@@ -106,7 +109,7 @@ public class PredicateRegistry {
             if (livingEntity == null) {
                 return 0.0F;
             }
-            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F);
+            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F - ((ModdedBow)itemStack.getItem()).getReducedPullTime());
         });
     }
 

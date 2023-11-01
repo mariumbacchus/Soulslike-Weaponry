@@ -124,6 +124,7 @@
     "item.soulsweapons.master_sword": "Master Sword",
     "item.soulsweapons.nights_edge_item": "Night's Edge",
     "item.soulsweapons.empowered_dawnbreaker": "Genesis Fracture",
+    "item.soulsweapons.kraken_slayer": "Kraken Slayer",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -196,6 +197,7 @@
     "entity.soulsweapons.nights_edge": "Night's Edge",
     "entity.soulsweapons.night_wave": "Night Wave",
     "entity.soulsweapons.flame_pillar": "Flame Pillar",
+    "entity.soulsweapons.kraken_slayer_projectile": "Kraken Slayer Bolt",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",
@@ -522,6 +524,14 @@
     "tooltip.soulsweapons.blight_description_4": "- §dBlight§r increases damage taken in percent",
     "tooltip.soulsweapons.blight_description_5": "based on the target's armor amount.",
     "tooltip.soulsweapons.blight_description_6": "Bonus damage in % = (ln(amplifier) * armor / 8) * 10",
+    "tooltip.soulsweapons.fast_pull": "Swift Draw",
+    "tooltip.soulsweapons.fast_pull_1": "- Pull speed is increased for this weapon.",
+    "tooltip.soulsweapons.slow_pull": "Gentle Haul",
+    "tooltip.soulsweapons.slow_pull_1": "- Pull speed is reduced for this weapon.",
+    "tooltip.soulsweapons.third_shot": "Bring It Down",
+    "tooltip.soulsweapons.third_shot_1": "- Every §b3rd§r shot is empowered, dealing",
+    "tooltip.soulsweapons.third_shot_2": " bonus true damage.",
+    "tooltip.soulsweapons.third_shot_3": "True damage is reduced against other players by ",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",
@@ -570,7 +580,7 @@
     "tooltip.soulsweapons.chaos_crown_lore_3": "of his own empire either, after all...",
     "tooltip.soulsweapons.shard_of_uncertainty.part_1": "It seems to perfectly fit in a certain pedestal...",
 
-    "enchantment.soulsweapons.fast_hands": "Fast Hands",
+    "enchantment.soulsweapons.fast_hands": "Quick Reload",
     "enchantment.soulsweapons.fast_hands.desc": "Reduce charge time or increase use time for Guns.",
     "enchantment.soulsweapons.visceral": "Posture Breaker",
     "enchantment.soulsweapons.visceral.desc": "Increases 'Posture Loss' Silver Bullets apply.",
