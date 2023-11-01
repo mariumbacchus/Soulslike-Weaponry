@@ -26,7 +26,7 @@ public class WeaponRegistry {
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, -3, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().maxDamage(1300).rarity(Rarity.EPIC));
+    public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().fireproof().maxDamage(1300).rarity(Rarity.EPIC));
     public static ToolItem TRANSLUCENT_SWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 6, -2.4F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem TRANSLUCENT_GLAIVE = new SwordItem(ModToolMaterials.LOST_SOUL, 7, -2.6F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 8, -2.8F, new FabricItemSettings().rarity(Rarity.RARE));
@@ -54,7 +54,7 @@ public class WeaponRegistry {
     public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem NIGHTS_EDGE_ITEM = new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem EMPOWERED_DAWNBREAKER = new EmpoweredDawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
-    public static BowItem KRAKEN_SLAYER = new KrakenSlayer(new FabricItemSettings().maxDamage(1258).rarity(Rarity.EPIC));
+    public static BowItem KRAKEN_SLAYER = new KrakenSlayer(new FabricItemSettings().fireproof().maxDamage(1258).rarity(Rarity.EPIC));
 
     public static void init() {
         ItemRegistry.registerItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword");
