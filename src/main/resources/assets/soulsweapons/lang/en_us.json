@@ -126,6 +126,7 @@
     "item.soulsweapons.nights_edge_item": "Night's Edge",
     "item.soulsweapons.empowered_dawnbreaker": "Genesis Fracture",
     "item.soulsweapons.kraken_slayer": "Kraken Slayer",
+    "item.soulsweapons.darkmoon_longbow": "Darkmoon Longbow",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -535,6 +536,12 @@
     "tooltip.soulsweapons.third_shot_1": "- Every §b3rd§r shot is empowered, dealing",
     "tooltip.soulsweapons.third_shot_2": " bonus true damage.",
     "tooltip.soulsweapons.third_shot_3": "True damage is reduced against other players by ",
+    "tooltip.soulsweapons.moonlight_arrow": "Moonlight Quiver",
+    "tooltip.soulsweapons.moonlight_arrow_1": "- Fires §3Moonlight Arrows§r that deal purely",
+    "tooltip.soulsweapons.moonlight_arrow_2": "§3Magic Damage§r and pierce targets.",
+    "tooltip.soulsweapons.arrow_storm": "Arrow Storm",
+    "tooltip.soulsweapons.arrow_storm_1": "- Send out a storm cloud that rain down",
+    "tooltip.soulsweapons.arrow_storm_2": "barrages of lesser §3Moonlight Arrows§r.",
 
     "tooltip.soulsweapons.lord_soul_dark.part_1": "This soul has seen the light, but in the end, it",
     "tooltip.soulsweapons.lord_soul_dark.part_2": "succumbed to the urges of the dark power",
