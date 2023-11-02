@@ -10,6 +10,7 @@
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "ModelInvoker",
+    "PersistentProjectileMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "ToolItemMixin",
