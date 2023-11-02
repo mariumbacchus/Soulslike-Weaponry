@@ -199,6 +199,7 @@
     "entity.soulsweapons.night_wave": "Night Wave",
     "entity.soulsweapons.flame_pillar": "Flame Pillar",
     "entity.soulsweapons.kraken_slayer_projectile": "Kraken Slayer Bolt",
+    "entity.soulsweapons.moonlight_arrow": "Moonlight Arrow",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",
