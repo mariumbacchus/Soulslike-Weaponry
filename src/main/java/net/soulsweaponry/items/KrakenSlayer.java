@@ -76,6 +76,6 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public float getReducedPullTime() {
-        return 10;
+        return ConfigConstructor.kraken_slayer_reduced_pull_time;
     }
 }

@@ -30,6 +30,7 @@ public abstract class ModdedBow extends BowItem {
 
     public void shootProjectile(World world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, PersistentProjectileEntity projectile, float powerModifier, float velModifier) {
         projectile.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
+        projectile.setOwner(player);
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, pullProgress * velModifier, 1.0F);
         if (pullProgress == 1.0F) {
             projectile.setCritical(true);
