@@ -541,7 +541,7 @@
     "tooltip.soulsweapons.third_shot_3": "True damage is reduced against other players by ",
     "tooltip.soulsweapons.moonlight_arrow": "Moonlight Quiver",
     "tooltip.soulsweapons.moonlight_arrow_1": "- Fires §3Moonlight Arrows§r that deal purely",
-    "tooltip.soulsweapons.moonlight_arrow_2": "§3Magic Damage§r and pierce targets.",
+    "tooltip.soulsweapons.moonlight_arrow_2": "§3Magic Damage§r and §fPierce§r targets.",
     "tooltip.soulsweapons.arrow_storm": "Arrow Storm",
     "tooltip.soulsweapons.arrow_storm_1": "- Send out a storm cloud that rain down",
     "tooltip.soulsweapons.arrow_storm_2": "barrages of lesser §3Moonlight Arrows§r.",
