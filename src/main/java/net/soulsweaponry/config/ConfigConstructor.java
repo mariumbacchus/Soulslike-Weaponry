@@ -45,6 +45,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_nights_edge = false;
     @Entry public static boolean disable_recipe_empowered_dawnbreaker = false;
     @Entry public static boolean disable_recipe_kraken_slayer = false;
+    @Entry public static boolean disable_recipe_darkmoon_longbow = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;
@@ -88,6 +89,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkin_scythe_prime_ability_cooldown = 400;
     @Entry public static float darkin_scythe_prime_heal_modifier = 0.25f;
     @Entry public static int darkin_scythe_prime_ticks_before_dismount = 80;
+    @Entry public static double darkmoon_longbow_ability_damage = 5D;
+    @Entry public static int darkmoon_longbow_ability_cooldown_ticks = 150;
+    @Entry public static float darkmoon_longbow_increased_pull_time = 5;
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
     @Entry(min=0,max=1) public static double dawnbreaker_ability_chance_modifier = 0.0D;
@@ -132,7 +136,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int kirkhammer_damage = 9;
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static float kraken_slayer_bonus_true_damage = 4f;
-    @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.5f;
+    @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
+    @Entry public static float kraken_slayer_reduced_pull_time = 10;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4;
