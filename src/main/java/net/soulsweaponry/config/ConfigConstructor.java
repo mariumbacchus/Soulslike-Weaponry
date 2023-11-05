@@ -45,6 +45,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_nights_edge = false;
     @Entry public static boolean disable_recipe_empowered_dawnbreaker = false;
     @Entry public static boolean disable_recipe_kraken_slayer = false;
+    @Entry public static boolean disable_recipe_darkmoon_longbow = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 20;

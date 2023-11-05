@@ -3,7 +3,7 @@
   "criteria": {
     "has_advancement": {
       "conditions": {
-        "recipe": "soulsweapons:master_sword_recipe"
+        "recipe": "soulsweapons:kraken_slayer_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -35,7 +35,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:master_sword_recipe"
+      "soulsweapons:kraken_slayer_recipe"
     ]
   },
   "sends_telemetry_event": true
