@@ -61,5 +61,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.FLAME_PILLAR, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, KrakenSlayerProjectileRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONLIGHT_ARROW, MoonlightArrowRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.ARROW_STORM_ENTITY, EmptyEntityRenderer::new);
     }
 }

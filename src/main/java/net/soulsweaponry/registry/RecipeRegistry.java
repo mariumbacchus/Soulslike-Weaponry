@@ -60,6 +60,7 @@ public class RecipeRegistry {
     public static JsonObject NIGHTS_EDGE_RECIPE = null;
     public static JsonObject EMPOWERED_DAWNBREAKER_RECIPE = null;
     public static JsonObject KRAKEN_SLAYER_RECIPE = null;
+    public static JsonObject DARKMOON_LONGBOW_RECIPE = null;
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -622,6 +623,23 @@ public class RecipeRegistry {
                                 " #X"
                         ), new Identifier(ModId, "kraken_slayer"));
                 registerAndBookLordSoul(KRAKEN_SLAYER_RECIPE, "kraken_slayer", ConfigConstructor.disable_recipe_kraken_slayer);
+            }
+            if (!ConfigConstructor.disable_recipe_darkmoon_longbow) {
+                DARKMOON_LONGBOW_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'Y', 'A', 'X'),
+                        Lists.newArrayList(
+                                new Identifier("gold_ingot"),
+                                new Identifier(ModId, "essence_of_eventide"),
+                                new Identifier("string"),
+                                new Identifier("stick")
+                        ),
+                        Lists.newArrayList("item", "item", "item", "item"),
+                        Lists.newArrayList(
+                                " #A",
+                                "XYA",
+                                " #A"
+                        ), new Identifier(ModId, "darkmoon_longbow"));
+                registerAndAddToBook(DARKMOON_LONGBOW_RECIPE, "darkmoon_longbow", ConfigConstructor.disable_recipe_darkmoon_longbow, ItemRegistry.ESSENCE_OF_EVENTIDE);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {

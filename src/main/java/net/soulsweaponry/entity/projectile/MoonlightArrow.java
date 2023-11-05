@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,8 +27,11 @@ import java.util.List;
 
 public class MoonlightArrow extends PersistentProjectileEntity {
 
+    private int maxArrowAge = 1000;
+
     public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.pickupType = PickupPermission.DISALLOWED;
     }
 
     public void tick() {
@@ -41,6 +45,9 @@ public class MoonlightArrow extends PersistentProjectileEntity {
             }
         }
         super.tick();
+        if (this.age > this.maxArrowAge) {
+            this.discard();
+        }
     }
 
     @Override
@@ -50,6 +57,10 @@ public class MoonlightArrow extends PersistentProjectileEntity {
         DamageSource damageSource;
         Entity entity2;
         Entity entity = entityHitResult.getEntity();
+        if (entity != null && this.isOwner(entity)) {
+            this.discard();
+            return;
+        }
         float f = (float)this.getVelocity().length();
         int i = MathHelper.ceil(MathHelper.clamp((double)f * this.getDamage(), 0.0, 2.147483647E9));
         if (this.getPierceLevel() > 0) {
@@ -134,6 +145,15 @@ public class MoonlightArrow extends PersistentProjectileEntity {
         }
     }
 
+    @Override
+    protected boolean tryPickup(PlayerEntity player) {
+        if (this.maxArrowAge > 100) {
+            return super.tryPickup(player);
+        } else {
+            return false;
+        }
+    }
+
     protected ParticleEffect getParticleType() {
         return ParticleRegistry.NIGHTFALL_PARTICLE;
     }
@@ -141,5 +161,23 @@ public class MoonlightArrow extends PersistentProjectileEntity {
     @Override
     protected ItemStack asItemStack() {
         return Items.ARROW.getDefaultStack();
+    }
+
+    public void setMaxArrowAge(int maxArrowAge) {
+        this.maxArrowAge = maxArrowAge;
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("maxArrowAge")) {
+            this.maxArrowAge = nbt.getInt("maxArrowAge");
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("maxArrowAge", this.maxArrowAge);
     }
 }

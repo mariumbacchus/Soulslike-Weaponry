@@ -23,6 +23,8 @@ public class PredicateRegistry {
         PredicateRegistry.registerPulling(WeaponRegistry.GALEFORCE);
         PredicateRegistry.registerPull(WeaponRegistry.KRAKEN_SLAYER);
         PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER);
+        PredicateRegistry.registerPull(WeaponRegistry.DARKMOON_LONGBOW);
+        PredicateRegistry.registerPulling(WeaponRegistry.DARKMOON_LONGBOW);
 
         PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
         PredicateRegistry.registerThrowing(WeaponRegistry.NIGHTFALL);

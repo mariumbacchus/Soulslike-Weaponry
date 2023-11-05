@@ -10,7 +10,7 @@ import net.soulsweaponry.entity.projectile.MoonlightArrow;
 @Environment(EnvType.CLIENT)
 public class MoonlightArrowRenderer extends ProjectileEntityRenderer<MoonlightArrow> {
 
-    private static final Identifier TEXTURE = new Identifier("soulsweapons", "textures/entity/kraken_slayer_projectile.png");
+    private static final Identifier TEXTURE = new Identifier("soulsweapons", "textures/entity/moonlight_arrow.png");
 
     public MoonlightArrowRenderer(Context context) {
         super(context);
