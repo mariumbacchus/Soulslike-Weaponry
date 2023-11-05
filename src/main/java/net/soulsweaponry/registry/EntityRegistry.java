@@ -74,6 +74,7 @@ public class EntityRegistry {
     public static final EntityType<FlamePillar> FLAME_PILLAR = registerEntity("flame_pillar", FabricEntityTypeBuilder.create(SpawnGroup.MISC, FlamePillar::new).dimensions(EntityDimensions.fixed(1.5f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<KrakenSlayerProjectile> KRAKEN_SLAYER_PROJECTILE = registerEntity("kraken_slayer_projectile", FabricEntityTypeBuilder.create(SpawnGroup.MISC, KrakenSlayerProjectile::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<MoonlightArrow> MOONLIGHT_ARROW = registerEntity("moonlight_arrow", FabricEntityTypeBuilder.create(SpawnGroup.MISC, MoonlightArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
+    public static final EntityType<ArrowStormEntity> ARROW_STORM_ENTITY = registerEntity("arrow_storm_entity", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ArrowStormEntity::new).dimensions(EntityDimensions.changing(3f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());

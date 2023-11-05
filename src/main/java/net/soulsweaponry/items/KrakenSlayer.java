@@ -10,9 +10,6 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -46,12 +43,12 @@ public class KrakenSlayer extends ModdedBow {
                         if (stack.hasNbt() && stack.getNbt().contains("firedShots") && stack.getNbt().getInt("firedShots") >= 2) {
                             KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, world);
                             projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack));
-                            this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile);
+                            this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.6f, 3.0f);
                             stack.getNbt().putInt("firedShots", 0);
                         } else {
                             ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
                             PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
-                            this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, persistentProjectileEntity);
+                            this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, persistentProjectileEntity, 0.6f, 3.0f);
                             if (stack.hasNbt()) {
                                 if (stack.getNbt().contains("firedShots")) {
                                     stack.getNbt().putInt("firedShots", stack.getNbt().getInt("firedShots") + 1);
@@ -64,39 +61,6 @@ public class KrakenSlayer extends ModdedBow {
                 }
             }
         }
-    }
-
-    public void shootProjectile(World world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, PersistentProjectileEntity projectile) {
-        projectile.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
-        projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, pullProgress * 3.0F, 1.0F);
-        if (pullProgress == 1.0F) {
-            projectile.setCritical(true);
-        }
-        double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack); // Normal bow: 2.5 -> 5 (power V) -> 10 with crit
-        projectile.setDamage(projectile.getDamage() + power * 0.6f); //This: 3 -> 6 -> 12 with crit
-        int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
-        if (punch > 0) {
-            projectile.setPunch(punch);
-        }
-        if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) {
-            projectile.setOnFireFor(8);
-        }
-        stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-
-        boolean creativeAndInfinity = player.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        boolean bl2 = creativeAndInfinity && arrowStack.isOf(Items.ARROW);
-        if (bl2 || player.getAbilities().creativeMode && (arrowStack.isOf(Items.SPECTRAL_ARROW) || arrowStack.isOf(Items.TIPPED_ARROW))) {
-            projectile.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-        }
-        world.spawnEntity(projectile);
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + pullProgress * 0.5F);
-        if (!bl2 && !player.getAbilities().creativeMode) {
-            arrowStack.decrement(1);
-            if (arrowStack.isEmpty()) {
-                player.getInventory().removeOne(arrowStack);
-            }
-        }
-        player.incrementStat(Stats.USED.getOrCreateStat(this));
     }
 
     @Override
@@ -112,6 +76,6 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public float getReducedPullTime() {
-        return 10;
+        return ConfigConstructor.kraken_slayer_reduced_pull_time;
     }
 }

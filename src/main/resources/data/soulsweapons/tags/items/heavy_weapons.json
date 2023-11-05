@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:darkin_blade",
+    "soulsweapons:guts_sword",
+    "soulsweapons:nightfall",
+    "soulsweapons:featherlight",
+    "soulsweapons:kirkhammer"
+  ]
+}
