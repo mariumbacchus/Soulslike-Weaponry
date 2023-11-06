@@ -388,7 +388,7 @@ public class PacketsClient {
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
             for (ParticleEffect particle : particles) {
-                world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
+                world.addParticle(particle, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
         } 
     }
