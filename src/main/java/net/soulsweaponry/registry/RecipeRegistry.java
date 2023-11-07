@@ -125,6 +125,22 @@ public class RecipeRegistry {
                                 "SGi",
                                 "S i"
                         ), new Identifier(ModId, "blunderbuss"));
+
+                ArrayList<ArrayList<Object>> list = new ArrayList<>();
+                list.add(Lists.newArrayList("tag", new Identifier("c", "silver_ingots")));
+                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+                BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
+                        list, new Identifier(ModId, "silver_bullet"), 10);
+                registerAndAddToBook(BEWITCHMENT_SILVER_BULLET, "silver_bullet_1", ConfigConstructor.disable_gun_recipes, ItemRegistry.LOST_SOUL);
+
+                list = new ArrayList<>();
+                list.add(Lists.newArrayList("item", new Identifier("iron_ingot")));
+                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+                SILVER_BULLET_RECIPE = JsonCreator.createShapelessRecipeJson(
+                        list, new Identifier(ModId, "silver_bullet"), 3);
+                registerAndAddToBook(SILVER_BULLET_RECIPE, "silver_bullet_2", ConfigConstructor.disable_gun_recipes, ItemRegistry.LOST_SOUL);
             }
             if (!ConfigConstructor.disable_recipe_bloodthirster) {
                 BLOODTHIRSTER_RECIPE = JsonCreator.createShapedRecipeJson(
@@ -639,23 +655,23 @@ public class RecipeRegistry {
                     "item", new Identifier("bewitchment", "demon_heart"),
                     new Identifier(ModId, "molten_demon_heart"), 0.1, 200);
 
-            if (!ConfigConstructor.disable_gun_recipes) {
-                ArrayList<ArrayList<Object>> list = new ArrayList<>();
-                list.add(Lists.newArrayList("tag", new Identifier("c", "silver_ingots")));
-                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
-                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
-                BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
-                        list, new Identifier(ModId, "silver_bullet"), 10);
-            }
-        } else if (!ConfigConstructor.disable_gun_recipes) {
-            ArrayList<ArrayList<Object>> list = new ArrayList<>();
-            list.add(Lists.newArrayList("item", new Identifier("iron_ingot")));
-            list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
-            list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
-            SILVER_BULLET_RECIPE = JsonCreator.createShapelessRecipeJson(
-                    list, new Identifier(ModId, "silver_bullet"), 10);
-            registerAndAddToBook(SILVER_BULLET_RECIPE, "silver_bullet", ConfigConstructor.disable_gun_recipes, ItemRegistry.LOST_SOUL);
-        }
+//            if (!ConfigConstructor.disable_gun_recipes) {
+//                ArrayList<ArrayList<Object>> list = new ArrayList<>();
+//                list.add(Lists.newArrayList("tag", new Identifier("c", "silver_ingots")));
+//                list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+//                list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+//                BEWITCHMENT_SILVER_BULLET = JsonCreator.createShapelessRecipeJson(
+//                        list, new Identifier(ModId, "silver_bullet"), 10);
+//            }
+        } //else if (!ConfigConstructor.disable_gun_recipes) {
+//            ArrayList<ArrayList<Object>> list = new ArrayList<>();
+//            list.add(Lists.newArrayList("item", new Identifier("iron_ingot")));
+//            list.add(Lists.newArrayList("item", new Identifier(ModId, "lost_soul")));
+//            list.add(Lists.newArrayList("item", new Identifier("gunpowder")));
+//            SILVER_BULLET_RECIPE = JsonCreator.createShapelessRecipeJson(
+//                    list, new Identifier(ModId, "silver_bullet"), 10);
+//            registerAndAddToBook(SILVER_BULLET_RECIPE, "silver_bullet", ConfigConstructor.disable_gun_recipes, ItemRegistry.LOST_SOUL);
+//        }
     }
 
     private static void registerAndAddToBook(JsonObject recipe, String name, boolean configBoolean, Item... items) {
