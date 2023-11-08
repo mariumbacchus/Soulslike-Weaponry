@@ -53,7 +53,9 @@ public class NightProwler extends BossEntity implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     public int phaseTwoTicks;
+    public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
+    public int maxSpawnTicks = 50;
     public int darknessRiseTicks;
     private int[] aliveSummons = new int[0];
     @Nullable private BlackflameSnakeLogic blackflameSnakeLogic = null;
@@ -113,6 +115,8 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (this.isInitiatingPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
+        } else if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+            state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
                 switch (this.getAttackAnimation()) {
@@ -362,7 +366,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     public enum Attacks {
-        IDLE, DEATH, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
+        IDLE, DEATH, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
         DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP
     }
 
@@ -378,10 +382,12 @@ public class NightProwler extends BossEntity implements GeoEntity {
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.setInitiatePhaseTwo(true);
+                this.setFlying(false);
             }
         }
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
+            this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
@@ -399,7 +405,12 @@ public class NightProwler extends BossEntity implements GeoEntity {
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
                 this.setInitiatePhaseTwo(false);
-                this.setFlying(false);
+            }
+        }
+        if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+            this.spawnTicks++;
+            if (this.spawnTicks >= this.maxSpawnTicks) {
+                this.setAttackAnimation(NightProwler.Attacks.IDLE);
             }
         }
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
@@ -441,7 +452,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             return false;
         }
         if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
-                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 2 : 1)
+                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 1.5f : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
             if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
@@ -456,9 +467,10 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 }
             }
         }
-        if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && this.getHealth() < this.getMaxHealth() / 2f) {
+        if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) &&
+                this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
             this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
-            this.heal(5f);
+            this.heal(ConfigConstructor.night_prowler_projectile_heal_amount);
             return false;
         }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
@@ -598,6 +610,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public void tickMovement() {
         super.tickMovement();
         if (this.getWorld().isClient) {
+            if (this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+                for (int i = 0; i < 2; i++) {
+                    this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+                }
+            }
             switch (this.getParticleState()) {
                 case 1 -> {
                     if (this.getTargetPos() != null) {
@@ -704,5 +721,10 @@ public class NightProwler extends BossEntity implements GeoEntity {
     @Override
     public boolean isClimbing() {
         return !this.isFlying() && super.isClimbing();
+    }
+
+    @Override
+    protected boolean shouldDropLoot() {
+        return this.isPhaseTwo();
     }
 }

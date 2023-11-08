@@ -251,9 +251,23 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
+    @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_1 = 0.8f;
+    @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_2 = 0.6f;
     @Entry(min=0) public static int day_stalker_xp = 500;
+    @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_1 = 1D;
+    @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_2 = 1D;
+    @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_1 = 1D;
+    @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_2 = 1D;
+    @Entry(min=0) public static int duo_fight_time_before_switch = 400;
     @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
+    @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
+    @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.1667f;
+    @Entry(min=0) public static float night_prowler_projectile_heal_amount = 5f;
     @Entry(min=0) public static double night_prowler_teleport_chance = 0.3D;
     @Entry(min=0) public static int night_prowler_xp = 500;
+    @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_1 = 1D;
+    @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_2 = 1D;
+    @Entry(min=0) public static double night_prowler_special_cooldown_modifier_phase_1 = 1D;
+    @Entry(min=0) public static double night_prowler_special_cooldown_modifier_phase_2 = 1D;
 }
