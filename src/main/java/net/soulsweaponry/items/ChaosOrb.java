@@ -1,17 +1,23 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
 import net.soulsweaponry.registry.EntityRegistry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ChaosOrb extends Item {
 
@@ -36,5 +42,13 @@ public class ChaosOrb extends Item {
             return TypedActionResult.success(stack);
         }
         return TypedActionResult.consume(stack);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        for (int i = 1; i < 3 + 1; i++) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));
+        }
     }
 }

@@ -46,7 +46,10 @@ public class DayStalker extends BossEntity implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     public int phaseTwoTicks;
+    public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
+    public int maxSpawnTicks = 50;
+    public int flightTimer = 0;
     public static final int ATTACKS_LENGTH = DayStalker.Attacks.values().length;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -143,6 +146,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (this.isDead()) return PlayState.STOP;
         if (this.isInitiatingPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
+        } else if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
+            state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
                 switch (this.getAttackAnimation()) {
@@ -172,6 +177,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                     case OVERHEAT -> state.getController().setAnimation(RawAnimation.begin().then("overheat_2", Animation.LoopType.LOOP));
                     case INFERNO -> state.getController().setAnimation(RawAnimation.begin().then("inferno_2", Animation.LoopType.LOOP));
                     case FLAMES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("flames_reach_2", Animation.LoopType.LOOP));
+                    case SKY_HIGH -> state.getController().setAnimation(RawAnimation.begin().then("sky_high_2", Animation.LoopType.LOOP));
                     default -> state.getController().setAnimation(RawAnimation.begin().then("empty_2", Animation.LoopType.LOOP));
                 }
             }
@@ -281,8 +287,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     public enum Attacks {
-        IDLE, DEATH, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
-        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE
+        IDLE, DEATH, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
+        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -306,6 +312,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         nbt.putInt("remaining_ani_ticks", this.getRemainingAniTicks());
         nbt.putBoolean("is_flying", this.isFlying());
         nbt.putBoolean("chase_target", this.shouldChaseTarget());
+        nbt.putInt("flight_timer", this.flightTimer);
     }
 
     @Override
@@ -332,6 +339,9 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (nbt.contains("chase_target")) {
             this.setChaseTarget(nbt.getBoolean("chase_target"));
         }
+        if (nbt.contains("flight_timer")) {
+            this.flightTimer = nbt.getInt("flight_timer");
+        }
     }
 
     public boolean isEmpowered() {
@@ -350,11 +360,14 @@ public class DayStalker extends BossEntity implements GeoEntity {
             LivingEntity partner = this.getPartner((ServerWorld) this.world);
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.setInitiatePhaseTwo(true);
+                this.setFlying(false);
             }
         }
         if (this.isEmpowered()) {
-            if (this.getHealth() < this.getMaxHealth() && this.age % 10 == 0) {
-                this.heal(1f);
+            if (this.isPhaseTwo()) {
+                if (this.getHealth() < this.getMaxHealth() && this.age % 10 == 0) {
+                    this.heal(1f);
+                }
             }
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1, false, false));
         }
@@ -376,7 +389,12 @@ public class DayStalker extends BossEntity implements GeoEntity {
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
                 this.setInitiatePhaseTwo(false);
-                this.setFlying(false);
+            }
+        }
+        if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
+            this.spawnTicks++;
+            if (this.spawnTicks >= this.maxSpawnTicks) {
+                this.setAttackAnimation(Attacks.IDLE);
             }
         }
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
@@ -510,7 +528,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
             amount = amount * 0.6f;
         }
         if (this.isEmpowered() && source.isProjectile() && !this.isFlying()) {
-            amount = amount * 0.75f;
+            amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
+                    ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
         }
         return super.damage(source, amount);
     }
@@ -530,5 +549,10 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     public boolean isClimbing() {
         return !this.isFlying() && super.isClimbing();
+    }
+
+    @Override
+    protected boolean shouldDropLoot() {
+        return this.isPhaseTwo();
     }
 }

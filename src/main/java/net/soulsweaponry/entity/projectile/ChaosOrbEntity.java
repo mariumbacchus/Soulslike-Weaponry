@@ -14,6 +14,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
+import net.soulsweaponry.entity.mobs.DayStalker;
+import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -49,7 +52,7 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
             double i = this.getZ() - f;
             float j = (float)Math.sqrt(h * h + i * i);
             float k = (float)MathHelper.atan2(i, h);
-            double l = MathHelper.lerp(0.0025, g, (double)j);
+            double l = MathHelper.lerp(0.0025, g, j);
             double m = vec3d.y;
             if (j < 1.0f) {
                 l *= 0.8;
@@ -73,16 +76,23 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
                 this.discard();
                 this.world.syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
 
-                for (int i = -1; i < 2; i += 2) {
-                    // TODO: Filler until right bosses are made.
-//                    NightShade boss = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
-//                    boss.setPos(this.getX(), this.getY(), this.getZ());
-//                    boss.setVelocity((float) i / 5f, 0.1f, - (float) i / 5f);
-//                    boss.setSpawn();
-//                    world.spawnEntity(boss);
-                    for (ServerPlayerEntity player : ((ServerWorld) world).getPlayers()) {
-                        world.playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT, SoundCategory.HOSTILE, 0.3f, 1f);
-                    }
+                NightProwler prowler = new NightProwler(EntityRegistry.NIGHT_PROWLER, this.getWorld());
+                DayStalker stalker = new DayStalker(EntityRegistry.DAY_STALKER, this.getWorld());
+                prowler.setPos(this.getX(), this.getY(), this.getZ());
+                stalker.setPos(this.getX(), this.getY(), this.getZ());
+                prowler.setVelocity(1 / 5f, 0.1f, - 1 / 5f);
+                stalker.setVelocity(- 1 / 5f, 0.1f, 1 / 5f);
+                boolean fly = this.random.nextBoolean();
+                prowler.setFlying(fly);
+                stalker.setFlying(!fly);
+                prowler.setAttackAnimation(NightProwler.Attacks.SPAWN);
+                stalker.setAttackAnimation(DayStalker.Attacks.SPAWN);
+                prowler.setPartnerUuid(stalker.getUuid());
+                stalker.setPartnerUuid(prowler.getUuid());
+                this.getWorld().spawnEntity(stalker);
+                this.getWorld().spawnEntity(prowler);
+                for (ServerPlayerEntity player : ((ServerWorld) getWorld()).getPlayers()) {
+                    getWorld().playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT, SoundCategory.HOSTILE, 0.3f, 1f);
                 }
             }
         } else {
