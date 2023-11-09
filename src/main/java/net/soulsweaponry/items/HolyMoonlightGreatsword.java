@@ -93,7 +93,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                 int times = stack.getNbt().getInt(RUPTURES);
                 Vec3d direction = new Vec3d(stack.getNbt().getDouble(SPOT_X), 0, stack.getNbt().getDouble(SPOT_Z)).multiply(mod);
                 BlockPos pos = new BlockPos(stack.getNbt().getIntArray(POS)[0], stack.getNbt().getIntArray(POS)[1], stack.getNbt().getIntArray(POS)[2]);
-                Vec3d targetArea = new Vec3d(pos.getX(), user.getY() - 5, pos.getZ()).add(direction);
+                Vec3d targetArea = new Vec3d(pos.getX(), user.getY() - 3, pos.getZ()).add(direction);
                 BlockPos blockPos = this.getAlteredPos(world, new BlockPos(targetArea));
                 for (Entity e : world.getOtherEntities(user, new Box(blockPos).expand(2))) {
                     if (e instanceof LivingEntity) {

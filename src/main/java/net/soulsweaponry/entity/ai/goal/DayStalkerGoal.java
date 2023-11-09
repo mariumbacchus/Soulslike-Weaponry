@@ -19,6 +19,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DayStalker;
+import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
@@ -45,6 +46,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     //private int flightTimer; // Testing only.
     private int changeFlightTargetTimer;
     private Vec3d flightPosAdder;
+    private float flyY = 6f;
+    private float fallDistance = 0;
 
     public DayStalkerGoal(DayStalker boss, double speed, boolean pauseWhenMobIdle) {
         super(boss, speed, pauseWhenMobIdle);
@@ -86,6 +89,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.hasExploded = false;
         this.boss.setFlying(false);
         this.changeFlightTargetTimer = 0;
+        this.flyY = 6f;
+        this.fallDistance = 0;
+        this.boss.flightTimer = 0;
     }
 
     private void checkAndSetAttack(LivingEntity target) {
@@ -132,7 +138,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             case WARMTH -> {
-                if (this.boss.isPhaseTwo() && this.specialCooldown <= 0) {
+                if (this.boss.isPhaseTwo() && this.specialCooldown <= 0 && this.boss.getRandom().nextBoolean()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -146,13 +152,18 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                     this.boss.setAttackAnimation(attack);
                 }
             }
+            case SKY_HIGH -> {
+                if (this.boss.isPhaseTwo() && this.specialCooldown <= 0) {
+                    this.boss.setAttackAnimation(attack);
+                }
+            }
             default -> this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
         }
     }
 
     @Override
     public void tick() {
-        if (this.boss.getRemainingAniTicks() > 0) {
+        if (this.boss.getRemainingAniTicks() > 0 || this.boss.getAttackAnimation().equals(DayStalker.Attacks.SPAWN)) {
             return;
         }
         if (this.boss.isInitiatingPhaseTwo()) {
@@ -183,6 +194,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         * */
         LivingEntity target = this.boss.getTarget();
         if (target != null) {
+            if (!this.boss.isPhaseTwo()) {
+                this.tickPartnerSwitch();
+            }
             if (this.boss.isFlying()) {
                 this.moveAboveTarget(target);
             }
@@ -247,7 +261,25 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                     this.attackLength = 60;
                     this.flamesReach(target, distanceToEntity);
                 }
+                case SKY_HIGH -> {
+                    this.attackLength = 210;
+                    this.skyHigh();
+                }
             }
+        }
+    }
+
+    /**
+     * The timer for when the bosses should switch between flying and on ground
+     * is built-in here.
+     */
+    private void tickPartnerSwitch() {
+        int timer = Math.max(0, this.boss.flightTimer--);
+        NightProwler partner;
+        if (timer == 0 && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
+            partner.setFlying(!partner.isFlying());
+            this.boss.setFlying(!this.boss.isFlying());
+            this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
         }
     }
 
@@ -260,7 +292,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.lookAtEntity(target, this.boss.getMaxLookYawChange(), this.boss.getMaxLookPitchChange());
         Vec3d vec3d = this.boss.getVelocity().multiply(0.8f, 0.6f, 0.8f);
         double d = vec3d.y;
-        if (this.boss.getY() < target.getY() || this.boss.getY() < target.getY() + 6.0) {
+        if (this.boss.getY() < target.getY() || this.boss.getY() < target.getY() + this.flyY) {
             d = Math.max(0.0, d);
             d += 0.3 - d * (double)0.6f;
         }
@@ -285,12 +317,16 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void checkAndReset(int attackCooldown, int specialCooldown) {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
-            this.attackCooldown = attackCooldown;
-            if (specialCooldown != 0) this.specialCooldown = specialCooldown;
+            this.attackCooldown = MathHelper.floor((double)attackCooldown
+                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_cooldown_modifier_phase_1));
+            if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
+                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_special_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
             this.boss.setChaseTarget(true);
             this.hasExploded = false;
+            this.flyY = 6f;
+            this.fallDistance = 0;
         }
     }
 
@@ -339,7 +375,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
         }
-        this.checkAndReset(5, 0);
+        this.checkAndReset(15, 0);
     }
 
     private void decimate(LivingEntity target) {
@@ -372,7 +408,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             boolean phase2 = this.boss.isPhaseTwo();
             this.shootSunlight(target, phase2 ? 1 : 0, phase2 ? 25f : 15f, MoonlightProjectile.RotationState.NORMAL);
         }
-        this.checkAndReset(10, 0);
+        this.checkAndReset(30, 0);
     }
 
     private void shootProjectile(LivingEntity target, ProjectileEntity projectile, SoundEvent sound) {
@@ -444,7 +480,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 this.boss.world.setBlockState(randomPos, Blocks.FIRE.getDefaultState());
             }
         }
-        this.checkAndReset(10, this.boss.isPhaseTwo() ? 0 : 100);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, this.boss.isPhaseTwo() ? 0 : 60);
     }
 
     private void dawnbreaker(LivingEntity target) {
@@ -474,7 +510,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 this.shootSunlight(target, 2, 30f, MoonlightProjectile.RotationState.NORMAL);
             }
         }
-        this.checkAndReset(10, 0);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 20, 0);
     }
 
     private void shootSunlight(LivingEntity target, int typeIndex, float damage, MoonlightProjectile.RotationState rotationState) {
@@ -549,7 +585,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus >= 65) {
             this.boss.setParticleState(0);
         }
-        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, 0);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 50, 0);
     }
 
     /**
@@ -620,7 +656,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         } else if (this.attackStatus == 96) {
             this.shootSunlight(target, 2, 25f, MoonlightProjectile.RotationState.NORMAL);
         }
-        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, 0);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 70, 0);
     }
 
     private void conflagration(LivingEntity target) {
@@ -645,7 +681,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 this.boss.world.spawnEntity(fireballEntity);
             }
         }
-        this.checkAndReset(phase2 ? 20 : 40, phase2 ? 160 : 0);
+        this.checkAndReset(phase2 ? 20 : 80, phase2 ? 160 : 0);
     }
 
     private void blazeBarrage(LivingEntity target) {
@@ -663,7 +699,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.boss.world.spawnEntity(fireball);
             if (this.attackStatus % 4 == 0) this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
         }
-        this.checkAndReset(this.boss.isPhaseTwo() ? 40 : 1, 0);
+        this.checkAndReset(40, 0);
     }
 
     private void flamesEdge() {
@@ -696,7 +732,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 this.aoe(5.2D, 40f, 1.5f);
             }
         }
-        this.checkAndReset(20, 0);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 30, 0);
     }
 
     public void aoe(double expansion, float damage, float knockback) {
@@ -721,7 +757,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             CustomDeathHandler.deathExplosionEvent(this.boss.world, this.boss.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
             this.aoe(4D, 60f, 4f);
         }
-        this.checkAndReset(40, 200);
+        this.checkAndReset(40, 140);
     }
 
     private void warmth() {
@@ -803,6 +839,46 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(30, 0);
     }
 
+    private void skyHigh() {
+        this.attackStatus++;
+        this.boss.getNavigation().stop();
+        if (this.attackStatus == 23) {
+            this.playSound(null, SoundEvents.ENTITY_BLAZE_SHOOT, 1f, 1f);
+            this.playSound(null, SoundRegistry.NIGHT_PROWLER_SCREAM, 1f, 1f);
+            this.boss.setFlying(true);
+            this.flyY = 30f;
+            this.boss.addVelocity(0, 1.5f, 0);
+        }
+        if (this.attackStatus == 142) {
+            this.boss.setFlying(false);
+            this.boss.setVelocity(0, -3f, 0);
+        }
+        if (this.boss.fallDistance > this.fallDistance) {
+            this.fallDistance = this.boss.fallDistance;
+        }
+        if (this.attackStatus >= 146 && this.attackStatus <= 190) {
+            if (this.boss.isOnGround() && !this.hasExploded) {
+                float power = 20 + this.fallDistance;
+                float expansion = this.fallDistance/2.5f;
+                Box box = this.boss.getBoundingBox().expand(expansion);
+                for (Entity targets : this.boss.getWorld().getOtherEntities(this.boss, box)) {
+                    if (targets instanceof LivingEntity livingEntity) {
+                        this.damageTarget(livingEntity, power);
+                    }
+                }
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                double pDistance = this.fallDistance >= 10 ? this.fallDistance/10 : 1;
+                if (!this.boss.getWorld().isClient) {
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
+                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
+                }
+                this.hasExploded = true;
+            }
+        }
+        this.checkAndReset(5, 80);
+    }
+
     private void flamesReach(LivingEntity target, double distance) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
@@ -847,7 +923,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
         }
-        this.checkAndReset(20, 0);
+        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, 0);
     }
 
     /**
