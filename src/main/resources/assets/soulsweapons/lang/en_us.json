@@ -590,6 +590,9 @@
     "tooltip.soulsweapons.chaos_crown_lore_2": "the Monarch's intentions were always so evil. Not much remains",
     "tooltip.soulsweapons.chaos_crown_lore_3": "of his own empire either, after all...",
     "tooltip.soulsweapons.shard_of_uncertainty.part_1": "It seems to perfectly fit in a certain pedestal...",
+    "tooltip.soulsweapons.chaos_orb.1": "All the colors of night and day pass through",
+    "tooltip.soulsweapons.chaos_orb.2": "this orb. Throw it into the sky to summon",
+    "tooltip.soulsweapons.chaos_orb.3": "deities beyond your comprehension.",
 
     "enchantment.soulsweapons.fast_hands": "Quick Reload",
     "enchantment.soulsweapons.fast_hands.desc": "Reduce charge time or increase use time for Guns.",
@@ -670,5 +673,7 @@
     "advancements.soulsweapons.trickweapon.title": "Switcharoo!",
     "advancements.soulsweapons.trickweapon.description": "Acquire your first trickweapon, a weapon that can transform itself into other weaponry!",
     "advancements.soulsweapons.transform_scythe.title": "Winner takes all",
-    "advancements.soulsweapons.transform_scythe.description": "Feed the Darkin Scythe enough souls to transform itself into a new empowered form."
+    "advancements.soulsweapons.transform_scythe.description": "Feed the Darkin Scythe enough souls to transform itself into a new empowered form.",
+    "advancements.soulsweapons.kill_day_night_boss.title": "Heat Death of the Universe",
+    "advancements.soulsweapons.kill_day_night_boss.description": "Use the Chaos Orb to summon the Day Stalker and Night Prowler, and acquire either of their souls."
 }
