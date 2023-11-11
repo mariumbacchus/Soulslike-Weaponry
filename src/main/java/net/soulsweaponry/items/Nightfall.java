@@ -19,6 +19,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -131,6 +132,9 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
+            for (int i = 1; i <= 3; i++) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.nightfall.part_" + i).formatted(Formatting.DARK_GRAY));
+            }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
