@@ -353,11 +353,14 @@ public class WeaponUtil {
             }
             case MOONLIGHT_ATTACK -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_attack_description").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_attack_description_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_attack_description_2").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_attack_description_3").formatted(Formatting.GRAY));
             }
             case LUNAR_HERALD -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_description_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_description_1").formatted(Formatting.GRAY)
+                        .append(KeyBindRegistry.effectShootMoonlight.getBoundKeyLocalizedText()));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_description_2").formatted(Formatting.GRAY));
             }
             case SUMMON_GHOST -> {

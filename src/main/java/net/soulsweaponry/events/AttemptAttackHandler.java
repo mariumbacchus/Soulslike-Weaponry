@@ -15,7 +15,7 @@ public class AttemptAttackHandler implements AttemptAttackCallback {
     @Override
     public ActionResult useViaAttack(PlayerEntity player, World world) {
         for (Hand hand : Hand.values()) {
-            if (player.hasStatusEffect(EffectRegistry.MOON_HERALD) || player.getStackInHand(hand).isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
+            if (player.getStackInHand(hand).isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
                 if (world.isClient) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     ClientPlayNetworking.send(PacketRegistry.MOONLIGHT, buf);
