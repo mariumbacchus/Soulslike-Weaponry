@@ -2,6 +2,8 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,10 +31,13 @@ public class MoonstoneRing extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, 600, EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)));
-        user.getItemCooldownManager().set(this, 2400);
-        stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
-        return TypedActionResult.success(stack, world.isClient());
+        if (!user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
+            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, 600, EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)));
+            stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
+            world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
+            return TypedActionResult.success(stack, world.isClient());
+        }
+        return TypedActionResult.fail(stack);
     }
 
     @Override

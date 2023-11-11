@@ -1,6 +1,10 @@
 package net.soulsweaponry.client.registry;
 
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Hand;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import org.lwjgl.glfw.GLFW;
 
@@ -21,6 +25,7 @@ public class KeyBindRegistry {
     public static KeyBinding switchWeapon;
     public static KeyBinding keybindAbility;
     private static KeyBinding parry;
+    public static KeyBinding effectShootMoonlight;
 
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
@@ -29,6 +34,7 @@ public class KeyBindRegistry {
         switchWeapon = registerKeyboard("switch_weapon", GLFW.GLFW_KEY_B);
         keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
         parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
+        effectShootMoonlight = registerKeyboard("effect_shoot_moonlight", GLFW.GLFW_KEY_H);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
@@ -65,6 +71,15 @@ public class KeyBindRegistry {
                 try {
                     ClientPlayNetworking.send(PacketRegistry.PARRY, PacketByteBufs.empty());
                 } catch (Exception ignored) {}
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (effectShootMoonlight.wasPressed()) {
+                if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    ClientPlayNetworking.send(PacketRegistry.MOONLIGHT, buf);
+                    client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
+                }
             }
         });
     }
