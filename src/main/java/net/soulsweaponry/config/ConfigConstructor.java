@@ -163,6 +163,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int moonlight_shortsword_projectile_cooldown = 13;
     @Entry public static boolean moonlight_shortsword_enable_right_click = false;
     @Entry public static boolean moonlight_shortsword_enable_left_click = true;
+    @Entry public static int moonlight_ring_projectile_cooldown = 5;
     @Entry public static int nightfall_damage = 11;
     @Entry public static float nightfall_ability_damage = 18.0f;
     @Entry public static int nightfall_ability_shield_power = 2;
