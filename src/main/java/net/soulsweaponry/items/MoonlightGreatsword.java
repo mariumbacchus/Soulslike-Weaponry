@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
+import net.minecraft.util.Formatting;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,6 +73,9 @@ public class MoonlightGreatsword extends SwordItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT, stack, tooltip);
+            for (int i = 1; i <= 3; i++) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_" + i).formatted(Formatting.DARK_GRAY));
+            }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

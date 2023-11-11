@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -152,6 +153,9 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
+            for (int i = 1; i <= 3; i++) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.nightfall.part_" + i).formatted(Formatting.DARK_GRAY));
+            }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
