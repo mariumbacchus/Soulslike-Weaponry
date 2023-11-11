@@ -170,8 +170,22 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
-                for (int i = 1; i <= 3; i++) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_lore_" + i).formatted(Formatting.DARK_GRAY));
+                if (stack.isOf(ItemRegistry.CHAOS_CROWN)) {
+                    if (Screen.hasControlDown()) {
+                        for (int i = 1; i <= 4; i++) {
+                            tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_lore_" + i).formatted(Formatting.DARK_GRAY));
+                        }
+                    } else {
+                        tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                    }
+                } else {
+                    if (Screen.hasControlDown()) {
+                        for (int i = 1; i <= 4; i++) {
+                            tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_helm_lore_" + i).formatted(Formatting.DARK_GRAY));
+                        }
+                    } else {
+                        tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                    }
                 }
             } else if (stack.isOf(ItemRegistry.CHAOS_ROBES)) {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
@@ -179,12 +193,19 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
+                if (Screen.hasControlDown()) {
+                    for (int i = 1; i <= 4; i++) {
+                        tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_lore_" + i).formatted(Formatting.DARK_GRAY));
+                    }
+                } else {
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                }
             } else if (stack.isOf(ItemRegistry.ARKENPLATE)) {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
                 if (Screen.hasControlDown()) {
-                    for (int i = 1; i <= 8; i++) {
+                    for (int i = 1; i <= 4; i++) {
                         tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
                     }
                 } else {
