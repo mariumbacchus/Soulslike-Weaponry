@@ -39,8 +39,7 @@ public class MoonlightGreatsword extends SwordItem {
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
+        if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
@@ -74,6 +73,9 @@ public class MoonlightGreatsword extends SwordItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT, stack, tooltip);
+            for (int i = 1; i <= 3; i++) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_" + i).formatted(Formatting.DARK_GRAY));
+            }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }

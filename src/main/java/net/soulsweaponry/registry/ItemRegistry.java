@@ -19,18 +19,23 @@ public class ItemRegistry {
   
     public static final ItemGroup MAIN_GROUP = SoulsWeaponry.MAIN_GROUP;
 
-    public static final LoreItem LORD_SOUL_RED = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_red", 3);
+    public static final LoreItem LORD_SOUL_RED = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_red", 4);
     public static final LoreItem LORD_SOUL_DARK = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_dark", 3);
-    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_void", 2);
-    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_rose", 2);
+    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_void", 3);
+    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_rose", 3);
     public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_purple", 3);
     public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_white", 3);
     public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_day_stalker", 2);
     public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC).fireproof(), "lord_soul_night_prowler", 3);
-    public static final Item LOST_SOUL = new Item(new FabricItemSettings().rarity(Rarity.RARE));
+    public static final Item LOST_SOUL = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE),"lost_soul", 3);
     public static final Item MOONSTONE = new Item(new FabricItemSettings());
     public static final Item CHUNGUS_EMERALD = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON));
-    public static final Item DEMON_HEART = new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(4).saturationModifier(6f).meat().alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1).statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 1).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()));
+    public static final Item DEMON_HEART = new LoreItem(new FabricItemSettings().food(new FoodComponent.Builder()
+            .hunger(4).saturationModifier(6f).meat().alwaysEdible()
+            .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
+            .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
+            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()),
+            "demon_heart", 3);
     public static final Item MOLTEN_DEMON_HEART= new Item(new FabricItemSettings());
     public static final Item DEMON_CHUNK = new Item(new FabricItemSettings());
     public static final Item CRIMSON_INGOT = new Item(new FabricItemSettings());
@@ -48,7 +53,7 @@ public class ItemRegistry {
     public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f, new FabricItemSettings());
     public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new FabricItemSettings());
 
-    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(), "withered_demon_heart", 3);
+    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(), "withered_demon_heart", 4);
     public static final LoreItem ARKENSTONE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(), "arkenstone", 4);
     public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(), "essence_of_eventide", 2);
     public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE).fireproof(), "essence_of_luminescence", 3);
