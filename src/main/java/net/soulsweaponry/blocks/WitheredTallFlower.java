@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 /**
  * If this replaced tall flowers, it will turn into a random tall flower 
- * block instead of it's previous form, just like {@link WitheredFlower}
+ * block instead of its previous form, just like {@link WitheredFlower}
  */
 public class WitheredTallFlower extends WitheredTallGrass {
 

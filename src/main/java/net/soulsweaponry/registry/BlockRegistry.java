@@ -15,28 +15,20 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.blocks.AltarBlock;
-import net.soulsweaponry.blocks.BlackstonePedestal;
-import net.soulsweaponry.blocks.DrippingBlock;
-import net.soulsweaponry.blocks.SoulLampBlock;
-import net.soulsweaponry.blocks.WitheredBlock;
-import net.soulsweaponry.blocks.WitheredFlower;
-import net.soulsweaponry.blocks.WitheredGrass;
-import net.soulsweaponry.blocks.WitheredTallFlower;
-import net.soulsweaponry.blocks.WitheredTallGrass;
+import net.soulsweaponry.blocks.*;
 
 public class BlockRegistry {
 
     public static final Block CRIMSON_OBSIDIAN = new DrippingBlock(FabricBlockSettings
         .copyOf(Blocks.OBSIDIAN)
-        .strength(50.0F, 1200.0F) //hardness og resistence, sjekk wiki
+        .strength(50.0F, 1200.0F) //hardness and resistance, check wiki
         .sounds(BlockSoundGroup.STONE)
         .luminance(10)
         .requiresTool(), ParticleTypes.FALLING_LAVA);
     public static final Block INFUSED_BLACKSTONE = new Block(FabricBlockSettings.copyOf(Blocks.BLACKSTONE).strength(1.8F, 7.0F).sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block CRACKED_INFUSED_BLACKSTONE = new Block(FabricBlockSettings.copyOf(Blocks.BLACKSTONE).strength(1.8F, 7.0F) .sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block MOONSTONE_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
-    public static final Block MOONSTONE_ORE_DEEPSLATE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
+    public static final Block MOONSTONE_ORE_DEEPSLATE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block MOONSTONE_BLOCK = new Block(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool());
     public static final AltarBlock ALTAR_BLOCK = new AltarBlock(FabricBlockSettings.copyOf(Blocks.OBSIDIAN).strength(30F, 800.0F).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool());
     public static final WitheredBlock WITHERED_DIRT = new WitheredBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).strength(0.3F).sounds(BlockSoundGroup.GRAVEL), Blocks.DIRT);
@@ -50,10 +42,11 @@ public class BlockRegistry {
     public static final WitheredTallFlower OLEANDER = new WitheredTallFlower(FabricBlockSettings.copyOf(Blocks.ROSE_BUSH).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS).offset(AbstractBlock.OffsetType.XZ), Blocks.LARGE_FERN, EffectRegistry.DECAY);
     public static final BlackstonePedestal BLACKSTONE_PEDESTAL = new BlackstonePedestal(FabricBlockSettings.copyOf(Blocks.OBSIDIAN).strength(20.0f, 400.0f).sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block VERGLAS_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
-    public static final Block VERGLAS_ORE_DEEPSLATE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
+    public static final Block VERGLAS_ORE_DEEPSLATE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_EMERALD_ORE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block VERGLAS_BLOCK = new TransparentBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).mapColor(MapColor.DARK_AQUA).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().requiresTool());
     public static final Block SOULFIRE_STAIN = new MagmaBlock(AbstractBlock.Settings.copy(Blocks.MAGMA_BLOCK).mapColor(MapColor.DARK_AQUA).requiresTool().luminance(state -> 3).ticksRandomly().strength(0.5f).allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true));
     public static final Block SOUL_LAMP = new SoulLampBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP).luminance(BlockRegistry.createLightLevelFromLitBlockState(15)).strength(0.3f).sounds(BlockSoundGroup.GLASS).allowsSpawning((state, world, pos, type) -> true));
+    public static final Block CHUNGUS_MONOLITH = new ChungusMonolith(AbstractBlock.Settings.copy(Blocks.DEEPSLATE_TILES).strength(3f, 3f).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool());
 
     public static void init() {
         registerBlock(CRIMSON_OBSIDIAN, "crimson_obsidian");
@@ -78,6 +71,7 @@ public class BlockRegistry {
         registerBlock(VERGLAS_BLOCK, "verglas_block");
         registerBlock(SOULFIRE_STAIN, "soulfire_stain");
         registerBlock(SOUL_LAMP, "soul_lamp");
+        registerBlock(CHUNGUS_MONOLITH, "chungus_monolith");
     }
 
     private static ToIntFunction<BlockState> createLightLevelFromLitBlockState(int litLevel) {
