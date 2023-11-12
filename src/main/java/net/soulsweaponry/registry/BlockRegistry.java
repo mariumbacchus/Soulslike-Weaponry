@@ -29,7 +29,7 @@ public class BlockRegistry {
     public static final Block INFUSED_BLACKSTONE = new Block(FabricBlockSettings.of(Material.STONE).strength(1.8F, 7.0F).sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block CRACKED_INFUSED_BLACKSTONE = new Block(FabricBlockSettings.of(Material.STONE).strength(1.8F, 7.0F) .sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block MOONSTONE_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
-    public static final Block MOONSTONE_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
+    public static final Block MOONSTONE_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE).luminance(9).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block MOONSTONE_BLOCK = new Block(FabricBlockSettings.of(Material.AMETHYST).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool());
     public static final AltarBlock ALTAR_BLOCK = new AltarBlock(FabricBlockSettings.of(Material.STONE).strength(30F, 800.0F).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool());
     public static final WitheredBlock WITHERED_DIRT = new WitheredBlock(FabricBlockSettings.of(Material.SOIL).strength(0.3F).sounds(BlockSoundGroup.GRAVEL), Blocks.DIRT);
@@ -43,10 +43,11 @@ public class BlockRegistry {
     public static final WitheredTallFlower OLEANDER = new WitheredTallFlower(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.LARGE_FERN, EffectRegistry.DECAY);
     public static final BlackstonePedestal BLACKSTONE_PEDESTAL = new BlackstonePedestal(FabricBlockSettings.of(Material.STONE).strength(20.0f, 400.0f).sounds(BlockSoundGroup.STONE).requiresTool());
     public static final Block VERGLAS_ORE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
-    public static final Block VERGLAS_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.STONE).requiresTool(), UniformIntProvider.create(4, 8));
+    public static final Block VERGLAS_ORE_DEEPSLATE = new OreBlock(FabricBlockSettings.of(Material.STONE).strength(4.5F, 3.0F).sounds(BlockSoundGroup.DEEPSLATE).requiresTool(), UniformIntProvider.create(4, 8));
     public static final Block VERGLAS_BLOCK = new TransparentBlock(FabricBlockSettings.of(Material.AMETHYST, MapColor.DARK_AQUA).strength(5.0F, 6.0F).sounds(BlockSoundGroup.AMETHYST_BLOCK).nonOpaque().requiresTool());
     public static final Block SOULFIRE_STAIN = new MagmaBlock(AbstractBlock.Settings.of(Material.STONE, MapColor.DARK_AQUA).requiresTool().luminance(state -> 3).ticksRandomly().strength(0.5f).allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true));
     public static final Block SOUL_LAMP = new SoulLampBlock(AbstractBlock.Settings.of(Material.REDSTONE_LAMP).luminance(BlockRegistry.createLightLevelFromLitBlockState(15)).strength(0.3f).sounds(BlockSoundGroup.GLASS).allowsSpawning((state, world, pos, type) -> true));
+    public static final Block CHUNGUS_MONOLITH = new ChungusMonolith(AbstractBlock.Settings.copy(Blocks.DEEPSLATE_TILES).strength(3f, 3f).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool());
 
     public static void init() {
         registerBlockAndItem(CRIMSON_OBSIDIAN, "crimson_obsidian");
@@ -71,6 +72,7 @@ public class BlockRegistry {
         registerBlockAndItem(VERGLAS_BLOCK, "verglas_block");
         registerBlockAndItem(SOULFIRE_STAIN, "soulfire_stain");
         registerBlockAndItem(SOUL_LAMP, "soul_lamp");
+        registerBlockAndItem(CHUNGUS_MONOLITH, "chungus_monolith");
     }
 
     private static ToIntFunction<BlockState> createLightLevelFromLitBlockState(int litLevel) {
