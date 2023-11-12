@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "soulsweapons:block/chungus_monolith",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "soulsweapons:block/chungus_monolith",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "soulsweapons:block/chungus_monolith"
+    },
+    "facing=west": {
+      "model": "soulsweapons:block/chungus_monolith",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "soulsweapons:block/chungus_monolith"
+    },
+    "facing=down": {
+      "model": "soulsweapons:block/chungus_monolith"
+    }
+  }
+}

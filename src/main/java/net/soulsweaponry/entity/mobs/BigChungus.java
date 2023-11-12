@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -25,7 +27,7 @@ public class BigChungus extends HostileEntity {
 
     public BigChungus(EntityType<? extends BigChungus> entityType, World world) {
         super(entityType, world);
-        this.experiencePoints = 70;
+        this.experiencePoints = 50;
     }
     /* ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⣠⠞⠉⢉⠩⢍⡙⠛⠋⣉⠉⠍⢉⣉⣉⣉⠩⢉⠉⠛⠲⣄⠀⠀⠀⠀
@@ -63,7 +65,24 @@ public class BigChungus extends HostileEntity {
         return view.doesNotIntersectEntities(this) && this.world.isNight() && !world.containsFluid(this.getBoundingBox()) 
             && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
             && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.BIG_CHUNGUS)
-            && this.isSpawnable();
+            && this.isSpawnable() && this.checkForMonolith();
+    }
+
+    public boolean checkForMonolith() {
+        BlockPos entityPos = this.getBlockPos();
+        int radius = ConfigConstructor.chungus_monolith_radius;
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                if (x * x + z * z <= radius * radius) {
+                    BlockPos checkPos = entityPos.add(x, 0, z);
+                    Block block = this.getWorld().getBlockState(checkPos).getBlock();
+                    if (block == BlockRegistry.CHUNGUS_MONOLITH) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public boolean isSpawnable() {
