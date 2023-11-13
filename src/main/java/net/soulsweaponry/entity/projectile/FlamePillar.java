@@ -7,14 +7,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.List;
+import java.util.Random;
 
 public class FlamePillar extends InvisibleEntity {
 
@@ -41,9 +40,6 @@ public class FlamePillar extends InvisibleEntity {
             this.setWarmup(this.getWarmup() - 1);
             if (this.getWarmup() < 0) {
                 if (this.getWarmup() == -7) {
-                    if (!this.getWorld().isClient) {
-                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.FLAME_RUPTURE_ID, this.getBlockPos());
-                    }
                     List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
                     for (LivingEntity livingEntity : list) {
                         this.damage(livingEntity);
@@ -52,12 +48,27 @@ public class FlamePillar extends InvisibleEntity {
                     if (this.getWorld().getBlockState(this.getBlockPos()).isAir()) {
                         this.getWorld().setBlockState(this.getBlockPos(), Blocks.FIRE.getDefaultState());
                     }
-                }
-                if (--this.ticksLeft < 0) {
                     this.discard();
                 }
             }
         }
+    }
+
+    @Override
+    public void onRemoved() {
+        Random random = this.random;
+        double d = random.nextGaussian() * 0.05D;
+        double e = random.nextGaussian() * 0.05D;
+        double f = random.nextGaussian() * 0.05D;
+        for(int j = 0; j < 200; ++j) {
+            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
+            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
+            double newY = random.nextDouble() - 0.5D + random.nextGaussian() * 0.5D + f;
+            this.getWorld().addParticle(ParticleTypes.WAX_ON, this.getX(), this.getY(), this.getZ(), newX / 0.1f, newY / 0.01f, newZ / 0.1f);
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getY(), this.getZ(), newX / 4, newY / 0.5f, newZ / 4);
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getY(), this.getZ(), newX / 4, newY / 0.5f, newZ / 4);
+        }
+        super.onRemoved();
     }
 
     @Override
