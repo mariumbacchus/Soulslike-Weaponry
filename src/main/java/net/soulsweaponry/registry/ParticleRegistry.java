@@ -9,13 +9,21 @@ import net.soulsweaponry.SoulsWeaponry;
 
 public class ParticleRegistry {
 
-    public static final DefaultParticleType NIGHTFALL_PARTICLE = registerParticle(FabricParticleTypes.simple(), "nightfall_particle");
-    public static final DefaultParticleType DAZZLING_PARTICLE = registerParticle(FabricParticleTypes.simple(), "dazzling_particle");
-    public static final DefaultParticleType PURPLE_FLAME = registerParticle(FabricParticleTypes.simple(), "purple_flame");
-    public static final DefaultParticleType DARK_STAR = registerParticle(FabricParticleTypes.simple(), "dark_star");
-    public static final DefaultParticleType BLACK_FLAME = registerParticle(FabricParticleTypes.simple(), "black_flame");
+    public static final DefaultParticleType NIGHTFALL_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType DAZZLING_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType PURPLE_FLAME = FabricParticleTypes.simple();
+    public static final DefaultParticleType DARK_STAR = FabricParticleTypes.simple();
+    public static final DefaultParticleType BLACK_FLAME = FabricParticleTypes.simple();
 
-    public static <I extends DefaultParticleType> I registerParticle(I particle, String name) {
-		return Registry.register(Registries.PARTICLE_TYPE, new Identifier(SoulsWeaponry.ModId, name), particle);
-	}
+    public static void init() {
+        registerParticle(NIGHTFALL_PARTICLE, "nightfall_particle");
+        registerParticle(DAZZLING_PARTICLE, "dazzling_particle");
+        registerParticle(PURPLE_FLAME, "purple_flame");
+        registerParticle(DARK_STAR, "dark_star");
+        registerParticle(BLACK_FLAME, "black_flame");
+    }
+
+    public static void registerParticle(DefaultParticleType particle, String name) {
+        Registry.register(Registries.PARTICLE_TYPE, new Identifier(SoulsWeaponry.ModId, name), particle);
+    }
 }
