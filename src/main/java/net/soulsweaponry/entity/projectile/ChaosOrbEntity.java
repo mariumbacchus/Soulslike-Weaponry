@@ -80,11 +80,10 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
                 DayStalker stalker = new DayStalker(EntityRegistry.DAY_STALKER, this.getWorld());
                 prowler.setPos(this.getX(), this.getY(), this.getZ());
                 stalker.setPos(this.getX(), this.getY(), this.getZ());
-                prowler.setVelocity(1 / 5f, 0.1f, - 1 / 5f);
-                stalker.setVelocity(- 1 / 5f, 0.1f, 1 / 5f);
-                boolean fly = this.random.nextBoolean();
-                prowler.setFlying(fly);
-                stalker.setFlying(!fly);
+                prowler.setVelocity(1 / 5f, -0.1f, - 1 / 5f);
+                stalker.setVelocity(- 1 / 5f, -0.1f, 1 / 5f);
+                prowler.setFlying(true);
+                stalker.setFlying(true);
                 prowler.setAttackAnimation(NightProwler.Attacks.SPAWN);
                 stalker.setAttackAnimation(DayStalker.Attacks.SPAWN);
                 prowler.setPartnerUuid(stalker.getUuid());
