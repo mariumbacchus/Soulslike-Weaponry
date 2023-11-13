@@ -61,7 +61,9 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
-                player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
+                if (!player.isCreative()) {
+                    player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
+                }
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
             }
         }

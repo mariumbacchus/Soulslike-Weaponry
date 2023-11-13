@@ -276,10 +276,17 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void tickPartnerSwitch() {
         int timer = Math.max(0, this.boss.flightTimer--);
         NightProwler partner;
-        if (timer == 0 && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
-            partner.setFlying(!partner.isFlying());
-            this.boss.setFlying(!this.boss.isFlying());
-            this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+        if (!this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
+            if (timer == 0) {
+                partner.setFlying(!partner.isFlying());
+                this.boss.setFlying(!this.boss.isFlying());
+                this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+            } else if (partner.isFlying() == this.boss.isFlying()) {
+                boolean bl = this.boss.getRandom().nextBoolean();
+                this.boss.setFlying(bl);
+                partner.setFlying(!bl);
+                this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+            }
         }
     }
 
