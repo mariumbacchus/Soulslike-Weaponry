@@ -756,7 +756,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 if (this.attackStatus % 12 == 0 && entity instanceof LivingEntity target) {
                     Vec3d vec = new Vec3d(target.getX() - (this.boss.getX()), target.getEyeY() - this.boss.getBodyY(1f), target.getZ() - this.boss.getZ());
                     this.shootSplitProjectile(vec, 3, 1.75f, EntityRegistry.NIGHT_SKULL);
-                    if (target.isDead() && target.deathTime < 1) {
+                    if (target.isDead() && target.deathTime < 2) {
                         this.boss.heal(ConfigConstructor.night_prowler_eclipse_healing);
                         DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);
                         spiral.setPosition(target.getPos());

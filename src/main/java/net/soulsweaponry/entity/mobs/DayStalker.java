@@ -397,6 +397,12 @@ public class DayStalker extends BossEntity implements GeoEntity {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
                 this.setAttackAnimation(Attacks.IDLE);
+                NightProwler partner;
+                if (!this.getWorld().isClient && (partner = this.getPartner((ServerWorld) this.getWorld())) != null) {
+                    boolean bl = this.getRandom().nextBoolean();
+                    this.setFlying(bl);
+                    partner.setFlying(!bl);
+                }
             }
         }
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
