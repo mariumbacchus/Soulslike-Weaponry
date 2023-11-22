@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
         super(entityType, world);
         this.noClip = true;
         this.setDamage(2D);
+        this.pickupType = PickupPermission.DISALLOWED;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
 
     @Override
     protected ItemStack asItemStack() {
-        return null;
+        return Items.ARROW.getDefaultStack();
     }
 
     @Override

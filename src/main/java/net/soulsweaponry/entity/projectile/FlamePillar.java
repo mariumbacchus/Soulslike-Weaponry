@@ -8,12 +8,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.List;
 import java.util.Random;
@@ -21,8 +18,6 @@ import java.util.Random;
 public class FlamePillar extends InvisibleEntity {
 
     private int warmup;
-    public int maxTicks = 15;
-    private int ticksLeft = maxTicks;
 
     public FlamePillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
