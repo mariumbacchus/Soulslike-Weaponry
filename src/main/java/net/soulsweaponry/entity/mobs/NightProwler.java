@@ -293,7 +293,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     public boolean isEmpowered() {
-        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isNight()) || this.isPhaseTwo();
     }
 
     @Override

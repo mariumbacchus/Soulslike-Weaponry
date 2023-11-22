@@ -895,7 +895,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus == (phase2 ? 18 : 23)) {
             Vec3d out = this.boss.getRotationVector().multiply(5.5D, 0, 5.5D).add(this.boss.getPos().getX(), target.getY(), this.boss.getPos().getZ());
             Box box = new Box(BlockPos.ofFloored(out)).expand(3D);
-            this.aoe(box, 10f, 1f, false, phase2 ? new StatusEffect[]{StatusEffects.WATER_BREATHING} : new StatusEffect[0]);
+            this.aoe(box, 10f, 1f, false, phase2 ? new StatusEffect[]{StatusEffects.BLINDNESS} : new StatusEffect[0]);
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE, 1f, 0.75f);
             if (phase2) {
                 if (this.boss.teleportAway()) {
