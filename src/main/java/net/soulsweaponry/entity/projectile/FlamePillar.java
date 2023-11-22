@@ -18,8 +18,6 @@ import java.util.Random;
 public class FlamePillar extends InvisibleEntity {
 
     private int warmup;
-    public int maxTicks = 15;
-    private int ticksLeft = maxTicks;
 
     public FlamePillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
