@@ -1,11 +1,11 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
@@ -45,7 +45,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
 
     @Override
     protected ItemStack asItemStack() {
-        return Items.ARROW.getDefaultStack();
+        return Blocks.AIR.asItem().getDefaultStack();
     }
 
     @Override
