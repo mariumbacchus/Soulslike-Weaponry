@@ -297,7 +297,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
     }
 
     public boolean isEmpowered() {
-        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isNight()) || this.isPhaseTwo();
     }
 
     @Override

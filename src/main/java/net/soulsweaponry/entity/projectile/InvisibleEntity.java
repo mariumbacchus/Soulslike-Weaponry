@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +16,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
         super(entityType, world);
         this.noClip = true;
         this.setDamage(2D);
+        this.pickupType = PickupPermission.DISALLOWED;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
 
     @Override
     protected ItemStack asItemStack() {
-        return null;
+        return Blocks.AIR.asItem().getDefaultStack();
     }
 
     @Override
