@@ -76,9 +76,9 @@ public class RecipeRegistry {
                     Lists.newArrayList(new Identifier("minecraft", "iron_ingot"),
                     new Identifier(ModId, "lost_soul"),
                     new Identifier("minecraft", "iron_block"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("item", "item", "item", "item"), 
+                    Lists.newArrayList("item", "item", "item", "tag"),
                     Lists.newArrayList(
                         "S M",
                         "SG#",
@@ -89,9 +89,9 @@ public class RecipeRegistry {
                     Lists.newArrayList('#', 'G', 'S'), 
                     Lists.newArrayList(new Identifier("minecraft", "iron_ingot"),
                     new Identifier(ModId, "lost_soul"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("item", "item", "item"), 
+                    Lists.newArrayList("item", "item", "tag"),
                     Lists.newArrayList(
                         " ##",
                         "SG#",
@@ -103,9 +103,9 @@ public class RecipeRegistry {
                     Lists.newArrayList(new Identifier("minecraft", "iron_ingot"),
                     new Identifier(ModId, "lost_soul"),
                     new Identifier("minecraft", "iron_block"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("item", "item", "item", "item"), 
+                    Lists.newArrayList("item", "item", "item", "tag"),
                     Lists.newArrayList(
                         "S #",
                         "SG#",
@@ -116,10 +116,10 @@ public class RecipeRegistry {
                     Lists.newArrayList('#', 'G', 'S', 'i'), 
                     Lists.newArrayList(new Identifier("minecraft", "iron_block"),
                     new Identifier(ModId, "lost_soul"),
-                    new Identifier("minecraft", "stick"),
+                    new Identifier("c", "wood_sticks"),
                     new Identifier("minecraft", "iron_ingot")
                     ), 
-                    Lists.newArrayList("item", "item", "item", "item"), 
+                    Lists.newArrayList("item", "item", "tag", "item"),
                     Lists.newArrayList(
                         " i#",
                         "SGi",
@@ -147,9 +147,9 @@ public class RecipeRegistry {
                     Lists.newArrayList('i', 'S', '/'), 
                     Lists.newArrayList(new Identifier("minecraft", "iron_ingot"),
                     new Identifier(ModId, "crimson_ingot"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("item", "item", "item"), 
+                    Lists.newArrayList("item", "item", "tag"),
                     Lists.newArrayList(
                         "iSi",
                         "iSi",
@@ -209,9 +209,9 @@ public class RecipeRegistry {
                 GUTS_SWORD_RECIPE = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('#', 'X'), 
                     Lists.newArrayList(new Identifier("minecraft", "iron_block"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("item", "item"), 
+                    Lists.newArrayList("item", "tag"),
                     Lists.newArrayList(
                         " # ",
                         "###",
@@ -225,9 +225,9 @@ public class RecipeRegistry {
                     Lists.newArrayList('S', 'G', '/'), 
                     Lists.newArrayList(new Identifier(ModId, "lord_soul"),
                     new Identifier("minecraft", "gold_ingot"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("tag", "item", "item"), 
+                    Lists.newArrayList("tag", "item", "tag"),
                     Lists.newArrayList(
                         " G ",
                         "GSG",
@@ -322,10 +322,10 @@ public class RecipeRegistry {
                 SOUL_REAPER_RECIPE = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('i', '/', 'S'), 
                     Lists.newArrayList(new Identifier(ModId, "soul_ingot"),
-                    new Identifier("minecraft", "stick"),
+                    new Identifier("c", "wood_sticks"),
                     new Identifier(ModId, "lord_soul")
                     ), 
-                    Lists.newArrayList("item", "item", "tag"), 
+                    Lists.newArrayList("item", "tag", "tag"),
                     Lists.newArrayList(
                         " ii",
                         "S/ ",
@@ -337,11 +337,11 @@ public class RecipeRegistry {
             if (!ConfigConstructor.disable_recipe_whirligig_sawblade) {
                 WHIRLIGIG_SAWBLADE_RECIPE = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('/', 'i', 'S'), 
-                    Lists.newArrayList(new Identifier("minecraft", "stick"),
+                    Lists.newArrayList(new Identifier("c", "wood_sticks"),
                     new Identifier("minecraft", "iron_ingot"),
                     new Identifier(ModId, "lord_soul")
                     ), 
-                    Lists.newArrayList("item", "item", "tag"), 
+                    Lists.newArrayList("tag", "item", "tag"),
                     Lists.newArrayList(
                         " i ",
                         "iSi",
@@ -370,9 +370,9 @@ public class RecipeRegistry {
                     Lists.newArrayList('S', '#', '/'), 
                     Lists.newArrayList(new Identifier(ModId, "lord_soul"),
                     new Identifier(ModId, "verglas"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("tag", "item", "item"), 
+                    Lists.newArrayList("tag", "item", "tag"),
                     Lists.newArrayList(
                         "#S",
                         "#/",
@@ -385,9 +385,9 @@ public class RecipeRegistry {
                     Lists.newArrayList('S', '#', '/'), 
                     Lists.newArrayList(new Identifier(ModId, "lord_soul"),
                     new Identifier(ModId, "verglas"),
-                    new Identifier("minecraft", "stick")
+                            new Identifier("c", "wood_sticks")
                     ), 
-                    Lists.newArrayList("tag", "item", "item"), 
+                    Lists.newArrayList("tag", "item", "tag"),
                     Lists.newArrayList(
                         "S#",
                         "/#",
@@ -415,12 +415,12 @@ public class RecipeRegistry {
             if (!ConfigConstructor.disable_recipe_mjolnir) {
                 MJOLNIR_RECIPE = JsonCreator.createShapedRecipeJson(
                     Lists.newArrayList('#', 'X', 'O', 'Y'), 
-                    Lists.newArrayList(new Identifier("minecraft", "stick"),
+                    Lists.newArrayList(new Identifier("c", "wood_sticks"),
                     new Identifier("minecraft", "iron_block"),
                     new Identifier(ModId, "verglas"),
                     new Identifier(ModId, "lord_soul")
                     ), 
-                    Lists.newArrayList("item", "item", "item", "tag"), 
+                    Lists.newArrayList("tag", "item", "item", "tag"),
                     Lists.newArrayList(
                         "XOX",
                         "XYX",
@@ -459,9 +459,9 @@ public class RecipeRegistry {
                         Lists.newArrayList('#', 'X'),
                         Lists.newArrayList(
                                 new Identifier(ModId, "verglas"),
-                                new Identifier("minecraft", "stick")
+                                new Identifier("c", "wood_sticks")
                         ),
-                        Lists.newArrayList("item", "item"),
+                        Lists.newArrayList("item", "tag"),
                         Lists.newArrayList(
                                 "#",
                                 "#",
@@ -499,10 +499,10 @@ public class RecipeRegistry {
                         Lists.newArrayList('#', 'X', 'O'),
                         Lists.newArrayList(
                                 new Identifier(ModId, "crimson_ingot"),
-                                new Identifier("minecraft", "stick"),
+                                new Identifier("c", "wood_sticks"),
                                 new Identifier(ModId, "lord_soul")
                         ),
-                        Lists.newArrayList("item", "item", "tag"),
+                        Lists.newArrayList("item", "tag", "tag"),
                         Lists.newArrayList(
                                 " ##",
                                 "OX ",
@@ -595,12 +595,12 @@ public class RecipeRegistry {
                 NIGHTS_EDGE_RECIPE = JsonCreator.createShapedRecipeJson(
                         Lists.newArrayList('/', 'X', 'Y', '#'),
                         Lists.newArrayList(
-                                new Identifier("stick"),
+                                new Identifier("c", "wood_sticks"),
                                 new Identifier(ModId, "moonstone"),
                                 new Identifier(ModId, "lord_soul_night_prowler"),
                                 new Identifier(ModId, "soul_ingot")
                         ),
-                        Lists.newArrayList("item", "item", "item", "item"),
+                        Lists.newArrayList("tag", "item", "item", "item"),
                         Lists.newArrayList(
                                 " XX",
                                 "#YX",
@@ -639,9 +639,9 @@ public class RecipeRegistry {
                                 new Identifier("gold_ingot"),
                                 new Identifier(ModId, "essence_of_eventide"),
                                 new Identifier("string"),
-                                new Identifier("stick")
+                                new Identifier("c", "wood_sticks")
                         ),
-                        Lists.newArrayList("item", "item", "item", "item"),
+                        Lists.newArrayList("item", "item", "item", "tag"),
                         Lists.newArrayList(
                                 " #A",
                                 "XYA",

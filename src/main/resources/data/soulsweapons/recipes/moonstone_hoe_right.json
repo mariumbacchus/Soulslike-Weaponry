@@ -13,7 +13,7 @@
             "item": "soulsweapons:verglas"
         },
         "/": {
-            "item": "minecraft:stick"
+            "tag": "c:wood_sticks"
         }
     },
     "result": {
