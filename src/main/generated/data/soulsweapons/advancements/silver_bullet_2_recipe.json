@@ -2,7 +2,7 @@
   "parent": "soulsweapons:recipe_root",
   "rewards": {
     "recipes": [
-      "soulsweapons:silver_bullet_recipe"
+      "soulsweapons:silver_bullet_2_recipe"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_advancement": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulsweapons:silver_bullet_recipe"
+        "recipe": "soulsweapons:silver_bullet_2_recipe"
       }
     }
   },
