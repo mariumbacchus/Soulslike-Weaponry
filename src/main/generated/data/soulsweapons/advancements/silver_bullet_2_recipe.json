@@ -3,7 +3,7 @@
   "criteria": {
     "has_advancement": {
       "conditions": {
-        "recipe": "soulsweapons:silver_bullet_recipe"
+        "recipe": "soulsweapons:silver_bullet_2_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:silver_bullet_recipe"
+      "soulsweapons:silver_bullet_2_recipe"
     ]
   }
 }
