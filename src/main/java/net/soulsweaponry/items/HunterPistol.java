@@ -30,6 +30,21 @@ public class HunterPistol extends GunItem {
         return ConfigConstructor.hunter_pistol_posture_loss + lvl * 3;
     }
 
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ConfigConstructor.hunter_pistol_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+    }
+
+    @Override
+    public int getCooldown(ItemStack stack) {
+        return ConfigConstructor.hunter_pistol_cooldown - this.getReducedCooldown(stack);
+    }
+
+    @Override
+    public int bulletsNeeded() {
+        return 1;
+    }
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
@@ -39,7 +54,7 @@ public class HunterPistol extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = ConfigConstructor.hunter_pistol_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack)/2;
+            int power = this.getDamage(stack);
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
@@ -66,14 +81,14 @@ public class HunterPistol extends GunItem {
             world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f,1f);
             stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             if (!bl2 && !user.getAbilities().creativeMode) {
-                itemStack.decrement(1);
+                itemStack.decrement(this.bulletsNeeded());
                 if (itemStack.isEmpty()) {
                     user.getInventory().removeOne(itemStack);
                 }
             }
 
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            if (!user.isCreative()) user.getItemCooldownManager().set(this, ConfigConstructor.hunter_pistol_cooldown - this.getReducedCooldown(stack));
+            if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
