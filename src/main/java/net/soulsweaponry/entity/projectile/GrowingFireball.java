@@ -87,7 +87,7 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
         }
         if (!(this.getOwner() instanceof DayStalker) && !this.world.isClient) {
             for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox())) {
-                if (entity instanceof LivingEntity) {
+                if (!this.isOwner(entity) && entity instanceof LivingEntity) {
                     this.detonate();
                 }
             }
