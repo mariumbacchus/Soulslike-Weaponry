@@ -2,47 +2,49 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityGroup;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.registry.Registry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.enchantments.FastHandsEnchantment;
+import net.soulsweaponry.enchantments.VisceralEnchantment;
 import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 
-    @Unique
-    private static Enchantment currentEnchantment;
-
     /**
-     * Sets the static {@code currentEnchantment} in this class to the one being processed.
-     * Credits goes to KingVampyre (<a href="https://github.com/KingVampyre/DeepTrenches">...</a>) for this fantastic implementation.
-     * <p></p>
-     * Note to self! When porting to forge, consider using {@code EnumHelper.addEnchantmentType("weaponType", (item)->(item instanceof WeaponItem));} instead
-     * of all this. Check out this when the time comes: (<a href="https://forums.minecraftforge.net/topic/67916-solved-1122-cant-add-new-enchantment-type/">...</a>)
+     * Removes custom enchants and checks whether they can be applied again.
+     * Credit goes to <a href="https://github.com/Majrusz/MajruszLibrary">Majrusz</a> for this fix instead of using @Redirect.
+     * NOTE: Check if rework is required when porting to fabric 0.15.0
      */
-    @Redirect(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;isAvailableForRandomSelection()Z"))
-    private static boolean isAvailableForRandomSelection(Enchantment enchantment) {
-        currentEnchantment = enchantment;
-        return enchantment.isAvailableForRandomSelection();
-    }
-
-    @Redirect(method = "getPossibleEntries", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentTarget;isAcceptableItem(Lnet/minecraft/item/Item;)Z"))
-    private static boolean isAcceptableItem(EnchantmentTarget enchantmentTarget, Item item) {
-        if (enchantmentTarget == EnchantmentTarget.BOW) {
-            return currentEnchantment.isAcceptableItem(item.getDefaultStack());
+    @Inject(at = @At("RETURN"), cancellable = true, method = "getPossibleEntries")
+    private static void interceptEnchantEntries(int power, ItemStack stack, boolean isTreasure, CallbackInfoReturnable<List<EnchantmentLevelEntry>> info) {
+        List<EnchantmentLevelEntry> enchantments = info.getReturnValue();
+        // Re-implement this if other enchants are made
+        enchantments.removeIf(enchantment -> enchantment.enchantment instanceof FastHandsEnchantment || enchantment.enchantment instanceof VisceralEnchantment);
+        boolean bl = stack.isOf(Items.BOOK);
+        for (Enchantment enchantment : Registry.ENCHANTMENT) {
+            if (enchantment.isTreasure() && !isTreasure || !enchantment.isAvailableForRandomSelection() || !enchantment.isAcceptableItem(stack) && !bl) continue;
+            for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; i--) {
+                if (power >= enchantment.getMinPower(i) && power <= enchantment.getMaxPower(i)) {
+                    enchantments.add(new EnchantmentLevelEntry(enchantment, i));
+                    break;
+                }
+            }
         }
-        return enchantmentTarget.isAcceptableItem(item);
+        info.setReturnValue( enchantments );
     }
 
     @Inject(method = "getAttackDamage", at = @At("TAIL"), cancellable = true)
