@@ -26,6 +26,7 @@ public class EnchantmentHelperMixin {
     /**
      * Removes custom enchants and checks whether they can be applied again.
      * Credit goes to <a href="https://github.com/Majrusz/MajruszLibrary">Majrusz</a> for this fix instead of using @Redirect.
+     * NOTE: Check if rework is required when porting to fabric 0.15.0
      */
     @Inject(at = @At("RETURN"), cancellable = true, method = "getPossibleEntries")
     private static void interceptEnchantEntries(int power, ItemStack stack, boolean isTreasure, CallbackInfoReturnable<List<EnchantmentLevelEntry>> info) {
