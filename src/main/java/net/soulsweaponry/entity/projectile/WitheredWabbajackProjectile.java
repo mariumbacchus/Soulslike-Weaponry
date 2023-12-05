@@ -3,12 +3,14 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -27,6 +29,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class WitheredWabbajackProjectile extends WitherSkullEntity {
@@ -130,7 +133,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         if (unluckyAf) {
             boolean isWarden = this.random.nextBoolean();
             for (int i = 0; i < 3; i++) {
-                if (isWarden) {
+                if (isWarden && !this.getWorld().isClient) {
                     WardenEntity warden = new WardenEntity(EntityType.WARDEN, getWorld());
                     warden.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null, null);
                     warden.setPos(this.getX(), this.getY(), this.getZ());
@@ -227,7 +230,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     private StatusEffect getRandomEffect(boolean flipLuckTypes) {
         if (this.getOwner() instanceof LivingEntity) {
-            return (StatusEffect) this.randomFromList((LivingEntity)this.getOwner(), this.getEffectList(), flipLuckTypes);
+            return (StatusEffect) this.randomFromList((LivingEntity)this.getOwner(), this.getEffectObjectList(), flipLuckTypes);
         } else {
             //Glowing as default incase nothing works
             return StatusEffects.GLOWING;
@@ -238,6 +241,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
      * The new way to get a random object while including the status effect Luck found through
      * {@link #getLuckFactor(LivingEntity)} as a factor. As long as the given array contains exactly an
      * element with a given {@link LuckType}, an exception won't be thrown and the game won't crash :)
+     * <p></p>
+     * EDIT: Cool message, past me! But this sucks! Message to future me: rework it one day when you feel like it :)
      */
     private Object randomFromList(LivingEntity user, Object[][] arr, boolean flipLuckTypes) {
         ArrayList<ArrayList<Object>> objectList = new ArrayList<>();
@@ -305,28 +310,34 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         return chosenObject;
     }
 
-    private Object[][] getEffectList() {
-        return new Object[][]{
-            {StatusEffects.BLINDNESS, LuckType.BAD},
-            {StatusEffects.WITHER, LuckType.BAD},
-            {StatusEffects.GLOWING, LuckType.BAD},
-            {StatusEffects.HASTE, LuckType.GOOD},
-            {StatusEffects.STRENGTH, LuckType.GOOD},
-            {StatusEffects.WEAKNESS, LuckType.GOOD},
-            {StatusEffects.SLOWNESS, LuckType.BAD},
-            {StatusEffects.INVISIBILITY, LuckType.NEUTRAL},
-            {StatusEffects.SPEED, LuckType.GOOD},
-            {StatusEffects.SLOW_FALLING, LuckType.BAD},
-            {StatusEffects.REGENERATION, LuckType.GOOD},
-            {StatusEffects.RESISTANCE, LuckType.GOOD},
-            {StatusEffects.MINING_FATIGUE, LuckType.BAD},
-            {StatusEffects.INSTANT_DAMAGE, LuckType.BAD},
-            {StatusEffects.INSTANT_HEALTH, LuckType.GOOD},
-            {StatusEffects.ABSORPTION, LuckType.GOOD},
-            {StatusEffects.HUNGER, LuckType.BAD},
-            {StatusEffects.POISON, LuckType.BAD},
-            {StatusEffects.NAUSEA, LuckType.BAD}
-        };
+    private HashMap<StatusEffect, LuckType> getEffectMap() {
+        HashMap<StatusEffect, LuckType> map = new HashMap<>();
+        for (StatusEffect effect : Registries.STATUS_EFFECT) {
+            if (effect.getCategory().equals(StatusEffectCategory.HARMFUL)) {
+                map.put(effect, LuckType.BAD);
+            } else if (effect.getCategory().equals(StatusEffectCategory.BENEFICIAL)) {
+                map.put(effect, LuckType.GOOD);
+            } else {
+                map.put(effect, LuckType.NEUTRAL);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * I'm not going to bother reworking this class today so this will do :)
+     */
+    private Object[][] getEffectObjectList() {
+        HashMap<StatusEffect, LuckType> map = this.getEffectMap();
+        int len = map.size();
+        Object[][] arr = new Object[len][2];
+        int i = 0;
+        for (StatusEffect effect : map.keySet()) {
+            arr[i][0] = effect;
+            arr[i][1] = map.get(effect);
+            i++;
+        }
+        return arr;
     }
 
     private Object[][] getEntityList() {
@@ -346,8 +357,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             {EntityType.WANDERING_TRADER, LuckType.NEUTRAL},
             {EntityType.CHICKEN, LuckType.NEUTRAL},
             {EntityType.SHEEP, LuckType.NEUTRAL},
-            {EntityType.DROWNED, LuckType.NEUTRAL},
-            {EntityType.GUARDIAN, LuckType.NEUTRAL},
+            {EntityType.DROWNED, LuckType.BAD},
+            {EntityType.GUARDIAN, LuckType.BAD},
         };
     }
 
