@@ -44,7 +44,7 @@ public class EnchantmentHelperMixin {
                 }
             }
         }
-        info.setReturnValue( enchantments );
+        info.setReturnValue(enchantments);
     }
 
     @Inject(method = "getAttackDamage", at = @At("TAIL"), cancellable = true)

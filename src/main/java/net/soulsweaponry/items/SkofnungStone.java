@@ -1,11 +1,9 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,11 +13,13 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.List;
 
 public class SkofnungStone extends Item {
 
@@ -40,8 +40,8 @@ public class SkofnungStone extends Item {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-        for (StatusEffect effect : this.harmfulEffects()) {
-            if (user.hasStatusEffect(effect)) {
+        for (StatusEffect effect : Registry.STATUS_EFFECT) {
+            if (effect.getCategory().equals(StatusEffectCategory.HARMFUL) && user.hasStatusEffect(effect)) {
                 user.removeStatusEffect(effect);
                 world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 shouldDamage = true;
@@ -64,29 +64,5 @@ public class SkofnungStone extends Item {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
-    }
-
-    public StatusEffect[] harmfulEffects() {
-        return new StatusEffect[]{
-            StatusEffects.BLINDNESS,
-            StatusEffects.HUNGER,
-            StatusEffects.INSTANT_DAMAGE,
-            StatusEffects.LEVITATION,
-            StatusEffects.MINING_FATIGUE,
-            StatusEffects.NAUSEA,
-            StatusEffects.POISON,
-            StatusEffects.SLOWNESS,
-            StatusEffects.UNLUCK,
-            StatusEffects.WEAKNESS,
-            StatusEffects.WITHER,
-            EffectRegistry.POSTURE_BREAK,
-            EffectRegistry.BLEED,
-            EffectRegistry.DISABLE_HEAL,
-            EffectRegistry.FEAR,
-            EffectRegistry.FREEZING,
-            EffectRegistry.DECAY,
-            EffectRegistry.RETRIBUTION,
-            EffectRegistry.BLIGHT,
-        };
     }
 }
