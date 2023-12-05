@@ -32,17 +32,32 @@ public class HunterCannon extends GunItem {
         return ConfigConstructor.hunter_cannon_posture_loss * (lvl == 0 ? 1 : lvl);
     }
 
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+    }
+
+    @Override
+    public int getCooldown(ItemStack stack) {
+        return ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50;
+    }
+
+    @Override
+    public int bulletsNeeded() {
+        return 10;
+    }
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getArrowType(stack);
-        int bulletsNeeded = 10;
+        int bulletsNeeded = this.bulletsNeeded();
         if (!itemStack.isEmpty() && itemStack.getCount() >= bulletsNeeded || bl) {
             if (itemStack.isEmpty()) {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+            int power = this.getDamage(stack);
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
@@ -86,7 +101,7 @@ public class HunterCannon extends GunItem {
             l *= n / m;
             user.addVelocity(-(double)h, -(double)k, -(double)l);
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            user.getItemCooldownManager().set(this, ConfigConstructor.hunter_cannon_cooldown- 4*this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack)*50);
+            if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 

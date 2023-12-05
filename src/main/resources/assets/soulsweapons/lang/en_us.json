@@ -546,6 +546,11 @@
     "tooltip.soulsweapons.arrow_storm": "Arrow Storm",
     "tooltip.soulsweapons.arrow_storm_1": "- Send out a storm cloud that rain down",
     "tooltip.soulsweapons.arrow_storm_2": "barrages of lesser §3Moonlight Arrows§r.",
+    "tooltip.soulsweapons.gun_posture_loss": "Posture Loss applied per projectile: ",
+    "tooltip.soulsweapons.gun_damage": "Projectile damage: ",
+    "tooltip.soulsweapons.gun_cooldown": "Cooldown: ",
+    "tooltip.soulsweapons.gun_max_use_time": "Max use time: ",
+    "tooltip.soulsweapons.gun_bullets_used": "Bullets needed: ",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",
