@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,8 +52,17 @@ public class WitheredWabbajack extends SwordItem {
             if (entity instanceof DragonStaffProjectile dragonStaffProjectile) {
                 dragonStaffProjectile.setRadius(2f + user.getRandom().nextFloat() * this.getLuckFactor(user));
             }
-            entity.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
-            entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
+            entity.setPos(user.getX(), user.getEyeY(), user.getZ());
+            if (entity instanceof GrowingFireball ball) {
+                float power = 1f + user.getRandom().nextFloat() * 10 * this.getLuckFactor(user);
+                int duration = user.getRandom().nextBetween(10, 100 + 20 * this.getLuckFactor(user));
+                float speed = user.getRandom().nextBetween(25, 300 + 20 * this.getLuckFactor(user)) / 100f;
+                ball.setMaxAge(duration);
+                ball.setRadiusGrowth(power / (float) duration);
+                ball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, speed, 0f);
+            } else {
+                entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
+            }
             world.spawnEntity(entity);
             
             itemStack.damage(1, user, (p_220045_0_) -> {
@@ -71,6 +81,8 @@ public class WitheredWabbajack extends SwordItem {
      * Lastly, it chooses the random projectile based on all the projectiles' chances by generating a number between
      * 0 and the total sum of all the chances of all the projectiles combined. It chooses the projectile by constantly
      * changing the range based on the current projectile's chance and the previous projectile's chance.
+     * <p></p>
+     * EDIT: Hey, past me! This looks cool, but also it sucks! Message to future me: rework it one day when you feel like it :)
      */
     private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look, ItemStack stack) {
         int power = new Random().nextInt((6 + this.getLuckFactor(user)) - this.getLuckFactor(user)) + this.getLuckFactor(user);
@@ -83,8 +95,9 @@ public class WitheredWabbajack extends SwordItem {
             {new FireballEntity(world, user, look.getX(), look.getY(), look.getZ(), power), LuckType.NEUTRAL},
             {new SmallFireballEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
             {new SnowballEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new WitherSkullEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.NEUTRAL},
+            {new WitherSkullEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
             {new WitheredWabbajackProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.GOOD},
+            {new GrowingFireball(world, user), LuckType.NEUTRAL}
         };
         ArrayList<ArrayList<Object>> projectileList = new ArrayList<>();
         for (Object[] projectileType : projectileTypes) {
