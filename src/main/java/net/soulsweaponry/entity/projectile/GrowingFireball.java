@@ -92,7 +92,7 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
         }
         if (!(this.getOwner() instanceof DayStalker) && !this.world.isClient) {
             for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox())) {
-                if (entity instanceof LivingEntity) {
+                if (!this.isOwner(entity) && entity instanceof LivingEntity) {
                     this.detonate();
                 }
             }
