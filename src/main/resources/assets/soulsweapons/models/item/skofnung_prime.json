@@ -1,0 +1,28 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/skofnung_prime"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [-40, -90, 0],
+        "translation": [0.00, 8.0, 3.00],
+        "scale": [1.3, 1.3, 1.3]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [-40, 90, 0],
+        "translation": [0.00, 8.0, 3.00],
+        "scale": [1.3, 1.3, 1.3]
+      },
+      "firstperson_righthand": {
+        "rotation": [0, -90, 30],
+        "translation": [5, 5, -3],
+        "scale": [1.3, 1.3, 1.3]
+      },
+      "firstperson_lefthand": {
+          "rotation": [0, 90, -30],
+          "translation": [5, 5, -3],
+          "scale": [1.3, 1.3, 1.3]
+      }
+    }
+}

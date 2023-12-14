@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "age=0": {
+            "model": "soulsweapons:block/withered_grass_block_0"
+          },
+          "age=1": {
+            "model": "soulsweapons:block/withered_grass_block_0"
+          },
+          "age=2": {
+            "model": "soulsweapons:block/withered_grass_block_1"
+          },
+          "age=3": {
+            "model": "soulsweapons:block/withered_grass_block_2"
+          }
+    }
+}

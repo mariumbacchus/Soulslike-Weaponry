@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.soulsweaponry.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BrewingRecipeRegistryInvoker",
+    "EnchantmentHelperMixin",
+    "EnderDragonEntityMixin",
+    "EntityDataSaverMixin",
+    "LivingEntityInvoker",
+    "LivingEntityMixin",
+    "ModelInvoker",
+    "PersistentProjectileMixin",
+    "PlayerEntityMixin",
+    "RecipeManagerMixin",
+    "ToolItemMixin",
+    "WitherEntityMixin"
+  ],
+  "client": [
+    "BipedEntityModelMixin",
+    "HeldItemRendererMixin",
+    "MinecraftClientMixin",
+    "ShieldItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

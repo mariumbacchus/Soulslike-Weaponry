@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/cube_all",
+    "textures": {
+        "all": "soulsweapons:block/soul_lamp_on"
+    }
+}

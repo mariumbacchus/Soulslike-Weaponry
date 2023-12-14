@@ -11,14 +11,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.soulsweapons.registry.ItemRegistry;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(SoulsWeaponry.MOD_ID)
 public class SoulsWeaponry {
 
     public static final String MOD_ID = "soulsweapons";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final CreativeModeTab MAIN_GROUP = new CreativeModeTab("general") {
+    public static final CreativeModeTab MAIN_GROUP = new CreativeModeTab(MOD_ID + ".general") {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(ItemRegistry.MOONSTONE.get());

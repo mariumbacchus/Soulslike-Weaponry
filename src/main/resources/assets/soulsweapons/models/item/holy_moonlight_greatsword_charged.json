@@ -1,0 +1,28 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "soulsweapons:item/holy_moonlight_greatsword"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [-40, -90, 0],
+      "translation": [0.0, 11, 3.0],
+      "scale": [1.7, 1.7, 1]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-40, 90, 0],
+      "translation": [0.0, 11, 3.0],
+      "scale": [1.7, 1.7, 1]
+    },
+    "firstperson_righthand": {
+      "rotation": [-35, -90, 0],
+      "translation": [3.0, 7.1, 0.0],
+      "scale": [1.1, 1.1, 1]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-35, 90, 0],
+      "translation": [3, 7.1, 0.0],
+      "scale": [1.2, 1.2, 1]
+    }
+  }
+}

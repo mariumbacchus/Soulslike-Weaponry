@@ -1,0 +1,10 @@
+{
+    "variants": {
+      "lit=false": {
+        "model": "soulsweapons:block/soul_lamp"
+      },
+      "lit=true": {
+        "model": "soulsweapons:block/soul_lamp_on"
+      }
+    }
+}

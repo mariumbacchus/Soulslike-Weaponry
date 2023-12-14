@@ -1,0 +1,6 @@
+{
+    "parent": "item/bow",
+    "textures": {
+        "layer0": "soulsweapons:item/galeforce_pull_1"
+    }
+}

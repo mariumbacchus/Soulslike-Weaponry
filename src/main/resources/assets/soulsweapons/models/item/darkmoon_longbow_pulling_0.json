@@ -1,0 +1,6 @@
+{
+  "parent": "soulsweapons:item/darkmoon_longbow",
+  "textures": {
+    "layer0": "soulsweapons:item/darkmoon_longbow_pulling_0"
+  }
+}

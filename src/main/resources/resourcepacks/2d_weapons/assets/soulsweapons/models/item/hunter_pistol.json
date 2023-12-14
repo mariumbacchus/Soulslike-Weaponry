@@ -1,0 +1,16 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/hunter_pistol"
+    },
+    "thirdperson_righthand": {
+      "rotation": [-45, -90, 0],
+      "translation": [0.0, -4, -3],
+      "scale": [1, 1, 1]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-45, 90, 0],
+      "translation": [0.0, -4, -3],
+      "scale": [1, 1, 1]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/gatling_gun"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [-45, -90, 0],
+        "translation": [0.0, -4, -3],
+        "scale": [1.25, 1.25, 1.25]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [-45, 90, 0],
+        "translation": [0.0, -4, -3],
+        "scale": [1.25, 1.25, 1.25]
+      }
+    }
+}
