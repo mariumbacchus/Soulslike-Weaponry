@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:item/generated",
-    "textures": {
-      "layer0": "soulsweapons:item/boss_compass_04"
-    }
-}

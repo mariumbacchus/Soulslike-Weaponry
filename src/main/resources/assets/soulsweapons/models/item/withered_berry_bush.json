@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:item/generated",
-    "textures": {
-      "layer0": "soulsweapons:block/withered_berry_bush"
-    }
-}

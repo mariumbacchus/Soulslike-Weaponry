@@ -1,6 +1,0 @@
-{
-  "parent": "soulsweapons:item/kraken_slayer",
-  "textures": {
-    "layer0": "soulsweapons:item/kraken_slayer_2"
-  }
-}
