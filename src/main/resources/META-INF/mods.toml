@@ -27,7 +27,7 @@ displayName="Marium's Soulslike Weaponry" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="soulsweapons.png" #optional
+logoFile="assets/soulsweapons/icon.png" #optional
 # A text field displayed in the mod UI
 credits="Marium Bacchus" #optional
 # A text field displayed in the mod UI
