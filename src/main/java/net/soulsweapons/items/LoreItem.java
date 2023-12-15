@@ -3,7 +3,6 @@ package net.soulsweapons.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +21,6 @@ public class LoreItem extends Item {
         super(pProperties);
         this.name = name;
         this.linesOfLore = linesOfLore;
-    }
-
-    public String getIdName() {
-        return this.name;
     }
 
     @Override
