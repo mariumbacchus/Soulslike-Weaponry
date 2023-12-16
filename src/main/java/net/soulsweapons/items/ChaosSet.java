@@ -13,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -32,12 +31,13 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends ArmorItem implements IAnimatable {
+public class ChaosSet extends GeoArmorItem implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();

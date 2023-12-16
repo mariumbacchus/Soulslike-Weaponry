@@ -17,6 +17,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
+import java.util.Random;
+
 public class WitheredTallFlower extends WitheredTallGrass {
 
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.create("can_turn");
@@ -44,8 +47,8 @@ public class WitheredTallFlower extends WitheredTallGrass {
     }
 
     private Block getRandomFlower() {
-        System.out.println(ForgeRegistries.BLOCKS.tags().getTag(BlockTags.SMALL_FLOWERS));
-        return Blocks.SUNFLOWER; //TODO implement
+        List<Block> list = ForgeRegistries.BLOCKS.tags().getTag(BlockTags.TALL_FLOWERS).stream().toList();
+        return list.get(new Random().nextInt(list.size()));
     }
 
     @Override
@@ -63,7 +66,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         mutable.setWithOffset(pos, Direction.DOWN);
         return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).getValue(CANNOT_TURN);
-    }
+    }//TODO fix at den ikke kan plasseres ut manuelt
 
     @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {

@@ -3,6 +3,7 @@ package net.soulsweapons.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +29,11 @@ public class WitheredTallGrass extends DoublePlantBlock implements Withered {
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
         this.doTick(pState, pLevel, pPos, pRandom);
+    }
+
+    @Override
+    public void doTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+        world.scheduleTick(pos, this, Mth.nextInt(random, 20, 40));
     }
 
     @Override
@@ -59,5 +65,11 @@ public class WitheredTallGrass extends DoublePlantBlock implements Withered {
             this.turnBack(world, pos);
         }
         super.neighborChanged(state, world, pos, sourceBlock, sourcePos, notify);
+    }
+
+    @Override
+    public void turnBack(Level world, BlockPos pos) {
+        world.removeBlock(pos, false);
+        DoublePlantBlock.placeAt(world, this.getBlockToReturnAs().defaultBlockState(), pos, 2);
     }
 }

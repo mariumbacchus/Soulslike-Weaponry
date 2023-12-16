@@ -20,6 +20,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
+import java.util.Random;
+
 public class WitheredFlower extends WitherRoseBlock implements Withered {
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
@@ -46,8 +49,8 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
     }
 
     private Block getRandomFlower() {
-        System.out.println(ForgeRegistries.BLOCKS.tags().getTag(BlockTags.SMALL_FLOWERS));
-        return Blocks.CORNFLOWER; //TODO implement
+        List<Block> list = ForgeRegistries.BLOCKS.tags().getTag(BlockTags.SMALL_FLOWERS).stream().toList();
+        return list.get(new Random().nextInt(list.size()));
     }
 
     @Override
