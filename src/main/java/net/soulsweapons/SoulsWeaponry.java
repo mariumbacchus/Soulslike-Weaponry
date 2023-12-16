@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.soulsweapons.registry.BlockRegistry;
 import net.soulsweapons.registry.ItemRegistry;
 import org.slf4j.Logger;
 
@@ -27,6 +28,7 @@ public class SoulsWeaponry {
     public SoulsWeaponry() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        BlockRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);

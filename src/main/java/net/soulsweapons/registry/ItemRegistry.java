@@ -2,6 +2,7 @@ package net.soulsweapons.registry;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -11,7 +12,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweapons.SoulsWeaponry;
+import net.soulsweapons.items.ChaosSet;
 import net.soulsweapons.items.LoreItem;
+import net.soulsweapons.items.material.ModArmorMaterials;
 import net.soulsweapons.items.material.ModToolMaterials;
 
 public class ItemRegistry {
@@ -55,8 +58,11 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ARKENSTONE = ITEMS.register("arkenstone", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "arkenstone", 4));
     public static final RegistryObject<Item> ESSENCE_OF_EVENTIDE = ITEMS.register("essence_of_eventide", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "essence_of_eventide", 2));
     public static final RegistryObject<Item> ESSENCE_OF_LUMINESCENCE = ITEMS.register("essence_of_luminescence", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "essence_of_luminescence", 3));
-    //public static final RegistryObject<Item> CHAOS_CROWN = ITEMS.register("chaos_crown", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "essence_of_luminescence", 3));
-
+    public static final RegistryObject<Item> CHAOS_CROWN = ITEMS.register("chaos_crown", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.HEAD, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> CHAOS_HELMET = ITEMS.register("chaos_helmet", () -> new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> ARKENPLATE = ITEMS.register("arkenplate", () -> new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> CHAOS_ROBES = ITEMS.register("chaos_robes", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
+    //chaos orb
     //chungus disc
 
     public static void register(IEventBus eventBus) {
