@@ -46,7 +46,7 @@ public class ItemRegistry {
     //boss compass, moonstone ring
     public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = ITEMS.register("shard_of_uncertainty", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "shard_of_uncertainty", 1));
     public static final RegistryObject<Item> VERGLAS = ITEMS.register("verglas", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
-    //skofnung stone
+    //skofnung stone TODO rest of items
     public static final RegistryObject<Item> IRON_SKULL = ITEMS.register("iron_skull", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
 
     public static final RegistryObject<Item> MOONSTONE_SHOVEL = ITEMS.register("moonstone_shovel", () -> new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3f, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));

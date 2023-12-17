@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.soulsweapons.registry.EffectRegistry;
 
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class WitheredBlock extends Block {
     @Override
     public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity entity) {
         if (entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 40, 0));//EffectRegistry.DECAY TODO add decay effect
+            living.addEffect(new MobEffectInstance(EffectRegistry.DECAY.get(), 40, 0));
         }
         super.stepOn(pLevel, pPos, pState, entity);
     }

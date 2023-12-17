@@ -15,6 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.soulsweapons.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweapons.items.ChaosSet;
 import net.soulsweapons.registry.BlockRegistry;
+import net.soulsweapons.registry.EffectRegistry;
 import net.soulsweapons.registry.ItemRegistry;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
@@ -36,6 +37,7 @@ public class SoulsWeaponry {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         BlockRegistry.register(eventBus);
+        EffectRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);

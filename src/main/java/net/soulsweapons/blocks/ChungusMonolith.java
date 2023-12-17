@@ -33,6 +33,6 @@ public class ChungusMonolith extends Block {
     }
 
     public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING).getOpposite()));
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 }
