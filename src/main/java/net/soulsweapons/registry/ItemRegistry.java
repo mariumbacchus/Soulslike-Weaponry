@@ -1,11 +1,13 @@
 package net.soulsweapons.registry;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -63,7 +65,8 @@ public class ItemRegistry {
     public static final RegistryObject<Item> ARKENPLATE = ITEMS.register("arkenplate", () -> new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> CHAOS_ROBES = ITEMS.register("chaos_robes", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
     //chaos orb
-    //chungus disc
+
+    public static final RegistryObject<Item> CHUNGUS_DISC = ITEMS.register("chungus_disc", () -> new RecordItem(5, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

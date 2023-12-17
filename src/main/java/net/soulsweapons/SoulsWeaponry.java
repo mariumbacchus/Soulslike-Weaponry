@@ -25,6 +25,8 @@ import net.soulsweapons.items.ChaosSet;
 import net.soulsweapons.registry.BlockRegistry;
 import net.soulsweapons.registry.EffectRegistry;
 import net.soulsweapons.registry.ItemRegistry;
+import net.soulsweapons.registry.SoundRegistry;
+import net.soulsweapons.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
@@ -47,11 +49,11 @@ public class SoulsWeaponry {
         BlockRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
         EffectRegistry.register(eventBus);
+        SoundRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
 
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -72,6 +74,11 @@ public class SoulsWeaponry {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        //BrewingRecipeRegistry.addRecipe(Ingredient.of((ItemLike) Potions.AWKWARD), Ingredient.of(BlockRegistry.HYDRANGEA.get().asItem()), ((ItemLike)EffectRegistry.WARDING.get()).asItem().getDefaultInstance());
+        event.enqueueWork(() -> {
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.GLOWSTONE_DUST, EffectRegistry.STRONG_WARDING.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.REDSTONE, EffectRegistry.LONG_WARDING.get()));
+        });
     }
 }
