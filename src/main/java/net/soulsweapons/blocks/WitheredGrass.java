@@ -8,31 +8,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.Random;
 
 public class WitheredGrass extends TallGrassBlock implements Withered {
 
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     private final Block replacedBlock;
 
     public WitheredGrass(Properties pProperties, Block replacedBlock) {
         super(pProperties);
         this.replacedBlock = replacedBlock;
-        this.registerDefaultState(this.getStateDefinition().any().setValue(AGE, 0));
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE);
     }
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-        this.doTick(state, world, pos, random);
     }
 
     @Override

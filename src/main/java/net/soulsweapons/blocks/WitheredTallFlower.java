@@ -19,13 +19,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class WitheredTallFlower extends WitheredTallGrass {
 
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.create("can_turn");
-    private final MobEffect effect;
+    private final Supplier<MobEffect> effect;
 
-    public WitheredTallFlower(Properties pProperties, Block replacedBlock, MobEffect effect) {
+    public WitheredTallFlower(Supplier<MobEffect> effect, Properties pProperties, Block replacedBlock) {
         super(pProperties, replacedBlock);
         this.effect = effect;
     }
@@ -57,7 +58,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
             return;
         }
         if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addEffect(new MobEffectInstance(this.effect, 40));
+            ((LivingEntity)entity).addEffect(new MobEffectInstance(this.effect.get(), 40));
         }
     }
 
@@ -66,10 +67,5 @@ public class WitheredTallFlower extends WitheredTallGrass {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         mutable.setWithOffset(pos, Direction.DOWN);
         return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).getValue(CANNOT_TURN);
-    }//TODO fix at den ikke kan plasseres ut manuelt
-
-    @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return super.mayPlaceOn(pState, pLevel, pPos) || pState.is(Blocks.NETHERRACK) || pState.is(Blocks.END_STONE) || pState.is(Blocks.SOUL_SAND) || pState.is(Blocks.SOUL_SOIL);
     }
 }

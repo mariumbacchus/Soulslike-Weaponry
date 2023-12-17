@@ -3,9 +3,11 @@ package net.soulsweapons.registry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,6 +18,7 @@ import net.soulsweapons.entity.effect.*;
 public class EffectRegistry {
 
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, SoulsWeaponry.MOD_ID);
 
     public static final RegistryObject<MobEffect> DECAY = EFFECTS.register("decay", Decay::new);
     public static final RegistryObject<MobEffect> FEAR = EFFECTS.register("fear", Fear::new);
@@ -33,8 +36,14 @@ public class EffectRegistry {
     public static final RegistryObject<MobEffect> CALCULATED_FALL = EFFECTS.register("calculated_fall", () -> new DefaultStatusEffect(MobEffectCategory.BENEFICIAL, 0xffffff));
     public static final RegistryObject<MobEffect> BLIGHT = EFFECTS.register("blight", () -> new DefaultStatusEffect(MobEffectCategory.HARMFUL, 0x73013c));
 
+    public static final RegistryObject<Potion> WARDING = POTIONS.register("warding", () -> new Potion(new MobEffectInstance(MAGIC_RESISTANCE.get(), 4000, 0)));
+    public static final RegistryObject<Potion> STRONG_WARDING = POTIONS.register("strong_warding", () -> new Potion(new MobEffectInstance(MAGIC_RESISTANCE.get(), 2000, 1)));
+    public static final RegistryObject<Potion> LONG_WARDING = POTIONS.register("long_warding", () -> new Potion(new MobEffectInstance(MAGIC_RESISTANCE.get(), 8000, 0)));
+    public static final RegistryObject<Potion> TAINTED_AMBROSIA = POTIONS.register("tainted_ambrosia", () -> new Potion(new MobEffectInstance(DISABLE_HEAL.get(), 600, 0)));
+
     public static void register(IEventBus eventBus) {
         EFFECTS.register(eventBus);
+        POTIONS.register(eventBus);
     }
 
     static class DefaultStatusEffect extends MobEffect {

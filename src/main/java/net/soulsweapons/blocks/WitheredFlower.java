@@ -2,10 +2,12 @@ package net.soulsweapons.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -15,26 +17,32 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WitherRoseBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class WitheredFlower extends WitherRoseBlock implements Withered {
 
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.create("can_turn");
+    private final Supplier<MobEffect> effect;
 
-    public WitheredFlower(MobEffect pSuspiciousStewEffect, Properties pProperties) {
-        super(pSuspiciousStewEffect, pProperties);
+    // NOTE: Apparently, forge's registration order is scuffed, so you have to put in suppliers instead of the raw
+    // registered effects. Don't know why they would do it like this, but it makes it impossible to have a custom
+    // effect as a consequence for using this flower in a stew.
+    public WitheredFlower(Supplier<MobEffect> effect, Properties pProperties) {
+        super(MobEffects.WITHER, pProperties);
+        this.effect = effect;
+    }
+
+    @Override
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE);
         builder.add(CANNOT_TURN);
     }
 
@@ -66,7 +74,7 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
             return;
         }
         if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addEffect(new MobEffectInstance(this.getSuspiciousStewEffect(), 40));
+            ((LivingEntity)entity).addEffect(new MobEffectInstance(this.effect.get(), 40));
         }
     }
 

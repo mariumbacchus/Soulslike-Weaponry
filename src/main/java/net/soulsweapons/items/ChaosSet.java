@@ -98,19 +98,12 @@ public class ChaosSet extends GeoArmorItem implements IAnimatable {
                         for (Block turnGrass : this.turnableGrass.keySet()) if (blockState2.is(turnGrass)) world.setBlock(mutable, this.turnableGrass.get(turnGrass).defaultBlockState(), 2);
                         for (Block turnTallPlant : this.turnableTallPlant.keySet()) if (blockState2.is(turnTallPlant)) {
                             world.removeBlock(mutable, false);
-                            //this.turnableTallPlant.get(turnTallPlant).placeThis(world, blockState2, mutable, 2, true);
                             DoublePlantBlock.placeAt(world, this.turnableTallPlant.get(turnTallPlant).defaultBlockState(), mutable, 2);
                         }
                         if (blockState2.is(BlockTags.TALL_FLOWERS)) {
                             world.removeBlock(mutable, false);
                             DoublePlantBlock.placeAt(world, BlockRegistry.OLEANDER.get().defaultBlockState().setValue(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
                         }
-                        /* if (blockState2.isOf(Blocks.GRASS)) world.setBlockState(mutable, BlockRegistry.WITHERED_GRASS.getDefaultState());
-                        if (blockState2.isOf(Blocks.TALL_GRASS)) {
-                            world.removeBlock(mutable, false);
-                            BlockRegistry.WITHERED_TALL_GRASS.placeThis(world, blockState2, mutable, 2);
-                        }  */
-                        //if (!blockState2.isAir()/*  || blockState2.getBlock() == turnBlock */ || !blockState.canPlaceAt(world, blockPos2) || !world.canPlace(blockState, blockPos2, ShapeContext.absent())) continue;
                         world.setBlockAndUpdate(blockPos2, blockState);
                         world.scheduleTick(blockPos2, this.turnableBlocks.get(turnBlock), Mth.nextInt(entity.getRandom(), 50, 90));
                     } else if (world.getBlockState(blockPos2).getBlock() == this.turnableBlocks.get(turnBlock)) {

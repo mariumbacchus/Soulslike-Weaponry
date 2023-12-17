@@ -5,7 +5,15 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipe;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,8 +45,8 @@ public class SoulsWeaponry {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         BlockRegistry.register(eventBus);
-        EffectRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
+        EffectRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
@@ -64,6 +72,6 @@ public class SoulsWeaponry {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-
+        //BrewingRecipeRegistry.addRecipe(Ingredient.of((ItemLike) Potions.AWKWARD), Ingredient.of(BlockRegistry.HYDRANGEA.get().asItem()), ((ItemLike)EffectRegistry.WARDING.get()).asItem().getDefaultInstance());
     }
 }
