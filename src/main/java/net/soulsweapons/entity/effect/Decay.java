@@ -43,8 +43,8 @@ public class Decay extends MobEffect {
             if (!entity.getItemBySlot(slots[0]).is(ItemRegistry.CHAOS_CROWN.get()) && !entity.getItemBySlot(slots[0]).is(ItemRegistry.CHAOS_HELMET.get())) {
                 for (EquipmentSlot slot : slots) {
                     ItemStack stack = player.getItemBySlot(slot);
-                    if (!player.level.isClientSide && !stack.is(ItemRegistry.CHAOS_ROBES.get())) {
-                        stack.hurt(amplifier + 1, player.getRandom(), (ServerPlayer) player);
+                    if (!stack.is(ItemRegistry.CHAOS_ROBES.get())) {
+                        stack.hurt(1, player.getRandom(), player instanceof ServerPlayer ? (ServerPlayer)player : null);
                     }
                 }
             } else {

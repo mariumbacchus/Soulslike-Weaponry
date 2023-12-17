@@ -16,6 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.soulsweapons.SoulsWeaponry;
 import net.soulsweapons.items.ChaosSet;
 import net.soulsweapons.items.LoreItem;
+import net.soulsweapons.items.MoonstoneRing;
 import net.soulsweapons.items.material.ModArmorMaterials;
 import net.soulsweapons.items.material.ModToolMaterials;
 
@@ -45,7 +46,8 @@ public class ItemRegistry {
     public static final RegistryObject<Item> CRIMSON_INGOT = ITEMS.register("crimson_ingot", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
     public static final RegistryObject<Item> SOUL_INGOT = ITEMS.register("soul_ingot", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
     public static final RegistryObject<Item> SILVER_BULLET = ITEMS.register("silver_bullet", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
-    //boss compass, moonstone ring
+    //boss compass
+    public static final RegistryObject<Item> MOONSTONE_RING = ITEMS.register("moonstone_ring", () -> new MoonstoneRing(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).durability(25)));
     public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = ITEMS.register("shard_of_uncertainty", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.RARE).fireResistant(), "shard_of_uncertainty", 1));
     public static final RegistryObject<Item> VERGLAS = ITEMS.register("verglas", () -> new Item(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP)));
     //skofnung stone TODO rest of items
