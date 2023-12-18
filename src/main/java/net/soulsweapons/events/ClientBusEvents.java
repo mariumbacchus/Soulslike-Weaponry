@@ -6,4 +6,6 @@ import net.soulsweapons.SoulsWeaponry;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientBusEvents {
+
+
 }

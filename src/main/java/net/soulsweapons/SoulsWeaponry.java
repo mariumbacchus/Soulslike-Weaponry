@@ -1,6 +1,8 @@
 package net.soulsweapons;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,10 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.soulsweapons.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweapons.items.ChaosSet;
-import net.soulsweapons.registry.BlockRegistry;
-import net.soulsweapons.registry.EffectRegistry;
-import net.soulsweapons.registry.ItemRegistry;
-import net.soulsweapons.registry.SoundRegistry;
+import net.soulsweapons.registry.*;
 import net.soulsweapons.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
@@ -50,6 +49,7 @@ public class SoulsWeaponry {
         ItemRegistry.register(eventBus);
         EffectRegistry.register(eventBus);
         SoundRegistry.register(eventBus);
+        ParticleRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
