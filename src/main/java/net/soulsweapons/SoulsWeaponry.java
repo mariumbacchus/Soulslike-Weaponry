@@ -18,15 +18,19 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.soulsweapons.client.renderer.armor.ChaosSetRenderer;
+import net.soulsweapons.config.CommonConfig;
 import net.soulsweapons.items.ChaosSet;
 import net.soulsweapons.registry.*;
 import net.soulsweapons.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Mod(SoulsWeaponry.MOD_ID)
@@ -53,6 +57,10 @@ public class SoulsWeaponry {
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
+
+        GeckoLib.initialize();
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
     }
