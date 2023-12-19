@@ -487,7 +487,7 @@ public class CommonConfig {
         HUNTER_PISTOL_POSTURE_LOSS = BUILDER.define("Hunter Pistol Posture Loss", 21);
         HUNTER_PISTOL_COOLDOWN = BUILDER.define("Hunter Pistol cooldown", 50);
 
-        DECAYING_KING_HEALTH = BUILDER.comment("Values for bosses, namely damage modifiers, cooldown in ticks etc.").comment("Decaying King values").define("Decaying King health", 500D);
+        DECAYING_KING_HEALTH = BUILDER.comment("Decaying King values").define("Decaying King health", 500D);
         DECAYING_KING_ATTACK_COOLDOWN_TICKS = BUILDER.define("Decaying King attack cooldown", 20);
         DECAYING_KING_SPECIAL_COOLDOWN_TICKS = BUILDER.define("Decaying King special cooldown", 60);
         DECAYING_KING_DAMAGE_MODIFIER = BUILDER.define("Decaying King damage modifier", 1f);
