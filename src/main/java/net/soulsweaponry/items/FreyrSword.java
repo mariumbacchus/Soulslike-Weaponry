@@ -41,7 +41,7 @@ public class FreyrSword extends SwordItem implements IAnimatable {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         ItemStack stack = user.getItemInHand(hand);
-//        FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);TODO add FreyrSwordEntity
+//        FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);TODO add FreyrSwordEntity, når entity lages prøv å gjør det enklere å lage flere slike entities
 //        Optional<UUID> uuid = Optional.of(entity.getUuid());
 //        try {
 //            if (user.getEntityData().get(SUMMON_UUID).isPresent() && world instanceof ServerLevel) {

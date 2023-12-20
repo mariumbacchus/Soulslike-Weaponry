@@ -47,8 +47,8 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public Nightfall(Tier pTier, float pAttackSpeedModifier, Properties pProperties, boolean isHeavy) {
-        super(pTier, CommonConfig.NIGHTFALL_DAMAGE.get(), pAttackSpeedModifier, pProperties, isHeavy);
+    public Nightfall(Tier pTier, float pAttackSpeedModifier, Properties pProperties) {
+        super(pTier, CommonConfig.NIGHTFALL_DAMAGE.get(), pAttackSpeedModifier, pProperties, true);
     }
 
     @Override

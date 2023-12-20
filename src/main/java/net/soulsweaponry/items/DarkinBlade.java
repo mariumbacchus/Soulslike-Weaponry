@@ -80,7 +80,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(stack, world, entity, pSlotId, pIsSelected);
-        if (entity instanceof Player player) {
+        if (entity instanceof Player player) { //TODO siden nbts legger til refreshes stacken veldig mye som ser rart ut, finn en fiks
             float power = CommonConfig.DARKIN_BLADE_ABILITY_DAMAGE.get();
             CometSpear.detonateGround(player, power, 3, 1.75f, stack, world, true, 25);
         }

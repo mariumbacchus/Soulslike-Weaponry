@@ -46,6 +46,7 @@ public class SoulsWeaponry {
         EffectRegistry.register(eventBus);
         SoundRegistry.register(eventBus);
         ParticleRegistry.register(eventBus);
+        WeaponRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
