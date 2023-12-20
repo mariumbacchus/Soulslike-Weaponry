@@ -44,7 +44,7 @@ public class Decay extends MobEffect {
                 for (EquipmentSlot slot : slots) {
                     ItemStack stack = player.getItemBySlot(slot);
                     if (!stack.is(ItemRegistry.CHAOS_ROBES.get())) {
-                        stack.hurt(1, player.getRandom(), player instanceof ServerPlayer ? (ServerPlayer)player : null);
+                        stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
                     }
                 }
             } else {

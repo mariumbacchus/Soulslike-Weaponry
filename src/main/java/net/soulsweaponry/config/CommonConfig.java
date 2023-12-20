@@ -387,7 +387,7 @@ public class CommonConfig {
         DRAGON_STAFF_USE_TIME = BUILDER.define("Dragon Staff use time", 100);
         DRAUGR_NIGHT_DAMAGE = BUILDER.define("Draugr night time damage", 10);
         DRAUPNIR_DAMAGE = BUILDER.define("Draupnir Spear damage", 8);
-        DRAUPNIR_PROJECTILE_DAMAGE = BUILDER.define("Draupnir Spear projectile damage", 10f);
+        DRAUPNIR_PROJECTILE_DAMAGE = BUILDER.define("Draupnir Spear projectile and ability smash around player damage", 10f);
         DRAUPNIR_DETONATE_POWER = BUILDER.define("Draupnir Spear detonation power", 1f);
         DRAUPNIR_THROW_COOLDOWN = BUILDER.define("Draupnir Spear throw cooldown", 40);
         DRAUPNIR_DETONATE_COOLDOWN = BUILDER.define("Draupnir Spear detonate cooldown", 100);

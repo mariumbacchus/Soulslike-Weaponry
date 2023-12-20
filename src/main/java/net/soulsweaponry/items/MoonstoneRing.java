@@ -3,12 +3,12 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,9 +30,9 @@ public class MoonstoneRing extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         ItemStack stack = user.getItemInHand(hand);
-        if (!user.hasEffect(EffectRegistry.MOON_HERALD.get()) && !world.isClientSide) {
+        if (!user.hasEffect(EffectRegistry.MOON_HERALD.get())) {
             user.addEffect(new MobEffectInstance(EffectRegistry.MOON_HERALD.get(), 600, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack)));
-            stack.hurt(1, user.getRandom(), user instanceof ServerPlayer ? (ServerPlayer)user : null);
+            stack.hurtAndBreak(1, user, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             world.playSound(null, user.getOnPos(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1f, 1f);
             return InteractionResultHolder.success(stack);
         }

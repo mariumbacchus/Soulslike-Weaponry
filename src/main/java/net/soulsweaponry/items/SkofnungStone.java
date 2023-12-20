@@ -3,13 +3,13 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +49,7 @@ public class SkofnungStone extends Item {
         }
 
         if (shouldDamage) {
-            stoneStack.hurt(1, user.getRandom(), user instanceof ServerPlayer ? (ServerPlayer)user : null);
+            stoneStack.hurtAndBreak(1, user, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             return InteractionResultHolder.success(stoneStack);
         } else {
             return InteractionResultHolder.fail(stoneStack);

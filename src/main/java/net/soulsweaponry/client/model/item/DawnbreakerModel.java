@@ -1,7 +1,6 @@
 package net.soulsweaponry.client.model.item;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.Dawnbreaker;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
