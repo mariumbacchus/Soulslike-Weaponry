@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -95,7 +96,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     }
     //TODO riptide greia brukes flere steder, vurder å flytte til weaponutil
     private void riptide(Player player, Level world, ItemStack stack) {
-        float sharpness = EnchantmentHelper.getDamageBonus(stack, player.getMobType());//TODO replace med weaponutil enchant level basert
+        float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
         float f = player.getYRot();
         float g = player.getXRot();
         float h = -Mth.sin(f * 0.017453292F) * Mth.cos(g * 0.017453292F);
@@ -246,17 +247,17 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);TODDO weaponutil
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

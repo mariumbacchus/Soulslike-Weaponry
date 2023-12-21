@@ -20,6 +20,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -49,7 +50,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
                 if (!player.isCreative()) player.getCooldowns().addCooldown(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
                 float healing = CommonConfig.LIFE_STEAL_BASE_HEAL.get();
                 if (CommonConfig.LIFE_STEAL_SCALES.get()) {
-                    //healing += Mth.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);TODO add weapon util
+                    healing += Mth.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
                 }
                 attacker.heal(healing);
             }
@@ -99,15 +100,15 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);TODO weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

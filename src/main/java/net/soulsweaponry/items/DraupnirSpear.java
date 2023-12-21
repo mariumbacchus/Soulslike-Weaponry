@@ -23,6 +23,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -52,8 +53,8 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
         if (user instanceof Player playerEntity) {
             int i = this.getUseDuration(stack) - remainingUseTicks;
             if (i >= 10) {
-//                int enchant = WeaponUtil.getEnchantDamageBonus(stack);TODO add draupnir spear entity
-//                DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
+                int enchant = WeaponUtil.getEnchantDamageBonus(stack);
+//                DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);TODO add draupnir spear entity
 //                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
 //                entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
 //                world.spawnEntity(entity);
@@ -61,14 +62,13 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
                 if (stack.hasTag()) {
                     List<Integer> ids = new ArrayList<>();
                     if (stack.getTag().contains(SPEARS_ID)) {
-//                        int[] arr = stack.getNbt().getIntArray(SPEARS_ID);
-//                        ids = WeaponUtil.arrayToList(arr);TODO weaponutil
+                        int[] arr = stack.getTag().getIntArray(SPEARS_ID);
+                        ids = WeaponUtil.arrayToList(arr);
                     }
                     //ids.add(entity.getId());TODO draupnir entity
                     stack.getTag().putIntArray(SPEARS_ID, ids);
                 }
-
-                //playerEntity.getCooldowns().addCooldown(this, CommonConfig.DRAUPNIR_THROW_COOLDOWN.get()); - enchant * 5);TODO weaponutil
+                playerEntity.getCooldowns().addCooldown(this, CommonConfig.DRAUPNIR_THROW_COOLDOWN.get() - enchant * 5);
                 stack.hurtAndBreak(1, playerEntity, (p_43296_) -> p_43296_.broadcastBreakEvent(user.getUsedItemHand()));
             }
         }
@@ -145,14 +145,14 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

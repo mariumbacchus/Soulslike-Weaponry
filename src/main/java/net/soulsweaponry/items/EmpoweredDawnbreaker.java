@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,6 +25,7 @@ import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
@@ -93,16 +95,16 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHAOS_STORM, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VEIL_OF_FIRE, stack, tooltip);TODO weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHAOS_STORM, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VEIL_OF_FIRE, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     public void useKeybindAbilityServer(ServerLevel world, ItemStack stack, Player player) {
         if (!player.getCooldowns().isOnCooldown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
-            player.addEffect(new MobEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), 200, 1/*Mth.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)*/));//TODO weaponutil
+            player.addEffect(new MobEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), 200, Mth.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
             player.getCooldowns().addCooldown(this, CommonConfig.EMPOWERED_DAWNBREAKER_ABILITY_COOLDOWN.get());
         }
         /*

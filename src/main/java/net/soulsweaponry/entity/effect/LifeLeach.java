@@ -22,8 +22,8 @@ public class LifeLeach extends MobEffect {
     }
 
     //TODO: This is not used anywhere in the mod. Essentially, it would continuously heal the wielder of the effect
-    //TODO: whenever the target would be damaged by other effects such as poison or wither. If implemented in some way
-    //TODO: again, consider making a new icon for the effect.
+    //whenever the target would be damaged by other effects such as poison or wither. If implemented in some way
+    //again, consider making a new icon for the effect.
     @Override
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
         LivingEntity target = entity.getLastHurtByMob();

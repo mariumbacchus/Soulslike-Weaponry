@@ -21,6 +21,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -99,15 +100,15 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);TODO weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {

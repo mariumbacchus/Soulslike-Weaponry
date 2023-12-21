@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -41,7 +42,7 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
                 if (!player.isCreative()) player.getCooldowns().addCooldown(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
                 float healing = CommonConfig.LIFE_STEAL_BASE_HEAL.get();
                 if (CommonConfig.LIFE_STEAL_SCALES.get()) {
-                    //healing += Mth.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);TODO add weapon util
+                    healing += Mth.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
                 }
                 if (player.getHealth() == player.getMaxHealth() && CommonConfig.BLOODTHIRSTER_OVERSHIELD.get()) {
                     healing = healing - 4 > 0 ? healing - 4 : 0;
@@ -55,14 +56,14 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);TODO add weapon util
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

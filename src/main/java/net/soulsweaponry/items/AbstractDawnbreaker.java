@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
@@ -32,7 +33,7 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         target.setSecondsOnFire(4 + 3 * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack));
-        if (target.getMobType() == MobType.UNDEAD || CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get()) {
+        if (WeaponUtil.isUndead(target) || CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get()) {
             if (target.isDeadOrDying()) {
                 if (target.hasEffect(EffectRegistry.RETRIBUTION.get())) {
                     double chance = CommonConfig.DAWNBREAKER_ABILITY_CHANCE_MOD.get() + 1 - (Math.pow(.75, target.getEffect(EffectRegistry.RETRIBUTION.get()).getAmplifier()));
@@ -68,7 +69,7 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
         boolean bl = CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get();
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity targetHit) {
-                if (targetHit.getMobType() == MobType.UNDEAD || bl) {//TODO implement this in weapon util maybe?
+                if (WeaponUtil.isUndead(targetHit) || bl) {
                     if (!targetHit.equals(attacker)) {
                         targetHit.setSecondsOnFire(4 + EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack));
                         targetHit.hurt(DamageSource.explosion(attacker), CommonConfig.DAWNBREAKER_ABILITY_DAMAGE.get() + 5 * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack));

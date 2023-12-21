@@ -17,7 +17,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -33,6 +32,7 @@ import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -70,7 +70,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
             if (i >= 10) {
                 if (!player.isCreative()) player.getCooldowns().addCooldown(this, CommonConfig.NIGHTFALL_SMASH_COOLDOWN.get() - EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.hurtAndBreak(3, player, (p_43296_) -> p_43296_.broadcastBreakEvent(user.getUsedItemHand()));
-                Vec3 vecBlocksAway = player.getViewVector(1f).scale(3).add(player.position());//TODO test om viewVector er riktig rotation vector
+                Vec3 vecBlocksAway = player.getViewVector(1f).scale(3).add(player.position());
                 BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
                 AABB aoe = new AABB(targetArea).inflate(3);
                 List<Entity> entities = world.getEntities(player, aoe);
@@ -91,7 +91,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (target.getMobType() == MobType.UNDEAD && target.isDeadOrDying() && attacker instanceof Player) {
+        if (WeaponUtil.isUndead(target) && target.isDeadOrDying() && attacker instanceof Player) {
             double chance = new Random().nextDouble();
             if (chance < CommonConfig.NIGHTFALL_SUMMON_CHANCE.get()) {
                 Level world = attacker.getLevel();
@@ -129,19 +129,19 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);TODO weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
             for (int i = 1; i <= 3; i++) {
                 tooltip.add(new TranslatableComponent("tooltip.soulsweapons.nightfall.part_" + i).withStyle(ChatFormatting.DARK_GRAY));
             }
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

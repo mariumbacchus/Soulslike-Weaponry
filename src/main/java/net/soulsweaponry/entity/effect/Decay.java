@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.effect;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -13,28 +12,15 @@ import net.soulsweaponry.registry.ItemRegistry;
 
 public class Decay extends MobEffect {
 
-    EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
-    public final int finalTicks = 10;
-    int tickRate = finalTicks;
-    //TODO; why are there getters and setters here? consider fixing
+    private final EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     public Decay() {
         super(MobEffectCategory.HARMFUL, 0x0e0024);
     }
 
-    public int getFinalTickrate() {
-        return this.finalTicks;
-    }
-
     @Override
-    public boolean isDurationEffectTick(int pDuration, int amplifier) {
-        this.tickRate--;
-        if (tickRate < 0) {
-            this.tickRate = this.getFinalTickrate() - amplifier * 2;
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isDurationEffectTick(int duration, int amplifier) {
+        return duration % (Math.max((10 - amplifier * 2), 1)) == 0;
     }
 
     @Override

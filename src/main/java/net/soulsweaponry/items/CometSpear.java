@@ -24,6 +24,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -48,7 +49,7 @@ public class CometSpear extends SwordItem implements IAnimatable {
         if (user instanceof Player playerEntity) {
             int i = this.getUseDuration(stack) - remainingUseTicks;
             if (i >= 10) {
-                float enchant = 1f;//WeaponUtil.getEnchantDamageBonus(stack);TODO add weaponutil
+                float enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 if (stack == user.getOffhandItem()) {
                     float f = user.getYRot();
                     float g = user.getXRot();
@@ -109,7 +110,7 @@ public class CometSpear extends SwordItem implements IAnimatable {
                 if (targets instanceof LivingEntity livingEntity) {
                     livingEntity.hurt(DamageSource.ANVIL/*CustomDamageSource.obliterateDamageSource(player)*/, power + EnchantmentHelper.getDamageBonus(stack, livingEntity.getMobType()));//TODO add custom damage source
                     livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0, stack.getTag().getFloat(FALL_DISTANCE)/launchDivisor, 0));
-                    if (shouldHeal) player.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 /*+ (CommonConfig.LIFE_STEAL_SCALES.get() ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0)*/);//TODO weaponutil
+                    if (shouldHeal) player.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0));
                 }
             }
             world.playSound(null, player.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
@@ -137,15 +138,15 @@ public class CometSpear extends SwordItem implements IAnimatable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
-//            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CRIT, stack, tooltip);TODO weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CRIT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }
-        super.appendHoverText(pStack, pLevel, tooltip, pIsAdvanced);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override
