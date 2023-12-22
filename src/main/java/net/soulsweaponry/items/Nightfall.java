@@ -6,9 +6,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +18,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -33,6 +33,7 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.util.ParticleMaps;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -40,8 +41,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -79,21 +78,15 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
                 List<Entity> entities = world.getEntities(player, aoe);
                 float power = CommonConfig.NIGHTFALL_ABILITY_DAMAGE.get();
                 for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
-                        entity.hurt(/*CustomDamageSource.obliterateDamageSource(player)*/DamageSource.ANVIL, power + 2 * EnchantmentHelper.getDamageBonus(stack, ((LivingEntity) entity).getMobType()));//TODO weaponutil
-                        entity.setDeltaMovement(entity.getDeltaMovement().add(0, .5f, 0));
+                    if (entity instanceof LivingEntity target) {
+                        entity.hurt(/*CustomDamageSource.obliterateDamageSource(player)*/DamageSource.ANVIL, power + 2 * EnchantmentHelper.getDamageBonus(stack, target.getMobType()));//TODO custom damage source
+                        entity.setDeltaMovement(target.getDeltaMovement().add(0, .5f, 0));
+                        this.spawnRemnant(target, user);
                     }
                 }
                 world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
-                    //ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.OBLITERATE_ID, targetArea, 200);TODO better particle handling
-                    HashMap<ParticleOptions, Vec3> map = new HashMap<>();
-                    map.put(ParticleTypes.LARGE_SMOKE, new Vec3(1, 8, 1));
-                    map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3(2, 8, 2));
-                    map.put(ParticleTypes.SOUL, new Vec3(2, 8, 2));
-                    map.put(new ItemParticleOption(ParticleTypes.ITEM, Items.DIRT.getDefaultInstance()), new Vec3(1, 2, 1));
-                    map.put(new ItemParticleOption(ParticleTypes.ITEM, Items.STONE.getDefaultInstance()), new Vec3(1, 2, 1));
-                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), map, 1f);
+                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleMaps.OBLITERATE, 1f);
                 }
             }
         }
@@ -101,6 +94,11 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        this.spawnRemnant(target, attacker);
+        return super.hurtEnemy(stack, target, attacker);
+    }
+
+    private void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (WeaponUtil.isUndead(target) && target.isDeadOrDying() && attacker instanceof Player) {
             double chance = new Random().nextDouble();
             if (chance < CommonConfig.NIGHTFALL_SUMMON_CHANCE.get()) {
@@ -111,12 +109,10 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 //                world.spawnEntity(entity);TODO make entity
                 world.playSound(null, target.getOnPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
-//                    BlockPos pos = target.getBlockPos();TODO particle handling
-//                    ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
+                    ParticleHandler.particleOutburstMap(world, 50, target.getX(), target.getY() + .1f, target.getZ(), ParticleMaps.SOUL_RUPTURE, 1f);
                 }
             }
         }
-        return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
