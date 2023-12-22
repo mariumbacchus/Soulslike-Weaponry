@@ -1,6 +1,7 @@
 package net.soulsweaponry.client.registry;
 
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.SoulsWeaponry;
@@ -30,7 +31,7 @@ public class KeyBindRegistry {
 
     public static void registerKeyInputs(TickEvent.ClientTickEvent event) {
         while (returnFreyrSword.consumeClick()) {
-            ModMessages.sendToServer(new Example());//Sends example packet, TODO make real packets and register events for all keybinds
+            ModMessages.sendToServer(new Example(Minecraft.getInstance().player.getOnPos()));//Sends example packet, TODO make real packets and register events for all keybinds
         }
     }
 
