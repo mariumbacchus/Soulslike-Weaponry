@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -60,9 +61,9 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
      * @param stack used to gather damage buffs
      */
     public static void dawnbreakerEvent(LivingEntity target, LivingEntity attacker, ItemStack stack) {
-//        if (!attacker.world.isClient && attacker instanceof ServerPlayerEntity) { TODO implement particle handling
-//            ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, target.getBlockPos());
-//        }
+        if (!attacker.level.isClientSide) { //TODO implement particle handling
+            ParticleEvents.dawnbreakerEvent(attacker.level, target.getX(), target.getY(), target.getZ(), 1f);
+        }
         target.playSound(SoundRegistry.DAWNBREAKER_EVENT.get(), 2f, 1f);
         AABB aoe = target.getBoundingBox().inflate(10);
         List<Entity> entities = attacker.getLevel().getEntities(target, aoe);

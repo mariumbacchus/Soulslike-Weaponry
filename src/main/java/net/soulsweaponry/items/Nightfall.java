@@ -33,7 +33,7 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleHandler;
-import net.soulsweaponry.util.ParticleMaps;
+import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -86,7 +86,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
                 }
                 world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
-                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleMaps.OBLITERATE, 1f);
+                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
         }
@@ -109,7 +109,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 //                world.spawnEntity(entity);TODO make entity
                 world.playSound(null, target.getOnPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
-                    ParticleHandler.particleOutburstMap(world, 50, target.getX(), target.getY() + .1f, target.getZ(), ParticleMaps.SOUL_RUPTURE, 1f);
+                    ParticleHandler.particleOutburstMap(world, 50, target.getX(), target.getY() + .1f, target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }
             }
         }

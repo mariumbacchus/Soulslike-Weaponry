@@ -52,7 +52,7 @@ public class ParticleHandler {
      * list.add(ParticleTypes.FLAME);
      * ParticleHandler.particleSphereList(world, 150, targetArea.getX(), targetArea.getY(), targetArea.getZ(), list, 1f);}
      */
-    public static void particleSphereList(Level world, int amount, double x, double y, double z, List<ParticleOptions> particles, float sizeMod) {
+    public static void particleSphereList(Level world, int amount, double x, double y, double z, float sizeMod, ParticleOptions... particles) {
         for (ParticleOptions particle : particles) {
             particleSphere(world, amount, x, y, z, particle, sizeMod);
         }
