@@ -129,7 +129,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
         world.playSound(null, player, SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, .75f, 1f);
         double d = player.getRandom().nextGaussian() * 0.05D;
         double e = player.getRandom().nextGaussian() * 0.05D;
-        for(int j = 0; j < 200; ++j) {
+        for (int j = 0; j < 200; ++j) {
             double newX = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + d;
             double newZ = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + e;
             double newY = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextDouble() * 0.5D;

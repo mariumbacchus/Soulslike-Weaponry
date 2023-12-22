@@ -1,5 +1,6 @@
 package net.soulsweaponry.items;
 
+import com.google.common.collect.Maps;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,8 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -93,7 +96,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
             }
         }
         if (!world.isClientSide) {
-            //ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.ICE_PARTICLES_ID, pos, 300);TODO handle particles
+            ParticleHandler.particleSphere(world, 300, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.ICE_PARTICLE, 0.75f);
         }
         world.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.HOSTILE, 1f, 1f);
         world.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.HOSTILE, 1f, .5f);

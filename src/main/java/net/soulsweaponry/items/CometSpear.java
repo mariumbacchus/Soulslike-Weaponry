@@ -24,6 +24,8 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -36,7 +38,7 @@ import java.util.function.Consumer;
 
 public class CometSpear extends SwordItem implements IAnimatable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final String SMASH = "ground_slam";
     public static final String FALL_DISTANCE = "fall_distance";
 
@@ -115,9 +117,9 @@ public class CometSpear extends SwordItem implements IAnimatable {
             }
             world.playSound(null, player.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
 
-            double pDistance = stack.getTag().getFloat(FALL_DISTANCE) >= 25 ? stack.getTag().getFloat(FALL_DISTANCE)/25 : 1;
+            float pDistance = stack.getTag().getFloat(FALL_DISTANCE) >= 25 ? stack.getTag().getFloat(FALL_DISTANCE)/25 : 1;
             if (!world.isClientSide) {
-                //ParticleNetworking.specificServerParticlePacket((ServerWorld) world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), pDistance);TODO figure out particle managing
+                ParticleHandler.particleOutburstMap(world, 200, player.getX(), player.getY(), player.getZ(), ParticleEvents.GRAND_SKYFALL_MAP, pDistance); //TODO maybe increase the amount of particles some way, fix when fixing nbt issue
             }
             //Reset nbts
             stack.getTag().putFloat(FALL_DISTANCE, 0);

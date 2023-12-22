@@ -23,6 +23,8 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -108,7 +110,7 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
                     entity.setDeltaMovement(entity.getDeltaMovement().add(0, .1f, 0));
                 }
             }
-            //ParticleNetworking.specificServerParticlePacket(world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), 0.5D);TODO particle handling
+            ParticleHandler.particleOutburstMap(world, 200, player.getX(), player.getY(), player.getZ(), ParticleEvents.GRAND_SKYFALL_MAP, 0.5f);
             world.playSound(null, player.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
             player.getCooldowns().addCooldown(stack.getItem(), CommonConfig.DRAUPNIR_DETONATE_COOLDOWN.get());
             if (stack.hasTag() && stack.getTag().contains(DraupnirSpear.SPEARS_ID)) {

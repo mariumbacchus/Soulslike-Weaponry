@@ -1,9 +1,15 @@
 package net.soulsweaponry.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.networking.packets.S2C.FlashParticleS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleOutburstS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleSphereS2C;
 
@@ -82,6 +88,16 @@ public class ParticleHandler {
         }
     }
 
+    public static void flashParticle(Level world, double x, double y, double z, RGB rgb, float expansion) {
+        if (world.isClientSide) {
+            Particle flash = Minecraft.getInstance().particleEngine.createParticle(ParticleTypes.FLASH, x, y, z, 0, 0, 0);
+            flash.setBoundingBox(new AABB(new BlockPos(x, y, z)).inflate(expansion));
+            flash.setColor(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
+        } else {
+            ModMessages.sendToAllPlayers(new FlashParticleS2C(x, y, z, rgb, expansion));
+        }
+    }
+
     /**
      * Returns a list of Vec3 which contains the velocity vectors that should apply to a particle that goes in random directions.
      * @param particleAmount amount
@@ -124,5 +140,30 @@ public class ParticleHandler {
             list.add(vec);
         }
         return list;
+    }
+
+    /**
+     * Converts basic rgb values to acceptable floats for minecraft
+     */
+    public static class RGB {
+        float r, g, b;
+
+        public RGB(float red, float green, float blue) {
+            this.r = red / 255f;
+            this.g = green / 255f;
+            this.b = blue / 255f;
+        }
+
+        public float getRed() {
+            return this.r;
+        }
+
+        public float getGreen() {
+            return this.g;
+        }
+
+        public float getBlue() {
+            return this.b;
+        }
     }
 }

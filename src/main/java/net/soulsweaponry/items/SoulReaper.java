@@ -2,11 +2,8 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,6 +18,8 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -34,7 +33,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Consumer;
 
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
@@ -52,12 +50,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
             int power = this.getSouls(stack);
             if (power >= 3) {
                 Vec3 vecBlocksAway = player.getViewVector(1f).scale(3).add(player.position());
-                if (!world.isClientSide) {
-                    //ParticleNetworking.sendServerParticlePacket((ServerLevel) world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, new BlockPos(vecBlocksAway), 50);TODO particle handling
-                } else {
-                    this.spawnParticles(world, vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
-                }
-
+                ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.x(), vecBlocksAway.y(), vecBlocksAway.z(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                 world.playSound(player, player.getOnPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 0.8f, 1f);
 //                if (power < 10) {
 //                    SoulReaperGhost entity = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, world);
@@ -84,19 +77,6 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
             }
         }
         return InteractionResultHolder.fail(stack);
-    }
-
-    private void spawnParticles(Level world, double x, double y, double z) {
-        Random random = new Random();
-        double d = random.nextGaussian() * 0.05D;
-        double e = random.nextGaussian() * 0.05D;
-        for(int i = 0; i < 50; ++i) {
-            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-            world.addParticle(ParticleTypes.SOUL, x, y, z, newX/8, newY/2, newZ/8);
-            world.addParticle(ParticleTypes.DRAGON_BREATH, x, y, z, newX/8, newY/2, newZ/8);
-        }
     }
 
     @Override

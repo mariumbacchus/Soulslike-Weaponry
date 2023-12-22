@@ -123,7 +123,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event){
         event.getController().setAnimation(new AnimationBuilder().addAnimation("heartbeat", ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE; //TODO hvis du klarer å få til sou lreaper animasjon, gjør det også her med at hvis bruker er lav hp kan hjerte dunke fortere
+        return PlayState.CONTINUE; //TODO hvis du klarer å få til soul reaper animasjon, gjør det også her med at hvis bruker er lav hp kan hjerte dunke fortere
     }
 
     @Override
