@@ -35,7 +35,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     private static final String CRITICAL = "3rd_shot";
     private static final String PREV_UUID = "prev_projectile_uuid";
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     //TODO night prowler brukes no drag wither skulls, lag den og implement her med custom max age som du må lage som setter og getter
     public ForlornScythe(Tier pTier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, CommonConfig.FORLORN_SCYTHE_DAMAGE.get(), pAttackSpeedModifier, pProperties);
@@ -82,8 +82,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
         if (stack.hasTag() && stack.getTag().contains(PREV_UUID)) {
             UUID uuid = stack.getTag().getUUID(PREV_UUID);
             Entity entity = world.getEntity(uuid);
-            if (entity instanceof WitherSkull) {
-                WitherSkull skull = (WitherSkull) entity;
+            if (entity instanceof WitherSkull skull) {
                 Explosion.BlockInteraction destructionType = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, skull.getOwner()) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
                 world.explode(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isDangerous() ? 2f : 1f, false, destructionType);
                 skull.discard();

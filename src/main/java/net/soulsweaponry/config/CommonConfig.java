@@ -352,7 +352,7 @@ public class CommonConfig {
         COMET_SPEAR_ABILITY_DAMAGE = BUILDER.define("Comet Spear ability damage", 10f);
         COMET_SPEAR_SKYFALL_COOLDOWN = BUILDER.define("Comet Spear skyfall ability cooldown", 400);
         COMET_SPEAR_THROW_COOLDOWN = BUILDER.define("Comet Spear throw cooldown", 25);
-        CRUCIBLE_SWORD_DAMAGE = BUILDER.define("Crucible Sword damage", 9);
+        CRUCIBLE_SWORD_DAMAGE = BUILDER.define("Crucible Sword normal damage", 9);
         CRUCIBLE_SWORD_EMP_DAMAGE = BUILDER.define("Crucible Sword empowered damage", 30);
         CRUCIBLE_SWORD_EMP_COOLDOWN = BUILDER.define("Crucible Sword empowered cooldown", 300);
         DARKIN_BLADE_DAMAGE = BUILDER.define("Darkin Blade damage", 11);

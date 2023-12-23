@@ -43,6 +43,7 @@ public class SoulsWeaponry {
         ParticleRegistry.register(eventBus);
         WeaponRegistry.register(eventBus);
         EnchantmentRegistry.register(eventBus);
+        GunRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
 

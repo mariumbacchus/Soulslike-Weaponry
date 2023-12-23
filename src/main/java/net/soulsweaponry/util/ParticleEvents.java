@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -24,7 +25,7 @@ public class ParticleEvents {
     // BIG_TELEPORT_ID -> ChaosMonarchGoal, can easily call ParticleHandler.particleSphere with the right parameters
     // DRAGON_BREATH_EXPLOSION_PACKET -> ChaosMonarchGoal, can easily call ParticleHandler.particleSphere with the right parameters
     // DRAGON_BREATH_EXPLOSION_PACKET -> ChaosMonarchGoal, can easily call ParticleHandler.particleSphere with the right parameters
-    // SNOW_PARTICLES_ID -> Freezing effect, can easily call the default server.sendParticle method with the right off-set parameters
+    // SNOW_PARTICLES_ID -> Freezing effect, can easily call the default server.sendParticle method with the right off-set parameters, kinda pointless though since it can call client level
     // ICE_PARTICLES_ID -> can easily call the default ParticleHandler.particleSphere method with the right params in respective classes
     // MOONLIGHT_PARTICLES_ID -> MoonlightProjectile, can easily call ParticleHandler.particleSphere with right params
     // SWORD_SWIPE_ID -> can be called in respective classes using default serverLevel.sendParticle with right off-set params
@@ -43,7 +44,7 @@ public class ParticleEvents {
 
     public static final ParticleOptions DIRT_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.DIRT.getDefaultInstance());
     public static final ParticleOptions STONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.STONE.getDefaultInstance());
-    public static final ParticleOptions ICE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.ICE.getDefaultInstance());
+    public static final ParticleOptions ICE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.ICE));
 
     public static final HashMap<ParticleOptions, Vec3> OBLITERATE_MAP = Maps.newHashMap();
     public static final HashMap<ParticleOptions, Vec3> MOONFALL_MAP = Maps.newHashMap();

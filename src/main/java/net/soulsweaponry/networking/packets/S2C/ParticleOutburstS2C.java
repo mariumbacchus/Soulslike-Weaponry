@@ -3,9 +3,13 @@ package net.soulsweaponry.networking.packets.S2C;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -23,12 +27,25 @@ public class ParticleOutburstS2C {
     private final ParticleOptions particle;
     private final Vec3 velDividers;
     private final float sizeMod;
+    private final ItemStack item;
 
-    public ParticleOutburstS2C(int amount, double x, double y, double z, ParticleOptions particle, Vec3 velDividers, float sizeMod) {
+    /**
+     * Server to client packet that will result in a sphere forming with the given particle.
+     * @param amount amount of particles
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param particle particle type, i.e FLAME, SMOKE etc.
+     * @param velDividers velocity dividers that will modify the direction the particles go
+     * @param sizeMod modifies the size of the whole particle event
+     * @param item for when ItemParticleOption is used, will pass in the item that should be rendered to the ItemParticleOption
+     */
+    public ParticleOutburstS2C(int amount, double x, double y, double z, ParticleOptions particle, Vec3 velDividers, float sizeMod, ItemStack item) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.amount = amount;
+        this.item = item;
         this.particle = particle;
         this.velDividers = velDividers;
         this.sizeMod = sizeMod;
@@ -38,6 +55,7 @@ public class ParticleOutburstS2C {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(Registry.PARTICLE_TYPE.getId(this.particle.getType()));
         buf.writeInt(this.amount);
+        buf.writeItem(this.item);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
@@ -53,6 +71,7 @@ public class ParticleOutburstS2C {
         ParticleType<?> particletype = Registry.PARTICLE_TYPE.byId(buf.readInt());
         this.particle = this.readParticle(buf, particletype);
         this.amount = buf.readInt();
+        this.item = buf.readItem();
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
@@ -92,6 +111,14 @@ public class ParticleOutburstS2C {
         return this.sizeMod;
     }
 
+    private ItemParticleOption getItemParticleOption() {
+        return new ItemParticleOption(ParticleTypes.ITEM, this.item);
+    }
+
+    private ItemStack getItemStack() {
+        return this.item;
+    }
+
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -102,6 +129,10 @@ public class ParticleOutburstS2C {
     }
 
     private void handlePacket(ClientLevel level, ParticleOutburstS2C packet) {
-        ParticleHandler.particleOutburst(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getVelDividers(), packet.getSizeMod());
+        if (!packet.getItemStack().is(Items.AIR)) {
+            ParticleHandler.particleOutburst(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getVelDividers(), packet.getSizeMod());
+        } else {
+            ParticleHandler.particleOutburst(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getVelDividers(), packet.getSizeMod());
+        }
     }
 }

@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -31,10 +30,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.ParticleHandler;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -79,14 +75,14 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
                 float power = CommonConfig.NIGHTFALL_ABILITY_DAMAGE.get();
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
-                        entity.hurt(/*CustomDamageSource.obliterateDamageSource(player)*/DamageSource.ANVIL, power + 2 * EnchantmentHelper.getDamageBonus(stack, target.getMobType()));//TODO custom damage source
+                        entity.hurt(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getDamageBonus(stack, target.getMobType()));
                         entity.setDeltaMovement(target.getDeltaMovement().add(0, .5f, 0));
                         this.spawnRemnant(target, user);
                     }
                 }
                 world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
-                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
+                    ParticleHandler.particleOutburstMap(world, 100, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
         }

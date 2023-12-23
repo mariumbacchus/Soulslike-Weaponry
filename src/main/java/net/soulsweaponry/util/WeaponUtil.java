@@ -107,7 +107,7 @@ public class WeaponUtil {
     public static boolean isUndead(LivingEntity entity) {
         return entity.getMobType() == MobType.UNDEAD;
     }
-
+    //TODO virker som at forge har fikset overflow av tekst issue, test mer
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Component> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {

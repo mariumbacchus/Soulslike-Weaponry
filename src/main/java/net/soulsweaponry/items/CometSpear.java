@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +23,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
@@ -110,7 +110,7 @@ public class CometSpear extends SwordItem implements IAnimatable {
             List<Entity> entities = world.getEntities(player, box);
             for (Entity targets : entities) {
                 if (targets instanceof LivingEntity livingEntity) {
-                    livingEntity.hurt(DamageSource.ANVIL/*CustomDamageSource.obliterateDamageSource(player)*/, power + EnchantmentHelper.getDamageBonus(stack, livingEntity.getMobType()));//TODO add custom damage source
+                    livingEntity.hurt(CustomDamageSource.obliterateDamageSource(player), power + EnchantmentHelper.getDamageBonus(stack, livingEntity.getMobType()));
                     livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().add(0, stack.getTag().getFloat(FALL_DISTANCE)/launchDivisor, 0));
                     if (shouldHeal) player.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0));
                 }

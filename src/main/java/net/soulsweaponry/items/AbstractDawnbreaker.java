@@ -4,7 +4,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -61,7 +60,7 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
      * @param stack used to gather damage buffs
      */
     public static void dawnbreakerEvent(LivingEntity target, LivingEntity attacker, ItemStack stack) {
-        if (!attacker.level.isClientSide) { //TODO implement particle handling
+        if (!attacker.level.isClientSide) {
             ParticleEvents.dawnbreakerEvent(attacker.level, target.getX(), target.getY(), target.getZ(), 1f);
         }
         target.playSound(SoundRegistry.DAWNBREAKER_EVENT.get(), 2f, 1f);

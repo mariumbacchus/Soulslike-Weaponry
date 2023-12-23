@@ -3,9 +3,13 @@ package net.soulsweaponry.networking.packets.S2C;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
@@ -21,12 +25,24 @@ public class ParticleSphereS2C {
     private final int amount;
     private final ParticleOptions particle;
     private final float sizeMod;
+    private final ItemStack item;
 
-    public ParticleSphereS2C(int amount, double x, double y, double z, ParticleOptions particle, float sizeMod) {
+    /**
+     * Server to client packet that will result in a sphere forming with the given particle.
+     * @param amount amount of particles
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param particle particle type, i.e FLAME, SMOKE etc.
+     * @param sizeMod modifies the size of the whole particle event
+     * @param item for when ItemParticleOption is used, will pass in the item that should be rendered to the ItemParticleOption
+     */
+    public ParticleSphereS2C(int amount, double x, double y, double z, ParticleOptions particle, float sizeMod, ItemStack item) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.amount = amount;
+        this.item = item;
         this.particle = particle;
         this.sizeMod = sizeMod;
     }
@@ -35,6 +51,7 @@ public class ParticleSphereS2C {
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(Registry.PARTICLE_TYPE.getId(this.particle.getType()));
         buf.writeInt(this.amount);
+        buf.writeItem(this.item);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
@@ -47,6 +64,7 @@ public class ParticleSphereS2C {
         ParticleType<?> particletype = Registry.PARTICLE_TYPE.byId(buf.readInt());
         this.particle = this.readParticle(buf, particletype);
         this.amount = buf.readInt();
+        this.item = buf.readItem();
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
@@ -73,6 +91,14 @@ public class ParticleSphereS2C {
         return pParticleType.getDeserializer().fromNetwork(pParticleType, pBuffer);
     }
 
+    private ItemParticleOption getItemParticleOption() {
+        return new ItemParticleOption(ParticleTypes.ITEM, this.item);
+    }
+
+    private ItemStack getItemStack() {
+        return this.item;
+    }
+
     public ParticleOptions getParticle() {
         return this.particle;
     }
@@ -91,6 +117,10 @@ public class ParticleSphereS2C {
     }
 
     private void handlePacket(ClientLevel level, ParticleSphereS2C packet) {
-        ParticleHandler.particleSphere(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getSizeMod());
+        if (!packet.getItemStack().is(Items.AIR)) {
+            ParticleHandler.particleSphere(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getSizeMod());
+        } else {
+            ParticleHandler.particleSphere(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getSizeMod());
+        }
     }
 }

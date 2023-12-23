@@ -3,8 +3,11 @@ package net.soulsweaponry.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -72,7 +75,12 @@ public class ParticleHandler {
             }
         } else {
             //Sends a packet to the server that directs the info to a client side environment that calls it back to here with client level.
-            ModMessages.sendToAllPlayers(new ParticleOutburstS2C(amount, x, y, z, particle, velDivider, sizeMod));
+            ItemStack stack = new ItemStack(Items.AIR);
+            if (particle instanceof ItemParticleOption par) {
+                stack = par.getItem();
+                particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
+            }
+            ModMessages.sendToAllPlayers(new ParticleOutburstS2C(amount, x, y, z, particle, velDivider, sizeMod, stack));
         }
     }
 
@@ -80,11 +88,16 @@ public class ParticleHandler {
         if (world.isClientSide) {
             List<Vec3> list = getSphereParticleCords(amount, sizeMod);
             for (Vec3 vec : list) {
-                world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
+                world.addParticle(particle, x, y, z, vec.x(), vec.y(), vec.z());
             }
         } else {
             //Sends a packet to the server that directs the info to a client side environment that calls it back to here with client level.
-            ModMessages.sendToAllPlayers(new ParticleSphereS2C(amount, x, y, z, particle, sizeMod));
+            ItemStack stack = new ItemStack(Items.AIR);
+            if (particle instanceof ItemParticleOption par) {
+                stack = par.getItem();
+                particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
+            }
+            ModMessages.sendToAllPlayers(new ParticleSphereS2C(amount, x, y, z, particle, sizeMod, stack));
         }
     }
 

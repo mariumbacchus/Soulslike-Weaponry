@@ -1,9 +1,11 @@
 package net.soulsweaponry.items;
 
-import com.google.common.collect.Maps;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
@@ -59,7 +62,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
             if (i >= 10) {
                 stack.hurtAndBreak(3, playerEntity, (p_43296_) -> p_43296_.broadcastBreakEvent(user.getUsedItemHand()));
                 if (stack.hasTag()) {
-                    //stack.getTag().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});TODO add mjolnir
+                    stack.getTag().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
                 }
 //                LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
 //                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;

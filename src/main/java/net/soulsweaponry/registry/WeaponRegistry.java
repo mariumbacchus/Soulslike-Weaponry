@@ -18,8 +18,8 @@ public class WeaponRegistry {
     //TODO legg til resten av våpen
     public static final DeferredRegister<Item> WEAPONS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.MOD_ID);
 
-//    public static final RegistryObject<TieredItem> BLUEMOON_SHORTSWORD = WEAPONS.register("", () -> new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
-//    public static final RegistryObject<TieredItem> BLUEMOON_GREATSWORD = WEAPONS.register("", () -> new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
+    public static final RegistryObject<TieredItem> BLUEMOON_SHORTSWORD = WEAPONS.register("bluemoon_shortsword", () -> new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE)));
+    public static final RegistryObject<TieredItem> BLUEMOON_GREATSWORD = WEAPONS.register("bluemoon_greatsword", () -> new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE)));
 //    public static final RegistryObject<TieredItem> MOONLIGHT_SHORTSWORD = WEAPONS.register("", () -> new MoonlightShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
 //    public static final RegistryObject<TieredItem> MOONLIGHT_GREATSWORD = WEAPONS.register("", () -> new MoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
 //    public static final RegistryObject<TieredItem> PURE_MOONLIGHT_GREATSWORD = WEAPONS.register("", () -> new PureMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
@@ -48,7 +48,7 @@ public class WeaponRegistry {
     public static final RegistryObject<TieredItem> FREYR_SWORD = WEAPONS.register("freyr_sword", () -> new FreyrSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
 //    public static final RegistryObject<TieredItem> STING = WEAPONS.register("", () -> new Sting(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
 //    public static final RegistryObject<TieredItem> FEATHERLIGHT = WEAPONS.register("", () -> new Featherlight(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
-//    public static final RegistryObject<TieredItem> CRUCIBLE_SWORD = WEAPONS.register("", () -> new CrucibleSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant());
+    public static final RegistryObject<TieredItem> CRUCIBLE_SWORD = WEAPONS.register("crucible_sword", () -> new CrucibleSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
 //    public static final RegistryObject<TieredItem> DARKIN_SCYTHE_PRE = WEAPONS.register("", () -> new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant());
 //    public static final RegistryObject<TieredItem> DARKIN_SCYTHE_PRIME = WEAPONS.register("", () -> new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant());
 //    public static final RegistryObject<TieredItem> SHADOW_ASSASSIN_SCYTHE = WEAPONS.register("", () -> new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant());
