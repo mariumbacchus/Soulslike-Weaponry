@@ -44,7 +44,8 @@ public class SoulsWeaponry {
         WeaponRegistry.register(eventBus);
         EnchantmentRegistry.register(eventBus);
         GunRegistry.register(eventBus);
-
+        //TODO recipe generation
+        //TODO datagen with recipe advancements
         eventBus.addListener(this::setup);
 
         GeckoLib.initialize();

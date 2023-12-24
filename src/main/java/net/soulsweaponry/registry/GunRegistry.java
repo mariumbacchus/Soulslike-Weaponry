@@ -17,7 +17,7 @@ public class GunRegistry {
     public static final DeferredRegister<Item> GUNS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.MOD_ID);
     //TODO add all guns
 
-    public static final RegistryObject<GunItem> BLUEMOON_SHORTSWORD = GUNS.register("blunderbuss", () -> new Blunderbuss(new Item.Properties().tab(MAIN_GROUP).durability(900).rarity(Rarity.RARE)));
+    //public static final RegistryObject<GunItem> BLUNDERBUSS = GUNS.register("blunderbuss", () -> new Blunderbuss(new Item.Properties().tab(MAIN_GROUP).durability(900).rarity(Rarity.RARE)));
 
     public static void register(IEventBus eventBus) {
         GUNS.register(eventBus);
