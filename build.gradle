@@ -3,11 +3,13 @@ buildscript {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
@@ -17,6 +19,7 @@ plugins {
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'org.spongepowered.mixin'
 
 version = project.mod_version
 group = project.maven_group
@@ -161,6 +164,7 @@ dependencies {
     dependencies {
         implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${project.geckolib_version}")
     }
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -175,6 +179,11 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+mixin {
+    add sourceSets.main, "soulsweapons.refmap.json"
+    config 'soulsweapons.mixins.json'
+}
+
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
@@ -185,7 +194,8 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "soulsweaponssareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConnector": "net.soulsweapons.mixin.MixinConnector"
         ])
     }
 }
