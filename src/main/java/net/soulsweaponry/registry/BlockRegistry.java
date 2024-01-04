@@ -37,7 +37,7 @@ public class BlockRegistry {
     public static final WitheredGrass WITHERED_GRASS = new WitheredGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.GRASS);
     public static final WitheredGrass WITHERED_FERN = new WitheredGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.FERN);
     public static final WitheredGrass WITHERED_BERRY_BUSH = new WitheredGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.SWEET_BERRY_BUSH);
-    public static final WitheredFlower HYDRANGEA = new WitheredFlower(EffectRegistry.DECAY, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.WITHER_ROSE);
+    public static final WitheredFlower HYDRANGEA = new WitheredFlower(EffectRegistry.DECAY, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final WitheredTallGrass WITHERED_TALL_GRASS = new WitheredTallGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.TALL_GRASS);
     public static final WitheredTallGrass WITHERED_LARGE_FERN = new WitheredTallGrass(FabricBlockSettings.of(Material.REPLACEABLE_PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.LARGE_FERN);
     public static final WitheredTallFlower OLEANDER = new WitheredTallFlower(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Blocks.LARGE_FERN, EffectRegistry.DECAY);

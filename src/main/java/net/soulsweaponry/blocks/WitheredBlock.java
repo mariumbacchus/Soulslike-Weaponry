@@ -57,7 +57,7 @@ public class WitheredBlock extends Block {
         if ((random.nextInt(3) == 0 || this.canTurn(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             for (Direction direction : Direction.values()) {
-                mutable.set((Vec3i)pos, direction);
+                mutable.set(pos, direction);
                 BlockState blockState = world.getBlockState(mutable);
                 if (!blockState.isOf(this) || this.increaseAge(blockState, world, mutable)) continue;
                 world.createAndScheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
@@ -73,18 +73,18 @@ public class WitheredBlock extends Block {
             world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
-        this.turnBack(state, world, pos);
+        this.turnBack(world, pos);
         return true;
     }
 
     public void resetAge(BlockState state, World world, BlockPos pos) {
-        world.setBlockState(pos, (BlockState)state.with(AGE, 0), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos, state.with(AGE, 0), Block.NOTIFY_LISTENERS);
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canTurn(world, pos, 2)) {
-            this.turnBack(state, world, pos);
+            this.turnBack(world, pos);
         }
         //super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
         DebugInfoSender.sendNeighborUpdate(world, pos);
@@ -106,7 +106,7 @@ public class WitheredBlock extends Block {
         builder.add(AGE);
     }
 
-    protected void turnBack(BlockState state, World world, BlockPos pos) {
+    protected void turnBack(World world, BlockPos pos) {
         world.setBlockState(pos, this.replacedBlock.getDefaultState());
         world.updateNeighbor(pos, this.replacedBlock, pos);
     }
