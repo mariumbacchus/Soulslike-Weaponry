@@ -1,31 +1,31 @@
 package net.soulsweaponry.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TallPlantBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * If this replaced tall flowers, it will turn into a random tall flower 
- * block instead of it's previous form, just like {@link net.soulsweaponry.blocks.WitheredFlower} 
+ * block instead of its previous form, just like {@link net.soulsweaponry.blocks.WitheredFlower}
  */
 public class WitheredTallFlower extends WitheredTallGrass {
 
-    private StatusEffect effect;
+    private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, StatusEffect effect) {
@@ -40,14 +40,18 @@ public class WitheredTallFlower extends WitheredTallGrass {
     }
 
     @Override
-    public void turnBack(BlockState state, World world, BlockPos pos) {
-        this.replacedBlock = this.getRandomTallFlower();
-        super.turnBack(state, world, pos);
+    public Block getBlock() {
+        return this;
     }
 
-    private TallPlantBlock getRandomTallFlower() {
-        Block[] tallFlowers = {Blocks.SUNFLOWER, Blocks.LILAC, Blocks.PEONY, Blocks.ROSE_BUSH};
-        return (TallPlantBlock)tallFlowers[new Random().nextInt(tallFlowers.length)];
+    @Override
+    public Block getBlockToReturnAs() {
+        return this.getRandomTallFlower();
+    }
+
+    private Block getRandomTallFlower() {
+        List<Block> list = Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList();
+        return list.get(new Random().nextInt(list.size()));
     }
 
     @Override
@@ -61,17 +65,9 @@ public class WitheredTallFlower extends WitheredTallGrass {
     }
 
     @Override
-    protected boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
+    public boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        mutable.set((Vec3i)pos, Direction.DOWN);
-        if (!(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).get(CANNOT_TURN)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-        return super.canPlantOnTop(floor, world, pos) || floor.isOf(Blocks.NETHERRACK) || floor.isOf(Blocks.SOUL_SAND) || floor.isOf(Blocks.SOUL_SOIL) || floor.isOf(Blocks.END_STONE);
+        mutable.set(pos, Direction.DOWN);
+        return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).get(CANNOT_TURN);
     }
 }
