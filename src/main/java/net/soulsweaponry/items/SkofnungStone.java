@@ -37,14 +37,14 @@ public class SkofnungStone extends Item {
             if (/*swordStack.getItem() instanceof Skofnung && */swordStack.hasTag()) {//TODO make sword
                 //swordStack.getTag().putInt(Skofnung.EMPOWERED, ConfigConstructor.skofnung_stone_additional_empowered_strikes);TODO make config and skofnung sword
                 shouldDamage = true;
-                world.playSound(user, user.getOnPos(), SoundRegistry.SHARPEN_EVENT.get(), SoundSource.PLAYERS, .5f, 1f);
-                world.playSound(user, user.getOnPos(), SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, .5f, .5f);
+                world.playSound(user, user.blockPosition(), SoundRegistry.SHARPEN_EVENT.get(), SoundSource.PLAYERS, .5f, 1f);
+                world.playSound(user, user.blockPosition(), SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, .5f, .5f);
             }
         }
         for (MobEffect effect : ForgeRegistries.MOB_EFFECTS) {
             if (effect.getCategory().equals(MobEffectCategory.HARMFUL) && user.hasEffect(effect)) {
                 user.removeEffect(effect);
-                world.playSound(user, user.getOnPos(), SoundRegistry.RESTORE_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
+                world.playSound(user, user.blockPosition(), SoundRegistry.RESTORE_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 shouldDamage = true;
             }
         }

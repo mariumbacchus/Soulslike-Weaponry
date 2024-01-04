@@ -32,11 +32,11 @@ public class Freezing extends MobEffect {
         if (entity.isDeadOrDying()) {
             if (entity instanceof IAnimatedDeath animated) {
                 if (animated.getDeathTicks() < 2) {
-                    LeviathanAxe.iceExplosion(entity.getLevel(), entity.getOnPos(), entity.getLastHurtByMob(), amplifier);
+                    LeviathanAxe.iceExplosion(entity.getLevel(), entity.blockPosition(), entity.getLastHurtByMob(), amplifier);
                 }
             }
             else if (entity.deathTime < 2) {
-                LeviathanAxe.iceExplosion(entity.getLevel(), entity.getOnPos(), entity.getLastHurtByMob(), amplifier);
+                LeviathanAxe.iceExplosion(entity.getLevel(), entity.blockPosition(), entity.getLastHurtByMob(), amplifier);
             }
         }
     }

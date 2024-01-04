@@ -111,7 +111,7 @@ public class DraupnirSpear extends SwordItem implements IAnimatable, IKeybindAbi
                 }
             }
             ParticleHandler.particleOutburstMap(world, 200, player.getX(), player.getY(), player.getZ(), ParticleEvents.GRAND_SKYFALL_MAP, 0.5f);
-            world.playSound(null, player.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
+            world.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
             player.getCooldowns().addCooldown(stack.getItem(), CommonConfig.DRAUPNIR_DETONATE_COOLDOWN.get());
             if (stack.hasTag() && stack.getTag().contains(DraupnirSpear.SPEARS_ID)) {
                 int[] ids = stack.getTag().getIntArray(DraupnirSpear.SPEARS_ID);

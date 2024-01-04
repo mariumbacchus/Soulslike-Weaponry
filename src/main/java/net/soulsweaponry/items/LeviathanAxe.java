@@ -69,7 +69,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
 //                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
 //                entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
 //                world.spawnEntity(entity);TODO create leviathan axe projectile
-                world.playSound(playerEntity, playerEntity.getOnPos(), SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1f, .5f);
+                world.playSound(playerEntity, playerEntity.blockPosition(), SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1f, .5f);
                 if (!playerEntity.isCreative()) {
                     playerEntity.getInventory().removeItem(stack);
                 }

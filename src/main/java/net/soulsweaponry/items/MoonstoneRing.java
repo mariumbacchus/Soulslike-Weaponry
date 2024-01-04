@@ -17,6 +17,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class MoonstoneRing extends Item {
         if (!user.hasEffect(EffectRegistry.MOON_HERALD.get())) {
             user.addEffect(new MobEffectInstance(EffectRegistry.MOON_HERALD.get(), 600, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack)));
             stack.hurtAndBreak(1, user, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-            world.playSound(null, user.getOnPos(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1f, 1f);
+            world.playSound(null, user.blockPosition(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1f, 1f);
             return InteractionResultHolder.success(stack);
         }
         return InteractionResultHolder.fail(stack);//TODO add functionality to moon herald effect via moonlight shortsword
@@ -42,7 +43,7 @@ public class MoonstoneRing extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
-            //WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip); TODO add weaponutil
+            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip);
         } else {
             tooltip.add(new TranslatableComponent("tooltip.soulsweapons.shift"));
         }

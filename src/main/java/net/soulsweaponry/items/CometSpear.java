@@ -115,7 +115,7 @@ public class CometSpear extends SwordItem implements IAnimatable {
                     if (shouldHeal) player.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? WeaponUtil.getEnchantDamageBonus(stack)/2 : 0));
                 }
             }
-            world.playSound(null, player.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
+            world.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
 
             float pDistance = stack.getTag().getFloat(FALL_DISTANCE) >= 25 ? stack.getTag().getFloat(FALL_DISTANCE)/25 : 1;
             if (!world.isClientSide) {

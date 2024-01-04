@@ -78,7 +78,7 @@ public class Blunderbuss extends GunItem {
                     world.addParticle(ParticleTypes.SMOKE, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .5, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .5);
                 }
             }
-            world.playSound(user, user.getOnPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
+            world.playSound(user, user.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1f, 1f);
             stack.hurtAndBreak(1, user, (p_43296_) -> p_43296_.broadcastBreakEvent(user.getUsedItemHand()));
             if (!bl2 && !user.isCreative()) {
                 itemStack.shrink(this.bulletsNeeded());

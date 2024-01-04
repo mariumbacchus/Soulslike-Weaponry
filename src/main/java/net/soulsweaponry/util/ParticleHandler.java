@@ -67,6 +67,12 @@ public class ParticleHandler {
         }
     }
 
+    public static void particleSphereList(Level world, int amount, double x, double y, double z, List<ParticleOptions> particles, float sizeMod) {
+        for (ParticleOptions particle : particles) {
+            particleSphere(world, amount, x, y, z, particle, sizeMod);
+        }
+    }
+
     public static void particleOutburst(Level world, int amount, double x, double y, double z, ParticleOptions particle, Vec3 velDivider, float sizeMod) {
         if (world.isClientSide) {
             List<Vec3> list = getParticleOutburstCords(amount, velDivider, sizeMod);

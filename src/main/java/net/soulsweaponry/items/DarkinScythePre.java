@@ -62,7 +62,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
                 if (!world.isClientSide) {
                     ParticleEvents.dawnbreakerEvent(world, player.getX(), player.getY(), player.getZ(), 1f);
                 }
-                world.playSound(null, entity.getOnPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundSource.HOSTILE, 0.8f, 1f);
+                world.playSound(null, entity.blockPosition(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundSource.HOSTILE, 0.8f, 1f);
                 Item item = WeaponRegistry.DARKIN_SCYTHE_PRIME.get();
                 switch (this.getDominantType(stack)) {
                     case RED -> item = WeaponRegistry.DARKIN_SCYTHE_PRIME.get();

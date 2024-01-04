@@ -1,5 +1,6 @@
 package net.soulsweaponry.registry;
 
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TieredItem;
@@ -25,12 +26,12 @@ public class WeaponRegistry {
 //    public static final RegistryObject<TieredItem> PURE_MOONLIGHT_GREATSWORD = WEAPONS.register("", () -> new PureMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
     public static final RegistryObject<TieredItem> BLOODTHIRSTER = WEAPONS.register("bloodthirster", () -> new Bloodthirster(ModToolMaterials.CRIMSON_INGOT, -2.4F, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> DARKIN_BLADE = WEAPONS.register("darkin_blade", () -> new DarkinBlade(ModToolMaterials.CRIMSON_INGOT, -3F, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
-//    public static final RegistryObject<TieredItem> DRAGON_STAFF = WEAPONS.register("", () -> new DragonStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final RegistryObject<TieredItem> DRAGON_STAFF = WEAPONS.register("dragon_staff", () -> new DragonStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC)));
 //    public static final RegistryObject<TieredItem> WITHERED_WABBAJACK = WEAPONS.register("", () -> new WitheredWabbajack(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC).fireResistant());
 //    public static final RegistryObject<TieredItem> WHIRLIGIG_SAWBLADE = WEAPONS.register("", () -> new WhirligigSawblade(ModToolMaterials.IRON_BLOCK, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
-//    public static final RegistryObject<TieredItem> DRAGONSLAYER_SWORDSPEAR = WEAPONS.register("", () -> new DragonslayerSwordspear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC));
+    public static final RegistryObject<TieredItem> DRAGONSLAYER_SWORDSPEAR = WEAPONS.register("dragonslayer_swordspear", () -> new DragonslayerSwordspear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
 //    public static final RegistryObject<TieredItem> GUINSOOS_RAGEBLADE = WEAPONS.register("", () -> new GuinsoosRageblade(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
-//    public static final RegistryObject<TieredItem> GUTS_SWORD = WEAPONS.register("", () -> new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final RegistryObject<TieredItem> GUTS_SWORD = WEAPONS.register("guts_sword", () -> new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> NIGHTFALL = WEAPONS.register("nightfall", () -> new Nightfall(ModToolMaterials.IRON_BLOCK, -3, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> COMET_SPEAR = WEAPONS.register("comet_spear", () -> new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
 //    public static final RegistryObject<TieredItem> LICH_BANE = WEAPONS.register("", () -> new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
@@ -38,7 +39,7 @@ public class WeaponRegistry {
 //    public static final RegistryObject<TieredItem> TRANSLUCENT_SWORD = WEAPONS.register("", () -> new SwordItem(ModToolMaterials.LOST_SOUL, 6, -2.4F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
 //    public static final RegistryObject<TieredItem> TRANSLUCENT_GLAIVE = WEAPONS.register("", () -> new SwordItem(ModToolMaterials.LOST_SOUL, 7, -2.6F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
 //    public static final RegistryObject<TieredItem> TRANSLUCENT_DOUBLE_GREATSWORD = WEAPONS.register("", () -> new SwordItem(ModToolMaterials.LOST_SOUL, 8, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE));
-//    public static final RegistryObject<TieredItem> DRAUGR = WEAPONS.register("", () -> new Draugr(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final RegistryObject<TieredItem> DRAUGR = WEAPONS.register("draugr", () -> new Draugr(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> DAWNBREAKER = WEAPONS.register("dawnbreaker", () -> new Dawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> SOUL_REAPER = WEAPONS.register("soul_reaper", () -> new SoulReaper(ModToolMaterials.MOONSTONE_OR_VERGLAS, -3f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
     public static final RegistryObject<TieredItem> FORLORN_SCYTHE = WEAPONS.register("forlorn_scythe", () -> new ForlornScythe(ModToolMaterials.LOST_SOUL, -3f, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.UNCOMMON)));
@@ -63,7 +64,7 @@ public class WeaponRegistry {
 //    public static final RegistryObject<TieredItem> NIGHTS_EDGE_ITEM = WEAPONS.register("", () -> new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC));
     public static final RegistryObject<TieredItem> EMPOWERED_DAWNBREAKER = WEAPONS.register("empowered_dawnbreaker", () -> new EmpoweredDawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Properties().tab(MAIN_GROUP).fireResistant().rarity(Rarity.EPIC)));
 //    public static final RegistryObject<final RegistryObject<BowItem>> KRAKEN_SLAYER = WEAPONS.register("", () -> new KrakenSlayer(new Item.Properties().tab(MAIN_GROUP).maxDamage(1258).fireResistant().rarity(Rarity.EPIC));
-//    public static final RegistryObject<BowItem> DARKMOON_LONGBOW = WEAPONS.register("", () -> new DarkmoonLongbow(new Item.Properties().tab(MAIN_GROUP).fireResistant().maxDamage(1400).rarity(Rarity.EPIC));
+    public static final RegistryObject<BowItem> DARKMOON_LONGBOW = WEAPONS.register("darkmoon_longbow", () -> new DarkmoonLongbow(new Item.Properties().tab(MAIN_GROUP).fireResistant().durability(1400).rarity(Rarity.EPIC)));
 
 
     public static void register(IEventBus eventBus) {

@@ -65,7 +65,7 @@ public class ChaosSet extends GeoArmorItem implements IAnimatable {
                 player.addEffect(new MobEffectInstance(MobEffects.LUCK, 40, 0));
             }
             if (this.isRobesEquipped(player)) {
-                this.turnBlocks(player, world, player.getOnPos(), 0);
+                this.turnBlocks(player, world, player.blockPosition(), 0);
                 if (player.tickCount % 40 == 0) {
                     for (LivingEntity target : world.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(3D))) {
                         if (!(target instanceof Player)) {

@@ -51,7 +51,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
             if (power >= 3) {
                 Vec3 vecBlocksAway = player.getViewVector(1f).scale(3).add(player.position());
                 ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.x(), vecBlocksAway.y(), vecBlocksAway.z(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
-                world.playSound(player, player.getOnPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 0.8f, 1f);
+                world.playSound(player, player.blockPosition(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 0.8f, 1f);
 //                if (power < 10) {
 //                    SoulReaperGhost entity = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, world);
 //                    entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);

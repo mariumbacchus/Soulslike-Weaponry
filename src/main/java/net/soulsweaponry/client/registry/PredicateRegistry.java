@@ -38,7 +38,7 @@ public class PredicateRegistry {
         //PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
         //PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
 
-        //PredicateRegistry.registerNightActive(WeaponRegistry.DRAUGR);
+        PredicateRegistry.registerNightActive(WeaponRegistry.DRAUGR.get());
 
         //TODO add all weapons
         /*ItemProperties.register(WeaponRegistry.SKOFNUNG, new ResourceLocation("prime"), (itemStack, clientWorld, livingEntity, number) -> {

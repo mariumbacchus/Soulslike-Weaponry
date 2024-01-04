@@ -19,7 +19,7 @@ public class BossCompass extends Item {
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(stack, world, entity, pSlotId, pIsSelected);
         if (!world.isClientSide && entity instanceof Player && entity.tickCount % 40 == 0) {
-            this.updatePos((ServerLevel)world, entity.getOnPos(), stack, entity);
+            this.updatePos((ServerLevel)world, entity.blockPosition(), stack, entity);
         }
     }
 

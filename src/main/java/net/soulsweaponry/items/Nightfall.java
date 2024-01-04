@@ -103,7 +103,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 //                entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
 //                entity.setOwner((PlayerEntity) attacker);
 //                world.spawnEntity(entity);TODO make entity
-                world.playSound(null, target.getOnPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
+                world.playSound(null, target.blockPosition(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
                 if (!world.isClientSide) {
                     ParticleHandler.particleOutburstMap(world, 50, target.getX(), target.getY() + .1f, target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }
@@ -153,7 +153,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
             stack.hurtAndBreak(3, player, (p_43296_) -> p_43296_.broadcastBreakEvent(player.getUsedItemHand()));
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, CommonConfig.NIGHTFALL_ABILITY_SHIELD_POWER.get()));
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 0));
-            world.playSound(null, player.getOnPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
+            world.playSound(null, player.blockPosition(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundSource.PLAYERS, 1f, 1f);
         }
     }
 

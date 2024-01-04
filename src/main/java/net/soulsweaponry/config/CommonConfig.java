@@ -96,6 +96,9 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> DARKIN_SCYTHE_PRIME_ABILITY_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Float> DARKIN_SCYTHE_PRIME_HEAL_MODIFIER;
     public static final ForgeConfigSpec.ConfigValue<Integer> DARKIN_SCYTHE_PRIME_TICKS_BEFORE_DISMOUNT;
+    public static final ForgeConfigSpec.ConfigValue<Double> DARKMOON_LONGBOW_ABILITY_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DARKMOON_LONGBOW_ABILITY_COOLDOWN_TICKS;
+    public static final ForgeConfigSpec.ConfigValue<Float> DARKMOON_LONGBOW_INCREASED_PULL_TIME;
     public static final ForgeConfigSpec.ConfigValue<Integer> DAWNBREAKER_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> DAWNBREAKER_ABILITY_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Double> DAWNBREAKER_ABILITY_CHANCE_MOD;
@@ -366,6 +369,9 @@ public class CommonConfig {
         DARKIN_SCYTHE_PRIME_ABILITY_COOLDOWN = BUILDER.define("Darkin Scythe Prime ability cooldown", 400);
         DARKIN_SCYTHE_PRIME_HEAL_MODIFIER = BUILDER.define("Darkin Scythe Prime ability heal modifier", 0.25f);
         DARKIN_SCYTHE_PRIME_TICKS_BEFORE_DISMOUNT = BUILDER.define("Darkin Scythe Prime ticks before dismount", 80);
+        DARKMOON_LONGBOW_ABILITY_DAMAGE = BUILDER.define("Darkmoon Longbow ability damage", 5D);
+        DARKMOON_LONGBOW_ABILITY_COOLDOWN_TICKS = BUILDER.define("Darkmoon Longbow ability cooldown", 150);
+        DARKMOON_LONGBOW_INCREASED_PULL_TIME = BUILDER.define("Darkmoon Longbow increased pull time (ticks)", 5f);
         DAWNBREAKER_DAMAGE = BUILDER.define("Dawnbreaker damage", 8);
         DAWNBREAKER_ABILITY_DAMAGE = BUILDER.define("Dawnbreaker ability damage", 10f);
         DAWNBREAKER_ABILITY_CHANCE_MOD = BUILDER.defineInRange("Dawnbreaker ability chance modifier", 0D, 0D, 1D);

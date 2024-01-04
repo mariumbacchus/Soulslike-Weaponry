@@ -66,7 +66,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
             if (i >= 10) {
                 Vec3 rotation = player.getViewVector(1f).scale(1f);
                 player.setDeltaMovement(player.getDeltaMovement().add(rotation.x(), 1, rotation.z()));
-                world.playSound(player, player.getOnPos(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1f, 1f);
+                world.playSound(player, player.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1f, 1f);
                 duration = Mth.floor(duration/1.5);
                 user.addEffect(new MobEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, 0));
             }

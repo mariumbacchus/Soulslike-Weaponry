@@ -44,7 +44,7 @@ public class UmbralTrespassItem extends SoulHarvestingItem {
                     user.getEntityData().define(TICKS_BEFORE_DISMOUNT, this.ticksBeforeDismount);
                 }
                 if (!world.isClientSide) {
-                    world.playSound(null, user.getOnPos(), SoundRegistry.UMBRAL_TRESPASS_EVENT.get(), SoundSource.PLAYERS, 0.8f, 1f);
+                    world.playSound(null, user.blockPosition(), SoundRegistry.UMBRAL_TRESPASS_EVENT.get(), SoundSource.PLAYERS, 0.8f, 1f);
                     ParticleHandler.particleOutburstMap(world, 100, user.getX(), user.getEyeY(), user.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);//TODO test
                 }
                 return InteractionResultHolder.success(stack);

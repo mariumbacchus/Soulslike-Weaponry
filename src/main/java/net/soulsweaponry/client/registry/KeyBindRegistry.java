@@ -31,7 +31,7 @@ public class KeyBindRegistry {
 
     public static void registerKeyInputs(TickEvent.ClientTickEvent event) {
         while (returnFreyrSword.consumeClick()) {
-            ModMessages.sendToServer(new Example(Minecraft.getInstance().player.getOnPos()));//Sends example packet, TODO make real packets and register events for all keybinds
+            ModMessages.sendToServer(new Example(Minecraft.getInstance().player.blockPosition()));//Sends example packet, TODO make real packets and register events for all keybinds
         }
     }
 
