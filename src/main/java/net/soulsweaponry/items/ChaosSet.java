@@ -1,4 +1,4 @@
-    package net.soulsweaponry.items;
+package net.soulsweaponry.items;
 
 import java.util.HashMap;
 import java.util.List;
