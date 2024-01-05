@@ -2,15 +2,12 @@ package net.soulsweaponry.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Random;
 
 public class WitheredTallGrass extends DoublePlantBlock implements Withered {
 
@@ -19,10 +16,6 @@ public class WitheredTallGrass extends DoublePlantBlock implements Withered {
     public WitheredTallGrass(Properties pProperties, Block replacedBlock) {
         super(pProperties);
         this.replacedBlock = replacedBlock;
-    }
-
-    @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
     }
 
     @Override
@@ -52,7 +45,7 @@ public class WitheredTallGrass extends DoublePlantBlock implements Withered {
 
     @Override
     public void turnBack(Level world, BlockPos pos) {
-        world.removeBlock(pos, false);
+        world.removeBlock(pos, false); // This can (maybe) be removed in future updates, at least in fabric it can.
         DoublePlantBlock.placeAt(world, this.getBlockToReturnAs().defaultBlockState(), pos, 2);
     }
 

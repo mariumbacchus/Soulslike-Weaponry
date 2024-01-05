@@ -2,7 +2,6 @@ package net.soulsweaponry.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
@@ -35,10 +34,6 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
     public WitheredFlower(Supplier<MobEffect> effect, Properties pProperties) {
         super(MobEffects.WITHER, pProperties);
         this.effect = effect;
-    }
-
-    @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
     }
 
     @Override
