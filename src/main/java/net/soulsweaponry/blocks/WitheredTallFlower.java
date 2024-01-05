@@ -18,15 +18,17 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 /**
- * If this replaced tall flowers, it will turn into a random tall flower 
+ * If this replaced tall flowers, it will turn into a random tall flower
  * block instead of its previous form, just like {@link net.soulsweaponry.blocks.WitheredFlower}
  */
 public class WitheredTallFlower extends WitheredTallGrass {
 
     private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, StatusEffect effect) {
         super(settings, replacedBlock);
@@ -50,8 +52,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
     }
 
     private Block getRandomTallFlower() {
-        List<Block> list = Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList();
-        return list.get(new Random().nextInt(list.size()));
+        return TALL_FLOWERS.get().get(new Random().nextInt(TALL_FLOWERS.get().size()));
     }
 
     @Override

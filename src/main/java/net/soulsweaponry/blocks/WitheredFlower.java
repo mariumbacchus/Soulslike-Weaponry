@@ -9,37 +9,31 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.server.network.DebugInfoSender;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Will turn back into a random flower instead of its previous form when ticked.
- * Now there's a way to find the proper flowers without needing to look
- * for them, just use this to re-roll the same ones.
  */
 public class WitheredFlower extends WitherRoseBlock implements Withered {
 
     private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
+    private static final Supplier<List<Block>> SMALL_FLOWERS = () -> Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.SMALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
     public WitheredFlower(StatusEffect effect, Settings settings) {
         super(effect, settings);
         this.effect = effect;
-    }
-    
-    @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
     }
 
     @Override
@@ -56,8 +50,7 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
     }
 
     private Block getRandomFlower() {
-        List<Block> list = Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.SMALL_FLOWERS))).toList();
-        return list.get(new java.util.Random().nextInt(list.size()));
+        return SMALL_FLOWERS.get().get(new java.util.Random().nextInt(SMALL_FLOWERS.get().size()));
     }
 
     @Override
