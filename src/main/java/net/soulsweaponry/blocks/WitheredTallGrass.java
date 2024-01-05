@@ -5,24 +5,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TallPlantBlock;
 import net.minecraft.server.network.DebugInfoSender;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 public class WitheredTallGrass extends TallPlantBlock implements Withered {
+
     protected Block replacedBlock;
 
     public WitheredTallGrass(Settings settings, Block replacedBlock) {
         super(settings);
         this.replacedBlock = replacedBlock;
-    }
-
-    @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
     }
 
     @Override
@@ -50,6 +44,7 @@ public class WitheredTallGrass extends TallPlantBlock implements Withered {
         DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 
+    @Override
     public void turnBack(World world, BlockPos pos) {
         world.removeBlock(pos, false);
         TallPlantBlock.placeAt(world, this.getBlockToReturnAs().getDefaultState(), pos, 2);
