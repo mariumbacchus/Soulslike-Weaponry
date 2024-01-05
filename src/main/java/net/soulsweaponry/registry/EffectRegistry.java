@@ -24,7 +24,7 @@ public class EffectRegistry {
     public static final StatusEffect BLOODTHIRSTY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.NEUTRAL, 0x630109), "bloodthirsty");
     public static final StatusEffect POSTURE_BREAK = registerEffect(new PostureBreak(), "posture_break");
     public static final StatusEffect LIFE_LEACH = registerEffect(new LifeLeach(), "life_leach");
-    public static final StatusEffect RETRIBUTION = registerEffect(new Retribution(), "retribution");
+    public static final StatusEffect RETRIBUTION = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xc76700), "retribution");
     public static final StatusEffect FEAR = registerEffect(new Fear(), "fear");
     public static final StatusEffect DECAY = registerEffect(new Decay(), "decay");
     public static final StatusEffect MAGIC_RESISTANCE = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff), "magic_resistance");

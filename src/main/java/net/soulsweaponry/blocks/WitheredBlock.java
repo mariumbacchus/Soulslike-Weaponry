@@ -14,7 +14,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -22,7 +21,6 @@ import net.soulsweaponry.registry.EffectRegistry;
 
 public class WitheredBlock extends Block {
 
-    public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
     private final Block replacedBlock;
 
@@ -73,7 +71,7 @@ public class WitheredBlock extends Block {
             world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
-        this.turnBack(state, world, pos);
+        this.turnBack(world, pos);
         return true;
     }
 
@@ -84,7 +82,7 @@ public class WitheredBlock extends Block {
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canTurn(world, pos, 2)) {
-            this.turnBack(state, world, pos);
+            this.turnBack(world, pos);
         }
         //super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
         DebugInfoSender.sendNeighborUpdate(world, pos);
@@ -106,7 +104,7 @@ public class WitheredBlock extends Block {
         builder.add(AGE);
     }
 
-    protected void turnBack(BlockState state, World world, BlockPos pos) {
+    protected void turnBack(World world, BlockPos pos) {
         world.setBlockState(pos, this.replacedBlock.getDefaultState());
         world.updateNeighbor(pos, this.replacedBlock, pos);
     }
