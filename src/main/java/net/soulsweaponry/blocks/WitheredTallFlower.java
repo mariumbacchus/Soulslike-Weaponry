@@ -28,7 +28,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
 
     private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
-    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList();
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, StatusEffect effect) {
         super(settings, replacedBlock);

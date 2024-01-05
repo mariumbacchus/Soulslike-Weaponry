@@ -29,7 +29,7 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
 
     private final StatusEffect effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
-    private static final Supplier<List<Block>> SMALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.SMALL_FLOWERS))).toList();
+    private static final Supplier<List<Block>> SMALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.SMALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
     public WitheredFlower(StatusEffect effect, Settings settings) {
         super(effect, settings);
