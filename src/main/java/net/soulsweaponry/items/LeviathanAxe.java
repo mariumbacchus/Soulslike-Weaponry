@@ -7,7 +7,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -28,8 +27,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -64,9 +63,7 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-                });
+                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
 
                 if (stack.hasNbt()) {
                     stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});

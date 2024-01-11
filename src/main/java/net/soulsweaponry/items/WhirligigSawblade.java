@@ -1,9 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -12,12 +8,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -25,8 +18,11 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-public class WhirligigSawblade extends SwordItem {
+import java.util.List;
+
+public class WhirligigSawblade extends ChargeToUseItem {
 
     public WhirligigSawblade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.whirligig_sawblade_damage, attackSpeed, settings);
@@ -70,28 +66,15 @@ public class WhirligigSawblade extends SwordItem {
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         this.stop(user, stack);
-        super.onStoppedUsing(stack, world, user, remainingUseTicks);
     }
 
     private void stop(LivingEntity user, ItemStack stack) {
         if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
-        stack.damage(3, user, (p_220045_0_) -> {
-            p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-        });
+        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
 
     private int getCooldown(ItemStack stack) {
         return ConfigConstructor.whirligig_sawblade_cooldown - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
-    }
-
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        } else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
-        }
     }
 
     @Override

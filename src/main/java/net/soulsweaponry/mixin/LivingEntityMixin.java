@@ -1,64 +1,63 @@
 package net.soulsweaponry.mixin;
 
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.ItemCooldownManager;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.events.LivingEntityTickCallback;
+import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModifyDamageUtil;
+import net.soulsweaponry.util.ParticleNetworking;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ItemCooldownManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.*;
-import net.soulsweaponry.util.ParticleNetworking;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
+    @Unique
+    private final LivingEntity entity = ((LivingEntity)(Object)this);
+
     /*
      * NB! Only called if the damage is bigger than 0 (decimals count)
      */
     @Inject(method = "modifyAppliedDamage", at = @At("TAIL"), cancellable = true)
     protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
-        LivingEntity entity = ((LivingEntity)(Object)this);
+        LivingEntity entity = this.entity;
         float newAmount = info.getReturnValue();
         info.setReturnValue(ModifyDamageUtil.modifyDamageTaken(entity, newAmount, source));
     }
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
     public void interceptHeal(float amount, CallbackInfo info) {
-        if (((LivingEntity)(Object)this).hasStatusEffect(EffectRegistry.DISABLE_HEAL)) {
+        if (this.entity.hasStatusEffect(EffectRegistry.DISABLE_HEAL)) {
             info.cancel();
         }
     }
 
-    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
-        if (source.isOf(DamageTypes.FALL) && ((LivingEntity)(Object)this).hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
-            ((LivingEntity)(Object)this).removeStatusEffect(EffectRegistry.CALCULATED_FALL);
-            //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
-            ((LivingEntity)(Object)this).addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
+    @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
+    public void interceptFallDamage(float fallDistance, float damageMultiplier, DamageSource source, CallbackInfoReturnable<Boolean> info) {
+        //Another interceptFallDamage is made for players in PlayerEntityMixin since it won't trigger if they are in creative
+        //from this, but in survival it would trigger twice. This check is therefore needed to prevent the double call.
+        if (!(this.entity instanceof PlayerEntity) && DetonateGroundItem.triggerCalculateFall(this.entity, fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }
@@ -66,8 +65,7 @@ public class LivingEntityMixin {
 
     @Inject(method = "onDismounted", at = @At("HEAD"))
     public void interceptDismount(Entity entity, CallbackInfo info) {
-        if (entity instanceof LivingEntity && ((LivingEntity) (Object) this) instanceof PlayerEntity) {
-            PlayerEntity player = ((PlayerEntity) (Object) this);
+        if (entity instanceof LivingEntity && this.entity instanceof PlayerEntity player) {
             try {
                 if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
                     LivingEntity target = ((LivingEntity) entity);
@@ -99,14 +97,14 @@ public class LivingEntityMixin {
 
     @Inject(method = "getMaxHealth", at = @At("HEAD"), cancellable = true)
     protected void interceptGetMaxHealth(CallbackInfoReturnable<Float> infoReturnable) {
-        if (((LivingEntity)(Object)this) instanceof BossEntity boss) {
+        if (this.entity instanceof BossEntity boss) {
             infoReturnable.setReturnValue((float) boss.getBossMaxHealth());
         }
     }
 
     @Inject(method = "tick", at = @At("TAIL"), cancellable = true)
     private void interceptTick(CallbackInfo info) {
-        ActionResult result = LivingEntityTickCallback.EVENT.invoker().tick((LivingEntity)(Object) this);
+        ActionResult result = LivingEntityTickCallback.EVENT.invoker().tick(this.entity);
         if (result == ActionResult.FAIL) {
             info.cancel();
         }

@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParryData;
@@ -25,6 +26,14 @@ import static net.soulsweaponry.items.UmbralTrespassItem.TICKS_BEFORE_DISMOUNT;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
+
+    @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
+    public void interceptFallDamage(float fallDistance, float damageMultiplier, DamageSource source, CallbackInfoReturnable<Boolean> info) {
+        if (DetonateGroundItem.triggerCalculateFall(((PlayerEntity)(Object)this), fallDistance, source)) {
+            info.setReturnValue(false);
+            info.cancel();
+        }
+    }
 
     @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
