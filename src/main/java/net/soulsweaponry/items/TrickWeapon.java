@@ -29,7 +29,8 @@ public class TrickWeapon extends UltraHeavyWeapon {
     private final int ownWeaponIndex;
     private final boolean undeadBonus;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings, isHeavy);
+    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
+        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings, isHeavy);
         this.switchWeaponIndex = switchWeaponIndex;
         this.ownWeaponIndex = ownWeaponIndex;
         this.undeadBonus = undeadBonus;

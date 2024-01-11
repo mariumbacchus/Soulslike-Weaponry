@@ -74,9 +74,7 @@ public class DragonStaff extends SwordItem {
 
     private void stop(LivingEntity user, ItemStack stack) {
         if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
-        stack.damage(3, user, (p_220045_0_) -> {
-            p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-        });
+        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {

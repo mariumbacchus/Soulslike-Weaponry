@@ -1,22 +1,13 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
-
+import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -27,16 +18,12 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -45,7 +32,10 @@ import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class DragonslayerSwordspear extends SwordItem {
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class DragonslayerSwordspear extends ChargeToUseItem {
 
     private static final String RAINING = "raining_id";
 
@@ -53,33 +43,18 @@ public class DragonslayerSwordspear extends SwordItem {
         super(toolMaterial, ConfigConstructor.dragonslayer_swordspear_damage, attackSpeed, settings);
     }
 
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
-    }
-
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
+        if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                //float j = EnchantmentHelper.getAttackDamage(stack, user.getGroup());
                 if (stack != user.getOffHandStack()) {
-                    stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> {
-                        p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-                    });
+                    stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
                     world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    /* if (!playerEntity.getAbilities().creativeMode) {
-                        playerEntity.getInventory().removeOne(stack);
-                    } */
-                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
+                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
                 } else {
                     stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
                         p_220045_0_.sendToolBreakStatus(user.getActiveHand());
@@ -91,9 +66,8 @@ public class DragonslayerSwordspear extends SwordItem {
                     Box chunkBox = new Box(user.getX() - 10, user.getY() - 5, user.getZ() - 10, user.getX() + 10, user.getY() + 5, user.getZ() + 10);
                     List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
                     //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items aswell!
-                    for (int j = 0; j < nearbyEntities.size(); j++) {
-                        if (nearbyEntities.get(j) instanceof LivingEntity && !(nearbyEntities.get(j) instanceof TameableEntity)) {
-                            LivingEntity target = (LivingEntity) nearbyEntities.get(j);
+                    for (Entity nearbyEntity : nearbyEntities) {
+                        if (nearbyEntity instanceof LivingEntity target && !(nearbyEntity instanceof TameableEntity)) {
                             if (world.isSkyVisible(target.getBlockPos())) {
                                 for (i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
                                     LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
@@ -108,7 +82,7 @@ public class DragonslayerSwordspear extends SwordItem {
                                 if (!world.isClient) {
                                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 20);
                                 }
-                            } 
+                            }
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
@@ -152,18 +126,6 @@ public class DragonslayerSwordspear extends SwordItem {
             return super.getAttributeModifiers(slot);
         }
     }
-    
-
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        } 
-         else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
-        }
-    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -176,7 +138,6 @@ public class DragonslayerSwordspear extends SwordItem {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

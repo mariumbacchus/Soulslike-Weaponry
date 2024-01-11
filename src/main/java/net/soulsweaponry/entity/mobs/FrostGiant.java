@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -37,7 +37,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class FrostGiant extends Remnant implements IAnimatable, AnimatedDeathInterface {
+public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;

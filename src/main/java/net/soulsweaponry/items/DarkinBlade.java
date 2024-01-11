@@ -2,7 +2,6 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,9 +12,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -35,24 +31,15 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
+public class DarkinBlade extends DetonateGroundItem implements IAnimatable, UltraHeavy {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
-    }
-    
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings);
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
@@ -63,7 +50,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
                 attacker.heal(healing);
             }
         }
-        return true;
+        this.gainStrength(attacker);
+        return super.postHit(stack, target, attacker);
     }
     
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -74,36 +62,14 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());
                 player.world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
-                duration = MathHelper.floor(duration/1.5);
-                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, 0));
+                duration = MathHelper.floor(duration/1.5f);
+                //NOTE: Ground Smash method is in parent class DetonateGroundItem
+                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.darkin_blade_ability_damage));
+            } else {
+                this.detonateGroundEffect(user, ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
             }
-            if (stack.hasNbt()) {
-                stack.getNbt().putBoolean(CometSpear.SMASH, true);
-            }
-            stack.damage(3, user, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-            });
+            stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             player.getItemCooldownManager().set(this, duration);
-        }
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player) {
-            float power = ConfigConstructor.darkin_blade_ability_damage;
-            CometSpear.detonateGround(player, power, 3, 1.75f, stack, world, true, 25);
-        }
-    }
-
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        } 
-         else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.success(itemStack);
         }
     }
 
@@ -133,5 +99,30 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public float getBaseExpansion() {
+        return 3;
+    }
+
+    @Override
+    public float getExpansionModifier() {
+        return 1.75f;
+    }
+
+    @Override
+    public float getLaunchDivisor() {
+        return 25;
+    }
+
+    @Override
+    public boolean shouldHeal() {
+        return true;
+    }
+
+    @Override
+    public boolean isHeavy() {
+        return true;
     }
 }
