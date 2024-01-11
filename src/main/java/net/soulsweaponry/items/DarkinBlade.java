@@ -49,6 +49,7 @@ public class DarkinBlade extends DetonateGroundItem implements IAnimatable, Ultr
                 attacker.heal(healing);
             }
         }
+        this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
     

@@ -90,6 +90,7 @@ public class Nightfall extends ChargeToUseItem implements IAnimatable, IKeybindA
                 }
             }
         }
+        this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
 
