@@ -22,7 +22,7 @@ import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -35,7 +35,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Random;
 
-public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
+public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, IAnimatedDeath {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;

@@ -7,11 +7,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.GameRules;
@@ -31,7 +29,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     private static final String CRITICAL = "3rd_shot";
     private static final String PREV_UUID = "prev_projectile_uuid";
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, attackSpeed, settings);
@@ -46,7 +44,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
         if (stack.hasNbt()) {
             if (stack.getNbt().contains(KILLS)) {
                 int power = this.getSouls(stack);
-                if (power > 0) {
+                if (power > 0 || user.isCreative()) {
                     WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
                     entity.setPos(user.getX(), user.getEyeY(), user.getZ());
                     entity.setOwner(user);
@@ -59,11 +57,9 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
                     entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
                     world.spawnEntity(entity);
                     this.setPrevUuid(stack, entity);
-                    this.addAmount(stack, -1);
+                    if (!user.isCreative()) this.addAmount(stack, -1);
                     user.getItemCooldownManager().set(this, 10);
-                    stack.damage(1, user, (p_220045_0_) -> {
-                        p_220045_0_.sendToolBreakStatus(hand);
-                    });
+                    stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
                     return TypedActionResult.success(stack, world.isClient());
                 }
             }

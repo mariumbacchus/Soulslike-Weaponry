@@ -1,8 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -20,17 +17,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -42,23 +36,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybindAbility {
+import java.util.List;
+import java.util.Random;
+
+public class Nightfall extends ChargeToUseItem implements IAnimatable, IKeybindAbility, UltraHeavy {
     
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings, true);
-    }
-    
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        }
-        else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.success(itemStack);
-        }
+        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings);
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -107,14 +93,6 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
         return super.postHit(stack, target, attacker);
     }
 
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
-    }
-
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
@@ -145,9 +123,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
-            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(player.getActiveHand());
-            });
+            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
             world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -156,5 +132,10 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isHeavy() {
+        return true;
     }
 }

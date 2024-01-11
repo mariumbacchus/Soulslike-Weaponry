@@ -1,20 +1,12 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
-
+import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -23,17 +15,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity.PickupPermission;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -47,9 +34,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Mjolnir extends SwordItem implements IAnimatable {
+import java.util.List;
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class Mjolnir extends ChargeToUseItem implements IAnimatable {
+
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final String RAINING = "raining";
     public static final String LIGHTNING_STATUS = "lightning_status";
     public static final String SHOULD_UPDATE_LIGHTNING = "should_update_lightning";
@@ -62,8 +51,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         int i = this.getMaxUseTime(stack) - remainingUseTicks;
-        if (user instanceof PlayerEntity && i >= 10) {
-            PlayerEntity player = (PlayerEntity) user;
+        if (user instanceof PlayerEntity player && i >= 10) {
             int cooldown = 0;
             stack.damage(3, player, p -> p.sendToolBreakStatus(user.getActiveHand()));
             if (player.isSneaking()) {
@@ -85,7 +73,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
             stack.getNbt().putIntArray(OWNERS_LAST_POS, new int[]{player.getBlockX(), player.getBlockY(), player.getBlockZ()});
         }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
-        float speed = WeaponUtil.getEnchantDamageBonus(stack)/5;
+        float speed = WeaponUtil.getEnchantDamageBonus(stack)/5f;
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(projectile);
@@ -107,7 +95,7 @@ public class Mjolnir extends SwordItem implements IAnimatable {
         h *= n / m;
         k *= n / m;
         l *= n / m;
-        player.addVelocity((double)h, (double)k, (double)l);
+        player.addVelocity(h, k, l);
         player.useRiptide(20);
         if (player.isOnGround()) {
             player.move(MovementType.SELF, new Vec3d(0.0, 1.1999999284744263, 0.0));
@@ -130,9 +118,9 @@ public class Mjolnir extends SwordItem implements IAnimatable {
         double d = player.getRandom().nextGaussian() * 0.05D;
         double e = player.getRandom().nextGaussian() * 0.05D;
         for(int j = 0; j < 200; ++j) {
-            double newX = player.getRandom().nextDouble() - 1D * 0.5D + player.getRandom().nextGaussian() * 0.15D + d;
-            double newZ = player.getRandom().nextDouble() - 1D * 0.5D + player.getRandom().nextGaussian() * 0.15D + e;
-            double newY = player.getRandom().nextDouble() - 1D * 0.5D + player.getRandom().nextDouble() * 0.5D;
+            double newX = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + d;
+            double newZ = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + e;
+            double newY = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextDouble() * 0.5D;
             world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.STONE.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
             world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.DIRT.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
             world.addParticle(ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), newX, newY/8, newZ);
@@ -143,18 +131,6 @@ public class Mjolnir extends SwordItem implements IAnimatable {
     private void startLightningCall(ItemStack stack) {
         if (stack.hasNbt()) {
             stack.getNbt().putBoolean(SHOULD_UPDATE_LIGHTNING, true);
-        }
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        } 
-         else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
         }
     }
 
@@ -244,16 +220,6 @@ public class Mjolnir extends SwordItem implements IAnimatable {
         } else {
             return super.getAttributeModifiers(slot);
         }
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    @Override
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
     }
 
     @Override

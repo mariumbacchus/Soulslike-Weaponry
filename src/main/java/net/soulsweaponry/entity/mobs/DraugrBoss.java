@@ -34,6 +34,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
+import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -254,7 +255,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
      * For each hit the boss takes with the same weapon, the more resistant it grows against that weapon.
      * The attacker has to switch between weapons to fully utilize their damage. When starting to become
      * resistant, the damage sound changes from ENTITY_WITHER_SKELETON_HURT to ENTITY_ZOMBIE_ATTACK_IRON_DOOR.
-     * {@link net.soulsweaponry.items.TrickWeapon} come especially in handy here.
+     * {@link TrickWeapon} come especially in handy here.
      */
     @Override
     public boolean damage(DamageSource source, float amount) {

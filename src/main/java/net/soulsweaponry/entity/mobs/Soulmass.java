@@ -38,7 +38,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
@@ -53,7 +53,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, AnimatedDeathInterface {
+public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, IAnimatedDeath {
 
     public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;

@@ -27,7 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.util.ParticleNetworking;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -40,7 +40,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 
-public class RimeSpectre extends Remnant implements IAnimatable, AnimatedDeathInterface {
+public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;

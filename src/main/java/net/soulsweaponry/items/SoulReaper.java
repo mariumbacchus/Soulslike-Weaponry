@@ -50,6 +50,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
         
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
+            if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 if (!world.isClient) {
@@ -79,9 +80,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     this.addAmount(stack, -30);
                 }
 
-                stack.damage(3, player, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(hand);
-                });
+                stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
                 return TypedActionResult.success(stack, world.isClient());
             } 
         }

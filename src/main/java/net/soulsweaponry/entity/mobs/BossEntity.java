@@ -20,10 +20,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BossEntity extends HostileEntity implements AnimatedDeathInterface {
+public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
     
     protected final ServerBossBar bossBar;
     protected ArrayList<Item> drops = new ArrayList<>();
