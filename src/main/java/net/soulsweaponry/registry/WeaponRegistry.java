@@ -16,7 +16,7 @@ public class WeaponRegistry {
     public static ToolItem MOONLIGHT_GREATSWORD = new MoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem PURE_MOONLIGHT_GREATSWORD = new PureMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem BLOODTHIRSTER = new Bloodthirster(ModToolMaterials.CRIMSON_INGOT, -2.4F, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
-    public static ToolItem DARKIN_BLADE = new DarkinBlade(ModToolMaterials.CRIMSON_INGOT, -3F, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
+    public static DetonateGroundItem DARKIN_BLADE = new DarkinBlade(ModToolMaterials.CRIMSON_INGOT, -3F, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem DRAGON_STAFF = new DragonStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem WITHERED_WABBAJACK = new WitheredWabbajack(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static ToolItem WHIRLIGIG_SAWBLADE = new WhirligigSawblade(ModToolMaterials.IRON_BLOCK, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
@@ -24,7 +24,7 @@ public class WeaponRegistry {
     public static ToolItem GUINSOOS_RAGEBLADE = new GuinsoosRageblade(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem GUTS_SWORD = new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, -3f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, -3, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
-    public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
+    public static DetonateGroundItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new FabricItemSettings().rarity(Rarity.EPIC));
     public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().fireproof().maxDamage(1300).rarity(Rarity.EPIC));
     public static ToolItem TRANSLUCENT_SWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 6, -2.4F, new FabricItemSettings().rarity(Rarity.RARE));

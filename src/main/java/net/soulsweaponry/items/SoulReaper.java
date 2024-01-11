@@ -53,6 +53,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
         
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
+            if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos on = new BlockPos((int)vecBlocksAway.getX(), (int)vecBlocksAway.getY(), (int)vecBlocksAway.getZ());
@@ -61,7 +62,6 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
                 } else {
                     this.spawnParticles(world, vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                 }
-
                 world.playSound(player, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
                 if (power < 10) {
                     SoulReaperGhost entity = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, world);

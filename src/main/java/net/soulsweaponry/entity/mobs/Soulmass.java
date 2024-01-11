@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Soulmass extends Remnant implements GeoEntity, AnimatedDeathInterface {
+public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;

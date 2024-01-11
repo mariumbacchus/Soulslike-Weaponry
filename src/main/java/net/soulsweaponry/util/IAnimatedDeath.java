@@ -2,7 +2,7 @@ package net.soulsweaponry.util;
 
 import net.minecraft.entity.damage.DamageSource;
 
-public interface AnimatedDeathInterface {
+public interface IAnimatedDeath {
 
     void onDeath(DamageSource damageSource);
     void updatePostDeath();
