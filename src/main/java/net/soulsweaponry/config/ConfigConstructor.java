@@ -73,14 +73,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int bluemoon_shortsword_damage = 7;
     @Entry public static int comet_spear_damage = 8;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
-    @Entry public static float comet_spear_ability_damage = 10f;
+    @Entry public static int comet_spear_ability_damage = 10;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
     @Entry public static int crucible_sword_normal_damage = 9;
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int darkin_blade_damage = 11;
-    @Entry public static float darkin_blade_ability_damage = 12f;
+    @Entry public static int darkin_blade_ability_damage = 12;
     @Entry public static int darkin_blade_ability_cooldown = 150;
     @Entry public static int darkin_scythe_damage = 9;
     @Entry public static int darkin_scythe_bonus_damage = 3;

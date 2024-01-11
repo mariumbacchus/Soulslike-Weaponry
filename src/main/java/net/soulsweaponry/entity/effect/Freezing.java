@@ -8,7 +8,7 @@ import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.AnimatedDeathInterface;
+import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.util.ParticleNetworking;
 
 public class Freezing extends StatusEffect {
@@ -32,7 +32,7 @@ public class Freezing extends StatusEffect {
             ParticleNetworking.specificServerParticlePacket((ServerWorld) entity.world, PacketRegistry.SNOW_PARTICLES_ID, entity.getBlockPos(), entity.getWidth(), entity.getHeight());
         }
         if (entity.isDead()) {
-            if (entity instanceof AnimatedDeathInterface animated) {
+            if (entity instanceof IAnimatedDeath animated) {
                 if (animated.getDeathTicks() < 2) {
                     LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), amplifier);
                 }

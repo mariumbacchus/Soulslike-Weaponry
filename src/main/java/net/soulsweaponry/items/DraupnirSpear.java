@@ -12,15 +12,11 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
@@ -43,7 +39,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DraupnirSpear extends SwordItem implements GeoItem, IKeybindAbility {
+public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -75,31 +71,9 @@ public class DraupnirSpear extends SwordItem implements GeoItem, IKeybindAbility
                 }
 
                 playerEntity.getItemCooldownManager().set(this, ConfigConstructor.draupnir_spear_throw_cooldown - enchant * 5);
-                stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-                });
+                stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             }
         }
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        }
-        else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
-        }
-    }
-
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
     }
 
     private PlayState predicate(AnimationState<?> event){

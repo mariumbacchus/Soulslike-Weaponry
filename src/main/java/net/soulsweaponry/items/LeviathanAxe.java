@@ -47,6 +47,7 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
+
     public LeviathanAxe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.leviathan_axe_damage, attackSpeed, settings);
     }
@@ -64,15 +65,13 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-                });
+                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
 
                 if (stack.hasNbt()) {
                     stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
                 }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
-                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
+                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5f;
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);

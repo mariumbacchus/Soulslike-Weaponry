@@ -53,6 +53,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
         
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
+            if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 if (!world.isClient) {

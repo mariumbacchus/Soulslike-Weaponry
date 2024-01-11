@@ -74,9 +74,7 @@ public class DragonStaff extends SwordItem {
 
     private void stop(LivingEntity user, ItemStack stack) {
         if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
-        stack.damage(3, user, (p_220045_0_) -> {
-            p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-        });
+        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -89,9 +87,7 @@ public class DragonStaff extends SwordItem {
                 fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
                 fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 world.spawnEntity(fireball);
-                itemStack.damage(1, user, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(hand);
-                });
+                itemStack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
             }
             return TypedActionResult.success(itemStack, world.isClient());
         } else {

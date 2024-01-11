@@ -7,7 +7,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.UltraHeavy;
 import net.soulsweaponry.util.IEntityDataSaver;
 import net.soulsweaponry.util.PostureData;
 
@@ -31,7 +31,7 @@ public class StaggerEnchantment extends Enchantment {
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
         if (target instanceof LivingEntity living && !living.isDead()) {
             int postureLoss = 5;
-            if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof UltraHeavyWeapon heavy && heavy.isHeavy()) {
+            if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof UltraHeavy heavy && heavy.isHeavy()) {
                 postureLoss *= 2;
             }
             postureLoss *= level;
@@ -41,6 +41,6 @@ public class StaggerEnchantment extends Enchantment {
     }
 
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof UltraHeavyWeapon || super.isAcceptableItem(stack);
+        return stack.getItem() instanceof UltraHeavy || super.isAcceptableItem(stack);
     }
 }

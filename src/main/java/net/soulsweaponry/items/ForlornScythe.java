@@ -49,7 +49,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
         if (stack.hasNbt()) {
             if (stack.getNbt().contains(KILLS)) {
                 int power = this.getSouls(stack);
-                if (power > 0) {
+                if (power > 0 || user.isCreative()) {
                     WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
                     entity.setPos(user.getX(), user.getEyeY(), user.getZ());
                     entity.setOwner(user);
@@ -62,11 +62,9 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
                     entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
                     world.spawnEntity(entity);
                     this.setPrevUuid(stack, entity);
-                    this.addAmount(stack, -1);
+                    if (!user.isCreative()) this.addAmount(stack, -1);
                     user.getItemCooldownManager().set(this, 10);
-                    stack.damage(1, user, (p_220045_0_) -> {
-                        p_220045_0_.sendToolBreakStatus(hand);
-                    });
+                    stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
                     return TypedActionResult.success(stack, world.isClient());
                 }
             }
