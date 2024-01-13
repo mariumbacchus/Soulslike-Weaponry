@@ -24,6 +24,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -58,8 +59,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity2;
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.leviathan_axe_projectile_damage;
-        if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
+        float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
         DamageSource damageSource = this.getWorld().getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         if (entity.damage(damageSource, f)) {
