@@ -34,7 +34,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class LeviathanAxeEntity extends PersistentProjectileEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stack;
     private boolean dealtDamage;
     private static final String DEALT_DAMAGE = "DealtDamage";
@@ -42,12 +42,6 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
-    }
-
-    public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> type, double x, double y, double z,
-            World world) {
-        super(type, x, y, z, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
     }
 
@@ -59,16 +53,14 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity2;
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.leviathan_axe_projectile_damage;
-        if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
+        float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
         DamageSource damageSource = DamageSource.trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
@@ -174,7 +166,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
         nbt.putBoolean(DEALT_DAMAGE, this.dealtDamage);
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
@@ -186,7 +178,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override

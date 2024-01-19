@@ -13,7 +13,7 @@ import net.soulsweaponry.util.PostureData;
 
 public class StaggerEnchantment extends Enchantment {
 
-    public StaggerEnchantment(Rarity weight, EquipmentSlot[] slotTypes) {
+    public StaggerEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.WEAPON, slotTypes);
     }
     
