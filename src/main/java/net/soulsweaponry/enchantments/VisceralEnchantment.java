@@ -8,7 +8,7 @@ import net.soulsweaponry.items.GunItem;
 
 public class VisceralEnchantment extends Enchantment {
 
-    public VisceralEnchantment(Rarity weight, EquipmentSlot[] slotTypes) {
+    public VisceralEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.BOW, slotTypes);
     }
 

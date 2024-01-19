@@ -85,7 +85,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private void riptide(PlayerEntity player, World world, ItemStack stack) {
-        float sharpness = EnchantmentHelper.getAttackDamage(stack, player.getGroup());
+        float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
         float f = player.getYaw();
         float g = player.getPitch();
         float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
@@ -96,7 +96,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         h *= n / m;
         k *= n / m;
         l *= n / m;
-        player.addVelocity((double)h, (double)k, (double)l);
+        player.addVelocity(h, k, l);
         player.useRiptide(20);
         if (player.isOnGround()) {
             player.move(MovementType.SELF, new Vec3d(0.0, 1.1999999284744263, 0.0));

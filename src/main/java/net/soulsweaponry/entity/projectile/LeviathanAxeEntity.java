@@ -25,6 +25,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -33,7 +34,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class LeviathanAxeEntity extends PersistentProjectileEntity implements IAnimatable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private ItemStack stack;
     private boolean dealtDamage;
     private static final String DEALT_DAMAGE = "DealtDamage";
@@ -41,13 +42,6 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
-        this.ignoreCameraFrustum = true;
-    }
-
-    public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> type, double x, double y, double z,
-            World world) {
-        super(type, x, y, z, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
         this.ignoreCameraFrustum = true;
     }
@@ -61,16 +55,14 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity2;
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.leviathan_axe_projectile_damage;
-        if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
+        float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
         DamageSource damageSource = DamageSource.trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);

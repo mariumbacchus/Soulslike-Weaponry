@@ -8,7 +8,7 @@ import net.soulsweaponry.items.GunItem;
 
 public class FastHandsEnchantment extends Enchantment {
 
-    public FastHandsEnchantment(Rarity weight, EquipmentSlot[] slotTypes) {
+    public FastHandsEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.BOW, slotTypes);
     }
     
