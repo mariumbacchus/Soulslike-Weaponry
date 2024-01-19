@@ -81,9 +81,8 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
-                    
-                    int sharpness = (int) EnchantmentHelper.getAttackDamage(stack, user.getGroup());
-                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_ability_cooldown - (sharpness*10)) / (world.isRaining() ? 2 : 1));
+                    int sharpness = WeaponUtil.getEnchantDamageBonus(stack);
+                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_ability_cooldown - (sharpness*20)) / (world.isRaining() ? 2 : 1));
                 }
             }
         }

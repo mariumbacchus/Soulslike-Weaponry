@@ -84,7 +84,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private void riptide(PlayerEntity player, World world, ItemStack stack) {
-        float sharpness = EnchantmentHelper.getAttackDamage(stack, player.getGroup());
+        float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
         float f = player.getYaw();
         float g = player.getPitch();
         float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
