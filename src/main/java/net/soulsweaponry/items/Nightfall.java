@@ -52,18 +52,17 @@ public class Nightfall extends ChargeToUseItem implements IAnimatable, IKeybindA
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
-                stack.damage(3, player, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(player.getActiveHand());
-                });
+                stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
                 Box aoe = new Box(targetArea).expand(3);
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof LivingEntity target) {
                         entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
+                        this.spawnRemnant(target, user);
                     }
                 }
                 player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -75,6 +74,12 @@ public class Nightfall extends ChargeToUseItem implements IAnimatable, IKeybindA
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        this.spawnRemnant(target, attacker);
+        this.gainStrength(attacker);
+        return super.postHit(stack, target, attacker);
+    }
+
+    private void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance) {
@@ -90,8 +95,6 @@ public class Nightfall extends ChargeToUseItem implements IAnimatable, IKeybindA
                 }
             }
         }
-        this.gainStrength(attacker);
-        return super.postHit(stack, target, attacker);
     }
 
     @Override
