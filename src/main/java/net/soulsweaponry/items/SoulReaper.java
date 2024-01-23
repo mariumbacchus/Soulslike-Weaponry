@@ -1,15 +1,11 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -23,8 +19,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParticleNetworking;
 import net.soulsweaponry.util.WeaponUtil;
@@ -37,6 +33,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.List;
 
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
 
@@ -55,8 +53,6 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 if (!world.isClient) {
                     ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, new BlockPos(vecBlocksAway), 50);
-                } else {
-                    this.spawnParticles(world, vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                 }
 
                 world.playSound(player, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
@@ -80,27 +76,12 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     this.addAmount(stack, -30);
                 }
 
-                stack.damage(3, player, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(hand);
-                });
+                stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
                 return TypedActionResult.success(stack, world.isClient());
             } 
         }
         return TypedActionResult.fail(stack); 
 	}
-
-    private void spawnParticles(World world, double x, double y, double z) {
-        Random random = new Random();
-        double d = random.nextGaussian() * 0.05D;
-        double e = random.nextGaussian() * 0.05D;
-        for(int i = 0; i < 50; ++i) {
-            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-            world.addParticle(ParticleTypes.SOUL, x, y, z, newX/8, newY/2, newZ/8);
-            world.addParticle(ParticleTypes.DRAGON_BREATH, x, y, z, newX/8, newY/2, newZ/8);
-        }
-    }
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
