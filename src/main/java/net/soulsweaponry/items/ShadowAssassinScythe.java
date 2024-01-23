@@ -20,6 +20,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,9 +29,7 @@ import java.util.List;
 public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     private final float attackSpeed;
-    private static final String IN_COMBAT = "in_combat";
-    private static final String JUST_ATTACKED = "just_attacked";
-    private static final String COMBAT_TICKS = "combat_ticks";
+    private static final String HAS_EFFECT = "has_shadow_step";
     public static final int TICKS_FOR_BONUS = ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -40,15 +39,13 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> {
-            e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
-        });
-        if (attacker instanceof PlayerEntity) {
-            var cooldownManager = ((PlayerEntity) attacker).getItemCooldownManager();
-            if (!cooldownManager.isCoolingDown(this) && this.getCombatTicks(stack) > 0) {
-                attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 60,
-                        MathHelper.floor((float)WeaponUtil.getEnchantDamageBonus(stack)/2)));
-                this.setJustAttacked(stack, true);
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        if (attacker instanceof PlayerEntity player) {
+            var cooldownManager = player.getItemCooldownManager();
+            if (!cooldownManager.isCoolingDown(this)) {
+                attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP, TICKS_FOR_BONUS,
+                        MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
+                cooldownManager.set(this, ConfigConstructor.shadow_assassin_scythe_shadow_step_cooldown);
             }
         }
         return true;
@@ -57,68 +54,14 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player) {
-            ItemCooldownManager cooldownManager = player.getItemCooldownManager();
-            if (this.justAttacked(stack) && entity.age % 10 == 0 && this.getCombatTicks(stack) > 0) {
-                this.addCombatTicks(stack, -10);
-            }
-            if (this.justAttacked(stack) && this.getCombatTicks(stack) <= 0) {
-                cooldownManager.set(this, ConfigConstructor.shadow_assassin_scythe_shadow_step_cooldown);
-            }
-            if (!cooldownManager.isCoolingDown(this)) {
-                this.setCanGetBonus(stack, true);
-            } else {
-                this.setCanGetBonus(stack, false);
-                this.setJustAttacked(stack, false);
-                this.setCombatTicks(stack, TICKS_FOR_BONUS);
-            }
-        }
-    }
-
-    private int getCombatTicks(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(COMBAT_TICKS)) {
-            return stack.getNbt().getInt(COMBAT_TICKS);
-        }
-        return TICKS_FOR_BONUS;
-    }
-
-    private void addCombatTicks(ItemStack stack, int amount) {
         if (stack.hasNbt()) {
-            if (stack.getNbt().contains(COMBAT_TICKS)) {
-                stack.getNbt().putInt(COMBAT_TICKS, stack.getNbt().getInt(COMBAT_TICKS) + amount);
-            } else {
-                stack.getNbt().putInt(COMBAT_TICKS, TICKS_FOR_BONUS);
-            }
-        }
-    }
-
-    private void setCombatTicks(ItemStack stack, int amount) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putInt(COMBAT_TICKS, amount);
-        }
-    }
-    private void setJustAttacked(ItemStack stack, boolean bl) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(JUST_ATTACKED, bl);
-        }
-    }
-
-    private boolean justAttacked(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(JUST_ATTACKED)) {
-            return stack.getNbt().getBoolean(JUST_ATTACKED);
-        }
-        return false;
-    }
-
-    private void setCanGetBonus(ItemStack stack, boolean bl) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(IN_COMBAT, bl);
+            stack.getNbt().putBoolean(HAS_EFFECT, stack.hasNbt() && entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP));
         }
     }
 
     private boolean canGetBonus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(IN_COMBAT)) {
-            return stack.getNbt().getBoolean(IN_COMBAT);
+        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT)) {
+            return stack.getNbt().getBoolean(HAS_EFFECT);
         }
         return false;
     }
