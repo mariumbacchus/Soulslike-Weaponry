@@ -65,9 +65,10 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof LivingEntity target) {
                         entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
+                        this.spawnRemnant(target, user);
                     }
                 }
                 player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -79,6 +80,12 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        this.spawnRemnant(target, attacker);
+        this.gainStrength(attacker);
+        return super.postHit(stack, target, attacker);
+    }
+
+    private void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance) {
@@ -94,8 +101,6 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
                 }
             }
         }
-        this.gainStrength(attacker);
-        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -143,9 +148,7 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
-            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(player.getActiveHand());
-            });
+            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
             world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);

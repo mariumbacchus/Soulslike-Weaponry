@@ -451,14 +451,28 @@ public class MoonknightGoal extends Goal {
 
     private void smashGround(float damage, SoundEvent sound, boolean isSoundDelayed) {
         for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(this.targetPos).expand(3))) {
-            if (entity instanceof LivingEntity) {
+            if (entity instanceof LivingEntity living) {
                 entity.damage(CustomDamageSource.create(this.boss.world, CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(damage));
                 entity.addVelocity(0, 1, 0);
+                if (living.isUndead() && living.isDead()) {
+                    this.summonRemnant(living.getPos());
+                }
             }
         }
         if (!isSoundDelayed) this.boss.world.playSound(null, this.targetPos, sound, SoundCategory.HOSTILE, 1f, 1f);
         if (!this.boss.world.isClient) {
             ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.OBLITERATE_ID, this.targetPos, 200);
+        }
+    }
+
+    private void summonRemnant(Vec3d pos) {
+        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
+        if (this.canSummon()) entity.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
+        this.initEquip(entity);
+        this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.world.spawnEntity(entity);
+        if (!this.boss.world.isClient) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, BlockPos.ofFloored(pos), 100);
         }
     }
 
