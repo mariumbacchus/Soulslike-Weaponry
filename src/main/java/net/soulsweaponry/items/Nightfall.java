@@ -65,9 +65,10 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof LivingEntity target) {
                         entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
+                        this.spawnRemnant(target, user);
                     }
                 }
                 player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -79,6 +80,12 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        this.spawnRemnant(target, attacker);
+        this.gainStrength(attacker);
+        return super.postHit(stack, target, attacker);
+    }
+
+    private void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance) {
@@ -94,8 +101,6 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
                 }
             }
         }
-        this.gainStrength(attacker);
-        return super.postHit(stack, target, attacker);
     }
 
     @Override

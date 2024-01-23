@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -232,10 +233,13 @@ public class ReturningKnightGoal extends Goal {
                 List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
                 
                 if (this.attackStatus == 18) { //23
-                    for (int i = 0; i < entities.size(); i++) {
-                        if (entities.get(i) instanceof LivingEntity) {
-                            entities.get(i).damage(CustomDamageSource.obliterateDamageSource(this.boss), this.getModifiedDamage(60f));
-                            entities.get(i).setVelocity(entities.get(i).getVelocity().x, 1, entities.get(i).getVelocity().z);
+                    for (Entity entity : entities) {
+                        if (entity instanceof LivingEntity living) {
+                            entity.damage(CustomDamageSource.obliterateDamageSource(this.boss), this.getModifiedDamage(60f));
+                            entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
+                            if (living.isUndead() && living.isDead()) {
+                                this.summonRemnant(living.getPos());
+                            }
                         }
                     }
                     this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -333,6 +337,16 @@ public class ReturningKnightGoal extends Goal {
             }
 
             super.tick();
+        }
+    }
+
+    private void summonRemnant(Vec3d pos) {
+        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
+        if (this.canSummon()) entity.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
+        this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.world.spawnEntity(entity);
+        if (!this.boss.world.isClient) {
+            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, new BlockPos(pos), 100);
         }
     }
 }
