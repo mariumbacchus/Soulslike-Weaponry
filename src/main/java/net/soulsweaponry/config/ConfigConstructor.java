@@ -176,7 +176,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float nights_edge_ability_damage = 10f;
     @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 2;
     @Entry public static int shadow_assassin_scythe_shadow_step_ticks = 60;
-    @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 100;
+    @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 160;
     @Entry public static float shadow_assassin_scythe_ability_damage = 40f;
     @Entry public static int shadow_assassin_scythe_ability_cooldown = 300;
     @Entry public static int shadow_assassin_scythe_ticks_before_dismount = 120;
