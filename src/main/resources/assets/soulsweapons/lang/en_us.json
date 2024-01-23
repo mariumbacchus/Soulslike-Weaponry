@@ -230,6 +230,7 @@
     "effect.soulsweapons.calculated_fall": "Calculated Fall",
     "effect.soulsweapons.veil_of_fire": "Veil of Fire",
     "effect.soulsweapons.blight": "Blight",
+    "effect.soulsweapons.shadow_step": "Shadow Step",
 
     "item.minecraft.potion.effect.warding": "Potion of Magical Warding",
     "item.minecraft.splash_potion.effect.warding": "Splash Potion of Magical Warding",
@@ -481,8 +482,8 @@
     "tooltip.soulsweapons.transformation_description_7": "Enchants will carry over to the transforming weapon.",
     "tooltip.soulsweapons.transformation_description_8": "Current status of souls harvested:",
     "tooltip.soulsweapons.early_combat": "Shadow Step",
-    "tooltip.soulsweapons.early_combat_description_1": "- For the first given seconds in combat, gain increased",
-    "tooltip.soulsweapons.early_combat_description_2": "damage and movement speed post hit.",
+    "tooltip.soulsweapons.early_combat_description_1": "- If not on cooldown, post hit, gain movement speed",
+    "tooltip.soulsweapons.early_combat_description_2": "and bonus damage for this weapon.",
     "tooltip.soulsweapons.early_combat_description_3": "Time can be changed in config. Current time in seconds: ",
     "tooltip.soulsweapons.umbral_trespass": "Umbral Trespass",
     "tooltip.soulsweapons.umbral_trespass_description_1": "- Use while in combat to enter the soul of the target.",
