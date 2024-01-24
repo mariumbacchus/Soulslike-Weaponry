@@ -37,12 +37,8 @@ public class Draugr extends SwordItem {
     }
 
     private void refreshDayTime(World world, ItemStack stack) {
-        if (stack.hasNbt()) {
-            if (world.getDimension().hasSkyLight() && world.getTimeOfDay() % 24000 > 13000 && world.getTimeOfDay() % 24000 < 23000) {
-                stack.getNbt().putBoolean(NIGHT, true);
-            } else {
-                stack.getNbt().putBoolean(NIGHT, false);
-            }
+        if (stack.hasNbt() && !world.isClient) {
+            stack.getNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.isNight());
         }
     }
 
