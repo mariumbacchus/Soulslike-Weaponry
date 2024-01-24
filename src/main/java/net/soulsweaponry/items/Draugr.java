@@ -1,14 +1,8 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
-
+import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -20,9 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class Draugr extends SwordItem {
     
@@ -39,8 +36,8 @@ public class Draugr extends SwordItem {
     }
 
     private void refreshDayTime(World world, ItemStack stack) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.getTimeOfDay() % 24000 > 13000 && world.getTimeOfDay() % 24000 < 23000);
+        if (stack.hasNbt() && !world.isClient) {
+            stack.getNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.isNight());
         }
     }
 
