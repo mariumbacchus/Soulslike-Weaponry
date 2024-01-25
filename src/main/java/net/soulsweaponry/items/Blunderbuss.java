@@ -54,7 +54,7 @@ public class Blunderbuss extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = this.getDamage(stack);
+            int power = EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
@@ -64,7 +64,7 @@ public class Blunderbuss extends GunItem {
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 entity.setPostureLoss(this.getPostureLoss(stack));
-                entity.setDamage(power);
+                entity.setDamage(this.getDamage(stack));
                 if (punch > 0) {
                     entity.setPunch(punch);
                 }
