@@ -32,7 +32,7 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public int getDamage(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+        return ConfigConstructor.blunderbuss_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Blunderbuss extends GunItem {
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 entity.setPostureLoss(this.getPostureLoss(stack));
-                entity.setDamage(ConfigConstructor.blunderbuss_damage + power);
+                entity.setDamage(power);
                 if (punch > 0) {
                     entity.setPunch(punch);
                 }
