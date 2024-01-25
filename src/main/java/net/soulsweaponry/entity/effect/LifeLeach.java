@@ -4,13 +4,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffects;
+import net.soulsweaponry.registry.EffectRegistry;
 
 public class LifeLeach extends StatusEffect {
+
+    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED};
+
     public LifeLeach() {
-        super(
-            StatusEffectCategory.BENEFICIAL,
-            0x187a02
-        );
+        super(StatusEffectCategory.BENEFICIAL, 0x452773);
     }
 
     @Override
@@ -25,8 +26,13 @@ public class LifeLeach extends StatusEffect {
 
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         LivingEntity target = entity.getAttacking();
-        if (target instanceof LivingEntity && target.hasStatusEffect(StatusEffects.WITHER)) {
-            entity.heal(1 + target.getStatusEffect(StatusEffects.WITHER).getAmplifier());
+        if (target != null) {
+            for (StatusEffect effect : DAMAGE_OVER_TIME) {
+                if (target.hasStatusEffect(effect)) {
+                    entity.heal(1);
+                    break;
+                }
+            }
         }
     }
 }
