@@ -47,15 +47,6 @@ public class TrickWeapon extends UltraHeavyWeapon {
         return this.undeadBonus;
     }
 
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD)) {
-            WeaponUtil.addCharge(stack, 3);
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
@@ -68,6 +59,7 @@ public class TrickWeapon extends UltraHeavyWeapon {
             }
             if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD)) {
                 WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE, stack, tooltip);
             }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));

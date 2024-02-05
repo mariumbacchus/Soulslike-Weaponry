@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.entity.projectile.MoonlightArrow;
 import net.soulsweaponry.registry.EntityRegistry;
 
 public class ArrowStormEntity extends InvisibleEntity {

@@ -112,7 +112,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dragon_staff_aura_strength = 1;
     @Entry public static int dragon_staff_cooldown = 100;
     @Entry public static int dragon_staff_use_time = 100;
-    @Entry public static int draugr_damage_at_night = 10;
+    @Entry public static int draugr_damage_at_night = 11;
     @Entry public static int draupnir_spear_damage = 8;
     @Entry public static float draupnir_spear_projectile_damage = 10f;
     @Entry public static float draupnir_spear_detonate_power = 1f;
@@ -129,11 +129,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean rageblade_haste_cap = true;
     @Entry public static int holy_moonlight_greatsword_damage = 10;
     @Entry public static int holy_moonlight_ability_charge_needed = 50;
-    @Entry public static int holy_moonlight_ability_charge_added_post_hit = 1;
+    @Entry public static int holy_moonlight_greatsword_charge_added_post_hit = 3;
     @Entry public static float holy_moonlight_ability_damage = 20f;
     @Entry public static float holy_moonlight_ability_knockup = 0.3f;
     @Entry public static int holy_moonlight_ability_cooldown = 150;
+    @Entry public static int holy_moonlight_ruptures_amount = 8;
     @Entry public static int holy_moonlight_sword_damage = 8;
+    @Entry public static int holy_moonlight_sword_max_bonus_damage = 2;
+    @Entry public static int holy_moonlight_sword_charge_added_post_hit = 1;
     @Entry public static int kirkhammer_damage = 9;
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static float kraken_slayer_bonus_true_damage = 4f;
