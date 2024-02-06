@@ -55,7 +55,6 @@ public class WeaponUtil {
     }
 
     public static void addCharge(ItemStack stack, int amount) {
-
         if (stack.hasNbt()) {
             if (stack.getNbt().contains(CHARGE)) {
                 int currentCharge = stack.getNbt().contains(CHARGE) ? stack.getNbt().getInt(CHARGE) : 0;
