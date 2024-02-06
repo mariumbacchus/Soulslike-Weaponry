@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

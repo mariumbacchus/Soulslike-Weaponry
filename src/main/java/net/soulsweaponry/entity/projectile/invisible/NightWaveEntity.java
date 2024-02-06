@@ -1,10 +1,11 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.invisible.InvisibleEntity;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
