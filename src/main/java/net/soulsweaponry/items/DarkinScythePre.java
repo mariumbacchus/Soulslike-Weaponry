@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
     public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
-    private float attackSpeed;
+    private final float attackSpeed;
 
     public DarkinScythePre(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage, attackSpeed, settings);
@@ -47,9 +47,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> {
-            e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
-        });
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if (target.isDead()) {
             int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
             if (target.getHandItems().iterator().next().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {

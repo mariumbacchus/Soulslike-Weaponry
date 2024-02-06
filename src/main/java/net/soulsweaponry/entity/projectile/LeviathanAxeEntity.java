@@ -153,8 +153,8 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Mjolnir", NbtElement.COMPOUND_TYPE)) {
-            this.stack = ItemStack.fromNbt(nbt.getCompound("Mjolnir"));
+        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
+            this.stack = ItemStack.fromNbt(nbt.getCompound("Stack"));
         }
         this.dealtDamage = nbt.getBoolean(DEALT_DAMAGE);
     }
@@ -162,7 +162,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("Mjolnir", this.stack.writeNbt(new NbtCompound()));
+        nbt.put("Stack", this.stack.writeNbt(new NbtCompound()));
         nbt.putBoolean(DEALT_DAMAGE, this.dealtDamage);
     }
 
