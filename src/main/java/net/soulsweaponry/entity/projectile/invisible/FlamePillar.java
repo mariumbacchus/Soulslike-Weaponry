@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
@@ -15,20 +14,10 @@ import net.soulsweaponry.registry.SoundRegistry;
 import java.util.List;
 import java.util.Random;
 
-public class FlamePillar extends InvisibleEntity {
-
-    private int warmup;
+public class FlamePillar extends InvisibleWarmupEntity {
 
     public FlamePillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    public void setWarmup(int warmup) {
-        this.warmup = warmup;
-    }
-
-    public int getWarmup() {
-        return this.warmup;
     }
 
     @Override
@@ -69,11 +58,6 @@ public class FlamePillar extends InvisibleEntity {
         super.onRemoved();
     }
 
-    @Override
-    public boolean damage(DamageSource source, float amount) {
-        return false;
-    }
-
     private void damage(LivingEntity target) {
         Entity entity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && entity instanceof LivingEntity livingEntity && target != livingEntity) {
@@ -83,19 +67,5 @@ public class FlamePillar extends InvisibleEntity {
                 }
             }
         }
-    }
-
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Warmup")) {
-            this.warmup = nbt.getInt("Warmup");
-        }
-    }
-
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putInt("Warmup", this.warmup);
     }
 }

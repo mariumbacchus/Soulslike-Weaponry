@@ -59,9 +59,10 @@ public class WeaponUtil {
     public static void addCharge(ItemStack stack, int amount) {
         if (stack.hasNbt()) {
             if (stack.getNbt().contains(CHARGE)) {
-                int add = stack.getNbt().getInt(CHARGE) >= ConfigConstructor.holy_moonlight_ability_charge_needed ?
-                        ConfigConstructor.holy_moonlight_ability_charge_needed : stack.getNbt().getInt(CHARGE) + amount + WeaponUtil.getEnchantDamageBonus(stack);
-                stack.getNbt().putInt(CHARGE, add);
+                int currentCharge = stack.getNbt().contains(CHARGE) ? stack.getNbt().getInt(CHARGE) : 0;
+                int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
+                int maxCharge = ConfigConstructor.holy_moonlight_ability_charge_needed;
+                stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
             } else {
                 stack.getNbt().putInt(CHARGE, 0);
             }
@@ -87,7 +88,9 @@ public class WeaponUtil {
     }
 
     public static int getAddedCharge(ItemStack stack) {
-        return (ConfigConstructor.holy_moonlight_ability_charge_added_post_hit + WeaponUtil.getEnchantDamageBonus(stack)) * (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD) ? 3 : 1);
+        boolean sword = stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
+        int base = sword ? ConfigConstructor.holy_moonlight_sword_charge_added_post_hit : ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
+        return (base + WeaponUtil.getEnchantDamageBonus(stack)) * (sword ? 1 : 2);
     }
 
     public static List<Integer> arrayToList(int[] array) {
@@ -123,10 +126,18 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(current + " | " + getAddedCharge(stack)).formatted(Formatting.AQUA)));
             }
+            case CHARGE_BONUS_DAMAGE -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_bonus_damage").formatted(Formatting.AQUA));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_bonus_damage_1").formatted(Formatting.GRAY));
+            }
             case NEED_CHARGE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.need_charge").formatted(Formatting.RED));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.need_charge_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.need_charge_description_2").formatted(Formatting.GRAY));
+            }
+            case LUNAR_HERALD_NO_CHARGE -> {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_no_charge_1").formatted(Formatting.DARK_GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_no_charge_2").formatted(Formatting.DARK_GRAY));
             }
             case RIGHTEOUS -> {
                 int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + ConfigConstructor.righteous_undead_bonus_damage);
@@ -513,7 +524,7 @@ public class WeaponUtil {
     }
 
     public enum TooltipAbilities {
-        TRICK_WEAPON, CHARGE, NEED_CHARGE, RIGHTEOUS, MOONFALL, HEAVY, LIFE_STEAL, OMNIVAMP, OVERHEAL, SWORD_SLAM,
+        TRICK_WEAPON, CHARGE, CHARGE_BONUS_DAMAGE, NEED_CHARGE, LUNAR_HERALD_NO_CHARGE, RIGHTEOUS, MOONFALL, HEAVY, LIFE_STEAL, OMNIVAMP, OVERHEAL, SWORD_SLAM,
         SKYFALL, INFINITY, CRIT, DOOM, BLAZING_BLADE, TRANSFORMATION, UMBRAL_TRESPASS, DAWNBREAKER, RAGE, LIGHTNING_CALL,
         STORM_STOMP, WEATHERBORN, DRAGON_STAFF, VENGEFUL_FOG, NIGHT_PROWLER, DETONATE_SPEARS, FEATHERLIGHT, SOUL_TRAP,
         SOUL_RELEASE, SOUL_RELEASE_WITHER, COLLECT, SUMMON_WEAPON, GALEFORCE, FURY, HASTE, FLAME_ENRAGED, RETURNING,

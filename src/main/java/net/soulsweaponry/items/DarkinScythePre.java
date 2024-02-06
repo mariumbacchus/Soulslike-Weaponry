@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
     public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
-    private float attackSpeed;
+    private final float attackSpeed;
 
     public DarkinScythePre(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage, attackSpeed, settings);
@@ -48,9 +48,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> {
-            e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
-        });
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if (target.isDead()) {
             int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
             if (target.getItemsHand().iterator().next().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
@@ -65,8 +63,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
+        if (entity instanceof PlayerEntity player) {
             if (this.getSouls(stack) >= MAX_SOULS && slot == player.getInventory().selectedSlot) {
                 if (!world.isClient) {
                     BlockPos pos = entity.getBlockPos();
@@ -114,8 +111,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     private float getBonusDamage(ItemStack stack) {
         float soulPercent = (float) this.getSouls(stack) / (float) MAX_SOULS;
-        float bonusDamage = (float) ConfigConstructor.darkin_scythe_bonus_damage * soulPercent;
-        return bonusDamage;
+        return (float) ConfigConstructor.darkin_scythe_bonus_damage * soulPercent;
     }
 
     @Override
@@ -154,7 +150,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     public enum SoulType {
         RED("red_soul"), BLUE("blue_soul");
 
-        String id;
+        final String id;
         SoulType(String id) {
             this.id = id;
         }
