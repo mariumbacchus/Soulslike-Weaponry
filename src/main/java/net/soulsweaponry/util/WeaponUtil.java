@@ -57,9 +57,10 @@ public class WeaponUtil {
     public static void addCharge(ItemStack stack, int amount) {
         if (stack.hasNbt()) {
             if (stack.getNbt().contains(CHARGE)) {
-                int add = stack.getNbt().getInt(CHARGE) >= ConfigConstructor.holy_moonlight_ability_charge_needed ?
-                        ConfigConstructor.holy_moonlight_ability_charge_needed : stack.getNbt().getInt(CHARGE) + amount + WeaponUtil.getEnchantDamageBonus(stack);
-                stack.getNbt().putInt(CHARGE, add);
+                int currentCharge = stack.getNbt().contains(CHARGE) ? stack.getNbt().getInt(CHARGE) : 0;
+                int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
+                int maxCharge = ConfigConstructor.holy_moonlight_ability_charge_needed;
+                stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
             } else {
                 stack.getNbt().putInt(CHARGE, 0);
             }
