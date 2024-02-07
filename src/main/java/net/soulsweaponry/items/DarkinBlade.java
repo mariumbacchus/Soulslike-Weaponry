@@ -30,13 +30,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DarkinBlade extends DetonateGroundItem implements GeoItem, UltraHeavy {
+public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     
     public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -140,7 +140,7 @@ public class DarkinBlade extends DetonateGroundItem implements GeoItem, UltraHea
     }
 
     @Override
-    public boolean isHeavy() {
-        return true;
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[0];
     }
 }

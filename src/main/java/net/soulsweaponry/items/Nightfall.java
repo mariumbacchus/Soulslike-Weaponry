@@ -44,15 +44,16 @@ import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbility, UltraHeavy {
+public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     
     public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings, true);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -85,7 +86,7 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
         return super.postHit(stack, target, attacker);
     }
 
-    private void spawnRemnant(LivingEntity target, LivingEntity attacker) {
+    public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
             if (chance < ConfigConstructor.nightfall_summon_chance) {
@@ -160,7 +161,27 @@ public class Nightfall extends ChargeToUseItem implements GeoItem, IKeybindAbili
     }
 
     @Override
-    public boolean isHeavy() {
-        return true;
+    public float getBaseExpansion() {
+        return 3f;
+    }
+
+    @Override
+    public float getExpansionModifier() {
+        return 1.5f;
+    }
+
+    @Override
+    public float getLaunchDivisor() {
+        return 30;
+    }
+
+    @Override
+    public boolean shouldHeal() {
+        return false;
+    }
+
+    @Override
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[0];
     }
 }
