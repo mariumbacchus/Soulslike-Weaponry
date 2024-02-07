@@ -116,4 +116,9 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     public boolean shouldHeal() {
         return false;
     }
+
+    @Override
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[0];
+    }
 }
