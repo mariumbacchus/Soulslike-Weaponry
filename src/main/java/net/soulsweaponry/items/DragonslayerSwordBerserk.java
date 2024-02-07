@@ -57,11 +57,6 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public void detonateGroundEffect(LivingEntity user, int power, float fallDistance, World world, ItemStack stack) {
-        super.detonateGroundEffect(user, power, fallDistance, world, stack);
-    }
-
-    @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 
