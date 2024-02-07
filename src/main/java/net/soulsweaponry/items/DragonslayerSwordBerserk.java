@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,5 +59,34 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    }
+
+    @Override
+    public float getBaseExpansion() {
+        return 2.5f;
+    }
+
+    @Override
+    public float getExpansionModifier() {
+        return 1.6f;
+    }
+
+    @Override
+    public float getLaunchDivisor() {
+        return 25;
+    }
+
+    @Override
+    public boolean shouldHeal() {
+        return false;
+    }
+
+    @Override
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[] {new StatusEffectInstance(StatusEffects.WITHER, 140, 1)};
     }
 }

@@ -31,12 +31,12 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DarkinBlade extends DetonateGroundItem implements IAnimatable, UltraHeavy {
+public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings);
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -122,7 +122,7 @@ public class DarkinBlade extends DetonateGroundItem implements IAnimatable, Ultr
     }
 
     @Override
-    public boolean isHeavy() {
-        return true;
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[0];
     }
 }
