@@ -137,4 +137,9 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     public boolean shouldHeal() {
         return false;
     }
+
+    @Override
+    public StatusEffectInstance[] applyEffects() {
+        return new StatusEffectInstance[0];
+    }
 }

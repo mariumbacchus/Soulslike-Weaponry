@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TrickWeapon extends UltraHeavyWeapon {
+public class TrickWeapon extends SwordItem implements UltraHeavy {
 
     private static final int[] DAMAGE = {
             ConfigConstructor.kirkhammer_damage,
@@ -27,12 +28,14 @@ public class TrickWeapon extends UltraHeavyWeapon {
     private final int switchWeaponIndex;
     private final int ownWeaponIndex;
     private final boolean undeadBonus;
+    private final boolean isHeavy;
 
     public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
-        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings, isHeavy);
+        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings);
         this.switchWeaponIndex = switchWeaponIndex;
         this.ownWeaponIndex = ownWeaponIndex;
         this.undeadBonus = undeadBonus;
+        this.isHeavy = isHeavy;
     }
 
     public int getSwitchWeaponIndex() {
@@ -45,6 +48,14 @@ public class TrickWeapon extends UltraHeavyWeapon {
 
     public boolean hasUndeadBonus() {
         return this.undeadBonus;
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isHeavy) {
+            this.gainStrength(attacker);
+        }
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -65,5 +76,10 @@ public class TrickWeapon extends UltraHeavyWeapon {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isHeavy() {
+        return this.isHeavy;
     }
 }
