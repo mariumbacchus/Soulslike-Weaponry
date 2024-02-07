@@ -6,7 +6,10 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -22,13 +25,14 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
+import net.soulsweaponry.entity.projectile.invisible.WarmupLightningEntity;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -41,8 +45,6 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final String RAINING = "raining";
-    public static final String LIGHTNING_STATUS = "lightning_status";
-    public static final String SHOULD_UPDATE_LIGHTNING = "should_update_lightning";
     public static final String OWNERS_LAST_POS = "owners_last_pos";
 
     public Mjolnir(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -57,7 +59,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
             stack.damage(3, player, p -> p.sendToolBreakStatus(user.getActiveHand()));
             if (player.isSneaking()) {
                 this.smashGround(stack, world, player);
-                this.startLightningCall(stack);
+                this.lightningCall(player, world);
                 cooldown = ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
                 this.riptide(player, world, stack);
@@ -129,61 +131,19 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         }
     }
 
-    private void startLightningCall(ItemStack stack) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(SHOULD_UPDATE_LIGHTNING, true);
-        }
-    }
-
-    private void lightningCall(PlayerEntity player, World world, ItemStack stack) {
-        if (stack.hasNbt()) {
-            int[] triggers = {10, 20, 30};
-            for (int i = 1; i < triggers.length + 1; i++) {
-                if (this.getLightningStatus(stack) == triggers[i - 1]) {
-                    this.spawnLightning(i, player, world);
-                }
-            }
-        }
-        
-    }
-
-    private void spawnLightning(int multiplier, PlayerEntity player, World world) {
-        int r = 5*multiplier;
-        for (int theta = 0; theta < 360; theta+=30) {
-            double x0 = player.getX();
-            double z0 = player.getZ();
-            double x = x0 + r * Math.cos(theta * Math.PI / 180);
-            double z = z0 + r * Math.sin(theta * Math.PI / 180);
-            BlockPos pos = new BlockPos(x, player.getY(), z);
-            if (world.isSkyVisible(new BlockPos(x, player.getY(), z))) {
-                LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
-                entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+    private void lightningCall(PlayerEntity player, World world) {
+        for (int i = 1; i < 4; i++) {
+            int r = 5 * i;
+            for (int theta = 0; theta < 360; theta+=30) {
+                double x0 = player.getX();
+                double z0 = player.getZ();
+                double x = x0 + r * Math.cos(theta * Math.PI / 180);
+                double z = z0 + r * Math.sin(theta * Math.PI / 180);
+                WarmupLightningEntity entity = new WarmupLightningEntity(EntityRegistry.WARMUP_LIGHTNING, world);
+                entity.setPos(x, player.getY(), z);
+                entity.setWarmup(2 + i * 8);
+                entity.setOwner(player);
                 world.spawnEntity(entity);
-            }
-        }
-    }
-
-    private int getLightningStatus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(LIGHTNING_STATUS)) {
-            return stack.getNbt().getInt(LIGHTNING_STATUS);
-        } else {
-            return 0;
-        }
-    }
-
-    private void updateLightningStatus(ItemStack stack, PlayerEntity player, World world) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(LIGHTNING_STATUS) && stack.getNbt().contains(SHOULD_UPDATE_LIGHTNING)
-              && stack.getNbt().getBoolean(SHOULD_UPDATE_LIGHTNING)) {
-                this.lightningCall(player, world, stack);
-                stack.getNbt().putInt(LIGHTNING_STATUS, stack.getNbt().getInt(LIGHTNING_STATUS) + 1);
-                if (stack.getNbt().getInt(LIGHTNING_STATUS) >= 40) {
-                    stack.getNbt().putInt(LIGHTNING_STATUS, 0);
-                    stack.getNbt().putBoolean(SHOULD_UPDATE_LIGHTNING, false);
-                }
-            } else {
-                stack.getNbt().putInt(LIGHTNING_STATUS, 0);
-                stack.getNbt().putBoolean(SHOULD_UPDATE_LIGHTNING, false);
             }
         }
     }
@@ -192,8 +152,6 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         this.refreshRaining(world, stack);
-        if (entity instanceof PlayerEntity) this.updateLightningStatus(stack, (PlayerEntity)entity, world);
-        
     }
 
     private void refreshRaining(World world, ItemStack stack) {

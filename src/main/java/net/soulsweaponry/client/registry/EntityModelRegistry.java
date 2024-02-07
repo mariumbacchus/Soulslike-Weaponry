@@ -63,5 +63,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOONLIGHT_ARROW, MoonlightArrowRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ARROW_STORM_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.HOLY_MOONLIGHT_PILLAR, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.WARMUP_LIGHTNING, EmptyEntityRenderer::new);
     }
 }
