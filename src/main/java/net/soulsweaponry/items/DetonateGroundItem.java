@@ -39,6 +39,12 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
                 livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                 livingEntity.addVelocity(0, fallDistance/this.getLaunchDivisor(), 0);
                 if (this.shouldHeal()) user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power/10f : 0));
+                for (StatusEffectInstance effect : this.applyEffects()) {
+                    livingEntity.addStatusEffect(effect);
+                }
+                if (this instanceof Nightfall nightfall) {
+                    nightfall.spawnRemnant(livingEntity, user);
+                }
             }
         }
         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
@@ -52,6 +58,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
     public abstract float getExpansionModifier();
     public abstract float getLaunchDivisor();
     public abstract boolean shouldHeal();
+    public abstract StatusEffectInstance[] applyEffects();
 
     /**
      * Called in the fall damage mixin methods. {@link net.soulsweaponry.mixin.LivingEntityMixin#interceptFallDamage(float, float, DamageSource, CallbackInfoReturnable)}

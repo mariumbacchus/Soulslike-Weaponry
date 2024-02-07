@@ -2,10 +2,9 @@ package net.soulsweaponry.items;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 
-public class UltraHeavyWeapon extends SwordItem implements UltraHeavy {
+public abstract class UltraHeavyWeapon extends DetonateGroundItem implements UltraHeavy {
 
     private final boolean isHeavy;
 
