@@ -77,6 +77,7 @@ public class EntityRegistry {
     public static final EntityType<MoonlightArrow> MOONLIGHT_ARROW = registerEntity("moonlight_arrow", FabricEntityTypeBuilder.create(SpawnGroup.MISC, MoonlightArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<ArrowStormEntity> ARROW_STORM_ENTITY = registerEntity("arrow_storm_entity", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ArrowStormEntity::new).dimensions(EntityDimensions.changing(3f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<HolyMoonlightPillar> HOLY_MOONLIGHT_PILLAR = registerEntity("holy_moonlight_pillar", FabricEntityTypeBuilder.create(SpawnGroup.MISC, HolyMoonlightPillar::new).dimensions(EntityDimensions.fixed(1.85f, 1.85f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
+    public static final EntityType<WarmupLightningEntity> WARMUP_LIGHTNING = registerEntity("warmup_lightning", FabricEntityTypeBuilder.create(SpawnGroup.MISC, WarmupLightningEntity::new).dimensions(EntityDimensions.fixed(1.5f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());
