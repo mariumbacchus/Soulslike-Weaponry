@@ -132,7 +132,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private void lightningCall(PlayerEntity player, World world) {
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < ConfigConstructor.mjolnir_lightning_circle_amount + 1; i++) {
             int r = 5 * i;
             for (int theta = 0; theta < 360; theta+=30) {
                 double x0 = player.getX();

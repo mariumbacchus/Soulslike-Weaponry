@@ -156,6 +156,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_smash_damage = 8f;
     @Entry public static float mjolnir_projectile_damage = 7f;
     @Entry public static int mjolnir_lightning_smash_cooldown = 200;
+    @Entry public static int mjolnir_lightning_circle_amount = 3;
     @Entry public static int mjolnir_riptide_cooldown = 300;
     @Entry public static double mjolnir_return_speed = 4D;
     @Entry public static int moonlight_greatsword_damage = 9;
