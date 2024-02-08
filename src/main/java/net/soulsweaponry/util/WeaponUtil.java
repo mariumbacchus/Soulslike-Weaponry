@@ -23,7 +23,6 @@ public class WeaponUtil {
     
     public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
     public static final String PREV_TRICK_WEAPON = "trick_weapon_to_transform";
-    public static final String CHARGE = "current_charge";
 
     /**
      * Define all trick weapons here, which is gathered by PacketsServer to switch to the given weapon's index
@@ -56,43 +55,6 @@ public class WeaponUtil {
         return switchWeapon.getName();
     }
 
-    public static void addCharge(ItemStack stack, int amount) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(CHARGE)) {
-                int currentCharge = stack.getNbt().contains(CHARGE) ? stack.getNbt().getInt(CHARGE) : 0;
-                int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
-                int maxCharge = ConfigConstructor.holy_moonlight_ability_charge_needed;
-                stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
-            } else {
-                stack.getNbt().putInt(CHARGE, 0);
-            }
-        }
-    }
-
-    public static boolean isCharged(ItemStack stack) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(CHARGE)) {
-                return stack.getNbt().getInt(CHARGE) >= ConfigConstructor.holy_moonlight_ability_charge_needed;
-            } else {
-                stack.getNbt().putInt(CHARGE, 0);
-            }
-        }
-        return false;
-    }
-
-    public static int getCharge(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(CHARGE)) {
-            return stack.getNbt().getInt(CHARGE);
-        }
-        return 0;
-    }
-
-    public static int getAddedCharge(ItemStack stack) {
-        boolean sword = stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
-        int base = sword ? ConfigConstructor.holy_moonlight_sword_charge_added_post_hit : ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
-        return (base + WeaponUtil.getEnchantDamageBonus(stack)) * (sword ? 1 : 2);
-    }
-
     public static List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
         for (int t : array) {
@@ -121,10 +83,11 @@ public class WeaponUtil {
                 }
             }
             case CHARGE -> {
-                String current = MathHelper.floor((float) getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed * 100) + "%";
+                IChargeNeeded item = (IChargeNeeded)stack.getItem();
+                String current = MathHelper.floor((float) item.getCharge(stack) / (float) item.getMaxCharge() * 100) + "%";
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.charge").formatted(Formatting.DARK_AQUA));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_description_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(current + " | " + getAddedCharge(stack)).formatted(Formatting.AQUA)));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(current + " | " + item.getAddedCharge(stack)).formatted(Formatting.AQUA)));
             }
             case CHARGE_BONUS_DAMAGE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.charge_bonus_damage").formatted(Formatting.AQUA));
@@ -363,6 +326,9 @@ public class WeaponUtil {
             case MOONLIGHT -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_description").formatted(Formatting.GRAY));
+                if (stack.getItem() instanceof BluemoonGreatsword) {
+                    addAbilityTooltip(TooltipAbilities.LUNAR_HERALD_NO_CHARGE, stack, tooltip);
+                }
             }
             case MOONLIGHT_ATTACK -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
