@@ -70,7 +70,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean lifesteal_item_heal_scales = true;
     @Entry public static int lifesteal_item_cooldown = 60;
     @Entry public static int bluemoon_greatsword_damage = 8;
+    @Entry public static int bluemoon_greatsword_charge_needed = 8;
+    @Entry public static int bluemoon_greatsword_charge_added_post_hit = 1;
     @Entry public static int bluemoon_shortsword_damage = 7;
+    @Entry public static int bluemoon_shortsword_projectile_cooldown = 120;
     @Entry public static int comet_spear_damage = 8;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
     @Entry public static int comet_spear_ability_damage = 10;
