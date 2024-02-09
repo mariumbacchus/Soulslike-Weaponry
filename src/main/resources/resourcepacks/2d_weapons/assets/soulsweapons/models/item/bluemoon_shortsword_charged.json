@@ -1,0 +1,6 @@
+{
+  "parent": "soulsweapons:item/bluemoon_shortsword",
+  "textures": {
+    "layer0": "soulsweapons:item/bluemoon_shortsword_charged"
+  }
+}

@@ -29,5 +29,13 @@
         "translation": [1, 1, 0],
         "scale": [1.1, 1.1, 1.1]
       }
-    }
+    },
+    "overrides": [
+      {
+        "predicate": {
+          "charged": 1
+        },
+        "model": "soulsweapons:item/bluemoon_greatsword_charged"
+      }
+    ]
 }

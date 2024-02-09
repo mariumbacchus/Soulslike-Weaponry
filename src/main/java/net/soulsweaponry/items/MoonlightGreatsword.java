@@ -25,6 +25,10 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         super(toolMaterial, ConfigConstructor.moonlight_greatsword_damage, attackSpeed, settings);
     }
 
+    public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+        super(toolMaterial, attackDamage, attackSpeed, settings);
+    }
+
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -41,6 +45,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 entity.setItemStack(stack);
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                if (this instanceof BluemoonGreatsword) {
+                    if (stack.hasNbt() && !playerEntity.isCreative()) {
+                        stack.getNbt().putInt(IChargeNeeded.CHARGE, 0);
+                    }
+                }
             }
         }
     }
@@ -48,9 +57,15 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
+            if (this instanceof BluemoonGreatsword) {
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);
+                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
+            }
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT, stack, tooltip);
-            for (int i = 1; i <= 3; i++) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_" + i).formatted(Formatting.DARK_GRAY));
+            if (!(this instanceof BluemoonGreatsword)) {
+                for (int i = 1; i <= 3; i++) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_" + i).formatted(Formatting.DARK_GRAY));
+                }
             }
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
