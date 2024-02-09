@@ -54,6 +54,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
                         target.takeKnockback(1F, 0, 0);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                     }
+                    world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getY() + 1F, target.getZ(), target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5);
                 }
             }
         } else {
