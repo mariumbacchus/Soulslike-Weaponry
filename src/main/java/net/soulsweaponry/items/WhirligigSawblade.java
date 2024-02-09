@@ -10,6 +10,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
@@ -46,9 +48,11 @@ public class WhirligigSawblade extends ChargeToUseItem {
         if (remainingUseTicks > 0) {
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity target) {
-                    target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup())); //(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack))
-                    target.takeKnockback(1F, 0, 0);
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
+                    if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
+                        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
+                        target.takeKnockback(1F, 0, 0);
+                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
+                    }
                     world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getY() + 1F, target.getZ(), target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5);
                 }
             }
