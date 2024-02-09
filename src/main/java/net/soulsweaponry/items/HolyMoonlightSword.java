@@ -12,7 +12,7 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class HolyMoonlightSword extends TrickWeapon {
+public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     private final float attackSpeed;
 
@@ -23,12 +23,12 @@ public class HolyMoonlightSword extends TrickWeapon {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        WeaponUtil.addCharge(stack, WeaponUtil.getAddedCharge(stack));
+        this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
 
     private float getBonusDamage(ItemStack stack) {
-        float per = (float) WeaponUtil.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
+        float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
         return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }
 
@@ -44,5 +44,16 @@ public class HolyMoonlightSword extends TrickWeapon {
         } else {
             return super.getAttributeModifiers(slot);
         }
+    }
+
+    @Override
+    public int getMaxCharge() {
+        return ConfigConstructor.holy_moonlight_ability_charge_needed;
+    }
+
+    @Override
+    public int getAddedCharge(ItemStack stack) {
+        int base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
+        return base + WeaponUtil.getEnchantDamageBonus(stack);
     }
 }

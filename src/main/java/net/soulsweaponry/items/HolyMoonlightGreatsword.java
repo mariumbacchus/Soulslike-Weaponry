@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HolyMoonlightGreatsword extends TrickWeapon {
+public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeeded {
 
     public HolyMoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings, int switchWeaponIndex) {
         super(toolMaterial, 3, attackSpeed, settings, switchWeaponIndex, 3, false, true);
@@ -62,7 +62,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
                     this.castSpell(player, world, stack, ruptures);
                 }
                 if (stack.hasNbt() && !player.isCreative()) {
-                    stack.getNbt().putInt(WeaponUtil.CHARGE, 0);
+                    stack.getNbt().putInt(IChargeNeeded.CHARGE, 0);
                 }
                 world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
@@ -111,7 +111,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        WeaponUtil.addCharge(stack, WeaponUtil.getAddedCharge(stack));
+        this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
 
@@ -126,7 +126,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (WeaponUtil.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
+        if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
             user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
         }
@@ -155,5 +155,16 @@ public class HolyMoonlightGreatsword extends TrickWeapon {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
+    }
+
+    @Override
+    public int getMaxCharge() {
+        return ConfigConstructor.holy_moonlight_ability_charge_needed;
+    }
+
+    @Override
+    public int getAddedCharge(ItemStack stack) {
+        int base = ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
+        return base + WeaponUtil.getEnchantDamageBonus(stack) * 2;
     }
 }

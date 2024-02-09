@@ -32,6 +32,10 @@ public class MoonlightShortsword extends SwordItem {
         super(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, attackSpeed, settings);
     }
 
+    public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+        super(toolMaterial, attackDamage, attackSpeed, settings);
+    }
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (ConfigConstructor.moonlight_shortsword_enable_right_click) {
@@ -47,8 +51,10 @@ public class MoonlightShortsword extends SwordItem {
         for (Hand hand : Hand.values()) {
             ItemStack itemStack = user.getStackInHand(hand);
             if (!user.getItemCooldownManager().isCoolingDown(WeaponRegistry.MOONLIGHT_SHORTSWORD) && itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)
-                    || user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
-                if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) && user.getStatusEffect(EffectRegistry.MOON_HERALD).getDuration() % 4 != 0) {
+                    || user.hasStatusEffect(EffectRegistry.MOON_HERALD)
+                    || (itemStack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD) && !user.getItemCooldownManager().isCoolingDown(WeaponRegistry.BLUEMOON_SHORTSWORD))) {
+                boolean bl = itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) || itemStack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD);
+                if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && bl && user.getStatusEffect(EffectRegistry.MOON_HERALD).getDuration() % 4 != 0) {
                     return;
                 }
                 float damage = ConfigConstructor.moonlight_shortsword_projectile_damage;
@@ -66,6 +72,9 @@ public class MoonlightShortsword extends SwordItem {
                 /* itemStack.damage(1, user, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(hand);
                 }); */
+                if (itemStack.getItem() instanceof BluemoonShortsword) {
+                    user.getItemCooldownManager().set(WeaponRegistry.BLUEMOON_SHORTSWORD, ConfigConstructor.bluemoon_shortsword_projectile_cooldown);
+                }
 
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD, ConfigConstructor.moonlight_shortsword_projectile_cooldown);
