@@ -8,14 +8,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.items.BossCompass;
-import net.soulsweaponry.items.ModdedBow;
-import net.soulsweaponry.items.Skofnung;
-import net.soulsweaponry.items.Sting;
+import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 
 public class PredicateRegistry {
     
@@ -48,6 +44,7 @@ public class PredicateRegistry {
 
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
+        PredicateRegistry.registerCharged(WeaponRegistry.BLUEMOON_GREATSWORD);
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.DRAUGR, new Identifier("night"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity != null && livingEntity.world.getDimension().hasSkyLight() && livingEntity.world.getTimeOfDay() % 24000 > 13000 && livingEntity.world.getTimeOfDay() % 24000 < 23000) {
@@ -134,7 +131,7 @@ public class PredicateRegistry {
 
     protected static void registerCharged(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (WeaponUtil.isCharged(itemStack)) {
+            if (((IChargeNeeded)item).isCharged(itemStack)) {
                 return 1.0f;
             }
             return 0.0f;

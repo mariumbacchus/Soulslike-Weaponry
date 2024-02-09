@@ -133,8 +133,8 @@ public class PacketsServer {
                         }
                         if (newWeapon.hasNbt()) {
                             newWeapon.getNbt().putInt(WeaponUtil.PREV_TRICK_WEAPON, ((TrickWeapon) handItem).getOwnWeaponIndex());
-                            if (stack.getNbt().contains(WeaponUtil.CHARGE)) {
-                                newWeapon.getNbt().putInt(WeaponUtil.CHARGE, stack.getNbt().getInt(WeaponUtil.CHARGE));
+                            if (stack.getNbt().contains(IChargeNeeded.CHARGE)) {
+                                newWeapon.getNbt().putInt(IChargeNeeded.CHARGE, stack.getNbt().getInt(IChargeNeeded.CHARGE));
                             }
                         }
                         serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT, SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
