@@ -10,6 +10,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -22,10 +24,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,16 +160,38 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             case PARTICLES -> {
                 if (!this.world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.RANDOM_EXPLOSION_PACKET_ID, this.getBlockPos(), 1000);
+                    DefaultParticleType particle = this.getRandomParticle();
+                    int amount = 1000;
+                    if (particle == ParticleTypes.ELDER_GUARDIAN) {
+                        amount = 1;
+                    }
+                    ParticleHandler.particleSphereList(world, amount, this.getX(), this.getY(), this.getZ(), 1f, particle);
                 }
             }
             case RANDOM_ENTITY -> this.summonRandomEntity(user, power);
             case SPECIFIC_ENTITY -> this.summonSpecificEntity(user, power);
+            case CURSE -> {
+                this.world.addParticle(ParticleTypes.ELDER_GUARDIAN, this.getX(), this.getY(), this.getZ(), 0f, 0f, 0f);
+                this.world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.HOSTILE, 1f, 1f);
+                user.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 5));
+            }
             default -> {
                 boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
                 this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? Explosion.DestructionType.BREAK : Explosion.DestructionType.NONE);
             }
         }
+    }
+
+    private DefaultParticleType getRandomParticle() {
+        Random number = new Random();
+        ArrayList<DefaultParticleType> arr = new ArrayList<>();
+        Registry.PARTICLE_TYPE.stream().forEach(p -> {
+            if (p instanceof DefaultParticleType d) {
+                arr.add(d);
+            }
+        });
+        int rng = number.nextInt(arr.size());
+        return arr.get(rng);
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {
@@ -211,11 +234,12 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                 {CollisionEffect.PARTICLES, LuckType.BAD},
                 {CollisionEffect.DARKNESS, LuckType.BAD},
                 {CollisionEffect.EXPLOSION, LuckType.GOOD},
+                {CollisionEffect.CURSE, LuckType.BAD},
         };
     }
 
     enum CollisionEffect {
-        LIGHTNING, RANDOM_ENTITY, SPECIFIC_ENTITY, BATS, PARTICLES, DARKNESS, EXPLOSION
+        LIGHTNING, RANDOM_ENTITY, SPECIFIC_ENTITY, BATS, PARTICLES, DARKNESS, EXPLOSION, CURSE
     }
 
     private StatusEffect getRandomEffect(boolean flipLuckTypes) {

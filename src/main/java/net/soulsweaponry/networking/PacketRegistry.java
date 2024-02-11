@@ -1,48 +1,41 @@
 package net.soulsweaponry.networking;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.SoulsWeaponry;
+import net.minecraft.util.math.BlockPos;
+import net.soulsweaponry.networking.C2S.*;
+import net.soulsweaponry.networking.S2C.*;
 
 public class PacketRegistry {
-    
-    public static final Identifier DAWNBREAKER_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "spawn_particles");
-    public static final Identifier DARKIN_BLADE_SLAM_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "darkin_blade_slam");
-    public static final Identifier SOUL_RUPTURE_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "soul_rupture");
-    public static final Identifier CONJURE_ENTITY_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "conjure_entity");
-    public static final Identifier DEATH_EXPLOSION_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "death_explosion");
-    public static final Identifier RANDOM_EXPLOSION_PACKET_ID = new Identifier(SoulsWeaponry.ModId, "random_explosion");
-    public static final Identifier BIG_TELEPORT_ID = new Identifier(SoulsWeaponry.ModId, "big_teleport");
-    public static final Identifier DRAGON_BREATH_EXPLOSION_ID = new Identifier(SoulsWeaponry.ModId, "dragon_breath_explosion");
-    public static final Identifier DARK_EXPLOSION_ID = new Identifier(SoulsWeaponry.ModId, "dark_explosion_explosion");
-    public static final Identifier SNOW_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "snow_particles");
-    public static final Identifier ICE_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "ice_particles");
-    public static final Identifier MOONLIGHT_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "moonlight_particles");
-    public static final Identifier SWORD_SWIPE_ID = new Identifier(SoulsWeaponry.ModId, "sword_swipe");
-    public static final Identifier OBLITERATE_ID = new Identifier(SoulsWeaponry.ModId, "obliterate");
-    public static final Identifier GROUND_RUPTURE_ID = new Identifier(SoulsWeaponry.ModId, "rupture");
-    public static final Identifier BLINDING_LIGHT_ID = new Identifier(SoulsWeaponry.ModId, "blinding_light");
-    public static final Identifier GRAND_SKYFALL_SMASH_ID = new Identifier(SoulsWeaponry.ModId, "grand_skyfall_smash");
-    public static final Identifier BLINDING_LIGHT_SMASH_ID = new Identifier(SoulsWeaponry.ModId, "blinding_light_smash");
-    public static final Identifier SOUL_FLAME_RUPTURE_ID = new Identifier(SoulsWeaponry.ModId, "soul_flame_rupture");
-    public static final Identifier SOUL_FLAME_SMALL_OUTBURST_ID = new Identifier(SoulsWeaponry.ModId, "soul_flame_small_outburst");
-    public static final Identifier SOUL_FLAME_BIG_OUTBURST_ID = new Identifier(SoulsWeaponry.ModId, "soul_flame_big_outburst");
-    public static final Identifier MJOLNIR_LEVIATHAN_AXE_COLLISION_ID = new Identifier(SoulsWeaponry.ModId, "mjolnir_leviathan_axe_collision");
-    public static final Identifier UMBRAL_TRESPASS_ID = new Identifier(SoulsWeaponry.ModId, "umbral_trespass_id");
-    public static final Identifier MOONFALL_ID = new Identifier(SoulsWeaponry.ModId, "moonfall_id");
-    public static final Identifier CLAW_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "claw_particles_id");
-    public static final Identifier ICE_SMASH_ID = new Identifier(SoulsWeaponry.ModId, "ice_smash_id");
-    public static final Identifier PRE_EXPLOSION_ID = new Identifier(SoulsWeaponry.ModId, "pre_explosion_id");
-    public static final Identifier AIR_COMBUSTION_ID = new Identifier(SoulsWeaponry.ModId, "air_combustion_id");
-    public static final Identifier FLAME_RUPTURE_ID = new Identifier(SoulsWeaponry.ModId, "flame_rupture");
-    public static final Identifier TRINITY_FLASH_ID = new Identifier(SoulsWeaponry.ModId, "trinity_flash_id");
-    public static final Identifier BLACKFLAME_SNAKE_PARTICLES_ID = new Identifier(SoulsWeaponry.ModId, "blackflame_snake_particles_id");
 
-    public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
-    public static final Identifier RETURN_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "check_can_freyr_return");
-    public static final Identifier STATIONARY_FREYR_SWORD = new Identifier(SoulsWeaponry.ModId, "switch_stationary_freyr");
-    public static final Identifier COLLECT_SUMMONS = new Identifier(SoulsWeaponry.ModId, "collect_summons_to_soul_reaper");
-    public static final Identifier SWITCH_TRICK_WEAPON = new Identifier(SoulsWeaponry.ModId, "switch_trick_weapon");
-    public static final Identifier KEYBIND_ABILITY = new Identifier(SoulsWeaponry.ModId, "keybind_ability");
-    public static final Identifier PARRY = new Identifier(SoulsWeaponry.ModId, "parry_keybind");
-    public static final Identifier POSTURE = new Identifier(SoulsWeaponry.ModId, "posture");
+    public static void registerC2SPackets() {
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.MOONLIGHT, MoonlightC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.RETURN_FREYR_SWORD, ReturnFreyrSwordC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.STATIONARY_FREYR_SWORD, StationaryFreyrSwordC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.COLLECT_SUMMONS, CollectSummonsC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.SWITCH_TRICK_WEAPON, SwitchTrickWeaponC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.KEYBIND_ABILITY, KeybindAbilityC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParryC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureC2S::receive);
+    }
+
+    public static void registerS2CPackets() {
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SPHERE_PARTICLES, ParticleSphereS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.OUTBURST_PARTICLES, ParticleOutburstS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.FLASH_PARTICLE, FlashParticleS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SINGLE_PARTICLE, SingleParticleS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParrySyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureSyncS2C::receive);
+    }
+
+    public static void sendToAllPlayersS2C(ServerWorld world, BlockPos pos, Identifier packetId, PacketByteBuf buf) {
+        for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
+            ServerPlayNetworking.send(player, packetId, buf);
+        }
+    }
 }

@@ -23,10 +23,10 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.LeviathanAxe;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -111,7 +111,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             if (!world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
+                ParticleHandler.particleSphere(world, 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
             }
             this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
             this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
@@ -255,7 +255,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
                             }
                         }
                         if (!this.mob.world.isClient) {
-                            ParticleNetworking.sendServerParticlePacket((ServerWorld) mob.world, PacketRegistry.ICE_SMASH_ID, this.mob.getBlockPos(), 100);
+                            ParticleHandler.particleOutburstMap(mob.getWorld(), 150, mob.getX(), mob.getY(), mob.getZ(), ParticleEvents.ICE_SMASH_MAP, 1f);
                         }
                         this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
                         this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);

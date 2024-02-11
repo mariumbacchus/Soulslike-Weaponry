@@ -10,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -20,9 +19,9 @@ import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.items.ChaosSet;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -69,7 +68,7 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!this.world.isClient) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 10);
+            ParticleHandler.particleSphereList(world, 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
             this.discard();
         }
     }

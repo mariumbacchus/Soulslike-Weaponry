@@ -9,20 +9,20 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
 import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.networking.PacketsClient;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
 import net.soulsweaponry.client.renderer.item.*;
-import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -77,8 +77,8 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         
         EntityModelRegistry.initClient();
         PredicateRegistry.initClient();
-        PacketsClient.initClient();
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
+        PacketRegistry.registerS2CPackets();
     }
 }

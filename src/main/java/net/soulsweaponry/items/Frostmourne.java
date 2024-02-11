@@ -7,7 +7,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -21,11 +20,11 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class Frostmourne extends SoulHarvestingItem {
             this.addAmount(stack, -5);
             world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
             if (!world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, on, 50);
+                ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
             }
             return TypedActionResult.success(stack, world.isClient);
         }

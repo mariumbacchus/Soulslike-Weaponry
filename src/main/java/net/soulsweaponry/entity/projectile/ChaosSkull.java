@@ -23,10 +23,10 @@ import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BigChungus;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 
 import java.util.HashMap;
 
@@ -165,7 +165,9 @@ public class ChaosSkull extends WitherSkullEntity {
 
     private void finisher() {
         this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-        if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DARK_EXPLOSION_ID, this.getBlockPos(), 100);
+        if (!this.world.isClient) {
+            ParticleHandler.particleSphereList(world, 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+        }
         this.discard();
     }
 

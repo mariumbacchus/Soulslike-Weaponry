@@ -35,6 +35,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -323,7 +324,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setState(States.DEATH);
-        CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
+        CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.BLACK_FLAME);
         NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, world);
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
         entity.setVelocity(0, .1f, 0);

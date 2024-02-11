@@ -7,21 +7,24 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class DetonateGroundItem extends ChargeToUseItem {
 
@@ -48,9 +51,12 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
             }
         }
         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-        double pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
+        float pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
         if (!world.isClient) {
-            ParticleNetworking.specificServerParticlePacket((ServerWorld) world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, user.getBlockPos(), pDistance);
+            ParticleHandler.particleOutburstMap(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), ParticleEvents.BASE_GRAND_SKYFALL_MAP, pDistance);
+            for (ParticleEffect particle : this.getParticles().keySet()) {
+                ParticleHandler.particleOutburst(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), particle, this.getParticles().get(particle), pDistance);
+            }
         }
     }
 
@@ -59,6 +65,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
     public abstract float getLaunchDivisor();
     public abstract boolean shouldHeal();
     public abstract StatusEffectInstance[] applyEffects();
+    public abstract Map<ParticleEffect, Vec3d> getParticles();
 
     /**
      * Called in the fall damage mixin methods. {@link net.soulsweaponry.mixin.LivingEntityMixin#interceptFallDamage(float, float, DamageSource, CallbackInfoReturnable)}

@@ -1,35 +1,33 @@
 package net.soulsweaponry.entity.ai.goal;
 
-import java.util.EnumSet;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleHandler;
+
+import java.util.EnumSet;
 
 public class FreyrSwordGoal extends Goal {
 
     private final FreyrSwordEntity entity;
     private int attackTicks;
-    private double[][] hitFrames = {{6, 1.0}, {13, 1.0}, {20, 1.1}, {29, 1.25}}; //Frames and damage modifier
+    private final double[][] hitFrames = {{6, 1.0}, {13, 1.0}, {20, 1.1}, {29, 1.25}}; //Frames and damage modifier
     /* private double[][] hitFrames = {
         {0.5417, 0.6667},
         {1.2083, 1.3333},
         {1.875, 2},
         {2.7917, 2.9167}
     }; */
-    private double animationFrameCap = 3.5D;
+    private final double animationFrameCap = 3.5D;
     
     public FreyrSwordGoal(FreyrSwordEntity entity) {
         this.entity = entity;
@@ -79,16 +77,16 @@ public class FreyrSwordGoal extends Goal {
         Vec3d vecTarget = this.entity.getRotationVector().add(target.getPos());
         this.entity.updatePosition(vecTarget.getX(), vecTarget.getY(), vecTarget.getZ());
         this.entity.setAnimationAttacking(true);
-        for (int i = 0; i < this.hitFrames.length; i++) {
-            if (this.attackTicks == this.hitFrames[i][0]) {
+        for (double[] hitFrame : this.hitFrames) {
+            if (this.attackTicks == hitFrame[0]) {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
-                if (target.damage(CustomDamageSource.summonDamageSource("freyr_sword", this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * this.hitFrames[i][1]))) {
-                    int fire = 0;
+                if (target.damage(CustomDamageSource.summonDamageSource("freyr_sword", this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
+                    int fire;
                     if ((fire = EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.entity.asItemStack())) > 0) {
                         target.setOnFireFor(fire * 4);
                     }
                     if (!world.isClient) {
-                        ParticleNetworking.specificServerParticlePacket((ServerWorld) world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                        ParticleHandler.singleParticle(this.entity.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     } else {
                         world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }

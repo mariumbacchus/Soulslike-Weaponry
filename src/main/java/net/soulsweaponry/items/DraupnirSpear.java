@@ -22,9 +22,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -114,7 +114,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                     entity.addVelocity(0, .1f, 0);
                 }
             }
-            ParticleNetworking.specificServerParticlePacket(world, PacketRegistry.GRAND_SKYFALL_SMASH_ID, player.getBlockPos(), 0.5D);
+            ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
             player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
             if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {

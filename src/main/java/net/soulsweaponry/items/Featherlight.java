@@ -7,15 +7,21 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
 
@@ -64,5 +70,12 @@ public class Featherlight extends UltraHeavyWeapon {
                 new StatusEffectInstance(EffectRegistry.BLIGHT, 200, 4),
                 new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
         };
+    }
+
+    @Override
+    public Map<ParticleEffect, Vec3d> getParticles() {
+        Map<ParticleEffect, Vec3d> map = new HashMap<>();
+        map.put(ParticleRegistry.PURPLE_FLAME, new Vec3d(1, 6, 1));
+        return map;
     }
 }

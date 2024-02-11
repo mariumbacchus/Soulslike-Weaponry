@@ -1,9 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
@@ -25,23 +21,16 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -52,6 +41,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, IAnimatedDeath {
 
@@ -222,7 +215,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.sacrificeEvent();
             this.remove(RemovalReason.KILLED);
         }
@@ -353,10 +346,10 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                     if (this.attackStatus == 10) {
                         int[][] cords = {{4,4}, {-4,4}, {4,-4}, {-4,-4}};
                         for (int[] cord : cords) {
-                            BlockPos pos = new BlockPos(this.entity.getX() + cord[0], this.entity.getY(), this.entity.getZ() + cord[1]);
-                            if (!this.entity.world.isClient)
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.entity.world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 50);
-
+                            Vec3d pos = new Vec3d(this.entity.getX() + cord[0], this.entity.getY(), this.entity.getZ() + cord[1]);
+                            if (!this.entity.world.isClient) {
+                                ParticleHandler.particleOutburstMap(this.entity.getWorld(), 50, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
+                            }
                             this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.6f, 1f);
                             SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
                             mob.setSoulAmount(0);

@@ -1,5 +1,6 @@
 package net.soulsweaponry.registry;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
