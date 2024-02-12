@@ -6,12 +6,10 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
@@ -19,10 +17,10 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -53,7 +51,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
             if (power >= 3) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 if (!world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.CONJURE_ENTITY_PACKET_ID, new BlockPos(vecBlocksAway), 50);
+                    ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                 }
 
                 world.playSound(player, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);

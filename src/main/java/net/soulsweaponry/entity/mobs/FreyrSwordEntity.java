@@ -48,7 +48,7 @@ import java.util.UUID;
 
 public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stack;
     public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);

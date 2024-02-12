@@ -1,31 +1,23 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -36,16 +28,22 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
@@ -105,7 +103,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -190,7 +188,10 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                         closestTarget.damage(DamageSource.mob(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
                     }
                 }
-                if (!this.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DAWNBREAKER_PACKET_ID, this.getBlockPos());
+                if (!this.world.isClient) {
+                    ParticleHandler.particleSphere(world, 1000, this.getX(), this.getY() + 1f, this.getZ(), ParticleTypes.FLAME, 1f);
+                    ParticleHandler.particleOutburstMap(world, 200, this.getX(), this.getY() + .1f, this.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
+                }
             }
             if (this.spawnTicks >= 125) {
                 this.setAttackAnimation(AccursedLordAnimations.IDLE);

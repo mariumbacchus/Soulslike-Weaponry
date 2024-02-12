@@ -24,12 +24,16 @@ import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.UntargetableFireball;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.entity.projectile.invisible.FlamePillar;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DayStalkerGoal extends MeleeAttackGoal {
 
@@ -368,13 +372,15 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= 20 && this.attackStatus <= 36) {
             if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.PRE_EXPLOSION_ID, this.boss.getTargetPos());
+                Vec3d center = Vec3d.ofCenter(this.boss.getTargetPos());
+                ParticleHandler.particleOutburst(this.boss.getWorld(), 150, center.getX(), center.getY(), center.getZ(), ParticleTypes.FLAME, new Vec3d(10 ,10 ,10), 1f);
             }
         }
         if (this.attackStatus == 37) {
             if (!this.boss.world.isClient) {
                 this.boss.world.playSound(null, this.boss.getTargetPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.AIR_COMBUSTION_ID, this.boss.getTargetPos(), 100);
+                Vec3d pos = Vec3d.ofCenter(this.boss.getTargetPos());
+                ParticleEvents.airCombustionEvent(this.boss.getWorld(), pos.getX(), pos.getY(), pos.getZ());
                 for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(this.boss.getTargetPos()).expand(this.boss.isPhaseTwo() ? 2D : 1D))) {
                     if (entity instanceof LivingEntity living) {
                         this.damageTarget(living, 35f);
@@ -463,28 +469,27 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.mob.getNavigation().stop();
         boolean phase2 = this.boss.isPhaseTwo();
-        if (this.attackStatus == 1) this.playSound(this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, 1f, 1f);
-        if (this.attackStatus >= 25 && this.attackStatus < 80 && this.attackStatus % (phase2 ? 2 : 4) == 0) {
-            int x = this.boss.getBlockX() + this.boss.getRandom().nextInt(16) - 8;
-            int y = this.boss.getBlockY();
-            int z = this.boss.getBlockZ() + this.boss.getRandom().nextInt(16) - 8;
-            BlockPos randomPos = new BlockPos(x, y, z);
-            if (!this.boss.world.getBlockState(randomPos).isAir()) {
-                randomPos = randomPos.up();
-            } else if (this.boss.world.getBlockState(randomPos.down()).isAir()) {
-                randomPos = randomPos.down();
-            }
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(randomPos).expand(1D))) {
-                if (entity instanceof LivingEntity living) {
-                    this.damageTarget(living, 48f);
+        if (this.attackStatus == 1) {
+            this.playSound(this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, 1f, 1f);
+            int i = 0;
+            List<BlockPos> list = new ArrayList<>();
+            list.add(new BlockPos(0, 0, 0));
+            while (i < (phase2 ? 32 : 16)) {
+                int x = this.boss.getBlockX() + this.boss.getRandom().nextInt(16) - 8;
+                int y = this.boss.getBlockY();
+                int z = this.boss.getBlockZ() + this.boss.getRandom().nextInt(16) - 8;
+                BlockPos pos = new BlockPos(x, y, z);
+                for (BlockPos listPos : list) {
+                    if (listPos != pos) {
+                        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, this.boss.getWorld());
+                        pillar.setDamage(this.getModifiedDamage(48f));
+                        pillar.setPos(x, y, z);
+                        pillar.setOwner(this.boss);
+                        pillar.setWarmup(i * 2);
+                        this.boss.getWorld().spawnEntity(pillar);
+                        i++;
+                    }
                 }
-            }
-            if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.FLAME_RUPTURE_ID, randomPos);
-            }
-            this.playSound(randomPos, SoundRegistry.DAY_STALKER_CHAOS_STORM, 1f, 1f);
-            if (this.boss.world.getBlockState(randomPos).isAir()) {
-                this.boss.world.setBlockState(randomPos, Blocks.FIRE.getDefaultState());
             }
         }
         this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, this.boss.isPhaseTwo() ? 0 : 60);
@@ -498,7 +503,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 10f + (float)this.attackStatus/2f);
                 if (!this.boss.world.isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                    ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
             }
             if (this.boss.isPhaseTwo()) {
@@ -510,7 +515,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 25f);
                 if (!this.boss.world.isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                    ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
             }
             if (this.boss.isPhaseTwo()) {
@@ -761,7 +766,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(null, SoundRegistry.DAY_STALKER_RADIANCE, 1f, 1f);
         }
         if (this.attackStatus == 80) {
-            CustomDeathHandler.deathExplosionEvent(this.boss.world, this.boss.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.boss.getWorld(), this.boss.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
             this.aoe(4D, 60f, 4f);
         }
         this.checkAndReset(40, 140);
@@ -805,7 +810,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 BlockPos pos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
                 if (pos != null) {
                     if (!this.boss.world.isClient) {
-                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.FLAME_RUPTURE_ID, pos);
+                        ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.FLAME_RUPTURE_MAP, 1f);
                     }
                     this.boss.world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                 }
@@ -874,11 +879,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                     }
                 }
                 this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-                double pDistance = this.fallDistance >= 10 ? this.fallDistance/10 : 1;
+                float pDistance = this.fallDistance >= 10 ? this.fallDistance/10 : 1;
                 if (!this.boss.getWorld().isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.GRAND_SKYFALL_SMASH_ID, this.boss.getBlockPos(), pDistance);
+                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), MathHelper.floor(200 * pDistance), this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, pDistance);
                 }
                 this.hasExploded = true;
             }
@@ -919,12 +922,13 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus == 43) {
             Vec3d vec3d = this.boss.getRotationVec(1.0f);
-            BlockPos pos = new BlockPos(new Vec3d(this.boss.getBlockX() + vec3d.x * 3, this.boss.getBlockY(), this.boss.getBlockZ() + vec3d.z * 3));
+            Vec3d pos = new Vec3d(this.boss.getBlockX() + vec3d.x * 3, this.boss.getBlockY(), this.boss.getBlockZ() + vec3d.z * 3);
+            BlockPos blockPos = new BlockPos(pos);
             if (!this.boss.world.isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, pos, 150);
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 150, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARKIN_BLADE_SLAM_MAP, 1f);
             }
-            this.playSound(pos, SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
-            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(pos).expand(3D))) {
+            this.playSound(blockPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
+            for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(blockPos).expand(3D))) {
                 if (entity instanceof LivingEntity living) {
                     this.damageTarget(living, 25f);
                 }

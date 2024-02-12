@@ -1,7 +1,10 @@
 package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -24,17 +27,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
@@ -190,7 +191,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -381,7 +382,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
             }
             if (this.phaseTwoTicks == 81) {
                 if (!world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
+                    ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
                 placeHolder.aoe(4D, 50f, 4f);

@@ -19,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -27,8 +26,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +76,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                                 target.takeKnockback(5F, -x, -z);
                                 target.damage(DamageSource.mob(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
                                 if (!world.isClient) {
-                                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 20);
+                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
                                 }
                             }
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);

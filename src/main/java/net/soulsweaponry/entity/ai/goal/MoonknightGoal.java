@@ -10,7 +10,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -26,12 +26,12 @@ import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -398,7 +398,9 @@ public class MoonknightGoal extends Goal {
                         ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 100, 0));
                     }
                 }
-                if (!boss.world.isClient) ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_FLAME_SMALL_OUTBURST_ID, this.targetPos, this.height == 0 ? targetPos.getY() : this.height);
+                if (!boss.getWorld().isClient) {
+                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.height == 0 ? targetPos.getY() : this.height, this.targetPos.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
+                }
             }
         }
         if (this.attackStatus >= 23) {
@@ -422,7 +424,7 @@ public class MoonknightGoal extends Goal {
             }
             this.boss.world.playSound(null, new BlockPos(spot), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             if (!this.boss.world.isClient) {
-                ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_FLAME_RUPTURE_ID, new BlockPos(spot), spot.getX(), (float)spot.getZ());
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, spot.getX(), spot.getY(), spot.getZ(), ParticleEvents.SOUL_FLAME_RUPTURE_MAP, 1f);
             }
             this.moonfallRuptureMod += 0.25D;
         } else if (this.attackStatus >= 41) {
@@ -443,7 +445,9 @@ public class MoonknightGoal extends Goal {
                     livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(50f));
                 }
             }
-            if (!boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.boss.getBlockPos(), true);
+            if (!boss.world.isClient) {
+                ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            }
         }
         if (this.attackStatus >= 55) {
             this.resetAttack(1.2f, true, 1f);
@@ -462,7 +466,7 @@ public class MoonknightGoal extends Goal {
         }
         if (!isSoundDelayed) this.boss.world.playSound(null, this.targetPos, sound, SoundCategory.HOSTILE, 1f, 1f);
         if (!this.boss.world.isClient) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.OBLITERATE_ID, this.targetPos, 200);
+            ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
         }
     }
 
@@ -473,7 +477,7 @@ public class MoonknightGoal extends Goal {
         this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         this.boss.world.spawnEntity(entity);
         if (!this.boss.world.isClient) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, new BlockPos(pos), 100);
+            ParticleHandler.particleOutburstMap(this.boss.world, 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
         }
     }
 
@@ -524,7 +528,7 @@ public class MoonknightGoal extends Goal {
                 }
                 this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.OBLITERATE_ID, this.targetPos, 200);
+                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
             if (this.attackStatus >= 36) {
@@ -549,7 +553,7 @@ public class MoonknightGoal extends Goal {
                     entity.addVelocity(0, 1.0, 0);
                     this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                     if (!this.boss.world.isClient) {
-                        ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, entity.getBlockPos(), entity.getX(), (float)entity.getZ());
+                        ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
                     }
                 }
             }
@@ -564,7 +568,9 @@ public class MoonknightGoal extends Goal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         if (this.attackStatus < 1) this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
         if (this.attackStatus == 9) {
-            if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.BLINDING_LIGHT_SMASH_ID, this.boss.getBlockPos(), 200);
+            if (!this.boss.world.isClient) {
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.BLINDING_LIGHT_SMASH_MAP, 1f);
+            }
             this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.BLINDING_LIGHT_EXPLOSION_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(3))) {
                 if (entity instanceof LivingEntity living) {
@@ -609,11 +615,11 @@ public class MoonknightGoal extends Goal {
                 this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 this.boss.world.spawnEntity(entity);
                 if (!this.boss.world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 100);
+                    ParticleHandler.particleOutburstMap(this.boss.world, 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }
             }
             if (!this.boss.world.isClient) {
-                ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.GROUND_RUPTURE_ID, target.getBlockPos(), target.getX(), (float) target.getZ());
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, target.getX(), target.getY(), target.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
             }
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 140, 1));
             this.boss.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 0.7f, 1f);

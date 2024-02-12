@@ -1,8 +1,5 @@
 package net.soulsweaponry.entity.ai.goal;
 
-import java.util.EnumSet;
-import java.util.List;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,43 +7,26 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.DragonFireballEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.LlamaSpitEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
-import net.minecraft.entity.projectile.SpectralArrowEntity;
-import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.entity.projectile.WitherSkullEntity;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
-import net.soulsweaponry.entity.projectile.Cannonball;
-import net.soulsweaponry.entity.projectile.ChaosSkull;
-import net.soulsweaponry.entity.projectile.ChargedArrow;
-import net.soulsweaponry.entity.projectile.CometSpearEntity;
-import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
+import net.soulsweaponry.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class ChaosMonarchGoal extends Goal {
 
@@ -116,8 +96,9 @@ public class ChaosMonarchGoal extends Goal {
                     case TELEPORT -> {
                         this.attackStatus++;
                         if (this.attackStatus % 2 == 0 && this.attackStatus < 10) {
-                            if (!this.boss.world.isClient)
-                                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.BIG_TELEPORT_ID, this.boss.getBlockPos(), 1000);
+                            if (!this.boss.world.isClient){
+                                ParticleHandler.particleSphere(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleTypes.PORTAL, 1f);
+                            }
                         }
                         if (this.attackStatus == 23) {
                             this.boss.world.playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
@@ -125,8 +106,9 @@ public class ChaosMonarchGoal extends Goal {
                             if (!bl) {
                                 this.explode();
                             } else {
-                                if (!this.boss.world.isClient)
-                                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DRAGON_BREATH_EXPLOSION_ID, this.boss.getBlockPos(), 1000);
+                                if (!this.boss.world.isClient) {
+                                    ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH);
+                                }
                             }
                         }
                         if (this.attackStatus >= 30) {
@@ -198,8 +180,9 @@ public class ChaosMonarchGoal extends Goal {
             case BONK -> {
                 this.generateHitbox(blockPos, 2, 30f);
                 this.boss.world.playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-                if (!this.boss.world.isClient)
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DARK_EXPLOSION_ID, blockPos, 100);
+                if (!this.boss.world.isClient) {
+                    ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                }
             }
             default -> {
             }
@@ -381,9 +364,8 @@ public class ChaosMonarchGoal extends Goal {
         this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
         Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
         List<Entity> nearbyEntities = this.boss.world.getOtherEntities(this.boss, chunkBox);
-        for (int j = 0; j < nearbyEntities.size(); j++) {
-            if (nearbyEntities.get(j) instanceof LivingEntity) {
-                LivingEntity closestTarget = (LivingEntity) nearbyEntities.get(j);
+        for (Entity nearbyEntity : nearbyEntities) {
+            if (nearbyEntity instanceof LivingEntity closestTarget) {
                 double x = closestTarget.getX() - (this.boss.getX());
                 double z = closestTarget.getZ() - this.boss.getZ();
                 closestTarget.takeKnockback(10F, -x, -z);
@@ -391,7 +373,9 @@ public class ChaosMonarchGoal extends Goal {
             }
         }
 
-        if (!this.boss.world.isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.boss.getBlockPos(), true);
+        if (!this.boss.world.isClient) {
+            ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+        }
     }
 
     static enum HitboxType {
