@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybindAbility {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, attackSpeed, settings);

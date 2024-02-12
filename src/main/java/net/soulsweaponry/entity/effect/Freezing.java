@@ -3,13 +3,12 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.items.LeviathanAxe;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleHandler;
 
 public class Freezing extends StatusEffect {
 
@@ -29,7 +28,7 @@ public class Freezing extends StatusEffect {
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
         if (!entity.world.isClient) {
-            ParticleNetworking.specificServerParticlePacket((ServerWorld) entity.world, PacketRegistry.SNOW_PARTICLES_ID, entity.getBlockPos(), entity.getWidth(), entity.getHeight());
+            ParticleHandler.singleParticle(entity.world, ParticleTypes.SNOWFLAKE, entity.getParticleX(0.5D), entity.getRandomBodyY(), entity.getParticleZ(0.5D), 0, 0, 0);
         }
         if (entity.isDead()) {
             if (entity instanceof IAnimatedDeath animated) {

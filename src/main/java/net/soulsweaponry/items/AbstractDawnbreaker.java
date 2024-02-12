@@ -9,15 +9,15 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
@@ -64,7 +64,9 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
      */
     public static void dawnbreakerEvent(LivingEntity target, LivingEntity attacker, ItemStack stack) {
         if (!attacker.world.isClient && attacker instanceof ServerPlayerEntity) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.DAWNBREAKER_PACKET_ID, target.getBlockPos());
+            //Replaces old DAWNBREAKER_PACKET call
+            ParticleHandler.particleSphere(attacker.getWorld(), 1000, target.getX(), target.getEyeY() - .25f, target.getZ(), ParticleTypes.FLAME, 1f);
+            ParticleHandler.particleOutburstMap(attacker.getWorld(), 200, target.getX(), target.getY(), target.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
         }
         target.world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
         Box aoe = target.getBoundingBox().expand(10);

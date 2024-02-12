@@ -29,6 +29,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -139,7 +140,7 @@ public class NightShade extends BossEntity implements IAnimatable {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.NIGHTFALL_SPAWN_EVENT);
+                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
                     NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
@@ -198,7 +199,7 @@ public class NightShade extends BossEntity implements IAnimatable {
                 return;
             }
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
             this.remove(RemovalReason.KILLED);
         }
     }

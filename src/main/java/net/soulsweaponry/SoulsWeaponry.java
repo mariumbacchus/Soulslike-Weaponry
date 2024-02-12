@@ -3,6 +3,7 @@ package net.soulsweaponry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.soulsweaponry.networking.PacketRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,6 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.OreSpawnRegistry;
-import net.soulsweaponry.networking.PacketsServer;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
 import net.soulsweaponry.registry.SpawnInit;
@@ -57,7 +57,7 @@ public class SoulsWeaponry implements ModInitializer {
         LOGGER.info("Successfully initialized Geckolib!");
         RecipeRegistry.init();
         LOGGER.info("Successfully registered recipes!");
-        PacketsServer.initServer();
+        PacketRegistry.registerC2SPackets();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, "2D Weapon Models", ResourcePackActivationType.NORMAL);
