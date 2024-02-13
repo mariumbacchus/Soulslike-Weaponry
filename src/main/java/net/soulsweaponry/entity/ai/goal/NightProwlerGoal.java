@@ -12,6 +12,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -23,15 +24,17 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
 import net.soulsweaponry.entity.logic.DeathSpiralLogic;
 import net.soulsweaponry.entity.mobs.*;
-import net.soulsweaponry.entity.projectile.*;
+import net.soulsweaponry.entity.projectile.MoonlightProjectile;
+import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
 import net.soulsweaponry.entity.projectile.invisible.BlackflameSnakeEntity;
 import net.soulsweaponry.entity.projectile.invisible.FogEntity;
 import net.soulsweaponry.entity.projectile.invisible.InvisibleEntity;
 import net.soulsweaponry.entity.projectile.invisible.NightWaveEntity;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -374,8 +377,10 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.hasExploded = true;
             this.boss.setTargetPos(pos);
             this.boss.setParticleState(1);
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.TRINITY_FLASH_ID, pos);
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.OBLITERATE_ID, pos, 200);
+            Vec3d target = Vec3d.ofCenter(pos);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(142, 107, 1), 10f);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(72, 0, 140), 2f);
+            ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
             this.boss.playSound(SoundRegistry.TRINITY, 1f, 1f);
             if (this.boss.isPhaseTwo()) {
                 this.trinityShockwave();
@@ -471,7 +476,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 }
                 pos = this.getNonAirPos(pos, this.boss.getWorld());
                 entity.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.CONJURE_ENTITY_PACKET_ID, pos, 100);
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                 DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), entity.getPos(), 1f);
                 spiral.setPosition(entity.getPos());
                 this.boss.getWorld().spawnEntity(spiral);
@@ -883,7 +888,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus == 42) {
             this.aoe(this.boss.getBoundingBox().expand(3D), 35f, 2f, true);
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.boss.getBlockPos(), true);
+            ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
             this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 0.7f);
         }

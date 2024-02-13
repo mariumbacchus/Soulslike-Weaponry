@@ -14,6 +14,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -25,13 +27,10 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.ParticleNetworking;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -39,7 +38,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -74,7 +75,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                 }
                 player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (!world.isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.OBLITERATE_ID, targetArea, 200);
+                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
         }
@@ -97,8 +98,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                 world.spawnEntity(entity);
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (!attacker.world.isClient) {
-                    BlockPos pos = target.getBlockPos();
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) attacker.world, PacketRegistry.SOUL_RUPTURE_PACKET_ID, pos, 50);
+                    ParticleHandler.particleOutburstMap(attacker.getWorld(), 50, target.getX(), target.getY(), target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }
             }
         }
@@ -183,5 +183,12 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public StatusEffectInstance[] applyEffects() {
         return new StatusEffectInstance[0];
+    }
+
+    @Override
+    public Map<ParticleEffect, Vec3d> getParticles() {
+        Map<ParticleEffect, Vec3d> map = new HashMap<>();
+        map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1));
+        return map;
     }
 }

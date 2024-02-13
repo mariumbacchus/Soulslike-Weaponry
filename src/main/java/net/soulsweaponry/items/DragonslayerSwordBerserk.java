@@ -10,19 +10,27 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
     
@@ -63,6 +71,11 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        return TypedActionResult.fail(user.getStackInHand(hand));
+    }
+
+    @Override
     public float getBaseExpansion() {
         return 2.5f;
     }
@@ -85,5 +98,13 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public StatusEffectInstance[] applyEffects() {
         return new StatusEffectInstance[] {new StatusEffectInstance(StatusEffects.WITHER, 140, 1)};
+    }
+
+    @Override
+    public Map<ParticleEffect, Vec3d> getParticles() {
+        Map<ParticleEffect, Vec3d> map = new HashMap<>();
+        map.put(ParticleRegistry.DARK_STAR, new Vec3d(1, 6, 1));
+        map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
+        return map;
     }
 }

@@ -17,15 +17,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -158,18 +155,10 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!this.world.isClient) {
-            if (this.dataTracker.get(HUGE_EXPLOSION)) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
-            } else {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.world, PacketRegistry.MOONLIGHT_PARTICLES_ID, this.getBlockPos(), this.getMaxParticlePoints());
-            }
+        if (this.dataTracker.get(HUGE_EXPLOSION)) {
+            this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), 750, 0.5f);
         } else {
-            if (this.dataTracker.get(HUGE_EXPLOSION)) {
-                this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), 750, 0.5f);
-            } else {
-                this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
-            }
+            this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
         }
     }
 

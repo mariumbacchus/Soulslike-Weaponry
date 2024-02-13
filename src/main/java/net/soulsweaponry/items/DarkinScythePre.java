@@ -19,17 +19,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BossEntity;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,8 +64,8 @@ public class DarkinScythePre extends SoulHarvestingItem {
         if (entity instanceof PlayerEntity player) {
             if (this.getSouls(stack) >= MAX_SOULS && slot == player.getInventory().selectedSlot) {
                 if (!world.isClient) {
-                    BlockPos pos = entity.getBlockPos();
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DAWNBREAKER_PACKET_ID, pos);
+                    ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
+                    ParticleHandler.particleOutburstMap(world, 200, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
                 }
                 world.playSound(null, entity.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 0.8f, 1f);
                 Item item = WeaponRegistry.DARKIN_SCYTHE_PRIME;

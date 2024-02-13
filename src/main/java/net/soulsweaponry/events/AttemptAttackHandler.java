@@ -8,7 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 public class AttemptAttackHandler implements AttemptAttackCallback {
@@ -19,7 +19,7 @@ public class AttemptAttackHandler implements AttemptAttackCallback {
             if (stack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) || stack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD)) {
                 if (world.isClient) {
                     PacketByteBuf buf = PacketByteBufs.create();
-                    ClientPlayNetworking.send(PacketRegistry.MOONLIGHT, buf);
+                    ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
                 }
             }
         }

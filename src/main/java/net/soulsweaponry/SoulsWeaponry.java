@@ -1,34 +1,21 @@
 package net.soulsweaponry;
 
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.Text;
-import net.soulsweaponry.world.gen.OreGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
-import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.registry.BlockRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.EventRegistry;
-import net.soulsweaponry.registry.GunRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.networking.PacketsServer;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.RecipeRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.SpawnInit;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.registry.*;
+import net.soulsweaponry.world.gen.OreGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
 
 public class SoulsWeaponry implements ModInitializer {
@@ -66,7 +53,7 @@ public class SoulsWeaponry implements ModInitializer {
         LOGGER.info("Successfully registered SoulsWeapons content!");
         RecipeRegistry.init();
         LOGGER.info("Successfully registered recipes!");
-        PacketsServer.initServer();
+        PacketRegistry.registerC2SPackets();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);

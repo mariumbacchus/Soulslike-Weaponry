@@ -5,25 +5,25 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
 import org.joml.Matrix4f;
 
 public class CustomDeathHandler {
 
     private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0) / 2.0);
-    
-    public static void deathExplosionEvent(World world, BlockPos pos, boolean soulFlame, SoundEvent sound) {
+
+    public static void deathExplosionEvent(World world, Vec3d pos, SoundEvent sound, ParticleEffect... particles) {
         if (!world.isClient) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) world, PacketRegistry.DEATH_EXPLOSION_PACKET_ID, pos, soulFlame);
+            ParticleHandler.particleSphereList(world, 1000, pos.getX(), pos.getY(), pos.getZ(), 1f, particles);
         }
-        world.playSound(null, pos, sound, SoundCategory.HOSTILE, 1f, 1f);
+        world.playSound(null, BlockPos.ofFloored(pos), sound, SoundCategory.HOSTILE, 1f, 1f);
     }
 
     public static void renderDeathLight(LivingEntity entity, float entityYaw, float partialTicks, MatrixStack stack, double[] translation,

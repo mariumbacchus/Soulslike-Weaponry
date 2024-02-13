@@ -13,8 +13,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.NightProwler;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -63,8 +63,7 @@ public class BlackflameSnakeLogic {
 
     private void ruptureLogic(World world, Vec3d target) {
         if (!world.isClient) {
-            ParticleNetworking.specificServerParticlePacket((ServerWorld) world, PacketRegistry.BLACKFLAME_SNAKE_PARTICLES_ID, BlockPos.ofFloored(target),
-                    target.getX(), (float) target.getZ());
+            ParticleHandler.particleOutburstMap(world, 250, target.getX(), target.getY(), target.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
             for (Entity entity : world.getOtherEntities(this.getOwner(world), new Box(BlockPos.ofFloored(target)).expand(2D))) {
                 if (entity instanceof LivingEntity living && !this.isOwner(living) && !(entity instanceof NightProwler)) {
                     DamageSource src = (this.getOwner(world) != null && this.getOwner(world) instanceof LivingEntity) ?

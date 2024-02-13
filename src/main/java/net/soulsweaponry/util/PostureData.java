@@ -6,7 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketIds;
 
 public class PostureData {
 
@@ -47,6 +47,6 @@ public class PostureData {
     public static void syncData(int data, ServerPlayerEntity entity) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(data);
-        ServerPlayNetworking.send(entity, PacketRegistry.POSTURE, buf);
+        ServerPlayNetworking.send(entity, PacketIds.POSTURE, buf);
     }
 }
