@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -13,7 +11,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
@@ -24,6 +21,8 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class MoonlightShortsword extends SwordItem {
     
     public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -33,17 +32,6 @@ public class MoonlightShortsword extends SwordItem {
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
-
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (ConfigConstructor.moonlight_shortsword_enable_right_click) {
-            MoonlightShortsword.summonSmallProjectile(world, user);
-            return TypedActionResult.success(itemStack, world.isClient());
-        } else {
-            return TypedActionResult.fail(itemStack);
-        }
-		
-	}
 
     public static void summonSmallProjectile(World world, PlayerEntity user) {
         for (Hand hand : Hand.values()) {
