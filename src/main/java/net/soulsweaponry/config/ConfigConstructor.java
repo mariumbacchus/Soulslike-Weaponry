@@ -137,7 +137,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_ability_knockup = 0.3f;
     @Entry public static int holy_moonlight_ability_cooldown = 150;
     @Entry public static int holy_moonlight_ruptures_amount = 8;
-    @Entry public static int holy_moonlight_sword_damage = 8;
+    @Entry public static int holy_moonlight_sword_damage = 7;
     @Entry public static int holy_moonlight_sword_max_bonus_damage = 2;
     @Entry public static int holy_moonlight_sword_charge_added_post_hit = 1;
     @Entry public static int kirkhammer_damage = 9;
@@ -165,12 +165,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int moonlight_greatsword_damage = 9;
     @Entry public static float moonlight_greatsword_projectile_damage = 8.0f;
     @Entry public static int pure_moonlight_greatsword_damage = 12;
-    //@Entry public static int pure_moonlight_shortsword_damage = 8;
     @Entry public static int moonlight_shortsword_damage = 8;
     @Entry public static float moonlight_shortsword_projectile_damage = 3.0f;
     @Entry public static int moonlight_shortsword_projectile_cooldown = 13;
-    @Entry public static boolean moonlight_shortsword_enable_right_click = false;
-    @Entry public static boolean moonlight_shortsword_enable_left_click = true;
     @Entry public static int moonlight_ring_projectile_cooldown = 5;
     @Entry public static int nightfall_damage = 11;
     @Entry public static float nightfall_ability_damage = 18.0f;
