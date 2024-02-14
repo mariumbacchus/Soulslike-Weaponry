@@ -33,10 +33,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.ChaosSet;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -125,7 +122,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }

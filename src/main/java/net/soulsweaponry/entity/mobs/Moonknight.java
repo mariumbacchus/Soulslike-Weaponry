@@ -1,16 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -24,7 +16,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -37,12 +28,12 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -207,7 +198,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity && entity.getBlockPos() != null) {
-                if (!this.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, entity.getBlockPos(), 10);
+                if (!this.getWorld().isClient) {
+                    ParticleHandler.particleSphereList(this.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                }
                 return false;
             }
             return super.damage(source, amount);
@@ -233,7 +226,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
                 this.setPhaseTwo(true);
@@ -353,7 +346,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
         } else {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.OBLITERATE_ID, this.getBlockPos(), 50);
+            ParticleHandler.particleOutburstMap(this.getWorld(), 50, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
         }
     }
 
@@ -377,7 +370,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         if (this.deathTicks == 40 && this.getBlockPos() != null) this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }

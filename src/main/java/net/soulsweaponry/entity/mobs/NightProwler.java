@@ -33,10 +33,9 @@ import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -216,7 +215,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), true, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -397,7 +396,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             if (this.phaseTwoTicks == 81) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 if (!getWorld().isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), true);
+                    ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 NightProwlerGoal placeHolder = new NightProwlerGoal(this, 1D, true);
                 placeHolder.aoe(this.getBoundingBox().expand(4D), 50f, 4f, true);

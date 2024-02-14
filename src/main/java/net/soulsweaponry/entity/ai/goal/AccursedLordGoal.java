@@ -1,24 +1,17 @@
 package net.soulsweaponry.entity.ai.goal;
 
-import java.util.EnumSet;
-import java.util.List;
-
-import net.minecraft.entity.effect.StatusEffect;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -27,8 +20,14 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class AccursedLordGoal extends Goal {
     private final AccursedLordBoss boss;
@@ -195,7 +194,9 @@ public class AccursedLordGoal extends Goal {
         this.attackStatus++;
         if (this.attackStatus == 13 || this.attackStatus == 18 || this.attackStatus == 24) {
             this.summonLava(lavaRadius);
-            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.boss.getBlockPos(), 200);
+            if (!this.boss.getWorld().isClient) {
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.DARKIN_BLADE_SLAM_MAP, 1f);
+            }
             this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             this.lavaRadius++;
         }
@@ -259,7 +260,10 @@ public class AccursedLordGoal extends Goal {
                     this.damageTarget(closestTarget, this.boss.getWorld().getDamageSources().mobAttack(this.boss), 50f);
                 }
             }
-            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DAWNBREAKER_PACKET_ID, this.boss.getBlockPos());
+            if (!this.boss.getWorld().isClient) {
+                ParticleHandler.particleSphere(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY() + .4f, this.boss.getZ(), ParticleTypes.FLAME, 1f);
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, this.boss.getX(), this.boss.getY() + .1f, this.boss.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
+            }
         }
         if (this.attackStatus >= 30) {
             this.resetAttackCooldown(1.5f);
@@ -292,7 +296,9 @@ public class AccursedLordGoal extends Goal {
         Box aoe = new Box(this.attackPos).expand(3);
         List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
         if (this.attackStatus == 17) {
-            if (!this.boss.getWorld().isClient) ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARKIN_BLADE_SLAM_PACKET_ID, this.attackPos, 200);
+            if (!this.boss.getWorld().isClient) {
+                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, this.attackPos.getX(), this.attackPos.getY(), this.attackPos.getZ(), ParticleEvents.DARKIN_BLADE_SLAM_MAP, 1f);
+            }
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
                     this.damageTarget((LivingEntity) entity, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), 30f);

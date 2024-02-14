@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketIds;
 
 public class KeyBindRegistry {
 
@@ -38,27 +38,27 @@ public class KeyBindRegistry {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.RETURN_FREYR_SWORD, PacketByteBufs.empty());
+                ClientPlayNetworking.send(PacketIds.RETURN_FREYR_SWORD, PacketByteBufs.empty());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (stationaryFreyrSword.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.STATIONARY_FREYR_SWORD, PacketByteBufs.empty());
+                ClientPlayNetworking.send(PacketIds.STATIONARY_FREYR_SWORD, PacketByteBufs.empty());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (collectSummons.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.COLLECT_SUMMONS, PacketByteBufs.empty());
+                ClientPlayNetworking.send(PacketIds.COLLECT_SUMMONS, PacketByteBufs.empty());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (switchWeapon.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.SWITCH_TRICK_WEAPON, PacketByteBufs.empty());
+                ClientPlayNetworking.send(PacketIds.SWITCH_TRICK_WEAPON, PacketByteBufs.empty());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keybindAbility.wasPressed()) {
-                ClientPlayNetworking.send(PacketRegistry.KEYBIND_ABILITY, PacketByteBufs.empty());
+                ClientPlayNetworking.send(PacketIds.KEYBIND_ABILITY, PacketByteBufs.empty());
                 for (Hand hand : Hand.values()) {
                     if (client.player != null && client.player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
                         abilityItem.useKeybindAbilityClient(client.world, client.player.getStackInHand(hand), client.player);
@@ -69,7 +69,7 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (parry.wasPressed()) {
                 try {
-                    ClientPlayNetworking.send(PacketRegistry.PARRY, PacketByteBufs.empty());
+                    ClientPlayNetworking.send(PacketIds.PARRY, PacketByteBufs.empty());
                 } catch (Exception ignored) {}
             }
         });
@@ -77,7 +77,7 @@ public class KeyBindRegistry {
             while (effectShootMoonlight.wasPressed()) {
                 if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
                     PacketByteBuf buf = PacketByteBufs.create();
-                    ClientPlayNetworking.send(PacketRegistry.MOONLIGHT, buf);
+                    ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
                     client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
                 }
             }

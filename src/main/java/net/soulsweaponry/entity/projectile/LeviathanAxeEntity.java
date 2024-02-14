@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
@@ -21,9 +20,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.items.Mjolnir;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -75,7 +73,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
             }
         }
         if (!getWorld().isClient && entity instanceof MjolnirProjectile) {
-            ParticleNetworking.sendServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.MJOLNIR_LEVIATHAN_AXE_COLLISION_ID, this.getBlockPos());
+            ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
             this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.BLOCK);
         }
         LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));

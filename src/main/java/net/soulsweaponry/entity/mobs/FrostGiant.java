@@ -24,10 +24,10 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.LeviathanAxe;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -112,7 +112,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             if (!getWorld().isClient) {
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.ICE_PARTICLES_ID, this.getBlockPos(), 600);
+                ParticleHandler.particleSphere(this.getWorld(), 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
             }
             this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
             this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
@@ -256,7 +256,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
                             }
                         }
                         if (!this.mob.getWorld().isClient) {
-                            ParticleNetworking.sendServerParticlePacket((ServerWorld) mob.getWorld(), PacketRegistry.ICE_SMASH_ID, this.mob.getBlockPos(), 100);
+                            ParticleHandler.particleOutburstMap(mob.getWorld(), 150, mob.getX(), mob.getY(), mob.getZ(), ParticleEvents.ICE_SMASH_MAP, 1f);
                         }
                         this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
                         this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);

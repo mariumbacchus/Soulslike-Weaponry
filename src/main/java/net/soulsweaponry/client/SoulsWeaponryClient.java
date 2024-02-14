@@ -16,7 +16,7 @@ import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearMo
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;
 import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.networking.PacketsClient;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
@@ -52,7 +52,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
 
         EntityModelRegistry.initClient();
         PredicateRegistry.initClient();
-        PacketsClient.initClient();
+        PacketRegistry.registerS2CPackets();
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
     }

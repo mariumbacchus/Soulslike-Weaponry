@@ -13,8 +13,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.NightProwler;
-import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -51,8 +51,7 @@ public class BlackflameSnakeEntity extends InvisibleEntity {
                     }
                 }
                 this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
-                ParticleNetworking.specificServerParticlePacket((ServerWorld) this.getWorld(), PacketRegistry.BLACKFLAME_SNAKE_PARTICLES_ID,
-                        this.getBlockPos(), this.getX(), (float) this.getZ());
+                ParticleHandler.particleOutburstMap(this.getWorld(), 250, this.getX(), this.getY(), this.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
             }
         }
         if (this.age > 100 || this.hasHitPlayer) {

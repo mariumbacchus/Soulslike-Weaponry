@@ -8,6 +8,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -26,7 +28,9 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -142,5 +146,12 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     @Override
     public StatusEffectInstance[] applyEffects() {
         return new StatusEffectInstance[0];
+    }
+
+    @Override
+    public Map<ParticleEffect, Vec3d> getParticles() {
+        Map<ParticleEffect, Vec3d> map = new HashMap<>();
+        map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
+        return map;
     }
 }

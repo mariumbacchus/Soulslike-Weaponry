@@ -26,11 +26,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
+import net.soulsweaponry.util.ParticleHandler;
 import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -192,7 +193,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(getWorld(), this.getBlockPos(), false, SoundRegistry.DAWNBREAKER_EVENT);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -384,7 +385,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
             }
             if (this.phaseTwoTicks == 81) {
                 if (!getWorld().isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) getWorld(), PacketRegistry.DEATH_EXPLOSION_PACKET_ID, this.getBlockPos(), false);
+                    ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
                 placeHolder.aoe(4D, 50f, 4f);

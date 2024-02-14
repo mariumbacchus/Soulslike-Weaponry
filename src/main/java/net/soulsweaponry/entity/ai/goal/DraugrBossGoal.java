@@ -1,8 +1,5 @@
 package net.soulsweaponry.entity.ai.goal;
 
-import java.util.EnumSet;
-import java.util.Objects;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -11,7 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -19,10 +16,13 @@ import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+import java.util.Objects;
 
 import static net.soulsweaponry.entity.mobs.DraugrBoss.States;
 
@@ -214,7 +214,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                 if (this.applyDamage(target, damage)) {
                     this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                     if (!this.boss.getWorld().isClient) {
-                        ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                        ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }
                     if (applyBleed) target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                     if (knockback > 0) {
@@ -247,7 +247,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 10));
                     }
                     if (!this.boss.getWorld().isClient) {
-                        ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, target.getBlockPos(), 10);
+                        ParticleHandler.particleSphereList(this.boss.getWorld(), 10, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
                     }
                 }
             }
@@ -275,7 +275,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (attackStatus == frame) {
             if (damage > 0) {
                 if (!this.boss.getWorld().isClient) {
-                    ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.OBLITERATE_ID, this.boss.getBlockPos(), 200);
+                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
                 this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 0.8f, 1f);
             }
@@ -326,7 +326,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                 this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.getWorld().isClient) {
-                    ParticleNetworking.specificServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.SWORD_SWIPE_ID, target.getBlockPos(), target.getEyeY());
+                    ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
             }
         }
@@ -345,8 +345,9 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         if (attackStatus == 24 && pos != null && isPosNotNullish(pos)) {
             this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
-            if (!this.boss.getWorld().isClient)
-                ParticleNetworking.sendServerParticlePacket((ServerWorld) this.boss.getWorld(), PacketRegistry.DARK_EXPLOSION_ID, pos, 100);
+            if (!this.boss.getWorld().isClient) {
+                ParticleHandler.particleSphereList(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+            }
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {
                     this.applyDamage(living, 25f);
