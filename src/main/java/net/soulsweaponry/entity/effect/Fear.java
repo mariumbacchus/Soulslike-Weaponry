@@ -7,9 +7,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.soulsweaponry.entity.mobs.BossEntity;
 
 public class Fear extends StatusEffect {
-    int destinationReset;
-    double x;
-    double z;
 
     public Fear() {
         super(StatusEffectCategory.HARMFUL, 0xc76700);
@@ -27,15 +24,13 @@ public class Fear extends StatusEffect {
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        this.destinationReset--;
-        if (!(entity instanceof BossEntity) && entity instanceof MobEntity victim) {
-            if (destinationReset < 0) {
-                this.x = victim.getX() + victim.getRandom().nextBetween(-25, 25);
-                this.z = victim.getZ() + victim.getRandom().nextBetween(-25, 25);
-                this.destinationReset = 40;
-            } else {
-                victim.getNavigation().startMovingTo(x, victim.getY(), z, 1.1f);
+        if (!(entity instanceof BossEntity) && entity instanceof MobEntity target) {
+            if (target.getTarget() != null) {
+                target.setTarget(null);
             }
-        }      
+            double x = target.getX() + target.getRandom().nextBetween(-25, 25);
+            double z = target.getZ() + target.getRandom().nextBetween(-25, 25);
+            target.getNavigation().startMovingTo(x, target.getY(), z, 1.1f);
+        }
     }
 }
