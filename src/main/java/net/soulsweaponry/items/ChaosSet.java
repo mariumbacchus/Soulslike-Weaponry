@@ -9,6 +9,8 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,10 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.blocks.*;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -34,6 +38,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,6 +48,10 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    /**
+     * Will contain harmful effects as the key, and the opposite beneficial effect as value
+     */
+    private static final HashMap<StatusEffect, StatusEffect> flippableEffects = new HashMap<>();
     
     public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
         super(material, slot, settings);
@@ -64,6 +73,9 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
+                if (!player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_HELMET)) {
+                    this.flipEffects(player);
+                }
             }
             if (this.isRobesEquipped(player)) {
                 this.turnBlocks(player, world, player.getBlockPos(), 0);
@@ -116,6 +128,45 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         }
     }
 
+    static {
+        flippableEffects.put(StatusEffects.SLOWNESS, StatusEffects.SPEED);
+        flippableEffects.put(StatusEffects.MINING_FATIGUE, StatusEffects.HASTE);
+        flippableEffects.put(StatusEffects.WEAKNESS, StatusEffects.STRENGTH);
+        flippableEffects.put(StatusEffects.BLINDNESS, StatusEffects.NIGHT_VISION);
+        flippableEffects.put(StatusEffects.HUNGER, StatusEffects.SATURATION);
+        flippableEffects.put(StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING);
+    }
+
+    private void flipEffects(PlayerEntity player) {
+        List<StatusEffectInstance> statusEffectsCopy = new ArrayList<>(player.getStatusEffects());
+        List<StatusEffect> effectsToRemove = new ArrayList<>();
+        boolean triggered = false;
+        for (StatusEffectInstance instance : statusEffectsCopy) {
+            StatusEffect effect = instance.getEffectType();
+            if (effect.getCategory() == StatusEffectCategory.HARMFUL) {
+                int duration = (int) (instance.getDuration() / 3f);
+                int amplifier = (int) (instance.getAmplifier() / 2f);
+                StatusEffect newEffect = StatusEffects.REGENERATION;
+                for (StatusEffect harmful : flippableEffects.keySet()) {
+                    if (effect.equals(harmful)) {
+                        newEffect = flippableEffects.get(harmful);
+                        break;
+                    }
+                }
+                effectsToRemove.add(effect);
+                triggered = true;
+                player.addStatusEffect(new StatusEffectInstance(newEffect, duration, amplifier));
+            }
+        }
+        for (StatusEffect effectToRemove : effectsToRemove) {
+            player.removeStatusEffect(effectToRemove);
+        }
+        if (triggered && !player.isCreative()) {
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN, ConfigConstructor.chaos_crown_flip_effect_cooldown);
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET, ConfigConstructor.chaos_crown_flip_effect_cooldown);
+        }
+    }
+
     private boolean isHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
         return !helmet.isEmpty() && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
@@ -132,8 +183,8 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
     }
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        if (this == ItemRegistry.CHAOS_ROBES) {
-            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle")); Doesn't work for some reason.
+        if (this.equals(ItemRegistry.CHAOS_ROBES)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
         }
 		return PlayState.CONTINUE;
 	}
@@ -156,6 +207,11 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_3").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_4").formatted(Formatting.DARK_GRAY));
                 if (stack.isOf(ItemRegistry.CHAOS_CROWN)) {
                     if (Screen.hasControlDown()) {
                         for (int i = 1; i <= 4; i++) {

@@ -58,11 +58,13 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static boolean can_bosses_break_blocks = true;
 
-    @Entry public static int[] chaos_armor_armor_points = {3, 6, 8, 3};
+    @Entry public static int[] chaos_armor_armor_points = {4, 7, 10, 5};
     @Entry public static int[] chaos_set_armor_points = {2, 3, 4, 1};
     @Entry public static int[] soul_ingot_armor_points = {3, 5, 7, 3};
     @Entry public static int[] soul_robes_armor_points = {2, 3, 4, 3};
     @Entry public static int[] forlorn_armor_armor_points = {3, 6, 8, 3};
+
+    @Entry public static int chaos_crown_flip_effect_cooldown = 300;
     
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;
