@@ -30,7 +30,6 @@ import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -184,7 +183,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
         if (this.equals(ItemRegistry.CHAOS_ROBES)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle")); Fix
         }
 		return PlayState.CONTINUE;
 	}
