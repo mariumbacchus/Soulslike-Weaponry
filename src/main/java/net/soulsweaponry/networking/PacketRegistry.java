@@ -22,6 +22,7 @@ public class PacketRegistry {
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.KEYBIND_ABILITY, KeybindAbilityC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParryC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.DAMAGING_BOX, DamagingBox::receive);
     }
 
     public static void registerS2CPackets() {
