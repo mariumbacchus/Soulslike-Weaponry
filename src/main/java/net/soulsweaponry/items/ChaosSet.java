@@ -188,7 +188,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         }
         ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
-            if (entity instanceof LivingEntity target) {
+            if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
                 target.damage(player.getDamageSources().mobAttack(player), ConfigConstructor.arkenplate_shockwave_damage);
                 double x = player.getX() - target.getX();
                 double z = player.getZ() - target.getZ();
