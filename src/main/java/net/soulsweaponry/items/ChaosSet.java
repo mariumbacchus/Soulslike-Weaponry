@@ -13,9 +13,12 @@ import net.minecraft.block.TallPlantBlock;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -24,7 +27,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +46,7 @@ import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -59,7 +66,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
     /**
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
-    private static final HashMap<StatusEffect, StatusEffect> flippableEffects = new HashMap<>();
+    private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
     
     public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
         super(material, slot, settings);
@@ -97,6 +104,9 @@ public class ChaosSet extends ArmorItem implements GeoItem {
             }
             if (this.isChestActive(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
+                if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.ARKENPLATE) && player.getAttacker() != null) {
+                    this.shockwave(world, player);
+                }
             }
         }
     }
@@ -137,12 +147,12 @@ public class ChaosSet extends ArmorItem implements GeoItem {
     }
 
     static {
-        flippableEffects.put(StatusEffects.SLOWNESS, StatusEffects.SPEED);
-        flippableEffects.put(StatusEffects.MINING_FATIGUE, StatusEffects.HASTE);
-        flippableEffects.put(StatusEffects.WEAKNESS, StatusEffects.STRENGTH);
-        flippableEffects.put(StatusEffects.BLINDNESS, StatusEffects.NIGHT_VISION);
-        flippableEffects.put(StatusEffects.HUNGER, StatusEffects.SATURATION);
-        flippableEffects.put(StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING);
+        FLIPPABLE_EFFECTS.put(StatusEffects.SLOWNESS, StatusEffects.SPEED);
+        FLIPPABLE_EFFECTS.put(StatusEffects.MINING_FATIGUE, StatusEffects.HASTE);
+        FLIPPABLE_EFFECTS.put(StatusEffects.WEAKNESS, StatusEffects.STRENGTH);
+        FLIPPABLE_EFFECTS.put(StatusEffects.BLINDNESS, StatusEffects.NIGHT_VISION);
+        FLIPPABLE_EFFECTS.put(StatusEffects.HUNGER, StatusEffects.SATURATION);
+        FLIPPABLE_EFFECTS.put(StatusEffects.LEVITATION, StatusEffects.SLOW_FALLING);
     }
 
     private void flipEffects(PlayerEntity player) {
@@ -155,9 +165,9 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 int duration = (int) (instance.getDuration() / 3f);
                 int amplifier = (int) (instance.getAmplifier() / 2f);
                 StatusEffect newEffect = StatusEffects.REGENERATION;
-                for (StatusEffect harmful : flippableEffects.keySet()) {
+                for (StatusEffect harmful : FLIPPABLE_EFFECTS.keySet()) {
                     if (effect.equals(harmful)) {
-                        newEffect = flippableEffects.get(harmful);
+                        newEffect = FLIPPABLE_EFFECTS.get(harmful);
                         break;
                     }
                 }
@@ -172,6 +182,27 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         if (triggered && !player.isCreative()) {
             player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN, ConfigConstructor.chaos_crown_flip_effect_cooldown);
             player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET, ConfigConstructor.chaos_crown_flip_effect_cooldown);
+        }
+    }
+
+    private void shockwave(World world, PlayerEntity player) {
+        float i = ConfigConstructor.arkenplate_shockwave_knockback;
+        ItemStack stack = player.getInventory().getArmorStack(2);
+        if (stack != null) {
+            i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
+        for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
+            if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
+                target.damage(DamageSource.mob(player), ConfigConstructor.arkenplate_shockwave_damage);
+                double x = player.getX() - target.getX();
+                double z = player.getZ() - target.getZ();
+                target.takeKnockback(i * 0.5f, x, z);
+            }
+        }
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+        if (!player.isCreative()) {
+            player.getItemCooldownManager().set(ItemRegistry.ARKENPLATE, ConfigConstructor.arkenplate_shockwave_cooldown);
         }
     }
 
@@ -254,6 +285,10 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock").formatted(Formatting.DARK_GREEN));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
                 if (Screen.hasControlDown()) {
                     for (int i = 1; i <= 4; i++) {
                         tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
