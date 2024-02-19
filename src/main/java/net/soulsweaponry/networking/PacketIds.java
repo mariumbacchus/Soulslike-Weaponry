@@ -18,4 +18,5 @@ public class PacketIds {
     public static final Identifier KEYBIND_ABILITY = new Identifier(SoulsWeaponry.ModId, "keybind_ability");
     public static final Identifier PARRY = new Identifier(SoulsWeaponry.ModId, "parry_keybind");
     public static final Identifier POSTURE = new Identifier(SoulsWeaponry.ModId, "posture");
+    public static final Identifier DAMAGING_BOX = new Identifier(SoulsWeaponry.ModId, "damaging_box");
 }
