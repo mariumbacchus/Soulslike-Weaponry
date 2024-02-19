@@ -65,6 +65,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int[] forlorn_armor_armor_points = {3, 6, 8, 3};
 
     @Entry public static int chaos_crown_flip_effect_cooldown = 300;
+    @Entry public static int arkenplate_shockwave_cooldown = 200;
+    @Entry public static float arkenplate_shockwave_knockback = 2f;
+    @Entry public static float arkenplate_shockwave_damage = 6f;
     
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;

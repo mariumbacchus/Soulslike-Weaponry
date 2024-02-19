@@ -31,6 +31,7 @@ public class PacketRegistry {
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.SINGLE_PARTICLE, SingleParticleS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParrySyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureSyncS2C::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.DAMAGING_BOX, DamagingBox::receive);
     }
 
     public static void sendToAllPlayersS2C(ServerWorld world, BlockPos pos, Identifier packetId, PacketByteBuf buf) {
