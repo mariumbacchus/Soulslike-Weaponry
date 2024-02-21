@@ -1,0 +1,25 @@
+package net.soulsweaponry.client.model.armor;
+
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.items.ChaosSet;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
+
+public class EnhancedChaosArmorModel extends AnimatedGeoModel<ChaosSet> {
+
+    @Override
+    public Identifier getAnimationFileLocation(ChaosSet animatable) {
+        return new Identifier(SoulsWeaponry.ModId, "animations/enhanced_chaos_armor.animation.json");
+    }
+
+    @Override
+    public Identifier getModelLocation(ChaosSet object) {
+        return new Identifier(SoulsWeaponry.ModId, "geo/enhanced_chaos_armor.geo.json");
+    }
+
+    @Override
+    public Identifier getTextureLocation(ChaosSet object) {
+        return new Identifier(SoulsWeaponry.ModId, "textures/armor/enhanced_chaos_armor.png");
+    }
+
+}

@@ -1,24 +1,26 @@
 package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.mobs.ShieldBreaker;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.soulsweaponry.entity.mobs.ShieldBreaker;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
@@ -85,5 +87,22 @@ public class PlayerEntityMixin {
                 info.setReturnValue(false);
             }
         }
+        // Enhanced arkenplate && health < 1/3 && projectile
+        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth()/3f
+                && source.isProjectile() && source.getSource() instanceof ProjectileEntity projectile) {
+            Vec3d playerPos = player.getPos();
+            Vec3d projectilePos = projectile.getPos();
+            Vec3d projectileMotion = projectile.getVelocity();
+            Vec3d reflectionVector = this.calculateReflectionVector(playerPos, projectilePos, projectileMotion);
+            // Reflect the projectile back
+            projectile.setVelocity(reflectionVector);
+            info.setReturnValue(false);
+        }
+    }
+
+    @Unique
+    private Vec3d calculateReflectionVector(Vec3d playerPos, Vec3d projectilePos, Vec3d projectileMotion) {
+        Vec3d vectorToPlayer = playerPos.subtract(projectilePos).normalize();
+        return projectileMotion.subtract(vectorToPlayer.multiply(projectileMotion.dotProduct(vectorToPlayer) * 2.0D));
     }
 }
