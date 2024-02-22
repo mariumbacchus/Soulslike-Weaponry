@@ -69,6 +69,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int arkenplate_shockwave_cooldown = 200;
     @Entry public static float arkenplate_shockwave_knockback = 2f;
     @Entry public static float arkenplate_shockwave_damage = 6f;
+    @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.334f;
 
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;
