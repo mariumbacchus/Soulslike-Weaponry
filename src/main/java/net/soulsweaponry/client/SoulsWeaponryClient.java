@@ -15,6 +15,7 @@ import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
+import net.soulsweaponry.client.renderer.armor.EnhancedChaosArmorRenderer;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
@@ -67,6 +68,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         GeoArmorRenderer.registerArmorRenderer(new ChaosSetRenderer(), ItemRegistry.CHAOS_ROBES);
         GeoArmorRenderer.registerArmorRenderer(new ChaosArmorRenderer(), ItemRegistry.CHAOS_HELMET);
         GeoArmorRenderer.registerArmorRenderer(new ChaosArmorRenderer(), ItemRegistry.ARKENPLATE);
+        GeoArmorRenderer.registerArmorRenderer(new EnhancedChaosArmorRenderer(), ItemRegistry.ENHANCED_ARKENPLATE);
 
         EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, (context) -> new SoulReaperGhostRenderer(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayers.ZOMBIE)), 0.5f));
 

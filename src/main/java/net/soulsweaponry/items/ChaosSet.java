@@ -37,6 +37,7 @@ import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -49,7 +50,7 @@ import java.util.List;
 
 public class ChaosSet extends ArmorItem implements IAnimatable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
@@ -93,8 +94,9 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 }
             }
             if (this.isChestActive(player)) {
+                ItemStack chest = player.getInventory().getArmorStack(2);
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
-                if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.ARKENPLATE) && player.getAttacker() != null) {
+                if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(chest.getItem()) && player.getAttacker() != null) {
                     this.shockwave(world, player);
                 }
             }
@@ -178,12 +180,14 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
     private void shockwave(World world, PlayerEntity player) {
         float i = ConfigConstructor.arkenplate_shockwave_knockback;
         ItemStack stack = player.getInventory().getArmorStack(2);
-        if (stack != null) {
-            i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
-        }
+        if (stack == null) return;
+        i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
         ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
+                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2));
+                }
                 target.damage(DamageSource.mob(player), ConfigConstructor.arkenplate_shockwave_damage);
                 double x = player.getX() - target.getX();
                 double z = player.getZ() - target.getZ();
@@ -192,7 +196,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         }
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(ItemRegistry.ARKENPLATE, ConfigConstructor.arkenplate_shockwave_cooldown);
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.arkenplate_shockwave_cooldown);
         }
     }
 
@@ -208,7 +212,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.ARKENPLATE) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
     }
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -216,12 +220,15 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         if (this.equals(ItemRegistry.CHAOS_ROBES)) {
             //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP)); //Doesn't work for some reason.
         }
+        if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_spin"));
+        }
 		return PlayState.CONTINUE;
 	}
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));    
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -272,7 +279,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 } else {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
-            } else if (stack.isOf(ItemRegistry.ARKENPLATE)) {
+            } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
@@ -280,12 +287,20 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
-                if (Screen.hasControlDown()) {
-                    for (int i = 1; i <= 4; i++) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                if (stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
+                }
+                if (!stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    if (Screen.hasControlDown()) {
+                        for (int i = 1; i <= 4; i++) {
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                        }
+                    } else {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                     }
-                } else {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
             }
         } else {
