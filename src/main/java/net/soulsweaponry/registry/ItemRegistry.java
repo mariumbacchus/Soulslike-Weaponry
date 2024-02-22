@@ -60,6 +60,7 @@ public class ItemRegistry {
     public static final Item CHAOS_CROWN = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.HEAD, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static final Item ENHANCED_ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
@@ -102,6 +103,7 @@ public class ItemRegistry {
         registerItem(CHAOS_CROWN, "chaos_crown");
         registerItem(CHAOS_HELMET, "chaos_helmet");
         registerItem(ARKENPLATE, "arkenplate");
+        registerItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate");
         registerItem(CHAOS_ROBES, "chaos_robes");
         registerItem(CHAOS_ORB, "chaos_orb");
 

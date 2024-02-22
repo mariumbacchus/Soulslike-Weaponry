@@ -43,6 +43,7 @@ import net.soulsweaponry.blocks.WitheredTallFlower;
 import net.soulsweaponry.blocks.WitheredTallGrass;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
+import net.soulsweaponry.client.renderer.armor.EnhancedChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -103,8 +104,9 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 }
             }
             if (this.isChestActive(player)) {
+                ItemStack chest = player.getInventory().getArmorStack(2);
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
-                if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.ARKENPLATE) && player.getAttacker() != null) {
+                if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(chest.getItem()) && player.getAttacker() != null) {
                     this.shockwave(world, player);
                 }
             }
@@ -188,12 +190,14 @@ public class ChaosSet extends ArmorItem implements GeoItem {
     private void shockwave(World world, PlayerEntity player) {
         float i = ConfigConstructor.arkenplate_shockwave_knockback;
         ItemStack stack = player.getInventory().getArmorStack(2);
-        if (stack != null) {
-            i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
-        }
+        if (stack == null) return;
+        i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
         ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
+                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2));
+                }
                 target.damage(DamageSource.mob(player), ConfigConstructor.arkenplate_shockwave_damage);
                 double x = player.getX() - target.getX();
                 double z = player.getZ() - target.getZ();
@@ -202,7 +206,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         }
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(ItemRegistry.ARKENPLATE, ConfigConstructor.arkenplate_shockwave_cooldown);
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.arkenplate_shockwave_cooldown);
         }
     }
 
@@ -218,19 +222,22 @@ public class ChaosSet extends ArmorItem implements GeoItem {
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.ARKENPLATE) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
     }
 
 	private PlayState predicate(AnimationState<?> event) {
         if (this == ItemRegistry.CHAOS_ROBES) {
             event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
+        if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
+        }
 		return PlayState.CONTINUE;
 	}
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 20, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -281,7 +288,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 } else {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
-            } else if (stack.isOf(ItemRegistry.ARKENPLATE)) {
+            } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
@@ -289,12 +296,20 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
-                if (Screen.hasControlDown()) {
-                    for (int i = 1; i <= 4; i++) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                if (stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
+                }
+                if (!stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                    if (Screen.hasControlDown()) {
+                        for (int i = 1; i <= 4; i++) {
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                        }
+                    } else {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                     }
-                } else {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
             }
         } else {
@@ -314,6 +329,8 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                 if(this.renderer == null) {
                     if (itemStack.isOf(ItemRegistry.CHAOS_HELMET) || itemStack.isOf(ItemRegistry.ARKENPLATE)) {
                         this.renderer = new ChaosArmorRenderer();
+                    } else if (itemStack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                        this.renderer = new EnhancedChaosArmorRenderer();
                     } else {
                         this.renderer = new ChaosSetRenderer();
                     }
