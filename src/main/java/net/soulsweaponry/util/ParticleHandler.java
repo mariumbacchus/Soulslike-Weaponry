@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.PacketIds;
 
 import java.util.ArrayList;
@@ -102,7 +102,7 @@ public class ParticleHandler {
             buf.writeDouble(velX);
             buf.writeDouble(velY);
             buf.writeDouble(velZ);
-            PacketRegistry.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SINGLE_PARTICLE, buf);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SINGLE_PARTICLE, buf);
         }
     }
 
@@ -130,7 +130,7 @@ public class ParticleHandler {
             buf.writeDouble(velDivider.getY());
             buf.writeDouble(velDivider.getZ());
             buf.writeFloat(sizeMod);
-            PacketRegistry.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.OUTBURST_PARTICLES, buf);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.OUTBURST_PARTICLES, buf);
         }
     }
 
@@ -155,7 +155,7 @@ public class ParticleHandler {
             buf.writeDouble(y);
             buf.writeDouble(z);
             buf.writeFloat(sizeMod);
-            PacketRegistry.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SPHERE_PARTICLES, buf);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SPHERE_PARTICLES, buf);
         }
     }
 
@@ -173,7 +173,7 @@ public class ParticleHandler {
             buf.writeFloat(rgb.getGreen());
             buf.writeFloat(rgb.getBlue());
             buf.writeFloat(expansion);
-            PacketRegistry.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.FLASH_PARTICLE, buf);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.FLASH_PARTICLE, buf);
         }
     }
 
