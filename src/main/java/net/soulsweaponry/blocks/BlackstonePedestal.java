@@ -36,7 +36,7 @@ public class BlackstonePedestal extends Block {
             world.spawnEntity(boss);
             world.removeBlock(pos, false);
             return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(ItemRegistry.WITHERED_DEMON_HEART)) {
+        } else if (itemStack.isOf(ItemRegistry.DEMON_CHUNK) || itemStack.isOf(ItemRegistry.WITHERED_DEMON_HEART)) {
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
