@@ -24,6 +24,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -289,7 +290,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 if (stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(new LiteralText((int)(ConfigConstructor.arkenplate_mirror_trigger_percent * 100f) + "%").formatted(Formatting.RED)));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
                 }
                 if (!stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
