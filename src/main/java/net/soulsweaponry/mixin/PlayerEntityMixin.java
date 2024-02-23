@@ -79,7 +79,7 @@ public class PlayerEntityMixin {
             }
         }
         // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth()/3f
+        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
                 && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
             Vec3d playerPos = player.getPos();
             Vec3d projectilePos = projectile.getPos();
