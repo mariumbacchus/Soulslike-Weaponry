@@ -16,7 +16,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
-public class DamagingBox {
+import java.util.UUID;
+
+public class DamagingBoxC2S {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         BlockPos blockPos = buf.readBlockPos();
@@ -27,12 +29,20 @@ public class DamagingBox {
         float knockbackZ = buf.readFloat();
         SoundEvent sound = Registries.SOUND_EVENT.get(buf.readIdentifier());
         BlockPos soundPos = buf.readBlockPos();
+        UUID attackerUUID = buf.readUuid();
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
             if (serverWorld != null) {
+                Entity attacker = serverWorld.getEntity(attackerUUID);
+                DamageSource source;
+                if (attacker instanceof LivingEntity living) {
+                    source = DamageSource.mob(living);
+                } else {
+                    source = DamageSource.GENERIC;
+                }
                 for (Entity entity : serverWorld.getOtherEntities(player, new Box(blockPos).expand(expansion))) {
                     if (entity instanceof LivingEntity target) {
-                        target.damage(DamageSource.mob(player), damage);
+                        target.damage(source, damage);
                         if (knockbackX == 0 && knockbackZ == 0) {
                             double x = blockPos.getX() - target.getX();
                             double z = blockPos.getZ() - target.getZ();
@@ -42,7 +52,7 @@ public class DamagingBox {
                         }
                     }
                 }
-                serverWorld.playSound(null, soundPos, sound, SoundCategory.PLAYERS, 1f, 1f);
+                serverWorld.playSound(null, soundPos, sound, SoundCategory.HOSTILE, 1f, 1f);
             }
         });
     }
