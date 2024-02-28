@@ -1,5 +1,7 @@
 package net.soulsweaponry.client.registry;
 
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -59,9 +61,17 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keybindAbility.wasPressed()) {
                 ClientPlayNetworking.send(PacketIds.KEYBIND_ABILITY, PacketByteBufs.empty());
-                for (Hand hand : Hand.values()) {
-                    if (client.player != null && client.player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
-                        abilityItem.useKeybindAbilityClient(client.world, client.player.getStackInHand(hand), client.player);
+                if (client.player != null) {
+                    ClientPlayerEntity player = client.player;
+                    for (Hand hand : Hand.values()) {
+                        if (player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
+                            abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
+                        }
+                    }
+                    for (ItemStack armorStack : player.getArmorItems()) {
+                        if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
+                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                        }
                     }
                 }
             }

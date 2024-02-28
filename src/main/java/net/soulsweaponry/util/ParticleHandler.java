@@ -16,7 +16,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.networking.PacketIds;
 
 import java.util.ArrayList;

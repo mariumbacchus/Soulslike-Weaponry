@@ -18,9 +18,7 @@ import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
-import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
-import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
-import net.soulsweaponry.client.renderer.armor.EnhancedChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.*;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
 import net.soulsweaponry.client.renderer.item.*;
 import net.soulsweaponry.networking.PacketRegistry;
@@ -68,7 +66,9 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         GeoArmorRenderer.registerArmorRenderer(new ChaosSetRenderer(), ItemRegistry.CHAOS_ROBES);
         GeoArmorRenderer.registerArmorRenderer(new ChaosArmorRenderer(), ItemRegistry.CHAOS_HELMET);
         GeoArmorRenderer.registerArmorRenderer(new ChaosArmorRenderer(), ItemRegistry.ARKENPLATE);
-        GeoArmorRenderer.registerArmorRenderer(new EnhancedChaosArmorRenderer(), ItemRegistry.ENHANCED_ARKENPLATE);
+        GeoArmorRenderer.registerArmorRenderer(new EChaosArmorRenderer(), ItemRegistry.ENHANCED_ARKENPLATE);
+        GeoArmorRenderer.registerArmorRenderer(new WitheredArmorRenderer(), ItemRegistry.WITHERED_CHEST);
+        GeoArmorRenderer.registerArmorRenderer(new WitheredArmorRenderer(), ItemRegistry.ENHANCED_WITHERED_CHEST);
 
         EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, (context) -> new SoulReaperGhostRenderer(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayers.ZOMBIE)), 0.5f));
 

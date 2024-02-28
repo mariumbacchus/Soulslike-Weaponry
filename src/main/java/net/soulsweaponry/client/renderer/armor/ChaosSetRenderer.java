@@ -1,7 +1,7 @@
 package net.soulsweaponry.client.renderer.armor;
 
 import net.soulsweaponry.client.model.armor.ChaosSetModel;
-import net.soulsweaponry.items.ChaosSet;
+import net.soulsweaponry.items.armor.ChaosSet;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 public class ChaosSetRenderer extends GeoArmorRenderer<ChaosSet> {

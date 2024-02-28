@@ -36,12 +36,13 @@ import java.util.List;
 
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.soulreaper_damage, attackSpeed, settings);
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
@@ -59,19 +60,19 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.addAmount(stack, -3);
+                    if (!player.isCreative()) this.addAmount(stack, -3);
                 } else if (player.isSneaking() || power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.addAmount(stack, -10);
+                    if (!player.isCreative()) this.addAmount(stack, -10);
                 } else {
                     Soulmass entity = new Soulmass(EntityRegistry.SOULMASS, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.addAmount(stack, -30);
+                    if (!player.isCreative()) this.addAmount(stack, -30);
                 }
 
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
@@ -94,13 +95,31 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable {
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
+        //Figure out how to dynamically change the animation with ISyncable (problem now is that it can't override the prev. animation)
+        /*ClientPlayerEntity player;
+        if ((player = MinecraftClient.getInstance().player) != null) {
+            for (Hand hand : Hand.values()) {
+                ItemStack stack = player.getStackInHand(hand);
+                if (stack.isOf(WeaponRegistry.SOUL_REAPER)) {
+                    int souls = this.getSouls(stack);
+                    if (souls >= 10) {
+                        if (souls >= 30) {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("high_souls", EDefaultLoopTypes.LOOP));
+                        } else {
+                            event.getController().setAnimation(new AnimationBuilder().addAnimation("mid_souls", EDefaultLoopTypes.LOOP));
+                        }
+                        return PlayState.CONTINUE;
+                    }
+                }
+            }
+        }*/
         event.getController().setAnimation(new AnimationBuilder().addAnimation("low_souls", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 20, this::predicate));    
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override

@@ -62,6 +62,8 @@ public class RecipeRegistry {
     public static JsonObject KRAKEN_SLAYER_RECIPE = null;
     public static JsonObject DARKMOON_LONGBOW_RECIPE = null;
     public static JsonObject ENHANCED_ARKENPLATE_RECIPE = null;
+    public static JsonObject ENHANCED_WITHERED_CHEST_RECIPE = null;
+
 
     public static ArrayList<ArrayList<Object>> recipes = new ArrayList<>();
     public static HashMap<Item[], Identifier> recipeAdvancements = new HashMap<>();
@@ -656,6 +658,13 @@ public class RecipeRegistry {
                         "item", new Identifier(ModId, "lord_soul_night_prowler"),
                         new Identifier(ModId, "enhanced_arkenplate"));
                 registerAndAddToBook(ENHANCED_ARKENPLATE_RECIPE, "enhanced_arkenplate", ConfigConstructor.disable_recipe_enhanced_arkenplate, ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
+            }
+            if (!ConfigConstructor.disable_recipe_enhanced_withered_chest) {
+                ENHANCED_WITHERED_CHEST_RECIPE = JsonCreator.createSmithingRecipeJson(
+                        "item", new Identifier(ModId, "withered_chest"),
+                        "item", new Identifier(ModId, "lord_soul_day_stalker"),
+                        new Identifier(ModId, "enhanced_withered_chest"));
+                registerAndAddToBook(ENHANCED_WITHERED_CHEST_RECIPE, "enhanced_withered_chest", ConfigConstructor.disable_recipe_enhanced_withered_chest, ItemRegistry.LORD_SOUL_DAY_STALKER);
             }
         }
         if (FabricLoader.getInstance().isModLoaded("bewitchment")) {
