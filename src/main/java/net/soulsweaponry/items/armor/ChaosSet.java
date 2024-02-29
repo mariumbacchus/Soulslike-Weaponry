@@ -230,6 +230,8 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         }
         if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
             event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
+        } else if (this.equals(ItemRegistry.ARKENPLATE)) {
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
         }
 		return PlayState.CONTINUE;
 	}
