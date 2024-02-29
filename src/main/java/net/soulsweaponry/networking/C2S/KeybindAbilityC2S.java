@@ -23,6 +23,11 @@ public class KeybindAbilityC2S {
                         keybindItem.useKeybindAbilityServer(serverWorld, stack, player);
                     }
                 }
+                for (ItemStack armorStack : player.getArmorItems()) {
+                    if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
+                        abilityItem.useKeybindAbilityServer(serverWorld, armorStack, player);
+                    }
+                }
             }
         });
     }

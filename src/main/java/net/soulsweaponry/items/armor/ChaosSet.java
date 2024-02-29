@@ -1,4 +1,4 @@
-    package net.soulsweaponry.items;
+    package net.soulsweaponry.items.armor;
 
     import net.minecraft.block.Block;
     import net.minecraft.block.BlockState;
@@ -32,7 +32,7 @@
     import net.soulsweaponry.blocks.*;
     import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
     import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
-    import net.soulsweaponry.client.renderer.armor.EnhancedChaosArmorRenderer;
+    import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
     import net.soulsweaponry.config.ConfigConstructor;
     import net.soulsweaponry.registry.BlockRegistry;
     import net.soulsweaponry.registry.ItemRegistry;
@@ -321,11 +321,11 @@ public class ChaosSet extends ArmorItem implements GeoItem {
 
             @Override
             public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
-                if(this.renderer == null) {
+                if (this.renderer == null) {
                     if (itemStack.isOf(ItemRegistry.CHAOS_HELMET) || itemStack.isOf(ItemRegistry.ARKENPLATE)) {
                         this.renderer = new ChaosArmorRenderer();
                     } else if (itemStack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
-                        this.renderer = new EnhancedChaosArmorRenderer();
+                        this.renderer = new EChaosArmorRenderer();
                     } else {
                         this.renderer = new ChaosSetRenderer();
                     }

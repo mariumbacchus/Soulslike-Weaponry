@@ -1,15 +1,26 @@
 {
-    "type": "minecraft:smithing_transform",
-    "base": {
-        "item": "minecraft:netherite_chestplate"
-    },
-    "addition": {
-        "item": "soulsweapons:arkenstone"
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "nNn",
+        "D#D"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:iron_ingot"
+        },
+        "n": {
+            "item": "minecraft:netherite_ingot"
+        },
+        "N": {
+            "item": "soulsweapons:arkenstone"
+        },
+        "D": {
+            "item": "soulsweapons:soul_ingot"
+        }
     },
     "result": {
-        "item": "soulsweapons:arkenplate"
-    },
-    "template": {
-        "item": "minecraft:netherite_upgrade_smithing_template"
+        "item": "soulsweapons:arkenplate",
+        "count": 1
     }
 }
