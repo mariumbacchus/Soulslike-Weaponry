@@ -47,6 +47,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_kraken_slayer = false;
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
+    @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 100;
@@ -64,12 +65,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int[] soul_ingot_armor_points = {3, 5, 7, 3};
     @Entry public static int[] soul_robes_armor_points = {2, 3, 4, 3};
     @Entry public static int[] forlorn_armor_armor_points = {3, 6, 8, 3};
+    @Entry public static int[] withered_armor_armor_points = {4, 7, 10, 5};
 
     @Entry public static int chaos_crown_flip_effect_cooldown = 300;
     @Entry public static int arkenplate_shockwave_cooldown = 200;
     @Entry public static float arkenplate_shockwave_knockback = 2f;
     @Entry public static float arkenplate_shockwave_damage = 6f;
     @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.334f;
+    @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_1 = 0.5f;
+    @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_2 = 0.25f;
+    @Entry public static int withered_chest_ability_cooldown = 500;
+    @Entry public static int withered_chest_apply_wither_duration = 100;
+    @Entry public static int withered_chest_apply_wither_amplifier = 0;
+    @Entry public static int withered_chest_apply_fire_seconds = 6;
+    @Entry public static int withered_chest_life_leach_duration = 400;
+    @Entry public static int withered_chest_life_leach_amplifier = 0;
     
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;

@@ -12,6 +12,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.armor.ChaosSet;
+import net.soulsweaponry.items.armor.WitheredArmor;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
@@ -61,6 +63,8 @@ public class ItemRegistry {
     public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item ENHANCED_ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static final Item WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
+    public static final Item ENHANCED_WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.WITHERED_ARMOR, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
     public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
@@ -104,6 +108,8 @@ public class ItemRegistry {
         registerItem(CHAOS_HELMET, "chaos_helmet");
         registerItem(ARKENPLATE, "arkenplate");
         registerItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate");
+        registerItem(WITHERED_CHEST, "withered_chest");
+        registerItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest");
         registerItem(CHAOS_ROBES, "chaos_robes");
         registerItem(CHAOS_ORB, "chaos_orb");
 

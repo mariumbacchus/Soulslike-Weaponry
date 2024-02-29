@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "nNn",
+    "D#D"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:nether_brick"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "N": {
+      "item": "soulsweapons:withered_demon_heart"
+    },
+    "D": {
+      "item": "soulsweapons:crimson_ingot"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:withered_chest",
+    "count": 1
+  }
+}
