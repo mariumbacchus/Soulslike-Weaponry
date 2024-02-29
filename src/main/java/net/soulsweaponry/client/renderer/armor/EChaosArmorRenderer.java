@@ -1,13 +1,13 @@
 package net.soulsweaponry.client.renderer.armor;
 
-import net.soulsweaponry.client.model.armor.EnhancedChaosArmorModel;
-import net.soulsweaponry.items.ChaosSet;
+import net.soulsweaponry.client.model.armor.EChaosArmorModel;
+import net.soulsweaponry.items.armor.ChaosSet;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
-public class EnhancedChaosArmorRenderer extends GeoArmorRenderer<ChaosSet> {
+public class EChaosArmorRenderer extends GeoArmorRenderer<ChaosSet> {
 
-    public EnhancedChaosArmorRenderer() {
-        super(new EnhancedChaosArmorModel());
+    public EChaosArmorRenderer() {
+        super(new EChaosArmorModel());
 
         this.headBone = "armorHead";
         this.bodyBone = "armorBody";

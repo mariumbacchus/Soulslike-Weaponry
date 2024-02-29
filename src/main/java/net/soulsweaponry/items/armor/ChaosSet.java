@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.armor;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
