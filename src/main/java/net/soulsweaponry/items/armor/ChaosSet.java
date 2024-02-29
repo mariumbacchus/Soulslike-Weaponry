@@ -222,6 +222,8 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         }
         if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_spin"));
+        } else if (this.equals(ItemRegistry.ARKENPLATE)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("no_souls"));
         }
 		return PlayState.CONTINUE;
 	}
