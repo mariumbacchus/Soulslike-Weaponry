@@ -9,7 +9,7 @@ public class ChaosArmorModel extends AnimatedGeoModel<ChaosSet> {
 
     @Override
     public Identifier getAnimationFileLocation(ChaosSet animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/empty.animation.json");
+        return new Identifier(SoulsWeaponry.ModId, "animations/chaos_armor.animation.json");
     }
 
     @Override
