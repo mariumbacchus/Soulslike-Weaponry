@@ -7,15 +7,19 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ParryData;
+import net.soulsweaponry.util.ParticleHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -88,6 +92,25 @@ public class PlayerEntityMixin {
             // Reflect the projectile back
             projectile.setVelocity(reflectionVector);
             info.setReturnValue(false);
+        }
+        ItemStack stack = player.getInventory().getArmorStack(2);
+        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH) && !stack.isEmpty()
+                && (stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ItemRegistry.WITHERED_CHEST))) {
+            double x = player.getX() - attacker.getX();
+            double z = player.getZ() - attacker.getZ();
+            attacker.damage(player.getDamageSources().wither(), 1f);
+            attacker.takeKnockback(0.5f, x, z);
+            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, ConfigConstructor.withered_chest_apply_wither_duration, ConfigConstructor.withered_chest_apply_wither_amplifier));
+            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                attacker.setOnFireFor(ConfigConstructor.withered_chest_apply_fire_seconds);
+            }
+            if (!player.getWorld().isClient) {
+                for (int i = 0; i < 50; i++) {
+                    ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME, player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
+                            player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f);
+                }
+            }
+            player.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1f, 1f);
         }
     }
 

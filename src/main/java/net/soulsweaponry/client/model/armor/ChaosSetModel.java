@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.armor;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.ChaosSet;
+import net.soulsweaponry.items.armor.ChaosSet;
 import software.bernie.geckolib.model.GeoModel;
 
 public class ChaosSetModel extends GeoModel<ChaosSet> {

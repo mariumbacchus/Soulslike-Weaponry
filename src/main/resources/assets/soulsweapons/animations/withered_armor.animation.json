@@ -1,0 +1,137 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle_heartbeat": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"heart": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.75": {
+							"vector": [1.1, 1.1, 1.1],
+							"easing": "easeInOutQuart"
+						},
+						"2.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutQuint"
+						}
+					}
+				}
+			}
+		},
+		"fast_heartbeat": {
+			"loop": true,
+			"animation_length": 0.625,
+			"bones": {
+				"heart": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.2083": {
+							"vector": [1.1, 1.1, 1.1],
+							"easing": "easeInOutQuart"
+						},
+						"0.625": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutQuint"
+						}
+					}
+				}
+			}
+		},
+		"soul_spin": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"souls": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 180],
+							"easing": "step",
+							"easingArgs": [10]
+						}
+					}
+				}
+			}
+		},
+		"thorns": {
+			"animation_length": 0.625,
+			"bones": {
+				"thorns": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.2083": {
+							"vector": [10, 10, 10],
+							"easing": "easeInOutBack"
+						},
+						"0.625": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"active": {
+			"loop": true,
+			"bones": {
+				"chestplate": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"left": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"right": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"deactive": {
+			"loop": true,
+			"bones": {
+				"enh_chestplate": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"enh_left": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"enh_right": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"no_souls": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"souls": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

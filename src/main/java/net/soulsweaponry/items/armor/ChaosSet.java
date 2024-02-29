@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.armor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ import net.soulsweaponry.blocks.WitheredTallFlower;
 import net.soulsweaponry.blocks.WitheredTallGrass;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
-import net.soulsweaponry.client.renderer.armor.EnhancedChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -329,7 +329,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
                     if (itemStack.isOf(ItemRegistry.CHAOS_HELMET) || itemStack.isOf(ItemRegistry.ARKENPLATE)) {
                         this.renderer = new ChaosArmorRenderer();
                     } else if (itemStack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
-                        this.renderer = new EnhancedChaosArmorRenderer();
+                        this.renderer = new EChaosArmorRenderer();
                     } else {
                         this.renderer = new ChaosSetRenderer();
                     }
