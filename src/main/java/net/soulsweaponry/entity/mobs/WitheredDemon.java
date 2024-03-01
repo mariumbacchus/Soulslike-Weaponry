@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -109,7 +111,16 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true, target -> {
+            boolean bl = true;
+            for (ItemStack stack : target.getArmorItems()) {
+                if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                    bl = false;
+                    break;
+                }
+            }
+            return bl;
+        }));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
         this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
