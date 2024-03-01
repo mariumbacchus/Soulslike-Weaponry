@@ -217,6 +217,36 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
             this.mob = mob;
         }
 
+        private boolean canAttackTarget() {
+            boolean bl = true;
+            if (this.mob.getTarget() != null && this.mob.getAttacker() != this.mob.getTarget()) {
+                for (ItemStack stack : this.mob.getTarget().getArmorItems()) {
+                    if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                        bl = false;
+                        break;
+                    }
+                }
+            }
+            return bl;
+        }
+
+        @Override
+        public boolean shouldContinue() {
+            return super.shouldContinue() && this.canAttackTarget();
+        }
+
+        @Override
+        public boolean canStart() {
+            return super.canStart() && this.canAttackTarget();
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            this.mob.setAttacking(false);
+            this.mob.setSwingArm(false);
+        }
+
         @Override
         protected void attack(LivingEntity target, double squaredDistance) {
             double attackDistance = this.getSquaredMaxAttackDistance(target);
