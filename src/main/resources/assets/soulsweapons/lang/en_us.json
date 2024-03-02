@@ -128,7 +128,8 @@
     "item.soulsweapons.master_sword": "Master Sword",
     "item.soulsweapons.nights_edge_item": "Night's Edge",
     "item.soulsweapons.empowered_dawnbreaker": "Genesis Fracture",
-    "item.soulsweapons.kraken_slayer": "Kraken Slayer",
+    "item.soulsweapons.kraken_slayer": "Kraken Slayer Bow",
+    "item.soulsweapons.kraken_slayer_crossbow": "Kraken Slayer Crossbow",
     "item.soulsweapons.darkmoon_longbow": "Darkmoon Longbow",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
@@ -574,6 +575,7 @@
     "tooltip.soulsweapons.third_shot_1": "- Every §b3rd§r shot is empowered, dealing",
     "tooltip.soulsweapons.third_shot_2": " bonus true damage.",
     "tooltip.soulsweapons.third_shot_3": "True damage is reduced against other players by ",
+    "tooltip.soulsweapons.third_shot_4": "- Quick Charge increases projectile damage.",
     "tooltip.soulsweapons.moonlight_arrow": "Moonlight Quiver",
     "tooltip.soulsweapons.moonlight_arrow_1": "- Fires §3Moonlight Arrows§r that deal purely",
     "tooltip.soulsweapons.moonlight_arrow_2": "§3Magic Damage§r and §fPierce§r targets.",
