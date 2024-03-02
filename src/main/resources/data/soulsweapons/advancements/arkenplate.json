@@ -1,0 +1,37 @@
+{
+  "parent": "soulsweapons:returning_knight",
+  "display": {
+    "icon": {
+      "item": "soulsweapons:arkenplate"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.arkenplate.title"
+    },
+    "description": {
+      "translate": "advancements.soulsweapons.arkenplate.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:arkenplate"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "items"
+    ]
+  ]
+}
