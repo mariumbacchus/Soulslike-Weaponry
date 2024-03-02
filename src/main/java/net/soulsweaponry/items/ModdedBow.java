@@ -12,13 +12,11 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.world.World;
 
-public abstract class ModdedBow extends BowItem {
+public abstract class ModdedBow extends BowItem implements IReducedPullTime {
 
     public ModdedBow(Settings settings) {
         super(settings);
     }
-
-    public abstract float getReducedPullTime();
 
     public float getModdedPullProgress(int useTicks) {
         float f = (float)useTicks / (20.0f - this.getReducedPullTime());

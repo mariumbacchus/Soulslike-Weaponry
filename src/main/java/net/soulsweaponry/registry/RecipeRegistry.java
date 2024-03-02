@@ -631,7 +631,7 @@ public class RecipeRegistry {
                                 "A# ",
                                 "#Y#",
                                 " #X"
-                        ), new Identifier(ModId, "kraken_slayer"));
+                        ), new Identifier(ModId, "kraken_slayer_crossbow"));
                 registerAndBookLordSoul(KRAKEN_SLAYER_RECIPE, "kraken_slayer", ConfigConstructor.disable_recipe_kraken_slayer);
             }
             if (!ConfigConstructor.disable_recipe_darkmoon_longbow) {
