@@ -767,5 +767,9 @@
     "advancements.soulsweapons.transform_scythe.title": "Winner takes all",
     "advancements.soulsweapons.transform_scythe.description": "Feed the Darkin Scythe enough souls to transform itself into a new empowered form.",
     "advancements.soulsweapons.kill_day_night_boss.title": "Heat Death of the Universe",
-    "advancements.soulsweapons.kill_day_night_boss.description": "Use the Chaos Orb to summon the Day Stalker and Night Prowler, and acquire either of their souls."
+    "advancements.soulsweapons.kill_day_night_boss.description": "Use the Chaos Orb to summon the Day Stalker and Night Prowler, and acquire either of their souls.",
+    "advancements.soulsweapons.arkenplate.title": "",
+    "advancements.soulsweapons.arkenplate.description": "Craft the Arkenplate and become stronger than diamonds",
+    "advancements.soulsweapons.hallowheart.title": "",
+    "advancements.soulsweapons.hallowheart.description": "Craft the Hallowheart and reject the withering"
 }
