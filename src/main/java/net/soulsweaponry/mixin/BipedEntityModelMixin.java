@@ -32,12 +32,15 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
         for (ItemStack stack : entity.getItemsHand()) {
             if (stack.getItem() instanceof SoulHarvestingItem || stack.isOf(WeaponRegistry.GUTS_SWORD) && !stack.isOf(WeaponRegistry.FROSTMOURNE) || stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
                 if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-                    if (stack.isOf(WeaponRegistry.GUTS_SWORD) || stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                    if (stack.isOf(WeaponRegistry.GUTS_SWORD)) {
                         CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                    } else {
+                    } else if (!stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
                         ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
                     }
                 } else if (entity instanceof Remnant) {
+                    CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
+                }
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
                 }
             }
