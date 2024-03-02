@@ -59,7 +59,8 @@ public class RecipeRegistry {
     public static JsonObject FROSTMOURNE_RECIPE = null;
     public static JsonObject NIGHTS_EDGE_RECIPE = null;
     public static JsonObject EMPOWERED_DAWNBREAKER_RECIPE = null;
-    public static JsonObject KRAKEN_SLAYER_RECIPE = null;
+    public static JsonObject KRAKEN_SLAYER_BOW_RECIPE = null;
+    public static JsonObject KRAKEN_SLAYER_CROSSBOW_RECIPE = null;
     public static JsonObject DARKMOON_LONGBOW_RECIPE = null;
     public static JsonObject ENHANCED_ARKENPLATE_RECIPE = null;
     public static JsonObject ENHANCED_WITHERED_CHEST_RECIPE = null;
@@ -618,14 +619,14 @@ public class RecipeRegistry {
                         new Identifier(ModId, "empowered_dawnbreaker"));
                 registerAndAddToBook(EMPOWERED_DAWNBREAKER_RECIPE, "empowered_dawnbreaker", ConfigConstructor.disable_recipe_empowered_dawnbreaker, ItemRegistry.LORD_SOUL_DAY_STALKER);
             }
-            if (!ConfigConstructor.disable_recipe_kraken_slayer) {
-                KRAKEN_SLAYER_RECIPE = JsonCreator.createShapedRecipeJson(
+            if (!ConfigConstructor.disable_recipe_kraken_slayer_bow) {
+                KRAKEN_SLAYER_BOW_RECIPE = JsonCreator.createShapedRecipeJson(
                         Lists.newArrayList('#', 'X', 'Y', 'A'),
                         Lists.newArrayList(
                                 new Identifier("iron_ingot"),
                                 new Identifier("gold_block"),
                                 new Identifier(ModId, "lord_soul"),
-                                new Identifier("arrow")
+                                new Identifier("bow")
                         ),
                         Lists.newArrayList("item", "item", "tag", "item"),
                         Lists.newArrayList(
@@ -633,7 +634,24 @@ public class RecipeRegistry {
                                 "#Y#",
                                 " #X"
                         ), new Identifier(ModId, "kraken_slayer"));
-                registerAndBookLordSoul(KRAKEN_SLAYER_RECIPE, "kraken_slayer", ConfigConstructor.disable_recipe_kraken_slayer);
+                registerAndBookLordSoul(KRAKEN_SLAYER_BOW_RECIPE, "kraken_slayer_bow", ConfigConstructor.disable_recipe_kraken_slayer_bow);
+            }
+            if (!ConfigConstructor.disable_recipe_kraken_slayer_crossbow) {
+                KRAKEN_SLAYER_CROSSBOW_RECIPE = JsonCreator.createShapedRecipeJson(
+                        Lists.newArrayList('#', 'X', 'Y', 'A'),
+                        Lists.newArrayList(
+                                new Identifier("iron_ingot"),
+                                new Identifier("gold_block"),
+                                new Identifier(ModId, "lord_soul"),
+                                new Identifier("crossbow")
+                        ),
+                        Lists.newArrayList("item", "item", "tag", "item"),
+                        Lists.newArrayList(
+                                "A# ",
+                                "#Y#",
+                                " #X"
+                        ), new Identifier(ModId, "kraken_slayer_crossbow"));
+                registerAndBookLordSoul(KRAKEN_SLAYER_CROSSBOW_RECIPE, "kraken_slayer_crossbow", ConfigConstructor.disable_recipe_kraken_slayer_crossbow);
             }
             if (!ConfigConstructor.disable_recipe_darkmoon_longbow) {
                 DARKMOON_LONGBOW_RECIPE = JsonCreator.createShapedRecipeJson(
