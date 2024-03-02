@@ -435,21 +435,21 @@
 			"predicate": {
 				"pulling": 1
 			},
-			"model": "soulsweapons:item/kraken_slayer_pulling"
+			"model": "soulsweapons:item/kraken_slayer_pulling_crossbow"
 		},
 		{
 			"predicate": {
 				"pulling": 1,
 				"pull": 0.58
 			},
-			"model": "soulsweapons:item/kraken_slayer_pull_1"
+			"model": "soulsweapons:item/kraken_slayer_pull_crossbow_1"
 		},
 		{
 			"predicate": {
 				"pulling": 1,
 				"pull": 1.0
 			},
-			"model": "soulsweapons:item/kraken_slayer_pull_2"
+			"model": "soulsweapons:item/kraken_slayer_pull_crossbow_2"
 		},
 		{
 			"predicate": {
