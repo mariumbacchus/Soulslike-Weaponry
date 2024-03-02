@@ -442,7 +442,19 @@
           "items": [
             {
               "items": [
-                "soulsweapons:kraken_slayer"
+                "soulsweapons:kraken_slayer_crossbow"
+              ]
+            }
+          ]
+        }
+      },
+      "darkmoon_longbow": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkmoon_longbow"
               ]
             }
           ]
@@ -483,6 +495,7 @@
       ["master_sword"],
       ["nights_edge"],
       ["empowered_dawnbreaker"],
-      ["kraken_slayer"]
+      ["kraken_slayer"],
+      ["darkmoon_longbow"]
   ]
 }

@@ -44,7 +44,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_frostmourne = true;
     @Entry public static boolean disable_recipe_nights_edge = false;
     @Entry public static boolean disable_recipe_empowered_dawnbreaker = false;
-    @Entry public static boolean disable_recipe_kraken_slayer = false;
+    @Entry public static boolean disable_recipe_kraken_slayer_bow = true;
+    @Entry public static boolean disable_recipe_kraken_slayer_crossbow = false;
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;

@@ -687,11 +687,11 @@
     },
     "firstperson_righthand": {
       "rotation": [33.32, 10, 10],
-      "translation": [5.75, -0.25, -6]
+      "translation": [10, -8.25, -10]
     },
     "firstperson_lefthand": {
       "rotation": [33.32, 10, 10],
-      "translation": [10.5, -3, -5]
+      "translation": [10, -8.25, -10]
     },
     "ground": {
       "translation": [0, -0.25, 0],
