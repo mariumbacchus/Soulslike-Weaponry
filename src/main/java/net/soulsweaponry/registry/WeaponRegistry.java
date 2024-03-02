@@ -1,11 +1,7 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.*;
@@ -60,6 +56,7 @@ public class WeaponRegistry {
     public static ToolItem NIGHTS_EDGE_ITEM = new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
     public static ToolItem EMPOWERED_DAWNBREAKER = new EmpoweredDawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f, new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
     public static BowItem KRAKEN_SLAYER = new KrakenSlayer(new Item.Settings().group(MAIN_GROUP).maxDamage(1258).fireproof().rarity(Rarity.EPIC));
+    public static CrossbowItem KRAKEN_SLAYER_CROSSBOW = new KrakenSlayerCrossbow(new Item.Settings().group(MAIN_GROUP).fireproof().maxDamage(1258).rarity(Rarity.EPIC));
     public static BowItem DARKMOON_LONGBOW = new DarkmoonLongbow(new Item.Settings().group(MAIN_GROUP).fireproof().maxDamage(1400).rarity(Rarity.EPIC));
 
     public static void init() {
@@ -108,6 +105,7 @@ public class WeaponRegistry {
         ItemRegistry.registerItem(NIGHTS_EDGE_ITEM, "nights_edge_item");
         ItemRegistry.registerItem(EMPOWERED_DAWNBREAKER, "empowered_dawnbreaker");
         ItemRegistry.registerItem(KRAKEN_SLAYER, "kraken_slayer");
+        ItemRegistry.registerItem(KRAKEN_SLAYER_CROSSBOW, "kraken_slayer_crossbow");
         ItemRegistry.registerItem(DARKMOON_LONGBOW, "darkmoon_longbow");
     }
 }

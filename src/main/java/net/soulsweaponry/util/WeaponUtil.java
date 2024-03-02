@@ -453,7 +453,7 @@ public class WeaponUtil {
             }
             case FAST_PULL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
-                if (stack.getItem() instanceof ModdedBow bow) {
+                if (stack.getItem() instanceof IReducedPullTime bow) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_2").formatted(Formatting.GRAY).append(new LiteralText(String.valueOf(bow.getReducedPullTime()))));
                 } else {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));
@@ -461,21 +461,28 @@ public class WeaponUtil {
             }
             case SLOW_PULL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
-                if (stack.getItem() instanceof ModdedBow bow) {
+                if (stack.getItem() instanceof IReducedPullTime bow) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_2").formatted(Formatting.GRAY).append(new LiteralText(String.valueOf(bow.getReducedPullTime()))));
                 } else {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_1").formatted(Formatting.GRAY));
                 }
             }
             case THIRD_SHOT -> {
+                float bonus = 0f;
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER)) {
+                    bonus = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+                }
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot").formatted(Formatting.GOLD));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_1").formatted(Formatting.GRAY));
-                tooltip.add(new LiteralText(String.valueOf(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack)))
+                tooltip.add(new LiteralText(String.valueOf(ConfigConstructor.kraken_slayer_bonus_true_damage + bonus))
                         .formatted(Formatting.WHITE)
                         .append(new TranslatableText("tooltip.soulsweapons.third_shot_2").formatted(Formatting.GRAY)));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_3").formatted(Formatting.GRAY)
                         .append(new LiteralText(MathHelper.floor((1f - ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier) * 100) + "%"))
                         .formatted(Formatting.DARK_GRAY));
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_4").formatted(Formatting.GRAY));
+                }
             }
             case MOONLIGHT_ARROW -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_arrow").formatted(Formatting.AQUA));
