@@ -2,10 +2,12 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.util.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,21 +22,27 @@ import net.soulsweaponry.registry.WeaponRegistry;
 
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
+    @Unique
     BipedEntityModel<?> model = ((BipedEntityModel<?>)(Object)this);
+    @Unique
     private float parryProgress;
 
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        if ((entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem || entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD))
-                && !entity.getHandItems().iterator().next().isOf(WeaponRegistry.FROSTMOURNE)) {
-            if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-                if (entity.getHandItems().iterator().next().isOf(WeaponRegistry.GUTS_SWORD)) {
+        for (ItemStack stack : entity.getHandItems()) {
+            if (stack.getItem() instanceof SoulHarvestingItem || stack.isOf(WeaponRegistry.GUTS_SWORD) && !stack.isOf(WeaponRegistry.FROSTMOURNE) || stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
+                    if (stack.isOf(WeaponRegistry.GUTS_SWORD)) {
+                        CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
+                    } else if (!stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                        ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
+                    }
+                } else if (entity instanceof Remnant) {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                } else {
-                    ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
                 }
-            } else if (entity instanceof Remnant) {
-                CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                    CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
+                }
             }
         }
     }
