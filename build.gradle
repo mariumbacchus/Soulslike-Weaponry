@@ -20,6 +20,8 @@ repositories {
 	// for more information about repositories.
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 
+	maven { url "https://cursemaven.com" }
+
 	// Runtime only
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
@@ -35,8 +37,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.18:${project.geckolib_version}"
+	modImplementation "curse.maven:attributefix-${project.attributefix}"
 
 	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
 		exclude(group: "net.fabricmc.fabric-api")

@@ -25,8 +25,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
@@ -248,25 +246,10 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     public enum Attack {
         IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
     }
-
-    public Vec3d getRotationVec(float pitch, float yaw) {
-        float f = pitch * ((float)Math.PI / 180);
-        float g = -yaw * ((float)Math.PI / 180);
-        float h = MathHelper.cos(g);
-        float i = MathHelper.sin(g);
-        float j = MathHelper.cos(f);
-        float k = MathHelper.sin(f);
-        return new Vec3d(i * j, -k, h * j);
-    }
     
     @Override
     public boolean disablesShield() {
         return true;
-    }
-
-    @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.chaos_monarch_health;
     }
 
     @Override

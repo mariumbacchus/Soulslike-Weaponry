@@ -250,11 +250,6 @@ public class DayStalker extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.day_stalker_health;
-    }
-
-    @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "idles", 0, this::idles));
         data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attacks));

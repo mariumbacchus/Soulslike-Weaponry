@@ -338,11 +338,6 @@ public class NightProwler extends BossEntity implements IAnimatable {
         return true;
     }
 
-    @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.night_prowler_health;
-    }
-
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
