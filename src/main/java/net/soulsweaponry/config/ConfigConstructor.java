@@ -139,6 +139,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float draupnir_spear_detonate_power = 1f;
     @Entry public static int draupnir_spear_throw_cooldown = 40;
     @Entry public static int draupnir_spear_detonate_cooldown = 100;
+    @Entry public static int draupnir_spear_summon_spears_cooldown = 300;
     @Entry public static int draupnir_spear_max_age = 400;
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;

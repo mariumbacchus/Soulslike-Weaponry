@@ -55,7 +55,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
     public void detonate() {
         if (this.getOwner() != null && this.getBlockPos() != null && !world.isClient) {
             float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), power, false, Explosion.DestructionType.NONE);
+            this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, Explosion.DestructionType.NONE);
             if (power > 2f) {
                 for (Entity entity : world.getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
                     if (entity instanceof LivingEntity living) {
