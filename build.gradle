@@ -19,6 +19,7 @@ repositories {
 
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 
+	maven { url "https://cursemaven.com" }
 	// Runtime only
 
 }
@@ -38,7 +39,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.19:${project.geckolib_version}"
-
+	modImplementation "curse.maven:attributefix-${project.attributefix}"
 }
 
 loom {

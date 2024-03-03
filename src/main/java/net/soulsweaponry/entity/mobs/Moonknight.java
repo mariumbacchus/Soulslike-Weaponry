@@ -401,11 +401,6 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.fallen_icon_health;
-    }
-
-    @Override
     public void registerControllers(AnimationData data) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         data.addAnimationController(controller);  

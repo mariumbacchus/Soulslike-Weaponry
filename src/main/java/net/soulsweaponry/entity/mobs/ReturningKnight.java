@@ -287,11 +287,6 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.returning_knight_health;
-    }
-
-    @Override
     public boolean isUndead() {
         return true;
     }

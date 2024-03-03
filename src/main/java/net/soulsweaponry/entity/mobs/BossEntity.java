@@ -173,6 +173,4 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     @Override
     public abstract boolean disablesShield();
-
-    public abstract double getBossMaxHealth();
 }
