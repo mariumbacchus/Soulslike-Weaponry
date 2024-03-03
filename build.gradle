@@ -20,6 +20,7 @@ repositories {
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 	maven { url 'https://maven.blamejared.com' }
 	mavenCentral()
+	maven { url "https://cursemaven.com" }
 
 	//Runtime only repositories
 	maven { url "https://maven.shedaniel.me/" }
@@ -49,6 +50,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.19.4:${project.geckolib_version}"
+	modImplementation "curse.maven:attributefix-${project.attributefix}"
 	
 	//Runtime only
 	//modRuntimeOnly "net.darkhax.bookshelf:Bookshelf-Fabric-1.19.3:17.0.3"

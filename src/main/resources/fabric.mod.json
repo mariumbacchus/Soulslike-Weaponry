@@ -39,6 +39,7 @@
     "minecraft": "~1.19",
     "java": ">=17",
     "fabric-api": ">=0.78.0",
-    "geckolib": ">=4.1.3"
+    "geckolib": ">=4.1.3",
+    "attributefix": ">=19.1.2"
   }
 }

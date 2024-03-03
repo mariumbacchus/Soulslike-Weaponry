@@ -265,11 +265,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.chaos_monarch_health;
-    }
-
-    @Override
     public boolean isFireImmune() {
         return true;
     }
