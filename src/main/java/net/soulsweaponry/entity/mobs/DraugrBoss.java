@@ -344,11 +344,6 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         return this.shouldDisableShield;
     }
 
-    @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.old_champions_remains_health;
-    }
-
     public void updateDisableShield(boolean bl) {
         this.shouldDisableShield = bl;
     }

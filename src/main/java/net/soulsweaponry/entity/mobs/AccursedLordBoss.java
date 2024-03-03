@@ -233,11 +233,6 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.decaying_king_health;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::attackAnimations));
     }

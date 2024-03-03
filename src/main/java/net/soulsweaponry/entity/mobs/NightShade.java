@@ -351,11 +351,6 @@ public class NightShade extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.frenzied_shade_health;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }

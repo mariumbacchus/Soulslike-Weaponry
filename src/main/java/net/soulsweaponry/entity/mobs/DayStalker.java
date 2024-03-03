@@ -26,13 +26,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
-import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleHandler;
-import net.soulsweaponry.util.ParticleNetworking;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -236,11 +234,6 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     public boolean disablesShield() {
         return true;
-    }
-
-    @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.day_stalker_health;
     }
 
     @Override
