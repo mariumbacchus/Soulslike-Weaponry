@@ -221,6 +221,8 @@ public class WeaponUtil {
                     else tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
                 WeaponUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_6").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_7").formatted(Formatting.GRAY));
             }
             case FEATHERLIGHT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE));
