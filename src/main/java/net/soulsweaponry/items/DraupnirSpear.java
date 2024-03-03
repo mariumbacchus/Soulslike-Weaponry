@@ -8,19 +8,23 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.ParticleHandler;
@@ -59,16 +63,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
                 world.spawnEntity(entity);
                 world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                if (stack.hasNbt()) {
-                    List<Integer> ids = new ArrayList<>();
-                    if (stack.getNbt().contains(SPEARS_ID)) {
-                        int[] arr = stack.getNbt().getIntArray(SPEARS_ID);
-                        ids = WeaponUtil.arrayToList(arr);
-                    }
-                    ids.add(entity.getId());
-                    stack.getNbt().putIntArray(SPEARS_ID, ids);
-                }
-
+                this.saveSpearData(stack, entity);
                 playerEntity.getItemCooldownManager().set(this, ConfigConstructor.draupnir_spear_throw_cooldown - enchant * 5);
                 stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             }
@@ -82,7 +77,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<>(this, "controller", 20, this::predicate));
+        data.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -118,30 +113,68 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
         super.appendTooltip(stack, world, tooltip, context);
     }
 
+    private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
+        if (stack.hasNbt()) {
+            List<Integer> ids = new ArrayList<>();
+            if (stack.getNbt().contains(SPEARS_ID)) {
+                int[] arr = stack.getNbt().getIntArray(SPEARS_ID);
+                ids = WeaponUtil.arrayToList(arr);
+            }
+            ids.add(entity.getId());
+            stack.getNbt().putIntArray(SPEARS_ID, ids);
+        }
+    }
+
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            Box box = player.getBoundingBox().expand(3);
-            List<Entity> entities = world.getOtherEntities(player, box);
-            float power = ConfigConstructor.draupnir_spear_projectile_damage;
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity) {
-                    entity.damage(world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
-                    entity.addVelocity(0, .1f, 0);
+            if (player.isSneaking()) {
+                if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
+                    int r = 4;
+                    world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.PLAYERS, 1f, 1f);
+                    for (int theta = 0; theta < 360; theta += 45) {
+                        double x0 = player.getX();
+                        double z0 = player.getZ();
+                        double x = x0 + r * Math.cos(theta * Math.PI / 180);
+                        double z = z0 + r * Math.sin(theta * Math.PI / 180);
+                        double x1 = Math.cos(theta * Math.PI / 180);
+                        double z1 = Math.sin(theta * Math.PI / 180);
+                        DraupnirSpearEntity entity = new DraupnirSpearEntity(world, player, stack);
+                        entity.setPos(x, player.getY() + 5, z);
+                        entity.setVelocity(x1, -3, z1);
+                        entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
+                        world.spawnEntity(entity);
+                        this.saveSpearData(stack, entity);
+                        ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
+                    }
+                    if (!player.isCreative())
+                        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
+                } else {
+                    player.sendMessage(Text.literal("Can't cast this ability with Cooldown effect!"), true);
                 }
-            }
-            ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
-            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
-            if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
-                int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
-                for (int id : ids) {
-                    Entity entity = world.getEntityById(id);
-                    if (entity instanceof DraupnirSpearEntity spear) {
-                        spear.detonate();
+            } else {
+                Box box = player.getBoundingBox().expand(3);
+                List<Entity> entities = world.getOtherEntities(player, box);
+                float power = ConfigConstructor.draupnir_spear_projectile_damage;
+                for (Entity entity : entities) {
+                    if (entity instanceof LivingEntity) {
+                        entity.damage(world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.addVelocity(0, .1f, 0);
                     }
                 }
-                stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
+                ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
+                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
+                if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
+                    int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
+                    for (int id : ids) {
+                        Entity entity = world.getEntityById(id);
+                        if (entity instanceof DraupnirSpearEntity spear) {
+                            spear.detonate();
+                        }
+                    }
+                    stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
+                }
             }
         }
     }

@@ -236,6 +236,7 @@
     "effect.soulsweapons.veil_of_fire": "Veil of Fire",
     "effect.soulsweapons.blight": "Blight",
     "effect.soulsweapons.shadow_step": "Shadow Step",
+    "effect.soulsweapons.cooldown": "Cooldown",
 
     "item.minecraft.potion.effect.warding": "Potion of Magical Warding",
     "item.minecraft.splash_potion.effect.warding": "Splash Potion of Magical Warding",
@@ -524,6 +525,8 @@
     "tooltip.soulsweapons.detonate_spears_description_3": "thrown §6Draupnir Spears§r that exist with explosion power ",
     "tooltip.soulsweapons.detonate_spears_description_4": "At power level over 2, all nearby targets are",
     "tooltip.soulsweapons.detonate_spears_description_5": "affected by §3Weakness§r as well.",
+    "tooltip.soulsweapons.detonate_spears_description_6": "- Pressing while sneaking summons 8 §6Draupnir Spears§r from",
+    "tooltip.soulsweapons.detonate_spears_description_7": "the sky around the player instead.",
     "tooltip.soulsweapons.keybind_ability": "Ability Keybind: ",
     "tooltip.soulsweapons.moonfall": "Moonfall",
     "tooltip.soulsweapons.moonfall_description_1": "- Charge the weapon and smash the ground, causing",
@@ -767,8 +770,8 @@
     "advancements.soulsweapons.transform_scythe.description": "Feed the Darkin Scythe enough souls to transform itself into a new empowered form.",
     "advancements.soulsweapons.kill_day_night_boss.title": "Heat Death of the Universe",
     "advancements.soulsweapons.kill_day_night_boss.description": "Use the Chaos Orb to summon the Day Stalker and Night Prowler, and acquire either of their souls.",
-    "advancements.soulsweapons.arkenplate.title": "",
+    "advancements.soulsweapons.arkenplate.title": "Redemption Ark",
     "advancements.soulsweapons.arkenplate.description": "Craft the Arkenplate and become stronger than diamonds",
-    "advancements.soulsweapons.hallowheart.title": "",
+    "advancements.soulsweapons.hallowheart.title": "or pvp boss",
     "advancements.soulsweapons.hallowheart.description": "Craft the Hallowheart and reject the withering"
 }
