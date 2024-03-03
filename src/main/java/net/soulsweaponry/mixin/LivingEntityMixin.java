@@ -11,7 +11,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -99,13 +98,6 @@ public class LivingEntityMixin {
                 }
             } catch (Exception ignored) {
             }
-        }
-    }
-
-    @Inject(method = "getMaxHealth", at = @At("HEAD"), cancellable = true)
-    protected void interceptGetMaxHealth(CallbackInfoReturnable<Float> infoReturnable) {
-        if (this.entity instanceof BossEntity boss) {
-            infoReturnable.setReturnValue((float) boss.getBossMaxHealth());
         }
     }
 

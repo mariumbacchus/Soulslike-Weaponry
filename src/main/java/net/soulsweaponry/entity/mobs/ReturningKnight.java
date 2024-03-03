@@ -286,11 +286,6 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.returning_knight_health;
-    }
-
-    @Override
     public boolean isUndead() {
         return true;
     }

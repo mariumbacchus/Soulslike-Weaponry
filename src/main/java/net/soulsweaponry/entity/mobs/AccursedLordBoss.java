@@ -238,11 +238,6 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public double getBossMaxHealth() {
-        return ConfigConstructor.decaying_king_health;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
