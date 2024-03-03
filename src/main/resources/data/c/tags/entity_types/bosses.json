@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:accursed_lord_boss",
+    "soulsweapons:draugr_boss",
+    "soulsweapons:night_shade",
+    "soulsweapons:returning_knight",
+    "soulsweapons:chaos_monarch",
+    "soulsweapons:moonknight",
+    "soulsweapons:day_stalker",
+    "soulsweapons:night_prowler"
+  ]
+}
