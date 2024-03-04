@@ -3,7 +3,7 @@
   "criteria": {
     "has_advancement": {
       "conditions": {
-        "recipe": "soulsweapons:darkin_scythe_pre_recipe"
+        "recipe": "soulsweapons:kraken_slayer_crossbow_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -35,7 +35,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:darkin_scythe_pre_recipe"
+      "soulsweapons:kraken_slayer_crossbow_recipe"
     ]
   }
 }

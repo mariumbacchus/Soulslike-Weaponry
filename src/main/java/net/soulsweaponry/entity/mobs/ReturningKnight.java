@@ -31,10 +31,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -58,9 +56,6 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
-        this.setDrops(WeaponRegistry.NIGHTFALL);
-        this.setDrops(ItemRegistry.LORD_SOUL_ROSE);
-        this.setDrops(ItemRegistry.ARKENSTONE);
     }
 
     private static final TrackedData<Boolean> OBLITERATE = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);

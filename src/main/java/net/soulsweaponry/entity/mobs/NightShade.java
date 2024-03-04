@@ -6,11 +6,11 @@ import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -58,8 +57,6 @@ public class NightShade extends BossEntity implements IAnimatable {
     public NightShade(EntityType<? extends NightShade> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
         this.moveControl = new ShadeMoveControl(this);
-        this.setDrops(ItemRegistry.LORD_SOUL_DARK);
-        this.setDrops(ItemRegistry.ESSENCE_OF_EVENTIDE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -120,8 +117,12 @@ public class NightShade extends BossEntity implements IAnimatable {
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
-            this.drops.clear();
         }
+    }
+
+    @Override
+    protected boolean shouldDropLoot() {
+        return !this.isCopy();
     }
 
     @Override

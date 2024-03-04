@@ -28,10 +28,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleEvents;
@@ -69,9 +67,6 @@ public class Moonknight extends BossEntity implements IAnimatable {
     
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world, BossBar.Color.WHITE);
-        this.setDrops(WeaponRegistry.MOONLIGHT_GREATSWORD);
-        this.setDrops(ItemRegistry.LORD_SOUL_WHITE);
-        this.setDrops(ItemRegistry.ESSENCE_OF_LUMINESCENCE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {

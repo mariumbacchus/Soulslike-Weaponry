@@ -52,10 +52,6 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
         super(entityType, world, Color.PURPLE);
-        this.setDrops(WeaponRegistry.WITHERED_WABBAJACK);
-        this.setDrops(ItemRegistry.LORD_SOUL_VOID);
-        this.setDrops(ItemRegistry.CHAOS_CROWN);
-        this.setDrops(ItemRegistry.CHAOS_ROBES);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

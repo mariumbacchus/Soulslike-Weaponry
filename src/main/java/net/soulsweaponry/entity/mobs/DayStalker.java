@@ -71,8 +71,6 @@ public class DayStalker extends BossEntity implements IAnimatable {
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
-        this.drops.add(WeaponRegistry.DAWNBREAKER);
-        this.drops.add(ItemRegistry.LORD_SOUL_DAY_STALKER);
     }
 
     @Override
