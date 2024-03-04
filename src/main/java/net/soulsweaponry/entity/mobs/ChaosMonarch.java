@@ -51,10 +51,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
         super(entityType, world, Color.PURPLE);
-        this.setDrops(WeaponRegistry.WITHERED_WABBAJACK);
-        this.setDrops(ItemRegistry.LORD_SOUL_VOID);
-        this.setDrops(ItemRegistry.CHAOS_CROWN);
-        this.setDrops(ItemRegistry.CHAOS_ROBES);
     }
 
     private PlayState predicate(AnimationState<?> state) {

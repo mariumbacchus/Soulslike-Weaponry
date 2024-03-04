@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -55,8 +54,6 @@ public class NightShade extends BossEntity implements GeoEntity {
     public NightShade(EntityType<? extends NightShade> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
         this.moveControl = new ShadeMoveControl(this);
-        this.setDrops(ItemRegistry.LORD_SOUL_DARK);
-        this.setDrops(ItemRegistry.ESSENCE_OF_EVENTIDE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -117,8 +114,12 @@ public class NightShade extends BossEntity implements GeoEntity {
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
-            this.drops.clear();
         }
+    }
+
+    @Override
+    protected boolean shouldDropLoot() {
+        return !this.isCopy();
     }
 
     @Override

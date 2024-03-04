@@ -3,7 +3,7 @@
   "criteria": {
     "has_advancement": {
       "conditions": {
-        "recipe": "soulsweapons:galeforce_recipe"
+        "recipe": "soulsweapons:kraken_slayer_crossbow_recipe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -35,7 +35,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:galeforce_recipe"
+      "soulsweapons:kraken_slayer_crossbow_recipe"
     ]
   }
 }

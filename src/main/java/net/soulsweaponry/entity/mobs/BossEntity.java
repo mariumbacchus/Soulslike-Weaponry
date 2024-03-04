@@ -25,7 +25,6 @@ import net.soulsweaponry.util.IAnimatedDeath;
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
     
     protected final ServerBossBar bossBar;
-    protected ArrayList<Item> drops = new ArrayList<>();
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -35,19 +34,6 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     public abstract int getXp();
 
-    protected void setDrops(Item item) {
-        this.drops.add(item);
-    }
-
-    @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
-        for (Item item : drops) {
-            ItemEntity entity = this.dropItem(item);
-            if (entity != null) entity.setCovetedItem();
-        }
-    }
-    
     @Override
     protected void mobTick() {
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());

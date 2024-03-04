@@ -34,7 +34,6 @@ import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -55,7 +54,6 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     public DraugrBoss(EntityType<? extends DraugrBoss> entityType, World world) {
         super(entityType, world, BossBar.Color.WHITE);
-        this.setDrops(WeaponRegistry.DRAUGR);
     }
 
     private static final TrackedData<Boolean> IS_SHIELDING = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
