@@ -20,7 +20,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -33,7 +32,10 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.armor.ChaosSet;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -53,11 +55,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
         super(entityType, world, Color.PURPLE);
-        this.setDrops(WeaponRegistry.WITHERED_WABBAJACK);
-        this.setDrops(ItemRegistry.LORD_SOUL_VOID);
-        this.setDrops(ItemRegistry.CHAOS_CROWN);
-        this.setDrops(ItemRegistry.CHAOS_ROBES);
-        this.setDrops(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
     }
 
     private PlayState predicate(AnimationState<?> state) {

@@ -74,9 +74,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
         super(entityType, world, Color.PURPLE);
-        this.drops.add(WeaponRegistry.SOUL_REAPER);
-        this.drops.add(WeaponRegistry.FORLORN_SCYTHE);
-        this.drops.add(ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
     }
 
     @Override

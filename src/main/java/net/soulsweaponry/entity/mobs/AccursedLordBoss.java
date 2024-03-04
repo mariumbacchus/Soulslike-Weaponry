@@ -27,9 +27,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.ParticleHandler;
@@ -55,9 +53,6 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     public AccursedLordBoss(EntityType<? extends AccursedLordBoss> entityType, World world) {
         super(entityType, world, BossBar.Color.RED);
-        this.setDrops(ItemRegistry.LORD_SOUL_RED);
-        this.setDrops(ItemRegistry.WITHERED_DEMON_HEART);
-        this.setDrops(WeaponRegistry.DARKIN_BLADE);
     }
 
     public boolean isFireImmune() {
