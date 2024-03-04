@@ -58,9 +58,6 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
-        this.setDrops(WeaponRegistry.NIGHTFALL);
-        this.setDrops(ItemRegistry.LORD_SOUL_ROSE);
-        this.setDrops(ItemRegistry.ARKENSTONE);
     }
 
     private static final TrackedData<Boolean> OBLITERATE = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);

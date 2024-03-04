@@ -2,7 +2,7 @@
   "parent": "soulsweapons:recipe_root",
   "rewards": {
     "recipes": [
-      "soulsweapons:moonlight_shortsword_recipe"
+      "soulsweapons:kraken_slayer_crossbow_recipe"
     ]
   },
   "criteria": {
@@ -28,7 +28,7 @@
     "has_advancement": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulsweapons:moonlight_shortsword_recipe"
+        "recipe": "soulsweapons:kraken_slayer_crossbow_recipe"
       }
     }
   },

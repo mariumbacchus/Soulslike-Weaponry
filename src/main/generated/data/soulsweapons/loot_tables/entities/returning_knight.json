@@ -1,0 +1,90 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:nightfall"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:lord_soul_rose"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:arkenstone"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:soul_ingot"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:soul_ingot"
+        }
+      ]
+    }
+  ]
+}

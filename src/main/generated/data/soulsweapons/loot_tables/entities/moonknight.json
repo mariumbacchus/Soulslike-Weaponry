@@ -1,0 +1,90 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:moonlight_greatsword"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:lord_soul_white"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:essence_of_luminescence"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:moonstone"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0,
+              "add": false
+            }
+          ],
+          "name": "soulsweapons:moonstone"
+        }
+      ]
+    }
+  ]
+}

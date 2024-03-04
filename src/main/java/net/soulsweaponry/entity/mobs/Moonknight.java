@@ -70,9 +70,6 @@ public class Moonknight extends BossEntity implements IAnimatable {
     
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world, Color.WHITE);
-        this.setDrops(WeaponRegistry.MOONLIGHT_GREATSWORD);
-        this.setDrops(ItemRegistry.LORD_SOUL_WHITE);
-        this.setDrops(ItemRegistry.ESSENCE_OF_LUMINESCENCE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {

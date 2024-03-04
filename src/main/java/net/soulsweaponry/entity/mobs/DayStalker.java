@@ -27,9 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
@@ -71,8 +69,6 @@ public class DayStalker extends BossEntity implements IAnimatable {
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
         super(entityType, world, Color.YELLOW);
-        this.drops.add(WeaponRegistry.DAWNBREAKER);
-        this.drops.add(ItemRegistry.LORD_SOUL_DAY_STALKER);
     }
 
     @Override

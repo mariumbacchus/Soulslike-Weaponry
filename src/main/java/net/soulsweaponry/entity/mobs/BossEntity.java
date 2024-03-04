@@ -1,22 +1,15 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.boss.BossBar.Style;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -24,10 +17,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.IAnimatedDeath;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath, ShieldBreaker {
     
     protected final ServerBossBar bossBar;
-    protected ArrayList<Item> drops = new ArrayList<>();
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -36,19 +32,6 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     }
 
     public abstract int getXp();
-
-    protected void setDrops(Item item) {
-        this.drops.add(item);
-    }
-
-    @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
-        for (Item item : drops) {
-            ItemEntity entity = this.dropItem(item);
-            if (entity != null) entity.setCovetedItem();
-        }
-    }
     
     @Override
     protected void mobTick() {
