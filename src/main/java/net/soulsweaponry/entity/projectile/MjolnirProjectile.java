@@ -86,47 +86,58 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
                 this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
             }
             ++this.returnTimer;
+            float f = ConfigConstructor.mjolnir_projectile_damage;
+            if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
+            for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
+                if (entity1 instanceof LivingEntity target && !entity.isTeammate(target)) {
+                    this.collide(entity, target, f / 2f, 1);
+                }
+            }
         }
         super.tick();
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        BlockPos blockPos;
-        Entity entity2;
+        Entity owner = this.getOwner() == null ? this : this.getOwner();
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.mjolnir_projectile_damage;
         if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
-        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
-        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
-        if (entity.damage(damageSource, f)) {
+        int strikes = 1;
+        if (this.getWorld().isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
+        if (this.collide(owner, entity, f, strikes)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
             if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
+                if (owner instanceof LivingEntity) {
+                    EnchantmentHelper.onUserDamaged(livingEntity2, owner);
+                    EnchantmentHelper.onTargetDamaged((LivingEntity)owner, livingEntity2);
                 }
                 this.onHit(livingEntity2);
             }
         }
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        float g = 1.0f;
-        int strikes = 1;
-        if (this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = entity.getBlockPos())) {
-            if (this.getWorld().isThundering() || entity instanceof LeviathanAxeEntity) strikes = 3;
+    }
+
+    private boolean collide(Entity owner, Entity target, float damage, int strikes) {
+        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
+        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
+        BlockPos blockPos;
+        float g = 1f;
+        if (this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
             for (int i = 0; i < strikes; i++) {
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
-                lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
+                lightningEntity.setChanneler(owner instanceof ServerPlayerEntity ? (ServerPlayerEntity)owner : null);
                 this.getWorld().spawnEntity(lightningEntity);
             }
             soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
             g = 5.0f;
         }
         this.playSound(soundEvent, g, 1.0f);
+        return target.damage(damageSource, damage);
     }
 
     @Override
