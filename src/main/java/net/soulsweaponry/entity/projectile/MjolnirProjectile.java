@@ -89,7 +89,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements IAn
             float f = ConfigConstructor.mjolnir_projectile_damage;
             if (entity instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
             for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
-                if (entity1 instanceof LivingEntity target && !entity.isTeammate(target)) {
+                if (entity1 instanceof LivingEntity target && !target.isTeammate(entity)) {
                     this.collide(entity, target, f / 2f, 1);
                 }
             }

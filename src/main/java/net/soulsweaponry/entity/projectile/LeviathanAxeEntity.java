@@ -112,7 +112,7 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
             ++this.returnTimer;
             float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
             for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
-                if (entity1 instanceof LivingEntity target && !entity.isTeammate(target)) {
+                if (entity1 instanceof LivingEntity target && !target.isTeammate(entity)) {
                     this.collide(entity, target, f / 2f);
                 }
             }
