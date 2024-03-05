@@ -126,7 +126,8 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
-        if (this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
+        boolean bl = target.damage(damageSource, damage);
+        if (bl && this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
             for (int i = 0; i < strikes; i++) {
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
@@ -137,7 +138,7 @@ public class MjolnirProjectile extends PersistentProjectileEntity implements Geo
             g = 5.0f;
         }
         this.playSound(soundEvent, g, 1.0f);
-        return target.damage(damageSource, damage);
+        return bl;
     }
 
     @Override

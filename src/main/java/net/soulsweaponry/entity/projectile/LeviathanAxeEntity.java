@@ -120,8 +120,11 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements Ge
 
     private boolean collide(Entity owner, Entity target, float damage) {
         DamageSource damageSource = DamageSource.trident(this, owner);
-        LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
-        return target.damage(damageSource, damage);
+        boolean bl = target.damage(damageSource, damage);
+        if (bl) {
+            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
+        }
+        return bl;
     }
 
     @Override
