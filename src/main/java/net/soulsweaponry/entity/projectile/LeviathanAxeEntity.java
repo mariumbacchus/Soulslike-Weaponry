@@ -51,28 +51,26 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
     }
 
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        Entity entity2;
+        Entity owner = this.getOwner() == null ? this : this.getOwner();
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
-        DamageSource damageSource = DamageSource.trident(this, (entity2 = this.getOwner()) == null ? this : entity2);
         this.dealtDamage = true;
-        if (entity.damage(damageSource, f)) {
+        if (this.collide(owner, entity, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
+            if (entity instanceof LivingEntity target) {
+                if (owner instanceof LivingEntity) {
+                    EnchantmentHelper.onUserDamaged(target, owner);
+                    EnchantmentHelper.onTargetDamaged((LivingEntity)owner, target);
                 }
-                this.onHit(livingEntity2);
+                this.onHit(target);
             }
         }
         if (!world.isClient && entity instanceof MjolnirProjectile) {
             ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
             this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, Explosion.DestructionType.DESTROY);
         }
-        LeviathanAxe.iceExplosion(world, this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
     }
 
@@ -112,8 +110,20 @@ public class LeviathanAxeEntity extends PersistentProjectileEntity implements IA
                 this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
             }
             ++this.returnTimer;
+            float f = ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
+            for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
+                if (entity1 instanceof LivingEntity target && !entity.isTeammate(target)) {
+                    this.collide(entity, target, f / 2f);
+                }
+            }
         }
         super.tick();
+    }
+
+    private boolean collide(Entity owner, Entity target, float damage) {
+        DamageSource damageSource = DamageSource.trident(this, owner);
+        LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
+        return target.damage(damageSource, damage);
     }
 
     @Nullable
