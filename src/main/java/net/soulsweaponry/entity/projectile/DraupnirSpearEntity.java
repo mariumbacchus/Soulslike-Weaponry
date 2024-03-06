@@ -34,7 +34,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
 
     private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack stack;
-    private AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -117,10 +117,6 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
         return this.stack;
     }
 
-    public boolean isEnchanted() {
-        return (Boolean)this.dataTracker.get(ENCHANTED);
-    }
-
     @Nullable
     protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
@@ -135,14 +131,14 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
         return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
     }
 
-    private PlayState predicate(AnimationState state) {
+    private PlayState predicate(AnimationState<?> state) {
         state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
