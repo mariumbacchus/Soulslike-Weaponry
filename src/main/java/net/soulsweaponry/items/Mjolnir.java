@@ -80,6 +80,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
             stack.getNbt().putIntArray(OWNERS_LAST_POS, new int[]{player.getBlockX(), player.getBlockY(), player.getBlockZ()});
         }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
+        projectile.saveOnPlayer(player);
         float speed = (float) WeaponUtil.getEnchantDamageBonus(stack)/5;
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;

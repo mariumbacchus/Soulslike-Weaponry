@@ -28,6 +28,7 @@ public class KeyBindRegistry {
     public static KeyBinding keybindAbility;
     private static KeyBinding parry;
     public static KeyBinding effectShootMoonlight;
+    public static KeyBinding returnThrownWeapon;
 
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
@@ -37,6 +38,7 @@ public class KeyBindRegistry {
         keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
         parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
         effectShootMoonlight = registerKeyboard("effect_shoot_moonlight", GLFW.GLFW_KEY_H);
+        returnThrownWeapon = registerKeyboard("return_thrown_weapon", GLFW.GLFW_KEY_N);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
@@ -90,6 +92,11 @@ public class KeyBindRegistry {
                     ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
                     client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
                 }
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (returnThrownWeapon.wasPressed()) {
+                ClientPlayNetworking.send(PacketIds.RETURN_THROWN_WEAPON, PacketByteBufs.empty());
             }
         });
     }
