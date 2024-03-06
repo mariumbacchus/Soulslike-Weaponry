@@ -1,16 +1,11 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.data.DataTracker.Entry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -20,7 +15,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -33,9 +27,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
     public FreyrSword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -50,7 +48,7 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
         try {
             if (user.getDataTracker().get(SUMMON_UUID).isPresent() && world instanceof ServerWorld) {
                 Entity sword = ((ServerWorld)world).getEntity(user.getDataTracker().get(SUMMON_UUID).get());
-                if (sword != null && sword instanceof FreyrSwordEntity) {
+                if (sword instanceof FreyrSwordEntity) {
                     return TypedActionResult.fail(stack);
                 } else {
                     user.getInventory().removeOne(stack);

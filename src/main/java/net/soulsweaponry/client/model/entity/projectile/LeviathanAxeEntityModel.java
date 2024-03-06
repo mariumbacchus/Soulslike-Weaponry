@@ -31,7 +31,7 @@ public class LeviathanAxeEntityModel extends AnimatedGeoModel<LeviathanAxeEntity
 
         IBone main = this.getAnimationProcessor().getBone("main");
         float rotation = animatable.age % 360;
-		if (main != null && !animatable.isNoClip()) {
+		if (!animatable.dealtDamage && main != null) {
 			main.setRotationX(-rotation);
 		}
     }

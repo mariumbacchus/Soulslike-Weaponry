@@ -63,6 +63,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
                     stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
                 }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
+                entity.saveOnPlayer(playerEntity);
                 float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5f;
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
