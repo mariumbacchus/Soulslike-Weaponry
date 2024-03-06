@@ -121,10 +121,6 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
         return this.stack;
     }
 
-    public boolean isEnchanted() {
-        return (Boolean)this.dataTracker.get(ENCHANTED);
-    }
-
     @Nullable
     protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);

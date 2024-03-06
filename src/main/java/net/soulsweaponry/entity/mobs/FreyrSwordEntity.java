@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -72,7 +71,7 @@ import java.util.UUID;
  */
 public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private ItemStack stack;
     public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
