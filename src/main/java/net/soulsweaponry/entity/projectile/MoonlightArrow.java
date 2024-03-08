@@ -21,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.mixin.PersistentProjectileMixin;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 import java.util.List;
@@ -31,6 +32,11 @@ public class MoonlightArrow extends PersistentProjectileEntity {
 
     public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.pickupType = PickupPermission.DISALLOWED;
+    }
+
+    public MoonlightArrow(World world, LivingEntity owner) {
+        super(EntityRegistry.MOONLIGHT_ARROW, owner, world);
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
