@@ -1,6 +1,7 @@
 package net.soulsweaponry.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -42,6 +43,14 @@ public class ModTags {
 
         private static TagKey<Structure> createTag(String id) {
             return TagKey.of(RegistryKeys.STRUCTURE, new Identifier(SoulsWeaponry.ModId, id));
+        }
+    }
+
+    public static class Entities {
+        public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
+
+        private static TagKey<EntityType<?>> createCommonTag(String id) {
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("c", id));
         }
     }
 }

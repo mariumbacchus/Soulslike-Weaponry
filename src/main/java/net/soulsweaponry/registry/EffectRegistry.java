@@ -14,10 +14,12 @@ import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
 import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.ModTags;
 
 public class EffectRegistry {
 
@@ -87,7 +89,7 @@ public class EffectRegistry {
         
         @Override
         public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-            if (this == EffectRegistry.BLEED && !(entity instanceof AbstractSkeletonEntity || entity instanceof SkeletonHorseEntity)) {
+            if (this == EffectRegistry.BLEED && !entity.getType().isIn(EntityTypeTags.SKELETONS) && !entity.getType().isIn(ModTags.Entities.SKELETONS)) {
                 entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), 1f + amplifier);
             }
             if (this == EffectRegistry.BLOODTHIRSTY) {
