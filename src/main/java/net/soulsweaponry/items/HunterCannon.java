@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.Cannonball;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public class HunterCannon extends GunItem {
@@ -68,7 +67,7 @@ public class HunterCannon extends GunItem {
                 }
             }
 
-            Cannonball entity = new Cannonball(EntityRegistry.CANNONBALL, world);
+            Cannonball entity = new Cannonball(world, user);
             entity.setPos(user.getX(), user.getEyeY(), user.getZ());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
