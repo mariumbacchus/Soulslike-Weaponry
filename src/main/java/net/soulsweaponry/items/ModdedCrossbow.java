@@ -5,7 +5,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CrossbowUser;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -28,7 +27,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (CrossbowItem.isCharged(itemStack)) {
-            this.shootProjectiles(world, user, hand, itemStack, this.getSpeed(itemStack, user), this.getDivergence(itemStack, user), this.getProjectileType(itemStack, user, world));
+            this.shootProjectiles(world, user, hand, itemStack, this.getSpeed(itemStack, user), this.getDivergence(itemStack, user));
             CrossbowItem.setCharged(itemStack, false);
             return TypedActionResult.consume(itemStack);
         }
@@ -126,16 +124,14 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
         nbtCompound.put(CHARGED_PROJECTILES_KEY, nbtList);
     }
 
-    /**
-     * Set this to return null if you want it to spawn a normal arrow based on its stack.
-     */
-    @Nullable
-    public abstract EntityType<? extends PersistentProjectileEntity> getProjectileType(ItemStack stack, PlayerEntity player, World world);
     public abstract float getSpeed(ItemStack stack, PlayerEntity player);
     public abstract float getDivergence(ItemStack stack, PlayerEntity player);
     public abstract void modifyProjectile(PersistentProjectileEntity projectile, ItemStack stack);
 
-    public void shootProjectiles(World world, LivingEntity entity, Hand hand, ItemStack stack, float speed, float divergence, EntityType<? extends PersistentProjectileEntity> projectile) {
+    /**
+     * This should be overwritten to put in custom projectiles.
+     */
+    public void shootProjectiles(World world, LivingEntity entity, Hand hand, ItemStack stack, float speed, float divergence) {
         List<ItemStack> list = this.getProjectiles(stack);
         float[] soundPitches = this.getSoundPitches(entity.getRandom());
         boolean bl = entity instanceof PlayerEntity && ((PlayerEntity)entity).getAbilities().creativeMode;
@@ -143,28 +139,25 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
             ItemStack arrowStack = list.get(i);
             if (arrowStack.isEmpty()) continue;
             if (i == 0) {
+                PersistentProjectileEntity projectile = this.createArrow(world, entity, stack, arrowStack);
                 this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 0.0f);
                 continue;
             }
             if (i == 1) {
+                PersistentProjectileEntity projectile = this.createArrow(world, entity, stack, arrowStack);
                 this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, -10.0f);
                 continue;
             }
             if (i != 2) continue;
+            PersistentProjectileEntity projectile = this.createArrow(world, entity, stack, arrowStack);
             this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 10.0f);
         }
         this.postShoot(world, entity, stack);
     }
 
-    private void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, EntityType<? extends PersistentProjectileEntity> type, ItemStack arrowStack, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
+    public void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, PersistentProjectileEntity projectile, ItemStack arrowStack, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
         if (world.isClient) {
             return;
-        }
-        PersistentProjectileEntity projectile;
-        if (type == null) {
-            projectile = this.createArrow(world, shooter, crossbow, arrowStack);
-        } else {
-            projectile = type.create(world);
         }
         this.modifyProjectile(projectile, crossbow);
         this.applyPiercing(projectile, crossbow);
@@ -238,7 +231,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
         return SoundEvents.ITEM_CROSSBOW_LOADING_START;
     }
 
-    private void postShoot(World world, LivingEntity entity, ItemStack stack) {
+    public void postShoot(World world, LivingEntity entity, ItemStack stack) {
         if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
             if (!world.isClient) {
                 Criteria.SHOT_CROSSBOW.trigger(serverPlayerEntity, stack);
@@ -276,7 +269,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
         }
     }
 
-    private float[] getSoundPitches(Random random) {
+    public float[] getSoundPitches(Random random) {
         boolean bl = random.nextBoolean();
         return new float[]{1.0f, this.getSoundPitch(bl, random), this.getSoundPitch(!bl, random)};
     }
