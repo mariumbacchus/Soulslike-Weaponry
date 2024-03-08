@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -9,12 +10,17 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.registry.EntityRegistry;
 
 public class KrakenSlayerProjectile extends PersistentProjectileEntity {
     private float trueDamage;
 
     public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    public KrakenSlayerProjectile(World world, LivingEntity owner) {
+        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world);
     }
 
     public void setTrueDamage(float trueDamage) {

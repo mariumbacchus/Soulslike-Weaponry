@@ -14,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +40,7 @@ public class KrakenSlayer extends ModdedBow {
                 if (!((double)pullProgress < 0.1D)) {
                     if (!world.isClient) {
                         if (stack.hasNbt() && stack.getNbt().contains("firedShots") && stack.getNbt().getInt("firedShots") >= 2) {
-                            KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, world);
+                            KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, user);
                             projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack));
                             this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.6f, 3.0f);
                             stack.getNbt().putInt("firedShots", 0);
