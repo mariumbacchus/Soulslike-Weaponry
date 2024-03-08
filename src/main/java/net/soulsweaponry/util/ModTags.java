@@ -1,11 +1,11 @@
 package net.soulsweaponry.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.soulsweaponry.SoulsWeaponry;
 
@@ -43,6 +43,14 @@ public class ModTags {
 
         private static TagKey<ConfiguredStructureFeature<?, ?>> createTag(String id) {
             return TagKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
+        }
+    }
+
+    public static class Entities {
+        public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
+
+        private static TagKey<EntityType<?>> createCommonTag(String id) {
+            return TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("c", id));
         }
     }
 }

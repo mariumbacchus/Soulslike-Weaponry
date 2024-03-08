@@ -39,9 +39,9 @@ public class BossCompass extends Item {
         } else if (world.getDimension().getEffects() == DimensionType.OVERWORLD_ID) {
             optional = world.getRegistryManager().get(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY).getEntryList(ModTags.Structures.CHAMPIONS_GRAVES);
         } else {
-            optional = null;
+            optional = Optional.empty();
         }
-        if (optional != null) {
+        if (optional.isPresent()) {
             Pair<BlockPos, RegistryEntry<ConfiguredStructureFeature<?, ?>>> pair = world.getChunkManager().getChunkGenerator().locateStructure(world, optional.get(), center, 100, false);
             if (stack.getOrCreateNbt() != null) {
                 if (pair != null) {
