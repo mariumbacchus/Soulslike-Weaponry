@@ -34,7 +34,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
+        if (user instanceof PlayerEntity playerEntity && !world.isClient) {
             boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getProjectileType(stack);
             if (!itemStack.isEmpty() || creativeAndInfinity) {
@@ -44,12 +44,10 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
                 int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
                 float pullProgress = this.getModdedPullProgress(maxUseTime);
                 if (!((double)pullProgress < 0.1D)) {
-                    if (!world.isClient) {
-                        MoonlightArrow projectile = new MoonlightArrow(EntityRegistry.MOONLIGHT_ARROW, world);
-                        projectile.setPierceLevel((byte) 4);
-                        projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
-                        this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.5f, 3f);
-                    }
+                    MoonlightArrow projectile = new MoonlightArrow(world, playerEntity);
+                    projectile.setPierceLevel((byte) 4);
+                    projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+                    this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.5f, 3f);
                 }
             }
         }

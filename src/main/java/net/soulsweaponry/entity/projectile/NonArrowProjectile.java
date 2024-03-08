@@ -17,16 +17,17 @@ import net.minecraft.world.World;
 
 
 public abstract class NonArrowProjectile extends PersistentProjectileEntity {
-    protected NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    protected NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
         this(type, world);
         this.setPosition(x, y, z);
     }
 
-    protected NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
         this(type, owner.getX(), owner.getEyeY() - (double)0.1f, owner.getZ(), world);
         this.setOwner(owner);
         if (owner instanceof PlayerEntity) {

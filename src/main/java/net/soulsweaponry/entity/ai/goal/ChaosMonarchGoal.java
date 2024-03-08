@@ -268,7 +268,7 @@ public class ChaosMonarchGoal extends Goal {
             new SnowballEntity(EntityType.SNOWBALL, this.boss.getWorld()),
             new TridentEntity(EntityType.TRIDENT, this.boss.getWorld()),
             //Mod projectiles
-            new Cannonball(EntityRegistry.CANNONBALL, this.boss.getWorld()),
+            new Cannonball(this.boss.getWorld(), this.boss),
             new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
             new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
             new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),

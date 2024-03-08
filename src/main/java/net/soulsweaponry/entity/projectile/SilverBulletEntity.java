@@ -34,9 +34,8 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
         super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, owner, world);
     }
 
-    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> type, double x, double y, double z,
-            World world) {
-        super(type, x, y, z, world);
+    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner) {
+        super(entityType, owner, world);
     }
 
     @Override

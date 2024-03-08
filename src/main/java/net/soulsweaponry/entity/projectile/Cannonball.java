@@ -1,7 +1,9 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
+import net.soulsweaponry.registry.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -14,9 +16,8 @@ public class Cannonball extends SilverBulletEntity implements GeoEntity {
         super(entityType, world);
     }
 
-    public Cannonball(EntityType<? extends Cannonball> type, double x, double y, double z,
-            World world) {
-        super(type, x, y, z, world);
+    public Cannonball(World world, LivingEntity owner) {
+        super(EntityRegistry.CANNONBALL, world, owner);
     }
 
     @Override
