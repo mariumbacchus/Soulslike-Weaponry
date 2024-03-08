@@ -4,16 +4,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,10 +26,38 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     }
 
     @Override
-    public EntityType<? extends PersistentProjectileEntity> getProjectileType(ItemStack stack, PlayerEntity player, World world) {
+    public void shootProjectiles(World world, LivingEntity entity, Hand hand, ItemStack stack, float speed, float divergence) {
+        if (this.isEmpowered(stack)) {
+            List<ItemStack> list = this.getProjectiles(stack);
+            float[] soundPitches = this.getSoundPitches(entity.getRandom());
+            boolean bl = entity instanceof PlayerEntity && ((PlayerEntity)entity).getAbilities().creativeMode;
+            for (int i = 0; i < list.size(); i++) {
+                ItemStack arrowStack = list.get(i);
+                if (arrowStack.isEmpty()) continue;
+                if (i == 0) {
+                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                    this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 0.0f);
+                    continue;
+                }
+                if (i == 1) {
+                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                    this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, -10.0f);
+                    continue;
+                }
+                if (i != 2) continue;
+                KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 10.0f);
+            }
+            this.postShoot(world, entity, stack);
+        } else {
+            super.shootProjectiles(world, entity, hand, stack, speed, divergence);
+        }
+    }
+
+    public boolean isEmpowered(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains("firedShots") && stack.getNbt().getInt("firedShots") >= 2) {
             stack.getNbt().putInt("firedShots", 0);
-            return EntityRegistry.KRAKEN_SLAYER_PROJECTILE;
+            return true;
         } else {
             if (stack.hasNbt()) {
                 if (stack.getNbt().contains("firedShots")) {
@@ -38,7 +66,7 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
                     stack.getNbt().putInt("firedShots", 1);
                 }
             }
-            return null;
+            return false;
         }
     }
 
