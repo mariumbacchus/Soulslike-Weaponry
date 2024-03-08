@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -24,9 +25,9 @@ public class ArrowStormEntity extends InvisibleEntity {
             for (int i = 0; i < 60; ++i) {
                 this.getWorld().addParticle(ParticleTypes.CLOUD, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
             }
-        } else {
+        } else if (this.getOwner() instanceof LivingEntity) {
             for (int i = 0; i < 6; i++) {
-                MoonlightArrow arrow = new MoonlightArrow(EntityRegistry.MOONLIGHT_ARROW, this.getWorld());
+                MoonlightArrow arrow = new MoonlightArrow(this.getWorld(), (LivingEntity) this.getOwner());
                 arrow.setPos(this.getParticleX(0.5), this.getY(), this.getParticleZ(0.5));
                 Vec3d vec = this.getRotationVector().multiply(0.1f).add(this.getPos());
                 double e = vec.getX() - this.getX();

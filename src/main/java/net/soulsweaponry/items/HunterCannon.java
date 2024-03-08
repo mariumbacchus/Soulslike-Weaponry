@@ -68,7 +68,7 @@ public class HunterCannon extends GunItem {
                 }
             }
 
-            Cannonball entity = new Cannonball(EntityRegistry.CANNONBALL, world);
+            Cannonball entity = new Cannonball(world, user);
             entity.setPos(user.getX(), user.getEyeY(), user.getZ());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
