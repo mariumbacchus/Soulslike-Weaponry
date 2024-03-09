@@ -12,6 +12,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -102,7 +104,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         NightProwler.Attacks attack = NightProwler.Attacks.values()[rand];
         switch (attack) {
             case TRINITY -> {
-                if (this.isInMeleeRange(target) || this.boss.isFlying()) {
+                if (this.boss.isInMeleeRange(target) || this.boss.isFlying()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -117,12 +119,12 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 }
             }
             case RIPPLE_FANG, SOUL_REAPER -> {
-                if (this.isInMeleeRange(target)) {
+                if (this.boss.isInMeleeRange(target)) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
             case DARKNESS_RISE -> {
-                if (this.isInMeleeRange(target) && !this.boss.getDarknessRise()) {
+                if (this.boss.isInMeleeRange(target) && !this.boss.getDarknessRise()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -324,12 +326,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
-
-    protected boolean isInMeleeRange(LivingEntity target) {
-        double distanceToEntity = this.boss.squaredDistanceTo(target);
-        return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
-    }
+    protected void attack(LivingEntity target) {}
 
     /**
      * Easily accessible playSound function.
@@ -923,12 +920,12 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     public static class DeathSpiralEntity extends InvisibleEntity {
         private DeathSpiralLogic logic = new DeathSpiralLogic(this.getPos(), 1f);
 
-        public DeathSpiralEntity(EntityType<? extends InvisibleEntity> entityType, World world) {
-            super(entityType, world);
+        public DeathSpiralEntity(EntityType<? extends InvisibleEntity> entityType, World world, ItemStack stack) {
+            super(entityType, world, stack);
         }
 
         protected DeathSpiralEntity(World world, Vec3d pos, float radius) {
-            super(EntityRegistry.DEATH_SPIRAL_ENTITY, world);
+            super(EntityRegistry.DEATH_SPIRAL_ENTITY, world, Items.ARROW.getDefaultStack());
             this.logic = new DeathSpiralLogic(pos, radius);
         }
 

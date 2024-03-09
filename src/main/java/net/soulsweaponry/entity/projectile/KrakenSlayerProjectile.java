@@ -15,12 +15,12 @@ import net.soulsweaponry.registry.EntityRegistry;
 public class KrakenSlayerProjectile extends PersistentProjectileEntity {
     private float trueDamage;
 
-    public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+    public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
-    public KrakenSlayerProjectile(World world, LivingEntity owner) {
-        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world);
+    public KrakenSlayerProjectile(World world, LivingEntity owner, ItemStack stack) {
+        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world, stack);
     }
 
     public void setTrueDamage(float trueDamage) {

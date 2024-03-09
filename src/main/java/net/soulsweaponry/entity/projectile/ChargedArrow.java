@@ -4,7 +4,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -15,24 +14,20 @@ import net.soulsweaponry.registry.EntityRegistry;
 
 public class ChargedArrow extends PersistentProjectileEntity {
 
-    private final ItemStack stack;
     private boolean scaleDamageHp;
 
-    public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world) {
-        super(entityType, world);
-        this.stack = new ItemStack(Items.ARROW);
+    public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
         this.scaleDamageHp = false;
     }
 
-    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world);
-        this.stack = new ItemStack(Items.ARROW);
+    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp, ItemStack stack) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world, stack);
         this.scaleDamageHp = scaleDamageHp;
     }
 
     public ChargedArrow(World world, LivingEntity owner, ItemStack stack, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world, stack);
         this.scaleDamageHp = scaleDamageHp;
     }
   
@@ -75,10 +70,5 @@ public class ChargedArrow extends PersistentProjectileEntity {
 
     protected ParticleEffect getParticleType() {
         return ParticleTypes.GLOW;
-    }
-
-    protected ItemStack asItemStack() {
-        this.stack.setCount(1);
-        return this.stack;
     }
 }

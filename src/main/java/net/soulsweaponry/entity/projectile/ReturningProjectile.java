@@ -36,21 +36,16 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     public static final String SHOULD_RETURN = "ShouldReturn";
     public static final TrackedData<Optional<UUID>> THROWN_WEAPON_OPT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
-        super(type, x, y, z, world);
-    }
-
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
-        super(type, owner, world);
+    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world, ItemStack stack) {
+        super(type, x, y, z, world, stack);
     }
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
-        super(type, owner, world);
-        this.stack = stack.copy();
+        super(type, owner, world, stack);
     }
 
     public abstract float getDamage(Entity target);

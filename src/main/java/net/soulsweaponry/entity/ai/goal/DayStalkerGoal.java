@@ -104,7 +104,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         switch (attack) {
             case AIR_COMBUSTION -> this.boss.setAttackAnimation(attack);
             case BLAZE_BARRAGE, SUNFIRE_RUSH -> {
-                if ((this.boss.isFlying() || this.boss.isPhaseTwo()) && !this.isInMeleeRange(target)) {
+                if ((this.boss.isFlying() || this.boss.isPhaseTwo()) && !this.boss.isInMeleeRange(target)) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -114,7 +114,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             case DECIMATE, DAWNBREAKER -> {
-                if ((this.isInMeleeRange(target) && !this.boss.isFlying()) || this.boss.isPhaseTwo()) {
+                if ((this.boss.isInMeleeRange(target) && !this.boss.isFlying()) || this.boss.isPhaseTwo()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -135,7 +135,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             }
             case RADIANCE -> {
                 if (this.boss.isPhaseTwo()) {
-                    if (this.isInMeleeRange(target) && this.specialCooldown <= 0) {
+                    if (this.boss.isInMeleeRange(target) && this.specialCooldown <= 0) {
                         this.boss.setAttackAnimation(attack);
                     }
                 }
@@ -398,7 +398,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(this.boss.getBlockPos(), SoundRegistry.DAY_STALKER_DECIMATE, 1f, 1f);
         }
         if (this.attackStatus == 29) {
-            if (this.isInMeleeRange(target)) {
+            if (this.boss.isInMeleeRange(target)) {
                 if (this.damageTarget(target, 30f)) {
                     target.addVelocity(0, 1D, 0);
                 }
@@ -499,7 +499,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.mob.getNavigation().stop();
         if (this.attackStatus == 11 || this.attackStatus == 21) {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
-            if (this.isInMeleeRange(target)) {
+            if (this.boss.isInMeleeRange(target)) {
                 this.damageTarget(target, 10f + (float)this.attackStatus/2f);
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
@@ -511,7 +511,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus == 32) {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.75f);
-            if (this.isInMeleeRange(target)) {
+            if (this.boss.isInMeleeRange(target)) {
                 this.damageTarget(target, 25f);
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
@@ -639,9 +639,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
      * @param damage Damage to be done to all entities in the box
      */
     private void aoeMelee(LivingEntity target, double distanceToTarget, double expansion, float damage) {
-        double maxDistance = this.getSquaredMaxAttackDistance(target);
+        double maxDistance = this.boss.getSquaredMaxAttackDistance(target);
         BlockPos pos;
-        if (this.isInMeleeRange(target)) {
+        if (this.boss.isInMeleeRange(target)) {
             pos = target.getBlockPos();
         } else {
             double x = target.getBlockX() - this.boss.getBlockX();
@@ -957,10 +957,5 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
-
-    protected boolean isInMeleeRange(LivingEntity target) {
-        double distanceToEntity = this.boss.squaredDistanceTo(target);
-        return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
-    }
+    protected void attack(LivingEntity target) {}
 }

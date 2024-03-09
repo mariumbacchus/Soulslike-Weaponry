@@ -29,8 +29,8 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
-    public NightSkull(EntityType<? extends NightSkull> entityType, World world) {
-        super(entityType, world);
+    public NightSkull(EntityType<? extends NightSkull> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
         this.setDamage(10D);
     }
 

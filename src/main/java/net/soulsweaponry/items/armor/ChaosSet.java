@@ -69,7 +69,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT);
 
-        this.turnableGrass.put(Blocks.GRASS, BlockRegistry.WITHERED_GRASS);
+        this.turnableGrass.put(Blocks.SHORT_GRASS, BlockRegistry.WITHERED_GRASS);
         this.turnableGrass.put(Blocks.FERN, BlockRegistry.WITHERED_FERN);
         this.turnableGrass.put(Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH);
 

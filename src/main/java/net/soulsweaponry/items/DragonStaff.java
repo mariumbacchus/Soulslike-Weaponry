@@ -45,7 +45,7 @@ public class DragonStaff extends SwordItem {
             Vec3d particleSpawn = pov.multiply(1);
             Vec3d area = pov.multiply(10).add(user.getPos());
             Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
-            for (Entity entity : world.getOtherEntities(user, new Box(user.getBlockPos().add(0, 2, 0), new BlockPos(on)))) {
+            for (Entity entity : world.getOtherEntities(user, new Box(user.getPos().add(0, 2, 0), new BlockPos(on).toCenterPos()))) {
                 if (entity instanceof LivingEntity) {
                     entity.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), 2);
                     ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, ConfigConstructor.dragon_staff_aura_strength));

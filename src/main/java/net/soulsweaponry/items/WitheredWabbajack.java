@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.item.Items;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +88,7 @@ public class WitheredWabbajack extends SwordItem {
     private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look, ItemStack stack) {
         int power = new Random().nextInt((6 + this.getLuckFactor(user)) - this.getLuckFactor(user)) + this.getLuckFactor(user);
         Object[][] projectileTypes = {
-            {new ArrowEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+            {new ArrowEntity(world, look.getX(), look.getY(), look.getZ(), Items.ARROW.getDefaultStack()), LuckType.BAD},
             {new DragonStaffProjectile(world, user, stack), LuckType.NEUTRAL},
             {new EggEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
             {new EnderPearlEntity(world, user), LuckType.BAD},

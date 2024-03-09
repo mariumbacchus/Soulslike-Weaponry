@@ -241,9 +241,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
             super.tick();
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
-                double distanceToEntity = this.mob.squaredDistanceTo(target);
-                double d = this.getSquaredMaxAttackDistance(target);
-                if (distanceToEntity <= d && this.getCooldown() <= 0 && !this.mob.isSmashing()) {
+                if (this.mob.isInAttackRange(target) && this.getCooldown() <= 0 && !this.mob.isSmashing()) {
                     this.mob.setSmash(true);
                 }
                 if (this.mob.isSmashing()) {
@@ -276,6 +274,6 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         }
 
         @Override
-        protected void attack(LivingEntity target, double squaredDistance) {}
+        protected void attack(LivingEntity target) {}
     }
 }

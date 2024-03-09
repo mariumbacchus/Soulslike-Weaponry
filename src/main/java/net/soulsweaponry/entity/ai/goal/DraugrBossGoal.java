@@ -69,7 +69,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
 
     protected boolean isInMeleeRange(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
-        return distanceToEntity <= this.getSquaredMaxAttackDistance(target) * 2;
+        return distanceToEntity <= this.boss.getSquaredMaxAttackDistance(target) * 2;
     }
 
     protected boolean isTargetRanged(LivingEntity target) {
@@ -365,5 +365,5 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
+    protected void attack(LivingEntity target) {}
 }

@@ -30,13 +30,13 @@ public class MoonlightArrow extends PersistentProjectileEntity {
 
     private int maxArrowAge = 1000;
 
-    public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+    public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
-    public MoonlightArrow(World world, LivingEntity owner) {
-        super(EntityRegistry.MOONLIGHT_ARROW, owner, world);
+    public MoonlightArrow(World world, LivingEntity owner, ItemStack stack) {
+        super(EntityRegistry.MOONLIGHT_ARROW, owner, world, stack);
         this.pickupType = PickupPermission.DISALLOWED;
     }
 

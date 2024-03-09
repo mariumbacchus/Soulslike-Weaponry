@@ -1,7 +1,5 @@
 package net.soulsweaponry.entity.projectile;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -33,15 +31,12 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
-    public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
-        super(entityType, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR);
+    public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
     public CometSpearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, owner, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR);
-        this.spearStack = stack.copy();
+        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, owner, world, stack);
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
 

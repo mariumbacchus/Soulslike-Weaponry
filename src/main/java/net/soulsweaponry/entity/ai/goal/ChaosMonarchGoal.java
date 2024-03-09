@@ -10,6 +10,8 @@ import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundCategory;
@@ -255,13 +257,14 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     private void randomProjectiles() {
+        ItemStack stack = Items.ARROW.getDefaultStack();
         ProjectileEntity[] projectiles = {
-            new ArrowEntity(this.boss.getWorld(), this.boss),
+            new ArrowEntity(this.boss.getWorld(), this.boss, stack),
             new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.getWorld()),
             new FireballEntity(EntityType.FIREBALL, this.boss.getWorld()),
             new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.getWorld()),
             new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.getWorld()),
-            new SpectralArrowEntity(this.boss.getWorld(), this.boss),
+            new SpectralArrowEntity(this.boss.getWorld(), this.boss, stack),
             new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.getWorld()),
             new EggEntity(EntityType.EGG, this.boss.getWorld()),
             new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld()),
@@ -269,11 +272,11 @@ public class ChaosMonarchGoal extends Goal {
             new TridentEntity(EntityType.TRIDENT, this.boss.getWorld()),
             //Mod projectiles
             new Cannonball(this.boss.getWorld(), this.boss),
-            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
-            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
-            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),
-            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld()),
-            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld())
+            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld(), stack),
+            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld(), stack),
+            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld(), stack),
+            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), stack),
+            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld(), stack)
         };
         if (this.boss.getTarget() != null) {
             LivingEntity target = this.boss.getTarget();

@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -41,14 +42,21 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<Integer> APPLY_FIRE_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private ItemStack stackShotFrom;
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.ARROW.getDefaultStack());
+    }
+
+    public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
     
+    public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner, ItemStack stack) {
+        super(type, owner, world, stack);
+    }
+
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
-        super(type, owner, world);
+        super(type, owner, world, Items.ARROW.getDefaultStack());
     }
 
     @Override
@@ -121,8 +129,8 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
 
     @Override
     public int getPunch() {
-        if (stackShotFrom != null) {
-            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, stackShotFrom);
+        if (this.asItemStack() != null) {
+            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, this.asItemStack());
         }
         return super.getPunch();
     }
@@ -169,14 +177,6 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
 
     protected float getDragInWater() {
         return 1.01F;
-    }
-
-    protected ItemStack asItemStack() {
-        return this.stackShotFrom;
-    }
-
-    public void setItemStack(ItemStack stackShotFrom) {
-        this.stackShotFrom = stackShotFrom;
     }
 
     public boolean hasNoGravity() {

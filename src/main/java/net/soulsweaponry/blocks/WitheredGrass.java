@@ -2,14 +2,14 @@ package net.soulsweaponry.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FernBlock;
+import net.minecraft.block.ShortPlantBlock;
 import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class WitheredGrass extends FernBlock implements Withered {
+public class WitheredGrass extends ShortPlantBlock implements Withered {
 
     private final Block replacedBlock;
 

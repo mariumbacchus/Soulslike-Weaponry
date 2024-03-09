@@ -33,6 +33,15 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     public abstract int getXp();
 
+    public double getSquaredMaxAttackDistance(LivingEntity entity) {
+        return this.getWidth() * 2f * (this.getWidth() * 2f) + entity.getWidth();
+    }
+
+    public boolean isInMeleeRange(LivingEntity target) {
+        double distanceToEntity = this.squaredDistanceTo(target);
+        return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
+    }
+
     @Override
     protected void mobTick() {
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());

@@ -8,6 +8,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -18,17 +19,17 @@ import net.minecraft.world.World;
 
 public abstract class NonArrowProjectile extends PersistentProjectileEntity {
 
-    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
-    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
-        this(type, world);
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world, ItemStack stack) {
+        this(type, world, stack);
         this.setPosition(x, y, z);
     }
 
-    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
-        this(type, owner.getX(), owner.getEyeY() - (double)0.1f, owner.getZ(), world);
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
+        this(type, owner.getX(), owner.getEyeY() - (double)0.1f, owner.getZ(), world, stack);
         this.setOwner(owner);
         if (owner instanceof PlayerEntity) {
             this.pickupType = PickupPermission.ALLOWED;

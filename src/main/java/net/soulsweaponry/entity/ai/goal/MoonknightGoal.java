@@ -292,7 +292,7 @@ public class MoonknightGoal extends Goal {
                 this.boss.setBeamLength(range);
                 if (this.attackStatus % 2 == 0) {
                     this.boss.getWorld().createExplosion(boss, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
-                    for (Entity entity : this.boss.getWorld().getOtherEntities(boss, new Box(targetPos, this.boss.getBlockPos().add(0, 4, 0)))) {
+                    for (Entity entity : this.boss.getWorld().getOtherEntities(boss, new Box(targetPos.toCenterPos(), this.boss.getPos().add(0, 4, 0)))) {
                         if (entity instanceof LivingEntity) {
                             entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), this.getModifiedDamage(20f));
                             entity.setOnFireFor(4);

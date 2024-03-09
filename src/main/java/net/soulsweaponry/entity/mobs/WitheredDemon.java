@@ -242,15 +242,14 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         }
 
         @Override
-        protected void attack(LivingEntity target, double squaredDistance) {
-            double attackDistance = this.getSquaredMaxAttackDistance(target);
-            if (squaredDistance <= attackDistance && this.getCooldown() <= 0) {
+        protected void attack(LivingEntity target) {
+            if (this.mob.isInAttackRange(target) && this.getCooldown() <= 0) {
                 this.mob.setSwingArm(true);
             }
 
             if (this.mob.getSwingArm()) {
                 this.attackStatus++;
-                if (attackStatus == 10 && squaredDistance <= attackDistance) {
+                if (attackStatus == 10 && this.mob.isInAttackRange(target)) {
                     this.mob.tryAttack(target);
                 }
                 if (attackStatus >= 30) {

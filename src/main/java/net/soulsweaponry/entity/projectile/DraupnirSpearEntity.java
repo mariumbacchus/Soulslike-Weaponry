@@ -22,7 +22,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -33,18 +32,15 @@ import software.bernie.geckolib.core.object.PlayState;
 public class DraupnirSpearEntity extends PersistentProjectileEntity implements GeoEntity {
 
     private static final TrackedData<Boolean> ENCHANTED;
-    private final ItemStack stack;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
-    public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.DRAUPNIR_SPEAR);
+    public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
     public DraupnirSpearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.DRAUPNIR_SPEAR_TYPE, owner, world);
-        this.stack = stack.copy();
+        super(EntityRegistry.DRAUPNIR_SPEAR_TYPE, owner, world, stack);
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
 
@@ -71,7 +67,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
             return;
         }
         if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup());
+            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup());
         }
 
         Entity entity2 = this.getOwner();
@@ -110,11 +106,6 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return this.stack;
     }
 
     @Nullable
