@@ -3,12 +3,13 @@ package net.soulsweaponry.entity.projectile.invisible;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
 public class WarmupLightningEntity extends InvisibleWarmupEntity {
 
     public WarmupLightningEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.AIR.getDefaultStack());
     }
 
     @Override

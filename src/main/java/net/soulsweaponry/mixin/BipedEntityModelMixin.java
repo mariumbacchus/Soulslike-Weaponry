@@ -33,7 +33,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
                     if (stack.isOf(WeaponRegistry.GUTS_SWORD)) {
                         CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                    } else if (!stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                    } else if (!stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW) && !stack.isOf(WeaponRegistry.FROSTMOURNE)) {
                         ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
                     }
                 } else if (entity instanceof Remnant) {

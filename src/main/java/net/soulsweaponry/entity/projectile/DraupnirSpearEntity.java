@@ -22,6 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -34,6 +35,10 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
     private static final TrackedData<Boolean> ENCHANTED;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
+
+    public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+        super(entityType, world, WeaponRegistry.DRAUPNIR_SPEAR.getDefaultStack());
+    }
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);

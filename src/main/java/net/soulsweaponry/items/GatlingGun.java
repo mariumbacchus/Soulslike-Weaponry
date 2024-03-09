@@ -68,7 +68,7 @@ public class GatlingGun extends GunItem {
                         }
                     }
     
-                    SilverBulletEntity entity = new SilverBulletEntity(world, playerEntity);
+                    SilverBulletEntity entity = new SilverBulletEntity(world, playerEntity, itemStack);
                     entity.setPos(user.getX(), user.getEyeY() - 0.2f, user.getZ());
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 3.0F, 3.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;

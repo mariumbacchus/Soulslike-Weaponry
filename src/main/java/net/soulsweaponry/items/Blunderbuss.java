@@ -60,7 +60,7 @@ public class Blunderbuss extends GunItem {
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
             
             for (int i = 0; i < 3 + power; i++) {
-                SilverBulletEntity entity = new SilverBulletEntity(world, user);
+                SilverBulletEntity entity = new SilverBulletEntity(world, user, itemStack);
                 entity.setPos(user.getX(), user.getEyeY(), user.getZ());
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;

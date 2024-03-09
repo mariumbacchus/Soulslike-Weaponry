@@ -34,17 +34,17 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
                 ItemStack arrowStack = list.get(i);
                 if (arrowStack.isEmpty()) continue;
                 if (i == 0) {
-                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity, arrowStack);
                     this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 0.0f);
                     continue;
                 }
                 if (i == 1) {
-                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                    KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity, arrowStack);
                     this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, -10.0f);
                     continue;
                 }
                 if (i != 2) continue;
-                KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity);
+                KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, entity, arrowStack);
                 this.shoot(world, entity, hand, stack, projectile, arrowStack, soundPitches[i], bl, speed, divergence, 10.0f);
             }
             this.postShoot(world, entity, stack);

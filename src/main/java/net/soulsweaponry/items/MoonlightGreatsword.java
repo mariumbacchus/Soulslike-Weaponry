@@ -35,12 +35,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
         
-                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user);
+                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setDamage(ConfigConstructor.moonlight_greatsword_projectile_damage);
-                entity.setItemStack(stack);
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (this instanceof BluemoonGreatsword) {

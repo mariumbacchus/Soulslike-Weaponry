@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  *  Credits to Minenash */
 
 /*
-    Edited to fit 1.20 version. Changed all necessary implementations to get from the new DrawnContext file.
+    Edited to fit 1.20.4 version.
  */
 @SuppressWarnings("unchecked")
 public abstract class MidnightConfig {
@@ -322,7 +322,7 @@ public abstract class MidnightConfig {
         }
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            this.renderBackground(context);
+            this.renderBackground(context, mouseX, mouseY, delta);
             this.list.render(context, mouseX, mouseY, delta);
             context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 15, 0xFFFFFF);
 
@@ -352,7 +352,7 @@ public abstract class MidnightConfig {
         TextRenderer textRenderer;
 
         public MidnightConfigListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l, int m) {
-            super(minecraftClient, i, j, k, l, m);
+            super(minecraftClient, i, j, k, l);
             this.centerListVertically = false;
             textRenderer = minecraftClient.textRenderer;
         }

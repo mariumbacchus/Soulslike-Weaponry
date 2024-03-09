@@ -68,7 +68,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!this.getWorld().isClient) {
-            ParticleHandler.particleSphereList(this.getWorld(), 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+            ParticleHandler.particleSphereList(this.getWorld(), 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.2f);
             this.discard();
         }
     }

@@ -25,14 +25,17 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
-        super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
+        super(entityType, world, WeaponRegistry.LEVIATHAN_AXE.getDefaultStack());
+        this.ignoreCameraFrustum = true;
+    }
+
+    public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
         this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
+        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world, stack);
         this.ignoreCameraFrustum = true;
     }
 
@@ -50,7 +53,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
         boolean bl = target.damage(damageSource, damage);
         if (bl) {
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
+            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack()));
         }
         return bl;
     }

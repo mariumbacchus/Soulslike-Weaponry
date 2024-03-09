@@ -34,6 +34,11 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
         this.setDamage(10D);
     }
 
+    public NightSkull(EntityType<? extends NightSkull> entityType, World world) {
+        super(entityType, world, Items.AIR.getDefaultStack());
+        this.setDamage(10D);
+    }
+
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);

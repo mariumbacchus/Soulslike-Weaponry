@@ -1,8 +1,10 @@
 package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
@@ -18,8 +20,16 @@ public abstract class InvisibleWarmupEntity extends InvisibleEntity {
 
     private int warmup;
 
-    public InvisibleWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+    public InvisibleWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
+    public InvisibleWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, LivingEntity owner) {
+        super(entityType, world, owner);
+    }
+
+    public InvisibleWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, LivingEntity owner, ItemStack stack) {
+        super(entityType, world, owner, stack);
     }
 
     public void setWarmup(int warmup) {

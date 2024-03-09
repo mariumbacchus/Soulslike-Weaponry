@@ -40,7 +40,7 @@ public class KrakenSlayer extends ModdedBow {
                 if (!((double)pullProgress < 0.1D)) {
                     if (!world.isClient) {
                         if (stack.hasNbt() && stack.getNbt().contains("firedShots") && stack.getNbt().getInt("firedShots") >= 2) {
-                            KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, user);
+                            KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, user, itemStack);
                             projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack));
                             this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.6f, 3.0f);
                             stack.getNbt().putInt("firedShots", 0);

@@ -3,6 +3,8 @@ package net.soulsweaponry.entity.projectile.invisible;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
@@ -13,8 +15,12 @@ public class ArrowStormEntity extends InvisibleEntity {
 
     private int maxArrowAge = 1000;
 
+    public ArrowStormEntity(EntityType<? extends ArrowStormEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
     public ArrowStormEntity(EntityType<? extends ArrowStormEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.ARROW.getDefaultStack());
     }
 
     @Override
@@ -26,7 +32,7 @@ public class ArrowStormEntity extends InvisibleEntity {
             }
         } else if (this.getOwner() instanceof LivingEntity) {
             for (int i = 0; i < 6; i++) {
-                MoonlightArrow arrow = new MoonlightArrow(this.getWorld(), (LivingEntity) this.getOwner());
+                MoonlightArrow arrow = new MoonlightArrow(this.getWorld(), (LivingEntity) this.getOwner(), Items.ARROW.getDefaultStack());
                 arrow.setPos(this.getParticleX(0.5), this.getY(), this.getParticleZ(0.5));
                 Vec3d vec = this.getRotationVector().multiply(0.1f).add(this.getPos());
                 double e = vec.getX() - this.getX();

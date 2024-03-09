@@ -3,9 +3,11 @@ package net.soulsweaponry.entity.projectile.invisible;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.invisible.InvisibleEntity;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -13,8 +15,16 @@ import java.util.List;
 
 public class NightWaveEntity extends InvisibleEntity {
 
+    public NightWaveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
     public NightWaveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.ARROW.getDefaultStack());
+    }
+
+    public NightWaveEntity(World world, LivingEntity owner) {
+        super(EntityRegistry.NIGHT_WAVE, world, owner, Items.ARROW.getDefaultStack());
     }
 
     @Override

@@ -97,9 +97,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
             break;
         } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
         if (bl) {
-            HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
+            HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world, stack);
             pillar.setOwner(user);
-            pillar.setStack(stack);
             pillar.setDamage(this.getAbilityDamage());
             pillar.setKnockUp(this.getKnockup(stack));
             pillar.setWarmup(warmup);

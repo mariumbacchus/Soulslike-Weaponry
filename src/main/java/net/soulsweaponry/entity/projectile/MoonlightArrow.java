@@ -35,6 +35,11 @@ public class MoonlightArrow extends PersistentProjectileEntity {
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
+    public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+        super(entityType, world, Items.ARROW.getDefaultStack());
+        this.pickupType = PickupPermission.DISALLOWED;
+    }
+
     public MoonlightArrow(World world, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.MOONLIGHT_ARROW, owner, world, stack);
         this.pickupType = PickupPermission.DISALLOWED;

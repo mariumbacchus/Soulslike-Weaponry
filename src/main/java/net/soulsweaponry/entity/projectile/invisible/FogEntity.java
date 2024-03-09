@@ -5,14 +5,25 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public class FogEntity extends InvisibleEntity {
 
     public FogEntity(EntityType<? extends FogEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.AIR.getDefaultStack());
+    }
+
+    public FogEntity(EntityType<? extends FogEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
+    public FogEntity(World world, LivingEntity owner) {
+        super(EntityRegistry.FOG_ENTITY, world, owner);
     }
 
     @Override

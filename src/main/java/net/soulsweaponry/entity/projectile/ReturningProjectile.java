@@ -11,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -28,7 +27,6 @@ import java.util.UUID;
 
 public abstract class ReturningProjectile extends PersistentProjectileEntity {
 
-    public ItemStack stack;
     public boolean dealtDamage;
     private boolean shouldReturn;
     private int returnTimer;
@@ -96,13 +94,13 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
             this.setShouldReturn(true);
         }
         Entity entity = this.getOwner();
-        double returnSpeed = this.getReturnSpeed(this.stack);
+        double returnSpeed = this.getReturnSpeed(this.asItemStack());
         if (this.shouldReturn() && (this.dealtDamage || this.isNoClip()) && entity != null) {
             this.setNoClip(true);
             Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
             if (!this.isOwnerAlive()) {
-                if (this.stack.hasNbt() && this.stack.getNbt().contains(Mjolnir.OWNERS_LAST_POS)) {
-                    int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
+                if (this.asItemStack().hasNbt() && this.asItemStack().getNbt().contains(Mjolnir.OWNERS_LAST_POS)) {
+                    int[] pos = this.asItemStack().getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
                     vec3d = new Vec3d(pos[0], pos[1], pos[2]).subtract(this.getPos());
                     if (vec3d.getX() == pos[0] && vec3d.getY() == pos[1] && vec3d.getZ() == pos[2]) {
                         this.dropStack();
@@ -216,9 +214,6 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
-            this.stack = ItemStack.fromNbt(nbt.getCompound("Stack"));
-        }
         if (nbt.contains(SHOULD_RETURN)) {
             this.shouldReturn = nbt.getBoolean(SHOULD_RETURN);
         }
@@ -231,15 +226,9 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("Stack", this.stack.writeNbt(new NbtCompound()));
         nbt.putBoolean(DEALT_DAMAGE, this.dealtDamage);
         nbt.putBoolean(SHOULD_RETURN, this.shouldReturn);
         nbt.putInt("ReturnTimer", this.returnTimer);
-    }
-
-    @Override
-    public ItemStack asItemStack() {
-        return this.stack;
     }
 
     @Override

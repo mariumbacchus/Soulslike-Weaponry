@@ -28,13 +28,15 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world) {
-        super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.MJOLNIR);
+        super(entityType, world, WeaponRegistry.MJOLNIR.getDefaultStack());
+    }
+
+    public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
     }
 
     public MjolnirProjectile(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.MJOLNIR_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
+        super(EntityRegistry.MJOLNIR_ENTITY_TYPE, owner, world, stack);
     }
 
     @Override

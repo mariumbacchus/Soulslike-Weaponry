@@ -12,7 +12,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -920,8 +919,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     public static class DeathSpiralEntity extends InvisibleEntity {
         private DeathSpiralLogic logic = new DeathSpiralLogic(this.getPos(), 1f);
 
-        public DeathSpiralEntity(EntityType<? extends InvisibleEntity> entityType, World world, ItemStack stack) {
-            super(entityType, world, stack);
+        public DeathSpiralEntity(EntityType<? extends InvisibleEntity> entityType, World world) {
+            super(entityType, world, Items.AIR.getDefaultStack());
         }
 
         protected DeathSpiralEntity(World world, Vec3d pos, float radius) {

@@ -65,7 +65,7 @@ public class HunterPistol extends GunItem {
                 }
             }
 
-            SilverBulletEntity entity = new SilverBulletEntity(world, user);
+            SilverBulletEntity entity = new SilverBulletEntity(world, user, itemStack);
             entity.setPos(user.getX(), user.getEyeY(), user.getZ());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;

@@ -26,6 +26,10 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int postureLoss;
 
+    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
+        super(entityType, world, ItemRegistry.SILVER_BULLET.getDefaultStack());
+    }
+
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);
     }

@@ -6,6 +6,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
@@ -44,14 +45,17 @@ public class MoonlightShortsword extends SwordItem {
                     return;
                 }
                 float damage = ConfigConstructor.moonlight_shortsword_projectile_damage;
-                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user);
+                ItemStack stack = Items.ARROW.getDefaultStack();
+                if (itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
+                    stack = itemStack;
+                }
+                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user, stack);
                 if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && !itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
                     damage += user.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() * 2f;
                 }
                 projectile.setAgeAndPoints(15, 30, 1);
                 projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 projectile.setDamage(damage);
-                if (itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) projectile.setItemStack(itemStack);
                 world.spawnEntity(projectile);
     
                 //Damaging the itemstack messes with Better Combat, therefore postHit damages weapon twice instead

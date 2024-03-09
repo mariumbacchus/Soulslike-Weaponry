@@ -13,10 +13,15 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 
 public class KrakenSlayerProjectile extends PersistentProjectileEntity {
+
     private float trueDamage;
 
     public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);
+    }
+
+    public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+        super(entityType, world, Items.ARROW.getDefaultStack());
     }
 
     public KrakenSlayerProjectile(World world, LivingEntity owner, ItemStack stack) {

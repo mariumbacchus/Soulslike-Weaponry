@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -15,6 +16,11 @@ import net.soulsweaponry.registry.EntityRegistry;
 public class ChargedArrow extends PersistentProjectileEntity {
 
     private boolean scaleDamageHp;
+
+    public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world) {
+        super(entityType, world, Items.ARROW.getDefaultStack());
+        this.scaleDamageHp = false;
+    }
 
     public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);

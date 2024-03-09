@@ -5,12 +5,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.List;
@@ -20,8 +23,16 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
 
     private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
 
+    public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.AIR.getDefaultStack());
+    }
+
+    public HolyMoonlightPillar(World world, LivingEntity owner, ItemStack stack) {
+        super(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world, owner, stack);
     }
 
     @Override
@@ -63,7 +74,7 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
         Entity entity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && entity instanceof LivingEntity livingEntity && target != livingEntity) {
             if (!livingEntity.isTeammate(target)) {
-                target.damage(this.getDamageSources().mobAttack((LivingEntity)entity), (float) this.getDamage() + 2 * EnchantmentHelper.getAttackDamage(this.getStack(), target.getGroup()));
+                target.damage(this.getDamageSources().mobAttack((LivingEntity)entity), (float) this.getDamage() + 2 * EnchantmentHelper.getAttackDamage(this.asItemStack(), target.getGroup()));
                 target.addVelocity(0, this.getKnockup(), 0);
             }
         }

@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -27,12 +28,15 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 public class CometSpearEntity extends PersistentProjectileEntity implements GeoEntity {
 
     private static final TrackedData<Boolean> ENCHANTED;
-    private ItemStack spearStack;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);
+    }
+
+    public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
+        super(entityType, world, WeaponRegistry.COMET_SPEAR.getDefaultStack());
     }
 
     public CometSpearEntity(World world, LivingEntity owner, ItemStack stack) {
@@ -65,15 +69,6 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         return factory;
     }
 
-    @Override
-    protected ItemStack asItemStack() {
-        return this.spearStack.copy();
-    }
-
-    public boolean isEnchanted() {
-        return (Boolean)this.dataTracker.get(ENCHANTED);
-    }
-
     @Nullable
     protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
@@ -86,7 +81,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
             return;
         }
         if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(spearStack, livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
+            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup());
             float healthPercentLeft = livingEntity.getHealth()/livingEntity.getMaxHealth();
             if (healthPercentLeft < 0.2) {
                 f *= 2;

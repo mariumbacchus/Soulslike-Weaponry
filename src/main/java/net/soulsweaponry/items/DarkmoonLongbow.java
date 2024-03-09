@@ -44,7 +44,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
                 int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
                 float pullProgress = this.getModdedPullProgress(maxUseTime);
                 if (!((double)pullProgress < 0.1D)) {
-                    MoonlightArrow projectile = new MoonlightArrow(world, playerEntity);
+                    MoonlightArrow projectile = new MoonlightArrow(world, playerEntity, itemStack);
                     projectile.setPierceLevel((byte) 4);
                     projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
                     this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.5f, 3f);

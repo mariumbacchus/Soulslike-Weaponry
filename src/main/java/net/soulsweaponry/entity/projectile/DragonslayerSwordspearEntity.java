@@ -20,12 +20,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
     
     private static final TrackedData<Boolean> ENCHANTED;
     private boolean dealtDamage;
+
+    public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world) {
+        super(entityType, world, WeaponRegistry.DRAGONSLAYER_SWORDSPEAR.getDefaultStack());
+    }
 
     public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);

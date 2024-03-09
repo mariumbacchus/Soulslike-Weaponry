@@ -8,11 +8,14 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +27,16 @@ public class BlackflameSnakeEntity extends InvisibleEntity {
     private boolean hasHitPlayer;
     private static final TrackedData<Optional<UUID>> TARGET_UUID = DataTracker.registerData(BlackflameSnakeEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
+    public BlackflameSnakeEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
+        super(entityType, world, stack);
+    }
+
     public BlackflameSnakeEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(entityType, world, Items.AIR.getDefaultStack());
+    }
+
+    public BlackflameSnakeEntity(World world, LivingEntity owner) {
+        super(EntityRegistry.BLACKFLAME_SNAKE_ENTITY, world, owner);
     }
 
     @Override
