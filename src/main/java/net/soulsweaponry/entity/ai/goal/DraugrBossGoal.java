@@ -247,7 +247,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 10));
                     }
                     if (!this.boss.getWorld().isClient) {
-                        ParticleHandler.particleSphereList(this.boss.getWorld(), 10, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                        ParticleHandler.particleSphereList(this.boss.getWorld(), 10, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                     }
                 }
             }
@@ -346,7 +346,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (attackStatus == 24 && pos != null && isPosNotNullish(pos)) {
             this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
             if (!this.boss.getWorld().isClient) {
-                ParticleHandler.particleSphereList(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                ParticleHandler.particleSphereList(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
             }
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {

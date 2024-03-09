@@ -372,7 +372,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus >= 20 && this.attackStatus <= 36) {
             if (!this.boss.getWorld().isClient) {
                 Vec3d center = Vec3d.ofCenter(this.boss.getTargetPos());
-                ParticleHandler.particleOutburst(this.boss.getWorld(), 150, center.getX(), center.getY(), center.getZ(), ParticleTypes.FLAME, new Vec3d(10 ,10 ,10), 1f);
+                ParticleHandler.particleOutburst(this.boss.getWorld(), 20, center.getX(), center.getY(), center.getZ(), ParticleTypes.FLAME, new Vec3d(15 ,15 ,15), 1f);
             }
         }
         if (this.attackStatus == 37) {
