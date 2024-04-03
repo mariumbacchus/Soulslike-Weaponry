@@ -29,6 +29,7 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ParticleEvents;
 import net.soulsweaponry.util.ParticleHandler;
@@ -46,7 +47,7 @@ public class MoonknightGoal extends Goal {
     private int specialCooldown;
     private int targetNotVisibleTicks;
     private BlockPos targetPos;
-    private double moonfallRuptureMod = 0.5D;
+    private float yaw;
     private RotationState projectileRotation = RotationState.SWIPE_FROM_RIGHT;
     private float bonusBeamHeight = 0f;
     private double height = 0D;
@@ -84,7 +85,7 @@ public class MoonknightGoal extends Goal {
         this.specialCooldown = 0;
         this.bonusBeamHeight = 0f;
         this.projectileRotation = RotationState.SWIPE_FROM_RIGHT;
-        this.moonfallRuptureMod = 0.5D;
+        //this.moonfallRuptureMod = 0.5D; From old moonfall implementation
     }
 
     @Override
@@ -398,7 +399,7 @@ public class MoonknightGoal extends Goal {
                     }
                 }
                 if (!boss.getWorld().isClient) {
-                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.height == 0 ? targetPos.getY() : this.height, this.targetPos.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
+                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 250, this.targetPos.getX(), this.height == 0 ? targetPos.getY() : this.height, this.targetPos.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
                 }
             }
         }
@@ -408,11 +409,17 @@ public class MoonknightGoal extends Goal {
         }
     }
 
+    //private double moonfallRuptureMod = 0.5D; Variable along with old implementation
     private void moonfallLogic(LivingEntity target) {
         this.obliterateLogic(target, 25, 15, 43, 65f, SoundRegistry.KNIGHT_SWORD_SMASH_EVENT, true);
-        if (attackStatus == 21) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_SWORD_SMASH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        if (attackStatus == 18) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_SWORD_SMASH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         if (attackStatus == 1) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_CHARGE_SWORD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-        if (this.attackStatus > 26 && this.attackStatus < 40) {
+        if (this.attackStatus == 26) {
+            float yaw = (this.yaw == 0f ? this.boss.getHeadYaw() : this.yaw) + 90;
+            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.castSpell(this.boss, this.boss.getWorld(), WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.getDefaultStack(), this.targetPos.toCenterPos(), 14, this.getModifiedDamage(30f), 1f, yaw, 1.5f, 3.5f);
+        }
+        // Old implementation:
+        /*if (this.attackStatus > 26 && this.attackStatus < 40) {
             Vec3d direction = new Vec3d(this.targetPos.getX() - this.boss.getBlockX(), 0, this.targetPos.getZ() - this.boss.getBlockZ()).multiply(this.moonfallRuptureMod);
             Vec3d spot = new Vec3d(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ()).add(direction);
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(spot.getX() - 1, spot.getY() - 1, spot.getZ() - 1, spot.getX() + 1, spot.getY() + 1, spot.getZ() + 1))) {
@@ -428,7 +435,7 @@ public class MoonknightGoal extends Goal {
             this.moonfallRuptureMod += 0.25D;
         } else if (this.attackStatus >= 41) {
             this.moonfallRuptureMod = 0.5D;
-        }
+        }*/
     }
 
     private void moonveilLogic() {
@@ -487,6 +494,7 @@ public class MoonknightGoal extends Goal {
         } else if (this.targetPos != null) {
             this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
             this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
+            this.yaw = this.boss.getHeadYaw();
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
             if (this.attackStatus == hitFrame) {
                 this.smashGround(damage, sound, isSoundDelayed);
