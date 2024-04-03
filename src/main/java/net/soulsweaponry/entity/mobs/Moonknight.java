@@ -217,7 +217,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 float healPerTick = this.getMaxHealth() / maxHealTicks;
                 this.heal(healPerTick);
                 if (this.phaseTransitionTicks <= 92) {
-                    this.summonParticles();
+                    if (!this.getWorld().isClient) {
+                        ParticleHandler.particleOutburstMap(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
+                    }
                 }
             }
             if (this.phaseTransitionTicks == 89) {
@@ -340,8 +342,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 getWorld().addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
-        } else {
-            ParticleHandler.particleOutburstMap(this.getWorld(), 50, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
         }
     }
 
