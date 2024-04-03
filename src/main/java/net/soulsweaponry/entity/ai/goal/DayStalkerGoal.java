@@ -803,25 +803,41 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             double d = this.targetMaxY;
             double e = this.targetY;
             float f = this.attackRotation;
-            int length = 15;
+            int length = 20;
             for (int i = 0; i <= length; ++i) {
-                double h = 1.25 * (double)(i + 1);
+                double h = 1.25 * (double)(i + 1)/1.5;
                 BlockPos pos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
-                if (pos != null) {
+                // Old implementation:
+                /*if (pos != null) {
                     if (!this.boss.getWorld().isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.FLAME_RUPTURE_MAP, 1f);
                     }
                     this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                }*/
+                if (pos != null) {
+                    Vec3d vec = pos.toCenterPos();
+                    FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, this.boss.getWorld());
+                    pillar.setDamage(this.getModifiedDamage(40f));
+                    pillar.setPos(vec.getX(), pos.getY(), vec.getZ());
+                    pillar.setRadius(2.5f);
+                    pillar.setParticleDivergence(4f);
+                    pillar.setParticleMod(1.5f);
+                    pillar.setOwner(this.boss);
+                    pillar.setWarmup(-6);
+                    this.boss.getWorld().spawnEntity(pillar);
+                    this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                    i++;
                 }
             }
-            BlockPos lastPos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * 1.25 * (double)(length + 1), this.boss.getZ() + (double)MathHelper.sin(f) * 1.25 * (double)(length + 1), d, e);
+            // Old implementation:
+            /*BlockPos lastPos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * 1.25 * (double)(length + 1), this.boss.getZ() + (double)MathHelper.sin(f) * 1.25 * (double)(length + 1), d, e);
             if (lastPos != null) {
                 for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(this.boss.getPos().add(0, 2, 0), lastPos.toCenterPos()).expand(1D))) {
                     if (entity instanceof LivingEntity living) {
                         this.damageTarget(living, 40f);
                     }
                 }
-            }
+            }*/
         }
         this.checkAndReset(40, 0);
     }

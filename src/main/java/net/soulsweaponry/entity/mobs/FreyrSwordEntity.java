@@ -141,6 +141,11 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         return super.getWorld();
     }
 
+    @Override
+    public int getAir() {
+        return 300;
+    }
+
     @Nullable
     @Override
     public LivingEntity getOwner() {

@@ -129,4 +129,12 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
     public EntityDimensions getDimensions(EntityPose pose) {
         return EntityDimensions.changing(this.getRadius(), this.getRadius());
     }
+
+    @Override
+    public void onTrackedDataSet(TrackedData<?> data) {
+        if (RADIUS.equals(data)) {
+            this.calculateDimensions();
+        }
+        super.onTrackedDataSet(data);
+    }
 }

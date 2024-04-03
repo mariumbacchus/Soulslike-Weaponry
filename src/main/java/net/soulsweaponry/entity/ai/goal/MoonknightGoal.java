@@ -416,7 +416,7 @@ public class MoonknightGoal extends Goal {
         if (attackStatus == 1) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_CHARGE_SWORD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         if (this.attackStatus == 26) {
             float yaw = (this.yaw == 0f ? this.boss.getHeadYaw() : this.yaw) + 90;
-            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.castSpell(this.boss, this.boss.getWorld(), WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.getDefaultStack(), this.targetPos.toCenterPos(), 14, this.getModifiedDamage(30f), 1f, yaw, 1.5f, 5f);
+            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.castSpell(this.boss, this.boss.getWorld(), WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.getDefaultStack(), this.targetPos.toCenterPos(), 14, this.getModifiedDamage(30f), 1f, yaw, 1.5f, 3.5f);
         }
         // Old implementation:
         /*if (this.attackStatus > 26 && this.attackStatus < 40) {
