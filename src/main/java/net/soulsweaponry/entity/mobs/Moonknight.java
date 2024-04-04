@@ -184,6 +184,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             return false;
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
+            this.clearStatusEffects();
             this.initiatePhaseTwo(true);
             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             return false;
@@ -499,7 +500,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
-    public static enum MoonknightPhaseOne {
+    public enum MoonknightPhaseOne {
         IDLE,
         MACE_OF_SPADES,
         OBLITERATE,
@@ -508,7 +509,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         BLINDING_LIGHT,
     }
 
-    public static enum MoonknightPhaseTwo {
+    public enum MoonknightPhaseTwo {
         IDLE,
         SWORD_OF_LIGHT,
         MOONFALL,

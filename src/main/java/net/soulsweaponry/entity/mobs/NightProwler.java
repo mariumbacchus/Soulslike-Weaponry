@@ -371,6 +371,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (!this.getWorld().isClient) {
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
+                this.clearStatusEffects();
                 this.setInitiatePhaseTwo(true);
                 this.setFlying(false);
             }
