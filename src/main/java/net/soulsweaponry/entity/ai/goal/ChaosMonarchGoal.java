@@ -180,7 +180,7 @@ public class ChaosMonarchGoal extends Goal {
                 this.generateHitbox(blockPos, 2, 30f);
                 this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.getWorld().isClient) {
-                    ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                    ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
             }
         }

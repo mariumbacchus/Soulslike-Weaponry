@@ -53,7 +53,7 @@ public class SwitchTrickWeaponC2S {
                         }
                     }
                     serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT, SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
-                    ParticleHandler.particleSphereList(serverWorld, 20, player.getX(), player.getY(), player.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                    ParticleHandler.particleSphereList(serverWorld, 20, player.getX(), player.getY(), player.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                     newWeapon.setDamage(stack.getDamage());
                     int slot = player.getInventory().selectedSlot;
                     player.getInventory().removeStack(slot);
