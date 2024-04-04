@@ -73,7 +73,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                                 target.takeKnockback(5F, -x, -z);
                                 target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
                                 if (!world.isClient) {
-                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                                 }
                             }
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);

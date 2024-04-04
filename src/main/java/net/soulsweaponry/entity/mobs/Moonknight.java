@@ -195,7 +195,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity && entity.getBlockPos() != null) {
                 if (!this.getWorld().isClient) {
-                    ParticleHandler.particleSphereList(this.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                    ParticleHandler.particleSphereList(this.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
                 return false;
             }

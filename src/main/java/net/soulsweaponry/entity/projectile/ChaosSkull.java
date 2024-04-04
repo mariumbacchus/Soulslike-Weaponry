@@ -166,7 +166,7 @@ public class ChaosSkull extends WitherSkullEntity {
     private void finisher() {
         this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
         if (!this.getWorld().isClient) {
-            ParticleHandler.particleSphereList(this.getWorld(), 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+            ParticleHandler.particleSphereList(this.getWorld(), 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
         }
         this.discard();
     }
