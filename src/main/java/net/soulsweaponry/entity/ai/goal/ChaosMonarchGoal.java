@@ -22,8 +22,8 @@ import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 import java.util.List;

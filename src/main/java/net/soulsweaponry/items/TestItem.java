@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -11,6 +12,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.util.NbtHelper;
+
+import java.util.Arrays;
+import java.util.UUID;
 
 public class TestItem extends SwordItem {
 
@@ -26,6 +31,15 @@ public class TestItem extends SwordItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        UUID uuid = UUID.randomUUID();
+        NbtCompound compound = stack.getNbt();
+        NbtHelper.addUUIDToArr(compound, uuid, "test");
+        System.out.println(Arrays.toString(NbtHelper.getUUIDArr(compound, "test")));
+        if (NbtHelper.getUUIDArr(compound, "test").length > 3) {
+            System.out.println("Removing: " + NbtHelper.getUUIDArr(compound, "test")[0]);
+            NbtHelper.removeUUIDFromArr(compound, NbtHelper.getUUIDArr(compound, "test")[0], "test");
+            System.out.println("After removal: " + Arrays.toString(NbtHelper.getUUIDArr(compound, "test")));
+        }
         if (world.isClient) {
 
             // This will make an X shape of two half circles where the user is facing (only rotates Y axis)

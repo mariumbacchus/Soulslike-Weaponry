@@ -35,7 +35,7 @@ import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;

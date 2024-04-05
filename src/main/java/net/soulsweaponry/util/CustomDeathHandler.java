@@ -13,6 +13,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.joml.Matrix4f;
 
 public class CustomDeathHandler {

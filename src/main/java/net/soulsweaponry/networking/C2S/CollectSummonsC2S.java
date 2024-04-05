@@ -17,8 +17,8 @@ import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.items.UmbralTrespassItem;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public class CollectSummonsC2S {
 

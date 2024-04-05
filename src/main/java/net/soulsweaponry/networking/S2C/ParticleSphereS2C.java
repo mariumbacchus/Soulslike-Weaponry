@@ -13,7 +13,7 @@ import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public class ParticleSphereS2C {
 

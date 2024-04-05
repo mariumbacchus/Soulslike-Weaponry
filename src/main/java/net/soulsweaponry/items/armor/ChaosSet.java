@@ -36,7 +36,7 @@
     import net.soulsweaponry.config.ConfigConstructor;
     import net.soulsweaponry.registry.BlockRegistry;
     import net.soulsweaponry.registry.ItemRegistry;
-    import net.soulsweaponry.util.ParticleHandler;
+    import net.soulsweaponry.particles.ParticleHandler;
     import org.jetbrains.annotations.Nullable;
     import software.bernie.geckolib.animatable.GeoItem;
     import software.bernie.geckolib.animatable.client.RenderProvider;

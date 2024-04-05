@@ -14,7 +14,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public class ParticleOutburstS2C {
 
