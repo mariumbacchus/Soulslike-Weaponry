@@ -2,7 +2,7 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.soulsweaponry.util.IEntityDataSaver;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

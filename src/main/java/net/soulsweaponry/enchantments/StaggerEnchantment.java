@@ -8,8 +8,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.items.UltraHeavy;
-import net.soulsweaponry.util.IEntityDataSaver;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class StaggerEnchantment extends Enchantment {
 

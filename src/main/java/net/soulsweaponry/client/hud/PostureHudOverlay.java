@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class PostureHudOverlay implements HudRenderCallback {
 

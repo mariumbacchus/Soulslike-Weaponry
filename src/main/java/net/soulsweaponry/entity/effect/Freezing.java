@@ -8,7 +8,7 @@ import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public class Freezing extends StatusEffect {
 

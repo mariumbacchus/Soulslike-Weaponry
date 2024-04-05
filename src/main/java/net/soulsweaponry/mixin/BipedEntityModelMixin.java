@@ -12,7 +12,7 @@ import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.ParryData;
+import net.soulsweaponry.entitydata.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

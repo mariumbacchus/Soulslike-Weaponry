@@ -3,9 +3,8 @@ package net.soulsweaponry.events;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.util.IEntityDataSaver;
-import net.soulsweaponry.util.ParryData;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.ParryData;
 
 public class PlayerTickHandler implements ServerTickEvents.StartTick {
 

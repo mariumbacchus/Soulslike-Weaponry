@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.entitydata;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

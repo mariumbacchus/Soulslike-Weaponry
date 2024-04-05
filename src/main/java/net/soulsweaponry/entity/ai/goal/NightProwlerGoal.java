@@ -33,8 +33,8 @@ import net.soulsweaponry.entity.projectile.invisible.InvisibleEntity;
 import net.soulsweaponry.entity.projectile.invisible.NightWaveEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.entitydata;
 
 import net.minecraft.nbt.NbtCompound;
 

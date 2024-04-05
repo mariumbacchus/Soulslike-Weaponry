@@ -27,6 +27,10 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.SummonsData;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.*;
@@ -37,14 +41,11 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbility {
+public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbility, ISummonAllies {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -89,12 +90,13 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
             double chance = new Random().nextDouble();
-            if (chance < ConfigConstructor.nightfall_summon_chance) {
-                World world = attacker.getEntityWorld();
+            World world = attacker.getEntityWorld();
+            if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
                 Remnant entity = new Remnant(EntityRegistry.REMNANT, world);
                 entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
                 entity.setOwner((PlayerEntity) attacker);
                 world.spawnEntity(entity);
+                this.saveSummonUuid(attacker, entity.getUuid());
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (!attacker.getWorld().isClient) {
                     ParticleHandler.particleOutburstMap(attacker.getWorld(), 50, target.getX(), target.getY(), target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
@@ -189,5 +191,20 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public int getMaxSummons() {
+        return ConfigConstructor.nightfall_summoned_allies_cap;
+    }
+
+    @Override
+    public String getSummonsListId() {
+        return "NightfallSummons";
+    }
+
+    @Override
+    public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
+        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
     }
 }

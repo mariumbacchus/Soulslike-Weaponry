@@ -20,7 +20,7 @@ import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 import java.util.HashMap;

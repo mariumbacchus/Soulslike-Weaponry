@@ -20,4 +20,5 @@ public class PacketIds {
     public static final Identifier POSTURE = new Identifier(SoulsWeaponry.ModId, "posture");
     public static final Identifier DAMAGING_BOX = new Identifier(SoulsWeaponry.ModId, "damaging_box");
     public static final Identifier RETURN_THROWN_WEAPON = new Identifier(SoulsWeaponry.ModId, "try_return_thrown_weapons");
+    public static final Identifier SUMMONS_UUIDS = new Identifier(SoulsWeaponry.ModId, "summons_uuids");
 }
