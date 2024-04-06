@@ -22,6 +22,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -60,9 +61,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
     private static final TrackedData<Boolean> IS_SWORD_CHARGING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<BlockPos> BEAM_LOCATION = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BLOCK_POS);
-    private static final TrackedData<Float> BEAM_LENGTH = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
-    
+    private static final TrackedData<Boolean> INCREASING_BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
+
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world, Color.WHITE);
     }
@@ -125,20 +126,20 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return this.dataTracker.get(BEAM_LOCATION);
     }
 
-    public void setBeamLength(float fl) {
-        this.dataTracker.set(BEAM_LENGTH, fl);
-    }
-
-    private float getBeamLength() {
-        return this.dataTracker.get(BEAM_LENGTH);
-    }
-
     public void setBeamHeight(float fl) {
         this.dataTracker.set(BEAM_HEIGHT, fl);
     }
 
-    private float getBeamHeight() {
+    public float getBeamHeight() {
         return this.dataTracker.get(BEAM_HEIGHT);
+    }
+
+    public void setIncreasingBeamHeight(boolean bl) {
+        this.dataTracker.set(INCREASING_BEAM_HEIGHT, bl);
+    }
+
+    public boolean getIncreasingBeamHeight() {
+        return this.dataTracker.get(INCREASING_BEAM_HEIGHT);
     }
 
     public void setChargingSword(boolean bl) {
@@ -290,25 +291,20 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
             }
         }
-        if (this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
-            double e = this.getBeamLocation().getX() - this.getX();
-            double f = this.getBeamLocation().getY() - this.getEyeY() + this.getBeamHeight();
-            double g = this.getBeamLocation().getZ() - this.getZ();
-            double h = Math.sqrt(e * e + f * f + g * g);
-            e /= h;
-            f /= h;
-            g /= h;
-            double length = this.random.nextDouble();
-            double spreader = 1000;
-            int points = 50;
-            for (int i = 0; i < 10; i++) {
-                length += (this.getBeamLength()/100f) + this.random.nextDouble();
-                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.getWorld().addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader, (double)this.random.nextBetween(-points, points)/spreader);
-                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10, (double)this.random.nextBetween(-points, points)/10);
+        if (this.getWorld().isClient && this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
+            Vec3d start = this.getPos().add(0, 6f, 0);
+            Vec3d end = this.getBeamLocation().toCenterPos().add(0, this.getBeamHeight() + 1.4f, 0);
+            Vec3d between = new Vec3d(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
+            int numberOfParticles = 40;
+            double stepSize = 1.0 / numberOfParticles;
+            for (double progress = 0; progress < 1.0; progress += stepSize) {
+                Vec3d particlePos = start.add(between.multiply(progress));
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 0, 0, 0);
+                this.getWorld().addParticle(ParticleTypes.GLOW, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 0, 0, 0);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, particlePos.getX(), particlePos.getY(), particlePos.getZ(),
+                        (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10);
                 //Looks like wind blows particles away
-                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, particlePos.getX(), particlePos.getY(), particlePos.getZ(), this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
             }
             double d = this.random.nextGaussian() * 0.05D;
             double q = this.random.nextGaussian() * 0.05D;
@@ -440,8 +436,8 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(IS_SWORD_CHARGING, Boolean.FALSE);
         this.dataTracker.startTracking(ATTACK, 0);
         this.dataTracker.startTracking(BEAM_LOCATION, new BlockPos(0, 0, 0));
-        this.dataTracker.startTracking(BEAM_LENGTH, 0f);
         this.dataTracker.startTracking(BEAM_HEIGHT, 0f);
+        this.dataTracker.startTracking(INCREASING_BEAM_HEIGHT, false);
     }
 
     private PlayState predicate(AnimationState<?> state) {
