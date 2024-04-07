@@ -187,7 +187,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             default -> {
                 boolean bl = getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-                this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
+                this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.BLOW);
             }
         }
     }

@@ -856,12 +856,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= 70 && this.attackStatus <= 100) {
             if (this.boss.isOnGround() && !this.hasExploded) {
-                this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 6f, World.ExplosionSourceType.NONE);
+                this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 6f, World.ExplosionSourceType.BLOW);
                 this.hasExploded = true;
             }
         }
         if (this.attackStatus == 125) {
-            this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8f, World.ExplosionSourceType.NONE);
+            this.boss.getWorld().createExplosion(this.boss, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 8f, World.ExplosionSourceType.BLOW);
         }
         this.checkAndReset(30, 0);
     }

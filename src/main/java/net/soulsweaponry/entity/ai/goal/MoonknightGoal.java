@@ -85,6 +85,9 @@ public class MoonknightGoal extends Goal {
         this.specialCooldown = 0;
         this.bonusBeamHeight = 0f;
         this.projectileRotation = RotationState.SWIPE_FROM_RIGHT;
+        this.boss.setCanBeam(false);
+        this.boss.setIncreasingBeamHeight(false);
+        this.boss.setBeamHeight(0f);
         //this.moonfallRuptureMod = 0.5D; From old moonfall implementation
     }
 
@@ -178,7 +181,7 @@ public class MoonknightGoal extends Goal {
                 }
             }
             case CORE_BEAM -> {
-                if (this.specialCooldown < 0 && distance < 128D) {
+                if (this.specialCooldown < 0 && distance < 180D) {
                     this.boss.setPhaseTwoAttack(attack);
                 } else if (this.specialCooldown > 10 || this.attackCooldown < -30) {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
@@ -287,30 +290,32 @@ public class MoonknightGoal extends Goal {
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
             if (this.attackStatus >= 21 && this.attackStatus <= 47) {
                 if (attackStatus == 21) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_CORE_BEAM_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                float range = (float) this.boss.squaredDistanceTo(targetPos.getX(), targetPos.getY(), targetPos.getZ());
                 this.boss.setCanBeam(true);
                 this.boss.setBeamLocation(targetPos);
-                this.boss.setBeamLength(range);
                 if (this.attackStatus % 2 == 0) {
-                    this.boss.getWorld().createExplosion(boss, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
+                    this.boss.getWorld().createExplosion(boss, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 2f, true, this.boss.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.BLOW);
                     for (Entity entity : this.boss.getWorld().getOtherEntities(boss, new Box(targetPos.toCenterPos(), this.boss.getPos().add(0, 4, 0)))) {
                         if (entity instanceof LivingEntity) {
                             entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), this.getModifiedDamage(20f));
                             entity.setOnFireFor(4);
                         }
                     }
-                    this.bonusBeamHeight += 0.1f + this.bonusBeamHeight/2;
-                    this.boss.setBeamHeight(this.bonusBeamHeight);
+                }
+                if (this.attackStatus >= 26) {
+                    this.bonusBeamHeight += 0.0325f * 20;
+                    this.boss.setIncreasingBeamHeight(true);
                 }
             }
             if (this.attackStatus > 40) {
                 this.targetPos = this.targetPos.add(0, MathHelper.floor(-this.bonusBeamHeight), 0);
                 this.boss.setCanBeam(false);
+                this.boss.setIncreasingBeamHeight(false);
             }
         }
         if (this.attackStatus >= 77) {
             this.boss.getNavigation().stop();
             this.bonusBeamHeight = 0f;
+            this.boss.setBeamHeight(0f);
             this.resetAttack(1f, true, 1f);
         }
     }
