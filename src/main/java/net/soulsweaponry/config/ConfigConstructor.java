@@ -145,6 +145,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
     @Entry public static int frostmourne_damage = 11;
+    @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
     @Entry public static int galeforce_dash_cooldown = 50;
     @Entry public static int rageblade_damage = 7;
@@ -193,6 +194,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_ability_shield_power = 2;
     @Entry public static int nightfall_shield_cooldown = 500;
     @Entry public static int nightfall_smash_cooldown = 300;
+    @Entry public static int nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
     @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static int nights_edge_ability_cooldown = 120;
@@ -207,7 +209,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int skofnung_bonus_damage = 2;
     @Entry public static int skofnung_disable_heal_duration = 100;
     @Entry public static int skofnung_stone_additional_empowered_strikes = 8;
-    @Entry public static int soulreaper_damage = 11;
+    @Entry public static int soul_reaper_damage = 11;
+    @Entry public static int soul_reaper_summoned_allies_cap = 50;
     @Entry public static int sting_damage = 6;
     @Entry public static float sting_bonus_arthropod_damage = 4f;
     @Entry public static int sword_of_freyr_damage = 7;

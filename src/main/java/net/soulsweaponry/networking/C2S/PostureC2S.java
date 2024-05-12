@@ -7,7 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class PostureC2S {
 

@@ -49,7 +49,7 @@ public class WeaponRegistry {
     public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 0, 1, false, true);
     public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, -2.8f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 2, false, true);
     public static ToolItem DRAUPNIR_SPEAR = new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.6f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
-    public static TrickWeapon HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC), 4);
+    public static HolyMoonlightGreatsword HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC), 4);
     public static TrickWeapon HOLY_MOONLIGHT_SWORD = new HolyMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
     public static Frostmourne FROSTMOURNE = new Frostmourne(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f,  new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));
     public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4f, new Item.Settings().group(MAIN_GROUP).fireproof().rarity(Rarity.EPIC));

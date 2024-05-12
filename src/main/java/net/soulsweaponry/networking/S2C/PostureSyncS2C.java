@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
-import net.soulsweaponry.util.IEntityDataSaver;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class PostureSyncS2C {
 

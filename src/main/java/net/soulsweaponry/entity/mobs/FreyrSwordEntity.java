@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -27,7 +26,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -359,6 +357,11 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     @Override
     public boolean canUsePortals() {
         return false;
+    }
+
+    @Override
+    public int getAir() {
+        return 300;
     }
 
     @Override

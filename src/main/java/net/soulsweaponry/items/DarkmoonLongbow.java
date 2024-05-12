@@ -86,7 +86,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
             if (!player.isCreative()) {
-                player.getItemCooldownManager().set(this, ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30);
+                player.getItemCooldownManager().set(this, Math.max(ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30, 60));
             }
             stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }

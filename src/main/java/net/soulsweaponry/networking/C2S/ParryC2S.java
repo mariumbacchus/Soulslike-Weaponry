@@ -10,8 +10,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.IEntityDataSaver;
-import net.soulsweaponry.util.ParryData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.ParryData;
 
 public class ParryC2S {
 

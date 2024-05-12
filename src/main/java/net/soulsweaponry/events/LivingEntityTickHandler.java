@@ -7,8 +7,8 @@ import net.minecraft.util.ActionResult;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.IEntityDataSaver;
-import net.soulsweaponry.util.PostureData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class LivingEntityTickHandler implements LivingEntityTickCallback {
     @Override

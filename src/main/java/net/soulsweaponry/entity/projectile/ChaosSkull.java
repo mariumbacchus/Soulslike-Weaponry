@@ -25,8 +25,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.HashMap;
 
@@ -166,7 +166,7 @@ public class ChaosSkull extends WitherSkullEntity {
     private void finisher() {
         this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
         if (!this.world.isClient) {
-            ParticleHandler.particleSphereList(world, 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+            ParticleHandler.particleSphereList(world, 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
         }
         this.discard();
     }

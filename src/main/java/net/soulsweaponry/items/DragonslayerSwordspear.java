@@ -27,8 +27,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 
 import javax.annotation.Nullable;
@@ -79,7 +79,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                                 target.takeKnockback(5F, -x, -z);
                                 target.damage(DamageSource.mob(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
                                 if (!world.isClient) {
-                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                                 }
                             }
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);

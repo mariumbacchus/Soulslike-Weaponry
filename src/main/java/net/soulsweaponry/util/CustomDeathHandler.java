@@ -13,6 +13,7 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.Random;
 
