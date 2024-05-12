@@ -1,22 +1,24 @@
 package net.soulsweaponry.blocks;
 
-import com.mojang.math.Vector3d;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
-import net.soulsweaponry.registry.ItemRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.soulsweaponry.registry.ParticleRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,21 +27,15 @@ import java.util.Random;
 
 public class AltarBlock extends Block {
 
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final DirectionProperty FACING = FacingBlock.FACING;
 
-    public AltarBlock(Properties pProperties) {
-        super(pProperties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    public AltarBlock(Settings settings) {
+        super(settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-        if (world.isClientSide && random.nextInt(5) < 2) {
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (world.isClient && random.nextInt(5) < 2) {
             double e = .5f;
             double d = .375f;
             double f = .375f;
@@ -52,8 +48,8 @@ public class AltarBlock extends Block {
         }
     }
 
-    private void particleCircle(Level world, BlockPos pos, int r) {
-        List<Vector3d> points = new ArrayList<>();
+    private void particleCircle(World world, BlockPos pos, int r) {
+        List<Vec3d> points = new ArrayList<>();
         double y = pos.getY() + 0.2f;
         for (int theta = 0; theta < 360; theta += 2) {
             float x0 = pos.getX() + .5f;
@@ -62,14 +58,14 @@ public class AltarBlock extends Block {
             double z = z0 + r * Math.sin(theta * Math.PI / 180);
             world.addParticle(this.getParticleType(), x, y, z, 0, 0, 0);
             if (theta % 72 == 0) {
-                points.add(new Vector3d(x, y, z));
+                points.add(new Vec3d(x, y, z));
             }
         }
         particlePentagon(world, r, points, y);
 
         // If it works, it works. I don't give a **** that it's bad code at this point.
-        HashMap<Vector3d, Vector3d> map1 = new HashMap<>();
-        HashMap<Vector3d, Vector3d> map2 = new HashMap<>();
+        HashMap<Vec3d, Vec3d> map1 = new HashMap<>();
+        HashMap<Vec3d, Vec3d> map2 = new HashMap<>();
         map1.put(points.get(0), points.get(2));
         map1.put(points.get(0), points.get(3));
         map1.put(points.get(1), points.get(3));
@@ -84,10 +80,10 @@ public class AltarBlock extends Block {
         particleStar(world, r, map1, y);
         particleStar(world, r, map2, y);
         /*for (int i = 0; i < points.size(); i++) {
-            Vector3d start = points.get(i);
+            Vec3d start = points.get(i);
             for (int k = 0; k < points.size(); k++) {
                 if (i != k) {
-                    Vector3d target = points.get(k);
+                    Vec3d target = points.get(k);
                     map.put(start, target);
                 }
             }
@@ -95,17 +91,17 @@ public class AltarBlock extends Block {
         particleStar(world, r, map, y);*/
     }
 
-    private void particlePentagon(Level world, int modifier, List<Vector3d> points, double y) {
+    private void particlePentagon(World world, int modifier, List<Vec3d> points, double y) {
         for (int i = 0; i < points.size(); i++) {
-            Vector3d start = points.get(i);
-            Vector3d target = i == points.size() - 1 ? points.get(0) : points.get(i + 1);
-            double e = target.x - start.x;
-            double g = target.z - start.z;
+            Vec3d start = points.get(i);
+            Vec3d target = i == points.size() - 1 ? points.get(0) : points.get(i + 1);
+            double e = target.getX() - start.getX();
+            double g = target.getZ() - start.getZ();
             double h = Math.sqrt(e * e + g * g);
-            /*double x = pos.x + .5D;
-            double z = pos.z + .5D;*/
-            double x = start.x;
-            double z = start.z;
+            /*double x = pos.getX() + .5D;
+            double z = pos.getZ() + .5D;*/
+            double x = start.getX();
+            double z = start.getZ();
             e /= h;
             g /= h;
             double length = 0D;
@@ -116,14 +112,14 @@ public class AltarBlock extends Block {
         }
     }
 
-    private void particleStar(Level world, int modifier, HashMap<Vector3d, Vector3d> map, double y) {
-        for (Vector3d start : map.keySet()) {
-            Vector3d target = map.get(start);
-            double e = target.x - start.x;
-            double g = target.z - start.z;
+    private void particleStar(World world, int modifier, HashMap<Vec3d, Vec3d> map, double y) {
+        for (Vec3d start : map.keySet()) {
+            Vec3d target = map.get(start);
+            double e = target.getX() - start.getX();
+            double g = target.getZ() - start.getZ();
             double h = Math.sqrt(e * e + g * g);
-            double x = start.x;
-            double z = start.z;
+            double x = start.getX();
+            double z = start.getZ();
             e /= h;
             g /= h;
             double length = 0D;
@@ -134,44 +130,63 @@ public class AltarBlock extends Block {
         }
     }
 
-    private ParticleOptions getParticleType() {
-        return ParticleTypes.SOUL_FIRE_FLAME;//ParticleRegistry.NIGHTFALL_PARTICLE; TODO add particles here
+    private DefaultParticleType getParticleType() {
+        return ParticleRegistry.NIGHTFALL_PARTICLE.get();
+    }
+
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        /*ItemStack itemStack = player.getStackInHand(hand); TODO
+        if (itemStack.isOf(ItemRegistry.LOST_SOUL)) {
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+            }
+            ReturningKnight boss = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
+            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
+            boss.setSpawning(true);
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.spawnEntity(boss);
+            world.removeBlock(pos, false);
+            return ActionResult.SUCCESS;
+        } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
+            DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
+            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
+            boss.setSpawning();
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.spawnEntity(boss);
+            world.removeBlock(pos, false);
+            return ActionResult.SUCCESS;
+        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+            }
+            Moonknight boss = new Moonknight(EntityRegistry.MOONKNIGHT, world);
+            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
+            boss.setSpawning(true);
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.spawnEntity(boss);
+            world.removeBlock(pos, false);
+            return ActionResult.SUCCESS;
+        }*/
+        return ActionResult.FAIL;
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.is(ItemRegistry.LOST_SOUL.get())) {
-            if (!player.isCreative()) {
-                itemStack.shrink(1);
-            }//TODO add bosses here
-//            ReturningKnight boss = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
-//            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-//            boss.setSpawning(true);
-//            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-//            world.spawnEntity(boss);
-//            world.removeBlock(pos, false);
-//            return ActionResult.SUCCESS;
-//        } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
-//            DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
-//            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-//            boss.setSpawning();
-//            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-//            world.spawnEntity(boss);
-//            world.removeBlock(pos, false);
-//            return ActionResult.SUCCESS;
-//        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
-//            if (!player.getAbilities().creativeMode) {
-//                itemStack.decrement(1);
-//            }
-//            Moonknight boss = new Moonknight(EntityRegistry.MOONKNIGHT, world);
-//            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-//            boss.setSpawning(true);
-//            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-//            world.spawnEntity(boss);
-//            world.removeBlock(pos, false);
-//            return ActionResult.SUCCESS;
-        }
-        return InteractionResult.FAIL;
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, BlockRotation rotation) {
+        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, BlockMirror mirror) {
+        return state.rotate(mirror.getRotation(state.get(FACING)));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 }

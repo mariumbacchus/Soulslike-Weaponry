@@ -1,21 +1,20 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.enchantments.FastHandsEnchant;
 import net.soulsweaponry.enchantments.VisceralEnchant;
 import net.soulsweaponry.items.GunItem;
 
-public class EnchantmentRegistry {
+public class EnchantRegistry {
 
-    public static final EnchantmentCategory GUN = EnchantmentCategory.create("gun", (item -> item instanceof GunItem));
+    public static final EnchantmentTarget GUN = EnchantmentTarget.create("gun", (item -> item instanceof GunItem));
 
     public static final DeferredRegister<Enchantment> ENCHANTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, SoulsWeaponry.MOD_ID);
 

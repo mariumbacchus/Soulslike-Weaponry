@@ -1,19 +1,11 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.ShovelItem;
+import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
@@ -21,7 +13,8 @@ public class ItemRegistry {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.MOD_ID);
 
-    public static final RegistryObject<Item> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 4));
+    public static final RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone", () -> new Item(new Item.Settings().group(SoulsWeaponry.MAIN_GROUP)));
+    /*public static final RegistryObject<Item> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 4));
     public static final RegistryObject<Item> LORD_SOUL_DARK = ITEMS.register("lord_soul_dark", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 3));
     public static final RegistryObject<Item> LORD_SOUL_VOID = ITEMS.register("lord_soul_void", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 3));
     public static final RegistryObject<Item> LORD_SOUL_ROSE = ITEMS.register("lord_soul_rose", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_rose", 3));
@@ -65,7 +58,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> CHAOS_ROBES = ITEMS.register("chaos_robes", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
     public static final RegistryObject<Item> CHAOS_ORB = ITEMS.register("chaos_orb", () -> new ChaosOrb(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
 
-    public static final RegistryObject<Item> CHUNGUS_DISC = ITEMS.register("chungus_disc", () -> new RecordItem(5, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).stacksTo(1)));
+    public static final RegistryObject<Item> CHUNGUS_DISC = ITEMS.register("chungus_disc", () -> new RecordItem(5, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).stacksTo(1)));*/
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,22 +1,22 @@
 package net.soulsweaponry.client.registry;
 
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.soulsweaponry.registry.BlockRegistry;
 
 public class BlockRenderLayers {
 
     public static void register() {
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.ALTAR_BLOCK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.BLACKSTONE_PEDESTAL.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.CHUNGUS_MONOLITH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.VERGLAS_BLOCK.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.WITHERED_GRASS.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.WITHERED_BERRY_BUSH.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.WITHERED_FERN.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.WITHERED_LARGE_FERN.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.WITHERED_TALL_GRASS.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.OLEANDER.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockRegistry.HYDRANGEA.get(), RenderType.cutout());
+        RenderLayers.setRenderLayer(BlockRegistry.ALTAR_BLOCK.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.BLACKSTONE_PEDESTAL.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.CHUNGUS_MONOLITH.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.VERGLAS_BLOCK.get(), RenderLayer.getTranslucent());
+        RenderLayers.setRenderLayer(BlockRegistry.WITHERED_GRASS.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.WITHERED_BERRY_BUSH.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.WITHERED_FERN.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.WITHERED_LARGE_FERN.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.WITHERED_TALL_GRASS.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.OLEANDER.get(), RenderLayer.getCutout());
+        RenderLayers.setRenderLayer(BlockRegistry.HYDRANGEA.get(), RenderLayer.getCutout());
     }
 }

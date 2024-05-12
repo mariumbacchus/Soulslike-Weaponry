@@ -1,9 +1,9 @@
 package net.soulsweaponry.networking.packets.C2S;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -17,12 +17,12 @@ public class Example {
     }
 
     //Same as decode
-    public Example(FriendlyByteBuf buf) {
+    public Example(PacketByteBuf buf) {
         this(buf.readBlockPos());
     }
 
     // Same as encode
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(PacketByteBuf buf) {
         buf.writeBlockPos(this.blockPos);
     }
 
@@ -30,8 +30,8 @@ public class Example {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             //on server
-            ServerPlayer player = context.getSender();
-            player.sendMessage(new TextComponent("hello world!" + this.blockPos), player.getUUID());
+            ServerPlayerEntity player = context.getSender();
+            player.sendMessage(new LiteralText("hello world!" + this.blockPos), true);
         });
         context.setPacketHandled(true);
     }

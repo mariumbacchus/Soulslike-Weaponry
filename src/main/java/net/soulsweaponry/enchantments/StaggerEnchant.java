@@ -1,21 +1,23 @@
 package net.soulsweaponry.enchantments;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.soulsweaponry.items.UltraHeavyWeapon;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.soulsweaponry.items.UltraHeavy;
 
 public class StaggerEnchant extends Enchantment {
 
     public StaggerEnchant(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, EnchantmentCategory.WEAPON, pApplicableSlots);
+        super(pRarity, EnchantmentTarget.WEAPON, pApplicableSlots);
     }
 
     @Override
-    public int getMinCost(int level) {
+    public int getMinPower(int level) {
         return 10 + level * 10;
     }
 
@@ -25,20 +27,20 @@ public class StaggerEnchant extends Enchantment {
     }
 
     @Override
-    public void doPostAttack(LivingEntity attacker, Entity target, int pLevel) {
-        if (target instanceof LivingEntity living && !living.isDeadOrDying()) {
-//            int postureLoss = 5;
-//            if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof UltraHeavyWeapon heavy && heavy.isHeavy()) {
-//                postureLoss *= 2;
-//            }
-//            postureLoss *= level;
-//            PostureData.addPosture((IEntityDataSaver) living, postureLoss);TODO add posture data and posture loss mechanic
+    public void onTargetDamaged(LivingEntity user, Entity target, int level) {
+        if (target instanceof LivingEntity living && !living.isDead()) {
+            int postureLoss = 5;
+            if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof UltraHeavy heavy && heavy.isHeavy()) {
+                postureLoss *= 2;
+            }
+            postureLoss *= level;
+            //PostureData.addPosture((IEntityDataSaver) living, postureLoss);TODO posture things
         }
-        super.doPostAttack(attacker, target, pLevel);
+        super.onTargetDamaged(user, target, level);
     }
 
     @Override
-    public boolean canEnchant(ItemStack pStack) {
-        return pStack.getItem() instanceof UltraHeavyWeapon || super.canEnchant(pStack);
+    public boolean isAcceptableItem(ItemStack stack) {
+        return stack.getItem() instanceof UltraHeavy || super.isAcceptableItem(stack);
     }
 }

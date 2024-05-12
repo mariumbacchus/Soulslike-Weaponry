@@ -1,6 +1,6 @@
 package net.soulsweaponry.events;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
@@ -28,10 +28,10 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerParticleFactories(final ParticleFactoryRegisterEvent event) {
-        Minecraft.getInstance().particleEngine.register(ParticleRegistry.NIGHTFALL_PARTICLE.get(), FlameParticle.Provider::new);
-        Minecraft.getInstance().particleEngine.register(ParticleRegistry.DAZZLING_PARTICLE.get(), FlameParticle.Provider::new);
-        Minecraft.getInstance().particleEngine.register(ParticleRegistry.PURPLE_FLAME.get(), FlameParticle.Provider::new);
-        Minecraft.getInstance().particleEngine.register(ParticleRegistry.DARK_STAR.get(), FlameParticle.Provider::new);
-        Minecraft.getInstance().particleEngine.register(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Provider::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.NIGHTFALL_PARTICLE.get(), FlameParticle.Factory::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.DAZZLING_PARTICLE.get(), FlameParticle.Factory::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.PURPLE_FLAME.get(), FlameParticle.Factory::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.DARK_STAR.get(), FlameParticle.Factory::new);
+        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Factory::new);
     }
 }

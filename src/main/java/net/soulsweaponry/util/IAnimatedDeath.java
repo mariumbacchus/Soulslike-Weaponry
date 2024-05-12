@@ -1,6 +1,6 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.entity.damage.DamageSource;
 
 public interface IAnimatedDeath {
 

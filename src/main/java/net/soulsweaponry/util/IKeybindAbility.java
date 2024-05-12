@@ -1,13 +1,13 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 
 public interface IKeybindAbility {
 
-    void useKeybindAbilityServer(ServerLevel world, ItemStack stack, Player player);
-    void useKeybindAbilityClient(ClientLevel world, ItemStack stack, LocalPlayer player);
+    void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player);
+    void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player);
 }

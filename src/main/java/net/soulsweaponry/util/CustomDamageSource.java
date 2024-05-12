@@ -1,24 +1,23 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
 
 public class CustomDamageSource extends DamageSource {
 
-    public static final DamageSource BLEED = new CustomDamageSource("bleed").bypassArmor();
+    public static final DamageSource BLEED = new CustomDamageSource("bleed").setBypassesArmor();
     public static final DamageSource OBLIVION = new CustomDamageSource("oblivion");
-    public static final DamageSource TRUE_MAGIC = new CustomDamageSource("true_magic").bypassArmor().setMagic();
+    public static final DamageSource TRUE_MAGIC = new CustomDamageSource("true_magic").setBypassesArmor().setUsesMagic();
 
     protected CustomDamageSource(String name) {
         super(name);
     }
 
-    // ProjectileDamageSource = IndirectEntityDamageSource
     public static DamageSource summonDamageSource(String name, LivingEntity summon, Entity attacker) {
-        return new IndirectEntityDamageSource(name, summon, attacker);
+        return new ProjectileDamageSource(name, summon, attacker);
     }
 
     public static DamageSource obliterateDamageSource(LivingEntity attacker) {
@@ -26,7 +25,7 @@ public class CustomDamageSource extends DamageSource {
     }
 
     public static DamageSource shadowOrb(Entity projectile, Entity attacker) {
-        return new IndirectEntityDamageSource("shadow_orb", projectile, attacker).setProjectile();
+        return new ProjectileDamageSource("shadow_orb", projectile, attacker).setProjectile();
     }
 
     public static DamageSource beam(LivingEntity attacker) {

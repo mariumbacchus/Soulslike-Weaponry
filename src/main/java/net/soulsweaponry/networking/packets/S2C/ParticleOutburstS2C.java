@@ -1,16 +1,16 @@
 package net.soulsweaponry.networking.packets.S2C;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleType;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
@@ -24,8 +24,8 @@ public class ParticleOutburstS2C {
     private final double y;
     private final double z;
     private final int amount;
-    private final ParticleOptions particle;
-    private final Vec3 velDividers;
+    private final ParticleEffect particle;
+    private final Vec3d velDividers;
     private final float sizeMod;
     private final ItemStack item;
 
@@ -40,7 +40,7 @@ public class ParticleOutburstS2C {
      * @param sizeMod modifies the size of the whole particle event
      * @param item for when ItemParticleOption is used, will pass in the item that should be rendered to the ItemParticleOption
      */
-    public ParticleOutburstS2C(int amount, double x, double y, double z, ParticleOptions particle, Vec3 velDividers, float sizeMod, ItemStack item) {
+    public ParticleOutburstS2C(int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDividers, float sizeMod, ItemStack item) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -52,10 +52,10 @@ public class ParticleOutburstS2C {
     }
 
     // Same as encode
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(Registry.PARTICLE_TYPE.getId(this.particle.getType()));
+    public void toBytes(PacketByteBuf buf) {
+        buf.writeInt(Registry.PARTICLE_TYPE.getRawId(this.particle.getType()));
         buf.writeInt(this.amount);
-        buf.writeItem(this.item);
+        buf.writeItemStack(this.item);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
@@ -63,19 +63,19 @@ public class ParticleOutburstS2C {
         buf.writeDouble(this.velDividers.y);
         buf.writeDouble(this.velDividers.z);
         buf.writeFloat(this.sizeMod);
-        this.particle.writeToNetwork(buf);
+        this.particle.write(buf);
     }
 
     //Same as decode/fromBytes
-    public ParticleOutburstS2C(FriendlyByteBuf buf) {
-        ParticleType<?> particletype = Registry.PARTICLE_TYPE.byId(buf.readInt());
+    public ParticleOutburstS2C(PacketByteBuf buf) {
+        ParticleType<?> particletype = Registry.PARTICLE_TYPE.get(buf.readInt());
         this.particle = this.readParticle(buf, particletype);
         this.amount = buf.readInt();
-        this.item = buf.readItem();
+        this.item = buf.readItemStack();
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
-        this.velDividers = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        this.velDividers = new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
         this.sizeMod = buf.readFloat();
     }
 
@@ -95,15 +95,15 @@ public class ParticleOutburstS2C {
         return this.z;
     }
 
-    private <T extends ParticleOptions> T readParticle(FriendlyByteBuf pBuffer, ParticleType<T> pParticleType) {
-        return pParticleType.getDeserializer().fromNetwork(pParticleType, pBuffer);
+    private <T extends ParticleEffect> T readParticle(PacketByteBuf pBuffer, ParticleType<T> pParticleType) {
+        return pParticleType.getParametersFactory().read(pParticleType, pBuffer);
     }
 
-    public ParticleOptions getParticle() {
+    public ParticleEffect getParticle() {
         return this.particle;
     }
 
-    public Vec3 getVelDividers() {
+    public Vec3d getVelDividers() {
         return this.velDividers;
     }
 
@@ -111,8 +111,8 @@ public class ParticleOutburstS2C {
         return this.sizeMod;
     }
 
-    private ItemParticleOption getItemParticleOption() {
-        return new ItemParticleOption(ParticleTypes.ITEM, this.item);
+    private ItemStackParticleEffect getItemParticleOption() {
+        return new ItemStackParticleEffect(ParticleTypes.ITEM, this.item);
     }
 
     private ItemStack getItemStack() {
@@ -122,17 +122,17 @@ public class ParticleOutburstS2C {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            ClientLevel level = Minecraft.getInstance().level;
-            this.handlePacket(level, this);
+            ClientWorld world = MinecraftClient.getInstance().world;
+            this.handlePacket(world, this);
         }));
         context.setPacketHandled(true);
     }
 
-    private void handlePacket(ClientLevel level, ParticleOutburstS2C packet) {
-        if (!packet.getItemStack().is(Items.AIR)) {
-            ParticleHandler.particleOutburst(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getVelDividers(), packet.getSizeMod());
+    private void handlePacket(ClientWorld world, ParticleOutburstS2C packet) {
+        if (!packet.getItemStack().isOf(Items.AIR)) {
+            ParticleHandler.particleOutburst(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getVelDividers(), packet.getSizeMod());
         } else {
-            ParticleHandler.particleOutburst(level, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getVelDividers(), packet.getSizeMod());
+            ParticleHandler.particleOutburst(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getVelDividers(), packet.getSizeMod());
         }
     }
 }

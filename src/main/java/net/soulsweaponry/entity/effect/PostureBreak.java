@@ -1,19 +1,19 @@
 package net.soulsweaponry.entity.effect;
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 
-public class PostureBreak extends MobEffect {
+public class PostureBreak extends StatusEffect {
 
     public PostureBreak() {
-        super(MobEffectCategory.HARMFUL, 0x1c0000);
+        super(StatusEffectCategory.HARMFUL, 0x1c0000);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean canApplyUpdateEffect(int duration, int amplifier) {
         int k = 10 >> amplifier;
         if (k > 0) {
             return duration % k == 0;
@@ -23,9 +23,9 @@ public class PostureBreak extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 3));
-        entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 20, 9));
-        entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 20, 9));
+    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 3));
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 20, 9));
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 20, 9));
     }
 }

@@ -1,10 +1,10 @@
 package net.soulsweaponry;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Potions;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,9 +26,9 @@ public class SoulsWeaponry {
     public static final String MOD_ID = "soulsweapons";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final CreativeModeTab MAIN_GROUP = new CreativeModeTab(MOD_ID + ".general") {
+    public static final ItemGroup MAIN_GROUP = new ItemGroup(MOD_ID + ".general") {
         @Override
-        public ItemStack makeIcon() {
+        public ItemStack createIcon() {
             return new ItemStack(ItemRegistry.MOONSTONE.get());
         }
     };
@@ -42,7 +42,7 @@ public class SoulsWeaponry {
         SoundRegistry.register(eventBus);
         ParticleRegistry.register(eventBus);
         WeaponRegistry.register(eventBus);
-        EnchantmentRegistry.register(eventBus);
+        EnchantRegistry.register(eventBus);
         GunRegistry.register(eventBus);
         //TODO recipe generation
         //TODO datagen with recipe advancements

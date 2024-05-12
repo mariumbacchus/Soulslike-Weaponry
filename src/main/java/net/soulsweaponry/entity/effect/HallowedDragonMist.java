@@ -1,20 +1,22 @@
 package net.soulsweaponry.entity.effect;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Tameable;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.player.PlayerEntity;
 
-public class HallowedDragonMist extends MobEffect {
-
+public class HallowedDragonMist extends StatusEffect{
     public HallowedDragonMist() {
-        super(MobEffectCategory.NEUTRAL, 0xa915d6);
+        super(
+                StatusEffectCategory.NEUTRAL,
+                0xa915d6
+        );
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean canApplyUpdateEffect(int duration, int amplifier) {
         int k = 50 >> amplifier;
         if (k > 0) {
             return duration % k == 0;
@@ -24,13 +26,13 @@ public class HallowedDragonMist extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity instanceof Player || (entity instanceof TamableAnimal tamed && tamed.getOwner() instanceof Player)) {
+    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+        if (entity instanceof PlayerEntity || (entity instanceof Tameable tamed && tamed.getOwner() instanceof PlayerEntity)) {
             if (entity.getHealth() < entity.getMaxHealth()) {
                 entity.heal(amplifier + 1);
             }
         } else {
-            entity.hurt(DamageSource.MAGIC, 2.0F + (float) amplifier);
+            entity.damage(DamageSource.MAGIC, 2.0F + (float) amplifier);
         }
     }
 }

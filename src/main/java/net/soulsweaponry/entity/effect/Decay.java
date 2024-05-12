@@ -1,40 +1,41 @@
 package net.soulsweaponry.entity.effect;
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.soulsweaponry.registry.ItemRegistry;
 
-public class Decay extends MobEffect {
+public class Decay extends StatusEffect {
 
-    private final EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     public Decay() {
-        super(MobEffectCategory.HARMFUL, 0x0e0024);
+        super(StatusEffectCategory.HARMFUL, 0x0e0024);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean canApplyUpdateEffect(int duration, int amplifier) {
         return duration % (Math.max((10 - amplifier * 2), 1)) == 0;
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity instanceof Player player) {
-            if (!entity.getItemBySlot(slots[0]).is(ItemRegistry.CHAOS_CROWN.get()) && !entity.getItemBySlot(slots[0]).is(ItemRegistry.CHAOS_HELMET.get())) {
+    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+        if (entity instanceof PlayerEntity) {
+            if (!entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_HELMET.get())) {
+                PlayerEntity player = ((PlayerEntity)entity);
                 for (EquipmentSlot slot : slots) {
-                    ItemStack stack = player.getItemBySlot(slot);
-                    if (!stack.is(ItemRegistry.CHAOS_ROBES.get())) {
-                        stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                    ItemStack stack = player.getEquippedStack(slot);
+                    if (!stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
+                        stack.damage(amplifier + 1, player, (p) -> p.sendEquipmentBreakStatus(slot));
                     }
                 }
             } else {
-                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 50, amplifier));
+                entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, amplifier));
             }
         }
     }

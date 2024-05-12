@@ -1,18 +1,22 @@
 package net.soulsweaponry.entity.effect;
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffects;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 
-public class LifeLeach extends MobEffect {
+public class LifeLeach extends StatusEffect {
+
+    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED.get()};
 
     public LifeLeach() {
-        super(MobEffectCategory.BENEFICIAL, 0x187a02);
+        super(StatusEffectCategory.BENEFICIAL, 0x452773);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean canApplyUpdateEffect(int duration, int amplifier) {
         int k = 40 >> amplifier;
         if (k > 0) {
             return duration % k == 0;
@@ -21,14 +25,21 @@ public class LifeLeach extends MobEffect {
         }
     }
 
-    //TODO: This is not used anywhere in the mod. Essentially, it would continuously heal the wielder of the effect
-    //whenever the target would be damaged by other effects such as poison or wither. If implemented in some way
-    //again, consider making a new icon for the effect.
     @Override
-    public void applyEffectTick(LivingEntity entity, int pAmplifier) {
-        LivingEntity target = entity.getLastHurtByMob();
-        if (target instanceof LivingEntity && target.hasEffect(MobEffects.WITHER)) {
-            entity.heal(1 + target.getEffect(MobEffects.WITHER).getAmplifier());
+    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+        LivingEntity target = entity.getAttacking();
+        if (entity.getWorld().isClient) {
+            for (int i = 0; i < 30; i++) {
+                entity.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
+            }
+        }
+        if (target != null) {
+            for (StatusEffect effect : DAMAGE_OVER_TIME) {
+                if (target.hasStatusEffect(effect)) {
+                    entity.heal(1);
+                    break;
+                }
+            }
         }
     }
 }

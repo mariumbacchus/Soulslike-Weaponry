@@ -1,28 +1,28 @@
 package net.soulsweaponry.particles;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 //Not in current use, might be used later. If so, modify to fit behavior of FlameParticle.
-public class FadingParticle extends TextureSheetParticle {
+public class FadingParticle extends SpriteBillboardParticle {
 
-    protected FadingParticle(ClientLevel pLevel, double x, double y, double z, SpriteSet spriteSet, double velX, double velY, double velZ) {
+    public FadingParticle(ClientWorld pLevel, double x, double y, double z, SpriteProvider spriteSet, double velX, double velY, double velZ) {
         super(pLevel, x, y, z, velY, velY, velZ);
 
-        this.friction = 0.8f;
-        this.xd = velX;
-        this.yd = velY;
-        this.zd = velZ;
-        this.quadSize *= 0.85f;
-        this.lifetime = 20;
-        this.setSpriteFromAge(spriteSet);
-        this.rCol = 1f;
-        this.gCol = 1f;
-        this.bCol = 1f;
+        this.gravityStrength = 0.8f;
+        this.velocityX = velX;
+        this.velocityY = velY;
+        this.velocityZ = velZ;
+        this.scale *= 0.85f;
+        this.maxAge = 20;
+        this.setSprite(spriteSet);
+        this.red = 1f;
+        this.green = 1f;
+        this.blue = 1f;
     }
 
     @Override
@@ -32,25 +32,25 @@ public class FadingParticle extends TextureSheetParticle {
     }
 
     private void fade() {
-        this.alpha = (-(1 / (float) lifetime) * age + 1);
+        this.alpha = (-(1 / (float) maxAge) * age + 1);
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public ParticleTextureSheet getType() {
+        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet spriteSet;
+    public static class Provider implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider spriteSet;
 
-        public Provider(SpriteSet set) {
+        public Provider(SpriteProvider set) {
             this.spriteSet = set;
         }
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel level, double x, double y, double z, double pXSpeed, double pYSpeed, double pZSpeed) {
+        public Particle createParticle(DefaultParticleType pType, ClientWorld level, double x, double y, double z, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new FadingParticle(level, x, y, z, this.spriteSet, pXSpeed, pYSpeed, pZSpeed);
         }
     }

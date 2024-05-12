@@ -52,8 +52,11 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_FROSTMOURNE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_NIGHTS_EDGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_EMPOWERED_DAWNBREAKER;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_KRAKEN_SLAYER;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_KRAKEN_SLAYER_BOW;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_KRAKEN_SLAYER_CROSSBOW;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_DARKMOON_LONGBOW;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_ARKENPLATE;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_WITHERED_CHEST;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_DEMON_SPAWN_WEIGHT;
     public static final ForgeConfigSpec.ConfigValue<Integer> CHUNGUS_SPAWN_WEIGHT;
@@ -69,6 +72,21 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<List<Integer>> SOUL_INGOT_ARMOR_POINTS;
     public static final ForgeConfigSpec.ConfigValue<List<Integer>> SOUL_ROBES_ARMOR_POINTS;
     public static final ForgeConfigSpec.ConfigValue<List<Integer>> FORLORN_ARMOR_POINTS;
+    public static final ForgeConfigSpec.ConfigValue<List<Integer>> WITHERED_ARMOR_POINTS;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> CHAOS_CROWN_FLIP_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ARKENPLATE_SHOCKWAVE_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Float> ARKENPLATE_SHOCKWAVE_KNOCKBACK;
+    public static final ForgeConfigSpec.ConfigValue<Float> ARKENPLATE_SHOCKWAVE_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Double> ARKENPLATE_MIRROR_TRIGGER;
+    public static final ForgeConfigSpec.ConfigValue<Double> WITHERED_CHEST_STRENGTH_TRIGGER_1;
+    public static final ForgeConfigSpec.ConfigValue<Double> WITHERED_CHEST_STRENGTH_TRIGGER_2;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_ABILITY_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_WITHER_DURATION;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_WITHER_AMP;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_FIRE_SECONDS;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_LIFE_LEACH_DURATION;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_LIFE_LEACH_AMP;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> BLOODTHIRSTER_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> BLOODTHIRSTER_OVERSHIELD;
@@ -76,7 +94,10 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> LIFE_STEAL_SCALES;
     public static final ForgeConfigSpec.ConfigValue<Integer> LIFE_STEAL_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> BLUEMOON_GREATSWORD_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BLUEMOON_GREATSWORD_CHARGE_NEEDED;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BLUEMOON_GREATSWORD_CHARGE_ADDED;
     public static final ForgeConfigSpec.ConfigValue<Integer> BLUEMOON_SHORTSWORD_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BLUEMOON_SHORTSWORD_PROJECTILE_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> COMET_SPEAR_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> COMET_SPEAR_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> COMET_SPEAR_ABILITY_DAMAGE;
@@ -129,17 +150,21 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FEATHERLIGHT_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> FEATHERLIGHT_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Integer> FROSTMOURNE_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FROSTMOURNE_ALLIES_CAP;
     public static final ForgeConfigSpec.ConfigValue<Float> GALEFORCE_BONUS_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> GALEFORCE_DASH_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> RAGEBLADE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RAGEBLADE_HASTE_CAP;
     public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_GREAT_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_ABILITY_CHARGE_NEED;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_ABILITY_CHARGE_ADDED;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_GREAT_CHARGE_ADDED;
     public static final ForgeConfigSpec.ConfigValue<Float> HOLY_MOON_ABILITY_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> HOLY_MOON_ABILITY_KNOCKUP;
     public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_ABILITY_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_RUPTURES_AMOUNT;
     public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_SWORD_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_SWORD_MAX_BONUS;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HOLY_MOON_SWORD_CHARGE_ADDED;
     public static final ForgeConfigSpec.ConfigValue<Integer> KIRKHAMMER_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> KIRKHAMMER_SILVER_SWORD_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> KRAKEN_SLAYER_BONUS_DAMAGE;
@@ -159,6 +184,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> MJOLNIR_SMASH_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> MJOLNIR_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_LIGHTNING_SMASH_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_LIGHTNING_CIRCLE_AMOUNT;
     public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_RIPTIDE_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Double> MJOLNIR_RETURN_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONLIGHT_GREATSWORD_DAMAGE;
@@ -167,14 +193,13 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONLIGHT_SHORTSWORD_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> MOONLIGHT_SHORTSWORD_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONLIGHT_SHORTSWORD_PROJECTILE_COOLDOWN;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MOONLIGHT_SHORTSWORD_ENABLE_RIGHT_CLICK;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MOONLIGHT_SHORTSWORD_ENABLE_LEFT_CLICK;
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONLIGHT_RING_PROJECTILE_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTFALL_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> NIGHTFALL_ABILITY_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTFALL_ABILITY_SHIELD_POWER;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTFALL_SHIELD_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTFALL_SMASH_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTFALL_ALLIES_CAP;
     public static final ForgeConfigSpec.ConfigValue<Double> NIGHTFALL_SUMMON_CHANCE;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTS_EDGE_WEAPON_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> NIGHTS_EDGE_ABILITY_COOLDOWN;
@@ -190,6 +215,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> SKOFNUNG_DISABLE_HEAL_DURATION;
     public static final ForgeConfigSpec.ConfigValue<Integer> SKOFNUNG_STONE_ADDITIONAL_EMPOWERED_STRIKES;
     public static final ForgeConfigSpec.ConfigValue<Integer> SOULREAPER_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SOULREAPER_ALLIES_CAP;
     public static final ForgeConfigSpec.ConfigValue<Integer> STING_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> STING_BONUS_ARTHROPOD_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> SWORD_OF_FREYR_DAMAGE;
@@ -308,7 +334,8 @@ public class CommonConfig {
         RECIPE_RAGEBLADE = BUILDER.define("Disable Guinsoo's Rageblade recipe", false);
         RECIPE_HOLY_MOONLIGHT = BUILDER.define("Disable Holy Moonlight Greatsword recipe", false);
         RECIPE_KIRKHAMMER = BUILDER.define("Disable Kirkhammer recipe", false);
-        RECIPE_KRAKEN_SLAYER = BUILDER.define("Disable Kraken Slayer recipe", false);
+        RECIPE_KRAKEN_SLAYER_BOW = BUILDER.define("Disable Kraken Slayer Bow recipe", true);
+        RECIPE_KRAKEN_SLAYER_CROSSBOW = BUILDER.define("Disable Kraken Slayer Crossbow recipe", false);
         RECIPE_LEVIATHAN_AXE = BUILDER.define("Disable Leviathan Axe recipe", false);
         RECIPE_LICH_BANE = BUILDER.define("Disable Lich Bane recipe", false);
         RECIPE_LUDWIGS_HOLY_BLADE = BUILDER.define("Disable Ludwig's Holy Blade recipe", false);
@@ -325,6 +352,9 @@ public class CommonConfig {
         RECIPE_WABBAJACK = BUILDER.define("Disable Withered Wabbajack recipe", false);
         RECIPE_SAWBLADE = BUILDER.define("Disable Whirligig Sawblade recipe", false);
 
+        RECIPE_ENHANCED_ARKENPLATE = BUILDER.define("Disable Infused Arkenplate recipe", false);
+        RECIPE_ENHANCED_WITHERED_CHEST = BUILDER.define("Disable Infused Hallowheart recipe", false);
+
         WITHERED_DEMON_SPAWN_WEIGHT = BUILDER.comment("Spawn weight for the mobs, the higher the value, the more spawns.").define("Withered Demon spawn weight", 20);
         CHUNGUS_SPAWN_WEIGHT = BUILDER.define("Moderately Sized Chungus spawn weight", 100);
         FORLORN_SPAWN_WEIGHT = BUILDER.define("Evil Forlorn spawn weight", 20);
@@ -337,11 +367,26 @@ public class CommonConfig {
 
         CAN_BOSS_BREAK_BLOCK = BUILDER.comment("Some bosses destroy blocks around them periodically. If false, they won't.").define("Can Bosses break blocks", true);
 
-        CHAOS_ARMOR_ARMOR_POINTS = BUILDER.comment("Armor values for the Armor sets, boots on left, head on right.").define("Chaos Armor Points", Arrays.asList(3, 6, 8, 3));
+        CHAOS_ARMOR_ARMOR_POINTS = BUILDER.comment("Armor values for the Armor sets, boots on left, head on right.").define("Chaos Armor Points", Arrays.asList(4, 7, 10, 5));
         CHAOS_SET_ARMOR_POINTS = BUILDER.define("Chaos Set Points", Arrays.asList(2, 3, 4, 1));
         SOUL_INGOT_ARMOR_POINTS = BUILDER.define("Soul Ingot Armor Points", Arrays.asList(3, 5, 7, 3));
         SOUL_ROBES_ARMOR_POINTS = BUILDER.define("Soul Robes Armor Points", Arrays.asList(2, 3, 4, 3));
         FORLORN_ARMOR_POINTS = BUILDER.define("Forlorn Armor Points", Arrays.asList(3, 6, 8, 3));
+        WITHERED_ARMOR_POINTS = BUILDER.define("Forlorn Armor Points", Arrays.asList(4, 7, 10, 5));
+
+        CHAOS_CROWN_FLIP_COOLDOWN = BUILDER.define("Chaos Crown flip effects cooldown", 300);
+        ARKENPLATE_SHOCKWAVE_COOLDOWN = BUILDER.define("Arkenplate shockwave cooldown", 200);
+        ARKENPLATE_SHOCKWAVE_KNOCKBACK = BUILDER.define("Arkenplate shockwave knockback", 2f);
+        ARKENPLATE_SHOCKWAVE_DAMAGE = BUILDER.define("Arkenplate shockwave damage", 6f);
+        ARKENPLATE_MIRROR_TRIGGER = BUILDER.defineInRange("Arkenplate Mirror ability trigger threshold", 0.334f, 0f, 1f);
+        WITHERED_CHEST_STRENGTH_TRIGGER_1 = BUILDER.defineInRange("Hallowheart Strength 1 ability trigger threshold", 0.5f, 0f, 1f);
+        WITHERED_CHEST_STRENGTH_TRIGGER_2 = BUILDER.defineInRange("Hallowheart Strength 2 ability trigger threshold", 0.25f, 0f, 1f);
+        WITHERED_CHEST_ABILITY_COOLDOWN = BUILDER.define("Hallowheart ability cooldown", 500);
+        WITHERED_CHEST_WITHER_DURATION = BUILDER.define("Hallowheart apply Wither cooldown", 100);
+        WITHERED_CHEST_WITHER_AMP = BUILDER.define("Hallowheart apply Wither amplifier", 0);
+        WITHERED_CHEST_FIRE_SECONDS = BUILDER.define("Hallowheart apply fire seconds", 6);
+        WITHERED_CHEST_LIFE_LEACH_DURATION = BUILDER.define("Hallowheart Life Leach ability duration", 400);
+        WITHERED_CHEST_LIFE_LEACH_AMP = BUILDER.define("Hallowheart Life Leach ability amplifier", 0);
 
         BLOODTHIRSTER_DAMAGE = BUILDER.comment("Values for weapon damage, ability cooldowns in ticks, etc. Sorted roughly from A-Z, excluding value names related to the weapon.").define("Bloodthirster damage", 8);
         BLOODTHIRSTER_OVERSHIELD = BUILDER.define("Bloodthirster can overshield", true);
@@ -349,7 +394,10 @@ public class CommonConfig {
         LIFE_STEAL_SCALES = BUILDER.define("Life Steal Item healing scales with enchants", true);
         LIFE_STEAL_COOLDOWN = BUILDER.define("Life Steal Item heal cooldown", 60);
         BLUEMOON_GREATSWORD_DAMAGE = BUILDER.define("Bluemoon Greatsword damage", 8);
+        BLUEMOON_GREATSWORD_CHARGE_NEEDED = BUILDER.define("Bluemoon Greatsword charge needed", 8);
+        BLUEMOON_GREATSWORD_CHARGE_ADDED = BUILDER.define("Bluemoon Greatsword charge added post hit", 1);
         BLUEMOON_SHORTSWORD_DAMAGE = BUILDER.define("Bluemoon Shortsword damage", 7);
+        BLUEMOON_SHORTSWORD_PROJECTILE_COOLDOWN = BUILDER.define("Bluemoon Shortsword projectile cooldown", 120);
         COMET_SPEAR_DAMAGE = BUILDER.define("Comet Spear damage", 8);
         COMET_SPEAR_PROJECTILE_DAMAGE = BUILDER.define("Comet Spear projectile damage", 8f);
         COMET_SPEAR_ABILITY_DAMAGE = BUILDER.define("Comet Spear ability damage", 10f);
@@ -391,7 +439,7 @@ public class CommonConfig {
         DRAGON_STAFF_AURA_STRENGTH = BUILDER.define("Dragon Staff aura strength", 1);
         DRAGON_STAFF_COOLDOWN = BUILDER.define("Dragon Staff cooldown", 100);
         DRAGON_STAFF_USE_TIME = BUILDER.define("Dragon Staff use time", 100);
-        DRAUGR_NIGHT_DAMAGE = BUILDER.define("Draugr night time damage", 10);
+        DRAUGR_NIGHT_DAMAGE = BUILDER.define("Draugr night time damage", 11);
         DRAUPNIR_DAMAGE = BUILDER.define("Draupnir Spear damage", 8);
         DRAUPNIR_PROJECTILE_DAMAGE = BUILDER.define("Draupnir Spear projectile and ability smash around player damage", 10f);
         DRAUPNIR_DETONATE_POWER = BUILDER.define("Draupnir Spear detonation power", 1f);
@@ -402,17 +450,21 @@ public class CommonConfig {
         FEATHERLIGHT_DAMAGE = BUILDER.define("Featherlight damage", 8);
         FEATHERLIGHT_ATTACK_SPEED = BUILDER.define("Featherlight attack speed", 1.6f);
         FROSTMOURNE_DAMAGE = BUILDER.define("Frostmourne damage", 11);
+        FROSTMOURNE_ALLIES_CAP = BUILDER.define("Frostmourne summoned allies cap", 50);
         GALEFORCE_BONUS_DAMAGE = BUILDER.define("Galeforce bonus projectile damage", 1f);
         GALEFORCE_DASH_COOLDOWN = BUILDER.define("Galeforce dash cooldown", 50);
         RAGEBLADE_DAMAGE = BUILDER.define("Guinsoo's Rageblade damage", 7);
         RAGEBLADE_HASTE_CAP = BUILDER.define("Guinsoo's Rageblade has haste cap", true);
         HOLY_MOON_GREAT_DAMAGE = BUILDER.define("Holy Moonlight Greatsword damage", 10);
         HOLY_MOON_ABILITY_CHARGE_NEED = BUILDER.define("Holy Moonlight Greatsword charge needed", 50);
-        HOLY_MOON_ABILITY_CHARGE_ADDED = BUILDER.define("Holy Moonlight Greatsword added post hit", 1);
+        HOLY_MOON_GREAT_CHARGE_ADDED = BUILDER.define("Holy Moonlight Greatsword charge added post hit", 3);
         HOLY_MOON_ABILITY_DAMAGE = BUILDER.define("Holy Moonlight Greatsword ability damage", 20f);
         HOLY_MOON_ABILITY_KNOCKUP = BUILDER.define("Holy Moonlight Greatsword ability knockup", 0.3f);
         HOLY_MOON_ABILITY_COOLDOWN = BUILDER.define("Holy Moonlight Greatsword ability cooldown", 150);
-        HOLY_MOON_SWORD_DAMAGE = BUILDER.define("Holy Moonlight Sword damage", 8);
+        HOLY_MOON_RUPTURES_AMOUNT = BUILDER.define("Holy Moonlight Greatsword ruptures amount", 8);
+        HOLY_MOON_SWORD_DAMAGE = BUILDER.define("Holy Moonlight Sword damage", 7);
+        HOLY_MOON_SWORD_MAX_BONUS = BUILDER.define("Holy Moonlight Sword max bonus damage", 2);
+        HOLY_MOON_SWORD_CHARGE_ADDED = BUILDER.define("Holy Moonlight Sword charge added post hit", 1);
         KIRKHAMMER_DAMAGE = BUILDER.define("Kirkhammer damage", 9);
         KIRKHAMMER_SILVER_SWORD_DAMAGE = BUILDER.define("Silver Sword damage", 6);
         KRAKEN_SLAYER_BONUS_DAMAGE = BUILDER.define("Kraken Slayer bonus true damage", 4f);
@@ -432,6 +484,7 @@ public class CommonConfig {
         MJOLNIR_SMASH_DAMAGE = BUILDER.define("Mjolnir ability smash damage", 8f);
         MJOLNIR_PROJECTILE_DAMAGE = BUILDER.define("Mjolnir projectile damage", 7f);
         MJOLNIR_LIGHTNING_SMASH_COOLDOWN = BUILDER.define("Mjolnir ability smash cooldown", 200);
+        MJOLNIR_LIGHTNING_CIRCLE_AMOUNT = BUILDER.define("Mjolnir ability lightning circle amount", 3);
         MJOLNIR_RIPTIDE_COOLDOWN = BUILDER.define("Mjolnir fly/riptide cooldown", 300);
         MJOLNIR_RETURN_SPEED = BUILDER.define("Mjolnir projectile return speed", 4D);
         MOONLIGHT_GREATSWORD_DAMAGE = BUILDER.define("Moonlight Greatsword damage", 9);
@@ -440,21 +493,20 @@ public class CommonConfig {
         MOONLIGHT_SHORTSWORD_DAMAGE = BUILDER.define("Moonlight Shortsword damage", 8);
         MOONLIGHT_SHORTSWORD_PROJECTILE_DAMAGE = BUILDER.define("Moonlight Shortsword projectile damage", 3f);
         MOONLIGHT_SHORTSWORD_PROJECTILE_COOLDOWN = BUILDER.define("Moonlight Shortsword projectile cooldown", 13);
-        MOONLIGHT_SHORTSWORD_ENABLE_RIGHT_CLICK = BUILDER.define("Moonlight Shortsword shoot via right click", false);//TODO maybe remove these
-        MOONLIGHT_SHORTSWORD_ENABLE_LEFT_CLICK = BUILDER.define("Moonlight Shortsword shoot via left click", true); //TODO maybe remove these
         MOONLIGHT_RING_PROJECTILE_COOLDOWN = BUILDER.define("Moonlight Ring/Lunar Ring projectile cooldown", 5);
         NIGHTFALL_DAMAGE = BUILDER.define("Nightfall damage", 11);
         NIGHTFALL_ABILITY_DAMAGE = BUILDER.define("Nightfall ability smash damage", 18f);
         NIGHTFALL_ABILITY_SHIELD_POWER = BUILDER.define("Nightfall ability shield power", 2);
         NIGHTFALL_SHIELD_COOLDOWN = BUILDER.define("Nightfall ability shield cooldown", 500);
         NIGHTFALL_SMASH_COOLDOWN = BUILDER.define("Nightfall ability smash cooldown", 300);
+        NIGHTFALL_ALLIES_CAP = BUILDER.define("Nightfall summoned allies cap", 50);
         NIGHTFALL_SUMMON_CHANCE = BUILDER.defineInRange("Nightfall summon chance", 0.3D, 0D, 1D);
         NIGHTS_EDGE_WEAPON_DAMAGE = BUILDER.define("Night's Edge damage", 10);
         NIGHTS_EDGE_ABILITY_COOLDOWN = BUILDER.define("Night's Edge ability cooldown", 120);
         NIGHTS_EDGE_ABILITY_DAMAGE = BUILDER.define("Night's Edge ability damage", 10f);
         SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_BONUS_DAMAGE = BUILDER.define("Shadow Assassin Scythe shadow step bonus damage", 2);
-        SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_TICKS = BUILDER.define("Shadow Assassin Scythe shadow step ticks", 60);//TODO shadow step kan gjøres om til effect
-        SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_COOLDOWN = BUILDER.define("Shadow Assassin Scythe shadow step cooldown", 100);
+        SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_TICKS = BUILDER.define("Shadow Assassin Scythe shadow step ticks", 60);
+        SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_COOLDOWN = BUILDER.define("Shadow Assassin Scythe shadow step cooldown", 160);
         SHADOW_ASSASSIN_SCYTHE_ABILITY_DAMAGE = BUILDER.define("Shadow Assassin Scythe ability damage", 40f);
         SHADOW_ASSASSIN_SCYTHE_ABILITY_COOLDOWN = BUILDER.define("Shadow Assassin Scythe ability cooldown", 300);
         SHADOW_ASSASSIN_SCYTHE_TICKS_BEFORE_DISMOUNT = BUILDER.define("Shadow Assassin Scythe ticks before dismount", 120);
@@ -463,6 +515,7 @@ public class CommonConfig {
         SKOFNUNG_DISABLE_HEAL_DURATION = BUILDER.define("Skofnung disable heal duration", 100);
         SKOFNUNG_STONE_ADDITIONAL_EMPOWERED_STRIKES = BUILDER.define("Skofnung Stone added empowered strikes", 8);
         SOULREAPER_DAMAGE = BUILDER.define("Soul Reaper damage", 11);
+        SOULREAPER_ALLIES_CAP = BUILDER.define("Soul Reaper summoned allies cap", 50);
         STING_DAMAGE = BUILDER.define("Sting damage", 6);
         STING_BONUS_ARTHROPOD_DAMAGE = BUILDER.define("Sting bonus arthropod damage", 4f);
         SWORD_OF_FREYR_DAMAGE = BUILDER.define("Sword of Freyr damage", 7);

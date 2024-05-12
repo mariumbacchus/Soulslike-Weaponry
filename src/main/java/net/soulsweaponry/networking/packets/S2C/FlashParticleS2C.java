@@ -1,8 +1,8 @@
 package net.soulsweaponry.networking.packets.S2C;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
@@ -27,7 +27,7 @@ public class FlashParticleS2C {
     }
 
     // Same as encode
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(PacketByteBuf buf) {
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
@@ -38,7 +38,7 @@ public class FlashParticleS2C {
     }
 
     //Same as decode/fromBytes
-    public FlashParticleS2C(FriendlyByteBuf buf) {
+    public FlashParticleS2C(PacketByteBuf buf) {
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
@@ -69,13 +69,13 @@ public class FlashParticleS2C {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            ClientLevel world = Minecraft.getInstance().level;
+            ClientWorld world = MinecraftClient.getInstance().world;
             this.handlePacket(world, this);
         }));
         context.setPacketHandled(true);
     }
 
-    private void handlePacket(ClientLevel world, FlashParticleS2C packet) {
+    private void handlePacket(ClientWorld world, FlashParticleS2C packet) {
         ParticleHandler.flashParticle(world, packet.getX(), packet.getY(), packet.getZ(), packet.getRgb(), packet.getExpansion());
     }
 }

@@ -1,20 +1,21 @@
 package net.soulsweaponry.blocks;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TallPlantBlock;
+import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
-public class WitheredTallGrass extends DoublePlantBlock implements Withered {
+public class WitheredTallGrass extends TallPlantBlock implements Withered {
 
-    protected final Block replacedBlock;
+    protected Block replacedBlock;
 
-    public WitheredTallGrass(Properties pProperties, Block replacedBlock) {
-        super(pProperties);
+    public WitheredTallGrass(Settings settings, Block replacedBlock) {
+        super(settings);
         this.replacedBlock = replacedBlock;
     }
 
@@ -29,28 +30,28 @@ public class WitheredTallGrass extends DoublePlantBlock implements Withered {
     }
 
     @Override
-    public boolean canTurn(BlockGetter world, BlockPos pos, int maxNeighbors) {
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        mutable.setWithOffset(pos, Direction.DOWN);
+    public boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        mutable.set(pos, Direction.DOWN);
         return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (this.canTurn(world, pos, 2)) {
             this.turnBack(world, pos);
         }
-        super.neighborChanged(state, world, pos, sourceBlock, sourcePos, notify);
+        DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 
     @Override
-    public void turnBack(Level world, BlockPos pos) {
-        world.removeBlock(pos, false); // This can (maybe) be removed in future updates, at least in fabric it can.
-        DoublePlantBlock.placeAt(world, this.getBlockToReturnAs().defaultBlockState(), pos, 2);
+    public void turnBack(World world, BlockPos pos) {
+        world.removeBlock(pos, false);
+        TallPlantBlock.placeAt(world, this.getBlockToReturnAs().getDefaultState(), pos, 2);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return super.mayPlaceOn(pState, pLevel, pPos) || pState.is(Blocks.NETHERRACK) || pState.is(Blocks.END_STONE) || pState.is(Blocks.SOUL_SAND) || pState.is(Blocks.SOUL_SOIL);
+    protected boolean canPlantOnTop(BlockState state, BlockView world, BlockPos pos) {
+        return super.canPlantOnTop(state, world, pos) || state.isOf(Blocks.NETHERRACK) || state.isOf(Blocks.END_STONE) || state.isOf(Blocks.SOUL_SAND) || state.isOf(Blocks.SOUL_SOIL);
     }
 }

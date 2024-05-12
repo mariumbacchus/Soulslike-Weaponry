@@ -1,39 +1,44 @@
 package net.soulsweaponry.blocks;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.state.StateManager.Builder;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+/**
+ * If this replaced tall flowers, it will turn into a random tall flower
+ * block instead of its previous form, just like {@link net.soulsweaponry.blocks.WitheredFlower}
+ */
 public class WitheredTallFlower extends WitheredTallGrass {
 
-    public static final BooleanProperty CANNOT_TURN = BooleanProperty.create("can_turn");
-    private final Supplier<MobEffect> effect;
+    private final StatusEffect effect;
+    public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
-    public WitheredTallFlower(Supplier<MobEffect> effect, Properties pProperties, Block replacedBlock) {
-        super(pProperties, replacedBlock);
+    public WitheredTallFlower(StatusEffect effect, Settings settings, Block replacedBlock) {
+        super(settings, replacedBlock);
         this.effect = effect;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(CANNOT_TURN);
+    protected void appendProperties(Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
+        builder.add(CANNOT_TURN);
     }
 
     @Override
@@ -43,28 +48,27 @@ public class WitheredTallFlower extends WitheredTallGrass {
 
     @Override
     public Block getBlockToReturnAs() {
-        return this.getRandomFlower();
+        return this.getRandomTallFlower();
     }
 
-    private Block getRandomFlower() {
-        List<Block> list = ForgeRegistries.BLOCKS.tags().getTag(BlockTags.TALL_FLOWERS).stream().toList();
-        return list.get(new Random().nextInt(list.size()));
+    private Block getRandomTallFlower() {
+        return TALL_FLOWERS.get().get(new Random().nextInt(TALL_FLOWERS.get().size()));
     }
 
     @Override
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-        if (world.isClientSide || world.getDifficulty() == Difficulty.PEACEFUL) {
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+        if (world.isClient || world.getDifficulty() == Difficulty.PEACEFUL) {
             return;
         }
         if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addEffect(new MobEffectInstance(this.effect.get(), 40));
+            ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(this.effect, 40));
         }
     }
 
     @Override
-    public boolean canTurn(BlockGetter world, BlockPos pos, int maxNeighbors) {
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        mutable.setWithOffset(pos, Direction.DOWN);
-        return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).getValue(CANNOT_TURN);
+    public boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        mutable.set(pos, Direction.DOWN);
+        return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock) && !world.getBlockState(pos).get(CANNOT_TURN);
     }
 }

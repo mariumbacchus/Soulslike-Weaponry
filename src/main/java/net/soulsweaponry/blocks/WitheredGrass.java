@@ -1,19 +1,20 @@
 package net.soulsweaponry.blocks;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.TallGrassBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FernBlock;
+import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
-public class WitheredGrass extends TallGrassBlock implements Withered {
+public class WitheredGrass extends FernBlock implements Withered {
 
     private final Block replacedBlock;
 
-    public WitheredGrass(Properties pProperties, Block replacedBlock) {
-        super(pProperties);
+    public WitheredGrass(Settings settings, Block replacedBlock) {
+        super(settings);
         this.replacedBlock = replacedBlock;
     }
 
@@ -28,17 +29,17 @@ public class WitheredGrass extends TallGrassBlock implements Withered {
     }
 
     @Override
-    public boolean canTurn(BlockGetter world, BlockPos pos, int maxNeighbors) {
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        mutable.setWithOffset(pos, Direction.DOWN);
+    public boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        mutable.set(pos, Direction.DOWN);
         return !(world.getBlockState(mutable).getBlock() instanceof WitheredBlock);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (this.canTurn(world, pos, 0)) {
             this.turnBack(world, pos);
         }
-        super.neighborChanged(state, world, pos, sourceBlock, sourcePos, notify);
+        DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 }

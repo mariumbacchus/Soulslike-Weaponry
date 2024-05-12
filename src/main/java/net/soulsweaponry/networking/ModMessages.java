@@ -1,7 +1,7 @@
 package net.soulsweaponry.networking;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -23,7 +23,7 @@ public class ModMessages {
     }
 
     public static void register() {
-        SimpleChannel net = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(SoulsWeaponry.MOD_ID, "messages")).networkProtocolVersion(() -> "1.0")
+        SimpleChannel net = NetworkRegistry.ChannelBuilder.named(new Identifier(SoulsWeaponry.MOD_ID, "messages")).networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true).serverAcceptedVersions(s -> true).simpleChannel();
         INSTANCE = net;
 
@@ -37,7 +37,7 @@ public class ModMessages {
         INSTANCE.sendToServer(message);
     }
 
-    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayerEntity player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
