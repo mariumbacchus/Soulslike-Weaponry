@@ -19,7 +19,7 @@ import java.util.function.ToIntFunction;
 
 public class BlockRegistry {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SoulsWeaponry.ModId);
 
     public static final RegistryObject<Block> CRIMSON_OBSIDIAN = registerBlockAndItem("crimson_obsidian", () -> new DrippingBlock(
             AbstractBlock.Settings.of(Material.STONE).strength(50f, 1200f)

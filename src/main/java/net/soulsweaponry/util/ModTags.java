@@ -15,7 +15,7 @@ public class ModTags {
     public static class Blocks {
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier(SoulsWeaponry.MOD_ID, name));
+            return TagKey.of(Registry.BLOCK_KEY, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Block> createCommonTag(String name) {
@@ -29,7 +29,7 @@ public class ModTags {
         public static final TagKey<Item> MOONLIGHT_SWORD = createTag("moonlight_sword");
 
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier(SoulsWeaponry.MOD_ID, name));
+            return TagKey.of(Registry.ITEM_KEY, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Item> createCommonTag(String name) {
@@ -42,7 +42,7 @@ public class ModTags {
         public static final TagKey<ConfiguredStructureFeature<?, ?>> CHAMPIONS_GRAVES = createTag("champions_graves");
 
         private static TagKey<ConfiguredStructureFeature<?, ?>> createTag(String id) {
-            return TagKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, new Identifier(SoulsWeaponry.MOD_ID, id));
+            return TagKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
         }
     }
 

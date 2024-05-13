@@ -10,7 +10,7 @@ import net.soulsweaponry.SoulsWeaponry;
 
 public class ParticleRegistry {
 
-    public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SoulsWeaponry.ModId);
 
     public static final RegistryObject<DefaultParticleType> NIGHTFALL_PARTICLE = PARTICLES.register("nightfall_particle", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> DAZZLING_PARTICLE = PARTICLES.register("dazzling_particle", () -> new DefaultParticleType(true));

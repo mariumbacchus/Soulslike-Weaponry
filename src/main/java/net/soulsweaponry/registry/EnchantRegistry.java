@@ -16,7 +16,7 @@ public class EnchantRegistry {
 
     public static final EnchantmentTarget GUN = EnchantmentTarget.create("gun", (item -> item instanceof GunItem));
 
-    public static final DeferredRegister<Enchantment> ENCHANTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<Enchantment> ENCHANTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, SoulsWeaponry.ModId);
 
     public static final Enchantment FAST_HANDS = new FastHandsEnchant(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment VISCERAL = new VisceralEnchant(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);

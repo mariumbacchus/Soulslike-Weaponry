@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 
-@Mod.EventBusSubscriber(modid = SoulsWeaponry.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEvents {
 
     @SubscribeEvent

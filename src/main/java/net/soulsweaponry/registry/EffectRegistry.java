@@ -7,8 +7,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.tag.EntityTypeTags;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,8 +20,8 @@ import net.soulsweaponry.util.ModTags;
 
 public class EffectRegistry {
 
-    public static final DeferredRegister<StatusEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, SoulsWeaponry.MOD_ID);
-    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<StatusEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, SoulsWeaponry.ModId);
+    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, SoulsWeaponry.ModId);
 
     public static final RegistryObject<StatusEffect> DECAY = EFFECTS.register("decay", Decay::new);
     public static final RegistryObject<StatusEffect> FEAR = EFFECTS.register("fear", Fear::new);

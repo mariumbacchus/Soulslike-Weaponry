@@ -4,14 +4,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.networking.ModMessages;
-import net.soulsweaponry.networking.packets.C2S.Example;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import org.lwjgl.glfw.GLFW;
 
@@ -87,7 +83,7 @@ public class KeyBindRegistry {
     }
 
     private static KeyBinding registerKeyboard(String name, int keycode) {
-        KeyBinding key = new KeyBinding("key." + SoulsWeaponry.MOD_ID + "." + name, keycode, "category." + SoulsWeaponry.MOD_ID + ".main");
+        KeyBinding key = new KeyBinding("key." + SoulsWeaponry.ModId + "." + name, keycode, "category." + SoulsWeaponry.ModId + ".main");
         ClientRegistry.registerKeyBinding(key);
         return key;
     }

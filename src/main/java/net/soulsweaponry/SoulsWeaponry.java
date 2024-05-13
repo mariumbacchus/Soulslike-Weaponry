@@ -20,13 +20,13 @@ import net.soulsweaponry.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
-@Mod(SoulsWeaponry.MOD_ID)
+@Mod(SoulsWeaponry.ModId)
 public class SoulsWeaponry {
 
-    public static final String MOD_ID = "soulsweapons";
+    public static final String ModId = "soulsweapons";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final ItemGroup MAIN_GROUP = new ItemGroup(MOD_ID + ".general") {
+    public static final ItemGroup MAIN_GROUP = new ItemGroup(ModId + ".general") {
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ItemRegistry.MOONSTONE.get());

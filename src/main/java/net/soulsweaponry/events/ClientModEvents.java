@@ -14,7 +14,7 @@ import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
-@Mod.EventBusSubscriber(modid = SoulsWeaponry.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
 
     @SubscribeEvent

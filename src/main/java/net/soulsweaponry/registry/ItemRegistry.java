@@ -6,12 +6,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.material.ModArmorMaterials;
-import net.soulsweaponry.items.material.ModToolMaterials;
 
 public class ItemRegistry {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.ModId);
 
     public static final RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone", () -> new Item(new Item.Settings().group(SoulsWeaponry.MAIN_GROUP)));
     /*public static final RegistryObject<Item> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 4));

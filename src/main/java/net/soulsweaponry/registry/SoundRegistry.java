@@ -10,7 +10,7 @@ import net.soulsweaponry.SoulsWeaponry;
 
 public class SoundRegistry {
 
-    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, SoulsWeaponry.ModId);
 
     public static final RegistryObject<SoundEvent> MOONLIGHT_BIG_EVENT = registerSound("moonlight_big");
     public static final RegistryObject<SoundEvent>  MOONLIGHT_SMALL_EVENT = registerSound("moonlight_small");
@@ -75,7 +75,7 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
-        return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(SoulsWeaponry.MOD_ID, name)));
+        return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(SoulsWeaponry.ModId, name)));
     }
 
     public static void register(IEventBus eventBus) {

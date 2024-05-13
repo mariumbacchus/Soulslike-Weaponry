@@ -9,7 +9,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
 
 import static net.soulsweaponry.SoulsWeaponry.MAIN_GROUP;
@@ -17,7 +16,7 @@ import static net.soulsweaponry.SoulsWeaponry.MAIN_GROUP;
 public class WeaponRegistry {
 
     //TODO legg til resten av våpen
-    public static final DeferredRegister<Item> WEAPONS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.MOD_ID);
+    public static final DeferredRegister<Item> WEAPONS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.ModId);
 
     public static final RegistryObject<TieredItem> BLUEMOON_SHORTSWORD = WEAPONS.register("bluemoon_shortsword", () -> new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.4F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE)));
     public static final RegistryObject<TieredItem> BLUEMOON_GREATSWORD = WEAPONS.register("bluemoon_greatsword", () -> new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, -2.8F, new Item.Properties().tab(MAIN_GROUP).rarity(Rarity.RARE)));
