@@ -18,8 +18,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -248,7 +248,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 10));
                     }
                     if (!this.boss.world.isClient) {
-                        ParticleHandler.particleSphereList(this.boss.getWorld(), 10, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                        ParticleHandler.particleSphereList(this.boss.getWorld(), 10, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                     }
                 }
             }
@@ -347,7 +347,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (attackStatus == 24 && pos != null && isPosNotNullish(pos)) {
             this.boss.world.playSound(null, pos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
             if (!this.boss.world.isClient) {
-                ParticleHandler.particleSphereList(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                ParticleHandler.particleSphereList(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
             }
             for (Entity entity : this.boss.world.getOtherEntities(this.boss, new Box(pos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {

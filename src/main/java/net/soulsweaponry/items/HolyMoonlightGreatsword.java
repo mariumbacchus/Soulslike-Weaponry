@@ -24,8 +24,8 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
                     }
                 }
                 if (!world.isClient) {
-                    this.castSpell(player, world, stack, ruptures);
+                    this.castSpell(player, world, stack, ruptures, this.getAbilityDamage(), this.getKnockup(stack), user.getYaw() + 90);
                 }
                 if (stack.hasNbt() && !player.isCreative()) {
                     stack.getNbt().putInt(IChargeNeeded.CHARGE, 0);
@@ -72,17 +72,17 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
         }
     }
 
-    protected void castSpell(PlayerEntity user, World world, ItemStack stack, int amount) {
-        double maxY = user.getY();
-        double y = user.getY() + 1.0;
-        float f = (float) Math.toRadians(user.getYaw() + 90);
+    public void castSpell(LivingEntity user, World world, ItemStack stack, Vec3d startPos, int amount, float damage, float knockup, float yaw, float particleMod, float radius) {
+        double maxY = startPos.getY();
+        double y = startPos.getY() + 1.0;
+        float f = (float) Math.toRadians(yaw);
         for (int i = 0; i < amount; i++) {
             double h = 1.75 * (double)(i + 1);
-            this.summonPillars(user, world, stack, user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double) MathHelper.sin(f) * h, maxY, y, -6 + i * 2);
+            this.summonPillars(user, world, stack, startPos.getX() + (double)MathHelper.cos(f) * h, startPos.getZ() + (double)MathHelper.sin(f) * h, maxY, y, -6 + i * 2, damage, knockup, particleMod, radius);
         }
     }
 
-    private void summonPillars(PlayerEntity user, World world, ItemStack stack, double x, double z, double maxY, double y, int warmup) {
+    private void summonPillars(LivingEntity user, World world, ItemStack stack, double x, double z, double maxY, double y, int warmup, float damage, float knockup, float particleMod, float radius) {
         BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
         boolean bl = false;
         double d = 0.0;
@@ -100,12 +100,18 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
             HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
             pillar.setOwner(user);
             pillar.setStack(stack);
-            pillar.setDamage(this.getAbilityDamage());
-            pillar.setKnockUp(this.getKnockup(stack));
+            pillar.setParticleMod(particleMod);
+            pillar.setRadius(radius);
+            pillar.setDamage(damage);
+            pillar.setKnockUp(knockup);
             pillar.setWarmup(warmup);
             pillar.setPos(x, (double)blockPos.getY() + d, z);
             world.spawnEntity(pillar);
         }
+    }
+
+    public void castSpell(LivingEntity user, World world, ItemStack stack, int amount, float damage, float knockup, float yaw) {
+        this.castSpell(user, world, stack, user.getPos(), amount, damage, knockup, yaw, 1f, 1.85f);
     }
 
     @Override

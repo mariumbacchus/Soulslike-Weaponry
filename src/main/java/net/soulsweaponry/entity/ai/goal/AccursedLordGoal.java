@@ -22,8 +22,8 @@ import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;

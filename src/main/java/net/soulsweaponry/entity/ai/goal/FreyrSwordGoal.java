@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 

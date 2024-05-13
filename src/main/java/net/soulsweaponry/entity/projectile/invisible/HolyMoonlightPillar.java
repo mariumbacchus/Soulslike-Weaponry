@@ -1,10 +1,11 @@
 package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -20,9 +21,18 @@ import java.util.Random;
 public class HolyMoonlightPillar extends InvisibleWarmupEntity {
 
     private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
+    private static final TrackedData<Float> RADIUS = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
 
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(PARTICLE_MOD, 1f);
+        this.dataTracker.startTracking(RADIUS, 1.85f);
     }
 
     @Override
@@ -50,7 +60,7 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
         double d = random.nextGaussian() * 0.05D;
         double e = random.nextGaussian() * 0.05D;
         double f = random.nextGaussian() * 0.05D;
-        for(int j = 0; j < 200; ++j) {
+        for(int j = 0; j < 200 * this.getParticleMod(); ++j) {
             double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
             double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
             double newY = random.nextDouble() - 0.5D + random.nextGaussian() * 0.5D + f;
@@ -78,11 +88,33 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
         this.knockUp = knockUp;
     }
 
+    public void setRadius(float radius) {
+        this.dataTracker.set(RADIUS, radius);
+    }
+
+    public float getRadius() {
+        return this.dataTracker.get(RADIUS);
+    }
+
+    public void setParticleMod(float particleMod) {
+        this.dataTracker.set(PARTICLE_MOD, particleMod);
+    }
+
+    public float getParticleMod() {
+        return this.dataTracker.get(PARTICLE_MOD);
+    }
+
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Knockup")) {
             this.knockUp = nbt.getFloat("Knockup");
+        }
+        if (nbt.contains("Radius")) {
+            this.setRadius(nbt.getFloat("Radius"));
+        }
+        if (nbt.contains("ParticleModifier")) {
+            this.setParticleMod(nbt.getFloat("ParticleModifier"));
         }
     }
 
@@ -90,5 +122,20 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("Knockup", this.knockUp);
+        nbt.putFloat("Radius", this.getRadius());
+        nbt.putFloat("ParticleModifier", this.getParticleMod());
+    }
+
+    @Override
+    public EntityDimensions getDimensions(EntityPose pose) {
+        return EntityDimensions.changing(this.getRadius(), this.getRadius());
+    }
+
+    @Override
+    public void onTrackedDataSet(TrackedData<?> data) {
+        if (RADIUS.equals(data)) {
+            this.calculateDimensions();
+        }
+        super.onTrackedDataSet(data);
     }
 }

@@ -360,6 +360,11 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
+    public int getAir() {
+        return 300;
+    }
+
+    @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         ItemStack itemStack = this.asItemStack();

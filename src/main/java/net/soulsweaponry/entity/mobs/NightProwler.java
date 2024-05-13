@@ -33,7 +33,7 @@ import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -376,6 +376,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (!this.getWorld().isClient) {
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
+                this.clearStatusEffects();
                 this.setInitiatePhaseTwo(true);
                 this.setFlying(false);
             }

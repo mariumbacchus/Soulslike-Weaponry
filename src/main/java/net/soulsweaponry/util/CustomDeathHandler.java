@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public class CustomDeathHandler {
 

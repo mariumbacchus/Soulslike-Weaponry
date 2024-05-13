@@ -281,14 +281,17 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         return (float)this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
     }
 
+    @Override
     protected SoundEvent getAmbientSound() {
         return SoundRegistry.DEMON_IDLE_EVENT;
     }
 
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundRegistry.DEMON_DAMAGE_EVENT;
     }
 
+    @Override
     protected SoundEvent getDeathSound() {
         return SoundRegistry.DEMON_DEATH_EVENT;
     }
@@ -302,6 +305,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         return true;
     }
 
+    @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
     }

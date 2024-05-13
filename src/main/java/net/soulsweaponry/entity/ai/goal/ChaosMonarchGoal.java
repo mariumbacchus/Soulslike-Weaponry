@@ -22,8 +22,8 @@ import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.util.ParticleEvents;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -181,7 +181,7 @@ public class ChaosMonarchGoal extends Goal {
                 this.generateHitbox(blockPos, 2, 30f);
                 this.boss.world.playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.world.isClient) {
-                    ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 1f);
+                    ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
             }
             default -> {

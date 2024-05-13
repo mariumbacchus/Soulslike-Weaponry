@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.particles;
 
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;

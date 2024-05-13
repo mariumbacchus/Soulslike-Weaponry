@@ -27,11 +27,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
-import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.ParticleHandler;
-import net.soulsweaponry.util.ParticleNetworking;
+import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;

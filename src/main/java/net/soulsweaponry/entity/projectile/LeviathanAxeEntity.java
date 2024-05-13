@@ -13,7 +13,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.ParticleEvents;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;

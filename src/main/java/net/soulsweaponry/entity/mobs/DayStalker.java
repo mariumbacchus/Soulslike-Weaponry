@@ -27,11 +27,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.util.ParticleHandler;
+import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -366,6 +364,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
         if (!this.world.isClient) {
             LivingEntity partner = this.getPartner((ServerWorld) this.world);
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
+                this.clearStatusEffects();
                 this.setInitiatePhaseTwo(true);
                 this.setFlying(false);
             }
