@@ -15,11 +15,11 @@ public class Fear extends StatusEffect {
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
         int k = 10 >> amplifier;
-        if (k > 0) {
+         if (k > 0) {
             return duration % k == 0;
-        } else {
+         } else {
             return true;
-        }
+         }
     }
 
     @Override

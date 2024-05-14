@@ -1,21 +1,16 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.Blunderbuss;
+import net.minecraft.item.Item;
+import net.minecraft.util.Rarity;
+import net.minecraftforge.registries.RegistryObject;
+import net.soulsweaponry.items.*;
+
+import static net.soulsweaponry.SoulsWeaponry.MAIN_GROUP;
 
 public class GunRegistry {
 
-    public static final DeferredRegister<Item> GUNS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.ModId);
-    //TODO add all guns
-
-    //public static final RegistryObject<GunItem> BLUNDERBUSS = GUNS.register("blunderbuss", () -> new Blunderbuss(new Item.Properties().tab(MAIN_GROUP).durability(900).rarity(Rarity.RARE)));
-
-    public static void register(IEventBus eventBus) {
-        GUNS.register(eventBus);
-    }
+    public static final RegistryObject<Item> HUNTER_PISTOL = ItemRegistry.registerItem("hunter_pistol", new HunterPistol(new Item.Settings().group(MAIN_GROUP).maxDamage(700).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> BLUNDERBUSS = ItemRegistry.registerItem("blunderbuss", new Blunderbuss(new Item.Settings().group(MAIN_GROUP).maxDamage(900).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> GATLING_GUN = ItemRegistry.registerItem("gatling_gun", new GatlingGun(new Item.Settings().group(MAIN_GROUP).maxDamage(1000).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> HUNTER_CANNON = ItemRegistry.registerItem("hunter_cannon", new HunterCannon(new Item.Settings().group(MAIN_GROUP).maxDamage(1250).rarity(Rarity.RARE)));
 }

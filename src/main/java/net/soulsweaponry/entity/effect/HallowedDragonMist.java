@@ -10,8 +10,8 @@ import net.minecraft.entity.player.PlayerEntity;
 public class HallowedDragonMist extends StatusEffect{
     public HallowedDragonMist() {
         super(
-                StatusEffectCategory.NEUTRAL,
-                0xa915d6
+            StatusEffectCategory.NEUTRAL,
+            0xa915d6
         );
     }
 

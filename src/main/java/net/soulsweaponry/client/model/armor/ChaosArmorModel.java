@@ -21,4 +21,5 @@ public class ChaosArmorModel extends AnimatedGeoModel<ChaosSet> {
     public Identifier getTextureLocation(ChaosSet object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/armor/chaos_armor.png");
     }
+    
 }

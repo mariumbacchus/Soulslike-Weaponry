@@ -39,11 +39,11 @@ public class SoulsWeaponry {
         BlockRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
         EffectRegistry.register(eventBus);
+        EnchantRegistry.register(eventBus);
+        EntityRegistry.register(eventBus);
         SoundRegistry.register(eventBus);
         ParticleRegistry.register(eventBus);
         WeaponRegistry.register(eventBus);
-        EnchantRegistry.register(eventBus);
-        GunRegistry.register(eventBus);
         //TODO recipe generation
         //TODO datagen with recipe advancements
         eventBus.addListener(this::setup);

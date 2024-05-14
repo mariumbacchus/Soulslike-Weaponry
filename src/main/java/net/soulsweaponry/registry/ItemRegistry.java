@@ -10,7 +10,7 @@ import net.soulsweaponry.SoulsWeaponry;
 public class ItemRegistry {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.ModId);
-
+    //TODO
     public static final RegistryObject<Item> MOONSTONE = ITEMS.register("moonstone", () -> new Item(new Item.Settings().group(SoulsWeaponry.MAIN_GROUP)));
     /*public static final RegistryObject<Item> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 4));
     public static final RegistryObject<Item> LORD_SOUL_DARK = ITEMS.register("lord_soul_dark", () -> new LoreItem(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant(), "lord_soul_red", 3));
@@ -57,6 +57,10 @@ public class ItemRegistry {
     public static final RegistryObject<Item> CHAOS_ORB = ITEMS.register("chaos_orb", () -> new ChaosOrb(new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).rarity(Rarity.EPIC).fireResistant()));
 
     public static final RegistryObject<Item> CHUNGUS_DISC = ITEMS.register("chungus_disc", () -> new RecordItem(5, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Properties().tab(SoulsWeaponry.MAIN_GROUP).stacksTo(1)));*/
+
+    public static <I extends Item> RegistryObject<I> registerItem(String id, I item) {
+        return ITEMS.register(id, () -> item);
+    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

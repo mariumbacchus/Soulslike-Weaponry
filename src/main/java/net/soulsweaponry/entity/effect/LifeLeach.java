@@ -9,7 +9,7 @@ import net.soulsweaponry.registry.ParticleRegistry;
 
 public class LifeLeach extends StatusEffect {
 
-    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED.get()};
+    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED};
 
     public LifeLeach() {
         super(StatusEffectCategory.BENEFICIAL, 0x452773);
@@ -18,11 +18,11 @@ public class LifeLeach extends StatusEffect {
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
         int k = 40 >> amplifier;
-        if (k > 0) {
+         if (k > 0) {
             return duration % k == 0;
-        } else {
+         } else {
             return true;
-        }
+         }
     }
 
     @Override
@@ -30,7 +30,7 @@ public class LifeLeach extends StatusEffect {
         LivingEntity target = entity.getAttacking();
         if (entity.getWorld().isClient) {
             for (int i = 0; i < 30; i++) {
-                entity.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
+                entity.getWorld().addParticle(ParticleRegistry.DARK_STAR, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }
         }
         if (target != null) {

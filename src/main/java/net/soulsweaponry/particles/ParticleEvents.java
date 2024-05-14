@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.particles;
 
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
@@ -54,12 +54,14 @@ public class ParticleEvents {
     public static final HashMap<ParticleEffect, Vec3d> CONJURE_ENTITY_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> GROUND_RUPTURE_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> BLINDING_LIGHT_MAP = Maps.newHashMap();
-    public static final HashMap<ParticleEffect, Vec3d> GRAND_SKYFALL_MAP = Maps.newHashMap();
+    public static final HashMap<ParticleEffect, Vec3d> DEFAULT_GRAND_SKYFALL_MAP = Maps.newHashMap();
+    public static final HashMap<ParticleEffect, Vec3d> BASE_GRAND_SKYFALL_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> BLINDING_LIGHT_SMASH_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> SOUL_FLAME_RUPTURE_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> SOUL_FLAME_SMALL_OUTBURST_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> ICE_SMASH_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> BLACKFLAME_SNAKE_PARTICLE_MAP = Maps.newHashMap();
+    public static final HashMap<ParticleEffect, Vec3d> FLAME_RUPTURE_MAP = Maps.newHashMap();
 
     public static final List<ParticleEffect> DARK_EXPLOSION_LIST = List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.SMOKE, ParticleTypes.POOF);
 
@@ -98,10 +100,13 @@ public class ParticleEvents {
         BLINDING_LIGHT_MAP.put(ParticleTypes.WAX_OFF, new Vec3d(0.05f, 0.05f, 0.05f));
         BLINDING_LIGHT_MAP.put(ParticleTypes.SOUL, new Vec3d(4, 4, 4));
 
-        GRAND_SKYFALL_MAP.put(ParticleTypes.LARGE_SMOKE, FLAT_SPREADING_SMOKE);
-        GRAND_SKYFALL_MAP.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
-        GRAND_SKYFALL_MAP.put(DIRT_PARTICLE, FLAT_ITEM_PARTICLE);
-        GRAND_SKYFALL_MAP.put(STONE_PARTICLE, FLAT_ITEM_PARTICLE);
+        DEFAULT_GRAND_SKYFALL_MAP.put(ParticleTypes.LARGE_SMOKE, FLAT_SPREADING_SMOKE);
+        BASE_GRAND_SKYFALL_MAP.put(ParticleTypes.LARGE_SMOKE, FLAT_SPREADING_SMOKE);
+        DEFAULT_GRAND_SKYFALL_MAP.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
+        DEFAULT_GRAND_SKYFALL_MAP.put(DIRT_PARTICLE, FLAT_ITEM_PARTICLE);
+        BASE_GRAND_SKYFALL_MAP.put(DIRT_PARTICLE, FLAT_ITEM_PARTICLE);
+        DEFAULT_GRAND_SKYFALL_MAP.put(STONE_PARTICLE, FLAT_ITEM_PARTICLE);
+        BASE_GRAND_SKYFALL_MAP.put(STONE_PARTICLE, FLAT_ITEM_PARTICLE);
 
         BLINDING_LIGHT_SMASH_MAP.put(ParticleTypes.LARGE_SMOKE, FLAT_SPREADING_SMOKE);
         BLINDING_LIGHT_SMASH_MAP.put(ParticleTypes.FIREWORK, FLAT_SPREADING_FLAME);
@@ -122,6 +127,10 @@ public class ParticleEvents {
         BLACKFLAME_SNAKE_PARTICLE_MAP.put(ParticleTypes.LARGE_SMOKE, RISING_ITEM_PARTICLE);
         BLACKFLAME_SNAKE_PARTICLE_MAP.put(ParticleRegistry.DAZZLING_PARTICLE.get(), RISING_ITEM_PARTICLE);
         BLACKFLAME_SNAKE_PARTICLE_MAP.put(ParticleRegistry.DARK_STAR.get(), RISING_ITEM_PARTICLE);
+
+        FLAME_RUPTURE_MAP.put(ParticleTypes.FLAME, new Vec3d(4, 0.5f, 4));
+        FLAME_RUPTURE_MAP.put(ParticleTypes.WAX_ON, new Vec3d(0.1f, 0.01f, 0.1f));
+        FLAME_RUPTURE_MAP.put(ParticleTypes.SMALL_FLAME, new Vec3d(4, 0.5f, 4));
     }
 
     public static void dawnbreakerEvent(World world, double x, double y, double z, float sizeMod) {

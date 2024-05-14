@@ -21,4 +21,5 @@ public class WitheredArmorModel extends AnimatedGeoModel<WitheredArmor> {
     public Identifier getTextureLocation(WitheredArmor object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/armor/withered_armor.png");
     }
+    
 }

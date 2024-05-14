@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.particles;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;

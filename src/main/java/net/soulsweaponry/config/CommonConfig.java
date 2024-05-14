@@ -145,6 +145,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> DRAUPNIR_DETONATE_POWER;
     public static final ForgeConfigSpec.ConfigValue<Integer> DRAUPNIR_THROW_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> DRAUPNIR_DETONATE_COOLDOWN;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DRAUPNIR_SUMMON_SPEARS_COOLDOWN;
     public static final ForgeConfigSpec.ConfigValue<Integer> DRAUPNIR_MAX_AGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> FORLORN_SCYTHE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> FEATHERLIGHT_DAMAGE;
@@ -445,6 +446,7 @@ public class CommonConfig {
         DRAUPNIR_DETONATE_POWER = BUILDER.define("Draupnir Spear detonation power", 1f);
         DRAUPNIR_THROW_COOLDOWN = BUILDER.define("Draupnir Spear throw cooldown", 40);
         DRAUPNIR_DETONATE_COOLDOWN = BUILDER.define("Draupnir Spear detonate cooldown", 100);
+        DRAUPNIR_SUMMON_SPEARS_COOLDOWN = BUILDER.define("Draupnir Spear summon spears cooldown", 300);
         DRAUPNIR_MAX_AGE = BUILDER.define("Draupnir Spear projectile max age", 400);
         FORLORN_SCYTHE_DAMAGE = BUILDER.define("Forlorn Scythe damage", 11);
         FEATHERLIGHT_DAMAGE = BUILDER.define("Featherlight damage", 8);

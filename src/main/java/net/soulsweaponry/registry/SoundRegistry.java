@@ -1,7 +1,7 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -75,7 +75,7 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
-        return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(SoulsWeaponry.ModId, name)));
+        return SOUNDS.register(name, () -> new SoundEvent(new Identifier(SoulsWeaponry.ModId, name)));
     }
 
     public static void register(IEventBus eventBus) {
