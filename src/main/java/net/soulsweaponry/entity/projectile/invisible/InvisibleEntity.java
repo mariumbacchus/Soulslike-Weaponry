@@ -22,7 +22,7 @@ public class InvisibleEntity extends PersistentProjectileEntity {
         this.noClip = true;
         this.setDamage(2D);
         this.pickupType = PickupPermission.DISALLOWED;
-        this.stack = new ItemStack(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD); // Filler stack
+        this.stack = new ItemStack(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get()); // Filler stack
     }
 
     public void setStack(ItemStack stack) {

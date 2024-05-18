@@ -17,7 +17,7 @@ public class Cannonball extends SilverBulletEntity implements IAnimatable {
     }
 
     public Cannonball(World world, LivingEntity owner) {
-        super(EntityRegistry.CANNONBALL, world, owner);
+        super(EntityRegistry.CANNONBALL.get(), world, owner);
     }
 
     @Override

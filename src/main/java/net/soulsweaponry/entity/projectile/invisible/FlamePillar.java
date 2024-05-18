@@ -46,7 +46,7 @@ public class FlamePillar extends InvisibleWarmupEntity {
                     for (LivingEntity livingEntity : list) {
                         this.damage(livingEntity);
                     }
-                    this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_CHAOS_STORM, SoundCategory.HOSTILE, 1f, 1f);
+                    this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_CHAOS_STORM.get(), SoundCategory.HOSTILE, 1f, 1f);
                     if (this.getWorld().getBlockState(this.getBlockPos()).isAir()) {
                         this.getWorld().setBlockState(this.getBlockPos(), Blocks.FIRE.getDefaultState());
                     }

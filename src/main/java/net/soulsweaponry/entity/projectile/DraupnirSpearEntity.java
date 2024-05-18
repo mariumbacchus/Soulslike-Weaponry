@@ -21,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -43,18 +43,18 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.DRAUPNIR_SPEAR);
+        this.stack = new ItemStack(WeaponRegistry.DRAUPNIR_SPEAR.get());
     }
 
     public DraupnirSpearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.DRAUPNIR_SPEAR_TYPE, owner, world);
+        super(EntityRegistry.DRAUPNIR_SPEAR_TYPE.get(), owner, world);
         this.stack = stack.copy();
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
 
     public void detonate() {
         if (this.getOwner() != null && this.getBlockPos() != null && !world.isClient) {
-            float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
+            float power = CommonConfig.DRAUPNIR_DETONATE_POWER.get() + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
             this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, Explosion.DestructionType.NONE);
             if (power > 2f) {
                 for (Entity entity : world.getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
@@ -70,7 +70,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.draupnir_spear_projectile_damage;
+        float f = CommonConfig.DRAUPNIR_PROJECTILE_DAMAGE.get();
         if (entity == null) {
             return;
         }
@@ -110,7 +110,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
-        if (this.age > ConfigConstructor.draupnir_spear_max_age) {
+        if (this.age > CommonConfig.DRAUPNIR_MAX_AGE.get()) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();

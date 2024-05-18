@@ -5,10 +5,20 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "soulsweapons.refmap.json",
   "mixins": [
-    "EnchantmentHelperMixin"
+    "EnchantmentHelperMixin",
+    "EnderDragonEntityMixin",
+    "LivingEntityInvoker",
+    "LivingEntityMixin",
+    "PersistentProjectileMixin",
+    "PlayerEntityMixin",
+    "RecipeManagerMixin",
+    "ToolItemMixin",
+    "WitherEntityMixin"
   ],
   "client": [
-
+    "BipedEntityModelMixin",
+    "HeldItemRendererMixin",
+    "ShieldItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

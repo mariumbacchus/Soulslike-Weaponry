@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.soulsweaponry.items.GunItem;
 import net.soulsweaponry.registry.EnchantRegistry;
 
-public class FastHandsEnchant extends Enchantment {
+public class FastHandsEnchantment extends Enchantment {
 
-    public FastHandsEnchant(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
+    public FastHandsEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
         super(pRarity, EnchantRegistry.GUN, pApplicableSlots);
     }
 

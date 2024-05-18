@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -26,19 +26,19 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
+        this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE.get());
         this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world);
+        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE.get(), owner, world);
         this.stack = stack.copy();
         this.ignoreCameraFrustum = true;
     }
 
     @Override
     public float getDamage(Entity target) {
-        return ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
+        return CommonConfig.LEVIATHAN_AXE_PROJECTILE_DAMAGE.get() + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return ConfigConstructor.leviathan_axe_return_speed + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
+        return CommonConfig.LEVIATHAN_AXE_RETURN_SPEED.get() + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
     }
 
     @Override

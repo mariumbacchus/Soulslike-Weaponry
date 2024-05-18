@@ -9,12 +9,13 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
@@ -61,7 +62,7 @@ public class NightShadeGoal extends Goal {
 
     private void reset(float cooldownModifier) {
         this.attackStatus = 0;
-        this.attackCooldown = (int) Math.floor((float)ConfigConstructor.frenzied_shade_cooldown * cooldownModifier);
+        this.attackCooldown = (int) Math.floor((float) CommonConfig.FRENZIED_SHADE_COOLDOWN.get() * cooldownModifier);
     }
 
     private void damageTarget(LivingEntity target, float damage) {
@@ -70,7 +71,7 @@ public class NightShadeGoal extends Goal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
+        return damage * CommonConfig.FRENZIED_SHADE_DAMAGE_MODIFIER.get() * (this.boss.isCopy() ? 0.35f : 1f);
     }
 
     private void randomAttack(LivingEntity target) {
@@ -140,7 +141,7 @@ public class NightShadeGoal extends Goal {
                 if (!this.boss.world.isClient) {
                     for (int i = 0; i < 3; i++) {
                         for (int j = -10; j <= 10; j++) {
-                            ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.GLOW, pos.getX(), pos.getY() + 0.3f + (float) i / 1.5f, pos.getZ() + (float) j / 10f, 0, 0, 0);
+                            ((ServerWorld)this.boss.getWorld()).spawnParticles(ParticleTypes.GLOW, pos.getX(), pos.getY() + 0.3f + (float) i / 1.5f, pos.getZ() + (float) j / 10f, 1, 0, 0, 0, 0);
                         }
                     }
                 }
@@ -220,8 +221,8 @@ public class NightShadeGoal extends Goal {
             double e = target.getX() - (this.boss.getX());
             double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
             double g = target.getZ() - this.boss.getZ();
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.HOSTILE, 1f, 0.75f);
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE, this.boss.world, this.boss);
+            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.HOSTILE, 1f, 0.75f);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE.get(), this.boss.world, this.boss);
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 1.5f, 1f);
             projectile.setDamage(this.getModifiedDamage(25f));
@@ -244,14 +245,14 @@ public class NightShadeGoal extends Goal {
         if (attackStatus >= 6 && attackStatus <= 15) {
             this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
             ShadowOrb orb = new ShadowOrb(this.boss.world, this.boss, e, f, g,
-                    new StatusEffect[] {StatusEffects.BLINDNESS, EffectRegistry.DECAY});
+                    new StatusEffect[] {StatusEffects.BLINDNESS, EffectRegistry.DECAY.get()});
             orb.setPosition(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             orb.setVelocity(e, f, g, 2f, 1f);
             this.boss.world.spawnEntity(orb);
         }
         if (attackStatus == 16) {
-            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.world, this.boss);
+            this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.world, this.boss);
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 2f, 1f);
             projectile.setAgeAndPoints(30, 150, 4);

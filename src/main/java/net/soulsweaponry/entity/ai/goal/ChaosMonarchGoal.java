@@ -16,7 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.*;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
@@ -42,7 +42,7 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.chaos_monarch_damage_modifier;
+        return damage * CommonConfig.CHAOS_MONARCH_DAMAGE_MODIFIER.get();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ChaosMonarchGoal extends Goal {
 
     private int adjustCooldown(float cooldownModifier) {
         int reducedCooldown = MathHelper.floor(this.boss.getMaxHealth()/this.boss.getHealth())*4;
-        return MathHelper.floor(ConfigConstructor.chaos_monarch_attack_cooldown_ticks * cooldownModifier - reducedCooldown);
+        return MathHelper.floor(CommonConfig.CHAOS_MONARCH_ATTACK_COOLDOWN_TICKS.get() * cooldownModifier - reducedCooldown);
     }
 
     public void randomAttack() {
@@ -138,7 +138,7 @@ public class ChaosMonarchGoal extends Goal {
                     }
                     case SHOOT -> {
                         this.attackStatus++;
-                        if (this.attackStatus % 6 == 0) this.chaosSkull();
+                        if (this.attackStatus % 6 == 0) this.chaosSkull(target);
                         if (this.attackStatus >= 40) this.resetAttack(1);
                     }
                     case BARRAGE -> {
@@ -148,7 +148,7 @@ public class ChaosMonarchGoal extends Goal {
                             if (this.randomOrNot) {
                                 this.randomProjectiles();
                             } else {
-                                this.controlledProjectiles();
+                                this.controlledProjectiles(target);
                             }
                         }
                         if (this.attackStatus >= 30) this.resetAttack(1);
@@ -199,8 +199,7 @@ public class ChaosMonarchGoal extends Goal {
         }
     }
 
-    private void chaosSkull() {
-        LivingEntity target = this.boss.getTarget();
+    private void chaosSkull(LivingEntity target) {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
@@ -210,8 +209,7 @@ public class ChaosMonarchGoal extends Goal {
         this.boss.world.playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
     }
 
-    private void controlledProjectiles() {
-        LivingEntity target = this.boss.getTarget();
+    private void controlledProjectiles(LivingEntity target) {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
@@ -273,11 +271,11 @@ public class ChaosMonarchGoal extends Goal {
             new TridentEntity(EntityType.TRIDENT, this.boss.world),
             //Mod projectiles
             new Cannonball(this.boss.world, this.boss),
-            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.world),
-            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.world),
-            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.world),
-            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.world),
-            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.world)
+            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), this.boss.world),
+            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE.get(), this.boss.world),
+            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE.get(), this.boss.world),
+            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.world),
+            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE.get(), this.boss.world)
         };
         if (this.boss.getTarget() != null) {
             LivingEntity target = this.boss.getTarget();

@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -18,6 +19,9 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
+import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.WeaponUtil;
@@ -30,6 +34,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
@@ -87,5 +92,19 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
     @Override
     public void onAnimationSync(int id, int state) {        
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private FreyrSwordItemRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new FreyrSwordItemRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

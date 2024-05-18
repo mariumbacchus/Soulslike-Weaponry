@@ -7,5 +7,5 @@ public class MixinConnector implements IMixinConnector {
     @Override
     public void connect() {
         Mixins.addConfiguration("soulsweapons.mixins.json");
-    }
+    } //TODO might not need this
 }

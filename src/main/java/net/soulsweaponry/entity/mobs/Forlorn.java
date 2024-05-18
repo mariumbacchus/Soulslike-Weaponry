@@ -45,14 +45,14 @@ public class Forlorn extends Remnant {
     public static void initEquip(LivingEntity entity, Map<Enchantment, Integer> enchants) {
         HashMap<EquipmentSlot, ItemStack> equip = new HashMap<>();
         if (entity.getRandom().nextBoolean()) {
-            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.FORLORN_SCYTHE));
+            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.FORLORN_SCYTHE.get()));
         } else {
-            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.GUTS_SWORD));
+            equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.GUTS_SWORD.get()));
         }
-        equip.put(EquipmentSlot.HEAD, new ItemStack(ArmorRegistry.FORLORN_HELMET));
-        equip.put(EquipmentSlot.CHEST, new ItemStack(ArmorRegistry.FORLORN_CHESTPLATE));
-        equip.put(EquipmentSlot.LEGS, new ItemStack(ArmorRegistry.FORLORN_LEGGINGS));
-        equip.put(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.FORLORN_BOOTS));
+        equip.put(EquipmentSlot.HEAD, new ItemStack(ArmorRegistry.FORLORN_HELMET.get()));
+        equip.put(EquipmentSlot.CHEST, new ItemStack(ArmorRegistry.FORLORN_CHESTPLATE.get()));
+        equip.put(EquipmentSlot.LEGS, new ItemStack(ArmorRegistry.FORLORN_LEGGINGS.get()));
+        equip.put(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.FORLORN_BOOTS.get()));
         for (EquipmentSlot slot : equip.keySet()) {
             ItemStack item = equip.get(slot);
             for (Enchantment enchant : enchants.keySet()) {

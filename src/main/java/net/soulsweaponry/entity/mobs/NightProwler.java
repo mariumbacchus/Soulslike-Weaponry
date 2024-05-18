@@ -26,7 +26,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
 import net.soulsweaponry.registry.*;
@@ -215,7 +215,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -297,7 +297,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return this.isPhaseTwo() ? SoundRegistry.HARD_BOSS_DEATH_LONG : SoundRegistry.HARD_BOSS_DEATH_SHORT;
+        return this.isPhaseTwo() ? SoundRegistry.HARD_BOSS_DEATH_LONG.get() : SoundRegistry.HARD_BOSS_DEATH_SHORT.get();
     }
 
     @Override
@@ -338,7 +338,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.night_prowler_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.NIGHT_PROWLER_HEALTH.get())
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
@@ -366,7 +366,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.night_prowler_xp;
+        return CommonConfig.NIGHT_PROWLER_XP.get();
     }
 
     @Override
@@ -386,10 +386,10 @@ public class NightProwler extends BossEntity implements IAnimatable {
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
             if (this.phaseTwoTicks == 78) {
-                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.PARTNER_DIES, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.PARTNER_DIES.get(), SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.phaseTwoTicks == 81) {
-                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
                 if (!getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
                 }
@@ -421,7 +421,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
             Box box = new Box(this.getPos().add(r, 1, r), this.getPos().add(-r, -1, -r));
             for (Entity entity : this.getWorld().getOtherEntities(this, box)) {
                 if (this.darknessRiseTicks % 4 == 0 && entity instanceof LivingEntity living) {
-                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 60, 0));
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY.get(), 60, 0));
                     living.damage(DamageSource.MAGIC, 1f);
                 }
             }
@@ -447,7 +447,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
             return false;
         }
         if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
-                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isProjectile() ? 1.5f : 1)
+                && this.random.nextDouble() < CommonConfig.NIGHT_PROWLER_TELEPORT_CHANCE.get() * (source.isProjectile() ? 1.5f : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
             if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
@@ -463,9 +463,9 @@ public class NightProwler extends BossEntity implements IAnimatable {
             }
         }
         if (this.isEmpowered() && source.isProjectile() &&
-                this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+                this.getHealth() < this.getMaxHealth() * CommonConfig.NIGHT_PROWLER_PROJECTILE_HEAL_BELOW_PERCENT_HEALTH.get()) {
             this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
-            this.heal(ConfigConstructor.night_prowler_projectile_heal_amount);
+            this.heal(CommonConfig.NIGHT_PROWLER_PROJECTILE_HEAL_AMOUNT.get());
             return false;
         }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
@@ -602,9 +602,9 @@ public class NightProwler extends BossEntity implements IAnimatable {
     public void tickMovement() {
         super.tickMovement();
         if (this.getWorld().isClient) {
-            if (this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+            if (this.getHealth() < this.getMaxHealth() * CommonConfig.NIGHT_PROWLER_PROJECTILE_HEAL_BELOW_PERCENT_HEALTH.get()) {
                 for (int i = 0; i < 2; i++) {
-                    this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+                    this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE.get(), this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
                 }
             }
             switch (this.getParticleState()) {
@@ -619,7 +619,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                             double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e);
                             double newY = (random.nextDouble() - 0.5D + random.nextDouble() * 0.5D) / 2;
                             this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
-                            this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE.get(), pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
                             this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
                         }
                     }
@@ -636,7 +636,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                             double newY = (random.nextDouble() - 0.5D + random.nextDouble() * 0.5D) / 4;
                             this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
                             this.getWorld().addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
-                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR, pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
+                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), pos.getX(), pos.getY(), pos.getZ(), newX, newY, newZ);
                         }
                     }
                 }
@@ -656,9 +656,9 @@ public class NightProwler extends BossEntity implements IAnimatable {
                         Vec3d vec2 = new Vec3d(x2, y2, z2).rotateY(-yaw).add(this.getEyePos().add(0, -1, 0));
 
                         int div = 75;
-                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR, vec1.x, vec1.y, vec1.z,
+                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), vec1.x, vec1.y, vec1.z,
                                 this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
-                        this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE, vec2.x, vec2.y, vec2.z,
+                        this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE.get(), vec2.x, vec2.y, vec2.z,
                                 this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
                     }
                 }
@@ -673,7 +673,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                         double theta = phi * i;
                         double x = Math.cos(theta) * radius;
                         double z = Math.sin(theta) * radius;
-                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR, true, x * sizeMod + this.getX(), y * sizeMod + this.getY(), z * sizeMod + this.getZ(),
+                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), true, x * sizeMod + this.getX(), y * sizeMod + this.getY(), z * sizeMod + this.getZ(),
                                 this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
                     }
                 }
@@ -689,7 +689,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                             double z0 = this.getZ();
                             double x = x0 + r * Math.cos(theta * Math.PI / 180);
                             double z = z0 + r * Math.sin(theta * Math.PI / 180);
-                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR, x, this.getY() + 0.1f, z,
+                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), x, this.getY() + 0.1f, z,
                                     this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
                         }
                     }

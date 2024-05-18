@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -19,6 +20,9 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
+import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.invisible.FlamePillar;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -31,6 +35,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Also known as "Genesis Fracture"
@@ -151,5 +156,19 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private EmpoweredDawnbreakerRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new EmpoweredDawnbreakerRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

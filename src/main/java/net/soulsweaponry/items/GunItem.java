@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 public abstract class GunItem extends BowItem {
 
-    public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
+    public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET.get());
 
     public GunItem(Settings settings) {
         super(settings);

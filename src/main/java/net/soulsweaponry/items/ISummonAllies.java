@@ -3,8 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.SummonsData;
+import net.soulsweaponry.entitydata.summons.SummonsData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public interface ISummonAllies {
                 toRemove.add(prevUuid);
             }
         }
-        toRemove.forEach(uuid -> SummonsData.removeSummonUUID((IEntityDataSaver) user, uuid, listId));
+        toRemove.forEach(uuid -> SummonsData.removeSummonUUID(user, uuid, listId));
         return SummonsData.getAliveSummons(user, listId).length < this.getMaxSummons();
     }
 }

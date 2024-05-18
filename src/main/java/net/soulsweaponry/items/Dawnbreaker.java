@@ -2,11 +2,15 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
+import net.soulsweaponry.client.renderer.item.DawnbreakerRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -14,6 +18,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Dawnbreaker extends AbstractDawnbreaker {
 
@@ -37,5 +42,19 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private DawnbreakerRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new DawnbreakerRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

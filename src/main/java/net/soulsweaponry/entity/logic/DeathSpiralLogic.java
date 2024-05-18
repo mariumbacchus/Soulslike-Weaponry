@@ -26,7 +26,7 @@ public class DeathSpiralLogic {
         if (world.isClient) {
             for (List<Vec3d> list : spirals) {
                 if (list.size() != 0) {
-                    ParticleEffect type = this.switchParticle ? ParticleRegistry.DAZZLING_PARTICLE : ParticleRegistry.DARK_STAR;
+                    ParticleEffect type = this.switchParticle ? ParticleRegistry.DAZZLING_PARTICLE.get() : ParticleRegistry.DARK_STAR.get();
                     Vec3d vec = new Vec3d(list.get(0).getX(), list.get(0).getY(), list.get(0).getZ()).add(origin);
                     world.addParticle(type, vec.getX(), vec.getY(), vec.getZ(),
                             0, 0, 0);

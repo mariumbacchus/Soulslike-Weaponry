@@ -5,8 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
@@ -18,7 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.entity.mobs.DraugrBoss;
+import net.soulsweaponry.entity.mobs.Moonknight;
+import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.registry.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,38 +140,38 @@ public class AltarBlock extends Block {
     }
 
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        /*ItemStack itemStack = player.getStackInHand(hand); TODO
-        if (itemStack.isOf(ItemRegistry.LOST_SOUL)) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        if (itemStack.isOf(ItemRegistry.LOST_SOUL.get())) {
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
-            ReturningKnight boss = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
+            ReturningKnight boss = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
             boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
             boss.setSpawning(true);
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             world.spawnEntity(boss);
             world.removeBlock(pos, false);
             return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
-            DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
+        } else if (itemStack.isOf(WeaponRegistry.DRAUGR.get())) {
+            DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS.get(), world);
             boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
             boss.setSpawning();
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             world.spawnEntity(boss);
             world.removeBlock(pos, false);
             return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
+        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE.get())) {
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
-            Moonknight boss = new Moonknight(EntityRegistry.MOONKNIGHT, world);
+            Moonknight boss = new Moonknight(EntityRegistry.MOONKNIGHT.get(), world);
             boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
             boss.setSpawning(true);
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             world.spawnEntity(boss);
             world.removeBlock(pos, false);
             return ActionResult.SUCCESS;
-        }*/
+        }
         return ActionResult.FAIL;
     }
 

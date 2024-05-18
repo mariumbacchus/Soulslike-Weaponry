@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -22,7 +22,7 @@ public class NightWaveEntity extends InvisibleEntity {
         super.tick();
         if (this.getWorld().isClient) {
             for (int i = 0; i < 40; ++i) {
-                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE.get(), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
             }
         } else {
             if (this.age % 4 == 0) {
@@ -31,12 +31,12 @@ public class NightWaveEntity extends InvisibleEntity {
                     if (this.getOwner() instanceof LivingEntity) {
                         living.damage(DamageSource.mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
                     } else {
-                        living.damage(DamageSource.mobProjectile(this, null), 20f * ConfigConstructor.night_prowler_damage_modifier);
+                        living.damage(DamageSource.mobProjectile(this, null), 20f * CommonConfig.NIGHT_PROWLER_DAMAGE_MODIFIER.get());
                     }
                 }
             }
             if (this.age % 10 == 0) {
-                this.playSound(SoundRegistry.MOONLIGHT_BIG_EVENT, 0.4f, 0.75f);
+                this.playSound(SoundRegistry.MOONLIGHT_BIG_EVENT.get(), 0.4f, 0.75f);
             }
         }
         if (this.age > 15) {

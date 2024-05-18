@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.soulsweaponry.config.CommonConfig;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -20,7 +21,6 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
@@ -33,11 +33,11 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
 
     public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world) {
         super(entityType, world);
-        this.spearStack = new ItemStack(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR);
+        this.spearStack = new ItemStack(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR.get());
     }
 
     public DragonslayerSwordspearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, owner, world);
+        super(EntityRegistry.SWORDSPEAR_ENTITY_TYPE.get(), owner, world);
         this.spearStack = stack.copy();
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
@@ -109,7 +109,7 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
 
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.dragonslayer_swordspear_projectile_damage;
+        float f = CommonConfig.DRAGON_SWORDSPEAR_PROJECTILE_DAMAGE.get();
         if (this.getOwner() == null || entity == null) return;
         if (entity instanceof LivingEntity) {
             f += EnchantmentHelper.getAttackDamage(this.spearStack, ((LivingEntity) entity).getGroup());
@@ -122,8 +122,7 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity2 = (LivingEntity)entity;
+            if (entity instanceof LivingEntity livingEntity2) {
                 if (entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
@@ -137,8 +136,8 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
         if (!world.isClient) {
             BlockPos blockPos = entity.getBlockPos();
             if (this.world.isSkyVisible(blockPos)) {
-                for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
-                    LightningEntity lightningEntity = (LightningEntity)EntityType.LIGHTNING_BOLT.create(this.world);
+                for (int i = 0; i < CommonConfig.DRAGON_SWORDSPEAR_LIGHTNING_AMOUNT.get(); i++) {
+                    LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.world);
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
                     this.world.spawnEntity(lightningEntity);

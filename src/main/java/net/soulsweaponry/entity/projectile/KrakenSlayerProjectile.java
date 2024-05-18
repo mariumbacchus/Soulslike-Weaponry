@@ -20,7 +20,7 @@ public class KrakenSlayerProjectile extends PersistentProjectileEntity {
     }
 
     public KrakenSlayerProjectile(World world, LivingEntity owner) {
-        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world);
+        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE.get(), owner, world);
     }
 
     public void setTrueDamage(float trueDamage) {

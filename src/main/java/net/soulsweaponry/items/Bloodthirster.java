@@ -1,11 +1,13 @@
 package net.soulsweaponry.items;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -17,6 +19,9 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
+import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -71,5 +76,19 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private BloodthirsterRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new BloodthirsterRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

@@ -1,6 +1,5 @@
 package net.soulsweaponry.enchantments;
 
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.Entity;
@@ -8,11 +7,12 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.items.UltraHeavy;
 
-public class StaggerEnchant extends Enchantment {
+public class StaggerEnchantment extends Enchantment {
 
-    public StaggerEnchant(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
+    public StaggerEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
         super(pRarity, EnchantmentTarget.WEAPON, pApplicableSlots);
     }
 
@@ -34,7 +34,7 @@ public class StaggerEnchant extends Enchantment {
                 postureLoss *= 2;
             }
             postureLoss *= level;
-            //PostureData.addPosture((IEntityDataSaver) living, postureLoss);TODO posture things
+            PostureData.addPosture(living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
     }

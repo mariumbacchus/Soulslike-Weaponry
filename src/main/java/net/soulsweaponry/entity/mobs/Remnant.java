@@ -72,14 +72,14 @@ public class Remnant extends TameableEntity {
     public void initEquip() {
         int[] chance = {6, 6, 2, 4, 1, 2, 2, 2};
         Item[] equipment = {
-            ArmorRegistry.SOUL_INGOT_HELMET,
-            ArmorRegistry.SOUL_INGOT_CHESTPLATE,
-            ArmorRegistry.SOUL_INGOT_LEGGINGS,
-            ArmorRegistry.SOUL_INGOT_BOOTS,
+            ArmorRegistry.SOUL_INGOT_HELMET.get(),
+            ArmorRegistry.SOUL_INGOT_CHESTPLATE.get(),
+            ArmorRegistry.SOUL_INGOT_LEGGINGS.get(),
+            ArmorRegistry.SOUL_INGOT_BOOTS.get(),
             Items.SHIELD,
-            WeaponRegistry.TRANSLUCENT_SWORD,
-            WeaponRegistry.TRANSLUCENT_GLAIVE,
-            WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD,
+            WeaponRegistry.TRANSLUCENT_SWORD.get(),
+            WeaponRegistry.TRANSLUCENT_GLAIVE.get(),
+            WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get(),
         };
         EquipmentSlot[] spot = {
             EquipmentSlot.HEAD,

@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.explosion.ExplosionBehavior;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -37,7 +37,7 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     public ChaosSkull(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
-        super(EntityRegistry.CHAOS_SKULL, world);
+        super(EntityRegistry.CHAOS_SKULL.get(), world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
         double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
@@ -54,7 +54,7 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage*ConfigConstructor.chaos_monarch_damage_modifier;
+        return damage * CommonConfig.CHAOS_MONARCH_DAMAGE_MODIFIER.get();
     }
     
     /**
@@ -79,7 +79,7 @@ public class ChaosSkull extends WitherSkullEntity {
             }
             float damage = this.getModifiedDamage(this.random.nextInt(30) + 1);
             if (damage > this.getModifiedDamage(20)) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
+                this.world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.HOSTILE, .5f, 1f);
             }
             entity.damage(DamageSource.mob((LivingEntity)this.getOwner()), damage);
         }
@@ -134,7 +134,7 @@ public class ChaosSkull extends WitherSkullEntity {
                     }
                     default -> {
                         for (int j = 0; j < 2; j++) {
-                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS, this.world);
+                            BigChungus chungus = new BigChungus(EntityRegistry.BIG_CHUNGUS.get(), this.world);
                             chungus.setPos(this.getX(), this.getY(), this.getZ());
                             this.world.spawnEntity(chungus);
                         }

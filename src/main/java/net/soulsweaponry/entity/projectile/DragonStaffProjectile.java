@@ -14,7 +14,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -30,11 +30,11 @@ public class DragonStaffProjectile extends DragonFireballEntity {
 
     public DragonStaffProjectile(EntityType<? extends DragonStaffProjectile> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.DRAGON_STAFF);
+        this.stack = new ItemStack(WeaponRegistry.DRAGON_STAFF.get());
     }
 
     public DragonStaffProjectile(World world, LivingEntity user, ItemStack stack) {
-        super(EntityRegistry.DRAGON_STAFF_PROJECTILE, world);
+        super(EntityRegistry.DRAGON_STAFF_PROJECTILE.get(), world);
         this.setOwner(user);
         this.setRotation(user.getYaw(), user.getPitch());
         this.stack = stack;
@@ -65,7 +65,7 @@ public class DragonStaffProjectile extends DragonFireballEntity {
             areaEffectCloudEntity.setRadius(this.radius + (float) WeaponUtil.getEnchantDamageBonus(this.stack) / 2.5f);
             areaEffectCloudEntity.setDuration(200 + WeaponUtil.getEnchantDamageBonus(this.stack) * 20);
             areaEffectCloudEntity.setRadiusGrowth((3.0f - areaEffectCloudEntity.getRadius() + (float) WeaponUtil.getEnchantDamageBonus(this.stack) / 2.5f) / (float) areaEffectCloudEntity.getDuration());
-            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 50, ConfigConstructor.dragon_staff_aura_strength));
+            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 50, CommonConfig.DRAGON_STAFF_AURA_STRENGTH.get()));
             if (!list.isEmpty()) {
                 for (LivingEntity livingEntity : list) {
                     double d = this.squaredDistanceTo(livingEntity);

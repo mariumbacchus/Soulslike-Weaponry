@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -62,7 +62,7 @@ public class NightShade extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frenzied_shade_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.FRENZIED_SHADE_HEALTH.get())
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }
@@ -113,7 +113,7 @@ public class NightShade extends BossEntity implements IAnimatable {
         if (this.isCopy) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
-                this.setHealth((float)ConfigConstructor.frenzied_shade_health / 4f);
+                this.setHealth((float) (CommonConfig.FRENZIED_SHADE_HEALTH.get() / 4f));
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
@@ -141,10 +141,10 @@ public class NightShade extends BossEntity implements IAnimatable {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
+                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
-                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
+                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.world);
                     copy.setCopy(true);
                     copy.setPos(this.getX(), this.getY(), this.getZ());
                     copy.setVelocity((float) i / 10f, (float) i / 10f, - (float) i / 10f);
@@ -152,7 +152,7 @@ public class NightShade extends BossEntity implements IAnimatable {
                     copy.setTarget(this.getTarget());
                     world.spawnEntity(copy);
 
-                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE, this.world);
+                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.world);
                     copy2.setCopy(true);
                     copy2.setPos(this.getX(), this.getY(), this.getZ());
                     copy2.setVelocity(- (float) i / 10f, (float) i / 10f,  (float) i / 10f);
@@ -200,7 +200,7 @@ public class NightShade extends BossEntity implements IAnimatable {
                 return;
             }
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -321,7 +321,7 @@ public class NightShade extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.frenzied_shade_xp;
+        return CommonConfig.FRENZIED_SHADE_XP.get();
     }
 
     @Override
@@ -360,14 +360,14 @@ public class NightShade extends BossEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.NIGHT_SHADE_IDLE_EVENT;
+        return SoundRegistry.NIGHT_SHADE_IDLE_EVENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundRegistry.NIGHT_SHADE_DAMAGE_EVENT;
+        return SoundRegistry.NIGHT_SHADE_DAMAGE_EVENT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.NIGHT_SHADE_DEATH_EVENT;
+        return SoundRegistry.NIGHT_SHADE_DEATH_EVENT.get();
     }
 }

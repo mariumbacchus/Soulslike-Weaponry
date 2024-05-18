@@ -192,10 +192,10 @@ public class DarkSorcerer extends HostileEntity {
     }
 
     public void initEquip() {
-        this.equipStack(EquipmentSlot.HEAD, new ItemStack(ArmorRegistry.SOUL_ROBES_HELMET));
-        this.equipStack(EquipmentSlot.CHEST, new ItemStack(ArmorRegistry.SOUL_ROBES_CHESTPLATE));
-        this.equipStack(EquipmentSlot.LEGS, new ItemStack(ArmorRegistry.SOUL_ROBES_LEGGINGS));
-        this.equipStack(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.SOUL_ROBES_BOOTS));
+        this.equipStack(EquipmentSlot.HEAD, new ItemStack(ArmorRegistry.SOUL_ROBES_HELMET.get()));
+        this.equipStack(EquipmentSlot.CHEST, new ItemStack(ArmorRegistry.SOUL_ROBES_CHESTPLATE.get()));
+        this.equipStack(EquipmentSlot.LEGS, new ItemStack(ArmorRegistry.SOUL_ROBES_LEGGINGS.get()));
+        this.equipStack(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.SOUL_ROBES_BOOTS.get()));
     }
 
     @Override

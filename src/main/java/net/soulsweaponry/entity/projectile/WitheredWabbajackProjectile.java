@@ -45,7 +45,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     public WitheredWabbajackProjectile(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
-        super(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, world);
+        super(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE.get(), world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
         double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
@@ -92,7 +92,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                     }
                     default -> {
                         if (power > 50) {
-                            world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                            world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                         }
                         target.damage(DamageSource.MAGIC, power);
                     }

@@ -5,14 +5,14 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 
@@ -86,7 +86,7 @@ public class FreyrSwordGoal extends Goal {
                         target.setOnFireFor(fire * 4);
                     }
                     if (!world.isClient) {
-                        ParticleHandler.singleParticle(this.entity.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
+                        ((ServerWorld)this.entity.getWorld()).spawnParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
                     } else {
                         world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }
@@ -97,6 +97,6 @@ public class FreyrSwordGoal extends Goal {
     }
 
     public float getAttackDamage(LivingEntity target) {
-        return target != null ? (ConfigConstructor.sword_of_freyr_damage + EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup())) : ConfigConstructor.sword_of_freyr_damage;
+        return target != null ? (CommonConfig.SWORD_OF_FREYR_DAMAGE.get() + EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup())) : CommonConfig.SWORD_OF_FREYR_DAMAGE.get();
     }
 }

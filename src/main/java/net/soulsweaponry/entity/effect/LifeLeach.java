@@ -9,7 +9,7 @@ import net.soulsweaponry.registry.ParticleRegistry;
 
 public class LifeLeach extends StatusEffect {
 
-    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED};
+    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED.get()};
 
     public LifeLeach() {
         super(StatusEffectCategory.BENEFICIAL, 0x452773);
@@ -30,7 +30,7 @@ public class LifeLeach extends StatusEffect {
         LivingEntity target = entity.getAttacking();
         if (entity.getWorld().isClient) {
             for (int i = 0; i < 30; i++) {
-                entity.getWorld().addParticle(ParticleRegistry.DARK_STAR, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
+                entity.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }
         }
         if (target != null) {

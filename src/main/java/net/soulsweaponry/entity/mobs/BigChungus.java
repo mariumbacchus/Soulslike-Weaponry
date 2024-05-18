@@ -18,7 +18,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -52,19 +52,19 @@ public class BigChungus extends HostileEntity {
         BlockPos positionEntity = new BlockPos(this.getX(), this.getY(), this.getZ());
         return view.doesNotIntersectEntities(this) && this.world.isNight() && !world.containsFluid(this.getBoundingBox()) 
             && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
-            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.BIG_CHUNGUS)
+            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.BIG_CHUNGUS.get())
             && this.isSpawnable() && this.checkForMonolith();
     }
 
     public boolean checkForMonolith() {
         BlockPos entityPos = this.getBlockPos();
-        int radius = ConfigConstructor.chungus_monolith_radius;
+        int radius = CommonConfig.CHUNGUS_MONOLITH_RANGE.get();
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (x * x + z * z <= radius * radius) {
                     BlockPos checkPos = entityPos.add(x, 0, z);
                     Block block = this.getWorld().getBlockState(checkPos).getBlock();
-                    if (block == BlockRegistry.CHUNGUS_MONOLITH) {
+                    if (block == BlockRegistry.CHUNGUS_MONOLITH.get()) {
                         return true;
                     }
                 }
@@ -74,11 +74,11 @@ public class BigChungus extends HostileEntity {
     }
 
     public boolean isSpawnable() {
-        return ConfigConstructor.can_moderatly_sized_chungus_spawn;
+        return CommonConfig.SPAWN_CHUNGUS.get();
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.BIG_CHUNGUS_EVENT;
+        return SoundRegistry.BIG_CHUNGUS_EVENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -86,7 +86,7 @@ public class BigChungus extends HostileEntity {
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.FART_EVENT;
+        return SoundRegistry.FART_EVENT.get();
     }
 
     protected SoundEvent getStepSound() {

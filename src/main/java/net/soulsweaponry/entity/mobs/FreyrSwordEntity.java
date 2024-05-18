@@ -31,7 +31,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
 import net.soulsweaponry.items.FreyrSword;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -81,11 +81,11 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
 
     public FreyrSwordEntity(EntityType<? extends FreyrSwordEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.FREYR_SWORD);
+        this.stack = new ItemStack(WeaponRegistry.FREYR_SWORD.get());
     }
 
     public FreyrSwordEntity(World world, PlayerEntity owner, ItemStack stack) {
-        super(EntityRegistry.FREYR_SWORD_ENTITY_TYPE, world);
+        super(EntityRegistry.FREYR_SWORD_ENTITY_TYPE.get(), world);
         this.stack = stack.copy();
         this.setTamed(true);
         this.setOwner(owner);
@@ -271,7 +271,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         return PathAwareEntity.createLivingAttributes()
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) ConfigConstructor.sword_of_freyr_damage);
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) CommonConfig.SWORD_OF_FREYR_DAMAGE.get());
     }
 
     public double getFollowRange() {

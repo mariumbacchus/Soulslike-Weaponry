@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -116,7 +116,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true, target -> {
             boolean bl = true;
             for (ItemStack stack : target.getArmorItems()) {
-                if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                if (stack.isOf(ItemRegistry.WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
                     bl = false;
                     break;
                 }
@@ -147,12 +147,12 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
             && !world.getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
             && world.getDifficulty() != Difficulty.PEACEFUL
             && world.getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
-            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON)
+            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON.get())
             && this.isSpawnable();
     }
 
     public boolean isSpawnable() {
-        return ConfigConstructor.can_withered_demon_spawn;
+        return CommonConfig.SPAWN_WITHERED_DEMON.get();
     }
 
     @Override
@@ -221,7 +221,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
             boolean bl = true;
             if (this.mob.getTarget() != null && this.mob.getAttacker() != this.mob.getTarget()) {
                 for (ItemStack stack : this.mob.getTarget().getArmorItems()) {
-                    if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                    if (stack.isOf(ItemRegistry.WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
                         bl = false;
                         break;
                     }
@@ -283,21 +283,21 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.DEMON_IDLE_EVENT;
+        return SoundRegistry.DEMON_IDLE_EVENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundRegistry.DEMON_DAMAGE_EVENT;
+        return SoundRegistry.DEMON_DAMAGE_EVENT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.DEMON_DEATH_EVENT;
+        return SoundRegistry.DEMON_DEATH_EVENT.get();
     }
 
     protected SoundEvent getStepSound() {
-        return SoundRegistry.DEMON_WALK_EVENT;
+        return SoundRegistry.DEMON_WALK_EVENT.get();
     }
 
     @Override

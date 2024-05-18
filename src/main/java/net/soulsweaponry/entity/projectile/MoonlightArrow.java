@@ -161,7 +161,7 @@ public class MoonlightArrow extends PersistentProjectileEntity {
     }
 
     protected ParticleEffect getParticleType() {
-        return ParticleRegistry.NIGHTFALL_PARTICLE;
+        return ParticleRegistry.NIGHTFALL_PARTICLE.get();
     }
 
     @Override

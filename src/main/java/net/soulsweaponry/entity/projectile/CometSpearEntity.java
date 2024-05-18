@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.soulsweaponry.config.CommonConfig;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +19,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -36,12 +36,12 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
         super(entityType, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR);
+        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR.get());
     }
 
     public CometSpearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, owner, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR);
+        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE.get(), owner, world);
+        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR.get());
         this.spearStack = stack.copy();
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
@@ -92,7 +92,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
 
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.comet_spear_projectile_damage;
+        float f = CommonConfig.COMET_SPEAR_PROJECTILE_DAMAGE.get();
         if (entity == null) {
             return;
         }

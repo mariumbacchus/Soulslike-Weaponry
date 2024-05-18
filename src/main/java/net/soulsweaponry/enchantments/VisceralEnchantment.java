@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.soulsweaponry.items.GunItem;
 import net.soulsweaponry.registry.EnchantRegistry;
 
-public class VisceralEnchant extends Enchantment {
+public class VisceralEnchantment extends Enchantment {
 
-    public VisceralEnchant(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
+    public VisceralEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
         super(pRarity, EnchantRegistry.GUN, pApplicableSlots);
     }
 

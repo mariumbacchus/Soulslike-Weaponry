@@ -204,10 +204,10 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
         this.setNoGravity(true);
         for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox().expand(6D))) {
             if (entity instanceof LivingEntity target && !this.isOwner(target) && !this.isTeammate(target)) {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 20, 0));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 20, 0));
             }
         }
-        if (this.hasStatusEffect(EffectRegistry.FREEZING)) this.removeStatusEffect(EffectRegistry.FREEZING);
+        if (this.hasStatusEffect(EffectRegistry.FREEZING.get())) this.removeStatusEffect(EffectRegistry.FREEZING.get());
     }
 
     @Override
@@ -317,7 +317,7 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
                     Box box = new Box(target.getBlockPos(), this.mob.getBlockPos().add(0, 1, 0)).expand(1D);
                     for (Entity entity : this.mob.world.getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
-                            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 2));
+                            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 40, 2));
                             living.damage(DamageSource.mob(this.mob), 2f);
                         }
                     }

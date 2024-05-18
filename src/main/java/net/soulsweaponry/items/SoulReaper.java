@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,16 +16,17 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.entitydata.summons.SummonsData;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -38,6 +40,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISummonAllies {
 
@@ -144,6 +147,20 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private SoulReaperRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new SoulReaperRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

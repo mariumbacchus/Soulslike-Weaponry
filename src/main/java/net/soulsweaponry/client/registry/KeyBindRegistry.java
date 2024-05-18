@@ -8,6 +8,11 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.networking.packets.C2S.*;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import org.lwjgl.glfw.GLFW;
 
@@ -37,20 +42,19 @@ public class KeyBindRegistry {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client == null) return;
         while (returnFreyrSword.wasPressed()) {
-            //ModMessages.sendToServer(new Example(Minecraft.getInstance().player.blockPosition()));//Sends example packet, TODO make real packets and register events for all keybinds
-            //ClientPlayNetworking.send(PacketIds.RETURN_FREYR_SWORD, PacketByteBufs.empty());
+            ModMessages.sendToServer(new ReturnFreyrSwordC2S());
         }
         while (stationaryFreyrSword.wasPressed()) {
-            //ClientPlayNetworking.send(PacketIds.STATIONARY_FREYR_SWORD, PacketByteBufs.empty());
+            ModMessages.sendToServer(new StationaryFreyrSwordC2S());
         }
         while (collectSummons.wasPressed()) {
-            //ClientPlayNetworking.send(PacketIds.COLLECT_SUMMONS, PacketByteBufs.empty());
+            ModMessages.sendToServer(new CollectSummonsC2S());
         }
         while (switchWeapon.wasPressed()) {
-            //ClientPlayNetworking.send(PacketIds.SWITCH_TRICK_WEAPON, PacketByteBufs.empty());
+            ModMessages.sendToServer(new SwitchTrickWeaponC2S());
         }
         while (keybindAbility.wasPressed()) {
-            //ClientPlayNetworking.send(PacketIds.KEYBIND_ABILITY, PacketByteBufs.empty());
+            ModMessages.sendToServer(new KeybindAbilityC2S());
             if (client.player != null) {
                 ClientPlayerEntity player = client.player;
                 for (Hand hand : Hand.values()) {
@@ -67,18 +71,17 @@ public class KeyBindRegistry {
         }
         while (parry.wasPressed()) {
             try {
-                //ClientPlayNetworking.send(PacketIds.PARRY, PacketByteBufs.empty());
+                ModMessages.sendToServer(new ParryC2S());
             } catch (Exception ignored) {}
         }
         while (effectShootMoonlight.wasPressed()) {
-            /*if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
-                //PacketByteBuf buf = PacketByteBufs.create();
-                //ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
-                //client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), ConfigConstructor.moonlight_ring_projectile_cooldown);
-            }*/
+            if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
+                ModMessages.sendToServer(new MoonlightC2S());
+                client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), CommonConfig.MOONLIGHT_RING_PROJECTILE_COOLDOWN.get());
+            }
         }
         while (returnThrownWeapon.wasPressed()) {
-            //ClientPlayNetworking.send(PacketIds.RETURN_THROWN_WEAPON, PacketByteBufs.empty());
+            ModMessages.sendToServer(new ReturnThrownWeaponC2S());
         }
     }
 

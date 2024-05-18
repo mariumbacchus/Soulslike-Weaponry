@@ -26,7 +26,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.armor.ChaosSet;
 import net.soulsweaponry.registry.*;
@@ -80,7 +80,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.CHAOS_MONARCH_HEALTH.get())
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -114,7 +114,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -163,14 +163,14 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
 
     @Override
     public int getXp() {
-        return ConfigConstructor.chaos_monarch_xp;
+        return CommonConfig.CHAOS_MONARCH_XP.get();
     }
 
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {
-            this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
+        if (this.hasStatusEffect(EffectRegistry.DECAY.get()) && this.age % 10 == 0) {
+            this.heal(this.getStatusEffect(EffectRegistry.DECAY.get()).getAmplifier() + 1 + this.getAttackingPlayers().size());
             for (LivingEntity target : this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(3D))) {
                 if (!(target instanceof PlayerEntity) && target != this) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 3));
@@ -187,7 +187,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
-        ChaosSet cape = (ChaosSet) ItemRegistry.CHAOS_ROBES;
+        ChaosSet cape = (ChaosSet) ItemRegistry.CHAOS_ROBES.get();
         cape.turnBlocks(this, world, blockPos, 3);
     }
 

@@ -29,7 +29,7 @@ public class FogEntity extends InvisibleEntity {
                 }
             }
             if (this.age % 10 == 0) {
-                this.playSound(SoundRegistry.ENGULF, 0.4f, 1f);
+                this.playSound(SoundRegistry.ENGULF.get(), 0.4f, 1f);
             }
         }
         if (this.age > 100) {

@@ -217,7 +217,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.PURPLE_FLAME.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.sacrificeEvent();
             this.remove(RemovalReason.KILLED);
         }
@@ -352,8 +352,8 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                             if (!this.entity.world.isClient) {
                                 ParticleHandler.particleOutburstMap(this.entity.getWorld(), 50, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                             }
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.6f, 1f);
-                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST, this.entity.world);
+                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.6f, 1f);
+                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST.get(), this.entity.world);
                             mob.setSoulAmount(0);
                             this.entity.addSummonIds(mob.getId());
                             mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
@@ -497,7 +497,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.SOULMASS_IDLE_EVENT;
+        return SoundRegistry.SOULMASS_IDLE_EVENT.get();
     }
 
     @Override

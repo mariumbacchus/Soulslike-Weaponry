@@ -44,7 +44,7 @@ public class NightSkull extends NonArrowProjectile implements IAnimatable {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
         if (entityHitResult.getEntity() instanceof LivingEntity living) {
-            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 60, 0));
+            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY.get(), 60, 0));
             living.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 0));
         }
         this.detonate();
@@ -58,7 +58,7 @@ public class NightSkull extends NonArrowProjectile implements IAnimatable {
 
     @Override
     protected SoundEvent getHitSound() {
-        return SoundRegistry.NIGHT_SKULL_DIE;
+        return SoundRegistry.NIGHT_SKULL_DIE.get();
     }
 
     @Override
@@ -79,11 +79,11 @@ public class NightSkull extends NonArrowProjectile implements IAnimatable {
             if (entity instanceof LivingEntity) {
                 areaEffectCloudEntity.setOwner((LivingEntity)entity);
             }
-            areaEffectCloudEntity.setParticleType(ParticleRegistry.DARK_STAR);
+            areaEffectCloudEntity.setParticleType(ParticleRegistry.DARK_STAR.get());
             areaEffectCloudEntity.setRadius(0.5f);
             areaEffectCloudEntity.setDuration(80);
             areaEffectCloudEntity.setRadiusGrowth((2.5f - areaEffectCloudEntity.getRadius()) / (float)areaEffectCloudEntity.getDuration());
-            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.DECAY, 60, 0));
+            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.DECAY.get(), 60, 0));
             areaEffectCloudEntity.addEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 0));
             if (!list.isEmpty()) {
                 for (LivingEntity livingEntity : list) {

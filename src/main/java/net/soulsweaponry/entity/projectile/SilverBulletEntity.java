@@ -11,11 +11,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.PostureData;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -31,7 +30,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
     }
 
     public SilverBulletEntity(World world, LivingEntity owner) {
-        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, owner, world);
+        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE.get(), owner, world);
     }
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner) {
@@ -74,10 +73,10 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (ConfigConstructor.can_projectiles_apply_posture_loss && entityHitResult.getEntity() instanceof LivingEntity target) {
-            PostureData.addPosture((IEntityDataSaver) target, this.getPostureLoss());
+        if (CommonConfig.CAN_PROJECTILES_APPLY_POSTURE_LOSS.get() && entityHitResult.getEntity() instanceof LivingEntity target) {
+            PostureData.addPosture(target, this.getPostureLoss());
             if (target.isUndead()) {
-                this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
+                this.setDamage(this.getDamage() + CommonConfig.SILVER_BULLET_UNDEAD_BONUS_DAMAGE.get());
             }
         }
         super.onEntityHit(entityHitResult);
@@ -99,7 +98,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
 
     @Override
     protected ItemStack asItemStack() {
-        return ItemRegistry.SILVER_BULLET.getDefaultStack();
+        return ItemRegistry.SILVER_BULLET.get().getDefaultStack();
     }
 
     public void setPostureLoss(int postureLoss) {

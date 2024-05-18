@@ -26,11 +26,11 @@ public class Decay extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity) {
-            if (!entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_HELMET)) {
+            if (!entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_HELMET.get())) {
                 PlayerEntity player = ((PlayerEntity)entity);
                 for (EquipmentSlot slot : slots) {
                     ItemStack stack = player.getEquippedStack(slot);
-                    if (!stack.isOf(ItemRegistry.CHAOS_ROBES)) {
+                    if (!stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
                         stack.damage(amplifier + 1, player, (p) -> p.sendEquipmentBreakStatus(slot));
                     }
                 }

@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -74,7 +74,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.FALLEN_ICON_HEALTH.get())
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
@@ -193,7 +193,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
             this.clearStatusEffects();
             this.initiatePhaseTwo(true);
-            world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             return false;
         }
         if (this.isInvulnerableTo(source)) {
@@ -212,7 +212,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.fallen_icon_xp;
+        return CommonConfig.FALLEN_ICON_XP.get();
     }
 
     @Override
@@ -231,7 +231,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
                 this.setPhaseTwo(true);
@@ -242,7 +242,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
             }
         }
         
-        if (ConfigConstructor.can_bosses_break_blocks) {
+        if (CommonConfig.CAN_BOSS_BREAK_BLOCK.get()) {
             int j;
             int i;
             int k;
@@ -255,8 +255,9 @@ public class Moonknight extends BossEntity implements IAnimatable {
                     for (int l = -3; l <= 3; ++l) {
                         for (int m = -3; m <= 3; ++m) {
                             for (int n = 0; n <= 8; ++n) {
-                                if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                                BlockPos pos = new BlockPos(j + l, i + n, k + m);
+                                if (!(this.world.getBlockState(pos).getBlock() instanceof BlockWithEntity)) {
+                                    this.world.breakBlock(pos, true);
                                 }
                             }
                         }
@@ -283,7 +284,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
         if (!this.isDead() && !this.isPhaseTwo() && this.getUnbreakable()) {
             this.unbreakableTicks++;
             if (this.unbreakableTicks == 38) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
+                this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, .75f, 1f);
                 for (Entity entity : world.getOtherEntities(this, this.getBoundingBox().expand(20))) {
                     if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 400, 1));
@@ -324,7 +325,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
         if (this.isPhaseTwo() && !this.isDead() && this.isSwordCharging()) {
             if (this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.IDLE)) this.setChargingSword(false);
             for (int i = 0; i < 100; i++) {
-                this.world.addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
+                this.world.addParticle(ParticleRegistry.NIGHTFALL_PARTICLE.get(), this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
             }
         }
     }
@@ -369,10 +370,10 @@ public class Moonknight extends BossEntity implements IAnimatable {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == 40 && this.getBlockPos() != null) this.world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
+        if (this.deathTicks == 40 && this.getBlockPos() != null) this.world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT.get(), SoundCategory.HOSTILE , 1f, 1f);
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -425,15 +426,15 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.DEATH_SCREAMS_EVENT;
+        return SoundRegistry.DEATH_SCREAMS_EVENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundRegistry.KNIGHT_HIT_EVENT;
+        return SoundRegistry.KNIGHT_HIT_EVENT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.KNIGHT_DEATH_EVENT;
+        return SoundRegistry.KNIGHT_DEATH_EVENT.get();
     }
 
     protected void initDataTracker() {

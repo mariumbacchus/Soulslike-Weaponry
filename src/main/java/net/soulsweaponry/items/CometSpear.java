@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -18,6 +19,9 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
+import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -31,6 +35,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class CometSpear extends DetonateGroundItem implements IAnimatable{
     
@@ -132,5 +137,19 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private CometSpearItemRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new CometSpearItemRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

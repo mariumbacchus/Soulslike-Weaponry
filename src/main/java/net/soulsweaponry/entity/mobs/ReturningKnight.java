@@ -28,12 +28,10 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -110,7 +108,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.RETURNING_KNIGHT_HEALTH.get())
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -148,7 +146,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -315,7 +313,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
     @Override
     public int getXp() {
-        return ConfigConstructor.returning_knight_xp;
+        return CommonConfig.RETURNING_KNIGHT_XP.get();
     }
 
     protected void mobTick() {
@@ -331,7 +329,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
             }
         }
 
-        if (ConfigConstructor.can_bosses_break_blocks) {
+        if (CommonConfig.CAN_BOSS_BREAK_BLOCK.get()) {
             int j;
             int i;
             int k;
@@ -356,14 +354,14 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.DEATH_SCREAMS_EVENT;
+        return SoundRegistry.DEATH_SCREAMS_EVENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundRegistry.KNIGHT_HIT_EVENT;
+        return SoundRegistry.KNIGHT_HIT_EVENT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.KNIGHT_DEATH_EVENT;
+        return SoundRegistry.KNIGHT_DEATH_EVENT.get();
     }
 }

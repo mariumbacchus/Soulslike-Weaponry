@@ -25,13 +25,13 @@ public class ChargedArrow extends PersistentProjectileEntity {
     }
   
     public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world);
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), x, y, z, world);
         this.stack = new ItemStack(Items.ARROW);
         this.scaleDamageHp = scaleDamageHp;
     }
   
     public ChargedArrow(World world, LivingEntity owner, ItemStack stack, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world);
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), owner, world);
         this.stack = stack.copy();
         this.scaleDamageHp = scaleDamageHp;
     }

@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -24,10 +25,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.SummonsData;
+import net.soulsweaponry.entitydata.summons.SummonsData;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -40,6 +42,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybindAbility, ISummonAllies {
     
@@ -185,6 +188,20 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private NightfallRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new NightfallRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

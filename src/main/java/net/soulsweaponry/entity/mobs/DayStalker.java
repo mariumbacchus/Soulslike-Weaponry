@@ -25,7 +25,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -200,14 +200,14 @@ public class DayStalker extends BossEntity implements IAnimatable {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.world.isClient()) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
+            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return this.isPhaseTwo() ? SoundRegistry.HARD_BOSS_DEATH_LONG : SoundRegistry.HARD_BOSS_DEATH_SHORT;
+        return this.isPhaseTwo() ? SoundRegistry.HARD_BOSS_DEATH_LONG.get() : SoundRegistry.HARD_BOSS_DEATH_SHORT.get();
     }
 
     @Override
@@ -299,7 +299,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.day_stalker_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.DAY_STALKER_HEALTH.get())
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
@@ -355,7 +355,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.day_stalker_xp;
+        return CommonConfig.DAY_STALKER_XP.get();
     }
 
     @Override
@@ -383,7 +383,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
             if (this.phaseTwoTicks == 76) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE, SoundCategory.HOSTILE, 1f, 1f);
+                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE.get(), SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.phaseTwoTicks == 81) {
                 if (!world.isClient) {
@@ -540,8 +540,8 @@ public class DayStalker extends BossEntity implements IAnimatable {
             amount = amount * 0.6f;
         }
         if (this.isEmpowered() && source.isProjectile() && !this.isFlying()) {
-            amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
-                    ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
+            amount = amount * (this.isPhaseTwo() ? CommonConfig.DAY_STALKER_EMPOWERED_PROJECTILE_DAMAGE_TAKEN_MODIFIER_PHASE_2.get() :
+                    CommonConfig.DAY_STALKER_EMPOWERED_PROJECTILE_DAMAGE_TAKEN_MODIFIER_PHASE_1.get());
         }
         return super.damage(source, amount);
     }

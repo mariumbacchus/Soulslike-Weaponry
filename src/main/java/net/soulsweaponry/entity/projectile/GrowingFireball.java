@@ -24,7 +24,7 @@ import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.entitydata.parry.ParryData;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -53,7 +53,7 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
     }
 
     public GrowingFireball(World world, Entity owner) {
-        super(EntityRegistry.GROWING_FIREBALL_ENTITY, world);
+        super(EntityRegistry.GROWING_FIREBALL_ENTITY.get(), world);
         this.setOwner(owner);
     }
 

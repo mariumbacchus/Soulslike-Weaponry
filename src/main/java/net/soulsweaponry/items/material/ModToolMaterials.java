@@ -10,9 +10,9 @@ public enum ModToolMaterials implements ToolMaterial {
     
     IRON_BLOCK(1537, 8.0f, -1.0f, MiningLevels.IRON, 16, Ingredient.ofItems(Items.IRON_BLOCK)),
     LOST_SOUL(328, 7.0f, -1.0f, MiningLevels.IRON, 20, Ingredient.ofItems(ItemRegistry.LOST_SOUL.get(), ItemRegistry.SOUL_INGOT.get())),
-    MOONSTONE_OR_VERGLAS(1756, 10.0f, -1.0f, MiningLevels.DIAMOND, 10, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS.get())),
+    MOONSTONE_OR_VERGLAS(1756, 10.0f, -1.0f, MiningLevels.DIAMOND, 10, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), ItemRegistry.VERGLAS.get())),
     CRIMSON_INGOT(1984, 10.0f, -1.0f, MiningLevels.DIAMOND, 8, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get())),
-    MOONSTONE_TOOL(1721, 8.5f, 3.0f, MiningLevels.NETHERITE, 12, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS.get()));
+    MOONSTONE_TOOL(1721, 8.5f, 3.0f, MiningLevels.NETHERITE, 12, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), ItemRegistry.VERGLAS.get()));
 
     private final int durability;
     private final float miningSpeedMultiplier;

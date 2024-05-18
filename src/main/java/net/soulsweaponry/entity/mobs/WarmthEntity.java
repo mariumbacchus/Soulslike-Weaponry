@@ -162,7 +162,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.WARMTH_DIE_EVENT;
+        return SoundRegistry.WARMTH_DIE_EVENT.get();
     }
 
     @Nullable
@@ -259,7 +259,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
         private void buff() {
             this.attackStatus++;
             if (attackStatus == 1) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
-            if (attackStatus == 30) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 30) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             if (this.attackStatus == 35) {
                 boolean bl = this.entity.isTamed() && this.entity.getOwner() != null;
                 for (Entity en : this.entity.world.getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {

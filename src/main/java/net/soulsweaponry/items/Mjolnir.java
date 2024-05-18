@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -29,6 +30,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
+import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.invisible.WarmupLightningEntity;
@@ -40,6 +44,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Mjolnir extends ChargeToUseItem implements IAnimatable {
 
@@ -204,5 +209,19 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties() {
+            private MjolnirItemRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new MjolnirItemRenderer();
+
+                return renderer;
+            }
+        });
     }
 }

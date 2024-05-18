@@ -134,7 +134,7 @@ public class ParticleHandler {
             double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d) * sizeMod;
             double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e) * sizeMod;
             double newY = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + f) * sizeMod;
-            Vec3d vec = new Vec3d(newX/velDividers.x(), newY/velDividers.y(), newZ/velDividers.z());
+            Vec3d vec = new Vec3d(newX/velDividers.getX(), newY/velDividers.getY(), newZ/velDividers.getZ());
             list.add(vec);
         }
         return list;

@@ -24,7 +24,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -95,7 +95,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
 
     @Override
     public int getXp() {
-        return ConfigConstructor.decaying_king_xp;
+        return CommonConfig.DECAYING_KING_XP.get();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient) {
             this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -124,7 +124,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.DECAYING_KING_HEALTH.get())
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -177,7 +177,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
                 this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks > 110 && this.spawnTicks <= 112) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
                 for (Entity nearbyEntity : nearbyEntities) {
@@ -185,7 +185,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(DamageSource.mob(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
+                        closestTarget.damage(DamageSource.mob(this), 50f * CommonConfig.DECAYING_KING_DAMAGE_MODIFIER.get());
                     }
                 }
                 if (!this.world.isClient) {
@@ -248,15 +248,15 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.DEMON_BOSS_IDLE_EVENT;
+        return SoundRegistry.DEMON_BOSS_IDLE_EVENT.get();
     }
   
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundRegistry.DEMON_BOSS_HURT_EVENT;
+        return SoundRegistry.DEMON_BOSS_HURT_EVENT.get();
     }
   
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.DEMON_BOSS_DEATH_EVENT;
+        return SoundRegistry.DEMON_BOSS_DEATH_EVENT.get();
     }
 
     public enum AccursedLordAnimations {

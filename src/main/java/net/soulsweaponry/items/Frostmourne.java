@@ -21,8 +21,7 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.SummonsData;
+import net.soulsweaponry.entitydata.summons.SummonsData;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -92,6 +91,6 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
     }
 }

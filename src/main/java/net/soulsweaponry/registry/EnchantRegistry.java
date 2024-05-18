@@ -8,8 +8,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
-import net.soulsweaponry.enchantments.FastHandsEnchant;
-import net.soulsweaponry.enchantments.VisceralEnchant;
+import net.soulsweaponry.enchantments.FastHandsEnchantment;
+import net.soulsweaponry.enchantments.StaggerEnchantment;
+import net.soulsweaponry.enchantments.VisceralEnchantment;
 import net.soulsweaponry.items.GunItem;
 
 public class EnchantRegistry {
@@ -18,9 +19,9 @@ public class EnchantRegistry {
 
     public static final DeferredRegister<Enchantment> ENCHANTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, SoulsWeaponry.ModId);
 
-    public static final Enchantment FAST_HANDS = new FastHandsEnchant(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
-    public static final Enchantment VISCERAL = new VisceralEnchant(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
-    public static final Enchantment STAGGER = new VisceralEnchant(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
+    public static final Enchantment FAST_HANDS = new FastHandsEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment VISCERAL = new VisceralEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
+    public static final Enchantment STAGGER = new StaggerEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
 
     static {
         if (!CommonConfig.DISABLE_ENCHANTS.get()) {

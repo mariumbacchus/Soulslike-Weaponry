@@ -10,9 +10,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
-import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
+import net.soulsweaponry.events.ClientModBusEvents;
 
 public class DragonslayerSwordspearRenderer extends EntityRenderer<DragonslayerSwordspearEntity> {
     public static final Identifier TEXTURE = new Identifier("soulsweapons","textures/entity/dragonslayer_swordspear.png");
@@ -20,7 +20,7 @@ public class DragonslayerSwordspearRenderer extends EntityRenderer<DragonslayerS
 
     public DragonslayerSwordspearRenderer(EntityRendererFactory.Context context) {
         super(context);
-        this.model = new DragonslayerSwordspearModel(context.getPart(SoulsWeaponryClient.DRAGONSLAYER_SWORDSPEAR_LAYER));
+        this.model = new DragonslayerSwordspearModel(context.getPart(ClientModBusEvents.DRAGONSLAYER_SWORDSPEAR_LAYER));
     }
 
     public void render(DragonslayerSwordspearEntity entity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {

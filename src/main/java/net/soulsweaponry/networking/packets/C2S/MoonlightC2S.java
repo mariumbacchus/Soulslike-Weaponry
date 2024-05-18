@@ -2,37 +2,37 @@ package net.soulsweaponry.networking.packets.C2S;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.network.NetworkEvent;
+import net.soulsweaponry.items.MoonlightShortsword;
 
 import java.util.function.Supplier;
 
-public class Example {
+public class MoonlightC2S {
 
-    private final BlockPos blockPos;
+    public MoonlightC2S() {
 
-    public Example(BlockPos pos) { //Putt ting som skal lagres til buf i parameteret f.eks BlockPos
-        this.blockPos = pos;
     }
 
     //Same as decode
-    public Example(PacketByteBuf buf) {
-        this(buf.readBlockPos());
+    public MoonlightC2S(PacketByteBuf buf) {
+
     }
 
     // Same as encode
     public void toBytes(PacketByteBuf buf) {
-        buf.writeBlockPos(this.blockPos);
+
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            //on server
             ServerPlayerEntity player = context.getSender();
-            player.sendMessage(new LiteralText("hello world!" + this.blockPos), true);
+            this.handlePacket(player, this);
         });
         context.setPacketHandled(true);
+    }
+
+    private void handlePacket(ServerPlayerEntity player, MoonlightC2S packet) {
+        MoonlightShortsword.summonSmallProjectile(player.getWorld(), player);
     }
 }

@@ -11,9 +11,13 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.items.*;
+import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.soulsweaponry.items.SoulHarvestingItem.KILLS;
 
 public class WeaponUtil {
 
@@ -23,13 +27,13 @@ public class WeaponUtil {
     /**
      * Define all trick weapons here, which is gathered by PacketsServer to switch to the given weapon's index
      */
-    /*public static final TrickWeapon[] TRICK_WEAPONS = {
-            WeaponRegistry.KIRKHAMMER,
-            WeaponRegistry.SILVER_SWORD,
-            WeaponRegistry.HOLY_GREATSWORD,
-            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD,
-            WeaponRegistry.HOLY_MOONLIGHT_SWORD,
-    };*///TODO
+    public static final TrickWeapon[] TRICK_WEAPONS = {
+            WeaponRegistry.KIRKHAMMER.get(),
+            WeaponRegistry.SILVER_SWORD.get(),
+            WeaponRegistry.HOLY_GREATSWORD.get(),
+            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get(),
+            WeaponRegistry.HOLY_MOONLIGHT_SWORD.get(),
+    };
 
     /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
@@ -43,13 +47,13 @@ public class WeaponUtil {
         return 0;
     }
 
-    /*public static Text getSwitchWeaponName(ItemStack stack, TrickWeapon weapon) {
+    public static Text getSwitchWeaponName(ItemStack stack, TrickWeapon weapon) {
         TrickWeapon switchWeapon = TRICK_WEAPONS[weapon.getSwitchWeaponIndex()];
         if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
             switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
         }
         return switchWeapon.getName();
-    }*///TODO
+    }
 
     public static List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
@@ -157,7 +161,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.blazing_blade_description_2").formatted(Formatting.GRAY));
             }
             case TRANSFORMATION -> {
-                if (stack.isOf(WeaponRegistry.DARKIN_SCYTHE_PRE)) {
+                if (stack.isOf(WeaponRegistry.DARKIN_SCYTHE_PRE.get())) {
                     DarkinScythePre scythe = (DarkinScythePre) stack.getItem();
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation").formatted(Formatting.LIGHT_PURPLE));
                     for (int i = 1; i <= 8; i++) {
@@ -469,7 +473,7 @@ public class WeaponUtil {
             }
             case THIRD_SHOT -> {
                 float bonus = 0f;
-                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER)) {
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER.get())) {
                     bonus = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
                 }
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot").formatted(Formatting.GOLD));
@@ -480,7 +484,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_3").formatted(Formatting.GRAY)
                         .append(new LiteralText(MathHelper.floor((1f - CommonConfig.KRAKEN_SLAYER_PLAYER_DAMAGE_MOD.get()) * 100) + "%"))
                         .formatted(Formatting.DARK_GRAY));
-                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_4").formatted(Formatting.GRAY));
                 }
             }

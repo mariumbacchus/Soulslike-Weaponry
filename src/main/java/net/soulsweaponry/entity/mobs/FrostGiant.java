@@ -185,7 +185,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
     @Override
     public void tick() {
         super.tick();
-        if (this.hasStatusEffect(EffectRegistry.FREEZING)) this.removeStatusEffect(EffectRegistry.FREEZING);
+        if (this.hasStatusEffect(EffectRegistry.FREEZING.get())) this.removeStatusEffect(EffectRegistry.FREEZING.get());
     }
 
     @Override
@@ -251,7 +251,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
                     if (this.attackStatus == 32) {
                         for (Entity entity : this.mob.world.getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
                             if (entity instanceof LivingEntity living && !this.isOwner(living)) {
-                                if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
+                                if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 60, 0));
                             }
                         }
                         if (!this.mob.world.isClient) {

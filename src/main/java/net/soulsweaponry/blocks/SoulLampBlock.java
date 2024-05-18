@@ -2,7 +2,6 @@ package net.soulsweaponry.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,31 +23,31 @@ public class SoulLampBlock extends Block {
 
     public SoulLampBlock(Settings settings) {
         super(settings);
-        this.setDefaultState((BlockState)this.getDefaultState().with(LIT, false));
+        this.setDefaultState(this.getDefaultState().with(LIT, false));
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (state.get(LIT).booleanValue() && !world.isReceivingRedstonePower(pos)) {
-            world.setBlockState(pos, (BlockState)state.cycle(LIT), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.cycle(LIT), Block.NOTIFY_LISTENERS);
         }
     }
 
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        /*ItemStack itemStack = player.getStackInHand(hand); TODO
+        ItemStack itemStack = player.getStackInHand(hand);
         if (state.get(LIT)) {
-            world.setBlockState(pos, (BlockState)state.with(LIT, false), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(LIT, false), Block.NOTIFY_LISTENERS);
             if (!player.getAbilities().creativeMode) {
-                player.dropItem(ItemRegistry.LOST_SOUL);
+                player.dropItem(ItemRegistry.LOST_SOUL.get());
             }
             return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(ItemRegistry.LOST_SOUL)) {
-            world.setBlockState(pos, (BlockState)state.with(LIT, true), Block.NOTIFY_LISTENERS);
+        } else if (itemStack.isOf(ItemRegistry.LOST_SOUL.get())) {
+            world.setBlockState(pos, state.with(LIT, true), Block.NOTIFY_LISTENERS);
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
             return ActionResult.SUCCESS;
-        }*/
+        }
         return ActionResult.FAIL;
     }
 

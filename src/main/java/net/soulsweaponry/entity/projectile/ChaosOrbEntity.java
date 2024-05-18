@@ -82,8 +82,8 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
                 this.discard();
                 this.world.syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
 
-                NightProwler prowler = new NightProwler(EntityRegistry.NIGHT_PROWLER, this.getWorld());
-                DayStalker stalker = new DayStalker(EntityRegistry.DAY_STALKER, this.getWorld());
+                NightProwler prowler = new NightProwler(EntityRegistry.NIGHT_PROWLER.get(), this.getWorld());
+                DayStalker stalker = new DayStalker(EntityRegistry.DAY_STALKER.get(), this.getWorld());
                 prowler.setPos(this.getX(), this.getY(), this.getZ());
                 stalker.setPos(this.getX(), this.getY(), this.getZ());
                 prowler.setVelocity(1 / 5f, -0.1f, - 1 / 5f);
@@ -97,7 +97,7 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
                 this.getWorld().spawnEntity(stalker);
                 this.getWorld().spawnEntity(prowler);
                 for (ServerPlayerEntity player : ((ServerWorld) getWorld()).getPlayers()) {
-                    getWorld().playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT, SoundCategory.HOSTILE, 0.3f, 1f);
+                    getWorld().playSound(null, player.getBlockPos(), SoundRegistry.HARD_BOSS_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 0.3f, 1f);
                 }
             }
         } else {
@@ -139,6 +139,6 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
 
     @Override
     public ItemStack getStack() {
-        return new ItemStack(ItemRegistry.CHAOS_ORB);
+        return new ItemStack(ItemRegistry.CHAOS_ORB.get());
     }
 }
