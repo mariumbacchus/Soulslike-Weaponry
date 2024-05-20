@@ -1,15 +1,18 @@
 package net.soulsweaponry.registry;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.datagen.loot_tables.BossLootTables;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
@@ -88,7 +91,22 @@ public class EntityRegistry {
         return ENTITIES.register(id, () -> entity);
     }
 
+    private static void registerBossDrops(String id, Item... items) {
+        BossLootTables.BOSS_DROPS.put(id, Lists.newArrayList(items));
+    }
+
     public static void register(IEventBus bus) {
         ENTITIES.register(bus);
+    }
+
+    public static void registerBossDrops() {
+        registerBossDrops("accursed_lord_boss", ItemRegistry.LORD_SOUL_RED.get(), WeaponRegistry.DARKIN_BLADE.get(), ItemRegistry.WITHERED_DEMON_HEART.get());
+        registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK.get(), ItemRegistry.LORD_SOUL_VOID.get(), ItemRegistry.CHAOS_CROWN.get(), ItemRegistry.CHAOS_ROBES.get());
+        registerBossDrops("day_stalker", WeaponRegistry.DAWNBREAKER.get(), ItemRegistry.LORD_SOUL_DAY_STALKER.get());
+        registerBossDrops("draugr_boss", WeaponRegistry.DRAUGR.get());
+        registerBossDrops("moonknight", WeaponRegistry.MOONLIGHT_GREATSWORD.get(), ItemRegistry.LORD_SOUL_WHITE.get(), ItemRegistry.ESSENCE_OF_LUMINESCENCE.get(), ItemRegistry.MOONSTONE.get(), ItemRegistry.MOONSTONE.get());
+        registerBossDrops("night_prowler", WeaponRegistry.SOUL_REAPER.get(), WeaponRegistry.FORLORN_SCYTHE.get(), ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get());
+        registerBossDrops("returning_knight", WeaponRegistry.NIGHTFALL.get(), ItemRegistry.LORD_SOUL_ROSE.get(), ItemRegistry.ARKENSTONE.get(), ItemRegistry.SOUL_INGOT.get(), ItemRegistry.SOUL_INGOT.get());
+        registerBossDrops("night_shade", ItemRegistry.LORD_SOUL_DARK.get(), ItemRegistry.ESSENCE_OF_EVENTIDE.get());
     }
 }

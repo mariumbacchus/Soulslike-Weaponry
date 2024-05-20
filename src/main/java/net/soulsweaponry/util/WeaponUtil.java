@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.items.*;
@@ -23,6 +24,11 @@ public class WeaponUtil {
 
     public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
     public static final String PREV_TRICK_WEAPON = "trick_weapon_to_transform";
+
+    // NOTE: May be changed in future versions.
+    public static boolean isModLoaded(String modId) {
+        return FMLLoader.getLoadingModList().getModFileById(modId) != null;
+    }
 
     /**
      * Define all trick weapons here, which is gathered by PacketsServer to switch to the given weapon's index
