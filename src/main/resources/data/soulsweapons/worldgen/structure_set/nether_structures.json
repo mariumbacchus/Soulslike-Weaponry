@@ -1,0 +1,14 @@
+{
+    "structures": [
+      {
+        "structure": "soulsweapons:decaying_kingdom",
+        "weight": 1
+      }
+    ],
+    "placement": {
+      "type": "minecraft:random_spread",
+      "spacing": 60,
+      "separation": 30,
+      "salt": 92177219
+    }
+  }

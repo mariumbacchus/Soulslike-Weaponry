@@ -1,0 +1,38 @@
+{
+    "parent": "soulsweapons:lord_soul",
+    "display": {
+      "icon": {
+        "item": "soulsweapons:dragonslayer_swordspear",
+        "nbt": "{Damage:0}"
+      },
+      "title": {
+        "translate": "advancements.soulsweapons.dragonslayer_swordspear.title"
+      },
+      "description": {
+        "translate": "advancements.soulsweapons.dragonslayer_swordspear.description"
+      },
+      "frame": "challenge",
+      "show_toast": true,
+      "announce_to_chat": true,
+      "hidden": false
+    },
+    "criteria": {
+      "items": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:dragonslayer_swordspear"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "requirements": [
+      [
+        "items"
+      ]
+    ]
+  }

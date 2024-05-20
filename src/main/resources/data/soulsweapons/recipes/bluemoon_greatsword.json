@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "###",
+        "#/#"
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:moonstone"
+        },
+        "/": {
+            "tag": "c:wood_sticks"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:bluemoon_greatsword",
+        "count": 1
+    }
+}

@@ -2,5 +2,13 @@
     "parent": "item/handheld",
     "textures": {
       "layer0": "soulsweapons:item/bluemoon_shortsword"
-    }
+    },
+    "overrides": [
+      {
+        "predicate": {
+          "charged": 1
+        },
+        "model": "soulsweapons:item/bluemoon_greatsword_charged"
+      }
+    ]
 }

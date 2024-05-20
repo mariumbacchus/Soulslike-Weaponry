@@ -1,0 +1,45 @@
+{
+    "parent": "soulsweapons:demon_heart",
+    "display": {
+      "icon": {
+        "item": "soulsweapons:bloodthirster",
+        "nbt": "{Damage:0}"
+      },
+      "title": {
+        "translate": "advancements.soulsweapons.bloodthirsty.title"
+      },
+      "description": {
+        "translate": "advancements.soulsweapons.bloodthirsty.description"
+      },
+      "frame": "goal",
+      "show_toast": true,
+      "announce_to_chat": true,
+      "hidden": false
+    },
+    "criteria": {
+      "item": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:bloodthirster"
+              ]
+            }
+          ]
+        }
+      },
+      "effect": {
+        "trigger": "minecraft:effects_changed",
+        "conditions": {
+          "effects": {
+            "soulsweapons:bloodthirsty": {}
+          }
+        }
+      }
+    },
+    "requirements": [
+      ["item"],
+      ["effect"]
+    ]
+  }

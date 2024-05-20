@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "soulsweapons:crimson_ingot"
+        },
+        {
+            "item": "minecraft:obsidian"
+        }
+    ],
+    "result": {
+        "item": "soulsweapons:crimson_obsidian",
+        "count": 1
+    }
+}

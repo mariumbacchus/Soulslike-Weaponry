@@ -1,0 +1,40 @@
+{
+    "parent": "soulsweapons:root",
+    "display": {
+      "icon": {
+        "item": "soulsweapons:arkenstone",
+        "nbt": "{Damage:0}"
+      },
+      "title": {
+        "translate": "advancements.soulsweapons.returning_knight.title"
+      },
+      "description": {
+        "translate": "advancements.soulsweapons.returning_knight.description"
+      },
+      "frame": "challenge",
+      "show_toast": true,
+      "announce_to_chat": true,
+      "hidden": false
+    },
+    "criteria": {
+        "soulsweapons:returning_knight": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+              "entity": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "type": "soulsweapons:returning_knight"
+                  },
+                  "entity": "this"
+                }
+              ]
+            }
+          }
+        },
+    "requirements": [
+      [
+        "soulsweapons:returning_knight"
+      ]
+    ]
+}

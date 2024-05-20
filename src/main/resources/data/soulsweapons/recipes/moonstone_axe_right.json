@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " ##",
+        " i#",
+        " / "
+    ],
+    "key": {
+        "#": {
+            "item": "soulsweapons:moonstone"
+        },
+        "i": {
+            "item": "soulsweapons:verglas"
+        },
+        "/": {
+            "tag": "c:wood_sticks"
+        }
+    },
+    "result": {
+        "item": "soulsweapons:moonstone_axe",
+        "count": 1
+    }
+}

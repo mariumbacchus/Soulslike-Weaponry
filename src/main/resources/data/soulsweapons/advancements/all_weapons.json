@@ -1,0 +1,501 @@
+{
+    "parent": "soulsweapons:moonlight_tools",
+    "display": {
+      "icon": {
+        "item": "soulsweapons:lord_soul_purple"
+      },
+      "title": {
+        "translate": "advancements.soulsweapons.all_weapons.title"
+      },
+      "description": {
+        "translate": "advancements.soulsweapons.all_weapons.description"
+      },
+      "frame": "challenge",
+      "show_toast": true,
+      "announce_to_chat": true,
+      "hidden": false
+    },
+    "criteria": {
+      "bloodthirster": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:bloodthirster"
+              ]
+            }
+          ]
+        }
+      },
+      "bluemoon_short": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:bluemoon_shortsword"
+              ]
+            }
+          ]
+        }
+      },
+      "bluemoon_great": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:bluemoon_greatsword"
+              ]
+            }
+          ]
+        }
+      },
+      "moonlight_short": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:moonlight_shortsword"
+              ]
+            }
+          ]
+        }
+      },
+      "moonlight_great": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:moonlight_greatsword"
+              ]
+            }
+          ]
+        }
+      },
+      "comet_spear": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:comet_spear"
+              ]
+            }
+          ]
+        }
+      },
+      "darkin_blade": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkin_blade"
+              ]
+            }
+          ]
+        }
+      },
+      "guts": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:guts_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "ds_swordspear": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:dragonslayer_swordspear"
+              ]
+            }
+          ]
+        }
+      },
+      "dragon_staff": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:dragon_staff"
+              ]
+            }
+          ]
+        }
+      },
+      "wabbajack": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:withered_wabbajack"
+              ]
+            }
+          ]
+        }
+      },
+      "galeforce": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:galeforce"
+              ]
+            }
+          ]
+        }
+      },
+      "rageblade": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:rageblade"
+              ]
+            }
+          ]
+        }
+      },
+      "lich_bane": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:lich_bane"
+              ]
+            }
+          ]
+        }
+      },
+      "nightfall": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:nightfall"
+              ]
+            }
+          ]
+        }
+      },
+      "whirligig_sawblade": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:whirligig_sawblade"
+              ]
+            }
+          ]
+        }
+      },
+      "draugr": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:draugr"
+              ]
+            }
+          ]
+        }
+      },
+      "dawnbreaker": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:dawnbreaker"
+              ]
+            }
+          ]
+        }
+      },
+      "soul_reaper": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:soul_reaper"
+              ]
+            }
+          ]
+        }
+      },
+      "leviathan_axe": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:leviathan_axe"
+              ]
+            }
+          ]
+        }
+      },
+      "skofnung": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:skofnung"
+              ]
+            }
+          ]
+        }
+      },
+      "pure_moonlight": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:pure_moonlight_greatsword"
+              ]
+            }
+          ]
+        }
+      },
+      "mjolnir": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:mjolnir"
+              ]
+            }
+          ]
+        }
+      },
+      "freyr_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:freyr_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "crucible_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:crucible_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "featherlight": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:featherlight"
+              ]
+            }
+          ]
+        }
+      },
+      "darkin_scythe": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkin_scythe"
+              ]
+            }
+          ]
+        }
+      },
+      "draupnir_spear": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:draupnir_spear"
+              ]
+            }
+          ]
+        }
+      },
+      "holy_moonlight_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:holy_moonlight_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "darkin_scythe_pre": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkin_scythe_pre"
+              ]
+            }
+          ]
+        }
+      },
+      "shadow_assassin_scythe": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:shadow_assassin_scythe"
+              ]
+            }
+          ]
+        }
+      },
+      "frostmourne": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:frostmourne"
+              ]
+            }
+          ]
+        }
+      },
+      "master_sword": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:master_sword"
+              ]
+            }
+          ]
+        }
+      },
+      "nights_edge": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:nights_edge_item"
+              ]
+            }
+          ]
+        }
+      },
+      "empowered_dawnbreaker": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:empowered_dawnbreaker"
+              ]
+            }
+          ]
+        }
+      },
+      "kraken_slayer": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:kraken_slayer_crossbow"
+              ]
+            }
+          ]
+        }
+      },
+      "darkmoon_longbow": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "soulsweapons:darkmoon_longbow"
+              ]
+            }
+          ]
+        }
+      }
+    },
+  "requirements": [
+      ["bloodthirster"],
+      ["comet_spear"],
+      ["darkin_blade"],
+      ["guts"],
+      ["draugr"],
+      ["ds_swordspear"],
+      ["dragon_staff"],
+      ["wabbajack"],
+      ["galeforce"],
+      ["rageblade"],
+      ["lich_bane"],
+      ["nightfall"],
+      ["whirligig_sawblade"],
+      ["bluemoon_short", "bluemoon_great"],
+      ["moonlight_short", "moonlight_great"],
+      ["dawnbreaker"],
+      ["soul_reaper"],
+      ["leviathan_axe"],
+      ["skofnung"],
+      ["pure_moonlight"],
+      ["mjolnir"],
+      ["freyr_sword"],
+      ["crucible_sword"],
+      ["featherlight"],
+      ["darkin_scythe"],
+      ["darkin_scythe_pre"],
+      ["shadow_assassin_scythe"],
+      ["draupnir_spear"],
+      ["holy_moonlight_sword"],
+      ["frostmourne"],
+      ["master_sword"],
+      ["nights_edge"],
+      ["empowered_dawnbreaker"],
+      ["kraken_slayer"],
+      ["darkmoon_longbow"]
+  ]
+}
