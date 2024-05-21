@@ -46,8 +46,11 @@ public class EffectRegistry {
     public static final RegistryObject<Potion> LONG_WARDING = POTIONS.register("long_warding", () -> new Potion(new StatusEffectInstance(MAGIC_RESISTANCE.get(), 8000, 0)));
     public static final RegistryObject<Potion> TAINTED_AMBROSIA = POTIONS.register("tainted_ambrosia", () -> new Potion(new StatusEffectInstance(DISABLE_HEAL.get(), 600, 0)));
 
-    public static void register(IEventBus eventBus) {
+    public static void registerEffects(IEventBus eventBus) {
         EFFECTS.register(eventBus);
+    }
+
+    public static void registerPotions(IEventBus eventBus) {
         POTIONS.register(eventBus);
     }
 

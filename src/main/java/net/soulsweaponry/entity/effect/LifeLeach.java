@@ -7,9 +7,12 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 public class LifeLeach extends StatusEffect {
 
-    private static final StatusEffect[] DAMAGE_OVER_TIME = {StatusEffects.WITHER, StatusEffects.POISON, EffectRegistry.BLEED.get()};
+    private static final List<Supplier<StatusEffect>> DAMAGE_OVER_TIME = List.of(() -> StatusEffects.WITHER, () -> StatusEffects.POISON, EffectRegistry.BLEED);
 
     public LifeLeach() {
         super(StatusEffectCategory.BENEFICIAL, 0x452773);
@@ -34,8 +37,8 @@ public class LifeLeach extends StatusEffect {
             }
         }
         if (target != null) {
-            for (StatusEffect effect : DAMAGE_OVER_TIME) {
-                if (target.hasStatusEffect(effect)) {
+            for (Supplier<StatusEffect> effect : DAMAGE_OVER_TIME) {
+                if (target.hasStatusEffect(effect.get())) {
                     entity.heal(1);
                     break;
                 }

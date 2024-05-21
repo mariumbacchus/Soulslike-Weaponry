@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 
 public class LoreItem extends Item {
 
-    private String name;
-    private int linesOfLore;
+    private final String name;
+    private final int linesOfLore;
 
     public LoreItem(Settings settings, String name, int linesOfLore) {
         super(settings);

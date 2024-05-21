@@ -57,7 +57,7 @@ public class AreaEffectSphere extends Entity {
     }
 
     public AreaEffectSphere(World world, double x, double y, double z) {
-        this(EntityRegistry.AREA_EFFECT_SPHERE, world);
+        this(EntityRegistry.AREA_EFFECT_SPHERE.get(), world);
         this.setPosition(x, y, z);
     }
 

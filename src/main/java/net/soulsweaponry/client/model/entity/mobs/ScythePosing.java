@@ -1,14 +1,11 @@
 package net.soulsweaponry.client.model.entity.mobs;
 
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
-import net.fabricmc.api.EnvType;
 
-@Environment(value=EnvType.CLIENT)
 public abstract class ScythePosing {
     
     public static void hold(ModelPart holdingArm, ModelPart otherArm, ModelPart head, boolean rightArmed) {

@@ -6,13 +6,13 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.NightShadeModel;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class NightShadeRenderer extends GeoEntityRenderer<NightShade>{
+public class NightShadeRenderer extends GeoEntityRendererFixed<NightShade> {
 
     int[] rgbColorOne = {13, 2, 125};
     int[] rgbColorTwo = {20, 0, 237};

@@ -4,11 +4,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.AccursedLordBossModel;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss> {
+public class AccursedLordBossRenderer extends GeoEntityRendererFixed<AccursedLordBoss> {
 
     int[] rgbColorOne = {247, 94, 94};
     int[] rgbColorTwo = {140, 1, 1};

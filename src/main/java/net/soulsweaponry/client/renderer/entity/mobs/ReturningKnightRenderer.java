@@ -3,12 +3,12 @@ package net.soulsweaponry.client.renderer.entity.mobs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.ReturningKnightModel;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class ReturningKnightRenderer extends GeoEntityRenderer<ReturningKnight> {
+public class ReturningKnightRenderer extends GeoEntityRendererFixed<ReturningKnight> {
 
     int[] rgbColorOne = {254, 200, 203};
     int[] rgbColorTwo = {254, 254, 218};

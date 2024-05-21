@@ -35,20 +35,24 @@ public class SoulsWeaponry {
 
     public SoulsWeaponry() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        GeckoLib.initialize();
 
-        BlockRegistry.register(eventBus);
-        ItemRegistry.register(eventBus);
-        EffectRegistry.register(eventBus);
-        EnchantRegistry.register(eventBus);
-        EntityRegistry.register(eventBus);
         SoundRegistry.register(eventBus);
         ParticleRegistry.register(eventBus);
-        RecipeRegistry.init();
-        EntityRegistry.registerBossDrops();
-
+        EffectRegistry.registerEffects(eventBus);
+        EffectRegistry.registerPotions(eventBus);
+        EnchantRegistry.register(eventBus);
+        BlockRegistry.register(eventBus);
+        ArmorRegistry.register();
+        WeaponRegistry.register();
+        GunRegistry.register();
+        EntityRegistry.register(eventBus);
+        ItemRegistry.register(eventBus);
+        //TODO entity spawning
+        //TODO test and fix everything
+        //TODO fix bugs (especially with keybinds)
+        //TODO fix datagen run greia
         eventBus.addListener(this::setup);
-
-        GeckoLib.initialize();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");
 
@@ -58,6 +62,8 @@ public class SoulsWeaponry {
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModMessages.register();
+            RecipeRegistry.init();
+            EntityRegistry.registerBossDrops();
 
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));

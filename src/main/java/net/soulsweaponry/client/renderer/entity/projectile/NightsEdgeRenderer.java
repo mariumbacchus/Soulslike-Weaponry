@@ -4,11 +4,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3f;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeModel;
 import net.soulsweaponry.entity.projectile.NightsEdge;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class NightsEdgeRenderer extends GeoEntityRenderer<NightsEdge> {
+public class NightsEdgeRenderer extends GeoEntityRendererFixed<NightsEdge> {
 
     public NightsEdgeRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new NightsEdgeModel());

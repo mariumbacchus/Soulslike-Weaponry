@@ -4,11 +4,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.ChaosMonarchModel;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class ChaosMonarchRenderer extends GeoEntityRenderer<ChaosMonarch> {
+public class ChaosMonarchRenderer extends GeoEntityRendererFixed<ChaosMonarch> {
 
     int[] rgbColorOne = {255, 22, 206};
     int[] rgbColorTwo = {160, 14, 131};

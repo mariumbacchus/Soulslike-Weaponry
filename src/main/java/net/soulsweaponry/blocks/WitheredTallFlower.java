@@ -26,11 +26,11 @@ import java.util.function.Supplier;
  */
 public class WitheredTallFlower extends WitheredTallGrass {
 
-    private final StatusEffect effect;
+    private final Supplier<StatusEffect> effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
     private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
-    public WitheredTallFlower(StatusEffect effect, Settings settings, Block replacedBlock) {
+    public WitheredTallFlower(Supplier<StatusEffect> effect, Settings settings, Block replacedBlock) {
         super(settings, replacedBlock);
         this.effect = effect;
     }
@@ -61,7 +61,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
             return;
         }
         if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(this.effect, 40));
+            ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(this.effect.get(), 40));
         }
     }
 

@@ -4,16 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.resource.ResourcePackProfile;
-import net.minecraft.resource.ResourcePackSource;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.resource.metadata.PackResourceMetadata;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -21,9 +15,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.resource.PathResourcePack;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entitydata.parry.ParryData;
@@ -36,9 +28,7 @@ import net.soulsweaponry.networking.packets.S2C.PostureSyncS2C;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
-import java.io.IOException;
-
-@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId)
 public class ModEvents {
 
     @SubscribeEvent
@@ -111,24 +101,4 @@ public class ModEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void addBuiltinPack(AddPackFindersEvent event) {
-        // NOTE: Maybe done differently in other versions, if so see https://github.com/MinecraftForge/MinecraftForge/blob/1.18.x/src/test/java/net/minecraftforge/debug/AddPackFinderEventTest.java
-        try {
-            if (event.getPackType() == ResourceType.CLIENT_RESOURCES) {
-                var resourcePath = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("2d_weapons");
-                PathResourcePack pack = new PathResourcePack(ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().getFileName() + ":" + resourcePath, resourcePath);
-                var metadataSection = pack.parseMetadata(PackResourceMetadata.READER);
-                if (metadataSection != null) {
-                    event.addRepositorySource((packConsumer, packConstructor) ->
-                            packConsumer.accept(packConstructor.create(
-                                    "builtin/2d_weapons", new LiteralText("2D Weapon Models"), false,
-                                    () -> pack, metadataSection, ResourcePackProfile.InsertionPosition.BOTTOM, ResourcePackSource.PACK_SOURCE_BUILTIN, false)));
-                }
-            }
-        }
-        catch(IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 }

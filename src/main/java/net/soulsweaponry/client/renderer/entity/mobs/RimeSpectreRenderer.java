@@ -6,12 +6,12 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.RimeSpectreModel;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class RimeSpectreRenderer extends GeoEntityRenderer<RimeSpectre> {
+public class RimeSpectreRenderer extends GeoEntityRendererFixed<RimeSpectre> {
 
     public RimeSpectreRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new RimeSpectreModel());

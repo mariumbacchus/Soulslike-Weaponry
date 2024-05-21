@@ -17,9 +17,7 @@ license="CC0-1.0"
 # The modid of the mod
 modId="soulsweapons" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-# ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
-# see the associated build.gradle script for how to populate this completely automatically during a build
-version="${file.jarVersion}" #mandatory
+version="1.0.2-1.18.2-forge" #mandatory
  # A display name for the mod
 displayName="Marium's Soulslike Weaponry" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -54,3 +52,7 @@ description="Adds lots of legendary weapons and bosses!"
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.soulsweapons]]
+    modId="geckolib3"
+    mandatory=true
+    versionRange="[3.0.57,)"

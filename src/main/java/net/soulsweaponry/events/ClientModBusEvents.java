@@ -24,14 +24,16 @@ public class ClientModBusEvents {
 
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
-        BlockRenderLayers.register();
-        ArmorRenderRegistry.register();
-        PredicateRegistry.register();
-        EntityModelRegistry.register();
+        event.enqueueWork(() -> {
+            BlockRenderLayers.register();
+            ArmorRenderRegistry.register();
+            PredicateRegistry.register();
+            EntityModelRegistry.register();
+            //NOTE: 1.19 does registry differently through a client mod bus event instead, see https://www.youtube.com/watch?v=J3a7JT0rxTM
+            OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "posture_bar", PostureHudOverlay.HUD_POSTURE);
+        });
         //NOTE: 1.19 does registry differently, check https://www.youtube.com/watch?v=NN-k74NMKRc&list=PLKGarocXCE1HrC60yuTNTGRoZc6hf5Uvl&index=14 for more info.
         KeyBindRegistry.register();
-        //NOTE: 1.19 does registry differently through a client mod bus event instead, see https://www.youtube.com/watch?v=J3a7JT0rxTM
-        OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "posture_bar", PostureHudOverlay.HUD_POSTURE);
     }
 
     @SubscribeEvent

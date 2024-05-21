@@ -9,12 +9,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
+public class MoonknightRenderer extends GeoEntityRendererFixed<Moonknight> {
 
     int[] rgbColorOne = {254, 200, 203};
     int[] rgbColorTwo = {254, 254, 218};

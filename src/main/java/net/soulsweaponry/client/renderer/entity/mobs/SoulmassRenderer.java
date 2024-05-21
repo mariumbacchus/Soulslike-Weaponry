@@ -3,12 +3,12 @@ package net.soulsweaponry.client.renderer.entity.mobs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.SoulmassModel;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class SoulmassRenderer extends GeoEntityRenderer<Soulmass>{
+public class SoulmassRenderer extends GeoEntityRendererFixed<Soulmass> {
 
     int[] rgbColorOne = {13, 2, 125};
     int[] rgbColorTwo = {20, 0, 237};

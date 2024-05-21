@@ -7,12 +7,12 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
+import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
+public class DayStalkerRenderer extends GeoEntityRendererFixed<DayStalker> {
 
     int[] rgbColorOne = {252, 34, 34};
     int[] rgbColorTwo = {250, 186, 132};
