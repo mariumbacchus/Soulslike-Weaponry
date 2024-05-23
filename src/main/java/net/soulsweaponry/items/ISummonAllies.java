@@ -3,7 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.soulsweaponry.entitydata.summons.SummonsData;
+import net.soulsweaponry.entitydata.SummonsData;
 
 import java.util.ArrayList;
 import java.util.List;

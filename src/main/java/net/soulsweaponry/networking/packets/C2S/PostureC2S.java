@@ -1,12 +1,8 @@
 package net.soulsweaponry.networking.packets.C2S;
 
-import net.minecraft.item.ShieldItem;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.config.CommonConfig;
-import net.soulsweaponry.entitydata.parry.ParryData;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.PostureSyncS2C;

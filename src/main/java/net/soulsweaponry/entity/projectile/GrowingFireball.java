@@ -24,7 +24,7 @@ import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.entitydata.parry.ParryData;
+import net.soulsweaponry.entitydata.ParryData;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;

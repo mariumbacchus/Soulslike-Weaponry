@@ -52,6 +52,7 @@ public class SoulsWeaponry {
         //TODO test and fix everything
         //TODO fix bugs (especially with keybinds)
         //TODO fix datagen run greia
+        //TODO builtin texture pack funker men overrider ikke ting...
         eventBus.addListener(this::setup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");

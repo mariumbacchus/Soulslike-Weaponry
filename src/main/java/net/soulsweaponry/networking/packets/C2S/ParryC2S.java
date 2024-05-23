@@ -6,7 +6,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.CommonConfig;
-import net.soulsweaponry.entitydata.parry.ParryData;
+import net.soulsweaponry.entitydata.ParryData;
 
 import java.util.function.Supplier;
 

@@ -22,7 +22,7 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import net.soulsweaponry.entitydata.summons.SummonsData;
+import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;

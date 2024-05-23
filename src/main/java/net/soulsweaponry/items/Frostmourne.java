@@ -21,7 +21,7 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
-import net.soulsweaponry.entitydata.summons.SummonsData;
+import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

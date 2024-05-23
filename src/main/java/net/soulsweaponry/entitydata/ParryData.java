@@ -1,4 +1,4 @@
-package net.soulsweaponry.entitydata.parry;
+package net.soulsweaponry.entitydata;
 
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +12,53 @@ public class ParryData {
 
     public static final String PARRY_FRAMES_ID = "parry_frames";
     public static final int MAX_PARRY_FRAMES = CommonConfig.SHIELD_PARRY_MAX_ANIMATION_FRAMES.get();
-    private int parryFrames;
+
+    public static int addParryFrames(PlayerEntity player, int amount) {
+        NbtCompound nbt = player.getPersistentData();
+        int frame = nbt.getInt(PARRY_FRAMES_ID);
+        if (frame >= MAX_PARRY_FRAMES) {
+            frame = 0;
+        } else {
+            frame += amount;
+        }
+        nbt.putInt(PARRY_FRAMES_ID, frame);
+        if (player instanceof ServerPlayerEntity) {
+            syncFrames(frame, (ServerPlayerEntity) player);
+        }
+        return frame;
+    }
+
+    public static int setParryFrames(PlayerEntity player, int amount) {
+        NbtCompound nbt = player.getPersistentData();
+        nbt.putInt(PARRY_FRAMES_ID, amount);
+        if (player instanceof ServerPlayerEntity) {
+            syncFrames(amount, (ServerPlayerEntity) player);
+        }
+        return amount;
+    }
+
+    public static int getParryFrames(PlayerEntity player) {
+        return player.getPersistentData().getInt(PARRY_FRAMES_ID);
+    }
+
+    public static boolean successfulParry(PlayerEntity player, boolean checkIfCanBeParried, DamageSource source) {
+        int frames = ParryData.getParryFrames(player);
+        boolean bl = true;
+        if (checkIfCanBeParried) {
+            bl = !source.isUnblockable();
+        }
+        return frames >= 1 && frames <= CommonConfig.SHIELD_PARRY_FRAMES.get() && bl;
+    }
+
+    public static void syncFrames(int frames, ServerPlayerEntity player) {
+        ModMessages.sendToPlayer(new ParrySyncS2C(frames), player);
+    }
+
+    // Capabilities work fine, but why not use the getPersistentData method instead?
+    // SummonData and ParryData still uses the persistentData method like in the fabric
+    // version, while PostureData uses the capabilities instead.
+    // Under are some remains after I tried to make ParryData use capabilities.
+    /*private int parryFrames;
 
     public int getParryFrames() {
         return parryFrames;
@@ -69,5 +115,5 @@ public class ParryData {
             data.addParryFrames(amount);
             ModMessages.sendToPlayer(new ParrySyncS2C(data.getParryFrames()), (ServerPlayerEntity) player);
         });
-    }
+    }*/
 }

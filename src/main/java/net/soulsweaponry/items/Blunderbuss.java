@@ -31,7 +31,7 @@ public class Blunderbuss extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return CommonConfig.BLUNDERBUSS_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 

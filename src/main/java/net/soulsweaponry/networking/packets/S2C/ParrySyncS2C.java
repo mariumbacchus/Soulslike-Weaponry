@@ -7,6 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.client.entitydata.ClientParryData;
+import net.soulsweaponry.entitydata.ParryData;
 
 import java.util.function.Supplier;
 
@@ -43,5 +44,6 @@ public class ParrySyncS2C {
 
     private void handlePacket(ClientWorld world, ParrySyncS2C packet) {
         ClientParryData.setParryFrames(packet.getParryFrames());
+        //MinecraftClient.getInstance().player.getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, packet.getParryFrames());
     }
 }

@@ -32,7 +32,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return CommonConfig.GATLING_GUN_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 

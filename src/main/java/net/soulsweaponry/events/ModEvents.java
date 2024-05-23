@@ -18,8 +18,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
-import net.soulsweaponry.entitydata.parry.ParryData;
-import net.soulsweaponry.entitydata.parry.ParryDataProvider;
+import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.entitydata.posture.PostureDataProvider;
 import net.soulsweaponry.networking.ModMessages;
@@ -34,8 +33,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof PlayerEntity player) {
-            if (!player.getCapability(ParryDataProvider.PARRY_DATA).isPresent()) {
-                event.addCapability(new Identifier(SoulsWeaponry.ModId, "properties"), new ParryDataProvider());
+            if (!player.getCapability(PostureDataProvider.POSTURE_DATA).isPresent()) {
+                event.addCapability(new Identifier(SoulsWeaponry.ModId, "properties"), new PostureDataProvider());
             }
         }
     }
@@ -46,11 +45,7 @@ public class ModEvents {
             event.getOriginal().reviveCaps();
             PlayerEntity original = event.getOriginal();
             PlayerEntity player = event.getPlayer();
-
-            original.getCapability(ParryDataProvider.PARRY_DATA).ifPresent(old -> player.getCapability(ParryDataProvider.PARRY_DATA).ifPresent(up -> up.copyFrom(old)));
             original.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> player.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
-            //original.getCapability(SummonsDataProvider.SUMMONS_DATA).ifPresent(old -> player.getCapability(SummonsDataProvider.SUMMONS_DATA).ifPresent(up -> up.copyFrom(old)));
-
             event.getOriginal().invalidateCaps();
         }
     }
@@ -59,9 +54,7 @@ public class ModEvents {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         // NOTE: In other versions, either annotate capability class with @AutoRegisterCapability (or @CapabilityInject)
         // instead of having this method.
-        event.register(ParryData.class);
         event.register(PostureData.class);
-        //event.register(SummonsData.class);TODO gotta test if fabric implementation works or not, if it doesnt, fix up provider and uncomment registration etc.
     }
 
     @SubscribeEvent
@@ -100,5 +93,4 @@ public class ModEvents {
             }
         }
     }
-
 }

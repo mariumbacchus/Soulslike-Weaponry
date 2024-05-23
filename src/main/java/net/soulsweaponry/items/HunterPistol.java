@@ -31,7 +31,7 @@ public class HunterPistol extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return CommonConfig.HUNTER_PISTOL_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 

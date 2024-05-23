@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.Cannonball;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public class HunterCannon extends GunItem {
@@ -33,7 +32,7 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return CommonConfig.HUNTER_CANNON_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
     }
 
