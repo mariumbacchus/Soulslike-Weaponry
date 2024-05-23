@@ -530,7 +530,7 @@ public class CommonConfig {
         MAX_POSTURE_LOSS = BUILDER.comment("Values for gun properties, shield parry, posture loss and other mechanics.").define("Max Posture Loss before Posture Break", 200);
         ENABLE_SHIELD_PARRY = BUILDER.define("Enable Shield Parry ability", true);
         SHIELD_PARRY_COOLDOWN = BUILDER.define("Shield Parry cooldown", 40);
-        SHIELD_PARRY_MAX_ANIMATION_FRAMES = BUILDER.defineInRange("Shield Parry max animation frames", 10, 2, 3000);
+        SHIELD_PARRY_MAX_ANIMATION_FRAMES = BUILDER.defineInRange("Shield Parry max animation frames", 14, 2, 3000);
         SHIELD_PARRY_FRAMES = BUILDER.defineInRange("Shield Parry parry frames", 3, 2, 3000);
         CAN_PROJECTILES_APPLY_POSTURE_LOSS = BUILDER.define("Can projectiles apply Posture Loss", true);
         SILVER_BULLET_UNDEAD_BONUS_DAMAGE = BUILDER.define("Silver Bullet undead bonus damage", 4);
