@@ -50,8 +50,6 @@ public class SoulsWeaponry {
         ItemRegistry.register(eventBus);
         //TODO entity spawning
         //TODO test and fix everything
-        //TODO fix bugs (especially with keybinds)
-        //TODO fix datagen run greia
         //TODO builtin texture pack funker men overrider ikke ting...
         eventBus.addListener(this::setup);
 
@@ -63,8 +61,6 @@ public class SoulsWeaponry {
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModMessages.register();
-            RecipeRegistry.init();
-            EntityRegistry.registerBossDrops();
 
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));

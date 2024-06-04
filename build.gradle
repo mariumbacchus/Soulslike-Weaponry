@@ -10,9 +10,23 @@ base {
     archivesName = project.archives_base_name
 }
 
+def generatedResources = file("src/generated")
+sourceSets {
+    main {
+        resources.srcDir generatedResources
+    }
+}
+
 loom {
     forge {
         mixinConfig 'soulsweapons.mixins.json'
+    }
+    runs {
+        data {
+            data()
+            programArgs "--all", "--mod", "soulsweapons"
+            programArgs "--output", generatedResources.absolutePath
+        }
     }
 }
 

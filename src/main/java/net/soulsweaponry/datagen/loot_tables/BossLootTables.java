@@ -8,6 +8,7 @@ import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class BossLootTables implements Consumer<BiConsumer<Identifier, LootTable
 
     @Override
     public void accept(BiConsumer<Identifier, LootTable.Builder> bi) {
+        EntityRegistry.registerBossDrops();
         for (String id : BOSS_DROPS.keySet()) {
             LootTable.Builder builder = LootTable.builder();
             for (Item item : BOSS_DROPS.get(id)) {

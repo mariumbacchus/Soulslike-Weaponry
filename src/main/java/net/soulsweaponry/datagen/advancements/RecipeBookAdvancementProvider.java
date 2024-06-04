@@ -15,6 +15,8 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.util.Identifier;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.RecipeRegistry;
 
 import java.util.Set;
@@ -28,6 +30,7 @@ public class RecipeBookAdvancementProvider extends AdvancementProvider {
 
     @Override
     protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
+        RecipeRegistry.init();
         Advancement recipeRoot = Advancement.Builder.create().criterion("impossible",
                 new ImpossibleCriterion.Conditions()).build(consumer, new Identifier(SoulsWeaponry.ModId, "recipe_root").toString());
         for (Item[] items : RecipeRegistry.recipeAdvancements.keySet()) {
@@ -40,7 +43,6 @@ public class RecipeBookAdvancementProvider extends AdvancementProvider {
                     .requirements(new String[][]{{"has_item", "has_advancement"}})
                     .build(consumer, id.toString());
         }
-        super.registerAdvancements(consumer, fileHelper);
     }
 
     public static InventoryChangedCriterion.Conditions items(Item... items) {
