@@ -24,9 +24,12 @@ public class ModTags {
     }
 
     public static class Items {
-        public static final TagKey<Item> LORD_SOUL = createCommonTag("lord_soul");
+        public static final TagKey<Item> LORD_SOUL = createTag("lord_soul");
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> MOONLIGHT_SWORD = createTag("moonlight_sword");
+
+        public static final TagKey<Item> STICKS = createCommonTag("wood_sticks");
+        public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(Registry.ITEM_KEY, new Identifier(SoulsWeaponry.ModId, name));

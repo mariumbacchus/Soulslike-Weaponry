@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " #S",
+    "#GS",
+    " #S"
+  ],
+  "key": {
+    "#": {
+      "item": "soulsweapons:moonstone"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "G": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:galeforce"
+  }
+}

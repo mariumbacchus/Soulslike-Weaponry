@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:iron_sword"
+  },
+  "addition": {
+    "item": "soulsweapons:essence_of_eventide"
+  },
+  "result": {
+    "item": "soulsweapons:draugr"
+  }
+}

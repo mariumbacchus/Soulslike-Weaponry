@@ -58,7 +58,7 @@ dependencies {
     forge "net.minecraftforge:forge:$project.forge_version"
 
     modImplementation "software.bernie.geckolib:geckolib-forge-${project.geckolib_version}"
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }

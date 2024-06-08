@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iSi",
+    "iSi",
+    " / "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "soulsweapons:crimson_ingot"
+    },
+    "/": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:bloodthirster"
+  }
+}

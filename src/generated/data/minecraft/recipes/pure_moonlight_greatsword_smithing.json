@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "tag": "soulsweapons:moonlight_sword"
+  },
+  "addition": {
+    "item": "soulsweapons:essence_of_luminescence"
+  },
+  "result": {
+    "item": "soulsweapons:pure_moonlight_greatsword"
+  }
+}

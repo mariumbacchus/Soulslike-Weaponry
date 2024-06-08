@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A# ",
+    "#Y#",
+    " #X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "minecraft:gold_block"
+    },
+    "Y": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "A": {
+      "item": "minecraft:crossbow"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:kraken_slayer_crossbow"
+  }
+}

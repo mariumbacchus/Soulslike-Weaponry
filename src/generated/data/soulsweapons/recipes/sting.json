@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "#",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "tag": "c:wood_sticks"
+    },
+    "#": {
+      "item": "soulsweapons:verglas"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:sting"
+  }
+}

@@ -6,8 +6,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.datagen.advancements.RecipeBookAdvancementProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
+import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -17,6 +17,6 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
         generator.addProvider(new BossLootTableProvider(generator));
-        generator.addProvider(new RecipeBookAdvancementProvider(generator, fileHelper));
+        generator.addProvider(new WeaponRecipeProvider(generator));
     }
 }

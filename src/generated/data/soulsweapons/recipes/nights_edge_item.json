@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " XX",
+    "#YX",
+    "/# "
+  ],
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "X": {
+      "item": "soulsweapons:moonstone"
+    },
+    "Y": {
+      "item": "soulsweapons:lord_soul_night_prowler"
+    },
+    "#": {
+      "item": "soulsweapons:soul_ingot"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:nights_edge_item"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    "iSi",
+    "/i "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:whirligig_sawblade"
+  }
+}

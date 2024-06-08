@@ -12,6 +12,7 @@ public class CommonConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_WEAPON_RECIPES;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_GUN_RECIPES;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_EMPOWERED_ARMOR;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_ENCHANTS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_FAST_HANDS;
@@ -309,6 +310,7 @@ public class CommonConfig {
 
         DISABLE_WEAPON_RECIPES = BUILDER.define("Disable all legendary weapon recipes", false);
         DISABLE_GUN_RECIPES = BUILDER.define("Disable all gun recipes", false);
+        DISABLE_EMPOWERED_ARMOR = BUILDER.define("Disable all empowered armor recipes", false);
 
         DISABLE_ENCHANTS = BUILDER.comment("Disable registration of enchants.").define("Disable all enchants", false);
         DISABLE_FAST_HANDS = BUILDER.define("Disable Fast Hands/Quick Reload enchant", false);

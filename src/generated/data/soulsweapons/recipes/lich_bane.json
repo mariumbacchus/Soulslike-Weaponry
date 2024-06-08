@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  /",
+    "gS ",
+    "Fg "
+  ],
+  "key": {
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "g": {
+      "item": "minecraft:diamond"
+    },
+    "/": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:lich_bane"
+  }
+}

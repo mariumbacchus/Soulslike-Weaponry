@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S",
+    "#/",
+    " /"
+  ],
+  "key": {
+    "#": {
+      "item": "soulsweapons:verglas"
+    },
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:leviathan_axe"
+  }
+}
