@@ -10,6 +10,16 @@ public class CommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_VEIN_SIZE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_COUNT_PER_CHUNK;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_MIN_HEIGHT;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_MAX_HEIGHT;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> VERGLAS_ORE_VEIN_SIZE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VERGLAS_ORE_COUNT_PER_CHUNK;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VERGLAS_ORE_MIN_HEIGHT;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VERGLAS_ORE_MAX_HEIGHT;
+
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_WEAPON_RECIPES;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_GUN_RECIPES;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_EMPOWERED_ARMOR;
@@ -308,7 +318,17 @@ public class CommonConfig {
     static {
         BUILDER.push("Common config for Soulslike Weaponry Forge");
 
-        DISABLE_WEAPON_RECIPES = BUILDER.define("Disable all legendary weapon recipes", false);
+        MOONSTONE_ORE_VEIN_SIZE = BUILDER.comment("Ore generation settings.").define("Moonstone Ore vein size", 5);
+        MOONSTONE_ORE_COUNT_PER_CHUNK = BUILDER.define("Moonstone Ore average spawn count per chunk", 4);
+        MOONSTONE_ORE_MIN_HEIGHT = BUILDER.define("Moonstone Ore min spawn height", -63);
+        MOONSTONE_ORE_MAX_HEIGHT = BUILDER.define("Moonstone Ore max spawn height", 16);
+
+        VERGLAS_ORE_VEIN_SIZE = BUILDER.define("Verglas Ore vein size", 3);
+        VERGLAS_ORE_COUNT_PER_CHUNK = BUILDER.define("Verglas Ore average spawn count per chunk", 48);
+        VERGLAS_ORE_MIN_HEIGHT = BUILDER.define("Verglas Ore min spawn height", -80);
+        VERGLAS_ORE_MAX_HEIGHT = BUILDER.define("Verglas Ore max spawn height", 120);
+
+        DISABLE_WEAPON_RECIPES = BUILDER.comment("Disable all recipes of a group.").define("Disable all legendary weapon recipes", false);
         DISABLE_GUN_RECIPES = BUILDER.define("Disable all gun recipes", false);
         DISABLE_EMPOWERED_ARMOR = BUILDER.define("Disable all empowered armor recipes", false);
 
