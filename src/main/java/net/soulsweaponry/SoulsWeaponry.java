@@ -53,7 +53,7 @@ public class SoulsWeaponry {
         GunRegistry.register();
         EntityRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
-        //TODO armor rendering
+
         eventBus.addListener(this::setup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");

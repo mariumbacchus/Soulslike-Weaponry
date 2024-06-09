@@ -32,11 +32,12 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class WitheredArmor extends ArmorItem implements IAnimatable, IKeybindAbility {
+public class WitheredArmor extends GeoArmorItem implements IAnimatable, IKeybindAbility {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 

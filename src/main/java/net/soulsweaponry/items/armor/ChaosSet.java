@@ -43,6 +43,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -50,7 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends ArmorItem implements IAnimatable {
+public class ChaosSet extends GeoArmorItem implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();

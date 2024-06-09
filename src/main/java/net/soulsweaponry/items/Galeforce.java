@@ -25,6 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -108,8 +109,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.getItemCooldownManager().set(this, CommonConfig.GALEFORCE_DASH_COOLDOWN.get());
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
+            if (!player.isCreative())
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), CommonConfig.GALEFORCE_DASH_COOLDOWN.get(), 0));
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
@@ -124,7 +126,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             float f = player.getYaw();
             float g = player.getPitch();
             float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);

@@ -456,7 +456,7 @@ public class CommonConfig {
         FROSTMOURNE_DAMAGE = BUILDER.define("Frostmourne damage", 11);
         FROSTMOURNE_ALLIES_CAP = BUILDER.define("Frostmourne summoned allies cap", 50);
         GALEFORCE_BONUS_DAMAGE = BUILDER.define("Galeforce bonus projectile damage", 1f);
-        GALEFORCE_DASH_COOLDOWN = BUILDER.define("Galeforce dash cooldown", 50);
+        GALEFORCE_DASH_COOLDOWN = BUILDER.define("Galeforce dash cooldown", 80);
         RAGEBLADE_DAMAGE = BUILDER.define("Guinsoo's Rageblade damage", 7);
         RAGEBLADE_HASTE_CAP = BUILDER.define("Guinsoo's Rageblade has haste cap", true);
         HOLY_MOON_GREAT_DAMAGE = BUILDER.define("Holy Moonlight Greatsword damage", 10);
