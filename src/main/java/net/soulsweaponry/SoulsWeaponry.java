@@ -49,8 +49,7 @@ public class SoulsWeaponry {
         EntityRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
         //TODO entity spawning
-        //TODO test and fix everything
-        //TODO builtin texture pack funker men overrider ikke ting...
+        //TODO armor rendering
         eventBus.addListener(this::setup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");

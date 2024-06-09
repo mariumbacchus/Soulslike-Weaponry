@@ -10,6 +10,8 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.resource.PathResourcePack;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.*;
@@ -52,19 +54,23 @@ public class ModBusEvents {
         // NOTE: Maybe done differently in other versions, if so see https://github.com/MinecraftForge/MinecraftForge/blob/1.18.x/src/test/java/net/minecraftforge/debug/AddPackFinderEventTest.java
         try {
             if (event.getPackType() == ResourceType.CLIENT_RESOURCES) {
-                Path resourcePath = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/2d_weapons");
-                PathResourcePack pack = new PathResourcePack(ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().getFileName() + ":" + resourcePath, resourcePath);
-                PackResourceMetadata metadataSection = pack.parseMetadata(PackResourceMetadata.READER);
-                if (metadataSection != null) {
-                    event.addRepositorySource((packConsumer, packConstructor) ->
-                            packConsumer.accept(packConstructor.create(
-                                    "builtin/2d_weapons", new LiteralText("2D Weapon Models"), false,
-                                    () -> pack, metadataSection, ResourcePackProfile.InsertionPosition.BOTTOM, ResourcePackSource.PACK_SOURCE_BUILTIN, false)));
+                IModFileInfo info = ModList.get().getModFileById(SoulsWeaponry.ModId);
+                if (info == null) {
+                    return;
                 }
+                IModFile file = info.getFile();
+                Path resourcePath = file.findResource("resourcepacks/2d_weapons");
+                PathResourcePack pack = new PathResourcePack(file.getFileName() + ":" + resourcePath, resourcePath);
+                PackResourceMetadata metadata = pack.parseMetadata(PackResourceMetadata.READER);
+                event.addRepositorySource((consumer, constructor) -> {
+                    consumer.accept(constructor.create("builtin/2d_weapons", new LiteralText("2D Weapon Models"), false,
+                            () -> pack, metadata, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                });
             }
         }
         catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
     }
 }

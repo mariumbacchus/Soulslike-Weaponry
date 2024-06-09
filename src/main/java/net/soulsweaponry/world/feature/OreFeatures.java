@@ -18,5 +18,5 @@ public class OreFeatures {
     );
 
     public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> MOONSTONE_ORE = ConfiguredFeatures.register("overworld_moonstone_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_MOONSTONE_ORES, 5));
-    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> VERGLAS_ORE = ConfiguredFeatures.register("overworld_verglas_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_VERGLAS_ORES, 2));
+    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> VERGLAS_ORE = ConfiguredFeatures.register("overworld_verglas_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_VERGLAS_ORES, 3));
 }

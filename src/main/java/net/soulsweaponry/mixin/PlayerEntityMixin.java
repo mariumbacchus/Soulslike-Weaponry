@@ -116,7 +116,7 @@ public class PlayerEntityMixin {
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {
                     //ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME, player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
-                           // player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f); TODO test
+                           // player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f);
                     ((ServerWorld)player.getWorld()).spawnParticles(ParticleRegistry.BLACK_FLAME.get(), player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D), 1, 0, 0, 0, player.getRandom().nextGaussian() / 10f);
                 }
             }
