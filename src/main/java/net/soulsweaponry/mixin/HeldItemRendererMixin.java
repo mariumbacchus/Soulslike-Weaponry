@@ -29,7 +29,7 @@ public class HeldItemRendererMixin {
         int frames = ClientParryData.getParryFrames();
         if (frames >= 1) {
             this.parryProgress = frames == 1 ? 0.1f : parryProgress;
-            float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 6f;
+            float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 3f;//6
             this.parryProgress = Math.min(this.parryProgress + added, 1f);
 
             float h;

@@ -76,7 +76,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 float h = MathHelper.sin(parryProgress * (float)Math.PI) * -(model.head.pitch - 0.7f) * 0.75f;
                 modelPart.pitch -= g * 1.2f + h;
                 modelPart.yaw += model.body.yaw * 2.0f;
-                modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.8f; //0.4
+                modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.4f; //0.4, 0.8
             }
         }
     }
