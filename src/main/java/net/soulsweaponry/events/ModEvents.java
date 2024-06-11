@@ -1,14 +1,11 @@
 package net.soulsweaponry.events;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Identifier;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -20,7 +17,6 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.posture.PostureData;
-import net.soulsweaponry.entitydata.posture.PostureDataProvider;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.ParrySyncS2C;
 import net.soulsweaponry.networking.packets.S2C.PostureSyncS2C;
@@ -30,14 +26,14 @@ import net.soulsweaponry.registry.SoundRegistry;
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId)
 public class ModEvents {
 
-    @SubscribeEvent
-    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof PlayerEntity player) {
-            if (!player.getCapability(PostureDataProvider.POSTURE_DATA).isPresent()) {
-                event.addCapability(new Identifier(SoulsWeaponry.ModId, "properties"), new PostureDataProvider());
-            }
-        }
-    }
+//    @SubscribeEvent
+//    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+//        if (event.getObject() instanceof PlayerEntity player) {
+//            if (!player.getCapability(PostureDataProvider.POSTURE_DATA).isPresent()) {
+//                event.addCapability(new Identifier(SoulsWeaponry.ModId, "properties"), new PostureDataProvider());
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
@@ -45,7 +41,8 @@ public class ModEvents {
             event.getOriginal().reviveCaps();
             PlayerEntity original = event.getOriginal();
             PlayerEntity player = event.getPlayer();
-            original.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> player.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
+            //original.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> player.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
+            PostureData.setPosture(player, PostureData.getPosture(original));
             event.getOriginal().invalidateCaps();
         }
     }

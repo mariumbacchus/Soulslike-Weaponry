@@ -57,7 +57,7 @@ public class GatlingGun extends GunItem {
                         itemStack = new ItemStack(ItemRegistry.SILVER_BULLET.get());
                     }
                     boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET.get());
-                    int power = this.getDamage(stack);
+                    int power = this.getBulletDamage(stack);
                     int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
                     Vec3d pov = playerEntity.getRotationVector();
                     Vec3d particleBox = pov.multiply(1).add(playerEntity.getPos());

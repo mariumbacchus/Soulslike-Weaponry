@@ -64,7 +64,7 @@ public class Blunderbuss extends GunItem {
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 entity.setPostureLoss(this.getPostureLoss(stack));
-                entity.setDamage(this.getDamage(stack));
+                entity.setDamage(this.getBulletDamage(stack));
                 if (punch > 0) {
                     entity.setPunch(punch);
                 }

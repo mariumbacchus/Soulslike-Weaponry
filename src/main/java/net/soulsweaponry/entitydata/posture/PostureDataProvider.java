@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+/*
 public class PostureDataProvider implements ICapabilityProvider, INBTSerializable<NbtCompound> {
     public static Capability<PostureData> POSTURE_DATA = CapabilityManager.get(new CapabilityToken<PostureData>() { });
 
@@ -44,4 +44,4 @@ public class PostureDataProvider implements ICapabilityProvider, INBTSerializabl
     public void deserializeNBT(NbtCompound nbt) {
         createPostureData().loadNBTData(nbt);
     }
-}
+}*/

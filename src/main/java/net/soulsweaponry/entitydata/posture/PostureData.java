@@ -9,7 +9,46 @@ import net.soulsweaponry.networking.packets.S2C.PostureSyncS2C;
 public class PostureData {
 
     public static final String POSTURE_ID = "posture";
-    private int posture;
+
+    public static int addPosture(LivingEntity entity, int amount) {
+        NbtCompound nbt = entity.getPersistentData();
+        int posture = nbt.getInt(POSTURE_ID);
+        if (posture < 0) {
+            posture = 0;
+        } else {
+            posture += amount;
+        }
+        nbt.putInt(POSTURE_ID, posture);
+        if (entity instanceof ServerPlayerEntity) {
+            syncData(posture, (ServerPlayerEntity) entity);
+        }
+        return posture;
+    }
+
+    public static int getPosture(LivingEntity entity) {
+        return entity.getPersistentData().getInt(POSTURE_ID);
+    }
+
+    public static int reducePosture(LivingEntity entity, int amount) {
+        return addPosture(entity, -amount);
+    }
+
+    public static int setPosture(LivingEntity entity, int amount) {
+        NbtCompound nbt = entity.getPersistentData();
+        nbt.putInt(POSTURE_ID, amount);
+        if (entity instanceof ServerPlayerEntity) {
+            syncData(amount, (ServerPlayerEntity) entity);
+        }
+        return amount;
+    }
+
+    public static void syncData(int posture, ServerPlayerEntity entity) {
+        ModMessages.sendToPlayer(new PostureSyncS2C(posture), entity);
+    }
+
+    // Forgot that player capabilities don't apply to entities
+    // Commented it all out as a reference for possible later capability instances
+    /*private int posture;
 
     public int getPosture() {
         return posture;
@@ -72,5 +111,5 @@ public class PostureData {
                 ModMessages.sendToPlayer(new PostureSyncS2C(data.getPosture()), player);
             }
         });
-    }
+    }*/
 }
