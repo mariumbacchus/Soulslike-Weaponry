@@ -97,12 +97,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int comet_spear_ability_damage = 10;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
+    @Entry public static float comet_spear_launch_multiplier = 0.35f;
     @Entry public static int crucible_sword_normal_damage = 9;
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static int darkin_blade_ability_damage = 12;
     @Entry public static int darkin_blade_ability_cooldown = 150;
+    @Entry public static float darkin_blade_launch_multiplier = 0.25f;
     @Entry public static int darkin_scythe_damage = 9;
     @Entry public static int darkin_scythe_bonus_damage = 3;
     @Entry public static int darkin_scythe_max_souls = 100;
@@ -129,6 +131,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dragonslayer_swordspear_lightning_amount = 1;
     @Entry public static int dragonslayer_swordspear_throw_cooldown = 100;
     @Entry public static int dragonslayer_swordspear_ability_cooldown = 300;
+    @Entry public static float dragonslayer_swordspear_launch_multiplier = 0.25f;
     @Entry public static int dragon_staff_damage = 8;
     @Entry public static int dragon_staff_aura_strength = 1;
     @Entry public static int dragon_staff_cooldown = 100;
@@ -144,6 +147,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
+    @Entry public static float featherlight_launch_multiplier = 0.20f;
     @Entry public static int frostmourne_damage = 11;
     @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
@@ -196,6 +200,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry public static int nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
+    @Entry public static float nightfall_launch_multiplier = 0.30f;
     @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static int nights_edge_ability_cooldown = 120;
     @Entry public static float nights_edge_ability_damage = 10f;
@@ -220,6 +225,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int whirligig_sawblade_cooldown = 100;
     @Entry public static int whirligig_sawblade_use_time = 100;
     @Entry public static int withered_wabbajack_damage = 8;
+
+    @Entry public static boolean calculated_fall_hits_immune_entities = false;
 
     @Entry public static int max_posture_loss = 200;
     @Entry public static boolean enable_shield_parry = true;
