@@ -172,8 +172,8 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 30;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.nightfall_launch_multiplier;
     }
 
     @Override

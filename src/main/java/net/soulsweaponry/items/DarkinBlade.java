@@ -134,8 +134,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 25;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.darkin_blade_launch_multiplier;
     }
 
     @Override

@@ -61,8 +61,8 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 20;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.featherlight_launch_multiplier;
     }
 
     @Override

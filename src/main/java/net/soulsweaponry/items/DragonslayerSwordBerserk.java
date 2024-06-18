@@ -86,8 +86,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 25;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.dragonslayer_swordspear_launch_multiplier;
     }
 
     @Override

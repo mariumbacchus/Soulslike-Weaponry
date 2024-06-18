@@ -134,8 +134,8 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 35;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.comet_spear_launch_multiplier;
     }
 
     @Override
