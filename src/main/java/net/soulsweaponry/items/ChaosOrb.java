@@ -13,6 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +29,12 @@ public class ChaosOrb extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if(ConfigConstructor.disable_use_chaos_orb) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return TypedActionResult.fail(stack);
+        }
         if (!world.isClient) {
             ChaosOrbEntity orb = new ChaosOrbEntity(EntityRegistry.CHAOS_ORB_ENTITY, world);
             orb.setPosition(user.getX(), user.getEyeY(), user.getZ());
@@ -46,6 +53,9 @@ public class ChaosOrb extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_chaos_orb){
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         super.appendTooltip(stack, world, tooltip, context);
         for (int i = 1; i < 3 + 1; i++) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));

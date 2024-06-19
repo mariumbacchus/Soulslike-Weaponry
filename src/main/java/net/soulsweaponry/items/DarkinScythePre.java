@@ -46,6 +46,12 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_darkin_scythe) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
+            }
+            return false;
+        }
         stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if (target.isDead()) {
             int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
@@ -137,6 +143,9 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_darkin_scythe) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRANSFORMATION, stack, tooltip);
         } else {

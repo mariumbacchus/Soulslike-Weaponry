@@ -50,6 +50,12 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getStackInHand(hand);
+        if(ConfigConstructor.disable_use_soul_reaper) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return TypedActionResult.fail(stack);
+        }
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
             if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
@@ -89,6 +95,9 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_soul_reaper) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);

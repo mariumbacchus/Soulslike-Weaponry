@@ -28,6 +28,8 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     }
 
     private float getBonusDamage(ItemStack stack) {
+        if(ConfigConstructor.disable_use_holy_moonlight_sword)
+            return 0;
         float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
         return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }

@@ -9,7 +9,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_fast_hands = false;
     @Entry public static boolean disable_enchantment_posture_breaker = false;
     @Entry public static boolean disable_enchantment_stagger = false;
-    
+
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_comet_spear = false;
     @Entry public static boolean disable_recipe_darkin_blade = false;
@@ -49,6 +49,55 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
+
+    @Entry public static boolean inform_player_about_disabled_use = true;
+    @Entry public static boolean disable_use_bluemoon_shortsword = false;
+    @Entry public static boolean disable_use_bluemoon_greatsword = false;
+    @Entry public static boolean disable_use_moonlight_shortsword = false;
+    @Entry public static boolean disable_use_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_pure_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_bloodthirster = false;
+    @Entry public static boolean disable_use_darkin_blade = false;
+    @Entry public static boolean disable_use_dragon_staff = false;
+    @Entry public static boolean disable_use_withered_wabbajack = false;
+    @Entry public static boolean disable_use_whirligig_sawblade = false;
+    @Entry public static boolean disable_use_dragonslayer_swordspear = false;
+    @Entry public static boolean disable_use_rageblade = false;
+    @Entry public static boolean disable_use_heap_of_raw_iron = false;
+    @Entry public static boolean disable_use_nightfall = false;
+    @Entry public static boolean disable_use_comet_spear = false;
+    @Entry public static boolean disable_use_lich_bane = false;
+    @Entry public static boolean disable_use_galeforce = false;
+    @Entry public static boolean disable_use_draugr = false;
+    @Entry public static boolean disable_use_dawnbreaker = false;
+    @Entry public static boolean disable_use_soul_reaper = false;
+    @Entry public static boolean disable_use_forlorn_scythe = false;
+    @Entry public static boolean disable_use_leviathan_axe = false;
+    @Entry public static boolean disable_use_skofnung = false;
+    @Entry public static boolean disable_use_skofnung_stone = false;
+    @Entry public static boolean disable_use_mjolnir = false;
+    @Entry public static boolean disable_use_sword_of_freyr = false;
+    // @Entry public static boolean disable_use_sting = false;
+    @Entry public static boolean disable_use_featherlight = false;
+    @Entry public static boolean disable_use_crucible_sword = false;
+    @Entry public static boolean disable_use_darkin_scythe = false;
+    @Entry public static boolean disable_use_shadow_assassin_scythe = false;
+    @Entry public static boolean disable_use_draupnir_spear = false;
+    @Entry public static boolean disable_use_holy_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_holy_moonlight_sword = false;
+    @Entry public static boolean disable_use_frostmourne = false;
+    @Entry public static boolean disable_use_master_sword = false;
+    @Entry public static boolean disable_use_nights_edge = false;
+    @Entry public static boolean disable_use_empowered_dawnbreaker = false;
+    @Entry public static boolean disable_use_kraken_slayer_bow = false;
+    @Entry public static boolean disable_use_kraken_slayer_crossbow = false;
+    @Entry public static boolean disable_use_darkmoon_longbow = false;
+    @Entry public static boolean disable_use_hunter_pistol = false;
+    @Entry public static boolean disable_use_hunter_blunderbuss = false;
+    @Entry public static boolean disable_use_gatling_gun = false;
+    @Entry public static boolean disable_use_hunter_cannon = false;
+
+    @Entry public static boolean disable_use_chaos_orb = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 100;
