@@ -47,7 +47,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
             entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
         BlockPos blockPos = entity.getBeamLocation();
-        if (entity.getCanBeam() && blockPos != null) {
+        if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
             float yOffset = 4f;
             if (entity.getIncreasingBeamHeight()) {
                 entity.setBeamHeight(0.0325f + entity.getBeamHeight());
