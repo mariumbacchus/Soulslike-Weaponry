@@ -291,7 +291,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
             }
         }
-        if (this.getWorld().isClient && this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
+        if (this.getWorld().isClient && !this.isDead() && this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
             Vec3d start = this.getPos().add(0, 6f, 0);
             Vec3d end = this.getBeamLocation().toCenterPos().add(0, this.getBeamHeight() + 1.4f, 0);
             Vec3d between = new Vec3d(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
