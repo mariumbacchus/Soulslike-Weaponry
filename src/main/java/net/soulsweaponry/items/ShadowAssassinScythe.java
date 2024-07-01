@@ -37,6 +37,12 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_shadow_assassin_scythe) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return false;
+        }
         stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if (attacker instanceof PlayerEntity player) {
             var cooldownManager = player.getItemCooldownManager();
@@ -58,7 +64,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     private boolean canGetBonus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT)) {
+        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT) && !ConfigConstructor.disable_use_shadow_assassin_scythe) {
             return stack.getNbt().getBoolean(HAS_EFFECT);
         }
         return false;
@@ -79,6 +85,9 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_shadow_assassin_scythe){
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHADOW_STEP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS, stack, tooltip);

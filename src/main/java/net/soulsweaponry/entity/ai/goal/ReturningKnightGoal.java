@@ -61,6 +61,10 @@ public class ReturningKnightGoal extends Goal {
     }
 
     public boolean canSummon() {
+        //fix crash on mob summons
+        if(this.pos == null){
+            this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getBlockY() - 3, this.boss.getBlockZ() + this.boss.getRandom().nextInt(32) - 16);
+        }
         if (!this.boss.getWorld().getBlockState(this.pos).isAir()) {
             this.pos = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
             this.canSummon();

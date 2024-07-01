@@ -39,6 +39,12 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         if (user instanceof PlayerEntity player) {
             int chargeTime = this.getMaxUseTime(stack) - remainingUseTicks;
             if (chargeTime >= 10) {
@@ -131,6 +137,12 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return TypedActionResult.fail(itemStack);
+        }
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
             user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
@@ -150,6 +162,9 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);

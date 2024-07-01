@@ -38,6 +38,12 @@ public class Bloodthirster extends SwordItem implements GeoItem {
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_bloodthirster) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return false;
+        }
         super.postHit(stack, target, attacker);
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
@@ -63,6 +69,9 @@ public class Bloodthirster extends SwordItem implements GeoItem {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);
         } else {
+            if(ConfigConstructor.disable_use_bloodthirster){
+                tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+            }
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);

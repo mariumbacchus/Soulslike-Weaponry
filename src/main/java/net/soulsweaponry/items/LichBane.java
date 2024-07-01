@@ -26,6 +26,12 @@ public class LichBane extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_lich_bane) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return false;
+        }
         super.postHit(stack, target, attacker);
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
             ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
@@ -40,6 +46,9 @@ public class LichBane extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_lich_bane) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MAGIC_DAMAGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);

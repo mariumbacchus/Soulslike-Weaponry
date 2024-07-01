@@ -26,7 +26,7 @@ import java.util.Map;
 import static net.soulsweaponry.util.WeaponUtil.TRICK_WEAPONS;
 
 public class SwitchTrickWeaponC2S {
-
+//todo let users disable trick weapons
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();

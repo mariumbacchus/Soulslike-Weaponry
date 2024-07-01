@@ -34,6 +34,12 @@ public class MoonlightShortsword extends SwordItem {
     }
 
     public static void summonSmallProjectile(World world, PlayerEntity user) {
+        if(ConfigConstructor.disable_use_moonlight_shortsword) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         for (Hand hand : Hand.values()) {
             ItemStack itemStack = user.getStackInHand(hand);
             if (!user.getItemCooldownManager().isCoolingDown(WeaponRegistry.MOONLIGHT_SHORTSWORD) && itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)
@@ -71,6 +77,12 @@ public class MoonlightShortsword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_moonlight_shortsword) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return false;
+        }
         stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         return super.postHit(stack, target, attacker);
     }

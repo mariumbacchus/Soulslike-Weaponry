@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 
@@ -26,7 +25,13 @@ public class GuinsoosRageblade extends SwordItem {
         super(toolMaterial, ConfigConstructor.rageblade_damage, attackSpeed, settings);
     }
 
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) { 
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(ConfigConstructor.disable_use_rageblade) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return false;
+        }
         super.postHit(stack, target, attacker);
         
         if (attacker.isOnFire()) {
@@ -50,6 +55,9 @@ public class GuinsoosRageblade extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_rageblade) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FURY, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HASTE, stack, tooltip);

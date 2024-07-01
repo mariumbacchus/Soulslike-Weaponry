@@ -42,6 +42,12 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        if(ConfigConstructor.disable_use_whirligig_sawblade) {
+            if(ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         Vec3d vecBlocksAway = user.getRotationVector().multiply(5).add((user).getPos());
         Box chunkBox = new Box(user.getX(), user.getY(), user.getZ(), vecBlocksAway.x, vecBlocksAway.y + 1, vecBlocksAway.z);
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
@@ -83,6 +89,9 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if(ConfigConstructor.disable_use_whirligig_sawblade) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SAWBLADE, stack, tooltip);
         } else {
