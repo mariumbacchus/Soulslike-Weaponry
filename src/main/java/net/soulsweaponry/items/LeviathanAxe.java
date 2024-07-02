@@ -52,6 +52,12 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
     
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_leviathan_axe) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return super.postHit(stack, target, attacker);
+        }
         int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, sharpness));
         return super.postHit(stack, target, attacker);
@@ -59,6 +65,12 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (ConfigConstructor.disable_use_leviathan_axe) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -117,6 +129,9 @@ public class LeviathanAxe extends AxeItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_leviathan_axe) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);

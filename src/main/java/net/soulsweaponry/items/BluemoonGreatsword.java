@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -18,6 +19,12 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_bluemoon_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return super.postHit(stack, target, attacker);
+        }
         this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
@@ -25,6 +32,12 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (ConfigConstructor.disable_use_bluemoon_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return TypedActionResult.fail(itemStack);
+        }
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) ||
                 user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
             user.setCurrentHand(hand);

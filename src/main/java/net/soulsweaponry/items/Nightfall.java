@@ -8,6 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -56,6 +57,12 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (ConfigConstructor.disable_use_nightfall) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
@@ -81,14 +88,21 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
         }
     }
 
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_nightfall) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            return true;
+        }
         this.spawnRemnant(target, attacker);
-        this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
 
     public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
-        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity) {
+        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !ConfigConstructor.disable_use_nightfall) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
@@ -132,6 +146,9 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_nightfall) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
@@ -148,6 +165,12 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (ConfigConstructor.disable_use_nightfall) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
@@ -172,8 +195,8 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 30;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.nightfall_launch_multiplier;
     }
 
     @Override

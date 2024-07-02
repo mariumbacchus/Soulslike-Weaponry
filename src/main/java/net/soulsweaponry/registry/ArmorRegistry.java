@@ -3,7 +3,7 @@ package net.soulsweaponry.registry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.soulsweaponry.items.SoulRobesItem;
+import net.soulsweaponry.items.armor.SoulRobesItem;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 
 public class ArmorRegistry {

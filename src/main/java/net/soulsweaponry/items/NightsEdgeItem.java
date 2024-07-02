@@ -35,6 +35,9 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_nights_edge) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLIGHT, stack, tooltip);
@@ -46,6 +49,12 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_nights_edge) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return super.postHit(stack, target, attacker);
+        }
         if (target.hasStatusEffect(EffectRegistry.BLIGHT)) {
             int amp = target.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier();
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, 60, amp + 1));
@@ -60,6 +69,12 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (ConfigConstructor.disable_use_nights_edge) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
@@ -72,6 +87,12 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (ConfigConstructor.disable_use_nights_edge) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.castSpell(player, world, stack, true);
             player.getItemCooldownManager().set(this, ConfigConstructor.nights_edge_ability_cooldown);

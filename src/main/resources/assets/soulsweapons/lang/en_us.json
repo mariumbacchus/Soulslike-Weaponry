@@ -1,4 +1,8 @@
 {
+    "soulsweapons.midnightconfig.recipeComment": "Disable recipes for weapons",
+    "soulsweapons.midnightconfig.useComment": "Disable usage of weapons",
+    "soulsweapons.weapon.useDisabled": "§4This item is disabled!§r",
+
     "block.soulsweapons.moonstone_block": "Block of Moonstone",
     "block.soulsweapons.moonstone_ore": "Moonstone Ore",
     "block.soulsweapons.moonstone_ore_deepslate": "Deepslate Moonstone Ore",
@@ -320,6 +324,7 @@
 
     "tooltip.soulsweapons.shift": "Hold [§eSHIFT§r] for Info",
     "tooltip.soulsweapons.control": "Hold [§eCTRL§r] for Lore",
+    "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "Spellblade",
     "tooltip.soulsweapons.magic_damage_description_1": "- While the target has over §c33% Health§r, deal",
     "tooltip.soulsweapons.magic_damage_description_2": "bonus §9Magic Damage§r based on §6Fire Aspect§r",

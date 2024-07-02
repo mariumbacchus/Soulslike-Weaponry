@@ -27,11 +27,14 @@ import java.util.Map;
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - ConfigConstructor.featherlight_attack_speed), settings, true);
+        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - (ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed)), settings, true);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_featherlight) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FEATHERLIGHT, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
@@ -61,8 +64,8 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 20;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.featherlight_launch_multiplier;
     }
 
     @Override

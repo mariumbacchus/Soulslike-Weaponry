@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +44,15 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
     }
 
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_darkin_blade) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            return true;
+        }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
@@ -57,8 +66,15 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
-    
+
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (ConfigConstructor.disable_use_darkin_blade) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
+            }
+            return;
+        }
         if (user instanceof PlayerEntity player) {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -79,6 +95,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_darkin_blade) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
@@ -134,8 +153,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 25;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.darkin_blade_launch_multiplier;
     }
 
     @Override

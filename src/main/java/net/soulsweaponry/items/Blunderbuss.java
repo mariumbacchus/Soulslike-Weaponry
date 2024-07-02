@@ -1,5 +1,6 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,6 +9,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -17,6 +19,9 @@ import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class Blunderbuss extends GunItem {
 
@@ -47,6 +52,12 @@ public class Blunderbuss extends GunItem {
     
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (ConfigConstructor.disable_use_hunter_blunderbuss) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            return TypedActionResult.fail(stack);
+        }
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getProjectileType(stack);
         if (!itemStack.isEmpty() || bl) {
@@ -94,5 +105,13 @@ public class Blunderbuss extends GunItem {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_hunter_blunderbuss) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }
