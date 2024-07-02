@@ -59,7 +59,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_moonlight_greatsword) {
+        if (ConfigConstructor.disable_use_moonlight_greatsword && stack.getItem() instanceof MoonlightGreatsword) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {
