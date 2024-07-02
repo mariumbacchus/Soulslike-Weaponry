@@ -32,7 +32,7 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
     }
 
@@ -56,7 +56,7 @@ public class HunterCannon extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = this.getDamage(stack);
+            int power = this.getBulletDamage(stack);
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());

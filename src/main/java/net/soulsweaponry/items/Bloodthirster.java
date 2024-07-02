@@ -31,10 +31,15 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
         
     }
 
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-        if (attacker instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) attacker;
+        if (ConfigConstructor.disable_use_bloodthirster) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatable("soulsweapons.weapon.useDisabled"));
+            }
+            return super.postHit(stack, target, attacker);
+        }
+        if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
@@ -49,11 +54,14 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
                 }
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_bloodthirster){
+            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);

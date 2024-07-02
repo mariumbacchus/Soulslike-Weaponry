@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.armor;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
