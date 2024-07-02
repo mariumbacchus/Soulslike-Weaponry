@@ -35,7 +35,7 @@ public class CrucibleSword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity) {
+        if (attacker instanceof PlayerEntity && !ConfigConstructor.disable_use_crucible_sword) {
             ItemCooldownManager cooldownManager = ((PlayerEntity) attacker).getItemCooldownManager();
             if (!cooldownManager.isCoolingDown(this)) {
                 cooldownManager.set(this, ConfigConstructor.crucible_sword_empowered_cooldown - WeaponUtil.getEnchantDamageBonus(stack) * 20);
@@ -71,7 +71,7 @@ public class CrucibleSword extends SwordItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            if(ConfigConstructor.disable_use_crucible_sword) {
+            if (ConfigConstructor.disable_use_crucible_sword) {
                 builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.crucible_sword_normal_damage - 1, EntityAttributeModifier.Operation.ADDITION));
             } else {
                 builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (this.isEmpowered(stack) ? ConfigConstructor.crucible_sword_empowered_damage : ConfigConstructor.crucible_sword_normal_damage) - 1, EntityAttributeModifier.Operation.ADDITION));
@@ -86,7 +86,7 @@ public class CrucibleSword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_crucible_sword) {
+        if (ConfigConstructor.disable_use_crucible_sword) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -94,7 +94,6 @@ public class CrucibleSword extends SwordItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

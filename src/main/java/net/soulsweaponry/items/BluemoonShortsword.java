@@ -16,7 +16,7 @@ public class BluemoonShortsword extends MoonlightShortsword {
     }
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_bluemoon_shortsword) {
+        if (ConfigConstructor.disable_use_bluemoon_shortsword) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);

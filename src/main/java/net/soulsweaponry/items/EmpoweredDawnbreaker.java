@@ -5,6 +5,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -50,8 +51,26 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
+                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
+            }
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            return true;
+        }
+        return super.postHit(stack, target, attacker);
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
+            }
+            return TypedActionResult.fail(itemStack);
+        }
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
         }
@@ -63,11 +82,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
-        } else if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
+        if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
@@ -107,7 +122,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_empowered_dawnbreaker) {
+        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -155,8 +170,8 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if(ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
             }
         } else if (!player.getItemCooldownManager().isCoolingDown(this)) {

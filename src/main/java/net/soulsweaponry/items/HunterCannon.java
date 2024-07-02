@@ -37,7 +37,7 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
     }
 
@@ -51,10 +51,11 @@ public class HunterCannon extends GunItem {
         return 10;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_hunter_cannon) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_hunter_cannon) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(stack);
@@ -67,7 +68,7 @@ public class HunterCannon extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = this.getDamage(stack);
+            int power = this.getBulletDamage(stack);
             int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
@@ -114,11 +115,12 @@ public class HunterCannon extends GunItem {
             if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
-        return TypedActionResult.fail(stack); 
+        return TypedActionResult.fail(stack);
     }
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_hunter_cannon) {
+        if (ConfigConstructor.disable_use_hunter_cannon) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);

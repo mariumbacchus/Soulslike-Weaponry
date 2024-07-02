@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -9,8 +10,13 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
@@ -23,13 +29,12 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.addCharge(stack, this.getAddedCharge(stack));
+        if (!ConfigConstructor.disable_use_holy_moonlight_sword) this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
 
     private float getBonusDamage(ItemStack stack) {
-        if(ConfigConstructor.disable_use_holy_moonlight_sword)
-            return 0;
+        if (ConfigConstructor.disable_use_holy_moonlight_sword) return 0;
         float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
         return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }
@@ -57,5 +62,13 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     public int getAddedCharge(ItemStack stack) {
         int base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_holy_moonlight_sword) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }

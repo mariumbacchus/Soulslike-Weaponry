@@ -29,8 +29,8 @@ public class ChaosOrb extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_chaos_orb) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_chaos_orb) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(stack);
@@ -53,7 +53,7 @@ public class ChaosOrb extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_chaos_orb){
+        if (ConfigConstructor.disable_use_chaos_orb){
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);

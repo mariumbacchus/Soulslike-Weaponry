@@ -39,8 +39,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -105,7 +105,6 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
         if (bl) {
             HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
             pillar.setOwner(user);
-            pillar.setStack(stack);
             pillar.setParticleMod(particleMod);
             pillar.setRadius(radius);
             pillar.setDamage(damage);
@@ -137,8 +136,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(itemStack);
@@ -162,7 +161,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

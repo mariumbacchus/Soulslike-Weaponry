@@ -81,6 +81,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_featherlight = false;
     @Entry public static boolean disable_use_crucible_sword = false;
     @Entry public static boolean disable_use_darkin_scythe = false;
+    @Entry public static boolean disable_use_darkin_scythe_prime = false;
     @Entry public static boolean disable_use_shadow_assassin_scythe = false;
     @Entry public static boolean disable_use_draupnir_spear = false;
     @Entry public static boolean disable_use_holy_moonlight_greatsword = false;
@@ -174,13 +175,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int empowered_dawnbreaker_ability_cooldown = 180;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
+    @Entry public static float heap_of_raw_iron_launch_multiplier = 0.25f;
     @Entry public static int dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
     @Entry public static int dragonslayer_swordspear_lightning_amount = 1;
     @Entry public static int dragonslayer_swordspear_throw_cooldown = 100;
     @Entry public static int dragonslayer_swordspear_ability_cooldown = 300;
-    @Entry public static float dragonslayer_swordspear_launch_multiplier = 0.25f;
     @Entry public static int dragon_staff_damage = 8;
     @Entry public static int dragon_staff_aura_strength = 1;
     @Entry public static int dragon_staff_cooldown = 100;

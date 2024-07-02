@@ -6,6 +6,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class MoonlightShortsword extends SwordItem {
-    
+
     public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, attackSpeed, settings);
     }
@@ -34,12 +35,6 @@ public class MoonlightShortsword extends SwordItem {
     }
 
     public static void summonSmallProjectile(World world, PlayerEntity user) {
-        if(ConfigConstructor.disable_use_moonlight_shortsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         for (Hand hand : Hand.values()) {
             ItemStack itemStack = user.getStackInHand(hand);
             if (!user.getItemCooldownManager().isCoolingDown(WeaponRegistry.MOONLIGHT_SHORTSWORD) && itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)
@@ -57,9 +52,8 @@ public class MoonlightShortsword extends SwordItem {
                 projectile.setAgeAndPoints(15, 30, 1);
                 projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 projectile.setDamage(damage);
-                if (itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) projectile.setItemStack(itemStack);
                 world.spawnEntity(projectile);
-    
+
                 //Damaging the itemstack messes with Better Combat, therefore postHit damages weapon twice instead
                 /* itemStack.damage(1, user, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(hand);
@@ -77,11 +71,11 @@ public class MoonlightShortsword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_moonlight_shortsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_moonlight_shortsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return super.postHit(stack, target, attacker);
         }
         stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         return super.postHit(stack, target, attacker);
@@ -89,6 +83,9 @@ public class MoonlightShortsword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_moonlight_shortsword) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
         } else {

@@ -37,7 +37,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return ConfigConstructor.gatling_gun_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 
@@ -53,8 +53,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_gatling_gun) {
-            //don't bother sending a message every tick
+        if (ConfigConstructor.disable_use_gatling_gun) {
             return;
         }
         if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % 4 == 0) {
@@ -66,7 +65,7 @@ public class GatlingGun extends GunItem {
                         itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
                     }
                     boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-                    int power = this.getDamage(stack);
+                    int power = this.getBulletDamage(stack);
                     int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
                     Vec3d pov = playerEntity.getRotationVector();
                     Vec3d particleBox = pov.multiply(1).add(playerEntity.getPos());
@@ -76,7 +75,7 @@ public class GatlingGun extends GunItem {
                             world.addParticle(ParticleTypes.SMOKE, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
                         }
                     }
-    
+
                     SilverBulletEntity entity = new SilverBulletEntity(world, playerEntity);
                     entity.setPos(user.getX(), user.getEyeY() - 0.2f, user.getZ());
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 3.0F, 3.0F);
@@ -132,8 +131,8 @@ public class GatlingGun extends GunItem {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_gatling_gun) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_gatling_gun) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(itemStack);
@@ -141,8 +140,8 @@ public class GatlingGun extends GunItem {
         world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        } 
-         else {
+        }
+        else {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
@@ -150,7 +149,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_gatling_gun) {
+        if (ConfigConstructor.disable_use_gatling_gun) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);

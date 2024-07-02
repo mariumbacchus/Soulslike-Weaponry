@@ -42,8 +42,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_whirligig_sawblade) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_whirligig_sawblade) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -89,7 +89,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_whirligig_sawblade) {
+        if (ConfigConstructor.disable_use_whirligig_sawblade) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

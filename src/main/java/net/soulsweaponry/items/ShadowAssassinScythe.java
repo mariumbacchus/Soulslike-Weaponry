@@ -15,6 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -37,13 +39,13 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_shadow_assassin_scythe) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        if (ConfigConstructor.disable_use_shadow_assassin_scythe) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return true;
         }
-        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         if (attacker instanceof PlayerEntity player) {
             var cooldownManager = player.getItemCooldownManager();
             if (!cooldownManager.isCoolingDown(this)) {
@@ -53,6 +55,17 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
             }
         }
         return true;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (ConfigConstructor.disable_use_shadow_assassin_scythe) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
+            }
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
+        return super.use(world, user, hand);
     }
 
     @Override
@@ -85,7 +98,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_shadow_assassin_scythe){
+        if (ConfigConstructor.disable_use_shadow_assassin_scythe) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

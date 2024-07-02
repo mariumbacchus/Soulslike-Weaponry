@@ -41,10 +41,9 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
                 boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
-                if(canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
+                if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, fallDistance * this.getLaunchMultiplier(), 0);
-                    if (this.shouldHeal())
-                        user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power / 10f : 0));
+                    if (this.shouldHeal()) user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power / 10f : 0));
                     for (StatusEffectInstance effect : this.applyEffects()) {
                         livingEntity.addStatusEffect(effect);
                     }

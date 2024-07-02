@@ -25,8 +25,8 @@ public class MasterSword extends ChargeToUseItem {
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_master_sword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_master_sword) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -39,16 +39,15 @@ public class MasterSword extends ChargeToUseItem {
                 entity.setAgeAndPoints(30, 150, 4);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setDamage(ConfigConstructor.master_sword_projectile_damage);
-                entity.setItemStack(stack);
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
     }
-    
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_master_sword) {
+        if (ConfigConstructor.disable_use_master_sword) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

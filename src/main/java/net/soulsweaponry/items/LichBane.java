@@ -19,25 +19,24 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 
 public class LichBane extends SwordItem {
-    
+
     public LichBane(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.lich_bane_damage, attackSpeed, settings);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_lich_bane) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_lich_bane) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return super.postHit(stack, target, attacker);
         }
-        super.postHit(stack, target, attacker);
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
             ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
         }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     public float getBonusMagicDamage(ItemStack stack) {
@@ -46,7 +45,7 @@ public class LichBane extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_lich_bane) {
+        if (ConfigConstructor.disable_use_lich_bane) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -55,7 +54,7 @@ public class LichBane extends SwordItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
+
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

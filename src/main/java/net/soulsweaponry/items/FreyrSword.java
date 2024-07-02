@@ -47,8 +47,8 @@ public class FreyrSword extends SwordItem implements GeoItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_sword_of_freyr) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_sword_of_freyr) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(stack);
@@ -72,13 +72,12 @@ public class FreyrSword extends SwordItem implements GeoItem {
         } catch (Exception e) {
             user.getDataTracker().startTracking(SUMMON_UUID, uuid);
         }
-
         return TypedActionResult.success(stack);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_sword_of_freyr) {
+        if (ConfigConstructor.disable_use_sword_of_freyr) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

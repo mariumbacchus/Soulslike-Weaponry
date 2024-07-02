@@ -25,12 +25,12 @@ public class SkofnungStone extends Item {
     public SkofnungStone(Settings settings) {
         super(settings);
     }
-    
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stoneStack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_skofnung_stone) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_skofnung_stone) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(stoneStack);
@@ -52,7 +52,7 @@ public class SkofnungStone extends Item {
                 shouldDamage = true;
             }
         }
-        
+
         if (shouldDamage) {
             stoneStack.damage(1, user, e -> e.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
@@ -63,6 +63,9 @@ public class SkofnungStone extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        if (ConfigConstructor.disable_use_skofnung_stone) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_DEBUFS, stack, tooltip);
         } else {

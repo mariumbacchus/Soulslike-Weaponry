@@ -43,10 +43,11 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_forlorn_scythe) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_forlorn_scythe) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
             }
+            return TypedActionResult.fail(stack);
         }
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
@@ -110,7 +111,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_forlorn_scythe) {
+        if (ConfigConstructor.disable_use_forlorn_scythe) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -147,5 +148,4 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
     }
-    
 }

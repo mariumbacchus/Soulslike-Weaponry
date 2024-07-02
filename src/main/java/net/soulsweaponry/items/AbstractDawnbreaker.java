@@ -11,7 +11,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -34,12 +33,6 @@ public abstract class AbstractDawnbreaker extends SwordItem implements GeoItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_dawnbreaker) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return false;
-        }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
         if (target.isUndead() || ConfigConstructor.dawnbreaker_affect_all_entities) {
             if (target.isDead()) {

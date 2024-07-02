@@ -34,17 +34,16 @@ public class Bloodthirster extends SwordItem implements GeoItem {
 
     public Bloodthirster(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bloodthirster_damage, attackSpeed, settings);
-        
+
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_bloodthirster) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_bloodthirster) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return super.postHit(stack, target, attacker);
         }
-        super.postHit(stack, target, attacker);
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
@@ -60,7 +59,7 @@ public class Bloodthirster extends SwordItem implements GeoItem {
                 }
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class Bloodthirster extends SwordItem implements GeoItem {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);
         } else {
-            if(ConfigConstructor.disable_use_bloodthirster){
+            if (ConfigConstructor.disable_use_bloodthirster){
                 tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
             }
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));

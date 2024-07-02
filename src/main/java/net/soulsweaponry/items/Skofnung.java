@@ -42,11 +42,11 @@ public class Skofnung extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_skofnung) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_skofnung) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return super.postHit(stack, target, attacker);
         }
         int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, duration, 0));
@@ -69,11 +69,7 @@ public class Skofnung extends SwordItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND && isEmpowered(stack)) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            if(ConfigConstructor.disable_use_skofnung){
-                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
-            } else {
-                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
-            }
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.4D, EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -82,7 +78,7 @@ public class Skofnung extends SwordItem {
     }
 
     public static boolean isEmpowered(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0;
+        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0 && !ConfigConstructor.disable_use_skofnung;
     }
 
     public static Integer empAttacksLeft(ItemStack stack) {
@@ -101,10 +97,10 @@ public class Skofnung extends SwordItem {
             }
         }
     }
-    
+
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_skofnung) {
+        if (ConfigConstructor.disable_use_skofnung) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

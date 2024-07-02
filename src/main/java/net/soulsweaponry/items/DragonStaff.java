@@ -45,7 +45,7 @@ public class DragonStaff extends SwordItem {
             Vec3d particleSpawn = pov.multiply(1);
             Vec3d area = pov.multiply(10).add(user.getPos());
             Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
-            for (Entity entity : world.getOtherEntities(user, new Box(user.getBlockPos().add(0, 2, 0), new BlockPos(on)))) {
+            for (Entity entity : world.getOtherEntities(user, new Box(user.getPos().add(0, 2, 0), new BlockPos(on).toCenterPos()))) {
                 if (entity instanceof LivingEntity) {
                     entity.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), 2);
                     ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, ConfigConstructor.dragon_staff_aura_strength));
@@ -78,11 +78,11 @@ public class DragonStaff extends SwordItem {
         if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
         stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
-    
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_dragon_staff) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_dragon_staff) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(itemStack);
@@ -124,7 +124,7 @@ public class DragonStaff extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_dragon_staff) {
+        if (ConfigConstructor.disable_use_dragon_staff) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

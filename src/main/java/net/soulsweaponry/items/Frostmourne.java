@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,11 +41,12 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_frostmourne) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_frostmourne) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            return true;
         }
         int amp = MathHelper.ceil((float) WeaponUtil.getEnchantDamageBonus(stack)/2f);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 160, amp));
@@ -54,8 +56,8 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_frostmourne) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_frostmourne) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(stack);
@@ -80,7 +82,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_frostmourne) {
+        if (ConfigConstructor.disable_use_frostmourne) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

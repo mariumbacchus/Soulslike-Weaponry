@@ -27,8 +27,8 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(ConfigConstructor.disable_use_kraken_slayer_crossbow) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_kraken_slayer_crossbow) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(user.getStackInHand(hand));
@@ -107,7 +107,7 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_kraken_slayer_crossbow) {
+        if (ConfigConstructor.disable_use_kraken_slayer_crossbow) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

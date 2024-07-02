@@ -27,8 +27,8 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_kraken_slayer_bow) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_kraken_slayer_bow) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -70,7 +70,7 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_kraken_slayer_bow) {
+        if (ConfigConstructor.disable_use_kraken_slayer_bow) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

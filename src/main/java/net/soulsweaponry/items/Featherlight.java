@@ -27,12 +27,12 @@ import java.util.Map;
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - ConfigConstructor.featherlight_attack_speed), settings, true);
+        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - (ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed)), settings, true);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_featherlight) {
+        if (ConfigConstructor.disable_use_featherlight) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -50,12 +50,6 @@ public class Featherlight extends UltraHeavyWeapon {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(ConfigConstructor.disable_use_featherlight) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
         return TypedActionResult.fail(user.getStackInHand(hand));
     }
 

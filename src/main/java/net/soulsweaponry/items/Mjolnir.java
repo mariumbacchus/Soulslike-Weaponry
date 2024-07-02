@@ -57,8 +57,8 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_mjolnir) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_mjolnir) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -178,12 +178,13 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
             return false;
         }
     }
-    
+
+    @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            if(ConfigConstructor.disable_use_mjolnir) {
+            if (ConfigConstructor.disable_use_mjolnir) {
                 builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
             } else {
                 builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) ? ConfigConstructor.mjolnir_rain_bonus_damage - 1 + ConfigConstructor.mjolnir_damage : ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
@@ -198,7 +199,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_mjolnir) {
+        if (ConfigConstructor.disable_use_mjolnir) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

@@ -19,14 +19,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
-    
+
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(ConfigConstructor.disable_use_pure_moonlight_greatsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_pure_moonlight_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use) {
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return;
@@ -41,7 +42,6 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
                         entity.setAgeAndPoints(30, 75, 4);
                         entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw() + j*5, 0.0F, 1.5F, 1.0F);
                         entity.setDamage(ConfigConstructor.moonlight_greatsword_projectile_damage + 1f);
-                        entity.setItemStack(stack);
                         world.spawnEntity(entity);
                     }
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -52,7 +52,7 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if(ConfigConstructor.disable_use_pure_moonlight_greatsword) {
+        if (ConfigConstructor.disable_use_pure_moonlight_greatsword) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

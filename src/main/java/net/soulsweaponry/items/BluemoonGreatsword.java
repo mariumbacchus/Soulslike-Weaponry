@@ -12,18 +12,18 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
-    
+
     public BluemoonGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bluemoon_greatsword_damage, attackSpeed, settings);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(ConfigConstructor.disable_use_bluemoon_greatsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_bluemoon_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
                 attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
-            return false;
+            return super.postHit(stack, target, attacker);
         }
         this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
@@ -32,8 +32,8 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if(ConfigConstructor.disable_use_bluemoon_greatsword) {
-            if(ConfigConstructor.inform_player_about_disabled_use){
+        if (ConfigConstructor.disable_use_bluemoon_greatsword) {
+            if (ConfigConstructor.inform_player_about_disabled_use){
                 user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
             }
             return TypedActionResult.fail(itemStack);
