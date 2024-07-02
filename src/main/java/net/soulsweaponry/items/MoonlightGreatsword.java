@@ -14,6 +14,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,7 +60,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_moonlight_greatsword) {
+        if (ConfigConstructor.disable_use_moonlight_greatsword && stack.isOf(WeaponRegistry.MOONLIGHT_GREATSWORD)) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {
