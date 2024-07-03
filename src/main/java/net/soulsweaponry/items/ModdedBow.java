@@ -1,5 +1,6 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,9 +11,15 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class ModdedBow extends BowItem implements IReducedPullTime {
+import java.util.List;
+
+public abstract class ModdedBow extends BowItem implements IReducedPullTime, IConfigDisable {
 
     public ModdedBow(Settings settings) {
         super(settings);
@@ -26,6 +33,15 @@ public abstract class ModdedBow extends BowItem implements IReducedPullTime {
             f = 1.0f;
         }
         return f;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
+        return super.use(world, user, hand);
     }
 
     public void shootProjectile(World world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, PersistentProjectileEntity projectile, float powerModifier, float velModifier) {
@@ -60,5 +76,13 @@ public abstract class ModdedBow extends BowItem implements IReducedPullTime {
             }
         }
         player.incrementStat(Stats.USED.getOrCreateStat(this));
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }

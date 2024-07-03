@@ -45,7 +45,12 @@ public class HunterPistol extends GunItem {
         return 1;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getArrowType(stack);
@@ -82,9 +87,7 @@ public class HunterPistol extends GunItem {
             world.spawnEntity(entity);
             world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f,1f);
 
-            stack.damage(1, user, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-            });
+            stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             if (!bl2 && !user.getAbilities().creativeMode) {
                 itemStack.decrement(this.bulletsNeeded());
                 if (itemStack.isEmpty()) {
@@ -97,5 +100,10 @@ public class HunterPistol extends GunItem {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_hunter_pistol;
     }
 }

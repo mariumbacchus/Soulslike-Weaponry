@@ -8,7 +8,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.entity.mobs.BossEntity;
 
-public abstract class SoulHarvestingItem extends SwordItem {
+public abstract class SoulHarvestingItem extends ModdedSword {
 
     public static final String KILLS = "kills";
 
@@ -18,7 +18,10 @@ public abstract class SoulHarvestingItem extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (target.isDead()) {
             if (target instanceof BossEntity || target instanceof WitherEntity) {
                 this.addAmount(stack, 50);
@@ -26,7 +29,7 @@ public abstract class SoulHarvestingItem extends SwordItem {
                 this.addKillCounter(stack);
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     public void addKillCounter(ItemStack stack) {

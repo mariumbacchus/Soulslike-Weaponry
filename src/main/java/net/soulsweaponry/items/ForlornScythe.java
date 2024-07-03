@@ -38,6 +38,10 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
@@ -76,8 +80,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
         if (stack.hasNbt() && stack.getNbt().contains(PREV_UUID)) {
             UUID uuid = stack.getNbt().getUuid(PREV_UUID);
             Entity entity = world.getEntity(uuid);
-            if (entity != null && entity instanceof  WitherSkullEntity) {
-                WitherSkullEntity skull = (WitherSkullEntity) entity;
+            if (entity instanceof WitherSkullEntity skull) {
                 Explosion.DestructionType destructionType = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
                 world.createExplosion(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isCharged() ? 2f : 1f, false, destructionType);
                 skull.discard();
@@ -93,9 +96,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     private boolean isCritical(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains(CRITICAL)) {
-            if (stack.getNbt().getInt(CRITICAL) >= 3) {
-                return true;
-            }
+            return stack.getNbt().getInt(CRITICAL) >= 3;
         } else {
             stack.getNbt().putInt(CRITICAL, 1);
         }
@@ -104,6 +105,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER, stack, tooltip);
@@ -111,7 +113,6 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -122,5 +123,9 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     public AnimationFactory getFactory() {
         return this.factory;
     }
-    
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_forlorn_scythe;
+    }
 }

@@ -59,12 +59,12 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.GALEFORCE, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, boolean scaleDamageHp, @Nullable Vec3d currentTargetPos) {
@@ -108,6 +108,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             player.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
             if (player.getAttacking() != null) {
@@ -124,6 +128,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+        if (this.isDisabled()) {
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             float f = player.getYaw();
             float g = player.getPitch();
@@ -142,5 +149,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public float getReducedPullTime() {
         return 0;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_galeforce;
     }
 }

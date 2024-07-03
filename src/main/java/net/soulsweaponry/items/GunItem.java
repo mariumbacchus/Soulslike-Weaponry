@@ -6,16 +6,19 @@ import java.util.function.Predicate;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GunItem extends BowItem {
+public abstract class GunItem extends BowItem implements IConfigDisable {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
 
@@ -42,6 +45,9 @@ public abstract class GunItem extends BowItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(Text.literal(String.valueOf(this.getPostureLoss(stack)))).formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.valueOf(this.getBulletDamage(stack)))).formatted(Formatting.GRAY));

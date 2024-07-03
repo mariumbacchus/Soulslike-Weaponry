@@ -4,12 +4,12 @@ import java.util.List;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
@@ -22,21 +22,23 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Bloodthirster extends SwordItem implements IAnimatable {
+public class Bloodthirster extends ModdedSword implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
     public Bloodthirster(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bloodthirster_damage, attackSpeed, settings);
-        
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_bloodthirster;
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_bloodthirster) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                attacker.sendMessage(Text.translatable("soulsweapons.weapon.useDisabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
         if (attacker instanceof PlayerEntity player) {
@@ -59,16 +61,13 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_bloodthirster){
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override

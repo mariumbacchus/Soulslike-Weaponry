@@ -40,21 +40,23 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RAGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            stack.damage(1, player, (p_220045_0_) -> {
-                p_220045_0_.sendToolBreakStatus(player.getActiveHand());
-            });
+            stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
             player.getItemCooldownManager().set(this, ConfigConstructor.heap_of_raw_iron_cooldown);
             int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 200, power));
@@ -88,8 +90,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 25;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.heap_of_raw_iron_launch_multiplier;
     }
 
     @Override
@@ -108,5 +110,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
         map.put(ParticleRegistry.DARK_STAR, new Vec3d(1, 6, 1));
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_heap_of_raw_iron;
     }
 }

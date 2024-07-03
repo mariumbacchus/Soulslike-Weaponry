@@ -97,6 +97,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_hunter_blunderbuss = false;
     @Entry public static boolean disable_use_gatling_gun = false;
     @Entry public static boolean disable_use_hunter_cannon = false;
+    @Entry public static boolean disable_use_kirkhammer = false;
+    @Entry public static boolean disable_use_silver_sword = false;
+    @Entry public static boolean disable_use_ludwigs_holy_greatsword = false;
+    @Entry public static boolean disable_use_moonstone_ring = false;
 
     @Entry public static boolean disable_use_chaos_orb = false;
 

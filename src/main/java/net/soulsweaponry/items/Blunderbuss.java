@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -16,7 +17,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 
 public class Blunderbuss extends GunItem {
 
@@ -44,8 +44,13 @@ public class Blunderbuss extends GunItem {
     public int bulletsNeeded() {
         return 2;
     }
-    
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getArrowType(stack);
@@ -94,5 +99,10 @@ public class Blunderbuss extends GunItem {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_hunter_blunderbuss;
     }
 }

@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
+public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
@@ -42,6 +42,10 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
         Optional<UUID> uuid = Optional.of(entity.getUuid());
         try {
@@ -67,12 +71,12 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_WEAPON, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -86,5 +90,10 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
     @Override
     public void onAnimationSync(int id, int state) {        
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_sword_of_freyr;
     }
 }

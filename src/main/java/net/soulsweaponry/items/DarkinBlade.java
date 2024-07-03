@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,7 +43,13 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
     }
 
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
+            return true;
+        }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
@@ -56,7 +63,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
-    
+
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
@@ -78,6 +86,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
@@ -85,8 +94,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event){
@@ -115,8 +122,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 25;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.darkin_blade_launch_multiplier;
     }
 
     @Override
@@ -134,5 +141,10 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_darkin_blade;
     }
 }

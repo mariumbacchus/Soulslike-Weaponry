@@ -18,15 +18,18 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-public class GuinsoosRageblade extends SwordItem {
+public class GuinsoosRageblade extends ModdedSword {
     
     public GuinsoosRageblade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.rageblade_damage, attackSpeed, settings);
     }
 
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) { 
-        super.postHit(stack, target, attacker);
-        
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (attacker.isOnFire()) {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 2));
         }    
@@ -42,12 +45,12 @@ public class GuinsoosRageblade extends SwordItem {
         } else {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, 0));
         }
-
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FURY, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HASTE, stack, tooltip);
@@ -55,7 +58,10 @@ public class GuinsoosRageblade extends SwordItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_rageblade;
     }
 }

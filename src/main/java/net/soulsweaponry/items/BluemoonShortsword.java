@@ -7,4 +7,9 @@ public class BluemoonShortsword extends MoonlightShortsword {
     public BluemoonShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bluemoon_shortsword_damage, attackSpeed, settings);
     }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_bluemoon_shortsword;
+    }
 }

@@ -47,6 +47,10 @@ public class DarkinScythePre extends SoulHarvestingItem {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return true;
+        }
         if (target.isDead()) {
             int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
             if (target.getHandItems().iterator().next().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
@@ -61,7 +65,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player) {
+        if (!this.isDisabled() && entity instanceof PlayerEntity player) {
             if (this.getSouls(stack) >= MAX_SOULS && slot == player.getInventory().selectedSlot) {
                 if (!world.isClient) {
                     ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
@@ -108,6 +112,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     private float getBonusDamage(ItemStack stack) {
+        if (this.isDisabled()) return 0;
         float soulPercent = (float) this.getSouls(stack) / (float) MAX_SOULS;
         return (float) ConfigConstructor.darkin_scythe_bonus_damage * soulPercent;
     }
@@ -122,6 +127,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
         return amount;
     }
 
+    @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
@@ -137,12 +143,17 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRANSFORMATION, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_darkin_scythe;
     }
 
     public enum SoulType {
