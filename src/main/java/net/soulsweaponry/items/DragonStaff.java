@@ -1,5 +1,7 @@
 package net.soulsweaponry.items;
 
+import java.util.List;
+
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -7,7 +9,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -27,11 +28,9 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class DragonStaff extends SwordItem {
+public class DragonStaff extends ModdedSword {
 
     public DragonStaff(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.dragon_staff_damage, attackSpeed, settings);
@@ -67,6 +66,7 @@ public class DragonStaff extends SwordItem {
         return super.finishUsing(stack, world, user);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         this.stop(user, stack);
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
@@ -76,9 +76,14 @@ public class DragonStaff extends SwordItem {
         if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
         stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
-    
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(itemStack);
+        }
         if (!user.isSneaking()) {
             if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(itemStack)*2);
             world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -118,12 +123,17 @@ public class DragonStaff extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DRAGON_STAFF, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VENGEFUL_FOG, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_dragon_staff;
     }
 }

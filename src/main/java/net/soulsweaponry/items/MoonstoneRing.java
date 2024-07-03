@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,22 +14,27 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-public class MoonstoneRing extends Item {
+public class MoonstoneRing extends Item implements IConfigDisable {
 
     public MoonstoneRing(Settings settings) {
         super(settings);
     }
-    
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (!user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, 600, EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)));
             stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
@@ -43,11 +46,19 @@ public class MoonstoneRing extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_moonstone_ring;
     }
 }

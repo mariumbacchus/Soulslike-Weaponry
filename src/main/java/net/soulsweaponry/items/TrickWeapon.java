@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -16,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TrickWeapon extends SwordItem implements UltraHeavy {
+public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     private static final int[] DAMAGE = {
             ConfigConstructor.kirkhammer_damage,
@@ -26,10 +25,19 @@ public class TrickWeapon extends SwordItem implements UltraHeavy {
             ConfigConstructor.holy_moonlight_sword_damage,
     };
 
+    private static final boolean[] DISABLE = {
+            ConfigConstructor.disable_use_kirkhammer,
+            ConfigConstructor.disable_use_silver_sword,
+            ConfigConstructor.disable_use_ludwigs_holy_greatsword,
+            ConfigConstructor.disable_use_holy_moonlight_greatsword,
+            ConfigConstructor.disable_use_holy_moonlight_sword,
+    };
+
     private final int switchWeaponIndex;
     private final int ownWeaponIndex;
     private final boolean undeadBonus;
     private final boolean isHeavy;
+    private final int arrayIndex;
 
     public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
         super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings);
@@ -37,6 +45,7 @@ public class TrickWeapon extends SwordItem implements UltraHeavy {
         this.ownWeaponIndex = ownWeaponIndex;
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
+        this.arrayIndex = damageIndex;
     }
 
     public int getSwitchWeaponIndex() {
@@ -61,6 +70,7 @@ public class TrickWeapon extends SwordItem implements UltraHeavy {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
             if (this.isHeavy()) {
@@ -76,11 +86,15 @@ public class TrickWeapon extends SwordItem implements UltraHeavy {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public boolean isHeavy() {
         return this.isHeavy;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return DISABLE[this.arrayIndex];
     }
 }

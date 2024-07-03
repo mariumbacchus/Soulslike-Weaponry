@@ -5,14 +5,12 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
@@ -49,13 +47,26 @@ public class MasterSword extends ChargeToUseItem {
     }
 
     @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (user.getHealth() < user.getMaxHealth()) {
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
+        return super.use(world, user, hand);
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYWARD_STRIKES, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RIGHTEOUS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_master_sword;
     }
 }

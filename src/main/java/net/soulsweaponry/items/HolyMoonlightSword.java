@@ -23,11 +23,14 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.addCharge(stack, this.getAddedCharge(stack));
+        if (!this.isDisabled()) {
+            this.addCharge(stack, this.getAddedCharge(stack));
+        }
         return super.postHit(stack, target, attacker);
     }
 
     private float getBonusDamage(ItemStack stack) {
+        if (this.isDisabled()) return 0;
         float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
         return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }

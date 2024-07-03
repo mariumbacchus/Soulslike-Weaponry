@@ -42,14 +42,18 @@ import java.util.UUID;
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISummonAllies {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    
+
     public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.soul_reaper_damage, attackSpeed, settings);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getStackInHand(hand);
+        ItemStack stack = player.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return TypedActionResult.fail(stack);
+        }
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
             if (player.isCreative()) power = player.getRandom().nextInt(5, 50);
@@ -82,13 +86,14 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
                 return TypedActionResult.success(stack, true);
-            } 
+            }
         }
         return TypedActionResult.fail(stack);
-	}
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
@@ -96,7 +101,6 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -145,5 +149,10 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_soul_reaper;
     }
 }

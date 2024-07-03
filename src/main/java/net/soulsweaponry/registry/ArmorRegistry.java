@@ -5,7 +5,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.SoulRobesItem;
+import net.soulsweaponry.items.armor.SoulRobesItem;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 
 public class ArmorRegistry {

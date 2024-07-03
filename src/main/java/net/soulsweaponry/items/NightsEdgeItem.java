@@ -36,17 +36,22 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLIGHT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
+
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (target.hasStatusEffect(EffectRegistry.BLIGHT)) {
             int amp = target.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier();
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, 60, amp + 1));
@@ -73,6 +78,10 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.castSpell(player, world, stack, true);
             player.getItemCooldownManager().set(this, ConfigConstructor.nights_edge_ability_cooldown);
@@ -135,5 +144,10 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_nights_edge;
     }
 }

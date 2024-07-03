@@ -32,7 +32,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
+    public int getBulletDamage(ItemStack stack) {
         return ConfigConstructor.gatling_gun_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 
@@ -57,7 +57,7 @@ public class GatlingGun extends GunItem {
                         itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
                     }
                     boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-                    int power = this.getDamage(stack);
+                    int power = this.getBulletDamage(stack);
                     int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
                     Vec3d pov = playerEntity.getRotationVector();
                     Vec3d particleBox = pov.multiply(1).add(playerEntity.getPos());
@@ -121,15 +121,25 @@ public class GatlingGun extends GunItem {
         }
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        } 
-         else {
+        }
+        else {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_gatling_gun;
     }
 }

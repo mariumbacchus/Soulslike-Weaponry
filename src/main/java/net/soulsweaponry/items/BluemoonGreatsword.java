@@ -1,5 +1,6 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -11,19 +12,30 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
-    
+
     public BluemoonGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.bluemoon_greatsword_damage, attackSpeed, settings);
     }
 
     @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_bluemoon_greatsword;
+    }
+
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
+            return true;
+        }
         this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        super.use(world, user, hand);
         ItemStack itemStack = user.getStackInHand(hand);
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) ||
                 user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {

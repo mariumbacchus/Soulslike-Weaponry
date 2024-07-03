@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 
-public abstract class UltraHeavyWeapon extends DetonateGroundItem implements UltraHeavy {
+public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUltraHeavy {
 
     private final boolean isHeavy;
 

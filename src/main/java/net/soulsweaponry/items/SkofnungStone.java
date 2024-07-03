@@ -21,15 +21,19 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public class SkofnungStone extends Item {
+public class SkofnungStone extends Item implements IConfigDisable {
 
     public SkofnungStone(Settings settings) {
         super(settings);
     }
-    
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stoneStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stoneStack);
+        }
         boolean shouldDamage = false;
         for (Hand offHand : Hand.values()) {
             ItemStack swordStack = user.getStackInHand(offHand);
@@ -47,7 +51,6 @@ public class SkofnungStone extends Item {
                 shouldDamage = true;
             }
         }
-        
         if (shouldDamage) {
             stoneStack.damage(1, user, e -> e.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
@@ -58,11 +61,19 @@ public class SkofnungStone extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_DEBUFS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_skofnung_stone;
     }
 }

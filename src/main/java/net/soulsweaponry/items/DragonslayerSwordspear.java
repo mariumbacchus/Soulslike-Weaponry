@@ -30,8 +30,8 @@ import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class DragonslayerSwordspear extends ChargeToUseItem {
@@ -42,6 +42,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
         super(toolMaterial, ConfigConstructor.dragonslayer_swordspear_damage, attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -55,16 +56,12 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                     playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
                 } else {
-                    stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> {
-                        p_220045_0_.sendToolBreakStatus(user.getActiveHand());
-                    });
-                    
+                    stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 5));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0));
-
                     Box chunkBox = new Box(user.getX() - 10, user.getY() - 5, user.getZ() - 10, user.getX() + 10, user.getY() + 5, user.getZ() + 10);
                     List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
-                    //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items aswell!
+                    //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items too!
                     for (Entity nearbyEntity : nearbyEntities) {
                         if (nearbyEntity instanceof LivingEntity target && !(nearbyEntity instanceof TameableEntity)) {
                             if (world.isSkyVisible(target.getBlockPos())) {
@@ -95,7 +92,9 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        this.updateRaining(world, stack);
+        if (!this.isDisabled()) {
+            this.updateRaining(world, stack);
+        }
     }
 
     private void updateRaining(World world, ItemStack stack) {
@@ -116,7 +115,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND && this.getRaining(stack)) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.dragonslayer_swordspear_damage, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.dragonslayer_swordspear_damage, EntityAttributeModifier.Operation.ADDITION)); // Damage is increased by 1
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.2D, EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -127,6 +126,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIGHTNING_CALL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
@@ -136,6 +136,10 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_dragonslayer_swordspear;
     }
 }

@@ -22,24 +22,25 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CometSpear extends DetonateGroundItem implements IAnimatable{
-    
+
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public CometSpear(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.comet_spear_damage, attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -56,7 +57,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                     h *= n / m;
                     k *= n / m;
                     l *= n / m;
-                    
+
                     user.addVelocity(h, k, l);
                     playerEntity.useRiptide(20);
                     world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -70,7 +71,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown-(enchant*5)));
-                    
+
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
@@ -82,7 +83,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override
@@ -92,6 +93,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
@@ -99,7 +101,6 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -113,8 +114,8 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 35;
+    public float getLaunchMultiplier() {
+        return ConfigConstructor.comet_spear_launch_multiplier;
     }
 
     @Override
@@ -132,5 +133,10 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_comet_spear;
     }
 }

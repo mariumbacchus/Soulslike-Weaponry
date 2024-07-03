@@ -89,13 +89,13 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
@@ -112,6 +112,10 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             if (player.isSneaking()) {
                 if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
@@ -166,5 +170,10 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_draupnir_spear;
     }
 }

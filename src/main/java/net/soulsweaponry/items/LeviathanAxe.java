@@ -10,7 +10,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
@@ -26,27 +25,36 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class LeviathanAxe extends AxeItem implements IAnimatable {
+public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public LeviathanAxe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.leviathan_axe_damage, attackSpeed, settings);
     }
-    
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_leviathan_axe;
+    }
+
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, sharpness));
         return super.postHit(stack, target, attacker);
@@ -86,10 +94,14 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        } 
-         else {
+        }
+        else {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
@@ -113,6 +125,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
@@ -121,11 +134,10 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override

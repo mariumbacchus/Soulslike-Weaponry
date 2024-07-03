@@ -1,27 +1,16 @@
 package net.soulsweaponry.items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
-import net.minecraft.entity.projectile.WitherSkullEntity;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -36,15 +25,25 @@ import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-public class WitheredWabbajack extends SwordItem {
-    
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class WitheredWabbajack extends ModdedSword {
+
     public WitheredWabbajack(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, attackSpeed, settings);
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(itemStack);
+        }
         user.getItemCooldownManager().set(this, 1);
         world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClient) {
@@ -65,7 +64,7 @@ public class WitheredWabbajack extends SwordItem {
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
             }
             world.spawnEntity(entity);
-            
+
             itemStack.damage(1, user, (p_220045_0_) -> {
                 p_220045_0_.sendToolBreakStatus(hand);
             });
@@ -86,9 +85,6 @@ public class WitheredWabbajack extends SwordItem {
      * EDIT: Hey, past me! This looks cool, but also it sucks! Message to future me: rework it one day when you feel like it :)
      */
     private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look, ItemStack stack) {
-        /* 
-         * Generisk oversikt over alle prosjektiler sammen med luck type, om de er bra eller dårlig.
-         */
         int power = new Random().nextInt((6 + this.getLuckFactor(user)) - this.getLuckFactor(user)) + this.getLuckFactor(user);
         Object[][] projectileTypes = {
                 {new ArrowEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
@@ -137,7 +133,7 @@ public class WitheredWabbajack extends SwordItem {
             }
         }
 
-        /* 
+        /*
          * Finner ut total sjansen basert på modifiserte sjanser til prosjektilene.
          */
         int totalChance = 0;
@@ -145,7 +141,7 @@ public class WitheredWabbajack extends SwordItem {
             totalChance += (int) objects.get(2);
         }
 
-        /* 
+        /*
          * Variabel "counter" holder tellingen på sjansene til alle prosjektilene oppover, mens "under"
          * holder tellingen på alle untatt forste, som lager boundsene til prosjektilene.
          */
@@ -157,12 +153,12 @@ public class WitheredWabbajack extends SwordItem {
             counter += (int) projectileList.get(i).get(2);
             if (i > 0) {
                 under += (int) projectileList.get(i - 1).get(2);
-            } 
+            }
             if (random < counter && random >= under) {
                 chosenProjectile = (ProjectileEntity) projectileList.get(i).get(0);
             }
 
-            /* 
+            /*
              * Skriver ut alle boundsene for debugging.
              */
             //System.out.println(under + " || " + counter);
@@ -177,7 +173,7 @@ public class WitheredWabbajack extends SwordItem {
     /**
      * Gets the luck factor that will be used to calculate the chance for each projectile or
      * effect based on whether it's unlucky or not through the LuckType enum. The returned value is
-     * a percent out of a hundred as a float, for example with amplifier 0 (which is effect 
+     * a percent out of a hundred as a float, for example with amplifier 0 (which is effect
      * level 1 ingame) it will increase the chance of good effects by 20% by returning 1.2f.
      * With unlucky status effect, the returned value is negative, which will have an impact
      * on the calculation later.
@@ -192,18 +188,23 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_withered_wabbajack;
+    }
+
     public enum LuckType {
         GOOD, NEUTRAL, BAD
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

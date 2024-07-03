@@ -65,17 +65,22 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FAST_PULL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THIRD_SHOT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public float getReducedPullTime() {
         return ConfigConstructor.kraken_slayer_reduced_pull_time;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_kraken_slayer_bow;
     }
 }

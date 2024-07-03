@@ -13,8 +13,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,10 +23,10 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,18 +39,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, attackSpeed, settings);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        }
-        else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
-        }
     }
 
     @Override
@@ -97,6 +83,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
@@ -105,7 +92,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -125,6 +111,10 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
@@ -133,7 +123,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little
         too laggy with the particles from the explosion.
-
         double phi = Math.PI * (3. - Math.sqrt(5.));
         float points = 90;
         for (int i = 0; i < points; i++) {
@@ -151,5 +140,10 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_empowered_dawnbreaker;
     }
 }

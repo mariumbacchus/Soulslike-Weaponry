@@ -15,22 +15,24 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
-    
+
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 if (!world.isClient) {
                     stack.damage(5, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+
                     for (int j = -1; j < 2; j++) {
                         MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user);
                         entity.setAgeAndPoints(30, 75, 4);
@@ -47,11 +49,16 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_pure_moonlight_greatsword;
     }
 }

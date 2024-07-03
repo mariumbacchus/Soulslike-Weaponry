@@ -9,7 +9,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_fast_hands = false;
     @Entry public static boolean disable_enchantment_posture_breaker = false;
     @Entry public static boolean disable_enchantment_stagger = false;
-    
+
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_comet_spear = false;
     @Entry public static boolean disable_recipe_darkin_blade = false;
@@ -49,6 +49,60 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
+
+    @Entry public static boolean inform_player_about_disabled_use = true;
+    @Entry public static boolean disable_use_bluemoon_shortsword = false;
+    @Entry public static boolean disable_use_bluemoon_greatsword = false;
+    @Entry public static boolean disable_use_moonlight_shortsword = false;
+    @Entry public static boolean disable_use_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_pure_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_bloodthirster = false;
+    @Entry public static boolean disable_use_darkin_blade = false;
+    @Entry public static boolean disable_use_dragon_staff = false;
+    @Entry public static boolean disable_use_withered_wabbajack = false;
+    @Entry public static boolean disable_use_whirligig_sawblade = false;
+    @Entry public static boolean disable_use_dragonslayer_swordspear = false;
+    @Entry public static boolean disable_use_rageblade = false;
+    @Entry public static boolean disable_use_heap_of_raw_iron = false;
+    @Entry public static boolean disable_use_nightfall = false;
+    @Entry public static boolean disable_use_comet_spear = false;
+    @Entry public static boolean disable_use_lich_bane = false;
+    @Entry public static boolean disable_use_galeforce = false;
+    @Entry public static boolean disable_use_draugr = false;
+    @Entry public static boolean disable_use_dawnbreaker = false;
+    @Entry public static boolean disable_use_soul_reaper = false;
+    @Entry public static boolean disable_use_forlorn_scythe = false;
+    @Entry public static boolean disable_use_leviathan_axe = false;
+    @Entry public static boolean disable_use_skofnung = false;
+    @Entry public static boolean disable_use_skofnung_stone = false;
+    @Entry public static boolean disable_use_mjolnir = false;
+    @Entry public static boolean disable_use_sword_of_freyr = false;
+    // @Entry public static boolean disable_use_sting = false;
+    @Entry public static boolean disable_use_featherlight = false;
+    @Entry public static boolean disable_use_crucible_sword = false;
+    @Entry public static boolean disable_use_darkin_scythe = false;
+    @Entry public static boolean disable_use_darkin_scythe_prime = false;
+    @Entry public static boolean disable_use_shadow_assassin_scythe = false;
+    @Entry public static boolean disable_use_draupnir_spear = false;
+    @Entry public static boolean disable_use_holy_moonlight_greatsword = false;
+    @Entry public static boolean disable_use_holy_moonlight_sword = false;
+    @Entry public static boolean disable_use_frostmourne = false;
+    @Entry public static boolean disable_use_master_sword = false;
+    @Entry public static boolean disable_use_nights_edge = false;
+    @Entry public static boolean disable_use_empowered_dawnbreaker = false;
+    @Entry public static boolean disable_use_kraken_slayer_bow = false;
+    @Entry public static boolean disable_use_kraken_slayer_crossbow = false;
+    @Entry public static boolean disable_use_darkmoon_longbow = false;
+    @Entry public static boolean disable_use_hunter_pistol = false;
+    @Entry public static boolean disable_use_hunter_blunderbuss = false;
+    @Entry public static boolean disable_use_gatling_gun = false;
+    @Entry public static boolean disable_use_hunter_cannon = false;
+    @Entry public static boolean disable_use_kirkhammer = false;
+    @Entry public static boolean disable_use_silver_sword = false;
+    @Entry public static boolean disable_use_ludwigs_holy_greatsword = false;
+    @Entry public static boolean disable_use_moonstone_ring = false;
+
+    @Entry public static boolean disable_use_chaos_orb = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnrate = 100;
@@ -97,12 +151,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int comet_spear_ability_damage = 10;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
+    @Entry public static float comet_spear_launch_multiplier = 0.35f;
     @Entry public static int crucible_sword_normal_damage = 9;
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static int darkin_blade_ability_damage = 12;
     @Entry public static int darkin_blade_ability_cooldown = 150;
+    @Entry public static float darkin_blade_launch_multiplier = 0.25f;
     @Entry public static int darkin_scythe_damage = 9;
     @Entry public static int darkin_scythe_bonus_damage = 3;
     @Entry public static int darkin_scythe_max_souls = 100;
@@ -123,6 +179,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int empowered_dawnbreaker_ability_cooldown = 180;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
+    @Entry public static float heap_of_raw_iron_launch_multiplier = 0.25f;
     @Entry public static int dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
@@ -144,10 +201,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
+    @Entry public static float featherlight_launch_multiplier = 0.20f;
     @Entry public static int frostmourne_damage = 11;
     @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
-    @Entry public static int galeforce_dash_cooldown = 50;
+    @Entry public static int galeforce_dash_cooldown = 80;
     @Entry public static int rageblade_damage = 7;
     @Entry public static boolean rageblade_haste_cap = true;
     @Entry public static int holy_moonlight_greatsword_damage = 10;
@@ -196,6 +254,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry public static int nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
+    @Entry public static float nightfall_launch_multiplier = 0.30f;
     @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static int nights_edge_ability_cooldown = 120;
     @Entry public static float nights_edge_ability_damage = 10f;
@@ -221,6 +280,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int whirligig_sawblade_use_time = 100;
     @Entry public static int withered_wabbajack_damage = 8;
 
+    @Entry public static boolean calculated_fall_hits_immune_entities = false;
+
     @Entry public static int max_posture_loss = 200;
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;
@@ -242,35 +303,35 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int hunter_pistol_posture_loss = 21;
     @Entry public static int hunter_pistol_cooldown = 50;
 
-    @Entry(min=1, max=1000000) public static double decaying_king_health = 500D;
+    @Entry(min=1, max=1000000D) public static double decaying_king_health = 500D;
     @Entry(min=0) public static int decaying_king_attack_cooldown_ticks = 20;
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
     @Entry(min=0) public static float decaying_king_damage_modifier = 1f;
     @Entry(min=0) public static int decaying_king_xp = 500;
 
-    @Entry(min=1, max=1000000) public static double returning_knight_health = 400D;
+    @Entry(min=1, max=1000000D) public static double returning_knight_health = 400D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
     @Entry(min=0) public static float returning_knight_damage_modifier = 1f;
     @Entry(min=0) public static int returning_knight_xp = 500;
 
-    @Entry(min=1, max=1000000) public static double old_champions_remains_health = 200D;
+    @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 200D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
     @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
     @Entry public static int old_champions_remains_xp = 200;
-    @Entry(min=1, max=1000000) public static double frenzied_shade_health = 100D;
+    @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 100D;
     @Entry public static float frenzied_shade_damage_modifier = 1f;
     @Entry public static int frenzied_shade_cooldown = 10;
     @Entry public static int frenzied_shade_xp = 400;
 
-    @Entry(min=1, max=1000000) public static double chaos_monarch_health = 400D;
+    @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 400D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
     @Entry(min=0) public static int chaos_monarch_xp = 500;
 
-    @Entry(min=1, max=1000000) public static double fallen_icon_health = 500D;
+    @Entry(min=1, max=1000000D) public static double fallen_icon_health = 500D;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_1 = 30;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_2 = 0;
     @Entry(min=0) public static int fallen_icon_special_cooldown_ticks = 50;
