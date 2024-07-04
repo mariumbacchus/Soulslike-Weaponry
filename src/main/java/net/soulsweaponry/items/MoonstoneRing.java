@@ -19,10 +19,11 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class MoonstoneRing extends Item {
+public class MoonstoneRing extends Item implements IConfigDisable {
 
     public MoonstoneRing(Settings settings) {
         super(settings);
@@ -31,6 +32,10 @@ public class MoonstoneRing extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (!user.hasStatusEffect(EffectRegistry.MOON_HERALD.get())) {
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD.get(), 600, EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)));
             stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
@@ -42,11 +47,19 @@ public class MoonstoneRing extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_MOONSTONE_RING.get();
     }
 }

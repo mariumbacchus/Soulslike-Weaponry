@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
-import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -44,6 +43,10 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
@@ -107,6 +110,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER, stack, tooltip);
@@ -114,11 +118,10 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override
@@ -138,5 +141,10 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_FORLORN_SCYTHE.get();
     }
 }

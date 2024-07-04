@@ -37,7 +37,7 @@ import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class WitheredWabbajack extends SwordItem {
+public class WitheredWabbajack extends ModdedSword {
     
     public WitheredWabbajack(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, CommonConfig.WITHERED_WABBAJACK_DAMAGE.get(), attackSpeed, settings);
@@ -45,6 +45,10 @@ public class WitheredWabbajack extends SwordItem {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(itemStack);
+        }
         user.getItemCooldownManager().set(this, 1);
         world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClient) {
@@ -198,12 +202,17 @@ public class WitheredWabbajack extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_WITHERED_WABBAJACK.get();
     }
 }

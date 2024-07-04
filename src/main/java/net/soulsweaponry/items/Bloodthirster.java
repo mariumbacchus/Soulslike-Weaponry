@@ -29,7 +29,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Bloodthirster extends SwordItem implements IAnimatable {
+public class Bloodthirster extends ModdedSword implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     
@@ -38,8 +38,17 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
         
     }
 
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_BLOODTHIRSTER.get();
+    }
+
+    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
@@ -55,22 +64,22 @@ public class Bloodthirster extends SwordItem implements IAnimatable {
                 }
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIFE_STEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OVERHEAL, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override

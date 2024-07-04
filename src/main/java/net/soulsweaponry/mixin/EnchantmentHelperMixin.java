@@ -22,7 +22,7 @@ public class EnchantmentHelperMixin {
             float value = cir.getReturnValue() + CommonConfig.STING_BONUS_ARTHROPOD_DAMAGE.get();
             cir.setReturnValue(value);
         }
-        if (group == EntityGroup.UNDEAD && (stack.getItem() instanceof TrickWeapon && ((TrickWeapon) stack.getItem()).hasUndeadBonus() || stack.isOf(WeaponRegistry.MASTER_SWORD.get()))) {
+        if (group == EntityGroup.UNDEAD && (stack.getItem() instanceof TrickWeapon trickWeapon && trickWeapon.hasUndeadBonus() && !trickWeapon.isDisabled() || stack.isOf(WeaponRegistry.MASTER_SWORD.get()))) {
             float value = cir.getReturnValue() + CommonConfig.RIGHTEOUS_UNDEAD_BONUS_DAMAGE.get() + (float) EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
             cir.setReturnValue(value);
         }

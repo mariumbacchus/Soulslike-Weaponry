@@ -52,7 +52,11 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getStackInHand(hand);
+        ItemStack stack = player.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return TypedActionResult.fail(stack);
+        }
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
             int power = this.getSouls(stack);
             if (player.isCreative()) power = player.getRandom().nextInt(5, 50);
@@ -92,6 +96,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
@@ -99,7 +104,6 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -162,5 +166,10 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_SOUL_REAPER.get();
     }
 }

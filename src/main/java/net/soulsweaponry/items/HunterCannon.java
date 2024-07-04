@@ -46,7 +46,12 @@ public class HunterCannon extends GunItem {
         return 10;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getArrowType(stack);
@@ -104,5 +109,10 @@ public class HunterCannon extends GunItem {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_HUNTER_CANNON.get();
     }
 }

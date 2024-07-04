@@ -21,7 +21,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
-import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -38,13 +37,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CometSpear extends DetonateGroundItem implements IAnimatable{
-    
+
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public CometSpear(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, CommonConfig.COMET_SPEAR_DAMAGE.get(), attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -75,7 +75,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     playerEntity.getItemCooldownManager().set(this, (int) (CommonConfig.COMET_SPEAR_THROW_COOLDOWN.get() - (enchant*5)));
-                    
+
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
@@ -87,7 +87,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override
@@ -97,6 +97,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
@@ -104,7 +105,6 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 35;
+    public float getLaunchMultiplier() {
+        return CommonConfig.COMET_SPEAR_LAUNCH_MULTIPLIER.get();
     }
 
     @Override
@@ -151,5 +151,10 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_COMET_SPEAR.get();
     }
 }

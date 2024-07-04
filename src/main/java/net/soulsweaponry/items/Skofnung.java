@@ -26,7 +26,7 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public class Skofnung extends SwordItem {
+public class Skofnung extends ModdedSword {
 
     public static final String EMPOWERED = "empowered_attacks_left";
 
@@ -42,6 +42,10 @@ public class Skofnung extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         int duration = CommonConfig.SKOFNUNG_DISABLE_HEAL_DURATION.get() + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL.get(), duration, 0));
         if (isEmpowered(stack)) {
@@ -72,7 +76,7 @@ public class Skofnung extends SwordItem {
     }
 
     public static boolean isEmpowered(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0;
+        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0 && !CommonConfig.DISABLE_USE_SKOFNUNG.get();
     }
 
     public static Integer empAttacksLeft(ItemStack stack) {
@@ -94,6 +98,7 @@ public class Skofnung extends SwordItem {
     
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_HEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHARPEN, stack, tooltip);
@@ -101,6 +106,10 @@ public class Skofnung extends SwordItem {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_SKOFNUNG.get();
     }
 }

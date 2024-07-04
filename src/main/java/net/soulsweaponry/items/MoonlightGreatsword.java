@@ -30,6 +30,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
 
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_MOONLIGHT_GREATSWORD.get();
+    }
+
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -55,6 +60,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (this instanceof BluemoonGreatsword) {
                 WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);
@@ -69,6 +75,5 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

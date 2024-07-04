@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LichBane extends SwordItem {
+public class LichBane extends ModdedSword {
     
     public LichBane(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, CommonConfig.LICH_BANE_DAMAGE.get(), attackSpeed, settings);
@@ -26,15 +26,15 @@ public class LichBane extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
-        // So, xp doesn't drop regardless of what the damage source was, and some counter-play
-        // is needed to not make the weapon too op in pvp, therefore it cannot execute
-        // anything or damage anything below 33% hp, problem solved😎
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
             target.damage(CustomDamageSource.TRUE_MAGIC, this.getBonusMagicDamage(stack));
         }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     public float getBonusMagicDamage(ItemStack stack) {
@@ -43,13 +43,17 @@ public class LichBane extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MAGIC_DAMAGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_LICH_BANE.get();
     }
 }

@@ -3,11 +3,11 @@ package net.soulsweaponry.items;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,7 +23,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
 
-public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatable {
+public abstract class AbstractDawnbreaker extends ChargeToUseItem implements IAnimatable {
 
     public AbstractDawnbreaker(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
@@ -35,6 +35,11 @@ public abstract class AbstractDawnbreaker extends SwordItem implements IAnimatab
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
+            return true;
+        }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
         if (target.isUndead() || CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get()) {
             if (target.isDead()) {

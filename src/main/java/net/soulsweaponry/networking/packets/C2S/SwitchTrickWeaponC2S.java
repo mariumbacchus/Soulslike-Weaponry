@@ -55,7 +55,11 @@ public class SwitchTrickWeaponC2S {
 
     private void handlePacket(ServerPlayerEntity player, SwitchTrickWeaponC2S packet) {
         Item handItem = player.getStackInHand(Hand.MAIN_HAND).getItem();
-        if (handItem instanceof TrickWeapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
+        if (handItem instanceof TrickWeapon weapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
+            if (weapon.isDisabled()) {
+                weapon.notifyDisabled(player);
+                return;
+            }
             ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
             TrickWeapon switchWeapon = TRICK_WEAPONS[((TrickWeapon) handItem).getSwitchWeaponIndex()];
             if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {

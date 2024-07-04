@@ -39,14 +39,16 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         List<Entity> entities = world.getOtherEntities(user, box);
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
-                livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
-                livingEntity.addVelocity(0, fallDistance/this.getLaunchDivisor(), 0);
-                if (this.shouldHeal()) user.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? power/10f : 0));
-                for (StatusEffectInstance effect : this.applyEffects()) {
-                    livingEntity.addStatusEffect(effect);
-                }
-                if (this instanceof Nightfall nightfall) {
-                    nightfall.spawnRemnant(livingEntity, user);
+                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
+                if (canDamageTarget || CommonConfig.CALCULATED_FALL_HITS_IMMUNE_ENTITIES.get()) {
+                    livingEntity.addVelocity(0, fallDistance * this.getLaunchMultiplier(), 0);
+                    if (this.shouldHeal()) user.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? power/10f : 0));
+                    for (StatusEffectInstance effect : this.applyEffects()) {
+                        livingEntity.addStatusEffect(effect);
+                    }
+                    if (this instanceof Nightfall nightfall) {
+                        nightfall.spawnRemnant(livingEntity, user);
+                    }
                 }
             }
         }
@@ -62,7 +64,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
 
     public abstract float getBaseExpansion();
     public abstract float getExpansionModifier();
-    public abstract float getLaunchDivisor();
+    public abstract float getLaunchMultiplier();
     public abstract boolean shouldHeal();
     public abstract StatusEffectInstance[] applyEffects();
     public abstract Map<ParticleEffect, Vec3d> getParticles();

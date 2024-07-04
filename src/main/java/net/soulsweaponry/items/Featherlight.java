@@ -28,7 +28,7 @@ import java.util.Map;
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.FEATHERLIGHT_DAMAGE.get(), - (4f - CommonConfig.FEATHERLIGHT_ATTACK_SPEED.get()), settings, true);
+        super(toolMaterial, CommonConfig.FEATHERLIGHT_DAMAGE.get(), - (4f - (CommonConfig.DISABLE_USE_FEATHERLIGHT.get() ? 1f : CommonConfig.FEATHERLIGHT_ATTACK_SPEED.get())), settings, true);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public float getLaunchDivisor() {
-        return 20;
+    public float getLaunchMultiplier() {
+        return CommonConfig.FEATHERLIGHT_LAUNCH_MULTIPLIER.get();
     }
 
     @Override
@@ -84,5 +84,10 @@ public class Featherlight extends UltraHeavyWeapon {
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleRegistry.PURPLE_FLAME.get(), new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_FEATHERLIGHT.get();
     }
 }

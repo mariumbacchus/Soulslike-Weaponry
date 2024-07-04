@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,6 +41,11 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
+            return true;
+        }
         int amp = MathHelper.ceil((float) WeaponUtil.getEnchantDamageBonus(stack)/2f);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 160, amp));
         return super.postHit(stack, target, attacker);
@@ -48,10 +54,15 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (this.getSouls(stack) >= 5 && !world.isClient && this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
             BlockPos on = new BlockPos(vecBlocksAway);
-            Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT.get(), world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE.get(), world);            entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
+            Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT.get(), world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE.get(), world);
+            entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
             entity.setOwner(user);
             if (entity instanceof RimeSpectre) entity.addVelocity(0, 0.1f, 0);
             entity.setTamed(true);
@@ -67,6 +78,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
@@ -76,7 +88,6 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -92,5 +103,10 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_FROSTMOURNE.get();
     }
 }

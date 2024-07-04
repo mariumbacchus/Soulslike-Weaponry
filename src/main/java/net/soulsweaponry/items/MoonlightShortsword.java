@@ -24,7 +24,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MoonlightShortsword extends SwordItem {
+public class MoonlightShortsword extends ModdedSword {
     
     public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, CommonConfig.MOONLIGHT_SHORTSWORD_DAMAGE.get(), attackSpeed, settings);
@@ -32,6 +32,11 @@ public class MoonlightShortsword extends SwordItem {
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_MOONLIGHT_SHORTSWORD.get();
     }
 
     public static void summonSmallProjectile(World world, PlayerEntity user) {
@@ -72,17 +77,19 @@ public class MoonlightShortsword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        if (!this.isDisabled()) {
+            stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        }
         return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

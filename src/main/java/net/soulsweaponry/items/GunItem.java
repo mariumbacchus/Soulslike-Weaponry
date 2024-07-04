@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class GunItem extends BowItem {
+public abstract class GunItem extends BowItem implements IConfigDisable {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET.get());
 
@@ -44,6 +44,9 @@ public abstract class GunItem extends BowItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.gun_posture_loss").append(new LiteralText(String.valueOf(this.getPostureLoss(stack)))).formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("tooltip.soulsweapons.gun_damage").append(new LiteralText(String.valueOf(this.getBulletDamage(stack)))).formatted(Formatting.GRAY));

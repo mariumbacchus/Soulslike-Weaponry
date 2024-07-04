@@ -167,7 +167,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private boolean isRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING)) {
+        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled()) {
             return stack.getNbt().getBoolean(RAINING);
         } else {
             return false;
@@ -190,6 +190,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
@@ -199,7 +200,6 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -223,5 +223,10 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_MJOLNIR.get();
     }
 }

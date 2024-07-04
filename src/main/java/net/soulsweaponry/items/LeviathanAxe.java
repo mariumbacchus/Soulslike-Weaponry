@@ -43,7 +43,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class LeviathanAxe extends AxeItem implements IAnimatable {
+public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public LeviathanAxe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
@@ -52,9 +52,18 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
     
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, sharpness));
         return super.postHit(stack, target, attacker);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_LEVIATHAN_AXE.get();
     }
 
     @Override
@@ -91,10 +100,13 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        } 
-         else {
+        } else {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
@@ -118,6 +130,7 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
@@ -126,11 +139,10 @@ public class LeviathanAxe extends AxeItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimationData data) {
     }
 
     @Override

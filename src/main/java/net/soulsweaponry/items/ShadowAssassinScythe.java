@@ -39,6 +39,10 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return true;
+        }
         if (attacker instanceof PlayerEntity player) {
             var cooldownManager = player.getItemCooldownManager();
             if (!cooldownManager.isCoolingDown(this)) {
@@ -59,13 +63,14 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     private boolean canGetBonus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT)) {
+        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT) && !this.isDisabled()) {
             return stack.getNbt().getBoolean(HAS_EFFECT);
         }
         return false;
     }
 
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+    @Override
+    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
@@ -80,12 +85,17 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHADOW_STEP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_SHADOW_ASSASSIN_SCYTHE.get();
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -21,7 +20,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
-import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.WeaponUtil;
@@ -36,7 +34,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
+public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
@@ -48,6 +46,10 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
         Optional<UUID> uuid = Optional.of(entity.getUuid());
         try {
@@ -73,12 +75,12 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_WEAPON, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -106,5 +108,10 @@ public class FreyrSword extends SwordItem implements IAnimatable, ISyncable {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_SWORD_OF_FREYR.get();
     }
 }

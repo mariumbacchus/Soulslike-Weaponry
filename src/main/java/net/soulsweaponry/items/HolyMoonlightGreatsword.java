@@ -117,7 +117,9 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.addCharge(stack, this.getAddedCharge(stack));
+        if (!this.isDisabled()) {
+            this.addCharge(stack, this.getAddedCharge(stack));
+        }
         return super.postHit(stack, target, attacker);
     }
 
@@ -132,6 +134,10 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(itemStack);
+        }
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD.get()))) {
             user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
@@ -151,6 +157,9 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);

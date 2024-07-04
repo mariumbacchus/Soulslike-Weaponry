@@ -60,12 +60,12 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.GALEFORCE, stack, tooltip);
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, boolean scaleDamageHp, @Nullable Vec3d currentTargetPos) {
@@ -109,6 +109,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             if (!player.isCreative())
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), CommonConfig.GALEFORCE_DASH_COOLDOWN.get(), 0));
@@ -126,6 +130,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+        if (this.isDisabled()) {
+            return;
+        }
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             float f = player.getYaw();
             float g = player.getPitch();
@@ -144,5 +151,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public float getReducedPullTime() {
         return 0;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return CommonConfig.DISABLE_USE_GALEFORCE.get();
     }
 }
