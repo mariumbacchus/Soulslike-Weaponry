@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TrickWeapon extends ModdedSword implements UltraHeavy {
+public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     private static final int[] DAMAGE = {
             ConfigConstructor.kirkhammer_damage,

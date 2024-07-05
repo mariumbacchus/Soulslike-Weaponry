@@ -46,6 +46,7 @@ public class HunterCannon extends GunItem {
         return 10;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled()) {
             this.notifyDisabled(user);

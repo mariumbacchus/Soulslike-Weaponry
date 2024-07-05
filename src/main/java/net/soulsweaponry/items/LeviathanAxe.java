@@ -91,6 +91,7 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
         return 72000;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (this.isDisabled()) {

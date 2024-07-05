@@ -101,7 +101,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_silver_sword = false;
     @Entry public static boolean disable_use_ludwigs_holy_greatsword = false;
     @Entry public static boolean disable_use_moonstone_ring = false;
-
     @Entry public static boolean disable_use_chaos_orb = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
@@ -205,7 +204,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int frostmourne_damage = 11;
     @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
-    @Entry public static int galeforce_dash_cooldown = 50;
+    @Entry public static int galeforce_dash_cooldown = 80;
     @Entry public static int rageblade_damage = 7;
     @Entry public static boolean rageblade_haste_cap = true;
     @Entry public static int holy_moonlight_greatsword_damage = 10;

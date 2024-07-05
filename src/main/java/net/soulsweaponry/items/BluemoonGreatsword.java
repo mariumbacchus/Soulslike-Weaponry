@@ -35,7 +35,10 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        super.use(world, user, hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         ItemStack itemStack = user.getStackInHand(hand);
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) ||
                 user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {

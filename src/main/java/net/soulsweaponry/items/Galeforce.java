@@ -26,6 +26,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -112,8 +113,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
             this.notifyDisabled(player);
             return;
         }
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
+            if (!player.isCreative())
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.galeforce_dash_cooldown, 0));
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
@@ -131,7 +133,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
         if (this.isDisabled()) {
             return;
         }
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             float f = player.getYaw();
             float g = player.getPitch();
             float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
