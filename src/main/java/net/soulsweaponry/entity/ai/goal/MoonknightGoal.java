@@ -642,8 +642,7 @@ public class MoonknightGoal extends Goal {
     }
 
     public boolean canSummon() {
-        //fix crash on mob summons
-        if(this.pos == null){
+        if(this.pos == null) {
             this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(20) - 10, this.boss.getBlockY() - 2,  this.boss.getBlockZ() + this.boss.getRandom().nextInt(20) - 10);
         }
         if (!this.boss.getWorld().getBlockState(this.pos).isAir()) {

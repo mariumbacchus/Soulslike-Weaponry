@@ -34,7 +34,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class FreyrSword extends SwordItem implements GeoItem {
+public class FreyrSword extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -47,10 +47,8 @@ public class FreyrSword extends SwordItem implements GeoItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_sword_of_freyr) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
@@ -77,15 +75,12 @@ public class FreyrSword extends SwordItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_sword_of_freyr) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_WEAPON, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -111,5 +106,10 @@ public class FreyrSword extends SwordItem implements GeoItem {
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_sword_of_freyr;
     }
 }

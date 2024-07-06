@@ -15,7 +15,7 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GunItem extends BowItem {
+public abstract class GunItem extends BowItem implements IConfigDisable {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
 
@@ -42,6 +42,9 @@ public abstract class GunItem extends BowItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled()) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
         if (Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(Text.literal(String.valueOf(this.getPostureLoss(stack)))).formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.valueOf(this.getBulletDamage(stack)))).formatted(Formatting.GRAY));

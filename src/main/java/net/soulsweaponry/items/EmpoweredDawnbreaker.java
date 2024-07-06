@@ -5,7 +5,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -14,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -48,36 +45,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, attackSpeed, settings);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-            return true;
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
-            return TypedActionResult.fail(itemStack);
-        }
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-            return TypedActionResult.fail(itemStack);
-        }
-        else {
-            user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
-        }
     }
 
     @Override
@@ -122,9 +89,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
@@ -133,7 +98,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -170,11 +134,11 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (ConfigConstructor.disable_use_empowered_dawnbreaker) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
-        } else if (!player.getItemCooldownManager().isCoolingDown(this)) {
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
+            return;
+        }
+        if (!player.getItemCooldownManager().isCoolingDown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
             player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
@@ -199,5 +163,10 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_empowered_dawnbreaker;
     }
 }

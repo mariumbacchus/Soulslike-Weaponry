@@ -1,13 +1,13 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.item.SwordItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.entity.mobs.BossEntity;
 
-public class SoulHarvestingItem extends SwordItem {
+public abstract class SoulHarvestingItem extends ModdedSword {
 
     public static final String KILLS = "kills";
 
@@ -17,15 +17,18 @@ public class SoulHarvestingItem extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHit(stack, target, attacker);
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
+            return super.postHit(stack, target, attacker);
+        }
         if (target.isDead()) {
-            if (target instanceof BossEntity || target instanceof WitherEntity) {
+            if (target instanceof BossEntity || target instanceof WitherEntity || target instanceof EnderDragonEntity) {
                 this.addAmount(stack, 50);
             } else {
                 this.addKillCounter(stack);
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     public void addKillCounter(ItemStack stack) {

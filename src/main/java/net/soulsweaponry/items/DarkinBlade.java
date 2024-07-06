@@ -46,11 +46,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_darkin_blade) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
             stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
             return true;
         }
         if (attacker instanceof PlayerEntity player) {
@@ -69,12 +67,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_darkin_blade) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity player) {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
@@ -95,9 +87,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_darkin_blade) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
@@ -105,8 +95,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -172,5 +160,10 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_darkin_blade;
     }
 }

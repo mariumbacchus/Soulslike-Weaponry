@@ -39,12 +39,6 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity player) {
             int chargeTime = this.getMaxUseTime(stack) - remainingUseTicks;
             if (chargeTime >= 10) {
@@ -121,7 +115,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.addCharge(stack, this.getAddedCharge(stack));
+        if (!this.isDisabled()) this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
     }
 
@@ -136,10 +130,8 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(itemStack);
         }
         if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
@@ -161,7 +153,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_holy_moonlight_greatsword) {
+        if (this.isDisabled()) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ChaosOrb extends Item {
+public class ChaosOrb extends Item implements IConfigDisable {
 
     public ChaosOrb(Settings settings) {
         super(settings);
@@ -29,10 +29,8 @@ public class ChaosOrb extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_chaos_orb) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
         if (!world.isClient) {
@@ -53,12 +51,17 @@ public class ChaosOrb extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_chaos_orb){
+        if (this.isDisabled()) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);
         for (int i = 1; i < 3 + 1; i++) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));
         }
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_chaos_orb;
     }
 }

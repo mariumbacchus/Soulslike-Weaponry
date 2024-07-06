@@ -43,10 +43,8 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_forlorn_scythe) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
         if (!world.isClient) {
@@ -111,9 +109,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_forlorn_scythe) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER, stack, tooltip);
@@ -121,7 +117,6 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -147,5 +142,10 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_forlorn_scythe;
     }
 }

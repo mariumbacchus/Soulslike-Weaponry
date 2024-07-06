@@ -13,7 +13,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CrucibleSword extends SwordItem {
+public class CrucibleSword extends ModdedSword {
 
     private static final String EMP = "empowered";
     private final float attackSpeed;
@@ -35,7 +34,7 @@ public class CrucibleSword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity && !ConfigConstructor.disable_use_crucible_sword) {
+        if (attacker instanceof PlayerEntity  && !this.isDisabled()) {
             ItemCooldownManager cooldownManager = ((PlayerEntity) attacker).getItemCooldownManager();
             if (!cooldownManager.isCoolingDown(this)) {
                 cooldownManager.set(this, ConfigConstructor.crucible_sword_empowered_cooldown - WeaponUtil.getEnchantDamageBonus(stack) * 20);
@@ -71,11 +70,7 @@ public class CrucibleSword extends SwordItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            if (ConfigConstructor.disable_use_crucible_sword) {
-                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.crucible_sword_normal_damage - 1, EntityAttributeModifier.Operation.ADDITION));
-            } else {
-                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (this.isEmpowered(stack) ? ConfigConstructor.crucible_sword_empowered_damage : ConfigConstructor.crucible_sword_normal_damage) - 1, EntityAttributeModifier.Operation.ADDITION));
-            }
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (this.isEmpowered(stack) && !this.isDisabled() ? ConfigConstructor.crucible_sword_empowered_damage : ConfigConstructor.crucible_sword_normal_damage) - 1, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.attackSpeed, EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -86,14 +81,16 @@ public class CrucibleSword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_crucible_sword) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DOOM, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_crucible_sword;
     }
 }

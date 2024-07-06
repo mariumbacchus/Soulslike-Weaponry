@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -38,12 +39,6 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_galeforce) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity playerEntity) {
             boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getProjectileType(stack);
@@ -64,15 +59,12 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_galeforce) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.GALEFORCE, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, boolean scaleDamageHp, @Nullable Vec3d currentTargetPos) {
@@ -116,14 +108,13 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (ConfigConstructor.disable_use_galeforce) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
             return;
         }
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.getItemCooldownManager().set(this, ConfigConstructor.galeforce_dash_cooldown);
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
+            if (!player.isCreative())
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.galeforce_dash_cooldown, 0));
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
@@ -138,11 +129,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
-        if (ConfigConstructor.disable_use_galeforce) {
-            // Don't bother sending another message here since it's already done by the server call
+        if (this.isDisabled()) {
             return;
         }
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             float f = player.getYaw();
             float g = player.getPitch();
             float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
@@ -160,5 +150,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public float getReducedPullTime() {
         return 0;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_galeforce;
     }
 }

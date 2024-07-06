@@ -97,7 +97,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_hunter_blunderbuss = false;
     @Entry public static boolean disable_use_gatling_gun = false;
     @Entry public static boolean disable_use_hunter_cannon = false;
-
+    @Entry public static boolean disable_use_kirkhammer = false;
+    @Entry public static boolean disable_use_silver_sword = false;
+    @Entry public static boolean disable_use_ludwigs_holy_greatsword = false;
+    @Entry public static boolean disable_use_moonstone_ring = false;
     @Entry public static boolean disable_use_chaos_orb = false;
 
     @Entry(min=0,max=100) public static int withered_demon_spawnrate = 20;
@@ -201,7 +204,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int frostmourne_damage = 11;
     @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
-    @Entry public static int galeforce_dash_cooldown = 50;
+    @Entry public static int galeforce_dash_cooldown = 80;
     @Entry public static int rageblade_damage = 7;
     @Entry public static boolean rageblade_haste_cap = true;
     @Entry public static int holy_moonlight_greatsword_damage = 10;
@@ -221,7 +224,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kraken_slayer_reduced_pull_time = 10;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
-    @Entry public static double leviathan_axe_return_speed = 4;
+    @Entry public static double leviathan_axe_return_speed = 4D;
     @Entry public static int lich_bane_damage = 7;
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
     @Entry public static int ludwigs_holy_greatsword = 8;
@@ -299,7 +302,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int hunter_pistol_posture_loss = 21;
     @Entry public static int hunter_pistol_cooldown = 50;
 
-    @Entry(min=1, max=1000000) public static double decaying_king_health = 500D;
+    @Entry(min=1, max=1000000D) public static double decaying_king_health = 500D;
     @Entry(min=0) public static int decaying_king_attack_cooldown_ticks = 20;
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
     @Entry(min=0) public static float decaying_king_damage_modifier = 1f;
