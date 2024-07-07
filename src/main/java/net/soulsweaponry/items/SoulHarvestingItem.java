@@ -23,7 +23,7 @@ public abstract class SoulHarvestingItem extends ModdedSword {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
-            if (target instanceof BossEntity || target instanceof WitherEntity) {
+            if (target instanceof BossEntity || target instanceof WitherEntity || target instanceof EnderDragonEntity) {
                 this.addAmount(stack, 50);
             } else {
                 this.addKillCounter(stack);
