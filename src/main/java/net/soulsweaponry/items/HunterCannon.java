@@ -1,6 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +9,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
@@ -20,9 +18,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.Cannonball;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class HunterCannon extends GunItem {
 
@@ -53,13 +48,11 @@ public class HunterCannon extends GunItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_hunter_cannon) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return TypedActionResult.fail(stack);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(user.getStackInHand(hand));
         }
+        ItemStack stack = user.getStackInHand(hand);
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack itemStack = user.getProjectileType(stack);
         int bulletsNeeded = this.bulletsNeeded();
@@ -115,14 +108,11 @@ public class HunterCannon extends GunItem {
             if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
             return TypedActionResult.success(stack, world.isClient());
         }
-        return TypedActionResult.fail(stack); 
+        return TypedActionResult.fail(stack);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_hunter_cannon) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
-        super.appendTooltip(stack, world, tooltip, context);
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_hunter_cannon;
     }
 }

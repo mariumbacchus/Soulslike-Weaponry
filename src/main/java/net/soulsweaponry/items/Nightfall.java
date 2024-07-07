@@ -50,19 +50,13 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    
+
     public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings, true);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_nightfall) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
@@ -90,11 +84,9 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_nightfall) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
             stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
             return true;
         }
         this.spawnRemnant(target, attacker);
@@ -102,7 +94,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
-        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !ConfigConstructor.disable_use_nightfall) {
+        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !this.isDisabled()) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
@@ -146,9 +138,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_nightfall) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
@@ -160,15 +150,12 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (ConfigConstructor.disable_use_nightfall) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
             return;
         }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
@@ -229,5 +216,10 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_nightfall;
     }
 }

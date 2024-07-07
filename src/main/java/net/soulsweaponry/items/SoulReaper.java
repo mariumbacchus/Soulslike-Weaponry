@@ -42,18 +42,16 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    
+
     public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.soul_reaper_damage, attackSpeed, settings);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_soul_reaper) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        ItemStack stack = player.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
             return TypedActionResult.fail(stack);
         }
         if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
@@ -91,13 +89,11 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
             }
         }
         return TypedActionResult.fail(stack);
-	}
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_soul_reaper) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
@@ -105,7 +101,6 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -171,5 +166,10 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_soul_reaper;
     }
 }

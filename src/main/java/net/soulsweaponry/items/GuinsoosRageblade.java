@@ -1,10 +1,5 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -13,30 +8,30 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-public class GuinsoosRageblade extends SwordItem {
-    
+import java.util.List;
+
+public class GuinsoosRageblade extends ModdedSword {
+
     public GuinsoosRageblade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.rageblade_damage, attackSpeed, settings);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_rageblade) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
         if (attacker.isOnFire()) {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 2));
-        }    
+        }
         int speed = EnchantmentHelper.getLevel(Enchantments.SWEEPING, stack);
         if (attacker.hasStatusEffect(StatusEffects.HASTE)) {
             StatusEffectInstance effect = attacker.getStatusEffect(StatusEffects.HASTE);
@@ -54,9 +49,7 @@ public class GuinsoosRageblade extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_rageblade) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FURY, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HASTE, stack, tooltip);
@@ -64,7 +57,10 @@ public class GuinsoosRageblade extends SwordItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_rageblade;
     }
 }

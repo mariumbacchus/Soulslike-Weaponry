@@ -41,11 +41,9 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_frostmourne) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
             stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+            this.notifyDisabled(attacker);
             return true;
         }
         int amp = MathHelper.ceil((float) WeaponUtil.getEnchantDamageBonus(stack)/2f);
@@ -56,10 +54,8 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_frostmourne) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
         if (this.getSouls(stack) >= 5 && !world.isClient && this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())) {
@@ -82,9 +78,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_frostmourne) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
@@ -94,7 +88,6 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -110,5 +103,10 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_frostmourne;
     }
 }

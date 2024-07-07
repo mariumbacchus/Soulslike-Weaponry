@@ -6,8 +6,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -24,14 +22,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MoonlightShortsword extends SwordItem {
-    
+public class MoonlightShortsword extends ModdedSword {
+
     public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, attackSpeed, settings);
     }
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_moonlight_shortsword;
     }
 
     public static void summonSmallProjectile(World world, PlayerEntity user) {
@@ -45,11 +48,7 @@ public class MoonlightShortsword extends SwordItem {
                     return;
                 }
                 float damage = ConfigConstructor.moonlight_shortsword_projectile_damage;
-                ItemStack stack = Items.ARROW.getDefaultStack();
-                if (itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
-                    stack = itemStack;
-                }
-                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user, stack);
+                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user);
                 if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && !itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
                     damage += user.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() * 2f;
                 }
@@ -57,7 +56,7 @@ public class MoonlightShortsword extends SwordItem {
                 projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 projectile.setDamage(damage);
                 world.spawnEntity(projectile);
-    
+
                 //Damaging the itemstack messes with Better Combat, therefore postHit damages weapon twice instead
                 /* itemStack.damage(1, user, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(hand);
@@ -75,26 +74,19 @@ public class MoonlightShortsword extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_moonlight_shortsword) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return super.postHit(stack, target, attacker);
+        if (!this.isDisabled()) {
+            stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         }
-        stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_moonlight_shortsword) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

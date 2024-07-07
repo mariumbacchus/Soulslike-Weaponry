@@ -45,13 +45,8 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
         super(toolMaterial, ConfigConstructor.comet_spear_damage, attackSpeed, settings);
     }
 
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_comet_spear) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
@@ -67,7 +62,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
                     h *= n / m;
                     k *= n / m;
                     l *= n / m;
-                    
+
                     user.addVelocity(h, k, l);
                     playerEntity.useRiptide(20);
                     world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -81,7 +76,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown-(enchant*5)));
-                    
+
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
@@ -119,9 +114,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_comet_spear) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
@@ -129,7 +122,6 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -162,5 +154,10 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_comet_spear;
     }
 }

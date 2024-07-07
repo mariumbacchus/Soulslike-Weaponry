@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -34,40 +33,26 @@ import java.util.List;
 import java.util.Map;
 
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
-    
+
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, attackSpeed, settings, true);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_heap_of_raw_iron) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RAGE, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_heap_of_raw_iron) {
-            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-            return true;
-        }
-        return super.postHit(stack, target, attacker);
     }
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity user) {
-        if (ConfigConstructor.disable_use_heap_of_raw_iron) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This weapon is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return;
         }
         if (!user.getItemCooldownManager().isCoolingDown(this)) {
@@ -124,5 +109,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
         map.put(ParticleRegistry.DARK_STAR, new Vec3d(1, 6, 1));
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_heap_of_raw_iron;
     }
 }

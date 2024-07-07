@@ -54,12 +54,6 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_draupnir_spear) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
@@ -110,16 +104,13 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_draupnir_spear) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
@@ -136,10 +127,8 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (ConfigConstructor.disable_use_draupnir_spear) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
             return;
         }
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
@@ -195,5 +184,10 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_draupnir_spear;
     }
 }

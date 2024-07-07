@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 
-public interface UltraHeavy {
+public interface IUltraHeavy {
 
     boolean isHeavy();
 

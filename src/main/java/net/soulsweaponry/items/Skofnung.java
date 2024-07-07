@@ -1,11 +1,8 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
-
+import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -16,7 +13,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -26,13 +22,15 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class Skofnung extends SwordItem {
+import java.util.List;
+
+public class Skofnung extends ModdedSword {
 
     public static final String EMPOWERED = "empowered_attacks_left";
 
     /**
      * The Skofnung sword will add a status effect that disables all healing on the target for a period of time.
-     * This effect can be removed, however, by using the Skofnung Stone. Additionally, when the stone is used while 
+     * This effect can be removed, however, by using the Skofnung Stone. Additionally, when the stone is used while
      * Skofnung is in the other hand, it temporarily sharpens the Skofnung sword, empowering it for the next 8 hits.
      * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
@@ -42,10 +40,8 @@ public class Skofnung extends SwordItem {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (ConfigConstructor.disable_use_skofnung) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                attacker.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
         int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
@@ -97,12 +93,10 @@ public class Skofnung extends SwordItem {
             }
         }
     }
-    
+
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_skofnung) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_HEAL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHARPEN, stack, tooltip);
@@ -110,6 +104,10 @@ public class Skofnung extends SwordItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_skofnung;
     }
 }

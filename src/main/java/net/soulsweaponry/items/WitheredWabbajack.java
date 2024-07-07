@@ -24,7 +24,6 @@ import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -37,8 +36,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
 
-public class WitheredWabbajack extends SwordItem {
-    
+public class WitheredWabbajack extends ModdedSword {
+
     public WitheredWabbajack(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, attackSpeed, settings);
     }
@@ -46,10 +45,8 @@ public class WitheredWabbajack extends SwordItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (ConfigConstructor.disable_use_withered_wabbajack) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
             return TypedActionResult.fail(itemStack);
         }
         user.getItemCooldownManager().set(this, 1);
@@ -72,7 +69,7 @@ public class WitheredWabbajack extends SwordItem {
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
             }
             world.spawnEntity(entity);
-            
+
             itemStack.damage(1, user, (p_220045_0_) -> {
                 p_220045_0_.sendToolBreakStatus(hand);
             });
@@ -95,17 +92,17 @@ public class WitheredWabbajack extends SwordItem {
     private ProjectileEntity calculateProjectile(LivingEntity user, World world, Vec3d look, ItemStack stack) {
         int power = new Random().nextInt((6 + this.getLuckFactor(user)) - this.getLuckFactor(user)) + this.getLuckFactor(user);
         Object[][] projectileTypes = {
-            {new ArrowEntity(world, look.getX(), look.getY(), look.getZ(), Items.ARROW.getDefaultStack()), LuckType.BAD},
-            {new DragonStaffProjectile(world, user, stack), LuckType.NEUTRAL},
-            {new EggEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new EnderPearlEntity(world, user), LuckType.BAD},
-            {new ExperienceBottleEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new FireballEntity(world, user, look.getX(), look.getY(), look.getZ(), power), LuckType.NEUTRAL},
-            {new SmallFireballEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new SnowballEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new WitherSkullEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
-            {new WitheredWabbajackProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.GOOD},
-            {new GrowingFireball(world, user), LuckType.NEUTRAL},
+                {new ArrowEntity(world, look.getX(), look.getY(), look.getZ(), Items.ARROW.getDefaultStack()), LuckType.BAD},
+                {new DragonStaffProjectile(world, user, stack), LuckType.NEUTRAL},
+                {new EggEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+                {new EnderPearlEntity(world, user), LuckType.BAD},
+                {new ExperienceBottleEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+                {new FireballEntity(world, user, look.getX(), look.getY(), look.getZ(), power), LuckType.NEUTRAL},
+                {new SmallFireballEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+                {new SnowballEntity(world, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+                {new WitherSkullEntity(world, user, look.getX(), look.getY(), look.getZ()), LuckType.BAD},
+                {new WitheredWabbajackProjectile(world, user, look.getX(), look.getY(), look.getZ()), LuckType.GOOD},
+                {new GrowingFireball(world, user), LuckType.NEUTRAL},
         };
         ArrayList<ArrayList<Object>> projectileList = new ArrayList<>();
         for (Object[] projectileType : projectileTypes) {
@@ -141,7 +138,7 @@ public class WitheredWabbajack extends SwordItem {
             }
         }
 
-        /* 
+        /*
          * Finner ut total sjansen basert på modifiserte sjanser til prosjektilene.
          */
         int totalChance = 0;
@@ -149,7 +146,7 @@ public class WitheredWabbajack extends SwordItem {
             totalChance += (int) objects.get(2);
         }
 
-        /* 
+        /*
          * Variabel "counter" holder tellingen på sjansene til alle prosjektilene oppover, mens "under"
          * holder tellingen på alle untatt forste, som lager boundsene til prosjektilene.
          */
@@ -161,12 +158,12 @@ public class WitheredWabbajack extends SwordItem {
             counter += (int) projectileList.get(i).get(2);
             if (i > 0) {
                 under += (int) projectileList.get(i - 1).get(2);
-            } 
+            }
             if (random < counter && random >= under) {
                 chosenProjectile = (ProjectileEntity) projectileList.get(i).get(0);
             }
 
-            /* 
+            /*
              * Skriver ut alle boundsene for debugging.
              */
             //System.out.println(under + " || " + counter);
@@ -181,7 +178,7 @@ public class WitheredWabbajack extends SwordItem {
     /**
      * Gets the luck factor that will be used to calculate the chance for each projectile or
      * effect based on whether it's unlucky or not through the LuckType enum. The returned value is
-     * a percent out of a hundred as a float, for example with amplifier 0 (which is effect 
+     * a percent out of a hundred as a float, for example with amplifier 0 (which is effect
      * level 1 ingame) it will increase the chance of good effects by 20% by returning 1.2f.
      * With unlucky status effect, the returned value is negative, which will have an impact
      * on the calculation later.
@@ -196,21 +193,23 @@ public class WitheredWabbajack extends SwordItem {
         }
     }
 
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_withered_wabbajack;
+    }
+
     public enum LuckType {
         GOOD, NEUTRAL, BAD
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_withered_wabbajack) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

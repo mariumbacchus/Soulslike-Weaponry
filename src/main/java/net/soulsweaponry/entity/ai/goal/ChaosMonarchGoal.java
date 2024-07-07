@@ -97,7 +97,7 @@ public class ChaosMonarchGoal extends Goal {
                         this.attackStatus++;
                         if (this.attackStatus % 2 == 0 && this.attackStatus < 10) {
                             if (!this.boss.getWorld().isClient){
-                                ParticleHandler.particleSphere(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleTypes.PORTAL, 4f);
+                                ParticleHandler.particleSphere(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleTypes.PORTAL, 6f);
                             }
                         }
                         if (this.attackStatus == 23) {

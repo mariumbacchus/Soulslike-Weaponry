@@ -14,14 +14,13 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class MoonlightGreatsword extends ChargeToUseItem {
-    
+
     public MoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.moonlight_greatsword_damage, attackSpeed, settings);
     }
@@ -30,19 +29,19 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
 
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_moonlight_greatsword;
+    }
+
+    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_moonlight_greatsword) {
-            if (ConfigConstructor.inform_player_about_disabled_use) {
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-        
-                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
+
+                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user);
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
@@ -57,12 +56,10 @@ public class MoonlightGreatsword extends ChargeToUseItem {
             }
         }
     }
-    
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_moonlight_greatsword && stack.isOf(WeaponRegistry.MOONLIGHT_GREATSWORD)) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (this instanceof BluemoonGreatsword) {
                 WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);
@@ -77,6 +74,5 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 }

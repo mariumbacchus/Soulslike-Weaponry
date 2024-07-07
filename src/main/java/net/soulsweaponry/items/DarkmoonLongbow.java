@@ -34,12 +34,6 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (ConfigConstructor.disable_use_darkmoon_longbow) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
-            return;
-        }
         if (user instanceof PlayerEntity playerEntity && !world.isClient) {
             boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getProjectileType(stack);
@@ -61,9 +55,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ConfigConstructor.disable_use_darkmoon_longbow) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SLOW_PULL, stack, tooltip);
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ARROW, stack, tooltip);
@@ -71,7 +63,6 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -81,10 +72,8 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (ConfigConstructor.disable_use_darkmoon_longbow) {
-            if (ConfigConstructor.inform_player_about_disabled_use){
-                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.useDisabled","This item is disabled"));
-            }
+        if (this.isDisabled()) {
+            this.notifyDisabled(player);
             return;
         }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
@@ -106,5 +95,10 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return ConfigConstructor.disable_use_darkmoon_longbow;
     }
 }

@@ -15,7 +15,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
-public class UmbralTrespassItem extends SoulHarvestingItem {
+public abstract class UmbralTrespassItem extends SoulHarvestingItem {
 
     private final int ticksBeforeDismount;
     public static final TrackedData<Boolean> SHOULD_DAMAGE_RIDING = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -29,6 +29,10 @@ public class UmbralTrespassItem extends SoulHarvestingItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        if (this.isDisabled()) {
+            this.notifyDisabled(user);
+            return TypedActionResult.fail(stack);
+        }
         if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < 200D) {
             LivingEntity target = user.getAttacking();
             if (user.startRiding(target, true)) {
