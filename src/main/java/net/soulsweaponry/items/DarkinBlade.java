@@ -113,28 +113,46 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     @Override
     public float getBaseExpansion() {
-        return 3;
+        return ConfigConstructor.darkin_blade_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.75f;
+        return ConfigConstructor.darkin_blade_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return ConfigConstructor.darkin_blade_launch_multiplier;
+    public float getLaunchModifier() {
+        return ConfigConstructor.darkin_blade_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return ConfigConstructor.darkin_blade_calculated_fall_max_radius;
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return ConfigConstructor.darkin_blade_calculated_fall_max_damage;
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return ConfigConstructor.darkin_blade_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return true;
+        return ConfigConstructor.darkin_blade_calculated_fall_should_heal;
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[0];
+    public float getHealFromDamageModifier() {
+        return ConfigConstructor.darkin_blade_calculated_fall_heal_from_damage_modifier;
     }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {}
 
     @Override
     public Map<ParticleEffect, Vec3d> getParticles() {

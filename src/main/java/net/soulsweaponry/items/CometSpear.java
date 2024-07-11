@@ -14,7 +14,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -105,28 +104,46 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public float getBaseExpansion() {
-        return 0;
+        return ConfigConstructor.comet_spear_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return 2;
+        return ConfigConstructor.comet_spear_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return ConfigConstructor.comet_spear_launch_multiplier;
+    public float getLaunchModifier() {
+        return ConfigConstructor.comet_spear_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return ConfigConstructor.comet_spear_calculated_fall_max_radius;
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return ConfigConstructor.comet_spear_calculated_fall_max_damage;
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return ConfigConstructor.comet_spear_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return ConfigConstructor.comet_spear_calculated_fall_should_heal;
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[0];
+    public float getHealFromDamageModifier() {
+        return ConfigConstructor.comet_spear_calculated_fall_heal_from_damage_modifier;
     }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {}
 
     @Override
     public Map<ParticleEffect, Vec3d> getParticles() {

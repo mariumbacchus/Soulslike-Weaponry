@@ -9,7 +9,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_fast_hands = false;
     @Entry public static boolean disable_enchantment_posture_breaker = false;
     @Entry public static boolean disable_enchantment_stagger = false;
-    
+
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_comet_spear = false;
     @Entry public static boolean disable_recipe_darkin_blade = false;
@@ -134,7 +134,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int withered_chest_apply_fire_seconds = 6;
     @Entry public static int withered_chest_life_leach_duration = 400;
     @Entry public static int withered_chest_life_leach_amplifier = 0;
-    
+
     @Entry public static int bloodthirster_damage = 8;
     @Entry public static boolean bloodthirster_overshields = true;
     @Entry public static int lifesteal_item_base_healing = 2;
@@ -150,14 +150,28 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int comet_spear_ability_damage = 10;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
-    @Entry public static float comet_spear_launch_multiplier = 0.35f;
+    @Entry public static float comet_spear_calculated_fall_base_radius = 0f;
+    @Entry public static float comet_spear_calculated_fall_height_increase_radius_modifier = 2f;
+    @Entry public static float comet_spear_calculated_fall_max_radius = 100f;
+    @Entry public static float comet_spear_calculated_fall_max_damage = 100f;
+    @Entry public static float comet_spear_calculated_fall_height_increase_damage_modifier = 0.2f;
+    @Entry public static float comet_spear_calculated_fall_target_launch_modifier = 0.35f;
+    @Entry public static boolean comet_spear_calculated_fall_should_heal = false;
+    @Entry public static float comet_spear_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int crucible_sword_normal_damage = 9;
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static int darkin_blade_ability_damage = 12;
     @Entry public static int darkin_blade_ability_cooldown = 150;
-    @Entry public static float darkin_blade_launch_multiplier = 0.25f;
+    @Entry public static float darkin_blade_calculated_fall_base_radius = 3f;
+    @Entry public static float darkin_blade_calculated_fall_height_increase_radius_modifier = 1.75f;
+    @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.25f;
+    @Entry public static float darkin_blade_calculated_fall_max_radius = 100f;
+    @Entry public static float darkin_blade_calculated_fall_max_damage = 100f;
+    @Entry public static float darkin_blade_calculated_fall_height_increase_damage_modifier = 0.2f;
+    @Entry public static boolean darkin_blade_calculated_fall_should_heal = true;
+    @Entry public static float darkin_blade_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int darkin_scythe_damage = 9;
     @Entry public static int darkin_scythe_bonus_damage = 3;
     @Entry public static int darkin_scythe_max_souls = 100;
@@ -178,7 +192,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int empowered_dawnbreaker_ability_cooldown = 180;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
-    @Entry public static float heap_of_raw_iron_launch_multiplier = 0.25f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_base_radius = 2.5f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_radius_modifier = 1.6f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_target_launch_modifier = 0.25f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_max_radius = 100f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_max_damage = 100f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_damage_modifier = 0.2f;
+    @Entry public static boolean heap_of_raw_iron_calculated_fall_should_heal = false;
+    @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
@@ -200,7 +221,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static int featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
-    @Entry public static float featherlight_launch_multiplier = 0.20f;
+    @Entry public static float featherlight_calculated_fall_base_radius = 2.5f;
+    @Entry public static float featherlight_calculated_fall_height_increase_radius_modifier = 1.6f;
+    @Entry public static float featherlight_calculated_fall_target_launch_modifier = 0.20f;
+    @Entry public static float featherlight_calculated_fall_max_radius = 100f;
+    @Entry public static float featherlight_calculated_fall_max_damage = 100f;
+    @Entry public static float featherlight_calculated_fall_height_increase_damage_modifier = 0.2f;
+    @Entry public static boolean featherlight_calculated_fall_should_heal = false;
+    @Entry public static float featherlight_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int frostmourne_damage = 11;
     @Entry public static int frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_bonus_damage = 1.0f;
@@ -253,7 +281,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nightfall_smash_cooldown = 300;
     @Entry public static int nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
-    @Entry public static float nightfall_launch_multiplier = 0.30f;
+    @Entry public static float nightfall_calculated_fall_base_radius = 3f;
+    @Entry public static float nightfall_calculated_fall_height_increase_radius_modifier = 1.5f;
+    @Entry public static float nightfall_calculated_fall_target_launch_modifier = 0.30f;
+    @Entry public static float nightfall_calculated_fall_max_radius = 100f;
+    @Entry public static float nightfall_calculated_fall_max_damage = 100f;
+    @Entry public static float nightfall_calculated_fall_height_increase_damage_modifier = 0.2f;
+    @Entry public static boolean nightfall_calculated_fall_should_heal = false;
+    @Entry public static float nightfall_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static int nights_edge_ability_cooldown = 120;
     @Entry public static float nights_edge_ability_damage = 10f;
@@ -280,6 +315,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int withered_wabbajack_damage = 8;
 
     @Entry public static boolean calculated_fall_hits_immune_entities = false;
+    @Entry public static boolean ultra_heavy_haste_when_strength = true;
 
     @Entry public static int max_posture_loss = 200;
     @Entry public static boolean enable_shield_parry = true;

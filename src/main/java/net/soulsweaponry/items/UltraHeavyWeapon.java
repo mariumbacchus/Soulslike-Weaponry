@@ -15,7 +15,9 @@ public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUl
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        this.gainStrength(attacker);
+        if (!this.isDisabled()) {
+            this.gainStrength(attacker);
+        }
         return super.postHit(stack, target, attacker);
     }
 
