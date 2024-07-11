@@ -27,6 +27,11 @@ import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
 
+    private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
+            new StatusEffectInstance(EffectRegistry.BLIGHT, 200, 4),
+            new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
+    };
+
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - (ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed)), settings, true);
     }
@@ -53,30 +58,49 @@ public class Featherlight extends UltraHeavyWeapon {
 
     @Override
     public float getBaseExpansion() {
-        return 2.5f;
+        return ConfigConstructor.featherlight_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.6f;
+        return ConfigConstructor.featherlight_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return ConfigConstructor.featherlight_launch_multiplier;
+    public float getLaunchModifier() {
+        return ConfigConstructor.featherlight_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return ConfigConstructor.featherlight_calculated_fall_max_radius;
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return ConfigConstructor.featherlight_calculated_fall_max_damage;
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return ConfigConstructor.featherlight_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return ConfigConstructor.featherlight_calculated_fall_should_heal;
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[] {
-                new StatusEffectInstance(EffectRegistry.BLIGHT, 200, 4),
-                new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
-        };
+    public float getHealFromDamageModifier() {
+        return ConfigConstructor.featherlight_calculated_fall_heal_from_damage_modifier;
+    }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {
+        for (StatusEffectInstance effect : CALCULATED_FALL_EFFECTS) {
+            target.addStatusEffect(effect);
+        }
     }
 
     @Override

@@ -153,27 +153,47 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public float getBaseExpansion() {
-        return 3f;
+        return ConfigConstructor.nightfall_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.5f;
+        return ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return ConfigConstructor.nightfall_launch_multiplier;
+    public float getLaunchModifier() {
+        return ConfigConstructor.nightfall_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return ConfigConstructor.nightfall_calculated_fall_max_radius;
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return ConfigConstructor.nightfall_calculated_fall_max_damage;
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return ConfigConstructor.nightfall_calculated_fall_should_heal;
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[0];
+    public float getHealFromDamageModifier() {
+        return ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier;
+    }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {
+        this.spawnRemnant(target, user);
     }
 
     @Override

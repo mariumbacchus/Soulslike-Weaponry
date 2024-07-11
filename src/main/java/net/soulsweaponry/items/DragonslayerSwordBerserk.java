@@ -35,6 +35,10 @@ import java.util.Map;
 
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
 
+    private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
+            new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
+    };
+
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, attackSpeed, settings, true);
     }
@@ -82,27 +86,49 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public float getBaseExpansion() {
-        return 2.5f;
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.6f;
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return ConfigConstructor.heap_of_raw_iron_launch_multiplier;
+    public float getLaunchModifier() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_radius;
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_damage;
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_should_heal;
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[] {new StatusEffectInstance(StatusEffects.WITHER, 140, 1)};
+    public float getHealFromDamageModifier() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_heal_from_damage_modifier;
+    }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {
+        for (StatusEffectInstance effect : CALCULATED_FALL_EFFECTS) {
+            target.addStatusEffect(effect);
+        }
     }
 
     @Override
