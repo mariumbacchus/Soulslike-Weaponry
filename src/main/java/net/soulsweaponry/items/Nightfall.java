@@ -156,27 +156,47 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public float getBaseExpansion() {
-        return 3f;
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_BASE_RADIUS.get();
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.5f;
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return CommonConfig.NIGHTFALL_LAUNCH_MULTIPLIER.get();
+    public float getLaunchModifier() {
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_MAX_RADIUS.get();
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_MAX_DAMAGE.get();
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_SHOULD_HEAL.get();
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[0];
+    public float getHealFromDamageModifier() {
+        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+    }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {
+        this.spawnRemnant(target, user);
     }
 
     @Override

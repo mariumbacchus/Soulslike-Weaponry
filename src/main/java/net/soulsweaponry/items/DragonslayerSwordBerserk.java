@@ -82,27 +82,52 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public float getBaseExpansion() {
-        return 2.5f;
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_BASE_RADIUS.get();
     }
 
     @Override
     public float getExpansionModifier() {
-        return 1.6f;
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return CommonConfig.GUTS_SWORD_LAUNCH_MULTIPLIER.get();
+    public float getLaunchModifier() {
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_MAX_RADIUS.get();
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_MAX_DAMAGE.get();
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_SHOULD_HEAL.get();
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[] {new StatusEffectInstance(StatusEffects.WITHER, 140, 1)};
+    public float getHealFromDamageModifier() {
+        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+    }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {
+        StatusEffectInstance[] effects = new StatusEffectInstance[] {
+                new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
+        };
+        for (StatusEffectInstance effect : effects) {
+            target.addStatusEffect(effect);
+        }
     }
 
     @Override

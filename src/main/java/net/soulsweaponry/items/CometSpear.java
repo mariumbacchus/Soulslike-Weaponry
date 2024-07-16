@@ -109,28 +109,46 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public float getBaseExpansion() {
-        return 0;
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_BASE_RADIUS.get();
     }
 
     @Override
     public float getExpansionModifier() {
-        return 2;
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
     }
 
     @Override
-    public float getLaunchMultiplier() {
-        return CommonConfig.COMET_SPEAR_LAUNCH_MULTIPLIER.get();
+    public float getLaunchModifier() {
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+    }
+
+    @Override
+    public float getMaxExpansion() {
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_MAX_RADIUS.get();
+    }
+
+    @Override
+    public float getMaxDetonationDamage() {
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_MAX_DAMAGE.get();
+    }
+
+    @Override
+    public float getFallDamageIncreaseModifier() {
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
     }
 
     @Override
     public boolean shouldHeal() {
-        return false;
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_SHOULD_HEAL.get();
     }
 
     @Override
-    public StatusEffectInstance[] applyEffects() {
-        return new StatusEffectInstance[0];
+    public float getHealFromDamageModifier() {
+        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
     }
+
+    @Override
+    public void doCustomEffects(LivingEntity target, LivingEntity user) {}
 
     @Override
     public Map<ParticleEffect, Vec3d> getParticles() {

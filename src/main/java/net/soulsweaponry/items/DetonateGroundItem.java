@@ -32,23 +32,18 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
 
-    public void detonateGroundEffect(LivingEntity user, int power, float fallDistance, World world, ItemStack stack) {
-        float expansion = this.getBaseExpansion() + this.getExpansionModifier() * fallDistance/10;
-        power += fallDistance/5;
+    public void detonateGroundEffect(LivingEntity user, int amplifier, float fallDistance, World world, ItemStack stack) {
+        float expansion = this.getBaseExpansion() + this.getExpansionModifier() * Math.min(this.getMaxExpansion(), fallDistance / 10);
+        float power = Math.min(this.getMaxDetonationDamage(), amplifier + fallDistance * this.getFallDamageIncreaseModifier()); // fallDistance was prev. divided by 5
         Box box = user.getBoundingBox().expand(expansion);
         List<Entity> entities = world.getOtherEntities(user, box);
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
                 boolean canDamageTarget = livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                 if (canDamageTarget || CommonConfig.CALCULATED_FALL_HITS_IMMUNE_ENTITIES.get()) {
-                    livingEntity.addVelocity(0, fallDistance * this.getLaunchMultiplier(), 0);
-                    if (this.shouldHeal()) user.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? power/10f : 0));
-                    for (StatusEffectInstance effect : this.applyEffects()) {
-                        livingEntity.addStatusEffect(effect);
-                    }
-                    if (this instanceof Nightfall nightfall) {
-                        nightfall.spawnRemnant(livingEntity, user);
-                    }
+                    livingEntity.addVelocity(0, fallDistance * this.getLaunchModifier(), 0);
+                    if (this.shouldHeal()) user.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? power * this.getHealFromDamageModifier() : 0)); // power was prev. divided by 10
+                    this.doCustomEffects(livingEntity, user);
                 }
             }
         }
@@ -63,10 +58,50 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
     }
 
     public abstract float getBaseExpansion();
+
+    /**
+     * @return Modifier to multiply the fall distance (after division of 10) before adding to the total expansion
+     * of the bounding box of the player, which determines the total range of the AOE
+     */
     public abstract float getExpansionModifier();
-    public abstract float getLaunchMultiplier();
+    public abstract float getLaunchModifier();
+    public abstract float getMaxExpansion();
+
+    /**
+     * Not to be confused with {@linkplain ItemStack#getMaxDamage()}
+     * @return max possible damage calculated fall AOE can do to each entity
+     */
+    public abstract float getMaxDetonationDamage();
+
+    /**
+     * @return Modifier to multiply the fall distance before adding to total damage
+     */
+    public abstract float getFallDamageIncreaseModifier();
+
+    /**
+     * @return Whether the Calculated Fall detonation should heal the player based on the damage dealt to each target or not
+     */
     public abstract boolean shouldHeal();
-    public abstract StatusEffectInstance[] applyEffects();
+
+    /**
+     * @return Healing modifier to multiply the total damage dealt to the target.
+     * <p>NOTE: This is called on every target hit, so multiple targets = big heal</p>
+     */
+    public abstract float getHealFromDamageModifier();
+
+    /**
+     * Post hit effects for all the targets hit, like applying custom status effects or spawning a
+     * {@linkplain net.soulsweaponry.entity.mobs.Remnant} like in {@linkplain Nightfall}'s case.
+     * Called for each individual living entity hit.
+     * @param target target
+     * @param user user
+     */
+    public abstract void doCustomEffects(LivingEntity target, LivingEntity user);
+
+    /**
+     * Additional particles on top of {@linkplain ParticleEvents#BASE_GRAND_SKYFALL_MAP}
+     * @return additional particles with vector divider to determine the direction of the particles
+     */
     public abstract Map<ParticleEffect, Vec3d> getParticles();
 
     /**
