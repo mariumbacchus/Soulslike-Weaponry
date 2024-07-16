@@ -27,7 +27,7 @@ public class WeaponRecipeProvider extends RecipeProvider {
             GunRecipes.generateRecipes(consumer);
             WeaponRecipes.generateRecipes(consumer);
         }
-        if (!CommonConfig.DISABLE_EMPOWERED_ARMOR.get()) {
+        if (!CommonConfig.DISABLE_ARMOR_RECIPES.get()) {
             ArmorRecipes.generateRecipes(consumer);
         }
         CookingRecipeJsonBuilder.createSmelting(

@@ -26,11 +26,9 @@ import java.util.List;
 public class CrucibleSword extends ModdedSword {
 
     private static final String EMP = "empowered";
-    private final float attackSpeed;
 
     public CrucibleSword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, CommonConfig.CRUCIBLE_SWORD_DAMAGE.get(), attackSpeed, settings);
-        this.attackSpeed = attackSpeed;
     }
 
     @Override
@@ -72,7 +70,7 @@ public class CrucibleSword extends ModdedSword {
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (this.isEmpowered(stack) && !this.isDisabled() ? CommonConfig.CRUCIBLE_SWORD_EMP_DAMAGE.get() : CommonConfig.CRUCIBLE_SWORD_DAMAGE.get()) - 1, EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {

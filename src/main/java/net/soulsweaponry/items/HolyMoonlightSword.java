@@ -14,11 +14,8 @@ import net.soulsweaponry.util.WeaponUtil;
 
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
-    private final float attackSpeed;
-
     public HolyMoonlightSword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
         super(toolMaterial, 4, attackSpeed, settings, 3, 4, false, true);
-        this.attackSpeed = attackSpeed;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.getAttackDamage() + this.getBonusDamage(stack), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {

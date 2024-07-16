@@ -117,8 +117,8 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND && this.getRaining(stack)) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", CommonConfig.DRAGON_SWORDSPEAR_DAMAGE.get(), EntityAttributeModifier.Operation.ADDITION)); // Damage is increased by 1
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", -2.2D, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", CommonConfig.DRAGON_SWORDSPEAR_DAMAGE.get() + CommonConfig.DRAGON_SWORDSPEAR_WEATHER_BONUS_DAMAGE.get() - 1, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - CommonConfig.DRAGON_SWORDSPEAR_WEATHER_TOTAL_ATTACK_SPEED.get()), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {

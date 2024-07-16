@@ -22,7 +22,7 @@ public class CommonConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_WEAPON_RECIPES;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_GUN_RECIPES;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_EMPOWERED_ARMOR;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_ARMOR_RECIPES;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_ENCHANTS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_FAST_HANDS;
@@ -66,6 +66,10 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_KRAKEN_SLAYER_BOW;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_KRAKEN_SLAYER_CROSSBOW;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_DARKMOON_LONGBOW;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ARKENPLATE;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_WITHERED_CHEST;
+
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_ARKENPLATE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_WITHERED_CHEST;
 
@@ -218,6 +222,8 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> GUTS_SWORD_CALCULATED_FALL_SHOULD_HEAL;
     public static final ForgeConfigSpec.ConfigValue<Float> GUTS_SWORD_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER;
     public static final ForgeConfigSpec.ConfigValue<Integer> DRAGON_SWORDSPEAR_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DRAGON_SWORDSPEAR_WEATHER_BONUS_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Float> DRAGON_SWORDSPEAR_WEATHER_TOTAL_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Float> DRAGON_SWORDSPEAR_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> DRAGON_SWORDSPEAR_ABILITY_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> DRAGON_SWORDSPEAR_LIGHTNING_AMOUNT;
@@ -278,6 +284,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> MASTER_SWORD_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_RAIN_BONUS_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Float> MJOLNIR_RAIN_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Float> MJOLNIR_SMASH_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> MJOLNIR_PROJECTILE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MJOLNIR_LIGHTNING_SMASH_COOLDOWN;
@@ -426,7 +433,7 @@ public class CommonConfig {
 
         DISABLE_WEAPON_RECIPES = BUILDER.comment("Disable all recipes of a group.").define("Disable all legendary weapon recipes", false);
         DISABLE_GUN_RECIPES = BUILDER.define("Disable all gun recipes", false);
-        DISABLE_EMPOWERED_ARMOR = BUILDER.define("Disable all empowered armor recipes", false);
+        DISABLE_ARMOR_RECIPES = BUILDER.define("Disable all empowered armor recipes", false);
 
         DISABLE_ENCHANTS = BUILDER.comment("Disable registration of enchants.").define("Disable all enchants", false);
         DISABLE_FAST_HANDS = BUILDER.define("Disable Fast Hands/Quick Reload enchant", false);
@@ -471,7 +478,10 @@ public class CommonConfig {
         RECIPE_WABBAJACK = BUILDER.define("Disable Withered Wabbajack recipe", false);
         RECIPE_SAWBLADE = BUILDER.define("Disable Whirligig Sawblade recipe", false);
 
-        RECIPE_ENHANCED_ARKENPLATE = BUILDER.define("Disable Infused Arkenplate recipe", false);
+        RECIPE_ARKENPLATE = BUILDER.comment("Disable armor item recipes, sorted from A-Z.").define("Disable Arkenplate recipe", false);
+        RECIPE_WITHERED_CHEST = BUILDER.define("Disable Hallowheart recipe", false);
+
+        RECIPE_ENHANCED_ARKENPLATE = BUILDER.comment("Disable special/infused armor item recipes, sorted from A-Z.").define("Disable Infused Arkenplate recipe", false);
         RECIPE_ENHANCED_WITHERED_CHEST = BUILDER.define("Disable Infused Hallowheart recipe", false);
 
         INFORM_PLAYER_ABOUT_DISABLED_USE = BUILDER.comment("Inform the player if the item used is disabled.").define("Send weapon is disabled message", true);
@@ -626,6 +636,8 @@ public class CommonConfig {
         GUTS_SWORD_CALCULATED_FALL_SHOULD_HEAL = BUILDER.define("Heap of Raw Iron/Guts' Sword Calculated Fall should heal user", false);
         GUTS_SWORD_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER = BUILDER.define("Heap of Raw Iron/Guts' Sword Calculated Fall heal from damage modifier", 0.1f);
         DRAGON_SWORDSPEAR_DAMAGE = BUILDER.define("Dragonslayer Swordspear damage", 8);
+        DRAGON_SWORDSPEAR_WEATHER_BONUS_DAMAGE = BUILDER.define("Dragonslayer Swordspear bonus damage during rain", 1);
+        DRAGON_SWORDSPEAR_WEATHER_TOTAL_ATTACK_SPEED = BUILDER.define("Dragonslayer Swordspear total attack speed during rain", 1.8f);
         DRAGON_SWORDSPEAR_PROJECTILE_DAMAGE = BUILDER.define("Dragonslayer Swordspear projectile damage", 7f);
         DRAGON_SWORDSPEAR_ABILITY_DAMAGE = BUILDER.define("Dragonslayer Swordspear ability damage", 6f);
         DRAGON_SWORDSPEAR_LIGHTNING_AMOUNT = BUILDER.define("Dragonslayer Swordspear lightning amount", 1);
@@ -686,6 +698,7 @@ public class CommonConfig {
         MASTER_SWORD_PROJECTILE_DAMAGE = BUILDER.define("Master Sword projectile damage", 11f);
         MJOLNIR_DAMAGE = BUILDER.define("Mjolnir damage", 9);
         MJOLNIR_RAIN_BONUS_DAMAGE = BUILDER.define("Mjolnir raining bonus damage", 2);
+        MJOLNIR_RAIN_ATTACK_SPEED = BUILDER.define("Mjolnir raining total attack speed", 1.2f);
         MJOLNIR_SMASH_DAMAGE = BUILDER.define("Mjolnir ability smash damage", 8f);
         MJOLNIR_PROJECTILE_DAMAGE = BUILDER.define("Mjolnir projectile damage", 7f);
         MJOLNIR_LIGHTNING_SMASH_COOLDOWN = BUILDER.define("Mjolnir ability smash cooldown", 200);
