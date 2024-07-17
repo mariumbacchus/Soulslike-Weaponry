@@ -147,6 +147,8 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> ARKENPLATE_SHOCKWAVE_KNOCKBACK;
     public static final ForgeConfigSpec.ConfigValue<Float> ARKENPLATE_SHOCKWAVE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Double> ARKENPLATE_MIRROR_TRIGGER;
+    public static final ForgeConfigSpec.ConfigValue<Float> FORLORN_SET_BONUS_RANGE;
+    public static final ForgeConfigSpec.ConfigValue<Float> FORLORN_SET_BONUS_HEAL;
     public static final ForgeConfigSpec.ConfigValue<Double> WITHERED_CHEST_STRENGTH_TRIGGER_1;
     public static final ForgeConfigSpec.ConfigValue<Double> WITHERED_CHEST_STRENGTH_TRIGGER_2;
     public static final ForgeConfigSpec.ConfigValue<Integer> WITHERED_CHEST_ABILITY_COOLDOWN;
@@ -561,6 +563,8 @@ public class CommonConfig {
         ARKENPLATE_SHOCKWAVE_KNOCKBACK = BUILDER.define("Arkenplate shockwave knockback", 2f);
         ARKENPLATE_SHOCKWAVE_DAMAGE = BUILDER.define("Arkenplate shockwave damage", 6f);
         ARKENPLATE_MIRROR_TRIGGER = BUILDER.defineInRange("Arkenplate Mirror ability trigger threshold", 0.334f, 0f, 1f);
+        FORLORN_SET_BONUS_RANGE = BUILDER.define("Forlorn Armor set-bonus radius/expansion range", 6f);
+        FORLORN_SET_BONUS_HEAL = BUILDER.define("Forlorn Armor set-bonus healing on nearby entity death", 2f);
         WITHERED_CHEST_STRENGTH_TRIGGER_1 = BUILDER.defineInRange("Hallowheart Strength 1 ability trigger threshold", 0.5f, 0f, 1f);
         WITHERED_CHEST_STRENGTH_TRIGGER_2 = BUILDER.defineInRange("Hallowheart Strength 2 ability trigger threshold", 0.25f, 0f, 1f);
         WITHERED_CHEST_ABILITY_COOLDOWN = BUILDER.define("Hallowheart ability cooldown", 500);
