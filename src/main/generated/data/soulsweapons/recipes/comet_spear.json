@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    "SG#",
+    "#S "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "G": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "S": {
+      "item": "soulsweapons:moonstone"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:comet_spear"
+  }
+}

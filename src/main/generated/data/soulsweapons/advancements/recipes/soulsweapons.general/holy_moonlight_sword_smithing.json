@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:holy_moonlight_sword_smithing"
+    ]
+  },
+  "criteria": {
+    "has_lord_soul": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulsweapons:lord_soul"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:holy_moonlight_sword_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lord_soul",
+      "has_the_recipe"
+    ]
+  ]
+}

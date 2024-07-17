@@ -6,6 +6,9 @@ import net.minecraft.advancement.Advancement;
 
 import java.util.function.Consumer;
 
+/**
+ * New recipe datagen automatically add themselves to the recipe book, so this is no longer needed. Consider it deprecated.
+ */
 public class AdvancementsProvider extends FabricAdvancementProvider {
 
     public AdvancementsProvider(FabricDataGenerator output) {

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#O#",
+    "#O#",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    "#": {
+      "item": "minecraft:obsidian"
+    },
+    "O": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:featherlight"
+  }
+}

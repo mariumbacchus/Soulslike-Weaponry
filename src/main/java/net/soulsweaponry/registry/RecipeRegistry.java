@@ -14,6 +14,9 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.JsonCreator;
 
+/**
+ * Old implementation of auto generating recipes. Consider this deprecated.
+ */
 public class RecipeRegistry {
 
     private static final String ModId = SoulsWeaponry.ModId;
@@ -73,7 +76,7 @@ public class RecipeRegistry {
     public static JsonObject BEWITCHMENT_SILVER_BULLET = null;
 
     public static void init() {
-        if (FabricLoader.getInstance().isModLoaded("soulsweapons") && !ConfigConstructor.disable_all_legendary_recipes) {
+        if (FabricLoader.getInstance().isModLoaded("soulsweapons") && !ConfigConstructor.disable_weapon_recipes) {
             if (!ConfigConstructor.disable_gun_recipes) {
                 HUNTER_CANNON_RECIPE = JsonCreator.createShapedRecipeJson(
                         Lists.newArrayList('#', 'G', 'M', 'S'),

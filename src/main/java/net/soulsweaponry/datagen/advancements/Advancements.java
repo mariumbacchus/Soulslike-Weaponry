@@ -18,6 +18,9 @@ import net.soulsweaponry.registry.RecipeRegistry;
 import java.util.Set;
 import java.util.function.Consumer;
 
+/**
+ * New recipe datagen automatically add themselves to the recipe book, so this is no longer needed. Consider it deprecated.
+ */
 public class Advancements implements Consumer<Consumer<Advancement>> {
 
     private static final String MOD_ID = SoulsWeaponry.ModId;

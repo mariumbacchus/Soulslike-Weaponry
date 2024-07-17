@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.world.gen.OreGeneration;
+import net.soulsweaponry.world.gen.WorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +24,7 @@ import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.OreSpawnRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.RecipeRegistry;
 import net.soulsweaponry.registry.SpawnInit;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib3.GeckoLib;
@@ -51,12 +51,10 @@ public class SoulsWeaponry implements ModInitializer {
         WeaponRegistry.init();
         ArmorRegistry.init();
         GunRegistry.init();
-        OreSpawnRegistry.init();
+        WorldGen.generateCustomWorldGen();
         LOGGER.info("Successfully registered SoulsWeapons content!");
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");
-        RecipeRegistry.init();
-        LOGGER.info("Successfully registered recipes!");
         PacketRegistry.registerC2SPackets();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {

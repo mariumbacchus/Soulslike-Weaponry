@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "soulsweapons:bluemoon_shortsword"
+  },
+  "addition": {
+    "tag": "soulsweapons:lord_soul"
+  },
+  "result": {
+    "item": "soulsweapons:moonlight_shortsword"
+  }
+}
