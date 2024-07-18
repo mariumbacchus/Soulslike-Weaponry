@@ -12,7 +12,6 @@
     "ModelInvoker",
     "PersistentProjectileMixin",
     "PlayerEntityMixin",
-    "RecipeManagerMixin",
     "ToolItemMixin",
     "WitherEntityMixin"
   ],

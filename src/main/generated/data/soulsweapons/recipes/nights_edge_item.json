@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "X": {
+      "item": "soulsweapons:moonstone"
+    },
+    "Y": {
+      "item": "soulsweapons:lord_soul_night_prowler"
+    }
+  },
+  "pattern": [
+    " XX",
+    "#YX",
+    "/# "
+  ],
+  "result": {
+    "item": "soulsweapons:nights_edge_item"
+  }
+}

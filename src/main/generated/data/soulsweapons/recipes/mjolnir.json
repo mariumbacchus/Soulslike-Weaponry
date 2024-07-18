@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:wood_sticks"
+    },
+    "O": {
+      "item": "soulsweapons:verglas"
+    },
+    "X": {
+      "item": "minecraft:iron_block"
+    },
+    "Y": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    "XOX",
+    "XYX",
+    " # "
+  ],
+  "result": {
+    "item": "soulsweapons:mjolnir"
+  }
+}

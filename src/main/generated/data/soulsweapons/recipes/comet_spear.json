@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "G": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "S": {
+      "item": "soulsweapons:moonstone"
+    }
+  },
+  "pattern": [
+    " ##",
+    "SG#",
+    "#S "
+  ],
+  "result": {
+    "item": "soulsweapons:comet_spear"
+  }
+}

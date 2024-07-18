@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "X": {
+      "item": "minecraft:blaze_rod"
+    },
+    "Y": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    "#",
+    "Y",
+    "X"
+  ],
+  "result": {
+    "item": "soulsweapons:draupnir_spear"
+  }
+}
