@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "O": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "X": {
+      "item": "soulsweapons:verglas"
+    },
+    "Y": {
+      "item": "soulsweapons:moonstone"
+    }
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    "#O#"
+  ],
+  "result": {
+    "item": "soulsweapons:freyr_sword"
+  }
+}

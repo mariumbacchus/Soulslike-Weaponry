@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_block"
+    },
+    "G": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "S": {
+      "tag": "c:wood_sticks"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " i#",
+    "SGi",
+    "S i"
+  ],
+  "result": {
+    "item": "soulsweapons:blunderbuss"
+  }
+}

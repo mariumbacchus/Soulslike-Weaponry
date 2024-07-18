@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:stone"
+    },
+    "X": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    " X "
+  ],
+  "result": {
+    "item": "soulsweapons:kirkhammer"
+  }
+}

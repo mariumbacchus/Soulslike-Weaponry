@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "soulsweapons:lord_soul_day_stalker"
+  },
+  "base": {
+    "item": "soulsweapons:withered_chest"
+  },
+  "result": {
+    "item": "soulsweapons:enhanced_withered_chest"
+  }
+}

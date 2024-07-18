@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "M": {
+      "item": "minecraft:iron_block"
+    },
+    "S": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "pattern": [
+    "S M",
+    "SG#",
+    " MM"
+  ],
+  "result": {
+    "item": "soulsweapons:hunter_cannon"
+  }
+}

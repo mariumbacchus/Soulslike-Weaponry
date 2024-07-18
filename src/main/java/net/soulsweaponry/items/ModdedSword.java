@@ -12,8 +12,15 @@ import java.util.List;
 
 public abstract class ModdedSword extends SwordItem implements IConfigDisable {
 
+    protected final float attackSpeed;
+
     public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.attackSpeed = attackSpeed;
+    }
+
+    public float getAttackSpeed() {
+        return attackSpeed;
     }
 
     @Override

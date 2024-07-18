@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_block"
+    },
+    "X": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "pattern": [
+    " # ",
+    "###",
+    "#X#"
+  ],
+  "result": {
+    "item": "soulsweapons:guts_sword"
+  }
+}

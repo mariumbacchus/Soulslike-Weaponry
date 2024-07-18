@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "soulsweapons:lord_soul"
+  },
+  "base": {
+    "item": "minecraft:diamond_sword"
+  },
+  "result": {
+    "item": "soulsweapons:master_sword"
+  }
+}

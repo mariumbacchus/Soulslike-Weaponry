@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "X": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "Y": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "pattern": [
+    "YYY",
+    "XSX",
+    " # "
+  ],
+  "result": {
+    "item": "soulsweapons:nightfall"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "i": {
+      "item": "soulsweapons:soul_ingot"
+    }
+  },
+  "pattern": [
+    " ii",
+    "S/ ",
+    " / "
+  ],
+  "result": {
+    "item": "soulsweapons:soul_reaper"
+  }
+}

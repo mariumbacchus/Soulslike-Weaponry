@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "D": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "N": {
+      "item": "soulsweapons:arkenstone"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    "# #",
+    "nNn",
+    "D#D"
+  ],
+  "result": {
+    "item": "soulsweapons:arkenplate"
+  }
+}

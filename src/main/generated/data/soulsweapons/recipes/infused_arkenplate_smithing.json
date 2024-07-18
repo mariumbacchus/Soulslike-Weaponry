@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "soulsweapons:lord_soul_night_prowler"
+  },
+  "base": {
+    "item": "soulsweapons:arkenplate"
+  },
+  "result": {
+    "item": "soulsweapons:enhanced_arkenplate"
+  }
+}
