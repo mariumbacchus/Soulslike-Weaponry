@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "M": {
+      "item": "minecraft:iron_block"
+    },
+    "S": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "pattern": [
+    "S #",
+    "SG#",
+    " #M"
+  ],
+  "result": {
+    "item": "soulsweapons:gatling_gun"
+  },
+  "show_notification": true
+}

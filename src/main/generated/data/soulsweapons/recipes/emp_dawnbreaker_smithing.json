@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "soulsweapons:lord_soul_day_stalker"
+  },
+  "base": {
+    "item": "soulsweapons:dawnbreaker"
+  },
+  "result": {
+    "item": "soulsweapons:empowered_dawnbreaker"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

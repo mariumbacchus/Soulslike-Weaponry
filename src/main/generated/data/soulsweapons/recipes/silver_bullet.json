@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "tag": "c:silver_ingots"
+    },
+    {
+      "item": "soulsweapons:lost_soul"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "result": {
+    "count": 10,
+    "item": "soulsweapons:silver_bullet"
+  }
+}

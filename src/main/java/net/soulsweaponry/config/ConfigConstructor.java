@@ -2,10 +2,21 @@ package net.soulsweaponry.config;
 
 public class ConfigConstructor extends MidnightConfig {
 
-    @Entry public static boolean disable_all_legendary_recipes = false;
-    @Entry public static boolean disable_gun_recipes = false;
-    @Entry public static boolean disable_all_enchantments = false;
+    @Entry public static int moonstone_ore_vein_size = 5;
+    @Entry public static int moonstone_ore_count_per_chunk = 4;
+    @Entry public static int moonstone_ore_min_height = -63;
+    @Entry public static int moonstone_ore_max_height = 16;
 
+    @Entry public static int verglas_ore_vein_size = 3;
+    @Entry public static int verglas_ore_count_per_chunk = 48;
+    @Entry public static int verglas_ore_min_height = -80;
+    @Entry public static int verglas_ore_max_height = 120;
+
+    @Entry public static boolean disable_weapon_recipes = false;
+    @Entry public static boolean disable_gun_recipes = false;
+    @Entry public static boolean disable_armor_recipes = false;
+
+    @Entry public static boolean disable_all_enchantments = false;
     @Entry public static boolean disable_enchantment_fast_hands = false;
     @Entry public static boolean disable_enchantment_posture_breaker = false;
     @Entry public static boolean disable_enchantment_stagger = false;
@@ -47,6 +58,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_kraken_slayer_bow = true;
     @Entry public static boolean disable_recipe_kraken_slayer_crossbow = false;
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
+
+    @Entry public static boolean disable_recipe_arkenplate = false;
+    @Entry public static boolean disable_recipe_withered_chest = false;
+
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
 
@@ -126,6 +141,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float arkenplate_shockwave_knockback = 2f;
     @Entry public static float arkenplate_shockwave_damage = 6f;
     @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.334f;
+    @Entry public static float forlorn_set_bonus_range = 6f;
+    @Entry public static float forlorn_set_bonus_heal = 2f;
     @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_1 = 0.5f;
     @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_2 = 0.25f;
     @Entry public static int withered_chest_ability_cooldown = 500;
@@ -201,6 +218,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean heap_of_raw_iron_calculated_fall_should_heal = false;
     @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int dragonslayer_swordspear_damage = 8;
+    @Entry public static int dragonslayer_swordspear_rain_bonus_damage = 1;
+    @Entry public static float dragonslayer_swordspear_rain_total_attack_speed = 1.8f;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
     @Entry public static int dragonslayer_swordspear_lightning_amount = 1;
@@ -252,7 +271,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kraken_slayer_reduced_pull_time = 10;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
-    @Entry public static double leviathan_axe_return_speed = 4;
+    @Entry public static double leviathan_axe_return_speed = 4D;
     @Entry public static int lich_bane_damage = 7;
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
     @Entry public static int ludwigs_holy_greatsword = 8;
@@ -261,6 +280,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float master_sword_projectile_damage = 11.0f;
     @Entry public static int mjolnir_damage = 9;
     @Entry public static int mjolnir_rain_bonus_damage = 2;
+    @Entry public static float mjolnir_rain_total_attack_speed = 1.2f;
     @Entry public static float mjolnir_smash_damage = 8f;
     @Entry public static float mjolnir_projectile_damage = 7f;
     @Entry public static int mjolnir_lightning_smash_cooldown = 200;

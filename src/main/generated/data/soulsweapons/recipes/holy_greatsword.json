@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    " # ",
+    "###",
+    "#X#"
+  ],
+  "result": {
+    "item": "soulsweapons:holy_greatsword"
+  },
+  "show_notification": true
+}

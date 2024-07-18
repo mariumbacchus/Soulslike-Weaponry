@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "S": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "pattern": [
+    " ##",
+    "SG#",
+    "S  "
+  ],
+  "result": {
+    "item": "soulsweapons:hunter_pistol"
+  },
+  "show_notification": true
+}

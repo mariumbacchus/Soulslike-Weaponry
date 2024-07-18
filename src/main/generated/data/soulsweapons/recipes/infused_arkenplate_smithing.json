@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "soulsweapons:lord_soul_night_prowler"
+  },
+  "base": {
+    "item": "soulsweapons:arkenplate"
+  },
+  "result": {
+    "item": "soulsweapons:enhanced_arkenplate"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

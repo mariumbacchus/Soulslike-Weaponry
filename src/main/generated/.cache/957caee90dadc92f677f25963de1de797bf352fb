@@ -1,9 +1,9 @@
-// 1.20	2024-03-04T22:33:29.384117	Marium's Soulslike Weaponry/minecraft:entity Loot Table
+// 1.20	2024-07-18T19:14:32.9376896	Marium's Soulslike Weaponry/minecraft:entity Loot Table
 d3e857923f4e2715ed6c1d6818d4008daa57ae3d data\soulsweapons\loot_tables\entities\night_prowler.json
 d728477b893dda2bbc16893f22f7a5936721ac9f data\soulsweapons\loot_tables\entities\night_shade.json
 881d0e35bac52be33a6d7a41f18ce9752d9173f4 data\soulsweapons\loot_tables\entities\chaos_monarch.json
-ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_tables\entities\moonknight.json
 be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_tables\entities\returning_knight.json
+ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_tables\entities\moonknight.json
 bb067d9e00792672a68fe601c3a8498bd6780e7e data\soulsweapons\loot_tables\entities\day_stalker.json
 32418a84e486264ce8e539393823ddb700c21b8c data\soulsweapons\loot_tables\entities\draugr_boss.json
 45c6519e25f33f317caf9a87b21ca7a62bc673e5 data\soulsweapons\loot_tables\entities\accursed_lord_boss.json
