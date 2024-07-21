@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,10 +19,10 @@ import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -33,7 +31,6 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -43,14 +40,15 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-    public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.soul_reaper_damage, attackSpeed, settings);
+    public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return TypedActionResult.fail(stack);
         }
@@ -89,18 +87,6 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
             }
         }
         return TypedActionResult.fail(stack);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -169,7 +155,12 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_reaper;
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

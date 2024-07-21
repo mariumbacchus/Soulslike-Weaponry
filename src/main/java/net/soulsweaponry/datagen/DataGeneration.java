@@ -10,6 +10,11 @@ import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
 import net.soulsweaponry.world.feature.ConfiguredFeatures;
 import net.soulsweaponry.world.feature.PlacedFeatures;
 
+/**
+ * NOTE:
+ * Keep in mind that datagen only runs once in development and not during runtime.
+ * Applying logic from config will not work.
+ */
 public class DataGeneration implements DataGeneratorEntrypoint {
 
     @Override
@@ -23,7 +28,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
 
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
-        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ConfiguredFeatures::init);
-        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, PlacedFeatures::init);
+        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, PlacedFeatures::bootstrap);
     }
 }

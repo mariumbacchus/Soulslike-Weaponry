@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,22 +16,20 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class MoonlightShortsword extends ModdedSword {
 
-    public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, attackSpeed, settings);
+    public MoonlightShortsword(ToolMaterial toolMaterial, Settings settings) {
+        this(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, ConfigConstructor.moonlight_shortsword_attack_speed, settings);
     }
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK);
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_moonlight_shortsword;
     }
 
@@ -74,19 +70,14 @@ public class MoonlightShortsword extends ModdedSword {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled()) {
+        if (!this.isDisabled(stack)) {
             stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         }
         return super.postHit(stack, target, attacker);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

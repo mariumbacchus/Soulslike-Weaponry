@@ -1,27 +1,28 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     private static final int[] DAMAGE = {
             ConfigConstructor.kirkhammer_damage,
             ConfigConstructor.kirkhammer_silver_sword_damage,
-            ConfigConstructor.ludwigs_holy_greatsword,
+            ConfigConstructor.ludwigs_holy_greatsword_damage,
             ConfigConstructor.holy_moonlight_greatsword_damage,
             ConfigConstructor.holy_moonlight_sword_damage,
+    };
+
+    private static final float[] ATTACK_SPEED = {
+            ConfigConstructor.kirkhammer_attack_speed,
+            ConfigConstructor.kirkhammer_silver_sword_attack_speed,
+            ConfigConstructor.ludwigs_holy_greatsword_attack_speed,
+            ConfigConstructor.holy_moonlight_greatsword_attack_speed,
+            ConfigConstructor.holy_moonlight_sword_attack_speed,
     };
 
     private static final boolean[] DISABLE = {
@@ -38,13 +39,20 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     private final boolean isHeavy;
     private final int arrayIndex;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
-        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings);
+    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
+        super(toolMaterial, DAMAGE[damageIndex], ATTACK_SPEED[damageIndex], settings);
         this.switchWeaponIndex = switchWeaponIndex;
         this.ownWeaponIndex = ownWeaponIndex;
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
         this.arrayIndex = damageIndex;
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRICK_WEAPON);
+        if (this.isHeavy()) {
+            this.addTooltipAbility(WeaponUtil.TooltipAbilities.HEAVY);
+        }
+        if (this.undeadBonus) {
+            this.addTooltipAbility(WeaponUtil.TooltipAbilities.RIGHTEOUS);
+        }
     }
 
     public int getSwitchWeaponIndex() {
@@ -68,23 +76,8 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
-            if (this.isHeavy()) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-            }
-            if (this.undeadBonus) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RIGHTEOUS, stack, tooltip);
-            }
-            if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD)) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE, stack, tooltip);
-            }
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -93,7 +86,7 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return DISABLE[this.arrayIndex];
     }
 }

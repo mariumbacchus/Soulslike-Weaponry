@@ -1,23 +1,9 @@
 package net.soulsweaponry.items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import net.soulsweaponry.entity.projectile.GrowingFireball;
-import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
-import net.minecraft.entity.projectile.WitherSkullEntity;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
@@ -33,18 +19,24 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
+import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
+import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class WitheredWabbajack extends ModdedSword {
 
-    public WitheredWabbajack(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, attackSpeed, settings);
+    public WitheredWabbajack(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, ConfigConstructor.withered_wabbajack_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.WABBAJACK, WeaponUtil.TooltipAbilities.LUCK_BASED);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(itemStack);
         }
@@ -77,6 +69,8 @@ public class WitheredWabbajack extends ModdedSword {
     }
 
     /**
+     * TODO: Rewrite this.
+     *
      * The new way to get a random projectile while including the status effect Luck found through
      * {@link #getLuckFactor(LivingEntity)} as a factor. <p>
      * All the objects/projectiles have an enum that says whether the projectile is benefiting or not for the user. <p>
@@ -193,7 +187,7 @@ public class WitheredWabbajack extends ModdedSword {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_withered_wabbajack;
     }
 
@@ -202,13 +196,7 @@ public class WitheredWabbajack extends ModdedSword {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WABBAJACK, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUCK_BASED, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

@@ -27,7 +27,7 @@ public abstract class ChargeToUseItem extends ModdedSword {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }

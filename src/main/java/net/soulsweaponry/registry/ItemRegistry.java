@@ -9,11 +9,13 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.ChaosSet;
 import net.soulsweaponry.items.armor.WitheredArmor;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
+import net.soulsweaponry.util.RecipeHandler;
 
 public class ItemRegistry {
 
@@ -83,7 +85,7 @@ public class ItemRegistry {
         registerItem(DEMON_CHUNK, "demon_chunk");
         registerItem(CRIMSON_INGOT, "crimson_ingot");
         registerItem(SOUL_INGOT, "soul_ingot");
-        registerItem(SILVER_BULLET, "silver_bullet");
+        registerGunItem(SILVER_BULLET, "silver_bullet");
         registerItem(BOSS_COMPASS, "boss_compass");
         registerItem(MOONSTONE_RING, "moonstone_ring");
         registerItem(SHARD_OF_UNCERTAINTY, "shard_of_uncertainty");
@@ -101,24 +103,48 @@ public class ItemRegistry {
         registerLoreItem(ESSENCE_OF_EVENTIDE);
         registerLoreItem(ESSENCE_OF_LUMINESCENCE);
         registerItem(CHAOS_CROWN, "chaos_crown");
-        registerItem(CHAOS_HELMET, "chaos_helmet");
-        registerItem(ARKENPLATE, "arkenplate");
-        registerItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate");
-        registerItem(WITHERED_CHEST, "withered_chest");
-        registerItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest");
+        registerArmorItem(CHAOS_HELMET, "chaos_helmet", ConfigConstructor.disable_recipe_chaos_helmet);
+        registerArmorItem(ARKENPLATE, "arkenplate", ConfigConstructor.disable_recipe_arkenplate);
+        registerArmorItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate", ConfigConstructor.disable_recipe_enhanced_arkenplate);
+        registerArmorItem(WITHERED_CHEST, "withered_chest", ConfigConstructor.disable_recipe_withered_chest);
+        registerArmorItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest", ConfigConstructor.disable_recipe_enhanced_withered_chest);
         registerItem(CHAOS_ROBES, "chaos_robes");
         registerItem(CHAOS_ORB, "chaos_orb");
 
         registerItem(CHUNGUS_DISC, "chungus_disc");
     }
 
-  public static <I extends Item> I registerItem(I item, String name) {
-      SoulsWeaponry.ITEM_GROUP_LIST.add(item);
+    public static <I extends Item> I registerItem(I item, String name) {
+        SoulsWeaponry.ITEM_GROUP_LIST.add(item);
 		return Registry.register(Registries.ITEM, new Identifier(SoulsWeaponry.ModId, name), item);
 	}
 
-  public static <I extends LoreItem> I registerLoreItem(I item) {
-      SoulsWeaponry.ITEM_GROUP_LIST.add(item);
-		return Registry.register(Registries.ITEM, new Identifier(SoulsWeaponry.ModId, item.getIdName()), item);
-	}
+    public static <I extends Item> I registerItemRemovableRecipe(I item, String name, boolean removeRecipe) {
+        RecipeHandler.RECIPE_IDS.put(new Identifier(SoulsWeaponry.ModId, name), removeRecipe);
+        return registerItem(item, name);
+    }
+
+    public static <I extends LoreItem> I registerLoreItem(I item) {
+		return registerItem(item, item.getIdName());
+    }
+
+    public static <I extends Item> I registerArmorItem(I item, String name, boolean removeRecipe) {
+        if (ConfigConstructor.disable_armor_recipes) {
+            return registerItemRemovableRecipe(item, name, true);
+        } else {
+            return registerItemRemovableRecipe(item, name, removeRecipe);
+        }
+    }
+
+    public static <I extends Item> I registerWeaponItem(I item, String name, boolean removeRecipe) {
+        if (ConfigConstructor.disable_weapon_recipes) {
+            return registerItemRemovableRecipe(item, name, true);
+        } else {
+            return registerItemRemovableRecipe(item, name, removeRecipe);
+        }
+    }
+
+    public static <I extends Item> I registerGunItem(I item, String name) {
+        return registerItemRemovableRecipe(item, name, ConfigConstructor.disable_gun_recipes);
+    }
 }

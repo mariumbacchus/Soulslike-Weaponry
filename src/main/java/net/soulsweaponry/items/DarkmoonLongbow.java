@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -17,19 +15,17 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.invisible.ArrowStormEntity;
 import net.soulsweaponry.entity.projectile.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.invisible.ArrowStormEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     public DarkmoonLongbow(Settings settings) {
         super(settings);
+        this.addTooltipAbility( WeaponUtil.TooltipAbilities.SLOW_PULL, WeaponUtil.TooltipAbilities.MOONLIGHT_ARROW, WeaponUtil.TooltipAbilities.ARROW_STORM);
     }
 
     @Override
@@ -54,15 +50,8 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SLOW_PULL, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ARROW, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.ARROW_STORM, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -72,7 +61,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return;
         }
@@ -98,7 +87,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkmoon_longbow;
     }
 }

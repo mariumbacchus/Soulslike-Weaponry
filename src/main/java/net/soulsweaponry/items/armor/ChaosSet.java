@@ -17,7 +17,6 @@
     import net.minecraft.entity.effect.StatusEffectInstance;
     import net.minecraft.entity.effect.StatusEffects;
     import net.minecraft.entity.player.PlayerEntity;
-    import net.minecraft.item.ArmorItem;
     import net.minecraft.item.ArmorMaterial;
     import net.minecraft.item.ItemStack;
     import net.minecraft.particle.ParticleTypes;
@@ -34,9 +33,9 @@
     import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
     import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
     import net.soulsweaponry.config.ConfigConstructor;
+    import net.soulsweaponry.particles.ParticleHandler;
     import net.soulsweaponry.registry.BlockRegistry;
     import net.soulsweaponry.registry.ItemRegistry;
-    import net.soulsweaponry.particles.ParticleHandler;
     import org.jetbrains.annotations.Nullable;
     import software.bernie.geckolib.animatable.GeoItem;
     import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -52,7 +51,7 @@
     import java.util.function.Consumer;
     import java.util.function.Supplier;
 
-public class ChaosSet extends ArmorItem implements GeoItem {
+public class ChaosSet extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -207,17 +206,17 @@ public class ChaosSet extends ArmorItem implements GeoItem {
 
     private boolean isHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
-        return !helmet.isEmpty() && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
+        return !helmet.isEmpty() && !this.isDisabled(helmet) && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
     }
 
     private boolean isRobesEquipped(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.CHAOS_ROBES);
+        return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.CHAOS_ROBES);
     }
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
     }
 
 	private PlayState predicate(AnimationState<?> event) {
@@ -244,6 +243,7 @@ public class ChaosSet extends ArmorItem implements GeoItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
@@ -312,8 +312,6 @@ public class ChaosSet extends ArmorItem implements GeoItem {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -342,5 +340,17 @@ public class ChaosSet extends ArmorItem implements GeoItem {
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
+            return ConfigConstructor.disable_use_chaos_crown;
+        } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            return ConfigConstructor.disable_use_arkenplate;
+        } else if (stack.isOf(ItemRegistry.CHAOS_ROBES)) {
+            return ConfigConstructor.disable_use_chaos_robes;
+        }
+        return false;
     }
 }

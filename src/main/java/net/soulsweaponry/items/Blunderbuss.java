@@ -48,7 +48,7 @@ public class Blunderbuss extends GunItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
@@ -102,7 +102,7 @@ public class Blunderbuss extends GunItem {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_hunter_blunderbuss;
     }
 }

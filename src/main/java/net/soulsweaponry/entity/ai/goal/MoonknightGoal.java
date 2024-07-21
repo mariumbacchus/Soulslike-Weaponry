@@ -26,6 +26,7 @@ import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
+import net.soulsweaponry.entity.util.RandomSummonPos;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -51,7 +52,6 @@ public class MoonknightGoal extends Goal {
     private RotationState projectileRotation = RotationState.SWIPE_FROM_RIGHT;
     private float bonusBeamHeight = 0f;
     private double height = 0D;
-    private BlockPos pos;
 
     public MoonknightGoal(Moonknight boss) {
         this.boss = boss;
@@ -470,7 +470,7 @@ public class MoonknightGoal extends Goal {
             if (entity instanceof LivingEntity living) {
                 entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(damage));
                 entity.addVelocity(0, 1, 0);
-                if (living.isUndead() && living.isDead()) {
+                if (living.isUndead() && living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                     this.summonRemnant(living.getPos());
                 }
             }
@@ -481,15 +481,8 @@ public class MoonknightGoal extends Goal {
         }
     }
 
-    private void summonRemnant(Vec3d pos) {
-        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.getWorld());
-        if (this.canSummon()) entity.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-        this.initEquip(entity);
-        this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-        this.boss.getWorld().spawnEntity(entity);
-        if (!this.boss.getWorld().isClient) {
-            ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-        }
+    private boolean isValidSpawn(BlockPos pos) {
+        return this.boss.getWorld().getBlockState(pos).isAir() && !this.boss.getWorld().getBlockState(pos.down()).isAir();
     }
 
     private void obliterateLogic(LivingEntity target, int hitFrame, int followTargetTicks, int attackFinishedTicks, float damage, SoundEvent sound, boolean isSoundDelayed) {
@@ -619,17 +612,8 @@ public class MoonknightGoal extends Goal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         if (this.attackStatus == 30) {
             int enemyNumber = this.boss.getRandom().nextInt(6 - 3) + 3;
-            for (int j = 0; j < enemyNumber; j++) {
-                Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.getWorld());
-                this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(20) - 10, this.boss.getBlockY() - 2,  this.boss.getBlockZ() + this.boss.getRandom().nextInt(20) - 10);
-                if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY() + .1f, this.pos.getZ());
-                this.initEquip(entity);
-                this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                this.boss.getWorld().spawnEntity(entity);
-                if (!this.boss.getWorld().isClient) {
-                    ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-                }
-            }
+            RandomSummonPos pos = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), enemyNumber, 10, this.boss.getBlockPos(), 10, 8, 5, this::summonRemnant);
+            pos.applySummonSpawns();
             if (!this.boss.getWorld().isClient) {
                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, target.getX(), target.getY(), target.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
             }
@@ -641,15 +625,15 @@ public class MoonknightGoal extends Goal {
         }
     }
 
-    public boolean canSummon() {
-        if(this.pos == null) {
-            this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(20) - 10, this.boss.getBlockY() - 2,  this.boss.getBlockZ() + this.boss.getRandom().nextInt(20) - 10);
+    private void summonRemnant(Vec3d pos) {
+        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.getWorld());
+        entity.setPosition(pos);
+        this.initEquip(entity);
+        this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.getWorld().spawnEntity(entity);
+        if (!this.boss.getWorld().isClient) {
+            ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
         }
-        if (!this.boss.getWorld().getBlockState(this.pos).isAir()) {
-            this.pos = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
-            this.canSummon();
-        }
-        return true;
     }
 
     private void initEquip(LivingEntity entity) {

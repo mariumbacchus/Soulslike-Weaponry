@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -23,30 +21,22 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
-    public NightsEdgeItem(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, attackSpeed, settings);
+    public NightsEdgeItem(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, WeaponUtil.TooltipAbilities.BLIGHT);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLIGHT, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
@@ -76,7 +66,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return;
         }
@@ -145,7 +135,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_nights_edge;
     }
 }

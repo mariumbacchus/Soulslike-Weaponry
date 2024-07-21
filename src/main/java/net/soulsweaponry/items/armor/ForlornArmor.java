@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -58,5 +59,10 @@ public class ForlornArmor extends SetBonusArmor {
         return new Text[] {
                 Text.translatable("tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal").formatted(Formatting.GRAY)
         };
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_forlorn_armor;
     }
 }

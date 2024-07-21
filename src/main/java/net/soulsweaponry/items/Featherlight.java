@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -18,10 +16,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
@@ -32,18 +28,13 @@ public class Featherlight extends UltraHeavyWeapon {
     };
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.featherlight_damage, - (4f - (ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed)), settings, true);
+        super(toolMaterial, ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FEATHERLIGHT);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FEATHERLIGHT, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -110,7 +101,7 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_featherlight;
     }
 }

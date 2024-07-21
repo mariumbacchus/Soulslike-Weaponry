@@ -1,9 +1,6 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +18,6 @@ import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -30,7 +26,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -40,16 +35,15 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-    public DarkinBlade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, attackSpeed, settings, true);
+    public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP, WeaponUtil.TooltipAbilities.SWORD_SLAM);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-            this.notifyDisabled(attacker);
-            return true;
+        if (this.isDisabled(stack)) {
+            return super.postHit(stack, target, attacker);
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
@@ -61,7 +55,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
                 attacker.heal(healing);
             }
         }
-        this.gainStrength(attacker);
         return super.postHit(stack, target, attacker);
     }
 
@@ -86,15 +79,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SWORD_SLAM, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -181,7 +167,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_blade;
     }
 }

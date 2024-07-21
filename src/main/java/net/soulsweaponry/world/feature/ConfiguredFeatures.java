@@ -27,7 +27,7 @@ public class ConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> MOONSTONE_ORE_KEY = registerKey("moonstone_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> VERGLAS_ORE_KEY = registerKey("verglas_ore");
 
-    public static void init(Registerable<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceables = new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         // Nice to have these for later use even though they aren't being used
