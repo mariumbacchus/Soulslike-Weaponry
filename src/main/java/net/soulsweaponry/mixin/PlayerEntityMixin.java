@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -49,6 +50,7 @@ public class PlayerEntityMixin {
             if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
                 int time = player.getDataTracker().get(TICKS_BEFORE_DISMOUNT);
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10, 0));
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, 10, 0));
                 if (time < 0) {
                     player.stopRiding();
                 } else {
@@ -118,5 +120,15 @@ public class PlayerEntityMixin {
     private Vec3d calculateReflectionVector(Vec3d playerPos, Vec3d projectilePos, Vec3d projectileMotion) {
         Vec3d vectorToPlayer = playerPos.subtract(projectilePos).normalize();
         return projectileMotion.subtract(vectorToPlayer.multiply(projectileMotion.dotProduct(vectorToPlayer) * 2.0D));
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"))
+    public void interceptAttack(Entity target, CallbackInfo info) {
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY)) {
+            float attackCooldown = player.getAttackCooldownProgress(0.5f);
+            float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY).getAmplifier()) * attackCooldown;
+            player.heal(heal);
+        }
     }
 }

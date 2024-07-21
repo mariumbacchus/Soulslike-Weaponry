@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "# #",
+    "L#L",
+    "LLL"
+  ],
+  "result": {
+    "item": "soulsweapons:soul_robes_chestplate"
+  }
+}

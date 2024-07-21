@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -14,9 +13,9 @@ import net.soulsweaponry.entity.mobs.EvilForlorn;
 
 public class SpawnInit {
     
-    public static int spawnRateChungus = ConfigConstructor.moderatly_sized_chungus_spawnrate;
-    public static int spawnRateDemon = ConfigConstructor.withered_demon_spawnrate;
-    public static int spawnRateForlorn = ConfigConstructor.evil_forlorn_spawnrate;
+    public static int spawnRateChungus = ConfigConstructor.moderatly_sized_chungus_spawnweight;
+    public static int spawnRateDemon = ConfigConstructor.withered_demon_spawnweight;
+    public static int spawnRateForlorn = ConfigConstructor.evil_forlorn_spawnweight;
 
     public static void init() {
 

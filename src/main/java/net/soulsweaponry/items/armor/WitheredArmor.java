@@ -11,7 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -42,7 +41,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility {
+public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -80,12 +79,12 @@ public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && (chest.isOf(ItemRegistry.WITHERED_CHEST) || chest.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST));
+        return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.WITHERED_CHEST) || chest.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST));
     }
 
     private boolean isChestEnhanced(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST);
+        return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST);
     }
 
     private PlayState souls(AnimationState<?> event) {
@@ -118,7 +117,7 @@ public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !this.isDisabled(stack)) {
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH, ConfigConstructor.withered_chest_life_leach_duration, ConfigConstructor.withered_chest_life_leach_amplifier));
             player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.withered_chest_ability_cooldown);
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
@@ -131,6 +130,7 @@ public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
                 boolean bl = stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST);
@@ -169,7 +169,6 @@ public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -194,5 +193,10 @@ public class WitheredArmor extends ArmorItem implements GeoItem, IKeybindAbility
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_withered_chest;
     }
 }

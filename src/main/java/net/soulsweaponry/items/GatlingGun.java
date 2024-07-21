@@ -124,7 +124,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
@@ -140,7 +140,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_gatling_gun;
     }
 }

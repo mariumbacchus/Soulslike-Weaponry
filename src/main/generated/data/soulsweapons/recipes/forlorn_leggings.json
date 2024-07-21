@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:crimson_ingot"
+    },
+    "L": {
+      "item": "soulsweapons:soul_ingot"
+    }
+  },
+  "pattern": [
+    "#L#",
+    "L L",
+    "L L"
+  ],
+  "result": {
+    "item": "soulsweapons:forlorn_leggings"
+  }
+}
