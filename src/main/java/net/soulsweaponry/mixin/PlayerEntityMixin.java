@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -125,7 +126,7 @@ public class PlayerEntityMixin {
     @Inject(method = "attack", at = @At("HEAD"))
     public void interceptAttack(Entity target, CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY)) {
+        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY) && player.getMainHandStack().getItem() instanceof ToolItem) {
             float attackCooldown = player.getAttackCooldownProgress(0.5f);
             float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY).getAmplifier()) * attackCooldown;
             player.heal(heal);
