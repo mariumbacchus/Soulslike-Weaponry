@@ -6,7 +6,9 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 public class SoulIngotArmor extends SetBonusArmor {
@@ -48,5 +50,10 @@ public class SoulIngotArmor extends SetBonusArmor {
     @Override
     protected Text[] getCustomTooltips() {
         return new Text[0];
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_soul_ingot_armor;
     }
 }

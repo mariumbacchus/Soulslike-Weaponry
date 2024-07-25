@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,14 +12,12 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
-    
-    public PureMoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, attackSpeed, settings);
+
+    public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 
     @Override
@@ -47,17 +43,12 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_pure_moonlight_greatsword;
     }
 }

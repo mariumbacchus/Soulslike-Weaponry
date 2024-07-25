@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "i": {
+      "item": "minecraft:netherite_scrap"
+    }
+  },
+  "pattern": [
+    " ii",
+    "S/ ",
+    " / "
+  ],
+  "result": {
+    "item": "soulsweapons:forlorn_scythe"
+  }
+}

@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends ArmorItem implements IAnimatable {
+public class ChaosSet extends ModdedArmor implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
@@ -202,17 +202,17 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
     private boolean isHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
-        return !helmet.isEmpty() && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
+        return !helmet.isEmpty() && !this.isDisabled(helmet) && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
     }
 
     private boolean isRobesEquipped(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.CHAOS_ROBES);
+        return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.CHAOS_ROBES);
     }
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
     }
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -240,6 +240,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
@@ -308,7 +309,17 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
+            return ConfigConstructor.disable_use_chaos_crown;
+        } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            return ConfigConstructor.disable_use_arkenplate;
+        } else if (stack.isOf(ItemRegistry.CHAOS_ROBES)) {
+            return ConfigConstructor.disable_use_chaos_robes;
+        }
+        return false;
     }
 }

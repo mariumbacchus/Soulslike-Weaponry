@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -21,22 +19,21 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CometSpear extends DetonateGroundItem implements IAnimatable{
     
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public CometSpear(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.comet_spear_damage, attackSpeed, settings);
+    public CometSpear(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYFALL, WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.CRIT);
     }
 
     @Override
@@ -91,15 +88,8 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYFALL, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CRIT, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -153,7 +143,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_comet_spear;
     }
 }

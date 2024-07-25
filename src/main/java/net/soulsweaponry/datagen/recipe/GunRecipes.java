@@ -19,9 +19,6 @@ import java.util.function.Consumer;
 public class GunRecipes {
 
     public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
-        if (ConfigConstructor.disable_gun_recipes) {
-            return;
-        }
         ShapedRecipeJsonBuilder.create(GunRegistry.HUNTER_CANNON)
                 .input('#', Items.IRON_INGOT)
                 .input('G', ItemRegistry.LOST_SOUL)

@@ -21,6 +21,7 @@ public class StationaryFreyrSwordC2S {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
             if (serverWorld != null) {
+                Text text = Text.translatable("soulsweapons.weapon.no_freyr_sword");
                 try {
                     Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                     if (op.isPresent() && player.getBlockPos() != null) {
@@ -28,11 +29,11 @@ public class StationaryFreyrSwordC2S {
                         if (entity instanceof FreyrSwordEntity sword) {
                             sword.setStationaryPos(player.getBlockPos());
                         } else {
-                            player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                            player.sendMessage(text, true);
                         }
                     }
                 } catch (Exception e) {
-                    player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                    player.sendMessage(text, true);
                 }
             }
         });

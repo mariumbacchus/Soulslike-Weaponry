@@ -1,32 +1,26 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 public class GuinsoosRageblade extends ModdedSword {
-    
-    public GuinsoosRageblade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.rageblade_damage, attackSpeed, settings);
+
+    public GuinsoosRageblade(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.rageblade_damage, ConfigConstructor.rageblade_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FURY, WeaponUtil.TooltipAbilities.HASTE, WeaponUtil.TooltipAbilities.FLAME_ENRAGED);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) { 
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
@@ -49,19 +43,12 @@ public class GuinsoosRageblade extends ModdedSword {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FURY, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HASTE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FLAME_ENRAGED, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_rageblade;
     }
 }

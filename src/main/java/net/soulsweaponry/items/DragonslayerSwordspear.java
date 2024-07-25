@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
@@ -29,7 +27,6 @@ import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,8 +34,9 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
 
     private static final String RAINING = "raining_id";
 
-    public DragonslayerSwordspear(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.dragonslayer_swordspear_damage, attackSpeed, settings);
+    public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.LIGHTNING_CALL, WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.THROW_LIGHTNING, WeaponUtil.TooltipAbilities.STORM_STOMP, WeaponUtil.TooltipAbilities.WEATHERBORN);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!this.isDisabled()) {
+        if (!this.isDisabled(stack)) {
             this.updateRaining(world, stack);
         }
     }
@@ -124,21 +122,12 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LIGHTNING_CALL, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.STORM_STOMP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragonslayer_swordspear;
     }
 }

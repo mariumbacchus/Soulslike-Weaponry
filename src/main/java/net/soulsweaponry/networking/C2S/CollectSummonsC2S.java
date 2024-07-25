@@ -16,7 +16,6 @@ import net.minecraft.util.Hand;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.items.UmbralTrespassItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
@@ -28,7 +27,7 @@ public class CollectSummonsC2S {
             if (serverWorld != null) {
                 for (Hand hand : Hand.values()) {
                     Item handItem = player.getStackInHand(hand).getItem();
-                    if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
+                    if (handItem instanceof SoulHarvestingItem && !(handItem instanceof DarkinScythePre)) {
                         int collectedSouls = 0;
                         for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
                             if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
@@ -39,9 +38,9 @@ public class CollectSummonsC2S {
                             }
                         }
                         SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
-                        String msg = collectedSouls == 0 ? "There were no bound allies to collect!" : "Collected " + collectedSouls + " souls back to the " + item.getName().getString();
-                        item.addAmount(player.getStackInHand(hand), collectedSouls);
-                        player.sendMessage(Text.literal(msg), true);
+                        Text msg = collectedSouls == 0 ? Text.translatable("soulsweapons.weapon.no_collected_souls")
+                                : Text.translatable("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());                        item.addAmount(player.getStackInHand(hand), collectedSouls);
+                        player.sendMessage(msg, true);
                     }
                 }
             }
