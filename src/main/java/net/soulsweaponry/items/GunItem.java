@@ -44,7 +44,7 @@ public abstract class GunItem extends BowItem implements IConfigDisable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {

@@ -123,11 +123,11 @@ public class GatlingGun extends GunItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (this.isDisabled()) {
+        ItemStack itemStack = user.getStackInHand(hand);
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
-        ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
@@ -139,7 +139,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_gatling_gun;
     }
 }

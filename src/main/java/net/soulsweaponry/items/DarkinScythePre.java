@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -22,35 +20,30 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BossEntity;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
     public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
-    private final float attackSpeed;
 
-    public DarkinScythePre(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_scythe_damage, attackSpeed, settings);
-        this.attackSpeed = attackSpeed;
+    public DarkinScythePre(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.darkin_scythe_damage, ConfigConstructor.darkin_scythe_attack_speed, settings);
+        this.getTooltipAbilities().clear();
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRANSFORMATION);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
-            return true;
+        if (this.isDisabled(stack)) {
+            return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
             int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
@@ -66,7 +59,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!this.isDisabled() && entity instanceof PlayerEntity player) {
+        if (!this.isDisabled(stack) && entity instanceof PlayerEntity player) {
             if (this.getSouls(stack) >= MAX_SOULS && slot == player.getInventory().selectedSlot) {
                 if (!world.isClient) {
                     ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
@@ -113,7 +106,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     private float getBonusDamage(ItemStack stack) {
-        if (this.isDisabled()) return 0;
+        if (this.isDisabled(stack)) return 0;
         float soulPercent = (float) this.getSouls(stack) / (float) MAX_SOULS;
         return (float) ConfigConstructor.darkin_scythe_bonus_damage * soulPercent;
     }
@@ -134,7 +127,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.getAttackDamage() + this.getBonusDamage(stack), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {
@@ -143,17 +136,12 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRANSFORMATION, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_scythe;
     }
 

@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import com.google.common.collect.Lists;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -29,11 +30,10 @@ import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 
 public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPullTime, IConfigDisable {
@@ -41,6 +41,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
     private boolean loaded = false;
     private boolean charged = false;
     private static final String CHARGED_PROJECTILES_KEY = "ChargedProjectiles";
+    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedCrossbow(Settings settings) {
         super(settings);
@@ -54,7 +55,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(itemStack);
         }
@@ -76,11 +77,29 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IReducedPul
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+        }
+        if (Screen.hasShiftDown()) {
+            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
+                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
+            }
+            tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
+        } else {
+            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
+
+    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+        return this.tooltipAbilities;
+    }
+
+    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+        Collections.addAll(this.tooltipAbilities, abilities);
+    }
+
+    public abstract Text[] getAdditionalTooltips();
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {

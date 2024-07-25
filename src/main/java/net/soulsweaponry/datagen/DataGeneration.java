@@ -6,6 +6,11 @@ import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 
+/**
+ * NOTE:
+ * Keep in mind that datagen only runs once in development and not during runtime.
+ * Applying logic from config will not work.
+ */
 public class DataGeneration implements DataGeneratorEntrypoint {
 
     @Override

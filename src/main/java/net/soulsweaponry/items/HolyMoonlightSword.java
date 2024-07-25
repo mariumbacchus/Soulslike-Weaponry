@@ -14,20 +14,21 @@ import net.soulsweaponry.util.WeaponUtil;
 
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
-    public HolyMoonlightSword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, 4, attackSpeed, settings, 3, 4, false, true);
+    public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, 4, settings, 3, 4, false, true);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHARGE, WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled()) {
+        if (!this.isDisabled(stack)) {
             this.addCharge(stack, this.getAddedCharge(stack));
         }
         return super.postHit(stack, target, attacker);
     }
 
     private float getBonusDamage(ItemStack stack) {
-        if (this.isDisabled()) return 0;
+        if (this.isDisabled(stack)) return 0;
         float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
         return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }

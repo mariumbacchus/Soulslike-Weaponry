@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +16,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.entity.util.RandomSummonPos;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
@@ -35,7 +37,6 @@ public class ReturningKnightGoal extends Goal {
     private int attackStatus;
     private int specialCooldown;
     int randomAttack = 3;
-    private BlockPos pos;
     private final int numberOfAttacks = 6; // 4 = 0 = obliterate, 5 = mace of spades
 
     public ReturningKnightGoal(ReturningKnight boss) {
@@ -59,17 +60,6 @@ public class ReturningKnightGoal extends Goal {
 
     public float getModifiedDamage(float damage) {
         return damage * ConfigConstructor.returning_knight_damage_modifier;
-    }
-
-    public boolean canSummon() {
-        if (this.pos == null){
-            this.pos = new BlockPos(this.boss.getBlockX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getBlockY() - 3, this.boss.getBlockZ() + this.boss.getRandom().nextInt(32) - 16);
-        }
-        if (!this.boss.world.getBlockState(this.pos).isAir()) {
-            this.pos = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
-            this.canSummon();
-        }
-        return true;
     }
 
     @Override
@@ -130,28 +120,10 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 30) { //58,4 ticks
                     int enemyNumber = this.boss.getRandom().nextInt(5 - 2) + 2;
                     int healerNumber = this.boss.getRandom().nextInt(3 - 1) + 1;
-                    for (int j = 0; j < enemyNumber; j++) {
-                        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
-                        this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getY() - 3f, this.boss.getZ() + this.boss.getRandom().nextInt(32) - 16);
-                        if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
-                        //entity.setOwner(null);
-                        this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                        this.boss.world.spawnEntity(entity);
-                        if (!this.boss.world.isClient) {
-                            ParticleHandler.particleOutburstMap(this.boss.world, 100, this.pos.getX(), this.pos.getY(), this.pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-                        }
-                    }
-                    for (int j = 0; j < healerNumber; j++) {
-                        DarkSorcerer entity = new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.boss.world);  
-                        this.pos = new BlockPos(this.boss.getX() + this.boss.getRandom().nextInt(32) - 16, this.boss.getY() - 3f, this.boss.getZ() + this.boss.getRandom().nextInt(32) - 16);
-                        if (this.canSummon()) entity.setPos(this.pos.getX(), this.pos.getY() + .2f, this.pos.getZ());    
-                        //entity.setOwner(null);
-                        this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                        this.boss.world.spawnEntity(entity);
-                        if (!this.boss.world.isClient) {
-                            ParticleHandler.particleOutburstMap(this.boss.world, 100, this.pos.getX(), this.pos.getY(), this.pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-                        }
-                    }
+                    RandomSummonPos remnants = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), enemyNumber, 10, this.boss.getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, false));
+                    RandomSummonPos healers = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), healerNumber, 10, this.boss.getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, true));
+                    remnants.applySummonSpawns();
+                    healers.applySummonSpawns();
                     if (!this.boss.world.isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, target.getX(), target.getY(), target.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
                     }
@@ -237,8 +209,8 @@ public class ReturningKnightGoal extends Goal {
                         if (entity instanceof LivingEntity living) {
                             entity.damage(CustomDamageSource.obliterateDamageSource(this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
-                            if (living.isUndead() && living.isDead()) {
-                                this.summonRemnant(living.getPos());
+                            if (living.isUndead() && living.isDead() && this.isValidSpawn(living.getBlockPos())) {
+                                this.summonAllies(living.getPos(), false);
                             }
                         }
                     }
@@ -340,13 +312,17 @@ public class ReturningKnightGoal extends Goal {
         }
     }
 
-    private void summonRemnant(Vec3d pos) {
-        Remnant entity = new Remnant(EntityRegistry.REMNANT, this.boss.world);
-        if (this.canSummon()) entity.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-        this.boss.world.playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-        this.boss.world.spawnEntity(entity);
-        if (!this.boss.world.isClient) {
-            ParticleHandler.particleOutburstMap(this.boss.world, 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
+    private void summonAllies(Vec3d pos, boolean healer) {
+        MobEntity entity = healer ? new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.boss.getWorld()) : new Remnant(EntityRegistry.REMNANT, this.boss.getWorld());
+        entity.setPosition(pos);
+        this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.getWorld().spawnEntity(entity);
+        if (!this.boss.getWorld().isClient) {
+            ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
         }
+    }
+
+    private boolean isValidSpawn(BlockPos pos) {
+        return this.boss.getWorld().getBlockState(pos).isAir() && !this.boss.getWorld().getBlockState(pos.down()).isAir();
     }
 }

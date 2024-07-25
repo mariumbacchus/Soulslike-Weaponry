@@ -36,6 +36,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.particles.ParticleHandler;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -45,12 +46,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends ArmorItem implements IAnimatable {
+public class ChaosSet extends ModdedArmor implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
@@ -60,7 +60,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
     private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
-    
+
     public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
         super(material, slot, settings);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
@@ -73,10 +73,11 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         this.turnableTallPlant.put(Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS);
         this.turnableTallPlant.put(Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN);
     }
-    
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
+
         if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
@@ -115,7 +116,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
                 for (Block turnBlock : this.turnableBlocks.keySet()) {
                     if (world.getBlockState(blockPos2).getBlock() == turnBlock) {
                         BlockState blockState = this.turnableBlocks.get(turnBlock).getDefaultState();
-                        if (!blockPos2.isWithinDistance(entity.getPos(), f)) continue;
+                        if (!blockPos2.isWithinDistance(entity.getPos(), (double)f)) continue;
                         mutable.set(blockPos2.getX(), blockPos2.getY() + 1, blockPos2.getZ());
                         BlockState blockState2 = world.getBlockState(mutable);
                         if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
@@ -203,30 +204,31 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
     private boolean isHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
-        return !helmet.isEmpty() && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
+        return !helmet.isEmpty() && !this.isDisabled(helmet) && (helmet.isOf(ItemRegistry.CHAOS_CROWN) || helmet.isOf(ItemRegistry.CHAOS_HELMET));
     }
 
     private boolean isRobesEquipped(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.CHAOS_ROBES);
+        return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.CHAOS_ROBES);
     }
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.ARKENPLATE) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && player.getHealth() < player.getMaxHealth()/2;
     }
 
-	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
+    private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
+        //LivingEntity livingEntity = event.getExtraDataOfType(LivingEntity.class).get(0);
         if (this.equals(ItemRegistry.CHAOS_ROBES)) {
-            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle")); Fix
+            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP)); //Doesn't work for some reason.
         }
         if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_spin"));
         } else if (this.equals(ItemRegistry.ARKENPLATE)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("no_souls"));
         }
-		return PlayState.CONTINUE;
-	}
+        return PlayState.CONTINUE;
+    }
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -240,6 +242,7 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
@@ -308,7 +311,17 @@ public class ChaosSet extends ArmorItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
+            return ConfigConstructor.disable_use_chaos_crown;
+        } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            return ConfigConstructor.disable_use_arkenplate;
+        } else if (stack.isOf(ItemRegistry.CHAOS_ROBES)) {
+            return ConfigConstructor.disable_use_chaos_robes;
+        }
+        return false;
     }
 }

@@ -13,11 +13,12 @@
     "ModelInvoker",
     "PersistentProjectileMixin",
     "PlayerEntityMixin",
-    "ToolItemMixin",
+    "RecipeManagerMixin",
     "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
+    "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
     "MinecraftClientMixin",
     "ShieldItemMixin"

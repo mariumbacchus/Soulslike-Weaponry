@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.GameRules;
@@ -23,7 +20,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 
 public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
@@ -32,14 +28,15 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     private static final String PREV_UUID = "prev_projectile_uuid";
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public ForlornScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, attackSpeed, settings);
+    public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
@@ -105,15 +102,8 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -126,7 +116,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_scythe;
     }
 }

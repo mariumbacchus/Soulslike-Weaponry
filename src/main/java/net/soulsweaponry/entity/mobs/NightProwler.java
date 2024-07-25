@@ -28,7 +28,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
-import net.soulsweaponry.entity.logic.BlackflameSnakeLogic;
+import net.soulsweaponry.entity.util.BlackflameSnakeLogic;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;

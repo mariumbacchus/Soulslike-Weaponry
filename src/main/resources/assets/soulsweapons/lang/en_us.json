@@ -1,7 +1,12 @@
 {
     "soulsweapons.midnightconfig.recipeComment": "Disable recipes for weapons",
     "soulsweapons.midnightconfig.useComment": "Disable usage of weapons",
+
     "soulsweapons.weapon.useDisabled": "§4This item is disabled!§r",
+    "soulsweapons.weapon.no_collected_souls": "There were no bound allies to collect!",
+    "soulsweapons.weapon.collected_souls": "Collected %s souls back to the ",
+    "soulsweapons.weapon.no_freyr_sword": "There is no Freyr Sword bound to you!",
+    "soulsweapons.weapon.on_cooldown": "Can't cast this ability with the Cooldown effect!",
 
     "block.soulsweapons.moonstone_block": "Block of Moonstone",
     "block.soulsweapons.moonstone_ore": "Moonstone Ore",

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " #X",
+    "DX#",
+    "#N "
+  ],
+  "key": {
+    "#": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "X": {
+      "item": "soulsweapons:verglas"
+    },
+    "D": {
+      "item": "soulsweapons:lord_soul_day_stalker"
+    },
+    "N": {
+      "item": "soulsweapons:lord_soul_night_prowler"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:frostmourne"
+  }
+}

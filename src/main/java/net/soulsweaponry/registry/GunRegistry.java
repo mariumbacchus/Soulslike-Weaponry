@@ -20,9 +20,9 @@ public class GunRegistry {
     public static GunItem HUNTER_CANNON = new HunterCannon(new Item.Settings().group(MAIN_GROUP).maxDamage(1250).rarity(Rarity.RARE));
     
     public static void init() {
-        ItemRegistry.registerItem(HUNTER_PISTOL, "hunter_pistol");
-        ItemRegistry.registerItem(BLUNDERBUSS, "blunderbuss");
-        ItemRegistry.registerItem(GATLING_GUN, "gatling_gun");
-        ItemRegistry.registerItem(HUNTER_CANNON, "hunter_cannon");
+        ItemRegistry.registerGunItem(HUNTER_PISTOL, "hunter_pistol");
+        ItemRegistry.registerGunItem(BLUNDERBUSS, "blunderbuss");
+        ItemRegistry.registerGunItem(GATLING_GUN, "gatling_gun");
+        ItemRegistry.registerGunItem(HUNTER_CANNON, "hunter_cannon");
     }
 }

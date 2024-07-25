@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -12,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -23,7 +20,6 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
@@ -37,8 +33,9 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public EmpoweredDawnbreaker(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, attackSpeed, settings);
+    public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHAOS_STORM, WeaponUtil.TooltipAbilities.VEIL_OF_FIRE);
     }
 
     @Override
@@ -82,19 +79,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DAWNBREAKER, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.BLAZING_BLADE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHAOS_STORM, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VEIL_OF_FIRE, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
-    }
-
-    @Override
     public AnimationFactory getFactory() {
         return this.factory;
     }
@@ -111,7 +95,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return;
         }
@@ -143,7 +127,12 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_empowered_dawnbreaker;
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

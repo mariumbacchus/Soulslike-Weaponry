@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -15,7 +13,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -40,19 +37,20 @@ import java.util.List;
 public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public LeviathanAxe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.leviathan_axe_damage, attackSpeed, settings);
+
+    public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.HEAVY_THROW, WeaponUtil.TooltipAbilities.RETURNING);
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_leviathan_axe;
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
+        if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
         int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
@@ -92,9 +90,10 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
         return 72000;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
@@ -124,16 +123,8 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY_THROW, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override

@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -24,7 +22,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -47,8 +44,9 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     public static final String RAINING = "raining";
     public static final String OWNERS_LAST_POS = "owners_last_pos";
 
-    public Mjolnir(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.mjolnir_damage, attackSpeed, settings);
+    public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, WeaponUtil.TooltipAbilities.THROW_LIGHTNING, WeaponUtil.TooltipAbilities.RETURNING, WeaponUtil.TooltipAbilities.WEATHERBORN, WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
     @Override
@@ -162,7 +160,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private boolean isRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled()) {
+        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled(stack)) {
             return stack.getNbt().getBoolean(RAINING);
         } else {
             return false;
@@ -183,17 +181,8 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.THROW_LIGHTNING, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.WEATHERBORN, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -206,7 +195,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_mjolnir;
     }
 }

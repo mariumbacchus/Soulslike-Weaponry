@@ -1,13 +1,10 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -33,8 +30,9 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.*;
-import org.jetbrains.annotations.Nullable;
+import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -46,8 +44,9 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public Nightfall(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nightfall_damage, attackSpeed, settings, true);
+    public Nightfall(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SUMMON_GHOST, WeaponUtil.TooltipAbilities.SHIELD, WeaponUtil.TooltipAbilities.OBLITERATE);
     }
 
     @Override
@@ -79,17 +78,14 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-            this.notifyDisabled(attacker);
-            return true;
+        if (!this.isDisabled(stack)) {
+            this.spawnRemnant(target, attacker);
         }
-        this.spawnRemnant(target, attacker);
         return super.postHit(stack, target, attacker);
     }
 
     public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
-        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !this.isDisabled()) {
+        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !this.isDisabled(attacker.getMainHandStack())) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
@@ -117,24 +113,17 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SUMMON_GHOST, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHIELD, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OBLITERATE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-            for (int i = 1; i <= 3; i++) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.nightfall.part_" + i).formatted(Formatting.DARK_GRAY));
-            }
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[] {
+                new TranslatableText("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
+                new TranslatableText("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
+                new TranslatableText("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
+        };
     }
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return;
         }
@@ -219,7 +208,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_nightfall;
     }
 }

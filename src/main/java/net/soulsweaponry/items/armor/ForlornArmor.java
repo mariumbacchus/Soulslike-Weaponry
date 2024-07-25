@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -24,8 +25,10 @@ public class ForlornArmor extends SetBonusArmor {
     protected void tickAdditionalSetEffects(PlayerEntity player) {
         if (player.world.isClient) return;
         for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {
-            if (entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
-                player.heal(ConfigConstructor.forlorn_set_bonus_heal / 8f); // Gets ticked 8 times by the time living.deathTime increases by 1
+            if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.FORLORN_HELMET) && entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
+                player.heal(ConfigConstructor.forlorn_set_bonus_heal);
+                // The method gets ticked multiple times during the server tick it seems, so this prevents it from healing continuously.
+                player.getItemCooldownManager().set(ArmorRegistry.FORLORN_HELMET, 1);
             }
         }
     }
@@ -60,5 +63,10 @@ public class ForlornArmor extends SetBonusArmor {
         return new Text[] {
                 new TranslatableText("tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal").formatted(Formatting.GRAY)
         };
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_forlorn_armor;
     }
 }
