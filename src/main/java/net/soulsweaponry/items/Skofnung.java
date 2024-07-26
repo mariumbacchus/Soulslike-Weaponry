@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -13,18 +11,14 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-
-import java.util.List;
 
 public class Skofnung extends ModdedSword {
 
@@ -36,14 +30,14 @@ public class Skofnung extends ModdedSword {
      * Skofnung is in the other hand, it temporarily sharpens the Skofnung sword, empowering it for the next 8 hits.
      * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
-    public Skofnung(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.SKOFNUNG_DAMAGE.get(), attackSpeed, settings);
+    public Skofnung(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.SKOFNUNG_DAMAGE.get(), CommonConfig.SKOFNUNG_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DISABLE_HEAL, WeaponUtil.TooltipAbilities.SHARPEN, WeaponUtil.TooltipAbilities.IS_SHARPENED);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
+        if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
         int duration = CommonConfig.SKOFNUNG_DISABLE_HEAL_DURATION.get() + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
@@ -97,19 +91,12 @@ public class Skofnung extends ModdedSword {
     }
     
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_HEAL, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHARPEN, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.IS_SHARPENED, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_SKOFNUNG.get();
     }
 }

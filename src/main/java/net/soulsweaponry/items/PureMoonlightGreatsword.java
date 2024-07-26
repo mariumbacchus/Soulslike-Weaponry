@@ -1,14 +1,11 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
@@ -16,13 +13,11 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class PureMoonlightGreatsword extends ChargeToUseItem {
-    
-    public PureMoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.PURE_MOONLIGHT_GREATSWORD_DAMAGE.get(), attackSpeed, settings);
+
+    public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.PURE_MOONLIGHT_GREATSWORD_DAMAGE.get(), CommonConfig.PURE_MOONLIGHT_GREATSWORD_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 
     @Override
@@ -47,17 +42,12 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_PURE_MOONLIGHT_GREATSWORD.get();
     }
 }

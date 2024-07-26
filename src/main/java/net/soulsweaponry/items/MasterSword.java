@@ -1,14 +1,11 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -17,14 +14,12 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class MasterSword extends ChargeToUseItem {
 
-    public MasterSword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.MASTER_SWORD_DAMAGE.get(), attackSpeed, settings);
+    public MasterSword(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.MASTER_SWORD_DAMAGE.get(), CommonConfig.MASTER_SWORD_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYWARD_STRIKES, WeaponUtil.TooltipAbilities.RIGHTEOUS);
     }
 
     @Override
@@ -55,18 +50,12 @@ public class MasterSword extends ChargeToUseItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SKYWARD_STRIKES, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RIGHTEOUS, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_MASTER_SWORD.get();
     }
 }

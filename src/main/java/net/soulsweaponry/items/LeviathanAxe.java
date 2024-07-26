@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -11,13 +9,11 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -26,13 +22,12 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -46,14 +41,15 @@ import java.util.function.Consumer;
 public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public LeviathanAxe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.LEVIATHAN_AXE_DAMAGE.get(), attackSpeed, settings);
+
+    public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.LEVIATHAN_AXE_DAMAGE.get(), CommonConfig.LEVIATHAN_AXE_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.HEAVY_THROW, WeaponUtil.TooltipAbilities.RETURNING);
     }
     
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
+        if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
         int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
@@ -62,7 +58,7 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_LEVIATHAN_AXE.get();
     }
 
@@ -98,9 +94,10 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
         return 72000;
     }
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
@@ -129,16 +126,8 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FREEZE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PERMAFROST, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY_THROW, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RETURNING, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override

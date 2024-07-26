@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +12,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -23,13 +20,13 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class WhirligigSawblade extends ChargeToUseItem {
 
-    public WhirligigSawblade(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.WHIRLIGIG_SAWBLADE_DAMAGE.get(), attackSpeed, settings);
+    public WhirligigSawblade(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.WHIRLIGIG_SAWBLADE_DAMAGE.get(), CommonConfig.WHIRLIGIG_SAWBLADE_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SAWBLADE);
     }
 
     @Override
@@ -85,17 +82,12 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SAWBLADE, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_WHIRLIGIG_SAWBLADE.get();
     }
 }

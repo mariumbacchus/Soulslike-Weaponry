@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +9,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -38,22 +35,22 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISummonAllies {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    
-    public SoulReaper(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.SOULREAPER_DAMAGE.get(), attackSpeed, settings);
+
+    public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.SOULREAPER_DAMAGE.get(), CommonConfig.SOULREAPER_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return TypedActionResult.fail(stack);
         }
@@ -93,18 +90,6 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
         }
         return TypedActionResult.fail(stack);
 	}
-
-    @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_TRAP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SOUL_RELEASE, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.COLLECT, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
-    }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
         //Figure out how to dynamically change the animation with ISyncable (problem now is that it can't override the prev. animation)
@@ -169,7 +154,12 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_SOUL_REAPER.get();
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

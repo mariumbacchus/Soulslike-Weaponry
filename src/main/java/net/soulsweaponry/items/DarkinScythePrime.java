@@ -1,34 +1,25 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class DarkinScythePrime extends UmbralTrespassItem {
 
-    public DarkinScythePrime(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), attackSpeed, settings, CommonConfig.DARKIN_SCYTHE_PRIME_TICKS_BEFORE_DISMOUNT.get());
+    public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), CommonConfig.DARKIN_SCYTHE_PRIME_ATTACK_SPEED.get(), settings, CommonConfig.DARKIN_SCYTHE_PRIME_TICKS_BEFORE_DISMOUNT.get());
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
-            return true;
+        if (this.isDisabled(stack)) {
+            return super.postHit(stack, target, attacker);
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
@@ -40,22 +31,16 @@ public class DarkinScythePrime extends UmbralTrespassItem {
                 attacker.heal(healing);
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.OMNIVAMP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_DARKIN_SCYTHE_PRIME.get();
     }
 }

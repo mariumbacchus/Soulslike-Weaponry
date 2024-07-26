@@ -170,10 +170,12 @@ public class WeaponUtil {
                 if (stack.isOf(WeaponRegistry.DARKIN_SCYTHE_PRE.get())) {
                     DarkinScythePre scythe = (DarkinScythePre) stack.getItem();
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation").formatted(Formatting.LIGHT_PURPLE));
-                    for (int i = 1; i <= 8; i++) {
+                    for (int i = 1; i <= 7; i++) {
                         tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation_description_" + i).formatted(Formatting.GRAY));
                     }
-                    tooltip.add(new LiteralText(MathHelper.floor(((float)scythe.getSouls(stack)/ scythe.MAX_SOULS)*100) + "%").formatted(scythe.getDominantType(stack).equals(DarkinScythePre.SoulType.BLUE) ? Formatting.AQUA : Formatting.RED));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.transformation_description_8").formatted(Formatting.GRAY)
+                            .append(new LiteralText(MathHelper.floor(((float)scythe.getSouls(stack)/ scythe.MAX_SOULS)*100) + "%")
+                                    .formatted(scythe.getDominantType(stack).equals(DarkinScythePre.SoulType.BLUE) ? Formatting.AQUA : Formatting.RED)));
                 }
             }
             case UMBRAL_TRESPASS -> {
@@ -181,6 +183,8 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_3").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_4").formatted(Formatting.DARK_GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_5").formatted(Formatting.DARK_GRAY));
             }
             case DAWNBREAKER -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.meridias_retribution").formatted(Formatting.DARK_PURPLE));

@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -58,6 +60,7 @@ public class PlayerEntityMixin {
             if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
                 int time = player.getDataTracker().get(TICKS_BEFORE_DISMOUNT);
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10, 0));
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY.get(), 10, 0));
                 if (time < 0) {
                     player.stopRiding();
                 } else {
@@ -128,5 +131,15 @@ public class PlayerEntityMixin {
     private Vec3d calculateReflectionVector(Vec3d playerPos, Vec3d projectilePos, Vec3d projectileMotion) {
         Vec3d vectorToPlayer = playerPos.subtract(projectilePos).normalize();
         return projectileMotion.subtract(vectorToPlayer.multiply(projectileMotion.dotProduct(vectorToPlayer) * 2.0D));
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"))
+    public void interceptAttack(Entity target, CallbackInfo info) {
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY.get()) && player.getMainHandStack().getItem() instanceof ToolItem) {
+            float attackCooldown = player.getAttackCooldownProgress(0.5f);
+            float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY.get()).getAmplifier()) * attackCooldown;
+            player.heal(heal);
+        }
     }
 }

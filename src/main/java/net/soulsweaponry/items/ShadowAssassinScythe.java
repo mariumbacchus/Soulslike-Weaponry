@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -15,33 +13,26 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ShadowAssassinScythe extends UmbralTrespassItem {
 
-    private final float attackSpeed;
     private static final String HAS_EFFECT = "has_shadow_step";
     public static final int TICKS_FOR_BONUS = CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_TICKS.get();
 
-    public ShadowAssassinScythe(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), attackSpeed, settings, CommonConfig.SHADOW_ASSASSIN_SCYTHE_TICKS_BEFORE_DISMOUNT.get());
-        this.attackSpeed = attackSpeed;
+    public ShadowAssassinScythe(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), CommonConfig.SHADOW_ASSASSIN_SCYTHE_ATTACK_SPEED.get(), settings, CommonConfig.SHADOW_ASSASSIN_SCYTHE_TICKS_BEFORE_DISMOUNT.get());
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SHADOW_STEP);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
-            return true;
+        if (this.isDisabled(stack)) {
+            return super.postHit(stack, target, attacker);
         }
         if (attacker instanceof PlayerEntity player) {
             var cooldownManager = player.getItemCooldownManager();
@@ -51,7 +42,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
                 cooldownManager.set(this, CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_COOLDOWN.get());
             }
         }
-        return true;
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -63,7 +54,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     private boolean canGetBonus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT) && !this.isDisabled()) {
+        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT) && !this.isDisabled(stack)) {
             return stack.getNbt().getBoolean(HAS_EFFECT);
         }
         return false;
@@ -75,7 +66,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.canGetBonus(stack) ? this.getAttackDamage() + CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_BONUS_DAMAGE.get() : this.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {
@@ -84,18 +75,12 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.SHADOW_STEP, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_SHADOW_ASSASSIN_SCYTHE.get();
     }
 }

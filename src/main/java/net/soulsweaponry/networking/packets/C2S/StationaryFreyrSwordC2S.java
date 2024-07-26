@@ -3,7 +3,8 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
@@ -38,6 +39,7 @@ public class StationaryFreyrSwordC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, StationaryFreyrSwordC2S packet) {
+        Text text = new TranslatableText("soulsweapons.weapon.no_freyr_sword");
         try {
             Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
             if (op.isPresent() && player.getBlockPos() != null) {
@@ -45,11 +47,11 @@ public class StationaryFreyrSwordC2S {
                 if (entity instanceof FreyrSwordEntity sword) {
                     sword.setStationaryPos(player.getBlockPos());
                 } else {
-                    player.sendMessage(new LiteralText("There is no Freyr Sword bound to you!"), true);
+                    player.sendMessage(text, true);
                 }
             }
         } catch (Exception e) {
-            player.sendMessage(new LiteralText("There is no Freyr Sword bound to you!"), true);
+            player.sendMessage(text, true);
         }
     }
 }

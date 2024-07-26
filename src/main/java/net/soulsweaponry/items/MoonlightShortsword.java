@@ -1,16 +1,12 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
@@ -21,21 +17,24 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class MoonlightShortsword extends ModdedSword {
-    
-    public MoonlightShortsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.MOONLIGHT_SHORTSWORD_DAMAGE.get(), attackSpeed, settings);
+
+    public MoonlightShortsword(ToolMaterial toolMaterial, Settings settings) {
+        this(toolMaterial, CommonConfig.MOONLIGHT_SHORTSWORD_DAMAGE.get(), CommonConfig.MOONLIGHT_SHORTSWORD_ATTACK_SPEED.get(), settings);
     }
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK);
     }
 
     @Override
-    public boolean isDisabled() {
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_MOONLIGHT_SHORTSWORD.get();
     }
 
@@ -77,19 +76,9 @@ public class MoonlightShortsword extends ModdedSword {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled()) {
+        if (!this.isDisabled(stack)) {
             stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         }
         return super.postHit(stack, target, attacker);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
     }
 }

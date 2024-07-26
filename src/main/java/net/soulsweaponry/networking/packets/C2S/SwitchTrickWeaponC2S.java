@@ -2,18 +2,14 @@ package net.soulsweaponry.networking.packets.C2S;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.items.FreyrSword;
 import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -22,8 +18,6 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import static net.soulsweaponry.util.WeaponUtil.TRICK_WEAPONS;
@@ -54,13 +48,13 @@ public class SwitchTrickWeaponC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, SwitchTrickWeaponC2S packet) {
-        Item handItem = player.getStackInHand(Hand.MAIN_HAND).getItem();
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+        Item handItem = stack.getItem();
         if (handItem instanceof TrickWeapon weapon && !player.getItemCooldownManager().isCoolingDown(handItem)) {
-            if (weapon.isDisabled()) {
+            if (weapon.isDisabled(stack)) {
                 weapon.notifyDisabled(player);
                 return;
             }
-            ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
             TrickWeapon switchWeapon = TRICK_WEAPONS[((TrickWeapon) handItem).getSwitchWeaponIndex()];
             if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
                 switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];

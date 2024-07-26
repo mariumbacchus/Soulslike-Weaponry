@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -12,7 +10,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -27,13 +24,11 @@ import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class DragonStaff extends ModdedSword {
 
-    public DragonStaff(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.DRAGON_STAFF_DAMAGE.get(), attackSpeed, settings);
+    public DragonStaff(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.DRAGON_STAFF_DAMAGE.get(), CommonConfig.DRAGON_STAFF_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DRAGON_STAFF, WeaponUtil.TooltipAbilities.VENGEFUL_FOG);
     }
 
     @Override
@@ -80,7 +75,7 @@ public class DragonStaff extends ModdedSword {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(itemStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(itemStack);
         }
@@ -122,18 +117,12 @@ public class DragonStaff extends ModdedSword {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DRAGON_STAFF, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.VENGEFUL_FOG, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_DRAGON_STAFF.get();
     }
 }

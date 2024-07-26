@@ -10,7 +10,6 @@ import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
@@ -25,9 +24,6 @@ public class GunRecipes extends RecipeProvider {
     }
 
     public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
-        if (CommonConfig.DISABLE_GUN_RECIPES.get()) {
-            return;
-        }
         ShapedRecipeJsonBuilder.create(GunRegistry.HUNTER_CANNON.get())
                 .input('#', Items.IRON_INGOT)
                 .input('G', ItemRegistry.LOST_SOUL.get())

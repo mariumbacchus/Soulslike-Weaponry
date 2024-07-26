@@ -9,6 +9,11 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 
+/**
+ * NOTE:
+ * Keep in mind that datagen only runs once in development and not during runtime.
+ * Applying logic from config will not work.
+ */
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 

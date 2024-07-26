@@ -17,7 +17,6 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -43,7 +42,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -51,7 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends GeoArmorItem implements IAnimatable {
+public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
@@ -204,17 +202,17 @@ public class ChaosSet extends GeoArmorItem implements IAnimatable {
 
     private boolean isHelmetEquipped(PlayerEntity player) {
         ItemStack helmet = player.getInventory().getArmorStack(3);
-        return !helmet.isEmpty() && (helmet.isOf(ItemRegistry.CHAOS_CROWN.get()) || helmet.isOf(ItemRegistry.CHAOS_HELMET.get()));
+        return !helmet.isEmpty() && !this.isDisabled(helmet) && (helmet.isOf(ItemRegistry.CHAOS_CROWN.get()) || helmet.isOf(ItemRegistry.CHAOS_HELMET.get()));
     }
 
     private boolean isRobesEquipped(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && chest.isOf(ItemRegistry.CHAOS_ROBES.get());
+        return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.CHAOS_ROBES.get());
     }
 
     private boolean isChestActive(PlayerEntity player) {
         ItemStack chest = player.getInventory().getArmorStack(2);
-        return !chest.isEmpty() && (chest.isOf(ItemRegistry.ARKENPLATE.get()) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) && player.getHealth() < player.getMaxHealth()/2;
+        return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.ARKENPLATE.get()) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) && player.getHealth() < player.getMaxHealth()/2;
     }
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -241,6 +239,7 @@ public class ChaosSet extends GeoArmorItem implements IAnimatable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
@@ -309,7 +308,17 @@ public class ChaosSet extends GeoArmorItem implements IAnimatable {
         } else {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
         }
-        
-        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) {
+            return CommonConfig.DISABLE_USE_CHAOS_CROWN.get();
+        } else if (stack.isOf(ItemRegistry.ARKENPLATE.get()) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
+            return CommonConfig.DISABLE_USE_ARKENPLATE.get();
+        } else if (stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
+            return CommonConfig.DISABLE_USE_CHAOS_ROBES.get();
+        }
+        return false;
     }
 }

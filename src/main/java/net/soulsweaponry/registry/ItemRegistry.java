@@ -4,16 +4,19 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.*;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
+import net.soulsweaponry.util.RecipeHandler;
 
 import java.util.function.Supplier;
 
@@ -43,7 +46,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> DEMON_CHUNK = registerItem("demon_chunk",() -> new Item(new Item.Settings().group(MAIN_GROUP)));
     public static final RegistryObject<Item> CRIMSON_INGOT = registerItem("crimson_ingot",() -> new Item(new Item.Settings().group(MAIN_GROUP)));
     public static final RegistryObject<Item> SOUL_INGOT = registerItem("soul_ingot", () -> new Item(new Item.Settings().group(MAIN_GROUP)));
-    public static final RegistryObject<Item> SILVER_BULLET = registerItem("silver_bullet", () -> new Item(new Item.Settings().group(MAIN_GROUP).maxCount(20)));
+    public static final RegistryObject<Item> SILVER_BULLET = registerGunItem("silver_bullet", () -> new Item(new Item.Settings().group(MAIN_GROUP).maxCount(20)));
     public static final RegistryObject<Item> BOSS_COMPASS = registerItem("boss_compass", () -> new BossCompass(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MOONSTONE_RING = registerItem("moonstone_ring", () -> new MoonstoneRing(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).maxDamage(25)));
     public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = registerItem("shard_of_uncertainty", () -> new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "shard_of_uncertainty", 1));
@@ -61,11 +64,11 @@ public class ItemRegistry {
     public static final RegistryObject<LoreItem> ESSENCE_OF_EVENTIDE = registerItem("essence_of_eventide",() -> new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "essence_of_eventide", 2));
     public static final RegistryObject<LoreItem> ESSENCE_OF_LUMINESCENCE = registerItem("essence_of_luminescence", () -> new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "essence_of_luminescence", 3));
     public static final RegistryObject<Item> CHAOS_CROWN = registerItem("chaos_crown", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
-    public static final RegistryObject<Item> CHAOS_HELMET = registerItem("chaos_helmet", () -> new ChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
-    public static final RegistryObject<Item> ARKENPLATE = registerItem("arkenplate", () -> new ChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
-    public static final RegistryObject<Item> ENHANCED_ARKENPLATE = registerItem("enhanced_arkenplate", () -> new EChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
-    public static final RegistryObject<Item> WITHERED_CHEST = registerItem("withered_chest", () -> new WitheredArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
-    public static final RegistryObject<Item> ENHANCED_WITHERED_CHEST = registerItem("enhanced_withered_chest", () -> new WitheredArmor(ModArmorMaterials.WITHERED_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
+    public static final RegistryObject<Item> CHAOS_HELMET = registerArmorItem("chaos_helmet", () -> new ChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()), CommonConfig.RECIPE_CHAOS_HELMET.get());
+    public static final RegistryObject<Item> ARKENPLATE = registerArmorItem("arkenplate", () -> new ChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()), CommonConfig.RECIPE_ARKENPLATE.get());
+    public static final RegistryObject<Item> ENHANCED_ARKENPLATE = registerArmorItem("enhanced_arkenplate", () -> new EChaosArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()), CommonConfig.RECIPE_ENHANCED_ARKENPLATE.get());
+    public static final RegistryObject<Item> WITHERED_CHEST = registerArmorItem("withered_chest", () -> new WitheredArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()), CommonConfig.RECIPE_WITHERED_CHEST.get());
+    public static final RegistryObject<Item> ENHANCED_WITHERED_CHEST = registerArmorItem("enhanced_withered_chest", () -> new WitheredArmor(ModArmorMaterials.WITHERED_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()), CommonConfig.RECIPE_ENHANCED_WITHERED_CHEST.get());
     public static final RegistryObject<Item> CHAOS_ROBES = registerItem("chaos_robes",() -> new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
     public static final RegistryObject<Item> CHAOS_ORB = registerItem("chaos_orb", () -> new ChaosOrb(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof()));
 
@@ -73,6 +76,31 @@ public class ItemRegistry {
 
     public static <I extends Item> RegistryObject<I> registerItem(String id, Supplier<I> item) {
         return ITEMS.register(id, item);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerItemRemovableRecipe(String name, Supplier<I> item, boolean removeRecipe) {
+        RecipeHandler.RECIPE_IDS.put(new Identifier(SoulsWeaponry.ModId, name), removeRecipe);
+        return registerItem(name, item);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerArmorItem(String name, Supplier<I> item, boolean removeRecipe) {
+        if (CommonConfig.DISABLE_ARMOR_RECIPES.get()) {
+            return registerItemRemovableRecipe(name, item, true);
+        } else {
+            return registerItemRemovableRecipe(name, item, removeRecipe);
+        }
+    }
+
+    public static <I extends Item> RegistryObject<I> registerWeaponItem(String name, Supplier<I> item, boolean removeRecipe) {
+        if (CommonConfig.DISABLE_WEAPON_RECIPES.get()) {
+            return registerItemRemovableRecipe(name, item, true);
+        } else {
+            return registerItemRemovableRecipe(name, item, removeRecipe);
+        }
+    }
+
+    public static <I extends Item> RegistryObject<I> registerGunItem(String name, Supplier<I> item) {
+        return registerItemRemovableRecipe(name, item, CommonConfig.DISABLE_GUN_RECIPES.get());
     }
 
     public static void register(IEventBus eventBus) {

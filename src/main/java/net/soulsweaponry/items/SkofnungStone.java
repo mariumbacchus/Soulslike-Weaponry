@@ -30,7 +30,7 @@ public class SkofnungStone extends Item implements IConfigDisable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stoneStack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stoneStack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stoneStack);
         }
@@ -62,7 +62,7 @@ public class SkofnungStone extends Item implements IConfigDisable {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -74,7 +74,7 @@ public class SkofnungStone extends Item implements IConfigDisable {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_SKOFNUNG_STONE.get();
     }
 }

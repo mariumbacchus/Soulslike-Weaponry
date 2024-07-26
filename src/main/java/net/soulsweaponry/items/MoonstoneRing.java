@@ -32,7 +32,7 @@ public class MoonstoneRing extends Item implements IConfigDisable {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
@@ -47,7 +47,7 @@ public class MoonstoneRing extends Item implements IConfigDisable {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {
@@ -59,7 +59,7 @@ public class MoonstoneRing extends Item implements IConfigDisable {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_MOONSTONE_RING.get();
     }
 }

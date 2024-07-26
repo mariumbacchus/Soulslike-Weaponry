@@ -1,28 +1,28 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.CommonConfig;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     private static final int[] DAMAGE = {
             CommonConfig.KIRKHAMMER_DAMAGE.get(),
             CommonConfig.KIRKHAMMER_SILVER_SWORD_DAMAGE.get(),
-            CommonConfig.LUDWIGS_HOLY_GREATSWORD.get(),
+            CommonConfig.LUDWIGS_HOLY_GREATSWORD_DAMAGE.get(),
             CommonConfig.HOLY_MOON_GREAT_DAMAGE.get(),
             CommonConfig.HOLY_MOON_SWORD_DAMAGE.get(),
+    };
+
+    private static final float[] ATTACK_SPEED = {
+            CommonConfig.KIRKHAMMER_ATTACK_SPEED.get(),
+            CommonConfig.KIRKHAMMER_SILVER_SWORD_ATTACK_SPEED.get(),
+            CommonConfig.LUDWIGS_HOLY_GREATSWORD_ATTACK_SPEED.get(),
+            CommonConfig.HOLY_MOON_GREAT_ATTACK_SPEED.get(),
+            CommonConfig.HOLY_MOON_SWORD_ATTACK_SPEED.get(),
     };
 
     private static final boolean[] DISABLE = {
@@ -39,13 +39,20 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     private final boolean isHeavy;
     private final int arrayIndex;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, float attackSpeed, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
-        super(toolMaterial, DAMAGE[damageIndex], attackSpeed, settings);
+    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
+        super(toolMaterial, DAMAGE[damageIndex], ATTACK_SPEED[damageIndex], settings);
         this.switchWeaponIndex = switchWeaponIndex;
         this.ownWeaponIndex = ownWeaponIndex;
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
         this.arrayIndex = damageIndex;
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRICK_WEAPON);
+        if (this.isHeavy()) {
+            this.addTooltipAbility(WeaponUtil.TooltipAbilities.HEAVY);
+        }
+        if (this.undeadBonus) {
+            this.addTooltipAbility(WeaponUtil.TooltipAbilities.RIGHTEOUS);
+        }
     }
 
     public int getSwitchWeaponIndex() {
@@ -62,8 +69,7 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
+        if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
         if (this.isHeavy) {
@@ -73,32 +79,17 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
-            if (this.isHeavy()) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-            }
-            if (this.undeadBonus) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.RIGHTEOUS, stack, tooltip);
-            }
-            if (stack.isOf(WeaponRegistry.HOLY_MOONLIGHT_SWORD.get())) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE, stack, tooltip);
-            }
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
-    }
-
-    @Override
     public boolean isHeavy() {
         return this.isHeavy;
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return DISABLE[this.arrayIndex];
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

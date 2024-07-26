@@ -14,8 +14,9 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 
-public abstract class UmbralTrespassItem extends SoulHarvestingItem {
+public abstract class UmbralTrespassItem extends ModdedSword {
 
     private final int ticksBeforeDismount;
     public static final TrackedData<Boolean> SHOULD_DAMAGE_RIDING = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -24,12 +25,13 @@ public abstract class UmbralTrespassItem extends SoulHarvestingItem {
     public UmbralTrespassItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int ticksBeforeDismount) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.ticksBeforeDismount = ticksBeforeDismount;
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }

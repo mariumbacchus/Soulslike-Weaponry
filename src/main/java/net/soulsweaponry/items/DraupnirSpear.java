@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
@@ -27,15 +25,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
-import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
 import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -55,8 +51,9 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final String SPEARS_ID = "thrown_spears_id";
 
-    public DraupnirSpear(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.DRAUPNIR_DAMAGE.get(), attackSpeed, settings);
+    public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, CommonConfig.DRAUPNIR_DAMAGE.get(), CommonConfig.DRAUPNIR_ATTACK_SPEED.get(), settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.DETONATE_SPEARS);
     }
 
     @Override
@@ -93,14 +90,8 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.INFINITY, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DETONATE_SPEARS, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
@@ -117,7 +108,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled()) {
+        if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
             return;
         }
@@ -144,7 +135,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                     if (!player.isCreative())
                         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), CommonConfig.DRAUPNIR_SUMMON_SPEARS_COOLDOWN.get(), 0));
                 } else {
-                    player.sendMessage(new LiteralText("Can't cast this ability with Cooldown effect!"), true);
+                    player.sendMessage(new TranslatableText("soulsweapons.weapon.on_cooldown"), true);
                 }
             } else {
                 Box box = player.getBoundingBox().expand(3);
@@ -192,7 +183,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_DRAUPNIR_SPEAR.get();
     }
 }

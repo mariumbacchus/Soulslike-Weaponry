@@ -40,6 +40,7 @@ public class EffectRegistry {
     public static final RegistryObject<StatusEffect> BLIGHT = EFFECTS.register("blight", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c));
     public static final RegistryObject<StatusEffect> SHADOW_STEP = EFFECTS.register("shadow_step", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78).addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "48403ce1-d9b3-4757-b1ef-9fbacff0ed37", 0.30000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<StatusEffect> COOLDOWN = EFFECTS.register("cooldown", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x525252));
+    public static final RegistryObject<StatusEffect> GHOSTLY = EFFECTS.register("ghostly", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191));
 
     public static final RegistryObject<Potion> WARDING = POTIONS.register("warding", () -> new Potion(new StatusEffectInstance(MAGIC_RESISTANCE.get(), 4000, 0)));
     public static final RegistryObject<Potion> STRONG_WARDING = POTIONS.register("strong_warding", () -> new Potion(new StatusEffectInstance(MAGIC_RESISTANCE.get(), 2000, 1)));

@@ -4,9 +4,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.entity.mobs.BossEntity;
+import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class SoulHarvestingItem extends ModdedSword {
 
@@ -14,12 +14,12 @@ public abstract class SoulHarvestingItem extends ModdedSword {
 
     public SoulHarvestingItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_TRAP, WeaponUtil.TooltipAbilities.COLLECT);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled()) {
-            this.notifyDisabled(attacker);
+        if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {

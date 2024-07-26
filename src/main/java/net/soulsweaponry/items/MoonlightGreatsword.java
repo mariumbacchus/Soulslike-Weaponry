@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,21 +15,19 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class MoonlightGreatsword extends ChargeToUseItem {
-    
-    public MoonlightGreatsword(ToolMaterial toolMaterial, float attackSpeed, Settings settings) {
-        super(toolMaterial, CommonConfig.MOONLIGHT_GREATSWORD_DAMAGE.get(), attackSpeed, settings);
+
+    public MoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
+        this(toolMaterial, CommonConfig.MOONLIGHT_GREATSWORD_DAMAGE.get(), CommonConfig.MOONLIGHT_GREATSWORD_ATTACK_SPEED.get(), settings);
     }
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MOONLIGHT);
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_MOONLIGHT_GREATSWORD.get();
     }
 
@@ -59,21 +55,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     }
     
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        if (Screen.hasShiftDown()) {
-            if (this instanceof BluemoonGreatsword) {
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.NEED_CHARGE, stack, tooltip);
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.CHARGE, stack, tooltip);
-            }
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.MOONLIGHT, stack, tooltip);
-            if (!(this instanceof BluemoonGreatsword)) {
-                for (int i = 1; i <= 3; i++) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.moonlight_greatsword.part_" + i).formatted(Formatting.DARK_GRAY));
-                }
-            }
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
+    public Text[] getAdditionalTooltips() {
+        return new Text[] {
+                new TranslatableText("tooltip.soulsweapons.moonlight_greatsword.part_1").formatted(Formatting.DARK_GRAY),
+                new TranslatableText("tooltip.soulsweapons.moonlight_greatsword.part_2").formatted(Formatting.DARK_GRAY),
+                new TranslatableText("tooltip.soulsweapons.moonlight_greatsword.part_3").formatted(Formatting.DARK_GRAY)
+        };
     }
 }

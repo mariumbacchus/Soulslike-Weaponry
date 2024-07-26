@@ -6,13 +6,13 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.items.UmbralTrespassItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
@@ -46,7 +46,7 @@ public class CollectSummonsC2S {
     private void handlePacket(ServerPlayerEntity player, CollectSummonsC2S packet) {
         for (Hand hand : Hand.values()) {
             Item handItem = player.getStackInHand(hand).getItem();
-            if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
+            if (handItem instanceof SoulHarvestingItem && !(handItem instanceof DarkinScythePre)) {
                 int collectedSouls = 0;
                 for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(8))) {
                     if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
@@ -57,9 +57,10 @@ public class CollectSummonsC2S {
                     }
                 }
                 SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
-                String msg = collectedSouls == 0 ? "There were no bound allies to collect!" : "Collected " + collectedSouls + " souls back to the " + item.getName().getString();
+                Text msg = collectedSouls == 0 ? new TranslatableText("soulsweapons.weapon.no_collected_souls")
+                        : new TranslatableText("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
                 item.addAmount(player.getStackInHand(hand), collectedSouls);
-                player.sendMessage(new LiteralText(msg), true);
+                player.sendMessage(msg, true);
             }
         }
     }

@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -10,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -19,27 +16,15 @@ import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.FEATHERLIGHT_DAMAGE.get(), - (4f - (CommonConfig.DISABLE_USE_FEATHERLIGHT.get() ? 1f : CommonConfig.FEATHERLIGHT_ATTACK_SPEED.get())), settings, true);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.FEATHERLIGHT, stack, tooltip);
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.HEAVY, stack, tooltip);
-        } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-        }
-        super.appendTooltip(stack, world, tooltip, context);
+        super(toolMaterial, CommonConfig.FEATHERLIGHT_DAMAGE.get(), CommonConfig.DISABLE_USE_FEATHERLIGHT.get() ? 1f : CommonConfig.FEATHERLIGHT_ATTACK_SPEED.get(), settings, true);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FEATHERLIGHT);
     }
 
     @Override
@@ -110,7 +95,12 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public boolean isDisabled() {
+    public boolean isDisabled(ItemStack stack) {
         return CommonConfig.DISABLE_USE_FEATHERLIGHT.get();
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }
