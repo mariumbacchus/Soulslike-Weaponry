@@ -100,13 +100,14 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     }
 
     private boolean getRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING)) {
+        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled(stack)) {
             return stack.getNbt().getBoolean(RAINING);
         } else {
             return false;
         }
     }
 
+    @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND && this.getRaining(stack)) {

@@ -37,7 +37,6 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (this.isDisabled(stack)) {
-            this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
         if (target.hasStatusEffect(EffectRegistry.BLIGHT)) {
