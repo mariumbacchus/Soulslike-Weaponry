@@ -71,18 +71,18 @@ public class KeyBindRegistry {
                         if (stack.getItem() instanceof IKeybindAbility abilityItem) {
                             if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
                                 configDisable.notifyDisabled(player);
-                                return;
+                            } else {
+                                abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
                             }
-                            abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
                         }
                     }
                     for (ItemStack armorStack : player.getArmorItems()) {
                         if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
                             if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
                                 configDisable.notifyDisabled(player);
-                                return;
+                            } else {
+                                abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
                             }
-                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
                         }
                     }
                 }
