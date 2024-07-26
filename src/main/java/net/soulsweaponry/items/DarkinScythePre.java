@@ -53,6 +53,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
                 this.addAmount(stack, amount, SoulType.RED);
             }
         }
+        stack.damage(1, attacker, (e) -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
         return true;
     }
 
