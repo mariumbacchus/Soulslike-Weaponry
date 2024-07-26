@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -66,13 +67,22 @@ public class KeyBindRegistry {
                 if (client.player != null) {
                     ClientPlayerEntity player = client.player;
                     for (Hand hand : Hand.values()) {
-                        if (player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
+                        ItemStack stack = player.getStackInHand(hand);
+                        if (stack.getItem() instanceof IKeybindAbility abilityItem) {
+                            if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
+                                configDisable.notifyDisabled(player);
+                            } else {
+                                abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
+                            }
                         }
                     }
                     for (ItemStack armorStack : player.getArmorItems()) {
                         if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                            if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
+                                configDisable.notifyDisabled(player);
+                            } else {
+                                abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                            }
                         }
                     }
                 }

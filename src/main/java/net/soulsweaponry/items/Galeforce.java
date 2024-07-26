@@ -101,10 +101,6 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             if (!player.isCreative())
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.galeforce_dash_cooldown, 0));
@@ -122,9 +118,6 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            return;
-        }
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             float f = player.getYaw();
             float g = player.getPitch();

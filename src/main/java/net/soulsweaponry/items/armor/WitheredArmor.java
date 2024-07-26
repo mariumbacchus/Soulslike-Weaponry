@@ -110,7 +110,7 @@ public class WitheredArmor extends ModdedArmor implements IAnimatable, IKeybindA
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         // NOTE! This may or may not set/check cooldowns for all items of this object WitheredArmor
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !this.isDisabled(stack)) {
+        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH, ConfigConstructor.withered_chest_life_leach_duration, ConfigConstructor.withered_chest_life_leach_amplifier));
             player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.withered_chest_ability_cooldown);
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
