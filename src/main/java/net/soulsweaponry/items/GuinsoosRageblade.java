@@ -21,7 +21,6 @@ public class GuinsoosRageblade extends ModdedSword {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) { 
         if (this.isDisabled(stack)) {
-            this.notifyDisabled(attacker);
             return super.postHit(stack, target, attacker);
         }
         if (attacker.isOnFire()) {

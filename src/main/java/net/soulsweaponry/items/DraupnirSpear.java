@@ -129,7 +129,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                     if (!player.isCreative())
                         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
                 } else {
-                    player.sendMessage(Text.literal("Can't cast this ability with Cooldown effect!"), true);
+                    player.sendMessage(Text.translatable("soulsweapons.weapon.on_cooldown"), true);
                 }
             } else {
                 Box box = player.getBoundingBox().expand(3);
