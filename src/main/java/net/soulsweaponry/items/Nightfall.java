@@ -143,10 +143,6 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));

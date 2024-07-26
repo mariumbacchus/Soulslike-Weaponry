@@ -61,10 +61,6 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
             ArrowStormEntity entity = new ArrowStormEntity(EntityRegistry.ARROW_STORM_ENTITY, world);
