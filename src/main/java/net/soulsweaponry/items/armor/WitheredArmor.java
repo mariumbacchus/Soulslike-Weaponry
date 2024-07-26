@@ -110,7 +110,7 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !this.isDisabled(stack)) {
+        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), CommonConfig.WITHERED_CHEST_LIFE_LEACH_DURATION.get(), CommonConfig.WITHERED_CHEST_LIFE_LEACH_AMP.get()));
             player.getItemCooldownManager().set(stack.getItem(), CommonConfig.WITHERED_CHEST_ABILITY_COOLDOWN.get());
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);

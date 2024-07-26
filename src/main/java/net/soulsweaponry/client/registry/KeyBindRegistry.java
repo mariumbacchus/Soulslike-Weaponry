@@ -9,6 +9,7 @@ import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.C2S.*;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -58,13 +59,22 @@ public class KeyBindRegistry {
             if (client.player != null) {
                 ClientPlayerEntity player = client.player;
                 for (Hand hand : Hand.values()) {
-                    if (player.getStackInHand(hand).getItem() instanceof IKeybindAbility abilityItem) {
-                        abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
+                    ItemStack stack = player.getStackInHand(hand);
+                    if (stack.getItem() instanceof IKeybindAbility abilityItem) {
+                        if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
+                            configDisable.notifyDisabled(player);
+                        } else {
+                            abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
+                        }
                     }
                 }
                 for (ItemStack armorStack : player.getArmorItems()) {
                     if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
-                        abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                        if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
+                            configDisable.notifyDisabled(player);
+                        } else {
+                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                        }
                     }
                 }
             }

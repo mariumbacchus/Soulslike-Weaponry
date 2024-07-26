@@ -65,10 +65,6 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.castSpell(player, world, stack, true);
             player.getItemCooldownManager().set(this, CommonConfig.NIGHTS_EDGE_ABILITY_COOLDOWN.get());

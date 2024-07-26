@@ -5,6 +5,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.util.IKeybindAbility;
 
 import java.util.function.Supplier;
@@ -38,11 +39,17 @@ public class KeybindAbilityC2S {
         for (Hand hand : Hand.values()) {
             ItemStack stack = player.getStackInHand(hand);
             if (stack.getItem() instanceof IKeybindAbility keybindItem) {
+                if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
+                    return;
+                }
                 keybindItem.useKeybindAbilityServer(player.getWorld(), stack, player);
             }
         }
         for (ItemStack armorStack : player.getArmorItems()) {
             if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
+                if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
+                    return;
+                }
                 abilityItem.useKeybindAbilityServer(player.getWorld(), armorStack, player);
             }
         }

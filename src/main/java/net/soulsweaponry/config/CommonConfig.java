@@ -487,7 +487,7 @@ public class CommonConfig {
     static {
         BUILDER.push("Common config for Soulslike Weaponry Forge");
 
-        MOONSTONE_ORE_VEIN_SIZE = BUILDER.comment("Ore generation settings (only works in 1.19.2 and down.").define("Moonstone Ore vein size", 5);
+        MOONSTONE_ORE_VEIN_SIZE = BUILDER.comment("Ore generation settings (only works in 1.19.2 and down).").define("Moonstone Ore vein size", 5);
         MOONSTONE_ORE_COUNT_PER_CHUNK = BUILDER.define("Moonstone Ore average spawn count per chunk", 4);
         MOONSTONE_ORE_MIN_HEIGHT = BUILDER.define("Moonstone Ore min spawn height", -63);
         MOONSTONE_ORE_MAX_HEIGHT = BUILDER.define("Moonstone Ore max spawn height", 16);
