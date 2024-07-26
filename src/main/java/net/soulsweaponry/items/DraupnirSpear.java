@@ -119,10 +119,6 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             if (player.isSneaking()) {
                 if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
