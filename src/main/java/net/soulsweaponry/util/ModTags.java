@@ -30,6 +30,7 @@ public class ModTags {
 
         public static final TagKey<Item> STICKS = createCommonTag("wood_sticks");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
+        public static final TagKey<Item> IRON_INGOTS = createCommonTag("iron_ingots");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, new Identifier(SoulsWeaponry.ModId, name));

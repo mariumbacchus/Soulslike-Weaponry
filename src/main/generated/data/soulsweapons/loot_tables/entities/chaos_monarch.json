@@ -47,7 +47,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:air"
+          "name": "soulsweapons:chaos_crown"
         }
       ],
       "rolls": 1.0

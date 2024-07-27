@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:bone"
+    },
+    "X": {
+      "tag": "c:iron_ingots"
+    },
+    "Y": {
+      "item": "soulsweapons:lost_soul"
+    }
+  },
+  "pattern": [
+    "XIX",
+    "IYI",
+    "XIX"
+  ],
+  "result": {
+    "item": "soulsweapons:iron_skull"
+  },
+  "show_notification": true
+}

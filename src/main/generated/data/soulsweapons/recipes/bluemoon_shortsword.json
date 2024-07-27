@@ -10,9 +10,9 @@
     }
   },
   "pattern": [
-    "#",
-    "#",
-    "X"
+    " # ",
+    " # ",
+    " X "
   ],
   "result": {
     "item": "soulsweapons:bluemoon_shortsword"

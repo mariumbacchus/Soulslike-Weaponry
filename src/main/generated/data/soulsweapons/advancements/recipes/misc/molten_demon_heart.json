@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_demon_heart": {
+    "has_item": {
       "conditions": {
         "items": [
           {
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_demon_heart",
+      "has_item",
       "has_the_recipe"
     ]
   ],

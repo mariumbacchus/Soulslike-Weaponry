@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "soulsweapons:moonstone"
+    },
+    "O": {
+      "item": "minecraft:polished_blackstone_bricks"
+    },
+    "X": {
+      "item": "minecraft:ender_pearl"
+    },
+    "Y": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    "I I",
+    "XYX",
+    "OOO"
+  ],
+  "result": {
+    "item": "soulsweapons:blackstone_pedestal"
+  },
+  "show_notification": true
+}
