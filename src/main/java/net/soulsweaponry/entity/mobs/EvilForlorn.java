@@ -1,10 +1,12 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
@@ -56,6 +58,9 @@ public class EvilForlorn extends Forlorn {
         if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
             this.discard();
         }
+        if (this.isInLava() && this.age % 10 == 0) {
+            this.damage(DamageSource.MAGIC, 1f);
+        }
     }
 
     @Override
@@ -73,6 +78,8 @@ public class EvilForlorn extends Forlorn {
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
                 && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
                 && world.getDifficulty() != Difficulty.PEACEFUL
+                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
+                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

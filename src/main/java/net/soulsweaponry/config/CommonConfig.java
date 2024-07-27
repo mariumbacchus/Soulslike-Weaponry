@@ -629,7 +629,7 @@ public class CommonConfig {
 
         WITHERED_DEMON_SPAWN_WEIGHT = BUILDER.comment("Spawn weight for the mobs, the higher the value, the more spawns.").define("Withered Demon spawn weight", 20);
         CHUNGUS_SPAWN_WEIGHT = BUILDER.define("Moderately Sized Chungus spawn weight", 100);
-        FORLORN_SPAWN_WEIGHT = BUILDER.define("Evil Forlorn spawn weight", 20);
+        FORLORN_SPAWN_WEIGHT = BUILDER.define("Invading/Evil Forlorn spawn weight", 15);
 
         CHUNGUS_MONOLITH_RANGE = BUILDER.comment("Radius in blocks which is the range how far away a monolith chungusus can spawn.").define("Chungus Monolith radius", 32);
 
