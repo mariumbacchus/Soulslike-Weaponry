@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "X": {
+      "item": "soulsweapons:lost_soul"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "item": "minecraft:soul_lantern"
+  }
+}

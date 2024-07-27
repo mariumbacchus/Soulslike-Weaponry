@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chaos_helmet"
+        "recipe": "soulsweapons:chaos_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:chaos_helmet"
+      "soulsweapons:chaos_helmet"
     ]
   }
 }

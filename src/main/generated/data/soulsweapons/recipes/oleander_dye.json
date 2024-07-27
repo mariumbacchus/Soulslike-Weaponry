@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soulsweapons:oleander"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:purple_dye"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "C": {
+      "item": "minecraft:cracked_polished_blackstone_bricks"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#C#",
+    " # "
+  ],
+  "result": {
+    "item": "soulsweapons:cracked_infused_blackstone"
+  }
+}

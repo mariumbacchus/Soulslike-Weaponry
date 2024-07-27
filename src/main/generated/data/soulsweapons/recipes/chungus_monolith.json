@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "item": "minecraft:deepslate"
+    },
+    "O": {
+      "item": "minecraft:golden_carrot"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SOS",
+    "SDS"
+  ],
+  "result": {
+    "item": "soulsweapons:chungus_monolith"
+  }
+}

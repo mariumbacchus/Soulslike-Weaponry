@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "C": {
+      "item": "minecraft:redstone_lamp"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#C#",
+    " # "
+  ],
+  "result": {
+    "item": "soulsweapons:soul_lamp"
+  }
+}
