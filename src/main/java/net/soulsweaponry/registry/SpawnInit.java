@@ -22,7 +22,7 @@ public class SpawnInit {
 
         BiomeModifications.addSpawn(BiomeSelectors.foundInTheNether(), SpawnGroup.MONSTER, EntityRegistry.WITHERED_DEMON, spawnRateDemon, 1, 1);
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.FOREST), SpawnGroup.MONSTER, EntityRegistry.BIG_CHUNGUS, spawnRateChungus, 4, 8);
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.NETHER_WASTES), SpawnGroup.MONSTER, EntityRegistry.EVIL_FORLORN, spawnRateForlorn, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.foundInTheNether(), SpawnGroup.MONSTER, EntityRegistry.EVIL_FORLORN, spawnRateForlorn, 1, 1);
 
         SpawnRestriction.register(EntityRegistry.WITHERED_DEMON, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
         SpawnRestriction.register(EntityRegistry.BIG_CHUNGUS, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
