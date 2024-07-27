@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:empowered_dawnbreaker"
+      "soulsweapons:empowered_dawnbreaker"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:empowered_dawnbreaker"
+        "recipe": "soulsweapons:empowered_dawnbreaker"
       }
     }
   },

@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:moonlight_shortsword"
+      "soulsweapons:moonlight_shortsword"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:moonlight_shortsword"
+        "recipe": "soulsweapons:moonlight_shortsword"
       }
     }
   },

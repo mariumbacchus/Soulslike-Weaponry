@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:darkin_blade"
+      "soulsweapons:darkin_blade"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:darkin_blade"
+        "recipe": "soulsweapons:darkin_blade"
       }
     }
   },

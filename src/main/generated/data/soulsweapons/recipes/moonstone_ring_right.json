@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " iD",
+    "i i",
+    " i "
+  ],
+  "key": {
+    "D": {
+      "item": "soulsweapons:arkenstone"
+    },
+    "i": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:moonstone_ring"
+  }
+}

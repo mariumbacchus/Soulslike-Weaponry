@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_demon_heart": {
+    "has_item": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_demon_heart",
+      "has_item",
       "has_the_recipe"
     ]
   ]

@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:chaos_helmet"
+      "soulsweapons:chaos_helmet"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:chaos_helmet"
+        "recipe": "soulsweapons:chaos_helmet"
       }
     }
   },

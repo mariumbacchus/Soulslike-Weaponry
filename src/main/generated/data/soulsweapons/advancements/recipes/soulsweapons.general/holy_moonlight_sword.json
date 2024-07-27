@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:holy_moonlight_sword"
+      "soulsweapons:holy_moonlight_sword"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:holy_moonlight_sword"
+        "recipe": "soulsweapons:holy_moonlight_sword"
       }
     }
   },

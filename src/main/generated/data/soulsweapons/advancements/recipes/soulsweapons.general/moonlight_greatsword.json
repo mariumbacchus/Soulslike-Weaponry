@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:moonlight_greatsword"
+      "soulsweapons:moonlight_greatsword"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:moonlight_greatsword"
+        "recipe": "soulsweapons:moonlight_greatsword"
       }
     }
   },

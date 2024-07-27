@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#C#",
+    " # "
+  ],
+  "key": {
+    "C": {
+      "tag": "c:iron_ingots"
+    },
+    "#": {
+      "item": "soulsweapons:lost_soul"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:soul_ingot"
+  }
+}

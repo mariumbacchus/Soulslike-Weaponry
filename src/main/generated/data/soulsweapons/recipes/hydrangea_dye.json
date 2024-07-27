@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soulsweapons:hydrangea"
+    }
+  ],
+  "result": {
+    "item": "minecraft:purple_dye"
+  }
+}

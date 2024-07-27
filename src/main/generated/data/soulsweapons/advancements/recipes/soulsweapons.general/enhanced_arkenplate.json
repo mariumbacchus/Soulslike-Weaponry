@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:enhanced_arkenplate"
+      "soulsweapons:enhanced_arkenplate"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:enhanced_arkenplate"
+        "recipe": "soulsweapons:enhanced_arkenplate"
       }
     }
   },

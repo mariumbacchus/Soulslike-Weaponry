@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " ##",
+    " i#",
+    " / "
+  ],
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "#": {
+      "item": "soulsweapons:moonstone"
+    },
+    "i": {
+      "item": "soulsweapons:verglas"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:moonstone_axe"
+  }
+}

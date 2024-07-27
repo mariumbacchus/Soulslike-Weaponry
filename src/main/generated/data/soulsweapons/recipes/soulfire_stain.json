@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "soulsweapons:lost_soul"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:soulfire_stain"
+  }
+}
