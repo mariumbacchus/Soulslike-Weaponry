@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulsweapons:molten_demon_heart"
+      "soulsweapons:bluemoon_shortsword"
     ]
   },
   "criteria": {
@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:demon_hearts"
+            "items": [
+              "soulsweapons:moonstone"
+            ]
           }
         ]
       }
@@ -19,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulsweapons:molten_demon_heart"
+        "recipe": "soulsweapons:bluemoon_shortsword"
       }
     }
   },

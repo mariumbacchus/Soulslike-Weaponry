@@ -23,6 +23,54 @@ public class WeaponRecipes extends RecipeProvider {
     }
 
     public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
+        // Regular weapons
+        ShapedRecipeJsonBuilder.create(WeaponRegistry.TRANSLUCENT_SWORD.get())
+                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('X', ItemRegistry.SOUL_INGOT.get())
+                .pattern(" # ")
+                .pattern(" # ")
+                .pattern(" X ")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.SOUL_INGOT.get()).build()))
+                .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(WeaponRegistry.TRANSLUCENT_GLAIVE.get())
+                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('X', ItemRegistry.SOUL_INGOT.get())
+                .pattern(" #")
+                .pattern("##")
+                .pattern("#X")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.SOUL_INGOT.get()).build()))
+                .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get())
+                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('X', ItemRegistry.SOUL_INGOT.get())
+                .pattern(" ##")
+                .pattern(" X ")
+                .pattern("## ")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.SOUL_INGOT.get()).build()))
+                .offerTo(consumer);
+
+        // Legendary weapons
+        ShapedRecipeJsonBuilder.create(WeaponRegistry.BLUEMOON_GREATSWORD.get())
+                .input('#', ItemRegistry.MOONSTONE.get())
+                .input('X', ModTags.Items.STICKS)
+                .pattern(" # ")
+                .pattern("###")
+                .pattern("#X#")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.MOONSTONE.get()).build()))
+                .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(WeaponRegistry.BLUEMOON_SHORTSWORD.get())
+                .input('#', ItemRegistry.MOONSTONE.get())
+                .input('X', ModTags.Items.STICKS)
+                .pattern(" # ")
+                .pattern(" # ")
+                .pattern(" X ")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.MOONSTONE.get()).build()))
+                .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(WeaponRegistry.BLOODTHIRSTER.get())
                 .input('i', Items.IRON_INGOT)
                 .input('S', ItemRegistry.CRIMSON_INGOT.get())

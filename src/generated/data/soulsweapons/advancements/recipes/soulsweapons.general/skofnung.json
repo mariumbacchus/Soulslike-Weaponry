@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "soulsweapons:molten_demon_heart"
+      "soulsweapons:skofnung"
     ]
   },
   "criteria": {
-    "has_item": {
+    "has_lord_soul": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "c:demon_hearts"
+            "tag": "soulsweapons:lord_soul"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "soulsweapons:molten_demon_heart"
+        "recipe": "soulsweapons:skofnung"
       }
     }
   },
   "requirements": [
     [
-      "has_item",
+      "has_lord_soul",
       "has_the_recipe"
     ]
   ]

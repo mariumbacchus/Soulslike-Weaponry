@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "XYX",
+    "OOO"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:ender_pearl"
+    },
+    "O": {
+      "item": "minecraft:polished_blackstone_bricks"
+    },
+    "I": {
+      "item": "soulsweapons:moonstone"
+    },
+    "Y": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "soulsweapons:blackstone_pedestal"
+  }
+}
