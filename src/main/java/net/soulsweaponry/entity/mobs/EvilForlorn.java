@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
@@ -53,10 +52,15 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
             this.discard();
         }
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return true;
     }
 
     @Override
@@ -69,7 +73,6 @@ public class EvilForlorn extends Forlorn {
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
                 && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
                 && world.getDifficulty() != Difficulty.PEACEFUL
-                && world.getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

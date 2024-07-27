@@ -17,7 +17,7 @@ public class EntityGeneration {
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
         addEntityToSpecificBiomes(event, EntityRegistry.BIG_CHUNGUS.get(), CommonConfig.CHUNGUS_SPAWN_WEIGHT.get(), 4, 8, BiomeKeys.FOREST);
         addEntityToAllNetherBiomes(event, EntityRegistry.WITHERED_DEMON.get(), CommonConfig.WITHERED_DEMON_SPAWN_WEIGHT.get(), 1, 1);
-        addEntityToSpecificBiomes(event, EntityRegistry.EVIL_FORLORN.get(), CommonConfig.FORLORN_SPAWN_WEIGHT.get(), 1, 1, BiomeKeys.NETHER_WASTES);
+        addEntityToAllNetherBiomes(event, EntityRegistry.EVIL_FORLORN.get(), CommonConfig.FORLORN_SPAWN_WEIGHT.get(), 1, 1);
     }
 
     private static void addEntityToAllBiomesExceptThese(BiomeLoadingEvent event, EntityType<?> type,
