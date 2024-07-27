@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "soulsweapons:iron_skull"
+    },
+    "D": {
+      "item": "soulsweapons:moonstone"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    " # ",
+    "DOD",
+    "OOO"
+  ],
+  "result": {
+    "item": "soulsweapons:altar_block"
+  }
+}

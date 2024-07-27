@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "C": {
+      "item": "soulsweapons:moonstone"
+    },
+    "D": {
+      "item": "soulsweapons:verglas"
+    }
+  },
+  "pattern": [
+    "#C#",
+    "CDC",
+    "#C#"
+  ],
+  "result": {
+    "item": "soulsweapons:skofnung_stone"
+  }
+}

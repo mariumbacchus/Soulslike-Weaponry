@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:holy_moonlight_sword"
+        "recipe": "soulsweapons:holy_moonlight_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:holy_moonlight_sword"
+      "soulsweapons:holy_moonlight_sword"
     ]
   }
 }

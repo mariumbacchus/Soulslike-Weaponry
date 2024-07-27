@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:enhanced_arkenplate"
+        "recipe": "soulsweapons:enhanced_arkenplate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:enhanced_arkenplate"
+      "soulsweapons:enhanced_arkenplate"
     ]
   }
 }
