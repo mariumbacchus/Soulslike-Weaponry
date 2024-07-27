@@ -30,7 +30,7 @@ public abstract class SetBonusArmor extends ModdedArmor {
                 for (StatusEffectInstance instance : this.getFullSetEffects()) {
                     player.addStatusEffect(instance);
                 }
-                this.tickAdditionalSetEffects(player);
+                this.tickAdditionalSetEffects(stack, player);
             }
         }
     }
@@ -47,7 +47,7 @@ public abstract class SetBonusArmor extends ModdedArmor {
         return bootsSlot && leggingsSlot && chestSlot && helmetSlot;
     }
 
-    protected abstract void tickAdditionalSetEffects(PlayerEntity player);
+    protected abstract void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player);
     protected abstract Item getMatchingBoots();
     protected abstract Item getMatchingLegs();
     protected abstract Item getMatchingChest();
