@@ -22,13 +22,11 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    protected void tickAdditionalSetEffects(PlayerEntity player) {
+    protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {
         if (player.world.isClient) return;
         for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {
-            if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.FORLORN_HELMET) && entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
+            if (stack.getItem() == this.getMatchingHead() && entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
                 player.heal(ConfigConstructor.forlorn_set_bonus_heal);
-                // The method gets ticked multiple times during the server tick it seems, so this prevents it from healing continuously.
-                player.getItemCooldownManager().set(ArmorRegistry.FORLORN_HELMET, 1);
             }
         }
     }
