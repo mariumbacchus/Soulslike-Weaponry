@@ -19,7 +19,7 @@ public class SoulRobesArmor extends SetBonusArmor {
     }
 
     @Override
-    protected void tickAdditionalSetEffects(PlayerEntity player) {}
+    protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {}
 
     @Override
     protected Item getMatchingBoots() {
