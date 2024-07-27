@@ -56,10 +56,18 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && !getWorld().isClient) {
             this.discard();
         }
+        if (this.isInLava() && this.age % 10 == 0) {
+            this.damage(this.getDamageSources().magic(), 1f);
+        }
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return true;
     }
 
     @Override
@@ -73,7 +81,8 @@ public class EvilForlorn extends Forlorn {
         return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
                 && state.getBlock().canMobSpawnInside(state)
                 && getWorld().getDifficulty() != Difficulty.PEACEFUL
-                && getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
+                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
+                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 
