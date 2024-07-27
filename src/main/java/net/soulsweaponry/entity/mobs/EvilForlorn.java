@@ -6,6 +6,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
@@ -53,10 +54,18 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
             this.discard();
         }
+        if (this.isInLava() && this.age % 10 == 0) {
+            this.damage(DamageSource.MAGIC, 1f);
+        }
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return true;
     }
 
     @Override
@@ -69,7 +78,8 @@ public class EvilForlorn extends Forlorn {
         return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
                 && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
                 && world.getDifficulty() != Difficulty.PEACEFUL
-                && world.getBlockState(this.getBlockPos().down()).isOf(Blocks.NETHERRACK)
+                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
+                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

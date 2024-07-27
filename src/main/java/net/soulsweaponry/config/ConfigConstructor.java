@@ -146,7 +146,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0,max=100) public static int withered_demon_spawnweight = 20;
     @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnweight = 100;
     @Entry public static int chungus_monolith_radius = 32;
-    @Entry(min=0,max=100) public static int evil_forlorn_spawnweight = 20;
+    @Entry(min=0,max=100) public static int evil_forlorn_spawnweight = 15;
 
     @Entry public static boolean can_withered_demon_spawn = true;
     @Entry public static boolean can_moderatly_sized_chungus_spawn = true;
