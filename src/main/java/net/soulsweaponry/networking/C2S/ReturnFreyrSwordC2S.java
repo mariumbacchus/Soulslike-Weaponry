@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
 
@@ -21,7 +22,6 @@ public class ReturnFreyrSwordC2S {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
             if (serverWorld != null) {
-                //NOTE: reading bufs does not work for some reason
                 try {
                     Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
                     if (op.isPresent() && player.getBlockPos() != null) {
@@ -32,12 +32,14 @@ public class ReturnFreyrSwordC2S {
                                 ((FreyrSwordEntity)sword).dropStack();
                             }
                             sword.discard();
-                        } else {
+                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                             player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                         }
                     }
                 } catch (Exception e) {
-                    player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                    }
                 }
             }
         });

@@ -102,15 +102,15 @@ public class MoonlightArrow extends PersistentProjectileEntity {
                 ((LivingEntity)entity2).onAttacking(entity);
             }
         }
-        boolean bl = entity.getType() == EntityType.ENDERMAN;
+        boolean enderman = entity.getType() == EntityType.ENDERMAN;
         int j = entity.getFireTicks();
-        if (this.isOnFire() && !bl) {
+        if (this.isOnFire() && !enderman) {
             entity.setOnFireFor(5);
         }
+        if (enderman) {
+            return;
+        }
         if (entity.damage(damageSource, i)) {
-            if (bl) {
-                return;
-            }
             if (entity instanceof LivingEntity livingEntity) {
                 Vec3d vec3d;
                 if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {

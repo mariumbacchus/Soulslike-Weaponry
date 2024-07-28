@@ -1,9 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
 import net.minecraft.entity.ai.goal.TrackOwnerAttackerGoal;
@@ -41,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
@@ -50,7 +48,7 @@ import java.util.UUID;
 public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private ItemStack stack;
+    private final ItemStack stack;
     public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<BlockPos> STATIONARY = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
@@ -103,6 +101,22 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, HostileEntity.class, true));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, SlimeEntity.class, true));
         super.initGoals();
+    }
+
+    @Override
+    public boolean isTeammate(Entity other) {
+        // Don't attack players if friendly fire is off
+        if (!ConfigConstructor.sword_of_freyr_friendly_fire && other instanceof PlayerEntity) {
+            return true;
+        }
+        if (other instanceof Tameable tameableOther) {
+            if (tameableOther.getOwner() != null && this.getOwner() != null) {
+                if (tameableOther.getOwner().equals(this.getOwner())) {
+                    return true;
+                }
+            }
+        }
+        return super.isTeammate(other);
     }
 
     @Override

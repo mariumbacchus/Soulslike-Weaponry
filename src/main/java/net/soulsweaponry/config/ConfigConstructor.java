@@ -2,6 +2,13 @@ package net.soulsweaponry.config;
 
 public class ConfigConstructor extends MidnightConfig {
 
+    @Entry public static boolean inform_player_about_disabled_use = true;
+    @Entry public static boolean inform_player_about_no_bound_freyr_sword = true;
+    @Entry public static boolean inform_player_about_no_soulbound_thrown_weapon = true;
+    @Entry public static boolean inform_player_about_cooldown_effect = true;
+    @Entry public static boolean inform_player_about_no_souls_to_collect = true;
+    @Entry public static boolean inform_player_about_collected_souls = true;
+
     // Config changes won't apply to generated json files/runtime so no point in having these as entries.
     public static int moonstone_ore_vein_size = 5;
     public static int moonstone_ore_count_per_chunk = 4;
@@ -82,7 +89,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
 
-    @Entry public static boolean inform_player_about_disabled_use = true;
     @Entry public static boolean disable_use_bluemoon_shortsword = false;
     @Entry public static boolean disable_use_bluemoon_greatsword = false;
     @Entry public static boolean disable_use_moonlight_shortsword = false;
@@ -389,6 +395,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float sting_bonus_arthropod_damage = 4f;
     @Entry public static int sword_of_freyr_damage = 7;
     @Entry public static float sword_of_freyr_attack_speed = 1.6f;
+    @Entry public static boolean sword_of_freyr_friendly_fire = true;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static int whirligig_sawblade_damage = 8;
     @Entry public static float whirligig_sawblade_attack_speed = 1.6f;
