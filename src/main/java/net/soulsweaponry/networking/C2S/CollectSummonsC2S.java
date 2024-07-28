@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
@@ -29,7 +30,7 @@ public class CollectSummonsC2S {
             if (serverWorld != null) {
                 for (Hand hand : Hand.values()) {
                     Item handItem = player.getStackInHand(hand).getItem();
-                    if (handItem instanceof SoulHarvestingItem && !(handItem instanceof UmbralTrespassItem || handItem instanceof DarkinScythePre)) {
+                    if (handItem instanceof SoulHarvestingItem && !(handItem instanceof DarkinScythePre)) {
                         int collectedSouls = 0;
                         for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
                             if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
@@ -40,10 +41,16 @@ public class CollectSummonsC2S {
                             }
                         }
                         SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
-                        Text msg = collectedSouls == 0 ? new TranslatableText("soulsweapons.weapon.no_collected_souls")
-                                : new TranslatableText("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
+                        Text msg = null;
+                        if (ConfigConstructor.inform_player_about_no_souls_to_collect && collectedSouls == 0) {
+                            msg = new TranslatableText("soulsweapons.weapon.no_collected_souls");
+                        } else if (ConfigConstructor.inform_player_about_collected_souls && collectedSouls > 0) {
+                            msg = new TranslatableText("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
+                        }
                         item.addAmount(player.getStackInHand(hand), collectedSouls);
-                        player.sendMessage(msg, true);
+                        if (msg != null) {
+                            player.sendMessage(msg, true);
+                        }
                     }
                 }
             }

@@ -11,6 +11,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
 
@@ -30,12 +31,14 @@ public class StationaryFreyrSwordC2S {
                         Entity entity = serverWorld.getEntity(op.get());
                         if (entity instanceof FreyrSwordEntity sword) {
                             sword.setStationaryPos(player.getBlockPos());
-                        } else {
+                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                             player.sendMessage(text, true);
                         }
                     }
                 } catch (Exception e) {
-                    player.sendMessage(text, true);
+                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                        player.sendMessage(text, true);
+                    }
                 }
             }
         });
