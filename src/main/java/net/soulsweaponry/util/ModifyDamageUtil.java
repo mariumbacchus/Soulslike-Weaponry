@@ -30,7 +30,7 @@ public class ModifyDamageUtil {
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
             newAmount += amountAdded;
         }
-        if ((source.isOf(DamageTypes.INDIRECT_MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
+        if ((source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
             float amountReduced = newAmount * ((amplifier + 1)*.2f);
             newAmount -= amountReduced;

@@ -140,7 +140,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                         ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
                     }
                     if (!player.isCreative()) player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
-                } else {
+                } else if (ConfigConstructor.inform_player_about_cooldown_effect) {
                     player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown", "Can't cast this ability with the Cooldown effect!"), true);
                 }
             } else {

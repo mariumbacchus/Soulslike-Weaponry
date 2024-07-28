@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
 
@@ -32,12 +33,14 @@ public class ReturnFreyrSwordC2S {
                                 ((FreyrSwordEntity)sword).dropStack();
                             }
                             sword.discard();
-                        } else {
+                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                             player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
                         }
                     }
                 } catch (Exception e) {
-                    player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                    }
                 }
             }
         });

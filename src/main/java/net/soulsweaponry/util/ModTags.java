@@ -2,6 +2,7 @@ package net.soulsweaponry.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -55,6 +56,14 @@ public class ModTags {
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {
             return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("c", id));
+        }
+    }
+
+    public static class Effects {
+        public static final TagKey<StatusEffect> DAMAGE_OVER_TIME = createCommonTag("damage_over_time");
+
+        private static TagKey<StatusEffect> createCommonTag(String id) {
+            return TagKey.of(RegistryKeys.STATUS_EFFECT, new Identifier("c", id));
         }
     }
 }
