@@ -5,6 +5,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraftforge.network.NetworkEvent;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 
 import java.util.Optional;
@@ -43,12 +44,14 @@ public class ReturnThrownWeaponC2S {
                 Entity entity = player.getWorld().getEntity(op.get());
                 if (entity instanceof ReturningProjectile projectile) {
                     projectile.setShouldReturn(true);
-                } else {
+                } else if (CommonConfig.INFORM_PLAYER_ABOUT_NO_SOULBOUND_THROWN_WEAPON.get()) {
                     player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
                 }
             }
         } catch (Exception e) {
-            player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
+            if (CommonConfig.INFORM_PLAYER_ABOUT_NO_SOULBOUND_THROWN_WEAPON.get()) {
+                player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
+            }
         }
     }
 }

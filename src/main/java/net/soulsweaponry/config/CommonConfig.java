@@ -10,6 +10,13 @@ public class CommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_DISABLED_USE;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_NO_SOULBOUND_THROWN_WEAPON;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_COOLDOWN_EFFECT;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_NO_SOULS_TO_COLLECT;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_COLLECTED_SOULS;
+
     // 1.19.2 and down still generate ores through code so this will work fine
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_VEIN_SIZE;
     public static final ForgeConfigSpec.ConfigValue<Integer> MOONSTONE_ORE_COUNT_PER_CHUNK;
@@ -90,7 +97,6 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_ARKENPLATE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RECIPE_ENHANCED_WITHERED_CHEST;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> INFORM_PLAYER_ABOUT_DISABLED_USE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_USE_BLUEMOON_SHORTSWORD;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_USE_BLUEMOON_GREATSWORD;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISABLE_USE_MOONLIGHT_SHORTSWORD;
@@ -395,6 +401,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> STING_BONUS_ARTHROPOD_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Integer> SWORD_OF_FREYR_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> SWORD_OF_FREYR_ATTACK_SPEED;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> SWORD_OF_FREYR_FRIENDLY_FIRE;
     public static final ForgeConfigSpec.ConfigValue<Integer> WHIRLIGIG_SAWBLADE_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Float> WHIRLIGIG_SAWBLADE_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Float> WHIRLIGIG_SAWBLADE_ABILITY_DAMAGE;
@@ -487,6 +494,13 @@ public class CommonConfig {
     static {
         BUILDER.push("Common config for Soulslike Weaponry Forge");
 
+        INFORM_PLAYER_ABOUT_DISABLED_USE = BUILDER.comment("Inform the player of certain messages after an action.").define("Inform weapon is disabled message", true);
+        INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD = BUILDER.define("Inform no bound Sword of Freyr was found message", true);
+        INFORM_PLAYER_ABOUT_NO_SOULBOUND_THROWN_WEAPON = BUILDER.define("Inform no thrown soulbound weapon was found message", true);
+        INFORM_PLAYER_ABOUT_COOLDOWN_EFFECT = BUILDER.define("Inform weapon is on cooldown due to cooldown effect message", true);
+        INFORM_PLAYER_ABOUT_NO_SOULS_TO_COLLECT = BUILDER.define("Inform no allies found to collect as souls message", true);
+        INFORM_PLAYER_ABOUT_COLLECTED_SOULS = BUILDER.define("Inform about collected souls message", true);
+
         MOONSTONE_ORE_VEIN_SIZE = BUILDER.comment("Ore generation settings (only works in 1.19.2 and down).").define("Moonstone Ore vein size", 5);
         MOONSTONE_ORE_COUNT_PER_CHUNK = BUILDER.define("Moonstone Ore average spawn count per chunk", 4);
         MOONSTONE_ORE_MIN_HEIGHT = BUILDER.define("Moonstone Ore min spawn height", -63);
@@ -566,7 +580,6 @@ public class CommonConfig {
         RECIPE_ENHANCED_ARKENPLATE = BUILDER.comment("Disable special/infused armor item recipes, sorted from A-Z.").define("Disable Infused Arkenplate recipe", false);
         RECIPE_ENHANCED_WITHERED_CHEST = BUILDER.define("Disable Infused Hallowheart recipe", false);
 
-        INFORM_PLAYER_ABOUT_DISABLED_USE = BUILDER.comment("Inform the player if the item used is disabled.").define("Send weapon is disabled message", true);
         DISABLE_USE_BLOODTHIRSTER = BUILDER.comment("Disable weapon/item usages, including post hit effects, trick weapon switches and right click use abilities, sorted from A-Z.").define("Disable Bloodthirster use", false);
         DISABLE_USE_BLUEMOON_GREATSWORD = BUILDER.define("Disable Bluemoon Greatsword use", false);
         DISABLE_USE_BLUEMOON_SHORTSWORD = BUILDER.define("Disable Bluemoon Shortsword use", false);
@@ -874,6 +887,7 @@ public class CommonConfig {
         STING_BONUS_ARTHROPOD_DAMAGE = BUILDER.define("Sting bonus arthropod damage", 4f);
         SWORD_OF_FREYR_DAMAGE = BUILDER.define("Sword of Freyr damage", 7);
         SWORD_OF_FREYR_ATTACK_SPEED = BUILDER.define("Sword of Freyr attack speed", 1.6f);
+        SWORD_OF_FREYR_FRIENDLY_FIRE = BUILDER.define("Sword of Freyr friendly fire (can attack players)", true);
         WHIRLIGIG_SAWBLADE_DAMAGE = BUILDER.define("Whirligig Sawblade damage", 8);
         WHIRLIGIG_SAWBLADE_ATTACK_SPEED = BUILDER.define("Whirligig Sawblade attack speed", 1.6f);
         WHIRLIGIG_SAWBLADE_ABILITY_DAMAGE = BUILDER.define("Whirligig Sawblade ability damage", 5f);

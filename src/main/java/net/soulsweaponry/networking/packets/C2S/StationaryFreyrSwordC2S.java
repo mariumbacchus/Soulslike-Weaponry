@@ -6,6 +6,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraftforge.network.NetworkEvent;
+import net.soulsweaponry.config.CommonConfig;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
 
@@ -46,12 +47,14 @@ public class StationaryFreyrSwordC2S {
                 Entity entity = player.getWorld().getEntity(op.get());
                 if (entity instanceof FreyrSwordEntity sword) {
                     sword.setStationaryPos(player.getBlockPos());
-                } else {
+                } else if (CommonConfig.INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD.get()) {
                     player.sendMessage(text, true);
                 }
             }
         } catch (Exception e) {
-            player.sendMessage(text, true);
+            if (CommonConfig.INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD.get()) {
+                player.sendMessage(text, true);
+            }
         }
     }
 }
