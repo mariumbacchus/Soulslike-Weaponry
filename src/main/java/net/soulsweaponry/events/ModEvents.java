@@ -85,7 +85,7 @@ public class ModEvents {
     public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
         if (!event.getWorld().isClient) {
             if (event.getEntity() instanceof ServerPlayerEntity player) {
-                ModMessages.sendToPlayer(new ParrySyncS2C(ParryData.getParryFrames(player)), player);
+                ModMessages.sendToPlayer(new ParrySyncS2C(ParryData.getParryFrames(player)), player);//TODO this causes server crash...
                 ModMessages.sendToPlayer(new PostureSyncS2C(PostureData.getPosture(player)), player);
             }
         }

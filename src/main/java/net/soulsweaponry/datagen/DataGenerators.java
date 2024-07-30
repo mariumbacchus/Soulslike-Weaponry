@@ -8,6 +8,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
+import net.soulsweaponry.datagen.tags.EntityTagsProvider;
 
 /**
  * NOTE:
@@ -23,5 +24,6 @@ public class DataGenerators {
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
         generator.addProvider(new BossLootTableProvider(generator));
         generator.addProvider(new WeaponRecipeProvider(generator));
+        generator.addProvider(new EntityTagsProvider(generator, fileHelper));
     }
 }

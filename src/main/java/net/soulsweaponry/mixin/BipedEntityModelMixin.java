@@ -2,24 +2,26 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.CrossbowPosing;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.client.entitydata.ClientParryData;
-import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
+import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.render.entity.model.CrossbowPosing;
-import net.minecraft.entity.LivingEntity;
-import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
-import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.registry.WeaponRegistry;
+import java.util.Set;
 
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
@@ -27,11 +29,19 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     BipedEntityModel<?> model = ((BipedEntityModel<?>)(Object)this);
     @Unique
     private float parryProgress;
+    @Unique
+    private final Set<Item> customHoldItems = Set.of(
+            WeaponRegistry.GUTS_SWORD.get(),
+            WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get(),
+            WeaponRegistry.DARKIN_SCYTHE_PRE.get(),
+            WeaponRegistry.DARKIN_SCYTHE_PRIME.get(),
+            WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get()
+    );
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        for (ItemStack stack : entity.getItemsHand()) {
-            if (stack.getItem() instanceof SoulHarvestingItem || stack.isOf(WeaponRegistry.GUTS_SWORD.get()) && !stack.isOf(WeaponRegistry.FROSTMOURNE.get()) || stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())) {
+        /*for (ItemStack stack : entity.getItemsHand()) {
+            if (!stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {
                 if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
                     if (stack.isOf(WeaponRegistry.GUTS_SWORD.get())) {
                         CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
@@ -45,16 +55,17 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
                 }
             }
-        }
+        }*/
     }
 
     @Inject(at = @At("HEAD"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
-        if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
-            if (model.handSwingProgress > 0.0f && entity.getItemsHand().iterator().next().getItem() instanceof SoulHarvestingItem) {
+        /*if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
+            ItemStack stack = entity.getMainHandStack();
+            if (model.handSwingProgress > 0.0f && !stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {
                 ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
             }
-        }
+        }*/
         if (entity instanceof AbstractClientPlayerEntity) {
             int frames = ClientParryData.getParryFrames();
             if (frames >= 1) {

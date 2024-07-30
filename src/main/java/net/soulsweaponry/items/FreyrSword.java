@@ -2,9 +2,6 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -30,10 +27,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import static net.soulsweaponry.events.PlayerDataHandlerEvents.SUMMON_UUID;
+
 public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
@@ -63,10 +61,7 @@ public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
                 }
             }
             user.getDataTracker().set(SUMMON_UUID, uuid);
-        } catch (Exception e) {
-            user.getDataTracker().startTracking(SUMMON_UUID, uuid);
-        }
-        
+        } catch (Exception ignored) {}
         return TypedActionResult.success(stack);
     }
 

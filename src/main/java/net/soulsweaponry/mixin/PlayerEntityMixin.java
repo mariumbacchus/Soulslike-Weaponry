@@ -16,12 +16,12 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ShieldBreaker;
+import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.entitydata.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
-import static net.soulsweaponry.items.UmbralTrespassItem.TICKS_BEFORE_DISMOUNT;
+import static net.soulsweaponry.events.PlayerDataHandlerEvents.SHOULD_DAMAGE_RIDING;
+import static net.soulsweaponry.events.PlayerDataHandlerEvents.TICKS_BEFORE_DISMOUNT;
 
 
 @Mixin(PlayerEntity.class)
@@ -53,7 +53,7 @@ public class PlayerEntityMixin {
         }
     }
 
-    @Inject(method = "tickRiding", at = @At("HEAD"))
+   @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
         try {

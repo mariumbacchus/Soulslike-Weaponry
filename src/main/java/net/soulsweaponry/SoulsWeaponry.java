@@ -28,7 +28,7 @@ import software.bernie.geckolib3.GeckoLib;
 public class SoulsWeaponry {
 
     public static final String ModId = "soulsweapons";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final ItemGroup MAIN_GROUP = new ItemGroup(ModId + ".general") {
         @Override
@@ -65,7 +65,7 @@ public class SoulsWeaponry {
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            ModMessages.register();
+            ModMessages.register();//TODO this needs to be moved elsewhere i think, something in modmessages causes server crash
 
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));

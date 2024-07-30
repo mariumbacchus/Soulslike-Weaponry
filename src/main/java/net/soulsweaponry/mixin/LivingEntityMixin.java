@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
+import static net.soulsweaponry.events.PlayerDataHandlerEvents.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {

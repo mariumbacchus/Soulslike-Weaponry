@@ -10,7 +10,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,11 +21,11 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
@@ -46,8 +45,8 @@ public class DarkinScythePre extends SoulHarvestingItem {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
-            int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
-            if (target.getItemsHand().iterator().next().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
+            int amount = target.getType().isIn(ModTags.Entities.BOSSES) ? 20 : 1;
+            if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
                 this.addAmount(stack, amount, SoulType.BLUE);
             } else {
                 this.addAmount(stack, amount, SoulType.RED);
