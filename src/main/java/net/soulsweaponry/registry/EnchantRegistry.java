@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.enchantments.FastHandsEnchantment;
 import net.soulsweaponry.enchantments.StaggerEnchantment;
 import net.soulsweaponry.enchantments.VisceralEnchantment;
@@ -24,10 +24,10 @@ public class EnchantRegistry {
     public static final Enchantment STAGGER = new StaggerEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
 
     static {
-        if (!CommonConfig.DISABLE_ENCHANTS.get()) {
-            if (!CommonConfig.DISABLE_FAST_HANDS.get()) ENCHANTS.register("fast_hands", () -> FAST_HANDS);
-            if (!CommonConfig.DISABLE_POSTURE_BREAKER.get()) ENCHANTS.register("visceral", () -> VISCERAL);
-            if (!CommonConfig.DISABLE_STAGGER.get()) ENCHANTS.register("stagger", () -> STAGGER);
+        if (!ConfigConstructor.disable_all_enchantments) {
+            if (!ConfigConstructor.disable_enchantment_fast_hands) ENCHANTS.register("fast_hands", () -> FAST_HANDS);
+            if (!ConfigConstructor.disable_enchantment_posture_breaker) ENCHANTS.register("visceral", () -> VISCERAL);
+            if (!ConfigConstructor.disable_enchantment_stagger) ENCHANTS.register("stagger", () -> STAGGER);
         }
     }
 

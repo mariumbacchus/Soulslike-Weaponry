@@ -15,12 +15,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -46,7 +46,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
 
     public void reset(float cooldownModifier, boolean shieldUp) {
         this.attackStatus = 0;
-        this.attackCooldown = (int)Math.floor((CommonConfig.OLD_CHAMPIONS_REMAINS_ATTACK_COOLDOWN_TICKS.get() * cooldownModifier) /
+        this.attackCooldown = (int)Math.floor((ConfigConstructor.old_champions_remains_attack_cooldown_ticks * cooldownModifier) /
                 this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F ? 2 : 1);
         this.boss.setState(States.IDLE);
         this.boss.updateDisableShield(false);
@@ -54,7 +54,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     }
 
     public boolean applyDamage(LivingEntity target, float baseDamage) {
-        float modified = baseDamage * CommonConfig.OLD_CHAMPIONS_REMAINS_DAMAGE_MODIFIER.get();
+        float modified = baseDamage * ConfigConstructor.old_champions_remains_damage_modifier;
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }
@@ -298,7 +298,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (this.attackStatus >= maxTicks) {
             this.reset(2f, shieldUpWhenDone);
             if (effects.length > 0) {
-                this.specialCooldown = CommonConfig.OLD_CHAMPIONS_REMAINS_SPECIAL_COOLDOWN_TICKS.get();
+                this.specialCooldown = ConfigConstructor.old_champions_remains_special_cooldown_ticks;
             }
         }
     }

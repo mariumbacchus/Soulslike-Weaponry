@@ -8,20 +8,20 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
 
     public BluemoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.BLUEMOON_GREATSWORD_DAMAGE.get(), CommonConfig.BLUEMOON_GREATSWORD_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.bluemoon_greatsword_damage, ConfigConstructor.bluemoon_greatsword_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.NEED_CHARGE, WeaponUtil.TooltipAbilities.CHARGE);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_BLUEMOON_GREATSWORD.get();
+        return ConfigConstructor.disable_use_bluemoon_greatsword;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
 
     @Override
     public int getMaxCharge() {
-        return CommonConfig.BLUEMOON_GREATSWORD_CHARGE_NEEDED.get();
+        return ConfigConstructor.bluemoon_greatsword_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        return CommonConfig.BLUEMOON_GREATSWORD_CHARGE_ADDED.get();
+        return ConfigConstructor.bluemoon_greatsword_charge_added_post_hit;
     }
 
     @Override

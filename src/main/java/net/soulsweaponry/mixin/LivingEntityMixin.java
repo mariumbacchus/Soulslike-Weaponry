@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -81,13 +81,13 @@ public abstract class LivingEntityMixin {
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (player.getStackInHand(hand).isOf(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get())) {
-                            damage = CommonConfig.SHADOW_ASSASSIN_SCYTHE_ABILITY_DAMAGE.get() + EnchantmentHelper.getAttackDamage(stack, target.getGroup());
-                            cooldownManager.set(stack.getItem(), CommonConfig.SHADOW_ASSASSIN_SCYTHE_ABILITY_COOLDOWN.get());
+                            damage = ConfigConstructor.shadow_assassin_scythe_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup());
+                            cooldownManager.set(stack.getItem(), ConfigConstructor.shadow_assassin_scythe_ability_cooldown);
                         } else if (player.getStackInHand(hand).isOf(WeaponRegistry.DARKIN_SCYTHE_PRIME.get())) {
-                            damage = (float) (CommonConfig.DARKIN_SCYTHE_PRIME_ABILITY_DAMAGE.get() + EnchantmentHelper.getAttackDamage(stack, target.getGroup()) + (target.getMaxHealth() * (CommonConfig.DARKIN_SCYTHE_PRIME_ABILITY_PERCENT_DAMAGE.get()/100f)));
-                            float healing = damage * CommonConfig.DARKIN_SCYTHE_PRIME_HEAL_MODIFIER.get();
+                            damage = ConfigConstructor.darkin_scythe_prime_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()) + (target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage/100f));
+                            float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
                             player.heal(healing);
-                            cooldownManager.set(stack.getItem(), CommonConfig.DARKIN_SCYTHE_PRIME_ABILITY_COOLDOWN.get());
+                            cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
                         }
                     }
                     target.damage(DamageSource.mob(player), damage);

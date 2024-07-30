@@ -26,10 +26,13 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.armor.ChaosSet;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -80,7 +83,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.CHAOS_MONARCH_HEALTH.get())
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -163,7 +166,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
 
     @Override
     public int getXp() {
-        return CommonConfig.CHAOS_MONARCH_XP.get();
+        return ConfigConstructor.chaos_monarch_xp;
     }
 
     @Override

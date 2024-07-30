@@ -6,17 +6,17 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public enum ModArmorMaterials implements ArmorMaterial {
     //Boots are on the left
-    CHAOS_ARMOR("chaos_armor", new int[]{500, 600, 700, 500}, CommonConfig.CHAOS_ARMOR_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), Items.NETHERITE_INGOT)),
-    CHAOS_SET("chaos_set", new int[]{400, 500, 600, 400}, CommonConfig.CHAOS_SET_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get())),
-    SOUL_INGOT("soul_ingot", new int[]{350, 410, 480, 380}, CommonConfig.SOUL_INGOT_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
-    SOUL_ROBES("soul_robes", new int[]{150, 210, 280, 180}, CommonConfig.SOUL_ROBES_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
-    FORLORN_ARMOR("forlorn", new int[]{380, 440, 510, 320}, CommonConfig.FORLORN_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
-    WITHERED_ARMOR("withered_armor", new int[]{500, 600, 700, 500}, CommonConfig.WITHERED_ARMOR_POINTS.get().stream().mapToInt(Integer::intValue).toArray(), 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get(), Items.NETHERITE_INGOT));
+    CHAOS_ARMOR("chaos_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.chaos_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), Items.NETHERITE_INGOT)),
+    CHAOS_SET("chaos_set", new int[]{400, 500, 600, 400}, ConfigConstructor.chaos_set_armor_points, 10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get())),
+    SOUL_INGOT("soul_ingot", new int[]{350, 410, 480, 380}, ConfigConstructor.soul_ingot_armor_points, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
+    SOUL_ROBES("soul_robes", new int[]{150, 210, 280, 180}, ConfigConstructor.soul_robes_armor_points, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
+    FORLORN_ARMOR("forlorn", new int[]{380, 440, 510, 320}, ConfigConstructor.forlorn_armor_armor_points, 8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
+    WITHERED_ARMOR("withered_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.withered_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get(), Items.NETHERITE_INGOT));
 
     private final String name;
     private final int[] baseDurability;

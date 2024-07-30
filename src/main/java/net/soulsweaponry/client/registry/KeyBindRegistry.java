@@ -8,7 +8,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.C2S.*;
@@ -87,7 +87,7 @@ public class KeyBindRegistry {
         while (effectShootMoonlight.wasPressed()) {
             if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
                 ModMessages.sendToServer(new MoonlightC2S());
-                client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), CommonConfig.MOONLIGHT_RING_PROJECTILE_COOLDOWN.get());
+                client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), ConfigConstructor.moonlight_ring_projectile_cooldown);
             }
         }
         while (returnThrownWeapon.wasPressed()) {

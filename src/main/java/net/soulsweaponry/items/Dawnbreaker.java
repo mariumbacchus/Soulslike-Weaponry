@@ -11,7 +11,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DawnbreakerRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
@@ -22,7 +22,7 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Dawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DAWNBREAKER_DAMAGE.get(), CommonConfig.DAWNBREAKER_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
     }
 
     @Override
@@ -59,6 +59,6 @@ public class Dawnbreaker extends AbstractDawnbreaker {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DAWNBREAKER.get();
+        return ConfigConstructor.disable_use_dawnbreaker;
     }
 }

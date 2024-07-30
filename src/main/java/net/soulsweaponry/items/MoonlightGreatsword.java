@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -18,7 +18,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class MoonlightGreatsword extends ChargeToUseItem {
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        this(toolMaterial, CommonConfig.MOONLIGHT_GREATSWORD_DAMAGE.get(), CommonConfig.MOONLIGHT_GREATSWORD_ATTACK_SPEED.get(), settings);
+        this(toolMaterial, ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
     }
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
@@ -28,7 +28,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_MOONLIGHT_GREATSWORD.get();
+        return ConfigConstructor.disable_use_moonlight_greatsword;
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -41,7 +41,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setDamage(CommonConfig.MOONLIGHT_GREATSWORD_PROJECTILE_DAMAGE.get());
+                entity.setDamage(ConfigConstructor.moonlight_greatsword_projectile_damage);
                 entity.setItemStack(stack);
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);

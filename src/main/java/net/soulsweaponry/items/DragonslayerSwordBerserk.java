@@ -19,7 +19,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.GUTS_SWORD_DAMAGE.get(), CommonConfig.GUTS_SWORD_ATTACK_SPEED.get(), settings, true);
+        super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.RAGE);
     }
 
@@ -44,7 +44,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-            player.getItemCooldownManager().set(this, CommonConfig.GUTS_SWORD_ABILITY_COOLDOWN.get());
+            player.getItemCooldownManager().set(this, ConfigConstructor.heap_of_raw_iron_cooldown);
             int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), 200, power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 0));
@@ -68,42 +68,42 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public float getBaseExpansion() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_BASE_RADIUS.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
     public float getLaunchModifier() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier;
     }
 
     @Override
     public float getMaxExpansion() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_MAX_RADIUS.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_radius;
     }
 
     @Override
     public float getMaxDetonationDamage() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_MAX_DAMAGE.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_damage;
     }
 
     @Override
     public float getFallDamageIncreaseModifier() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_SHOULD_HEAL.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_should_heal;
     }
 
     @Override
     public float getHealFromDamageModifier() {
-        return CommonConfig.GUTS_SWORD_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_heal_from_damage_modifier;
     }
 
     @Override
@@ -126,6 +126,6 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_HEAP_OF_RAW_IRON.get();
+        return ConfigConstructor.disable_use_heap_of_raw_iron;
     }
 }

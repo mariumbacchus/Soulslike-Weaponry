@@ -3,11 +3,10 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.items.FreyrSword;
 
@@ -52,12 +51,12 @@ public class ReturnFreyrSwordC2S {
                         ((FreyrSwordEntity)sword).dropStack();
                     }
                     sword.discard();
-                } else if (CommonConfig.INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD.get()) {
+                } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                     player.sendMessage(text, true);
                 }
             }
         } catch (Exception e) {
-            if (CommonConfig.INFORM_PLAYER_ABOUT_NO_BOUND_FREYR_SWORD.get()) {
+            if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                 player.sendMessage(text, true);
             }
         }

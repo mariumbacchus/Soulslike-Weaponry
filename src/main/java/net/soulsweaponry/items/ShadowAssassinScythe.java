@@ -15,17 +15,17 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     private static final String HAS_EFFECT = "has_shadow_step";
-    public static final int TICKS_FOR_BONUS = CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_TICKS.get();
+    public static final int TICKS_FOR_BONUS = ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), CommonConfig.SHADOW_ASSASSIN_SCYTHE_ATTACK_SPEED.get(), settings, CommonConfig.SHADOW_ASSASSIN_SCYTHE_TICKS_BEFORE_DISMOUNT.get());
+        super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.shadow_assassin_scythe_attack_speed, settings, ConfigConstructor.shadow_assassin_scythe_ticks_before_dismount);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SHADOW_STEP);
     }
 
@@ -39,7 +39,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
             if (!cooldownManager.isCoolingDown(this)) {
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP.get(), TICKS_FOR_BONUS,
                         MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-                cooldownManager.set(this, CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_COOLDOWN.get());
+                cooldownManager.set(this, ConfigConstructor.shadow_assassin_scythe_shadow_step_cooldown);
             }
         }
         return super.postHit(stack, target, attacker);
@@ -65,7 +65,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.canGetBonus(stack) ? this.getAttackDamage() + CommonConfig.SHADOW_ASSASSIN_SCYTHE_SHADOW_STEP_BONUS_DAMAGE.get() : this.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.canGetBonus(stack) ? this.getAttackDamage() + ConfigConstructor.shadow_assassin_scythe_shadow_step_bonus_damage : this.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -81,6 +81,6 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SHADOW_ASSASSIN_SCYTHE.get();
+        return ConfigConstructor.disable_use_shadow_assassin_scythe;
     }
 }

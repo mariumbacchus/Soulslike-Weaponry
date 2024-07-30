@@ -14,7 +14,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ShieldBreaker;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -79,7 +79,7 @@ public class PlayerEntityMixin {
             }
         } catch (Exception ignored) {}
         int frames = ParryData.getParryFrames(player);
-        if (frames >= 1 && frames <= CommonConfig.SHIELD_PARRY_FRAMES.get() && !source.isUnblockable()) {
+        if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isUnblockable()) {
             player.world.sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
             if (source.isProjectile() && source.getSource() instanceof ProjectileEntity) {
                 info.setReturnValue(false);
@@ -95,7 +95,7 @@ public class PlayerEntityMixin {
             }
         }
         // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE.get()) && player.getHealth() < player.getMaxHealth() * CommonConfig.ARKENPLATE_MIRROR_TRIGGER.get()
+        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE.get()) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
                 && source.isProjectile() && source.getSource() instanceof ProjectileEntity projectile) {
             Vec3d playerPos = player.getPos();
             Vec3d projectilePos = projectile.getPos();
@@ -112,9 +112,9 @@ public class PlayerEntityMixin {
             double z = player.getZ() - attacker.getZ();
             attacker.damage(DamageSource.WITHER, 1f);
             attacker.takeKnockback(0.5f, x, z);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, CommonConfig.WITHERED_CHEST_WITHER_DURATION.get(), CommonConfig.WITHERED_CHEST_WITHER_AMP.get()));
+            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, ConfigConstructor.withered_chest_apply_wither_duration, ConfigConstructor.withered_chest_apply_wither_amplifier));
             if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
-                attacker.setOnFireFor(CommonConfig.WITHERED_CHEST_FIRE_SECONDS.get());
+                attacker.setOnFireFor(ConfigConstructor.withered_chest_apply_fire_seconds);
             }
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {

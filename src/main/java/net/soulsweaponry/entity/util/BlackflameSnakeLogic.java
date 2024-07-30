@@ -11,7 +11,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -68,7 +68,7 @@ public class BlackflameSnakeLogic {
                 if (entity instanceof LivingEntity living && !this.isOwner(living) && !(entity instanceof NightProwler)) {
                     DamageSource src = (this.getOwner(world) != null && this.getOwner(world) instanceof LivingEntity) ?
                             DamageSource.mob((LivingEntity) this.getOwner(world)) : DamageSource.GENERIC;
-                    if (living.damage(src, 35f * CommonConfig.NIGHT_PROWLER_DAMAGE_MODIFIER.get())) {
+                    if (living.damage(src, 35f * ConfigConstructor.night_prowler_damage_modifier)) {
                         living.addVelocity(0, 1f, 0);
                     }
                 }

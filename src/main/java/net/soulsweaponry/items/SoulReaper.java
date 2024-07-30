@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Forlorn;
 import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
@@ -43,7 +43,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.SOULREAPER_DAMAGE.get(), CommonConfig.SOULREAPER_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE);
     }
 
@@ -126,7 +126,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
     @Override
     public int getMaxSummons() {
-        return CommonConfig.SOULREAPER_ALLIES_CAP.get();
+        return ConfigConstructor.soul_reaper_summoned_allies_cap;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SOUL_REAPER.get();
+        return ConfigConstructor.disable_use_soul_reaper;
     }
 
     @Override

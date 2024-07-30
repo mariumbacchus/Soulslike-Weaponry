@@ -11,7 +11,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -73,10 +73,10 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (CommonConfig.CAN_PROJECTILES_APPLY_POSTURE_LOSS.get() && entityHitResult.getEntity() instanceof LivingEntity target) {
+        if (ConfigConstructor.can_projectiles_apply_posture_loss && entityHitResult.getEntity() instanceof LivingEntity target) {
             PostureData.addPosture(target, this.getPostureLoss());
             if (target.isUndead()) {
-                this.setDamage(this.getDamage() + CommonConfig.SILVER_BULLET_UNDEAD_BONUS_DAMAGE.get());
+                this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
             }
         }
         super.onEntityHit(entityHitResult);

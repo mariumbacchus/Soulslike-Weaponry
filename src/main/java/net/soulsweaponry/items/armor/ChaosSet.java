@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.blocks.*;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -172,13 +172,13 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
             player.removeStatusEffect(effectToRemove);
         }
         if (triggered && !player.isCreative()) {
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN.get(), CommonConfig.CHAOS_CROWN_FLIP_COOLDOWN.get());
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET.get(), CommonConfig.CHAOS_CROWN_FLIP_COOLDOWN.get());
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN.get(), ConfigConstructor.chaos_crown_flip_effect_cooldown);
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET.get(), ConfigConstructor.chaos_crown_flip_effect_cooldown);
         }
     }
 
     private void shockwave(World world, PlayerEntity player) {
-        float i = CommonConfig.ARKENPLATE_SHOCKWAVE_KNOCKBACK.get();
+        float i = ConfigConstructor.arkenplate_shockwave_knockback;
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (stack == null) return;
         i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
@@ -188,7 +188,7 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
                 if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2));
                 }
-                target.damage(DamageSource.mob(player), CommonConfig.ARKENPLATE_SHOCKWAVE_DAMAGE.get());
+                target.damage(DamageSource.mob(player), ConfigConstructor.arkenplate_shockwave_damage);
                 double x = player.getX() - target.getX();
                 double z = player.getZ() - target.getZ();
                 target.takeKnockback(i * 0.5f, x, z);
@@ -196,7 +196,7 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         }
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(stack.getItem(), CommonConfig.ARKENPLATE_SHOCKWAVE_COOLDOWN.get());
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.arkenplate_shockwave_cooldown);
         }
     }
 
@@ -292,7 +292,7 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
                 if (stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(new LiteralText((int)(CommonConfig.ARKENPLATE_MIRROR_TRIGGER.get() * 100f) + "%").formatted(Formatting.RED)));
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(new LiteralText((int)(ConfigConstructor.arkenplate_mirror_trigger_percent * 100f) + "%").formatted(Formatting.RED)));
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
                 }
                 if (!stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
@@ -313,11 +313,11 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
     @Override
     public boolean isDisabled(ItemStack stack) {
         if (stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) {
-            return CommonConfig.DISABLE_USE_CHAOS_CROWN.get();
+            return ConfigConstructor.disable_use_chaos_crown;
         } else if (stack.isOf(ItemRegistry.ARKENPLATE.get()) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
-            return CommonConfig.DISABLE_USE_ARKENPLATE.get();
+            return ConfigConstructor.disable_use_arkenplate;
         } else if (stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
-            return CommonConfig.DISABLE_USE_CHAOS_ROBES.get();
+            return ConfigConstructor.disable_use_chaos_robes;
         }
         return false;
     }

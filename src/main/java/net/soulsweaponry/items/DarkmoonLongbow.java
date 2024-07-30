@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightArrow;
 import net.soulsweaponry.entity.projectile.invisible.ArrowStormEntity;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -58,7 +58,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public float getReducedPullTime() {
-        return - CommonConfig.DARKMOON_LONGBOW_INCREASED_PULL_TIME.get();
+        return - ConfigConstructor.darkmoon_longbow_increased_pull_time;
     }
 
     @Override
@@ -70,11 +70,11 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setVelocity(player, 0, player.getYaw(), 0.0F, 1f, 1.0F);
             entity.setOwner(player);
             double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
-            entity.setDamage(CommonConfig.DARKMOON_LONGBOW_ABILITY_DAMAGE.get() + power * 2f);
+            entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage + power * 2f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
             if (!player.isCreative()) {
-                player.getItemCooldownManager().set(this, Math.max(CommonConfig.DARKMOON_LONGBOW_ABILITY_COOLDOWN_TICKS.get() - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30, 60));
+                player.getItemCooldownManager().set(this, Math.max(ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30, 60));
             }
             stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }
@@ -86,6 +86,6 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DARKMOON_LONGBOW.get();
+        return ConfigConstructor.disable_use_darkmoon_longbow;
     }
 }

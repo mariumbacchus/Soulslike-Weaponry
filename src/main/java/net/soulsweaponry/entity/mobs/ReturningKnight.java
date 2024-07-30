@@ -28,7 +28,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -108,7 +108,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.RETURNING_KNIGHT_HEALTH.get())
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -313,7 +313,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
     @Override
     public int getXp() {
-        return CommonConfig.RETURNING_KNIGHT_XP.get();
+        return ConfigConstructor.returning_knight_xp;
     }
 
     protected void mobTick() {
@@ -329,7 +329,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
             }
         }
 
-        if (CommonConfig.CAN_BOSS_BREAK_BLOCK.get()) {
+        if (ConfigConstructor.can_bosses_break_blocks) {
             int j;
             int i;
             int k;

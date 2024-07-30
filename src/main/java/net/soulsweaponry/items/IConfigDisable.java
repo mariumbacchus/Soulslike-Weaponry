@@ -4,14 +4,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 
 public interface IConfigDisable {
 
     boolean isDisabled(ItemStack stack);
 
     default void notifyDisabled(LivingEntity user) {
-        if (CommonConfig.INFORM_PLAYER_ABOUT_DISABLED_USE.get() && user instanceof PlayerEntity player) {
+        if (ConfigConstructor.inform_player_about_disabled_use && user instanceof PlayerEntity player) {
             player.sendMessage(new TranslatableText("soulsweapons.weapon.useDisabled"), true);
         }
     }

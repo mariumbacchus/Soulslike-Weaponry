@@ -15,14 +15,14 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class NightShadeGoal extends Goal {
 
     private void reset(float cooldownModifier) {
         this.attackStatus = 0;
-        this.attackCooldown = (int) Math.floor((float) CommonConfig.FRENZIED_SHADE_COOLDOWN.get() * cooldownModifier);
+        this.attackCooldown = (int) Math.floor((float) ConfigConstructor.frenzied_shade_cooldown * cooldownModifier);
     }
 
     private void damageTarget(LivingEntity target, float damage) {
@@ -71,7 +71,7 @@ public class NightShadeGoal extends Goal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * CommonConfig.FRENZIED_SHADE_DAMAGE_MODIFIER.get() * (this.boss.isCopy() ? 0.35f : 1f);
+        return damage * ConfigConstructor.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
     }
 
     private void randomAttack(LivingEntity target) {

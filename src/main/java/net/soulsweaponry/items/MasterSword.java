@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -18,7 +18,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class MasterSword extends ChargeToUseItem {
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.MASTER_SWORD_DAMAGE.get(), CommonConfig.MASTER_SWORD_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYWARD_STRIKES, WeaponUtil.TooltipAbilities.RIGHTEOUS);
     }
 
@@ -33,7 +33,7 @@ public class MasterSword extends ChargeToUseItem {
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), world, user);
                 entity.setAgeAndPoints(30, 150, 4);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setDamage(CommonConfig.MASTER_SWORD_PROJECTILE_DAMAGE.get());
+                entity.setDamage(ConfigConstructor.master_sword_projectile_damage);
                 entity.setItemStack(stack);
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
@@ -56,6 +56,6 @@ public class MasterSword extends ChargeToUseItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_MASTER_SWORD.get();
+        return ConfigConstructor.disable_use_master_sword;
     }
 }

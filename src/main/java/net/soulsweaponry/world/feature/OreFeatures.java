@@ -2,7 +2,7 @@ package net.soulsweaponry.world.feature;
 
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.feature.*;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 
 import java.util.List;
@@ -18,6 +18,6 @@ public class OreFeatures {
             OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockRegistry.VERGLAS_ORE_DEEPSLATE.get().getDefaultState())
     );
 
-    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> MOONSTONE_ORE = ConfiguredFeatures.register("overworld_moonstone_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_MOONSTONE_ORES, CommonConfig.MOONSTONE_ORE_VEIN_SIZE.get()));
-    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> VERGLAS_ORE = ConfiguredFeatures.register("overworld_verglas_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_VERGLAS_ORES, CommonConfig.VERGLAS_ORE_VEIN_SIZE.get()));
+    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> MOONSTONE_ORE = ConfiguredFeatures.register("overworld_moonstone_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_MOONSTONE_ORES, ConfigConstructor.moonstone_ore_vein_size));
+    public static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> VERGLAS_ORE = ConfiguredFeatures.register("overworld_verglas_ore", Feature.ORE, new OreFeatureConfig(OVERWORLD_VERGLAS_ORES, ConfigConstructor.verglas_ore_vein_size));
 }

@@ -1,6 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -92,7 +92,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
 
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = CommonConfig.COMET_SPEAR_PROJECTILE_DAMAGE.get();
+        float f = ConfigConstructor.comet_spear_projectile_damage;
         if (entity == null) {
             return;
         }

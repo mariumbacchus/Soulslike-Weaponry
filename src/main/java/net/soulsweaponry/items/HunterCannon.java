@@ -14,7 +14,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.Cannonball;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -28,17 +28,17 @@ public class HunterCannon extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return CommonConfig.HUNTER_CANNON_POSTURE_LOSS.get() * (lvl == 0 ? 1 : lvl);
+        return ConfigConstructor.hunter_cannon_posture_loss * (lvl == 0 ? 1 : lvl);
     }
 
     @Override
     public int getBulletDamage(ItemStack stack) {
-        return CommonConfig.HUNTER_CANNON_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+        return ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
     }
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return CommonConfig.HUNTER_CANNON_COOLDOWN.get() - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50;
+        return ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50;
     }
 
     @Override
@@ -113,6 +113,6 @@ public class HunterCannon extends GunItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_HUNTER_CANNON.get();
+        return ConfigConstructor.disable_use_hunter_cannon;
     }
 }

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class Draugr extends ModdedSword {
@@ -20,7 +20,7 @@ public class Draugr extends ModdedSword {
     public static final String NIGHT = "night";
 
     public Draugr(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, 1, CommonConfig.DRAUGR_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, 1, ConfigConstructor.draugr_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.NIGHT_PROWLER);
     }
 
@@ -49,7 +49,7 @@ public class Draugr extends ModdedSword {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isNight(stack) && !this.isDisabled(stack) ? CommonConfig.DRAUGR_NIGHT_DAMAGE.get() - 1 : 0, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isNight(stack) && !this.isDisabled(stack) ? ConfigConstructor.draugr_damage_at_night - 1 : 0, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -65,6 +65,6 @@ public class Draugr extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DRAUGR.get();
+        return ConfigConstructor.disable_use_draugr;
     }
 }

@@ -25,7 +25,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -299,7 +299,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.DAY_STALKER_HEALTH.get())
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.day_stalker_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
@@ -355,7 +355,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return CommonConfig.DAY_STALKER_XP.get();
+        return ConfigConstructor.day_stalker_xp;
     }
 
     @Override
@@ -540,8 +540,8 @@ public class DayStalker extends BossEntity implements IAnimatable {
             amount = amount * 0.6f;
         }
         if (this.isEmpowered() && source.isProjectile() && !this.isFlying()) {
-            amount = amount * (this.isPhaseTwo() ? CommonConfig.DAY_STALKER_EMPOWERED_PROJECTILE_DAMAGE_TAKEN_MODIFIER_PHASE_2.get() :
-                    CommonConfig.DAY_STALKER_EMPOWERED_PROJECTILE_DAMAGE_TAKEN_MODIFIER_PHASE_1.get());
+            amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
+                    ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
         }
         return super.damage(source, amount);
     }

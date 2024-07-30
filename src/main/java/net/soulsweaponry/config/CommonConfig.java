@@ -5,6 +5,13 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * So, apparently forge configs are loaded AFTER registration of items, entities, etc.
+ * Can't seem to load the config before registration either. I get the restriction, but man this is frustrating.
+ * I guess I could update all the values after the config is loaded, but that's a pain.
+ * Wish I knew this earlier...
+ */
+@Deprecated
 public class CommonConfig {
 
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();

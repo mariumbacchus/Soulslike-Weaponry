@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.entitydata.ClientPostureData;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 
 public class PostureHudOverlay {
 
@@ -24,7 +24,7 @@ public class PostureHudOverlay {
             int y = height;
             if (client.player != null && !client.player.isDead()) {
                 int posture = ClientPostureData.getPosture();
-                float posturePerPixel = (float) CommonConfig.MAX_POSTURE_LOSS.get() / (float) 182;
+                float posturePerPixel = (float) ConfigConstructor.max_posture_loss / (float) 182;
                 int posturePixel = MathHelper.floor((float) posture / posturePerPixel);
                 if (posture > 0) {
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);

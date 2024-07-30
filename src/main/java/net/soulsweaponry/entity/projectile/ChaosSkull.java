@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 import net.minecraft.world.explosion.ExplosionBehavior;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -54,7 +54,7 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * CommonConfig.CHAOS_MONARCH_DAMAGE_MODIFIER.get();
+        return damage * ConfigConstructor.chaos_monarch_damage_modifier;
     }
     
     /**

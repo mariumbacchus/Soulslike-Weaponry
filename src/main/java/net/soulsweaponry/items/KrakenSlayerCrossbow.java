@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -81,14 +81,14 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     public void modifyProjectile(PersistentProjectileEntity projectile, ItemStack stack) {
         float bonus =  EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, stack) / 4f;
         if (projectile instanceof KrakenSlayerProjectile kraken) {
-            kraken.setTrueDamage(CommonConfig.KRAKEN_SLAYER_BONUS_DAMAGE.get());
+            kraken.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage);
         }
         projectile.setDamage(projectile.getDamage() + bonus);
     }
 
     @Override
     public float getReducedPullTime() {
-        return CommonConfig.KRAKEN_SLAYER_REDUCED_PULL_TIME.get();
+        return ConfigConstructor.kraken_slayer_reduced_pull_time;
     }
 
     @Override
@@ -98,6 +98,6 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_KRAKEN_SLAYER_CROSSBOW.get();
+        return ConfigConstructor.disable_use_kraken_slayer_crossbow;
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -28,17 +28,17 @@ public class GatlingGun extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return CommonConfig.GATLING_GUN_POSTURE_LOSS.get() + lvl;
+        return ConfigConstructor.gatling_gun_posture_loss + lvl;
     }
 
     @Override
     public int getBulletDamage(ItemStack stack) {
-        return CommonConfig.GATLING_GUN_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+        return ConfigConstructor.gatling_gun_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return CommonConfig.GATLING_GUN_COOLDOWN.get() - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30;
+        return ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class GatlingGun extends GunItem {
     @Override
     public int getMaxUseTime(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack);
-        return CommonConfig.GATLING_GUN_MAX_TIME.get() * (lvl == 0 ? 1 : lvl);
+        return ConfigConstructor.gatling_gun_max_time * (lvl == 0 ? 1 : lvl);
     }
 
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -140,6 +140,6 @@ public class GatlingGun extends GunItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_GATLING_GUN.get();
+        return ConfigConstructor.disable_use_gatling_gun;
     }
 }

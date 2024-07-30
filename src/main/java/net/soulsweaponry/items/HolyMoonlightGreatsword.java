@@ -15,7 +15,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.invisible.HolyMoonlightPillar;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -39,13 +39,13 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
             if (chargeTime >= 10) {
                 if (!player.isCreative()) {
                     int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() : 0;
-                    player.getItemCooldownManager().set(this, CommonConfig.HOLY_MOON_ABILITY_COOLDOWN.get() - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30 - emp);
+                    player.getItemCooldownManager().set(this, ConfigConstructor.holy_moonlight_ability_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30 - emp);
                 }
                 stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-                int ruptures = CommonConfig.HOLY_MOON_RUPTURES_AMOUNT.get() + WeaponUtil.getEnchantDamageBonus(stack);
+                int ruptures = ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack);
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
-                float power = CommonConfig.HOLY_MOON_ABILITY_DAMAGE.get();
+                float power = ConfigConstructor.holy_moonlight_ability_damage;
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity) {
                         entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
@@ -118,11 +118,11 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     }
 
     private float getAbilityDamage() {
-        return CommonConfig.HOLY_MOON_ABILITY_DAMAGE.get();
+        return ConfigConstructor.holy_moonlight_ability_damage;
     }
 
     private float getKnockup(ItemStack stack) {
-        return CommonConfig.HOLY_MOON_ABILITY_KNOCKUP.get() + (float)WeaponUtil.getEnchantDamageBonus(stack)/10;
+        return ConfigConstructor.holy_moonlight_ability_knockup + (float)WeaponUtil.getEnchantDamageBonus(stack)/10;
     }
 
     @Override
@@ -151,12 +151,12 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
 
     @Override
     public int getMaxCharge() {
-        return CommonConfig.HOLY_MOON_ABILITY_CHARGE_NEED.get();
+        return ConfigConstructor.holy_moonlight_ability_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        int base = CommonConfig.HOLY_MOON_GREAT_CHARGE_ADDED.get();
+        int base = ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack) * 2;
     }
 }

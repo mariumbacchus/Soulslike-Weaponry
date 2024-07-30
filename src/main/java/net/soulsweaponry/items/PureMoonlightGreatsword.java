@@ -7,7 +7,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -16,7 +16,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.PURE_MOONLIGHT_GREATSWORD_DAMAGE.get(), CommonConfig.PURE_MOONLIGHT_GREATSWORD_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 
@@ -31,7 +31,7 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
                         MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), world, user);
                         entity.setAgeAndPoints(30, 75, 4);
                         entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw() + j*5, 0.0F, 1.5F, 1.0F);
-                        entity.setDamage(CommonConfig.MOONLIGHT_GREATSWORD_PROJECTILE_DAMAGE.get() + 1f);
+                        entity.setDamage(ConfigConstructor.moonlight_greatsword_projectile_damage + 1f);
                         entity.setItemStack(stack);
                         world.spawnEntity(entity);
                     }
@@ -48,6 +48,6 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_PURE_MOONLIGHT_GREATSWORD.get();
+        return ConfigConstructor.disable_use_pure_moonlight_greatsword;
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 public class SoulIngotArmor extends SetBonusArmor {
@@ -54,6 +54,6 @@ public class SoulIngotArmor extends SetBonusArmor {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SOUL_INGOT_ARMOR.get();
+        return ConfigConstructor.disable_use_soul_ingot_armor;
     }
 }

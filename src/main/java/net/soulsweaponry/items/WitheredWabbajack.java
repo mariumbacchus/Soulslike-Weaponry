@@ -17,7 +17,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
@@ -29,7 +29,7 @@ import java.util.Random;
 public class WitheredWabbajack extends ModdedSword {
 
     public WitheredWabbajack(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.WITHERED_WABBAJACK_DAMAGE.get(), CommonConfig.WITHERED_WABBAJACK_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, ConfigConstructor.withered_wabbajack_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.WABBAJACK, WeaponUtil.TooltipAbilities.LUCK_BASED);
     }
 
@@ -200,6 +200,6 @@ public class WitheredWabbajack extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_WITHERED_WABBAJACK.get();
+        return ConfigConstructor.disable_use_withered_wabbajack;
     }
 }

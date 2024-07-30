@@ -17,14 +17,14 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
 import java.util.Random;
 
 public class EvilForlorn extends Forlorn {
 
-    public static boolean canSpawn = CommonConfig.SPAWN_FORLORN.get();
+    public static boolean canSpawn = ConfigConstructor.can_evil_forlorn_spawn;
 
     public EvilForlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);

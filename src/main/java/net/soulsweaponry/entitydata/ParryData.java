@@ -4,14 +4,14 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.ParrySyncS2C;
 
 public class ParryData {
 
     public static final String PARRY_FRAMES_ID = "parry_frames";
-    public static final int MAX_PARRY_FRAMES = CommonConfig.SHIELD_PARRY_MAX_ANIMATION_FRAMES.get();
+    public static final int MAX_PARRY_FRAMES = ConfigConstructor.shield_parry_max_animation_frames;
 
     public static int addParryFrames(PlayerEntity player, int amount) {
         NbtCompound nbt = player.getPersistentData();
@@ -47,7 +47,7 @@ public class ParryData {
         if (checkIfCanBeParried) {
             bl = !source.isUnblockable();
         }
-        return frames >= 1 && frames <= CommonConfig.SHIELD_PARRY_FRAMES.get() && bl;
+        return frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && bl;
     }
 
     public static void syncFrames(int frames, ServerPlayerEntity player) {

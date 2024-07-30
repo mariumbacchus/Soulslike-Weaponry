@@ -14,7 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +63,6 @@ public class ChaosOrb extends Item implements IConfigDisable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_CHAOS_ORB.get();
+        return ConfigConstructor.disable_use_chaos_orb;
     }
 }

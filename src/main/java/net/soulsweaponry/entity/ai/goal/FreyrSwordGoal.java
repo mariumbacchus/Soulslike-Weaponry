@@ -10,7 +10,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.CustomDamageSource;
 
@@ -97,6 +97,6 @@ public class FreyrSwordGoal extends Goal {
     }
 
     public float getAttackDamage(LivingEntity target) {
-        return target != null ? (CommonConfig.SWORD_OF_FREYR_DAMAGE.get() + EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup())) : CommonConfig.SWORD_OF_FREYR_DAMAGE.get();
+        return target != null ? (ConfigConstructor.sword_of_freyr_damage + EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup())) : ConfigConstructor.sword_of_freyr_damage;
     }
 }

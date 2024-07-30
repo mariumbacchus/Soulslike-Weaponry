@@ -12,7 +12,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class HolyMoonlightPillar extends InvisibleWarmupEntity {
 
-    private float knockUp = CommonConfig.HOLY_MOON_ABILITY_KNOCKUP.get();
+    private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
     private static final TrackedData<Float> RADIUS = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
 

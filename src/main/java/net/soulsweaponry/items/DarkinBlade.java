@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -39,7 +39,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_BLADE_DAMAGE.get(), CommonConfig.DARKIN_BLADE_ATTACK_SPEED.get(), settings, true);
+        super(toolMaterial, ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP, WeaponUtil.TooltipAbilities.SWORD_SLAM);
     }
 
@@ -50,9 +50,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                if (!player.isCreative()) player.getItemCooldownManager().set(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
-                float healing = CommonConfig.LIFE_STEAL_BASE_HEAL.get();
-                if (CommonConfig.LIFE_STEAL_SCALES.get()) {
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
+                float healing = ConfigConstructor.lifesteal_item_base_healing;
+                if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);
                 }
                 attacker.heal(healing);
@@ -64,7 +64,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
-            int duration = CommonConfig.DARKIN_BLADE_ABILITY_COOLDOWN.get();
+            int duration = ConfigConstructor.darkin_blade_ability_cooldown;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
@@ -72,9 +72,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
                 player.world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                 duration = MathHelper.floor(duration/1.5f);
                 //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, CommonConfig.DARKIN_BLADE_ABILITY_DAMAGE.get().intValue()));
+                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, ConfigConstructor.darkin_blade_ability_damage));
             } else {
-                this.detonateGroundEffect(user, CommonConfig.DARKIN_BLADE_ABILITY_DAMAGE.get().intValue(), 0, world, stack);
+                this.detonateGroundEffect(user, ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
             }
             stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             player.getItemCooldownManager().set(this, duration);
@@ -103,42 +103,42 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     @Override
     public float getBaseExpansion() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_BASE_RADIUS.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
     public float getLaunchModifier() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_target_launch_modifier;
     }
 
     @Override
     public float getMaxExpansion() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_MAX_RADIUS.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_max_radius;
     }
 
     @Override
     public float getMaxDetonationDamage() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_MAX_DAMAGE.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_max_damage;
     }
 
     @Override
     public float getFallDamageIncreaseModifier() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_SHOULD_HEAL.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_should_heal;
     }
 
     @Override
     public float getHealFromDamageModifier() {
-        return CommonConfig.DARKIN_BLADE_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.darkin_blade_calculated_fall_heal_from_damage_modifier;
     }
 
     @Override
@@ -167,6 +167,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DARKIN_BLADE.get();
+        return ConfigConstructor.disable_use_darkin_blade;
     }
 }

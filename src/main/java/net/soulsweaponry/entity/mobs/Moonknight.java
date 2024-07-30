@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -74,7 +74,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.FALLEN_ICON_HEALTH.get())
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
@@ -212,7 +212,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return CommonConfig.FALLEN_ICON_XP.get();
+        return ConfigConstructor.fallen_icon_xp;
     }
 
     @Override
@@ -242,7 +242,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
             }
         }
         
-        if (CommonConfig.CAN_BOSS_BREAK_BLOCK.get()) {
+        if (ConfigConstructor.can_bosses_break_blocks) {
             int j;
             int i;
             int k;

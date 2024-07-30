@@ -4,33 +4,33 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     private static final int[] DAMAGE = {
-            CommonConfig.KIRKHAMMER_DAMAGE.get(),
-            CommonConfig.KIRKHAMMER_SILVER_SWORD_DAMAGE.get(),
-            CommonConfig.LUDWIGS_HOLY_GREATSWORD_DAMAGE.get(),
-            CommonConfig.HOLY_MOON_GREAT_DAMAGE.get(),
-            CommonConfig.HOLY_MOON_SWORD_DAMAGE.get(),
+            ConfigConstructor.kirkhammer_damage,
+            ConfigConstructor.kirkhammer_silver_sword_damage,
+            ConfigConstructor.ludwigs_holy_greatsword_damage,
+            ConfigConstructor.holy_moonlight_greatsword_damage,
+            ConfigConstructor.holy_moonlight_sword_damage,
     };
 
     private static final float[] ATTACK_SPEED = {
-            CommonConfig.KIRKHAMMER_ATTACK_SPEED.get(),
-            CommonConfig.KIRKHAMMER_SILVER_SWORD_ATTACK_SPEED.get(),
-            CommonConfig.LUDWIGS_HOLY_GREATSWORD_ATTACK_SPEED.get(),
-            CommonConfig.HOLY_MOON_GREAT_ATTACK_SPEED.get(),
-            CommonConfig.HOLY_MOON_SWORD_ATTACK_SPEED.get(),
+            ConfigConstructor.kirkhammer_attack_speed,
+            ConfigConstructor.kirkhammer_silver_sword_attack_speed,
+            ConfigConstructor.ludwigs_holy_greatsword_attack_speed,
+            ConfigConstructor.holy_moonlight_greatsword_attack_speed,
+            ConfigConstructor.holy_moonlight_sword_attack_speed,
     };
 
     private static final boolean[] DISABLE = {
-            CommonConfig.DISABLE_USE_KIRKHAMMER.get(),
-            CommonConfig.DISABLE_USE_SILVER_SWORD.get(),
-            CommonConfig.DISABLE_USE_LUDWIGS_HOLY_GREATSWORD.get(),
-            CommonConfig.DISABLE_USE_HOLY_MOONLIGHT_GREATSWORD.get(),
-            CommonConfig.DISABLE_USE_HOLY_MOONLIGHT_SWORD.get(),
+            ConfigConstructor.disable_use_kirkhammer,
+            ConfigConstructor.disable_use_silver_sword,
+            ConfigConstructor.disable_use_ludwigs_holy_greatsword,
+            ConfigConstructor.disable_use_holy_moonlight_greatsword,
+            ConfigConstructor.disable_use_holy_moonlight_sword,
     };
 
     private final int switchWeaponIndex;

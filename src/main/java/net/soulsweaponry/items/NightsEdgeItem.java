@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -25,7 +25,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     public NightsEdgeItem(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.NIGHTS_EDGE_WEAPON_DAMAGE.get(), CommonConfig.NIGHTS_EDGE_WEAPON_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, WeaponUtil.TooltipAbilities.BLIGHT);
     }
 
@@ -58,7 +58,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.castSpell(player, world, stack, false);
-                player.getItemCooldownManager().set(this, CommonConfig.NIGHTS_EDGE_ABILITY_COOLDOWN.get());
+                player.getItemCooldownManager().set(this, ConfigConstructor.nights_edge_ability_cooldown);
             }
         }
     }
@@ -67,7 +67,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.castSpell(player, world, stack, true);
-            player.getItemCooldownManager().set(this, CommonConfig.NIGHTS_EDGE_ABILITY_COOLDOWN.get());
+            player.getItemCooldownManager().set(this, ConfigConstructor.nights_edge_ability_cooldown);
             stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }
     }
@@ -117,7 +117,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
         if (bl) {
             NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE.get(), world);
             edge.setOwner(user);
-            edge.setDamage(CommonConfig.NIGHTS_EDGE_ABILITY_DAMAGE.get() + 2 * WeaponUtil.getEnchantDamageBonus(stack));
+            edge.setDamage(ConfigConstructor.nights_edge_ability_damage + 2 * WeaponUtil.getEnchantDamageBonus(stack));
             edge.setWarmup(warmup);
             edge.setYaw(yaw * 57.295776F);
             edge.setPos(x, (double)blockPos.getY() + d, z);
@@ -131,6 +131,6 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_NIGHTS_EDGE.get();
+        return ConfigConstructor.disable_use_nights_edge;
     }
 }

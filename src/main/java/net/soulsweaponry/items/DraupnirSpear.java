@@ -17,7 +17,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Box;
@@ -25,7 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -52,7 +51,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     public static final String SPEARS_ID = "thrown_spears_id";
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DRAUPNIR_DAMAGE.get(), CommonConfig.DRAUPNIR_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.DETONATE_SPEARS);
     }
 
@@ -68,7 +67,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                 world.spawnEntity(entity);
                 world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 this.saveSpearData(stack, entity);
-                playerEntity.getItemCooldownManager().set(this, CommonConfig.DRAUPNIR_THROW_COOLDOWN.get() - enchant * 5);
+                playerEntity.getItemCooldownManager().set(this, ConfigConstructor.draupnir_spear_throw_cooldown - enchant * 5);
                 stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             }
         }
@@ -129,14 +128,14 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                         ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
                     }
                     if (!player.isCreative())
-                        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), CommonConfig.DRAUPNIR_SUMMON_SPEARS_COOLDOWN.get(), 0));
-                } else if (CommonConfig.INFORM_PLAYER_ABOUT_COOLDOWN_EFFECT.get()) {
+                        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
+                } else if (ConfigConstructor.inform_player_about_cooldown_effect) {
                     player.sendMessage(new TranslatableText("soulsweapons.weapon.on_cooldown"), true);
                 }
             } else {
                 Box box = player.getBoundingBox().expand(3);
                 List<Entity> entities = world.getOtherEntities(player, box);
-                float power = CommonConfig.DRAUPNIR_PROJECTILE_DAMAGE.get();
+                float power = ConfigConstructor.draupnir_spear_projectile_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity) {
                         entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
@@ -145,7 +144,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                 }
                 ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
                 world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-                player.getItemCooldownManager().set(stack.getItem(), CommonConfig.DRAUPNIR_DETONATE_COOLDOWN.get());
+                player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
                 if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
                     int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
                     for (int id : ids) {
@@ -180,6 +179,6 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DRAUPNIR_SPEAR.get();
+        return ConfigConstructor.disable_use_draupnir_spear;
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.invisible.FlamePillar;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -38,7 +38,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.EMPOWERED_DAWNBREAKER_DAMAGE.get(), CommonConfig.EMPOWERED_DAWNBREAKER_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHAOS_STORM, WeaponUtil.TooltipAbilities.VEIL_OF_FIRE);
     }
 
@@ -50,7 +50,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
                 if (!player.isCreative()) {
-                    player.getItemCooldownManager().set(this, CommonConfig.EMPOWERED_DAWNBREAKER_ABILITY_COOLDOWN.get());
+                    player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
                 }
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
             }
@@ -70,7 +70,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
                 for (BlockPos listPos : list) {
                     if (listPos != pos) {
                         FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), world);
-                        pillar.setDamage(CommonConfig.EMPOWERED_DAWNBREAKER_ABILITY_DAMAGE.get() + WeaponUtil.getEnchantDamageBonus(stack) * 2);
+                        pillar.setDamage(ConfigConstructor.empowered_dawnbreaker_ability_damage + WeaponUtil.getEnchantDamageBonus(stack) * 2);
                         pillar.setPos(x, y, z);
                         pillar.setOwner(user);
                         pillar.setWarmup(i * 2);
@@ -102,7 +102,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-            player.getItemCooldownManager().set(this, CommonConfig.EMPOWERED_DAWNBREAKER_ABILITY_COOLDOWN.get());
+            player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
         }
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little
@@ -143,7 +143,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_EMPOWERED_DAWNBREAKER.get();
+        return ConfigConstructor.disable_use_empowered_dawnbreaker;
     }
 
     @Override

@@ -16,7 +16,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -25,7 +25,7 @@ import java.util.List;
 public class WhirligigSawblade extends ChargeToUseItem {
 
     public WhirligigSawblade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.WHIRLIGIG_SAWBLADE_DAMAGE.get(), CommonConfig.WHIRLIGIG_SAWBLADE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SAWBLADE);
     }
 
@@ -36,7 +36,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return CommonConfig.WHIRLIGIG_SAWBLADE_USE_TIME.get() + WeaponUtil.getEnchantDamageBonus(stack) * 10;
+        return ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
         if (remainingUseTicks > 0) {
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity target) {
-                    if (target.damage(DamageSource.mob(user), CommonConfig.WHIRLIGIG_SAWBLADE_ABILITY_DAMAGE.get() + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
+                    if (target.damage(DamageSource.mob(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(1F, 0, 0);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), 100, 0));
@@ -78,7 +78,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     private int getCooldown(ItemStack stack) {
-        return CommonConfig.WHIRLIGIG_SAWBLADE_COOLDOWN.get() - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
+        return ConfigConstructor.whirligig_sawblade_cooldown - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_WHIRLIGIG_SAWBLADE.get();
+        return ConfigConstructor.disable_use_whirligig_sawblade;
     }
 }

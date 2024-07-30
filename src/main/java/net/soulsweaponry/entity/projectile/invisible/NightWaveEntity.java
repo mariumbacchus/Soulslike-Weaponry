@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -31,7 +31,7 @@ public class NightWaveEntity extends InvisibleEntity {
                     if (this.getOwner() instanceof LivingEntity) {
                         living.damage(DamageSource.mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
                     } else {
-                        living.damage(DamageSource.mobProjectile(this, null), 20f * CommonConfig.NIGHT_PROWLER_DAMAGE_MODIFIER.get());
+                        living.damage(DamageSource.mobProjectile(this, null), 20f * ConfigConstructor.night_prowler_damage_modifier);
                     }
                 }
             }

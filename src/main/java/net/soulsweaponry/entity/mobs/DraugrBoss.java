@@ -32,7 +32,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -109,7 +109,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.OLD_CHAMPIONS_REMAINS_HEALTH.get())
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.old_champions_remains_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -264,8 +264,8 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
             } else {
                 this.setSameWeaponCount(0);
             }
-            if (this.getSameWeaponCount() >= CommonConfig.OLD_CHAMPIONS_REMAINS_HITS_BEFORE_GROWING_RESISTANT.get()) {
-                double x = this.getSameWeaponCount() - (CommonConfig.OLD_CHAMPIONS_REMAINS_HITS_BEFORE_GROWING_RESISTANT.get() -
+            if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
+                double x = this.getSameWeaponCount() - (ConfigConstructor.old_champions_remains_hits_before_growing_resistant -
                         this.getSameWeaponCount() > 0 ? 1 : 0);
                 amount = (float) (amount * Math.pow((1f / 1.07f), x));
             }
@@ -282,7 +282,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
 
     @Override
     public int getXp() {
-        return CommonConfig.OLD_CHAMPIONS_REMAINS_XP.get();
+        return ConfigConstructor.old_champions_remains_xp;
     }
 
     @Override
@@ -372,7 +372,7 @@ public class DraugrBoss extends BossEntity implements IAnimatable, IAnimationTic
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
-        if (this.getSameWeaponCount() >= CommonConfig.OLD_CHAMPIONS_REMAINS_HITS_BEFORE_GROWING_RESISTANT.get()) {
+        if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
             return SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR;
         } else {
             return SoundEvents.ENTITY_WITHER_SKELETON_HURT;

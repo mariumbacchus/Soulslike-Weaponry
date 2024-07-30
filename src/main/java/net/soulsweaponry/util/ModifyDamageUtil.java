@@ -6,7 +6,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -53,7 +53,7 @@ public class ModifyDamageUtil {
         }
         if (source.getSource() instanceof KrakenSlayerProjectile projectile) {
             float trueDamage = projectile.getTrueDamage();
-            newAmount += entity instanceof PlayerEntity ? trueDamage * CommonConfig.KRAKEN_SLAYER_PLAYER_DAMAGE_MOD.get() : trueDamage;
+            newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
         }
         return newAmount;
     }

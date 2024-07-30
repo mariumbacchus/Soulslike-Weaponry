@@ -13,7 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -27,17 +27,17 @@ public class HunterPistol extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return CommonConfig.HUNTER_PISTOL_POSTURE_LOSS.get() + lvl * 3;
+        return ConfigConstructor.hunter_pistol_posture_loss + lvl * 3;
     }
 
     @Override
     public int getBulletDamage(ItemStack stack) {
-        return CommonConfig.HUNTER_PISTOL_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+        return ConfigConstructor.hunter_pistol_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
     }
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return CommonConfig.HUNTER_PISTOL_COOLDOWN.get() - this.getReducedCooldown(stack);
+        return ConfigConstructor.hunter_pistol_cooldown - this.getReducedCooldown(stack);
     }
 
     @Override
@@ -103,6 +103,6 @@ public class HunterPistol extends GunItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_HUNTER_PISTOL.get();
+        return ConfigConstructor.disable_use_hunter_pistol;
     }
 }

@@ -28,7 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
 import net.soulsweaponry.items.FreyrSword;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -128,7 +128,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     @Override
     public boolean isTeammate(Entity other) {
         // Don't attack players if friendly fire is off
-        if (!CommonConfig.SWORD_OF_FREYR_FRIENDLY_FIRE.get() && other instanceof PlayerEntity) {
+        if (!ConfigConstructor.sword_of_freyr_friendly_fire && other instanceof PlayerEntity) {
             return true;
         }
         if (other instanceof Tameable tameableOther) {
@@ -284,7 +284,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         return PathAwareEntity.createLivingAttributes()
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) CommonConfig.SWORD_OF_FREYR_DAMAGE.get());
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) ConfigConstructor.sword_of_freyr_damage);
     }
 
     public double getFollowRange() {

@@ -23,7 +23,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -40,10 +40,10 @@ import java.util.function.Consumer;
 
 public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.LEVIATHAN_AXE_DAMAGE.get(), CommonConfig.LEVIATHAN_AXE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.HEAVY_THROW, WeaponUtil.TooltipAbilities.RETURNING);
     }
     
@@ -59,7 +59,7 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_LEVIATHAN_AXE.get();
+        return ConfigConstructor.disable_use_leviathan_axe;
     }
 
     @Override

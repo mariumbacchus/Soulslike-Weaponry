@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -33,7 +33,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.FORLORN_SCYTHE_DAMAGE.get(), CommonConfig.FORLORN_SCYTHE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER);
     }
 
@@ -135,6 +135,6 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_FORLORN_SCYTHE.get();
+        return ConfigConstructor.disable_use_forlorn_scythe;
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.Arrays;
@@ -15,9 +15,9 @@ import java.util.List;
 public class EntityGeneration {
 
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
-        addEntityToSpecificBiomes(event, EntityRegistry.BIG_CHUNGUS.get(), CommonConfig.CHUNGUS_SPAWN_WEIGHT.get(), 4, 8, BiomeKeys.FOREST);
-        addEntityToAllNetherBiomes(event, EntityRegistry.WITHERED_DEMON.get(), CommonConfig.WITHERED_DEMON_SPAWN_WEIGHT.get(), 1, 1);
-        addEntityToAllNetherBiomes(event, EntityRegistry.EVIL_FORLORN.get(), CommonConfig.FORLORN_SPAWN_WEIGHT.get(), 1, 1);
+        addEntityToSpecificBiomes(event, EntityRegistry.BIG_CHUNGUS.get(), ConfigConstructor.moderatly_sized_chungus_spawnweight, 4, 8, BiomeKeys.FOREST);
+        addEntityToAllNetherBiomes(event, EntityRegistry.WITHERED_DEMON.get(), ConfigConstructor.withered_demon_spawnweight, 1, 1);
+        addEntityToAllNetherBiomes(event, EntityRegistry.EVIL_FORLORN.get(), ConfigConstructor.evil_forlorn_spawnweight, 1, 1);
     }
 
     private static void addEntityToAllBiomesExceptThese(BiomeLoadingEvent event, EntityType<?> type,

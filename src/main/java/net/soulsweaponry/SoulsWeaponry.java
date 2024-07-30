@@ -11,12 +11,11 @@ import net.minecraft.world.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.MidnightConfig;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.EvilForlorn;
 import net.soulsweaponry.networking.ModMessages;
@@ -39,7 +38,12 @@ public class SoulsWeaponry {
     };
 
     public SoulsWeaponry() {
+        // Forge config is loaded after all other registration, meaning it's useless in my case.
+        // ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");
+        MidnightConfig.init(ModId, ConfigConstructor.class);
+
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         GeckoLib.initialize();
 
         SoundRegistry.register(eventBus);
@@ -55,8 +59,6 @@ public class SoulsWeaponry {
         ItemRegistry.register(eventBus);
 
         eventBus.addListener(this::setup);
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
     }

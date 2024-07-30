@@ -12,7 +12,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Box;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -40,10 +40,10 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements IAn
             return super.postHit(stack, target, attacker);
         }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        if (target.isUndead() || CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get()) {
+        if (target.isUndead() || ConfigConstructor.dawnbreaker_affect_all_entities) {
             if (target.isDead()) {
                 if (target.hasStatusEffect(EffectRegistry.RETRIBUTION.get())) {
-                    double chance = CommonConfig.DAWNBREAKER_ABILITY_CHANCE_MOD.get() + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION.get()).getAmplifier()));
+                    double chance = ConfigConstructor.dawnbreaker_ability_percent_chance_addition + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION.get()).getAmplifier()));
                     double random = target.getRandom().nextDouble();
                     if (random < chance) {
                         AbstractDawnbreaker.dawnbreakerEvent(target, attacker, stack);
@@ -75,13 +75,13 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements IAn
         target.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 2f, 1f);
         Box aoe = target.getBoundingBox().expand(10);
         List<Entity> entities = attacker.getWorld().getOtherEntities(target, aoe);
-        boolean bl = CommonConfig.DAWNBREAKER_ABILITY_AFFECT_ALL.get();
+        boolean affectAll = ConfigConstructor.dawnbreaker_affect_all_entities;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity targetHit) {
-                if (targetHit.isUndead() || bl) {
+                if (targetHit.isUndead() || affectAll) {
                     if (!targetHit.equals(attacker)) {
                         targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                        targetHit.damage(DamageSource.explosion(attacker), CommonConfig.DAWNBREAKER_ABILITY_DAMAGE.get() + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                        targetHit.damage(DamageSource.explosion(attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
                         targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR.get(), 80, 0));
                     }
                 }

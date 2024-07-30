@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -152,7 +152,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     }
 
     public boolean isSpawnable() {
-        return CommonConfig.SPAWN_WITHERED_DEMON.get();
+        return ConfigConstructor.can_withered_demon_spawn;
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FrostGiant;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.FROSTMOURNE_DAMAGE.get(), CommonConfig.FROSTMOURNE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE, WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST);
     }
 
@@ -72,7 +72,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public int getMaxSummons() {
-        return CommonConfig.FROSTMOURNE_ALLIES_CAP.get();
+        return ConfigConstructor.frostmourne_summoned_allies_cap;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_FROSTMOURNE.get();
+        return ConfigConstructor.disable_use_frostmourne;
     }
 
     @Override

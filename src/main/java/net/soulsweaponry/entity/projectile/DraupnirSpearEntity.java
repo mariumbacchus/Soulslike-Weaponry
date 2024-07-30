@@ -21,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +37,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 public class DraupnirSpearEntity extends PersistentProjectileEntity implements IAnimatable {
 
     private static final TrackedData<Boolean> ENCHANTED;
-    private ItemStack stack;
+    private final ItemStack stack;
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private boolean dealtDamage;
 
@@ -54,7 +54,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
 
     public void detonate() {
         if (this.getOwner() != null && this.getBlockPos() != null && !world.isClient) {
-            float power = CommonConfig.DRAUPNIR_DETONATE_POWER.get() + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
+            float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
             this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, Explosion.DestructionType.NONE);
             if (power > 2f) {
                 for (Entity entity : world.getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
@@ -70,7 +70,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = CommonConfig.DRAUPNIR_PROJECTILE_DAMAGE.get();
+        float f = ConfigConstructor.draupnir_spear_projectile_damage;
         if (entity == null) {
             return;
         }
@@ -110,7 +110,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
-        if (this.age > CommonConfig.DRAUPNIR_MAX_AGE.get()) {
+        if (this.age > ConfigConstructor.draupnir_spear_max_age) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();

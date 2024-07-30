@@ -7,7 +7,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.client.entitydata.ClientParryData;
-import net.soulsweaponry.entitydata.ParryData;
 
 import java.util.function.Supplier;
 

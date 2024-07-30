@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -25,13 +25,13 @@ public class Bloodthirster extends ModdedSword implements IAnimatable {
     public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Bloodthirster(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.BLOODTHIRSTER_DAMAGE.get(), CommonConfig.BLOODTHIRSTER_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.bloodthirster_damage, ConfigConstructor.bloodthirster_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.LIFE_STEAL, WeaponUtil.TooltipAbilities.OVERHEAL);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_BLOODTHIRSTER.get();
+        return ConfigConstructor.disable_use_bloodthirster;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class Bloodthirster extends ModdedSword implements IAnimatable {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                if (!player.isCreative()) player.getItemCooldownManager().set(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
-                float healing = CommonConfig.LIFE_STEAL_BASE_HEAL.get();
-                if (CommonConfig.LIFE_STEAL_SCALES.get()) {
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
+                float healing = ConfigConstructor.lifesteal_item_base_healing;
+                if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);
                 }
-                if (player.getHealth() == player.getMaxHealth() && CommonConfig.BLOODTHIRSTER_OVERSHIELD.get()) {
+                if (player.getHealth() == player.getMaxHealth() && ConfigConstructor.bloodthirster_overshields) {
                     healing = healing - 4 > 0 ? healing - 4 : 0;
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 60 + MathHelper.floor(healing*10), MathHelper.floor(healing)));
                 } else if (player.getHealth() < player.getMaxHealth()) {

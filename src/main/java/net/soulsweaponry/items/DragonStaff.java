@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -27,7 +27,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class DragonStaff extends ModdedSword {
 
     public DragonStaff(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DRAGON_STAFF_DAMAGE.get(), CommonConfig.DRAGON_STAFF_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.dragon_staff_damage, ConfigConstructor.dragon_staff_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.DRAGON_STAFF, WeaponUtil.TooltipAbilities.VENGEFUL_FOG);
     }
 
@@ -40,7 +40,7 @@ public class DragonStaff extends ModdedSword {
             for (Entity entity : world.getOtherEntities(user, new Box(user.getBlockPos().add(0, 2, 0), new BlockPos(area)))) {
                 if (entity instanceof LivingEntity) {
                     entity.damage(CustomDamageSource.dragonMist(user), 2);
-                    ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, CommonConfig.DRAGON_STAFF_AURA_STRENGTH.get()));
+                    ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, ConfigConstructor.dragon_staff_aura_strength));
                 }
             }
             if (world.isClient) {
@@ -109,11 +109,11 @@ public class DragonStaff extends ModdedSword {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return CommonConfig.DRAGON_STAFF_USE_TIME.get() + WeaponUtil.getEnchantDamageBonus(stack) * 20;
+        return ConfigConstructor.dragon_staff_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 20;
     }
 
     private int getCooldown(ItemStack stack) {
-        return CommonConfig.DRAGON_STAFF_COOLDOWN.get() - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
+        return ConfigConstructor.dragon_staff_cooldown - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
     }
 
     @Override
@@ -123,6 +123,6 @@ public class DragonStaff extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DRAGON_STAFF.get();
+        return ConfigConstructor.disable_use_dragon_staff;
     }
 }

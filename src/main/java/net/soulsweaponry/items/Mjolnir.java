@@ -29,7 +29,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.invisible.WarmupLightningEntity;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -49,7 +49,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     public static final String OWNERS_LAST_POS = "owners_last_pos";
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.MJOLNIR_DAMAGE.get(), CommonConfig.MJOLNIR_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, WeaponUtil.TooltipAbilities.THROW_LIGHTNING, WeaponUtil.TooltipAbilities.RETURNING, WeaponUtil.TooltipAbilities.WEATHERBORN, WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
@@ -62,10 +62,10 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
             if (player.isSneaking()) {
                 this.smashGround(stack, world, player);
                 this.lightningCall(player, world);
-                cooldown = CommonConfig.MJOLNIR_LIGHTNING_SMASH_COOLDOWN.get();
+                cooldown = ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
                 this.riptide(player, world, stack);
-                if (!world.isRaining()) cooldown = CommonConfig.MJOLNIR_RIPTIDE_COOLDOWN.get();
+                if (!world.isRaining()) cooldown = ConfigConstructor.mjolnir_riptide_cooldown;
             } else {
                 this.throwHammer(world, player, stack);
             }
@@ -112,7 +112,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     private void smashGround(ItemStack stack, World world, PlayerEntity player) {
         Box box = player.getBoundingBox().expand(3);
         List<Entity> entities = world.getOtherEntities(player, box);
-        float power = CommonConfig.MJOLNIR_SMASH_DAMAGE.get();
+        float power = ConfigConstructor.mjolnir_smash_damage;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
                 entity.damage(DamageSource.mob(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
@@ -135,7 +135,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private void lightningCall(PlayerEntity player, World world) {
-        for (int i = 1; i < CommonConfig.MJOLNIR_LIGHTNING_CIRCLE_AMOUNT.get() + 1; i++) {
+        for (int i = 1; i < ConfigConstructor.mjolnir_lightning_circle_amount + 1; i++) {
             int r = 5 * i;
             for (int theta = 0; theta < 360; theta+=30) {
                 double x0 = player.getX();
@@ -176,8 +176,8 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) ? CommonConfig.MJOLNIR_RAIN_BONUS_DAMAGE.get() - 1 + CommonConfig.MJOLNIR_DAMAGE.get() : CommonConfig.MJOLNIR_DAMAGE.get() - 1, EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - CommonConfig.MJOLNIR_RAIN_ATTACK_SPEED.get()), EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) ? ConfigConstructor.mjolnir_rain_bonus_damage - 1 + ConfigConstructor.mjolnir_damage : ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - ConfigConstructor.mjolnir_rain_total_attack_speed), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {
@@ -215,6 +215,6 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_MJOLNIR.get();
+        return ConfigConstructor.disable_use_mjolnir;
     }
 }

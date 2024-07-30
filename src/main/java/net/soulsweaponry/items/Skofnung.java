@@ -16,7 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -31,7 +31,7 @@ public class Skofnung extends ModdedSword {
      * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
     public Skofnung(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.SKOFNUNG_DAMAGE.get(), CommonConfig.SKOFNUNG_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.DISABLE_HEAL, WeaponUtil.TooltipAbilities.SHARPEN, WeaponUtil.TooltipAbilities.IS_SHARPENED);
     }
 
@@ -40,7 +40,7 @@ public class Skofnung extends ModdedSword {
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
-        int duration = CommonConfig.SKOFNUNG_DISABLE_HEAL_DURATION.get() + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
+        int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL.get(), duration, 0));
         if (isEmpowered(stack)) {
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), 80, 0));
@@ -61,7 +61,7 @@ public class Skofnung extends ModdedSword {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND && isEmpowered(stack)) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", CommonConfig.SKOFNUNG_DAMAGE.get() + (CommonConfig.SKOFNUNG_BONUS_DAMAGE.get() - 1), EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
@@ -70,7 +70,7 @@ public class Skofnung extends ModdedSword {
     }
 
     public static boolean isEmpowered(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0 && !CommonConfig.DISABLE_USE_SKOFNUNG.get();
+        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0 && !ConfigConstructor.disable_use_skofnung;
     }
 
     public static Integer empAttacksLeft(ItemStack stack) {
@@ -97,6 +97,6 @@ public class Skofnung extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SKOFNUNG.get();
+        return ConfigConstructor.disable_use_skofnung;
     }
 }

@@ -19,7 +19,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -60,6 +60,6 @@ public class MoonstoneRing extends Item implements IConfigDisable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_MOONSTONE_RING.get();
+        return ConfigConstructor.disable_use_moonstone_ring;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
@@ -59,9 +59,9 @@ public class CollectSummonsC2S {
                 }
                 SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
                 Text msg = null;
-                if (CommonConfig.INFORM_PLAYER_ABOUT_NO_SOULS_TO_COLLECT.get() && collectedSouls == 0) {
+                if (ConfigConstructor.inform_player_about_no_souls_to_collect && collectedSouls == 0) {
                     msg = new TranslatableText("soulsweapons.weapon.no_collected_souls");
-                } else if (CommonConfig.INFORM_PLAYER_ABOUT_COLLECTED_SOULS.get() && collectedSouls > 0) {
+                } else if (ConfigConstructor.inform_player_about_collected_souls && collectedSouls > 0) {
                     msg = new TranslatableText("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
                 }
                 item.addAmount(player.getStackInHand(hand), collectedSouls);

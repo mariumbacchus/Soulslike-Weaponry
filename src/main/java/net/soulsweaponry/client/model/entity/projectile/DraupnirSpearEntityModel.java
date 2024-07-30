@@ -3,7 +3,6 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
-import net.soulsweaponry.entity.projectile.ShadowOrb;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class DraupnirSpearEntityModel extends AnimatedGeoModel<DraupnirSpearEntity>{

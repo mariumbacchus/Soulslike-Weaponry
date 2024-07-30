@@ -8,13 +8,13 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class GuinsoosRageblade extends ModdedSword {
 
     public GuinsoosRageblade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.RAGEBLADE_DAMAGE.get(), CommonConfig.RAGEBLADE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.rageblade_damage, ConfigConstructor.rageblade_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.FURY, WeaponUtil.TooltipAbilities.HASTE, WeaponUtil.TooltipAbilities.FLAME_ENRAGED);
     }
 
@@ -30,7 +30,7 @@ public class GuinsoosRageblade extends ModdedSword {
         if (attacker.hasStatusEffect(StatusEffects.HASTE)) {
             StatusEffectInstance effect = attacker.getStatusEffect(StatusEffects.HASTE);
             int amplifier = effect.getAmplifier();
-            if (amplifier < 3 + speed || !CommonConfig.RAGEBLADE_HASTE_CAP.get()) {
+            if (amplifier < 3 + speed || !ConfigConstructor.rageblade_haste_cap) {
                 attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, amplifier + 1));
             } else {
                 attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, speed + 3));
@@ -48,6 +48,6 @@ public class GuinsoosRageblade extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_RAGEBLADE.get();
+        return ConfigConstructor.disable_use_rageblade;
     }
 }

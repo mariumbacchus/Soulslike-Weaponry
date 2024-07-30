@@ -6,14 +6,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class LichBane extends ModdedSword {
 
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.LICH_BANE_DAMAGE.get(), CommonConfig.LICH_BANE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.MAGIC_DAMAGE, WeaponUtil.TooltipAbilities.BLAZING_BLADE);
     }
 
@@ -30,7 +30,7 @@ public class LichBane extends ModdedSword {
     }
 
     public float getBonusMagicDamage(ItemStack stack) {
-        return CommonConfig.LICH_BANE_BONUS_MAGIC_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
+        return ConfigConstructor.lich_bane_bonus_magic_damage + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class LichBane extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_LICH_BANE.get();
+        return ConfigConstructor.disable_use_lich_bane;
     }
 }

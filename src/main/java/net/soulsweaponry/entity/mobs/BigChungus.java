@@ -3,11 +3,7 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -18,7 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -58,7 +54,7 @@ public class BigChungus extends HostileEntity {
 
     public boolean checkForMonolith() {
         BlockPos entityPos = this.getBlockPos();
-        int radius = CommonConfig.CHUNGUS_MONOLITH_RANGE.get();
+        int radius = ConfigConstructor.chungus_monolith_radius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (x * x + z * z <= radius * radius) {
@@ -74,7 +70,7 @@ public class BigChungus extends HostileEntity {
     }
 
     public boolean isSpawnable() {
-        return CommonConfig.SPAWN_CHUNGUS.get();
+        return ConfigConstructor.can_moderatly_sized_chungus_spawn;
     }
 
     protected SoundEvent getAmbientSound() {

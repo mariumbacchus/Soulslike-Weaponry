@@ -17,7 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -58,8 +58,8 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
                     if (player.isOnFire() && player.age % 30 == 0) {
                         player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0));
                     }
-                    if (player.getHealth() < player.getMaxHealth() * CommonConfig.WITHERED_CHEST_STRENGTH_TRIGGER_1.get()) {
-                        if (player.getHealth() < player.getMaxHealth() * CommonConfig.WITHERED_CHEST_STRENGTH_TRIGGER_2.get()) {
+                    if (player.getHealth() < player.getMaxHealth() * ConfigConstructor.withered_chest_strength_trigger_percent_1) {
+                        if (player.getHealth() < player.getMaxHealth() * ConfigConstructor.withered_chest_strength_trigger_percent_2) {
                             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 1));
                         } else {
                             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
@@ -111,8 +111,8 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), CommonConfig.WITHERED_CHEST_LIFE_LEACH_DURATION.get(), CommonConfig.WITHERED_CHEST_LIFE_LEACH_AMP.get()));
-            player.getItemCooldownManager().set(stack.getItem(), CommonConfig.WITHERED_CHEST_ABILITY_COOLDOWN.get());
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), ConfigConstructor.withered_chest_life_leach_duration, ConfigConstructor.withered_chest_life_leach_amplifier));
+            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.withered_chest_ability_cooldown);
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
         }
     }
@@ -166,6 +166,6 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_WITHERED_CHEST.get();
+        return ConfigConstructor.disable_use_withered_chest;
     }
 }

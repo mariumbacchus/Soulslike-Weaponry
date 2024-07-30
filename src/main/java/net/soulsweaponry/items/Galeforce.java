@@ -20,7 +20,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -73,7 +73,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
             chargedArrow.setCritical(true);
         }
         double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack); // Normal bow: 2.5 -> 5 (power V) -> 10 with crit
-        chargedArrow.setDamage(chargedArrow.getDamage() + power * 0.6f + CommonConfig.GALEFORCE_BONUS_DAMAGE.get()); //This: 3 -> 6 -> 12 with crit
+        chargedArrow.setDamage(chargedArrow.getDamage() + power * 0.6f + ConfigConstructor.galeforce_bonus_damage); //This: 3 -> 6 -> 12 with crit
         int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
         if (punch > 0) {
             chargedArrow.setPunch(punch);
@@ -103,7 +103,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             if (!player.isCreative())
-                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), CommonConfig.GALEFORCE_DASH_COOLDOWN.get(), 0));
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.galeforce_dash_cooldown, 0));
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
@@ -140,6 +140,6 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_GALEFORCE.get();
+        return ConfigConstructor.disable_use_galeforce;
     }
 }

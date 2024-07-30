@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -48,7 +48,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.NIGHTFALL_DAMAGE.get(), CommonConfig.NIGHTFALL_ATTACK_SPEED.get(), settings, true);
+        super(toolMaterial, ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SUMMON_GHOST, WeaponUtil.TooltipAbilities.SHIELD, WeaponUtil.TooltipAbilities.OBLITERATE);
     }
 
@@ -57,13 +57,13 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                if (!player.isCreative()) player.getItemCooldownManager().set(this, CommonConfig.NIGHTFALL_SMASH_COOLDOWN.get() - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
                 Box aoe = new Box(targetArea).expand(3);
                 List<Entity> entities = world.getOtherEntities(player, aoe);
-                float power = CommonConfig.NIGHTFALL_ABILITY_DAMAGE.get();
+                float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
                         entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
@@ -91,7 +91,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
         if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity player && !this.isDisabled(attacker.getMainHandStack())) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
-            if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < CommonConfig.NIGHTFALL_SUMMON_CHANCE.get()) {
+            if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
                 Remnant entity = new Remnant(EntityRegistry.REMNANT.get(), world);
                 entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
                 entity.setOwner(player);
@@ -127,9 +127,9 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            player.getItemCooldownManager().set(this, (CommonConfig.NIGHTFALL_SHIELD_COOLDOWN.get() - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
+            player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, CommonConfig.NIGHTFALL_ABILITY_SHIELD_POWER.get()));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
             world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
         }
@@ -141,42 +141,42 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public float getBaseExpansion() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_BASE_RADIUS.get();
+        return ConfigConstructor.nightfall_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
+        return ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
     public float getLaunchModifier() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+        return ConfigConstructor.nightfall_calculated_fall_target_launch_modifier;
     }
 
     @Override
     public float getMaxExpansion() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_MAX_RADIUS.get();
+        return ConfigConstructor.nightfall_calculated_fall_max_radius;
     }
 
     @Override
     public float getMaxDetonationDamage() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_MAX_DAMAGE.get();
+        return ConfigConstructor.nightfall_calculated_fall_max_damage;
     }
 
     @Override
     public float getFallDamageIncreaseModifier() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_SHOULD_HEAL.get();
+        return ConfigConstructor.nightfall_calculated_fall_should_heal;
     }
 
     @Override
     public float getHealFromDamageModifier() {
-        return CommonConfig.NIGHTFALL_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier;
     }
 
     @Override
@@ -193,7 +193,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public int getMaxSummons() {
-        return CommonConfig.NIGHTFALL_ALLIES_CAP.get();
+        return ConfigConstructor.nightfall_summoned_allies_cap;
     }
 
     @Override
@@ -222,6 +222,6 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_NIGHTFALL.get();
+        return ConfigConstructor.disable_use_nightfall;
     }
 }

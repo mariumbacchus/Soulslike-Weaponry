@@ -15,7 +15,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
@@ -40,9 +40,9 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
                 boolean canDamageTarget = livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
-                if (canDamageTarget || CommonConfig.CALCULATED_FALL_HITS_IMMUNE_ENTITIES.get()) {
+                if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, fallDistance * this.getLaunchModifier(), 0);
-                    if (this.shouldHeal()) user.heal(CommonConfig.LIFE_STEAL_BASE_HEAL.get() - 1 + (CommonConfig.LIFE_STEAL_SCALES.get() ? power * this.getHealFromDamageModifier() : 0)); // power was prev. divided by 10
+                    if (this.shouldHeal()) user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power * this.getHealFromDamageModifier() : 0)); // power was prev. divided by 10
                     this.doCustomEffects(livingEntity, user);
                 }
             }

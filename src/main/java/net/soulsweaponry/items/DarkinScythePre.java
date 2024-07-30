@@ -21,7 +21,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -32,10 +32,10 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
-    public final int MAX_SOULS = CommonConfig.DARKIN_SCYTHE_MAX_SOULS.get();
+    public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
 
     public DarkinScythePre(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get(), CommonConfig.DARKIN_SCYTHE_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.darkin_scythe_damage, ConfigConstructor.darkin_scythe_attack_speed, settings);
         this.getTooltipAbilities().clear();
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRANSFORMATION);
     }
@@ -109,7 +109,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     private float getBonusDamage(ItemStack stack) {
         if (this.isDisabled(stack)) return 0;
         float soulPercent = (float) this.getSouls(stack) / (float) MAX_SOULS;
-        return (float) CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get() * soulPercent;
+        return (float) ConfigConstructor.darkin_scythe_bonus_damage * soulPercent;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DARKIN_SCYTHE.get();
+        return ConfigConstructor.disable_use_darkin_scythe;
     }
 
     public enum SoulType {

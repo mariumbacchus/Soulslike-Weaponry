@@ -17,7 +17,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -36,7 +36,7 @@ public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
     public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.SWORD_OF_FREYR_DAMAGE.get(), CommonConfig.SWORD_OF_FREYR_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SUMMON_WEAPON);
     }
 
@@ -104,6 +104,6 @@ public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SWORD_OF_FREYR.get();
+        return ConfigConstructor.disable_use_sword_of_freyr;
     }
 }

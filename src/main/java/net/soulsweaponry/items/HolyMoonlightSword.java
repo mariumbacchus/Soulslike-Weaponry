@@ -9,7 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
@@ -29,8 +29,8 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     private float getBonusDamage(ItemStack stack) {
         if (this.isDisabled(stack)) return 0;
-        float per = (float) this.getCharge(stack) / (float) CommonConfig.HOLY_MOON_ABILITY_CHARGE_NEED.get();
-        return (float) CommonConfig.HOLY_MOON_SWORD_MAX_BONUS.get() * per;
+        float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
+        return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }
 
     @Override
@@ -49,12 +49,12 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     @Override
     public int getMaxCharge() {
-        return CommonConfig.HOLY_MOON_ABILITY_CHARGE_NEED.get();
+        return ConfigConstructor.holy_moonlight_ability_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        int base = CommonConfig.HOLY_MOON_SWORD_CHARGE_ADDED.get();
+        int base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack);
     }
 }

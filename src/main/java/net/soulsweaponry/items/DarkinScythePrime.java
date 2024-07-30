@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class DarkinScythePrime extends UmbralTrespassItem {
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.DARKIN_SCYTHE_DAMAGE.get() + CommonConfig.DARKIN_SCYTHE_BONUS_DAMAGE.get(), CommonConfig.DARKIN_SCYTHE_PRIME_ATTACK_SPEED.get(), settings, CommonConfig.DARKIN_SCYTHE_PRIME_TICKS_BEFORE_DISMOUNT.get());
+        super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.darkin_scythe_prime_attack_speed, settings, ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP);
     }
 
@@ -23,9 +23,9 @@ public class DarkinScythePrime extends UmbralTrespassItem {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                if (!player.isCreative()) player.getItemCooldownManager().set(this, CommonConfig.LIFE_STEAL_COOLDOWN.get());
-                float healing = CommonConfig.LIFE_STEAL_BASE_HEAL.get();
-                if (CommonConfig.LIFE_STEAL_SCALES.get()) {
+                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.lifesteal_item_cooldown);
+                float healing = ConfigConstructor.lifesteal_item_base_healing;
+                if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
                 }
                 attacker.heal(healing);
@@ -41,6 +41,6 @@ public class DarkinScythePrime extends UmbralTrespassItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_DARKIN_SCYTHE_PRIME.get();
+        return ConfigConstructor.disable_use_darkin_scythe_prime;
     }
 }

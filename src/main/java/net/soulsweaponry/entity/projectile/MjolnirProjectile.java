@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -39,12 +39,12 @@ public class MjolnirProjectile extends ReturningProjectile implements IAnimatabl
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return CommonConfig.MJOLNIR_RETURN_SPEED.get() + (double) WeaponUtil.getEnchantDamageBonus(this.asItemStack())/2;
+        return ConfigConstructor.mjolnir_return_speed + (double) WeaponUtil.getEnchantDamageBonus(this.asItemStack())/2;
     }
 
     @Override
     public float getDamage(Entity target) {
-        float f = CommonConfig.MJOLNIR_PROJECTILE_DAMAGE.get();
+        float f = ConfigConstructor.mjolnir_projectile_damage;
         if (target instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) target).getGroup());
         return f;
     }

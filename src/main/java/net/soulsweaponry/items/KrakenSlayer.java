@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -37,7 +37,7 @@ public class KrakenSlayer extends ModdedBow {
                     if (!world.isClient) {
                         if (stack.hasNbt() && stack.getNbt().contains("firedShots") && stack.getNbt().getInt("firedShots") >= 2) {
                             KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, user);
-                            projectile.setTrueDamage(CommonConfig.KRAKEN_SLAYER_BONUS_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.POWER, stack));
+                            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack));
                             this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.6f, 3.0f);
                             stack.getNbt().putInt("firedShots", 0);
                         } else {
@@ -65,11 +65,11 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public float getReducedPullTime() {
-        return CommonConfig.KRAKEN_SLAYER_REDUCED_PULL_TIME.get();
+        return ConfigConstructor.kraken_slayer_reduced_pull_time;
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_KRAKEN_SLAYER_BOW.get();
+        return ConfigConstructor.disable_use_kraken_slayer_bow;
     }
 }

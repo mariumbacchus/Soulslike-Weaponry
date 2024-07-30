@@ -19,7 +19,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.explosion.Explosion.DestructionType;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseOne;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
@@ -66,7 +66,7 @@ public class MoonknightGoal extends Goal {
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * CommonConfig.FALLEN_ICON_DAMAGE_MODIFIER.get();
+        return damage * ConfigConstructor.fallen_icon_damage_modifier;
     }
 
     private void resetAttack(float attackCDModifier, boolean wasSpecial, float specialCDModifier) {
@@ -76,8 +76,8 @@ public class MoonknightGoal extends Goal {
             this.checkAttackPhaseTwo(MoonknightPhaseTwo.IDLE, this.boss.getTarget());
         }
         this.attackStatus = 0;
-        this.attackCooldown = ((int) Math.floor((this.boss.isPhaseTwo() ? CommonConfig.FALLEN_ICON_ATTACK_COOLDOWN_TICKS_PHASE_2.get() : CommonConfig.FALLEN_ICON_ATTACK_COOLDOWN_TICKS_PHASE_1.get()) * attackCDModifier) - this.boss.getReducedCooldownAttackers()*2);
-        if (wasSpecial) this.specialCooldown = (int) Math.floor(CommonConfig.FALLEN_ICON_SPECIAL_COOLDOWN_TICKS.get() * specialCDModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.attackCooldown = ((int) Math.floor((this.boss.isPhaseTwo() ? ConfigConstructor.fallen_icon_attack_cooldown_ticks_phase_2 : ConfigConstructor.fallen_icon_attack_cooldown_ticks_phase_1) * attackCDModifier) - this.boss.getReducedCooldownAttackers()*2);
+        if (wasSpecial) this.specialCooldown = (int) Math.floor(ConfigConstructor.fallen_icon_special_cooldown_ticks * specialCDModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     private void reset() {

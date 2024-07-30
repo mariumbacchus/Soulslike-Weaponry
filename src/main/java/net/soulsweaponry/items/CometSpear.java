@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -36,7 +36,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.COMET_SPEAR_DAMAGE.get(), CommonConfig.COMET_SPEAR_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYFALL, WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.CRIT);
     }
 
@@ -65,12 +65,12 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                         playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, CommonConfig.COMET_SPEAR_ABILITY_DAMAGE.get().intValue()));
-                    playerEntity.getItemCooldownManager().set(this, (int) (CommonConfig.COMET_SPEAR_SKYFALL_COOLDOWN.get() - (enchant*20)));
+                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, ConfigConstructor.comet_spear_ability_damage));
+                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_skyfall_ability_cooldown - (enchant*20)));
                     stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                    playerEntity.getItemCooldownManager().set(this, (int) (CommonConfig.COMET_SPEAR_THROW_COOLDOWN.get() - (enchant*5)));
+                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown - (enchant*5)));
 
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
@@ -98,42 +98,42 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public float getBaseExpansion() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_BASE_RADIUS.get();
+        return ConfigConstructor.comet_spear_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
+        return ConfigConstructor.comet_spear_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
     public float getLaunchModifier() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+        return ConfigConstructor.comet_spear_calculated_fall_target_launch_modifier;
     }
 
     @Override
     public float getMaxExpansion() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_MAX_RADIUS.get();
+        return ConfigConstructor.comet_spear_calculated_fall_max_radius;
     }
 
     @Override
     public float getMaxDetonationDamage() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_MAX_DAMAGE.get();
+        return ConfigConstructor.comet_spear_calculated_fall_max_damage;
     }
 
     @Override
     public float getFallDamageIncreaseModifier() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.comet_spear_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_SHOULD_HEAL.get();
+        return ConfigConstructor.comet_spear_calculated_fall_should_heal;
     }
 
     @Override
     public float getHealFromDamageModifier() {
-        return CommonConfig.COMET_SPEAR_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.comet_spear_calculated_fall_heal_from_damage_modifier;
     }
 
     @Override
@@ -162,6 +162,6 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_COMET_SPEAR.get();
+        return ConfigConstructor.disable_use_comet_spear;
     }
 }

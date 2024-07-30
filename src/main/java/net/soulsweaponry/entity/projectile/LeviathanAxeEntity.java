@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -38,7 +38,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
 
     @Override
     public float getDamage(Entity target) {
-        return CommonConfig.LEVIATHAN_AXE_PROJECTILE_DAMAGE.get() + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
+        return ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return CommonConfig.LEVIATHAN_AXE_RETURN_SPEED.get() + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
+        return ConfigConstructor.leviathan_axe_return_speed + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
     }
 
     @Override

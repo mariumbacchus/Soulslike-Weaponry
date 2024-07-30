@@ -24,12 +24,12 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -46,11 +46,11 @@ import java.util.Random;
 
 public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimationTickable {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
-    public ArrayList<BlockPos> lavaPos = new ArrayList<>();
+    public final ArrayList<BlockPos> lavaPos = new ArrayList<>();
 
     public AccursedLordBoss(EntityType<? extends AccursedLordBoss> entityType, World world) {
         super(entityType, world, BossBar.Color.RED);
@@ -95,7 +95,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
 
     @Override
     public int getXp() {
-        return CommonConfig.DECAYING_KING_XP.get();
+        return ConfigConstructor.decaying_king_xp;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.DECAYING_KING_HEALTH.get())
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -157,7 +157,6 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
 
     public void tickMovement() {
         super.tickMovement();
-
         if (this.getAttackAnimation().equals(AccursedLordAnimations.SPAWN)) {
             this.spawnTicks++;
             
@@ -185,7 +184,7 @@ public class AccursedLordBoss extends BossEntity implements IAnimatable, IAnimat
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(DamageSource.mob(this), 50f * CommonConfig.DECAYING_KING_DAMAGE_MODIFIER.get());
+                        closestTarget.damage(DamageSource.mob(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
                     }
                 }
                 if (!this.world.isClient) {

@@ -12,7 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.FEATHERLIGHT_DAMAGE.get(), CommonConfig.DISABLE_USE_FEATHERLIGHT.get() ? 1f : CommonConfig.FEATHERLIGHT_ATTACK_SPEED.get(), settings, true);
+        super(toolMaterial, ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.FEATHERLIGHT);
     }
 
@@ -38,42 +38,42 @@ public class Featherlight extends UltraHeavyWeapon {
 
     @Override
     public float getBaseExpansion() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_BASE_RADIUS.get();
+        return ConfigConstructor.featherlight_calculated_fall_base_radius;
     }
 
     @Override
     public float getExpansionModifier() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_HEIGHT_INCREASE_RADIUS_MODIFIER.get();
+        return ConfigConstructor.featherlight_calculated_fall_height_increase_radius_modifier;
     }
 
     @Override
     public float getLaunchModifier() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_TARGET_LAUNCH_MODIFIER.get();
+        return ConfigConstructor.featherlight_calculated_fall_target_launch_modifier;
     }
 
     @Override
     public float getMaxExpansion() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_MAX_RADIUS.get();
+        return ConfigConstructor.featherlight_calculated_fall_max_radius;
     }
 
     @Override
     public float getMaxDetonationDamage() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_MAX_DAMAGE.get();
+        return ConfigConstructor.featherlight_calculated_fall_max_damage;
     }
 
     @Override
     public float getFallDamageIncreaseModifier() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_HEIGHT_INCREASE_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.featherlight_calculated_fall_height_increase_damage_modifier;
     }
 
     @Override
     public boolean shouldHeal() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_SHOULD_HEAL.get();
+        return ConfigConstructor.featherlight_calculated_fall_should_heal;
     }
 
     @Override
     public float getHealFromDamageModifier() {
-        return CommonConfig.FEATHERLIGHT_CALCULATED_FALL_HEAL_FROM_DAMAGE_MODIFIER.get();
+        return ConfigConstructor.featherlight_calculated_fall_heal_from_damage_modifier;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Featherlight extends UltraHeavyWeapon {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_FEATHERLIGHT.get();
+        return ConfigConstructor.disable_use_featherlight;
     }
 
     @Override

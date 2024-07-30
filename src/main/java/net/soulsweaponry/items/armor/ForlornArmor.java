@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 
@@ -24,9 +24,9 @@ public class ForlornArmor extends SetBonusArmor {
     @Override
     protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {
         if (player.world.isClient) return;
-        for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(CommonConfig.FORLORN_SET_BONUS_RANGE.get()))) {
+        for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {
             if (stack.getItem() == this.getMatchingHead() && entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
-                player.heal(CommonConfig.FORLORN_SET_BONUS_HEAL.get());
+                player.heal(ConfigConstructor.forlorn_set_bonus_heal);
             }
         }
     }
@@ -65,6 +65,6 @@ public class ForlornArmor extends SetBonusArmor {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_FORLORN_ARMOR.get();
+        return ConfigConstructor.disable_use_forlorn_armor;
     }
 }

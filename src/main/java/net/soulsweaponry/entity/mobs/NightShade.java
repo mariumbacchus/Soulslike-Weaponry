@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -62,7 +62,7 @@ public class NightShade extends BossEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, CommonConfig.FRENZIED_SHADE_HEALTH.get())
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frenzied_shade_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }
@@ -113,7 +113,7 @@ public class NightShade extends BossEntity implements IAnimatable {
         if (this.isCopy) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
-                this.setHealth((float) (CommonConfig.FRENZIED_SHADE_HEALTH.get() / 4f));
+                this.setHealth((float) (ConfigConstructor.frenzied_shade_health / 4f));
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
@@ -321,7 +321,7 @@ public class NightShade extends BossEntity implements IAnimatable {
 
     @Override
     public int getXp() {
-        return CommonConfig.FRENZIED_SHADE_XP.get();
+        return ConfigConstructor.frenzied_shade_xp;
     }
 
     @Override

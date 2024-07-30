@@ -15,7 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -38,7 +38,7 @@ public class SkofnungStone extends Item implements IConfigDisable {
         for (Hand offHand : Hand.values()) {
             ItemStack swordStack = user.getStackInHand(offHand);
             if (swordStack.getItem() instanceof Skofnung && swordStack.hasNbt()) {
-                swordStack.getNbt().putInt(Skofnung.EMPOWERED, CommonConfig.SKOFNUNG_STONE_ADDITIONAL_EMPOWERED_STRIKES.get());
+                swordStack.getNbt().putInt(Skofnung.EMPOWERED, ConfigConstructor.skofnung_stone_additional_empowered_strikes);
                 shouldDamage = true;
                 world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
@@ -75,6 +75,6 @@ public class SkofnungStone extends Item implements IConfigDisable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return CommonConfig.DISABLE_USE_SKOFNUNG_STONE.get();
+        return ConfigConstructor.disable_use_skofnung_stone;
     }
 }

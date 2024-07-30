@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 /**
@@ -17,7 +17,7 @@ public class Sting extends ModdedSword {
     private static final String ACTIVE = "active_glowing";
 
     public Sting(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, CommonConfig.STING_DAMAGE.get(), CommonConfig.STING_ATTACK_SPEED.get(), settings);
+        super(toolMaterial, ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.LUMINATE, WeaponUtil.TooltipAbilities.SPIDERS_BANE);
     }
 

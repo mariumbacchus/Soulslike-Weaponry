@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.networking.ModMessages;
@@ -70,7 +70,7 @@ public class ModEvents {
     public static void onLivingEntityTicks(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
         int posture = PostureData.getPosture(entity);
-        if (posture >= CommonConfig.MAX_POSTURE_LOSS.get()) {
+        if (posture >= ConfigConstructor.max_posture_loss) {
             if (!entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get())) {
                 entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
             }

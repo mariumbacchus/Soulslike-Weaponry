@@ -11,7 +11,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.config.CommonConfig;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.WeaponRegistry;
 
@@ -109,7 +109,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lunar_herald_no_charge_2").formatted(Formatting.DARK_GRAY));
             }
             case RIGHTEOUS -> {
-                int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + CommonConfig.RIGHTEOUS_UNDEAD_BONUS_DAMAGE.get());
+                int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + ConfigConstructor.righteous_undead_bonus_damage);
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(String.valueOf(amount))));
@@ -228,7 +228,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears").formatted(Formatting.RED));
                 for (int i = 1; i <= 5; i++) {
                     if (i == 3) tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).append(new LiteralText(String.valueOf(
-                            CommonConfig.DRAUPNIR_DETONATE_POWER.get() + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) / 2.5f)))
+                            ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) / 2.5f)))
                             .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
                     else tooltip.add(new TranslatableText("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
@@ -320,7 +320,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.magic_damage_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.magic_damage_description_3").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.magic_damage_description_4").formatted(Formatting.GRAY).append(new LiteralText(
-                        String.valueOf(CommonConfig.LICH_BANE_BONUS_MAGIC_DAMAGE.get() + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack))).formatted(Formatting.DARK_AQUA)));
+                        String.valueOf(ConfigConstructor.lich_bane_bonus_magic_damage + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack))).formatted(Formatting.DARK_AQUA)));
             }
             case MJOLNIR_LIGHTNING -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.lightning").formatted(Formatting.GOLD));
@@ -408,7 +408,7 @@ public class WeaponUtil {
             case SPIDERS_BANE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods").formatted(Formatting.WHITE));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods_description_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(String.valueOf(CommonConfig.STING_BONUS_ARTHROPOD_DAMAGE.get())).formatted(Formatting.AQUA)));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.bane_of_arthropods_description_2").formatted(Formatting.DARK_GRAY).append(new LiteralText(String.valueOf(ConfigConstructor.sting_bonus_arthropod_damage)).formatted(Formatting.AQUA)));
             }
             case SAWBLADE -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.sawblade").formatted(Formatting.DARK_RED));
@@ -488,11 +488,11 @@ public class WeaponUtil {
                 }
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot").formatted(Formatting.GOLD));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_1").formatted(Formatting.GRAY));
-                tooltip.add(new LiteralText(String.valueOf(CommonConfig.KRAKEN_SLAYER_BONUS_DAMAGE.get() + bonus))
+                tooltip.add(new LiteralText(String.valueOf(ConfigConstructor.kraken_slayer_bonus_true_damage + bonus))
                         .formatted(Formatting.WHITE)
                         .append(new TranslatableText("tooltip.soulsweapons.third_shot_2").formatted(Formatting.GRAY)));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_3").formatted(Formatting.GRAY)
-                        .append(new LiteralText(MathHelper.floor((1f - CommonConfig.KRAKEN_SLAYER_PLAYER_DAMAGE_MOD.get()) * 100) + "%"))
+                        .append(new LiteralText(MathHelper.floor((1f - ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier) * 100) + "%"))
                         .formatted(Formatting.DARK_GRAY));
                 if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())) {
                     tooltip.add(new TranslatableText("tooltip.soulsweapons.third_shot_4").formatted(Formatting.GRAY));
