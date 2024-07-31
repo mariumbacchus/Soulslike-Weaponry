@@ -12,6 +12,9 @@ public class PostureData {
 
     public static int addPosture(LivingEntity entity, int amount) {
         NbtCompound nbt = entity.getPersistentData();
+        if (!nbt.contains(POSTURE_ID)) {
+            nbt.putInt(POSTURE_ID, 0);
+        }
         int posture = nbt.getInt(POSTURE_ID);
         if (posture < 0) {
             posture = 0;
@@ -26,6 +29,9 @@ public class PostureData {
     }
 
     public static int getPosture(LivingEntity entity) {
+        if (!entity.getPersistentData().contains(POSTURE_ID)) {
+            entity.getPersistentData().putInt(POSTURE_ID, 0);
+        }
         return entity.getPersistentData().getInt(POSTURE_ID);
     }
 

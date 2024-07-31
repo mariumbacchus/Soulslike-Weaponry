@@ -15,6 +15,9 @@ public class ParryData {
 
     public static int addParryFrames(PlayerEntity player, int amount) {
         NbtCompound nbt = player.getPersistentData();
+        if (!nbt.contains(PARRY_FRAMES_ID)) {
+            nbt.putInt(PARRY_FRAMES_ID, 0);
+        }
         int frame = nbt.getInt(PARRY_FRAMES_ID);
         if (frame >= MAX_PARRY_FRAMES) {
             frame = 0;
@@ -38,6 +41,9 @@ public class ParryData {
     }
 
     public static int getParryFrames(PlayerEntity player) {
+        if (!player.getPersistentData().contains(PARRY_FRAMES_ID)) {
+            player.getPersistentData().putInt(PARRY_FRAMES_ID, 0);
+        }
         return player.getPersistentData().getInt(PARRY_FRAMES_ID);
     }
 

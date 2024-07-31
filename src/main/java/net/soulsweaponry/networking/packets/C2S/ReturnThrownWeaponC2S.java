@@ -7,8 +7,8 @@ import net.minecraft.text.LiteralText;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
+import net.soulsweaponry.entitydata.ReturningProjectileData;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -38,20 +38,16 @@ public class ReturnThrownWeaponC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, ReturnThrownWeaponC2S packet) {
-        try {
-            Optional<UUID> op = player.getDataTracker().get(ReturningProjectile.THROWN_WEAPON_OPT);
-            if (op.isPresent()) {
-                Entity entity = player.getWorld().getEntity(op.get());
-                if (entity instanceof ReturningProjectile projectile) {
-                    projectile.setShouldReturn(true);
-                } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
-                    player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
-                }
-            }
-        } catch (Exception e) {
-            if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+        UUID uuid = ReturningProjectileData.getReturningProjectileUuid(player);
+        if (uuid != null) {
+            Entity entity = player.getWorld().getEntity(uuid);
+            if (entity instanceof ReturningProjectile projectile) {
+                projectile.setShouldReturn(true);
+            } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
                 player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
             }
+        } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+            player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
         }
     }
 }

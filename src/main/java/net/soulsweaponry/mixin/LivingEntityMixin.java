@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -25,8 +26,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static net.soulsweaponry.events.PlayerDataHandlerEvents.SHOULD_DAMAGE_RIDING;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -72,32 +71,29 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "onDismounted", at = @At("HEAD"))
     public void interceptDismount(Entity entity, CallbackInfo info) {
-        if (entity instanceof LivingEntity && this.entity instanceof PlayerEntity player) {
-            try {
-                if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
-                    LivingEntity target = ((LivingEntity)entity);
-                    float damage = 20f;
-                    ItemCooldownManager cooldownManager = player.getItemCooldownManager();
-                    for (Hand hand : Hand.values()) {
-                        ItemStack stack = player.getStackInHand(hand);
-                        if (player.getStackInHand(hand).isOf(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get())) {
-                            damage = ConfigConstructor.shadow_assassin_scythe_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup());
-                            cooldownManager.set(stack.getItem(), ConfigConstructor.shadow_assassin_scythe_ability_cooldown);
-                        } else if (player.getStackInHand(hand).isOf(WeaponRegistry.DARKIN_SCYTHE_PRIME.get())) {
-                            damage = ConfigConstructor.darkin_scythe_prime_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()) + (target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage/100f));
-                            float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
-                            player.heal(healing);
-                            cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
-                        }
-                    }
-                    target.damage(DamageSource.mob(player), damage);
-                    player.getDataTracker().set(SHOULD_DAMAGE_RIDING, false);
-                    if (!player.world.isClient && player.getBlockPos() != null) {
-                        player.world.playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
-                        ParticleHandler.particleOutburstMap(player.getWorld(), 150, player.getX(), player.getEyeY(), player.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
+        if (entity instanceof LivingEntity target && this.entity instanceof PlayerEntity player) {
+            if (UmbralTrespassData.shouldDamageRiding(player)) {
+                float damage = 20f;
+                ItemCooldownManager cooldownManager = player.getItemCooldownManager();
+                for (Hand hand : Hand.values()) {
+                    ItemStack stack = player.getStackInHand(hand);
+                    if (player.getStackInHand(hand).isOf(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get())) {
+                        damage = ConfigConstructor.shadow_assassin_scythe_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup());
+                        cooldownManager.set(stack.getItem(), ConfigConstructor.shadow_assassin_scythe_ability_cooldown);
+                    } else if (player.getStackInHand(hand).isOf(WeaponRegistry.DARKIN_SCYTHE_PRIME.get())) {
+                        damage = ConfigConstructor.darkin_scythe_prime_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()) + (target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage/100f));
+                        float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
+                        player.heal(healing);
+                        cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
                     }
                 }
-            } catch (Exception ignored) {}
+                target.damage(DamageSource.mob(player), damage);
+                UmbralTrespassData.setShouldDamageRiding(player, false);
+                if (!player.world.isClient && player.getBlockPos() != null) {
+                    player.world.playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
+                    ParticleHandler.particleOutburstMap(player.getWorld(), 150, player.getX(), player.getEyeY(), player.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
+                }
+            }
         }
     }
 }

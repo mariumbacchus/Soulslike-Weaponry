@@ -42,6 +42,10 @@ public class ModMessages {
         net.messageBuilder(ParrySyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ParrySyncS2C::new).encoder(ParrySyncS2C::toBytes).consumer(ParrySyncS2C::handle).add();
         net.messageBuilder(PostureSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(PostureSyncS2C::new).encoder(PostureSyncS2C::toBytes).consumer(PostureSyncS2C::handle).add();
         net.messageBuilder(SummonUUIDsSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(SummonUUIDsSyncS2C::new).encoder(SummonUUIDsSyncS2C::toBytes).consumer(SummonUUIDsSyncS2C::handle).add();
+        net.messageBuilder(FreyrSwordSummonDataSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(FreyrSwordSummonDataSyncS2C::new).encoder(FreyrSwordSummonDataSyncS2C::toBytes).consumer(FreyrSwordSummonDataSyncS2C::handle).add();
+        net.messageBuilder(TicksBeforeDismountSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(TicksBeforeDismountSyncS2C::new).encoder(TicksBeforeDismountSyncS2C::toBytes).consumer(TicksBeforeDismountSyncS2C::handle).add();
+        net.messageBuilder(ShouldDamageRidingSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ShouldDamageRidingSyncS2C::new).encoder(ShouldDamageRidingSyncS2C::toBytes).consumer(ShouldDamageRidingSyncS2C::handle).add();
+        net.messageBuilder(ReturningProjectileDataSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ReturningProjectileDataSyncS2C::new).encoder(ReturningProjectileDataSyncS2C::toBytes).consumer(ReturningProjectileDataSyncS2C::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

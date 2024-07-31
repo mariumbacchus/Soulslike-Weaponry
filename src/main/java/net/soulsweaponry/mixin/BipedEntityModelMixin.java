@@ -39,7 +39,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     );
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
-    private void positionRightArm(T entity, CallbackInfo info) {
+    private void positionRightArm(T entity, CallbackInfo info) {//TODO: make scythes not use this posing, only guts' sword, also change the models to look better
         /*for (ItemStack stack : entity.getItemsHand()) {
             if (!stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {
                 if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {

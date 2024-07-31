@@ -30,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
+import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -43,10 +44,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Optional;
 import java.util.UUID;
-
-import static net.soulsweaponry.events.PlayerDataHandlerEvents.SUMMON_UUID;
 
 /**
  * NOTE TO SELF: <p>
@@ -180,14 +178,10 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
             UUID uUID = this.getOwnerUuid();
             LivingEntity owner = uUID == null ? null : this.world.getPlayerByUuid(uUID);
             if (owner instanceof PlayerEntity player) {
-                try {
-                    Optional<UUID> op = player.getDataTracker().get(SUMMON_UUID);
-                    if (op.isPresent() && op.get() == this.getUuid()) {
-                        return owner;
-                    } else {
-                        return null;
-                    }
-                } catch (Exception e) {
+                UUID swordUuid = FreyrSwordSummonData.getSummonUuid(player);
+                if (swordUuid != null && swordUuid.equals(this.getUuid())) {
+                    return owner;
+                } else {
                     return null;
                 }
             }

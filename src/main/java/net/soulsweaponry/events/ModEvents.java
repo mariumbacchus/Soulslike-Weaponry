@@ -3,11 +3,9 @@ package net.soulsweaponry.events;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,9 +15,6 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.posture.PostureData;
-import net.soulsweaponry.networking.ModMessages;
-import net.soulsweaponry.networking.packets.S2C.ParrySyncS2C;
-import net.soulsweaponry.networking.packets.S2C.PostureSyncS2C;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -51,7 +46,7 @@ public class ModEvents {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         // NOTE: In other versions, either annotate capability class with @AutoRegisterCapability (or @CapabilityInject)
         // instead of having this method.
-        event.register(PostureData.class);
+        //event.register(PostureData.class);
     }
 
     @SubscribeEvent
@@ -78,16 +73,6 @@ public class ModEvents {
             PostureData.setPosture(entity, 0);
         } else if (posture > 0 && entity.age % 4 == 0) {
             PostureData.reducePosture(entity, 1);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerJoinWorld(EntityJoinWorldEvent event) {
-        if (!event.getWorld().isClient) {
-            if (event.getEntity() instanceof ServerPlayerEntity player) {
-                ModMessages.sendToPlayer(new ParrySyncS2C(ParryData.getParryFrames(player)), player);//TODO this causes server crash...
-                ModMessages.sendToPlayer(new PostureSyncS2C(PostureData.getPosture(player)), player);
-            }
         }
     }
 }
