@@ -3,8 +3,12 @@ package net.soulsweaponry.networking.S2C;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.soulsweaponry.particles.ParticleHandler;
 
 public class FlashParticleS2C {
@@ -21,6 +25,8 @@ public class FlashParticleS2C {
     }
 
     private static void handle(ClientWorld world, double x, double y, double z, ParticleHandler.RGB rgb, float sizeMod) {
-        ParticleHandler.flashParticle(world, x, y, z, rgb, sizeMod);
+        Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, x, y, z, 0, 0, 0);
+        flash.setBoundingBox(new Box(new BlockPos(x, y, z)).expand(sizeMod));
+        flash.setColor(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
     }
 }

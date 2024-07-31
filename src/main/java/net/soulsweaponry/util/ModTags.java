@@ -53,6 +53,8 @@ public class ModTags {
 
     public static class Entities {
         public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
+        public static final TagKey<EntityType<?>> RANGED_MOBS = createCommonTag("ranged_mobs");
+        public static final TagKey<EntityType<?>> BOSSES = createCommonTag("bosses");
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {
             return TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("c", id));

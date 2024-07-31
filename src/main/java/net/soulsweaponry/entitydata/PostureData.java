@@ -14,6 +14,9 @@ public class PostureData {
 
     public static int addPosture(IEntityDataSaver entity, int amount) {
         NbtCompound nbt = entity.getPersistentData();
+        if (!nbt.contains(POSTURE_ID)) {
+            nbt.putInt(POSTURE_ID, 0);
+        }
         int posture = nbt.getInt(POSTURE_ID);
         if (posture < 0) {
             posture = 0;
@@ -28,7 +31,11 @@ public class PostureData {
     }
 
     public static int getPosture(LivingEntity entity) {
-        return ((IEntityDataSaver)entity).getPersistentData().getInt(POSTURE_ID);
+        IEntityDataSaver target = (IEntityDataSaver)entity;
+        if (!target.getPersistentData().contains(POSTURE_ID)) {
+            target.getPersistentData().putInt(POSTURE_ID, 0);
+        }
+        return target.getPersistentData().getInt(POSTURE_ID);
     }
 
     public static int reducePosture(IEntityDataSaver entity, int amount) {

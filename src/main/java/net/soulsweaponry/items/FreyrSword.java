@@ -1,9 +1,6 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -16,6 +13,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
+import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -23,13 +21,11 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public static final TrackedData<Optional<UUID>> SUMMON_UUID = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
@@ -44,25 +40,25 @@ public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
             return TypedActionResult.fail(stack);
         }
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
-        Optional<UUID> uuid = Optional.of(entity.getUuid());
-        try {
-            if (user.getDataTracker().get(SUMMON_UUID).isPresent() && world instanceof ServerWorld) {
-                Entity sword = ((ServerWorld)world).getEntity(user.getDataTracker().get(SUMMON_UUID).get());
-                if (sword instanceof FreyrSwordEntity) {
-                    return TypedActionResult.fail(stack);
-                } else {
-                    user.getInventory().removeOne(stack);
-                    entity.setPos(user.getX(), user.getY(), user.getZ());
-                    user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
-                    entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
-                    world.spawnEntity(entity);
-                }
+        UUID uuid = entity.getUuid();
+        UUID prevUuid = FreyrSwordSummonData.getSummonUuid(user);
+        if (world instanceof ServerWorld serverWorld) {
+            if (prevUuid == null) {
+                FreyrSwordSummonData.setSummonUuid(user, uuid);
+                prevUuid = uuid;
             }
-            user.getDataTracker().set(SUMMON_UUID, uuid);
-        } catch (Exception e) {
-            user.getDataTracker().startTracking(SUMMON_UUID, uuid);
+            Entity sword = serverWorld.getEntity(prevUuid);
+            if (sword instanceof FreyrSwordEntity) {
+                return TypedActionResult.fail(stack);
+            } else {
+                user.getInventory().removeOne(stack);
+                entity.setPos(user.getX(), user.getY(), user.getZ());
+                user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
+                entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
+                world.spawnEntity(entity);
+            }
+            FreyrSwordSummonData.setSummonUuid(user, uuid);
         }
-
         return TypedActionResult.success(stack);
     }
 

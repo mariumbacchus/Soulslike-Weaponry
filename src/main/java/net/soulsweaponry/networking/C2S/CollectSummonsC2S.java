@@ -18,7 +18,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.items.UmbralTrespassItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
@@ -33,7 +32,7 @@ public class CollectSummonsC2S {
                     if (handItem instanceof SoulHarvestingItem && !(handItem instanceof DarkinScythePre)) {
                         int collectedSouls = 0;
                         for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(8))) {
-                            if (entity instanceof Remnant remnant && ((Remnant)entity).getOwner() == player) {
+                            if (entity instanceof Remnant remnant && remnant.getOwner() != null && remnant.getOwner().equals(player)) {
                                 collectedSouls += remnant.getSoulAmount();
                                 ParticleHandler.particleSphereList(serverWorld, 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                                 serverWorld.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0.7f);

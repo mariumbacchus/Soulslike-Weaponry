@@ -8,14 +8,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.items.FreyrSword;
+import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class ReturnFreyrSwordC2S {
@@ -25,22 +23,16 @@ public class ReturnFreyrSwordC2S {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
             if (serverWorld != null) {
                 Text text = new TranslatableText("soulsweapons.weapon.no_freyr_sword");
-                try {
-                    Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
-                    if (op.isPresent() && player.getBlockPos() != null) {
-                        Entity sword = serverWorld.getEntity(op.get());
-                        if (sword instanceof FreyrSwordEntity) {
-                            if (!((FreyrSwordEntity)sword).insertStack(player)) {
-                                sword.setPos(player.getX(), player.getEyeY(), player.getZ());
-                                ((FreyrSwordEntity)sword).dropStack();
-                            }
-                            sword.discard();
-                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
-                            player.sendMessage(text, true);
+                UUID uuid = FreyrSwordSummonData.getSummonUuid(player);
+                if (uuid != null && player.getBlockPos() != null) {
+                    Entity sword = player.getWorld().getEntity(uuid);
+                    if (sword instanceof FreyrSwordEntity freyrSword) {
+                        if (!freyrSword.insertStack(player)) {
+                            freyrSword.setPos(player.getX(), player.getEyeY(), player.getZ());
+                            freyrSword.dropStack();
                         }
-                    }
-                } catch (Exception e) {
-                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                        freyrSword.discard();
+                    } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                         player.sendMessage(text, true);
                     }
                 }

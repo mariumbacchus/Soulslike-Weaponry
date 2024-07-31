@@ -179,6 +179,7 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_3").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_4").formatted(Formatting.DARK_GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_5").formatted(Formatting.DARK_GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.umbral_trespass_description_6").formatted(Formatting.DARK_GRAY));
             }
             case DAWNBREAKER -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.meridias_retribution").formatted(Formatting.DARK_PURPLE));
