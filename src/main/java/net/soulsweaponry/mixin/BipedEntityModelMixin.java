@@ -13,7 +13,6 @@ import net.soulsweaponry.client.entitydata.ClientParryData;
 import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entitydata.ParryData;
-import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,16 +29,14 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     @Unique
     private final Set<Item> customHoldItems = Set.of(
             WeaponRegistry.GUTS_SWORD.get(),
-            WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get(),
-            WeaponRegistry.DARKIN_SCYTHE_PRE.get(),
-            WeaponRegistry.DARKIN_SCYTHE_PRIME.get(),
-            WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get()
+            WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get()
     );
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
-    private void positionRightArm(T entity, CallbackInfo info) {//TODO: make scythes not use this posing, only guts' sword, also change the models to look better
-        /*for (ItemStack stack : entity.getItemsHand()) {
-            if (!stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {
+    private void positionRightArm(T entity, CallbackInfo info) {
+        var model = ((BipedEntityModel<?>)(Object)this);
+        for (ItemStack stack : entity.getItemsHand()) {
+            if (customHoldItems.contains(stack.getItem())) {
                 if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
                     if (stack.isOf(WeaponRegistry.GUTS_SWORD.get())) {
                         CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
@@ -53,18 +50,13 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
                 }
             }
-        }*/
+        }
     }
 
-    @Inject(at = @At("HEAD"), method = "animateArms")
+    @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
-        /*if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
-            ItemStack stack = entity.getMainHandStack();
-            if (model.handSwingProgress > 0.0f && !stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {
-                ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
-            }
-        }*/
+        // Parry animation
         if (entity instanceof AbstractClientPlayerEntity) {
             int frames = ClientParryData.getParryFrames();
             if (frames >= 1) {
@@ -87,6 +79,13 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 modelPart.pitch -= g * 1.2f + h;
                 modelPart.yaw += model.body.yaw * 2.0f;
                 modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.4f; //0.4, 0.8
+            }
+        }
+        if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
+            ItemStack stack = entity.getMainHandStack();
+            if (model.handSwingProgress > 0.0f && customHoldItems.contains(stack.getItem())) {
+                ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
+                info.cancel();
             }
         }
     }
