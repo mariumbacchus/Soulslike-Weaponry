@@ -26,8 +26,6 @@ import java.util.Set;
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
     @Unique
-    BipedEntityModel<?> model = ((BipedEntityModel<?>)(Object)this);
-    @Unique
     private float parryProgress;
     @Unique
     private final Set<Item> customHoldItems = Set.of(
@@ -60,6 +58,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
 
     @Inject(at = @At("HEAD"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
+        var model = ((BipedEntityModel<?>)(Object)this);
         /*if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
             ItemStack stack = entity.getMainHandStack();
             if (model.handSwingProgress > 0.0f && !stack.isOf(WeaponRegistry.FROSTMOURNE.get()) && (stack.getItem() instanceof SoulHarvestingItem || customHoldItems.contains(stack.getItem()))) {

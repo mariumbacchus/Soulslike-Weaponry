@@ -9,12 +9,14 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.particles.ParticleHandler;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ParticleSphereS2C {
@@ -117,10 +119,15 @@ public class ParticleSphereS2C {
     }
 
     private void handlePacket(ClientWorld world, ParticleSphereS2C packet) {
+        ParticleEffect particleEffect;
         if (!packet.getItemStack().isOf(Items.AIR)) {
-            ParticleHandler.particleSphere(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getSizeMod());
+            particleEffect = packet.getItemParticleOption();
         } else {
-            ParticleHandler.particleSphere(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getSizeMod());
+            particleEffect = packet.getParticle();
+        }
+        List<Vec3d> list = ParticleHandler.getSphereParticleCords(packet.getAmount(), packet.getSizeMod());
+        for (Vec3d vec : list) {
+            world.addParticle(particleEffect, packet.getX(), packet.getY(), packet.getZ(), vec.getX(), vec.getY(), vec.getZ());
         }
     }
 }

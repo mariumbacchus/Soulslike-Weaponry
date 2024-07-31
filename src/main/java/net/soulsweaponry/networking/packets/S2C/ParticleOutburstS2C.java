@@ -16,6 +16,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.particles.ParticleHandler;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ParticleOutburstS2C {
@@ -129,10 +130,15 @@ public class ParticleOutburstS2C {
     }
 
     private void handlePacket(ClientWorld world, ParticleOutburstS2C packet) {
+        ParticleEffect particleEffect;
         if (!packet.getItemStack().isOf(Items.AIR)) {
-            ParticleHandler.particleOutburst(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getItemParticleOption(), packet.getVelDividers(), packet.getSizeMod());
+            particleEffect = packet.getItemParticleOption();
         } else {
-            ParticleHandler.particleOutburst(world, packet.getAmount(), packet.getX(), packet.getY(), packet.getZ(), packet.getParticle(), packet.getVelDividers(), packet.getSizeMod());
+            particleEffect = packet.getParticle();
+        }
+        List<Vec3d> list = ParticleHandler.getParticleOutburstCords(packet.getAmount(), packet.getVelDividers(), packet.getSizeMod());
+        for (Vec3d vec : list) {
+            world.addParticle(particleEffect, packet.getX(), packet.getY(), packet.getZ(), vec.getX(), vec.getY(), vec.getZ());
         }
     }
 }

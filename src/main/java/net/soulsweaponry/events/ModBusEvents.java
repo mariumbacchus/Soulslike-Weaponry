@@ -10,12 +10,14 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.resource.PathResourcePack;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.registry.EntityRegistry;
 
 import java.io.IOException;
@@ -72,5 +74,12 @@ public class ModBusEvents {
             throw new RuntimeException(ex);
         }
 
+    }
+
+    @SubscribeEvent
+    public static void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            ModMessages.register();
+        });
     }
 }
