@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
+import net.soulsweaponry.datagen.tags.EntityTagsProvider;
 
 /**
  * NOTE:
@@ -17,5 +18,6 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         //fabricDataGenerator.addProvider(ModelProvider::new);
         fabricDataGenerator.addProvider(BossLootTableProvider::new);
         fabricDataGenerator.addProvider(WeaponRecipeProvider::new);
+        fabricDataGenerator.addProvider(EntityTagsProvider::new);
     }
 }

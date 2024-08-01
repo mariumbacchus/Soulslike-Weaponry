@@ -11,9 +11,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.items.FreyrSword;
+import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class StationaryFreyrSwordC2S {
@@ -23,18 +22,12 @@ public class StationaryFreyrSwordC2S {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
             if (serverWorld != null) {
                 Text text = Text.translatable("soulsweapons.weapon.no_freyr_sword");
-                try {
-                    Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
-                    if (op.isPresent() && player.getBlockPos() != null) {
-                        Entity entity = serverWorld.getEntity(op.get());
-                        if (entity instanceof FreyrSwordEntity sword) {
-                            sword.setStationaryPos(player.getBlockPos());
-                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
-                            player.sendMessage(text, true);
-                        }
-                    }
-                } catch (Exception e) {
-                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                UUID uuid = FreyrSwordSummonData.getSummonUuid(player);
+                if (uuid != null && player.getBlockPos() != null) {
+                    Entity entity = player.getWorld().getEntity(uuid);
+                    if (entity instanceof FreyrSwordEntity sword) {
+                        sword.setStationaryPos(player.getBlockPos());
+                    } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
                         player.sendMessage(text, true);
                     }
                 }

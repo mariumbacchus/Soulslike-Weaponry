@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.entity.mobs.BossEntity;
+import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class SoulHarvestingItem extends ModdedSword {
@@ -24,7 +25,7 @@ public abstract class SoulHarvestingItem extends ModdedSword {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
-            if (target instanceof BossEntity || target instanceof WitherEntity || target instanceof EnderDragonEntity) {
+            if (target.getType().isIn(ModTags.Entities.BOSSES)) {
                 this.addAmount(stack, 50);
             } else {
                 this.addKillCounter(stack);

@@ -16,7 +16,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.networking.PacketIds;
 
 import java.util.ArrayList;
@@ -109,17 +108,11 @@ public class ParticleHandler {
 
     public static void particleOutburst(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
         if (world.isClient) {
-            /*if (!MinecraftClient.getInstance().isOnThread()) {
-                ParticleEffect p = particle; Be wary of possible infinite loop here!
-                MinecraftClient.getInstance().execute(() -> particleOutburst(world, amount, x, y, z, p, velDivider, sizeMod));
-                return;
-            }*/
             List<Vec3d> list = getParticleOutburstCords(amount, velDivider, sizeMod);
             for (Vec3d vec : list) {
                 world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
             }
         } else {
-            //Sends a packet to the server that directs the info to a client side environment that calls it back to here with client level.
             ItemStack stack = new ItemStack(Items.AIR);
             if (particle instanceof ItemStackParticleEffect par) {
                 stack = par.getItemStack();
@@ -147,7 +140,6 @@ public class ParticleHandler {
                 world.addParticle(particle, x, y, z, vec.getX(), vec.getY(), vec.getZ());
             }
         } else {
-            //Sends a packet to the server that directs the info to a client side environment that calls it back to here with client level.
             ItemStack stack = new ItemStack(Items.AIR);
             if (particle instanceof ItemStackParticleEffect par) {
                 stack = par.getItemStack();

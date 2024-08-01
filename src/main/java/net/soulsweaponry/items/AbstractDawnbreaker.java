@@ -43,7 +43,7 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements IAn
         if (target.isUndead() || ConfigConstructor.dawnbreaker_affect_all_entities) {
             if (target.isDead()) {
                 if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
-                    double chance = ConfigConstructor.dawnbreaker_ability_chance_modifier + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
+                    double chance = ConfigConstructor.dawnbreaker_ability_percent_chance_addition + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
                     double random = target.getRandom().nextDouble();
                     if (random < chance) {
                         AbstractDawnbreaker.dawnbreakerEvent(target, attacker, stack);
