@@ -18,15 +18,15 @@ sourceSets {
 }
 
 loom {
-    forge {
-        mixinConfig 'soulsweapons.mixins.json'
-    }
     runs {
         data {
             data()
             programArgs "--all", "--mod", "soulsweapons"
             programArgs "--output", generatedResources.absolutePath
         }
+    }
+    forge {
+        mixinConfig 'soulsweapons.mixins.json'
     }
 }
 
@@ -65,22 +65,10 @@ dependencies {
 }
 
 processResources {
-    // Since this doesn't work, replace the version completely in file
-    /*inputs.property 'version', project.version
+    inputs.property 'version', project.version
 
     filesMatching('META-INF/mods.toml') {
         expand version: project.version
-    }*/
-    // Define the version property
-    def versionProperty = project.version.toString()
-    // Process mods.toml file
-    filesMatching('META-INF/mods.toml') {
-        // Read the content of the mods.toml file
-        def content = file.text
-        // Replace the placeholder with the project version
-        content = content.replaceAll('\\$\\{file\\.jarVersion\\}', versionProperty)
-        // Write the modified content back to the file
-        file.text = content
     }
 }
 

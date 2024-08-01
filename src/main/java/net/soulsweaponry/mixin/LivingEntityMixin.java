@@ -12,50 +12,45 @@ import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ModifyDamageUtil;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
-
-    @Unique
-    private final LivingEntity entity = ((LivingEntity)(Object)this);
-
-    @Shadow public abstract boolean damage(DamageSource source, float amount);
+public class LivingEntityMixin {
 
     /*
      * NB! Only called if the damage is bigger than 0 (decimals count)
      */
     @Inject(method = "applyEnchantmentsToDamage", at = @At("TAIL"), cancellable = true)
-    protected void applyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
-        LivingEntity entity = this.entity;
+    protected void interceptApplyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
         float newAmount = info.getReturnValue();
         info.setReturnValue(ModifyDamageUtil.modifyDamageTaken(entity, newAmount, source));
     }
 
     @Inject(method = "heal", at = @At("HEAD"), cancellable = true)
     public void interceptHeal(float amount, CallbackInfo info) {
-        if (this.entity.hasStatusEffect(EffectRegistry.DISABLE_HEAL.get())) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (entity.hasStatusEffect(EffectRegistry.DISABLE_HEAL.get())) {
             info.cancel();
         }
     }
 
     @Inject(method = "damage", at = @At("HEAD"))
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
         if (source == CustomDamageSource.TRUE_MAGIC) {
-            ((LivingEntityInvoker)this.entity).invokeApplyDamage(source, amount);
+            ((LivingEntityInvoker)entity).invokeApplyDamage(source, amount);
         }
     }
 
@@ -63,7 +58,8 @@ public abstract class LivingEntityMixin {
     public void interceptFallDamage(float fallDistance, float damageMultiplier, DamageSource source, CallbackInfoReturnable<Boolean> info) {
         //Another interceptFallDamage is made for players in PlayerEntityMixin since it won't trigger if they are in creative
         //from this, but in survival it would trigger twice. This check is therefore needed to prevent the double call.
-        if (!(this.entity instanceof PlayerEntity) && DetonateGroundItem.triggerCalculateFall(this.entity, fallDistance, source)) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (!(entity instanceof PlayerEntity) && DetonateGroundItem.triggerCalculateFall(entity, fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }
@@ -71,7 +67,8 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "onDismounted", at = @At("HEAD"))
     public void interceptDismount(Entity entity, CallbackInfo info) {
-        if (entity instanceof LivingEntity target && this.entity instanceof PlayerEntity player) {
+        LivingEntity living = ((LivingEntity)(Object)this);
+        if (entity instanceof LivingEntity target && living instanceof PlayerEntity player) {
             if (UmbralTrespassData.shouldDamageRiding(player)) {
                 float damage = 20f;
                 ItemCooldownManager cooldownManager = player.getItemCooldownManager();
