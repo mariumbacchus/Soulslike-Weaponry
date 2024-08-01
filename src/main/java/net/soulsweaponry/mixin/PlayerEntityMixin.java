@@ -15,22 +15,20 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.entitydata.ParryData;
-import net.soulsweaponry.particles.ParticleHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static net.soulsweaponry.items.UmbralTrespassItem.SHOULD_DAMAGE_RIDING;
-import static net.soulsweaponry.items.UmbralTrespassItem.TICKS_BEFORE_DISMOUNT;
 
 
 @Mixin(PlayerEntity.class)
@@ -47,28 +45,24 @@ public class PlayerEntityMixin {
     @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        try {
-            if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
-                int time = player.getDataTracker().get(TICKS_BEFORE_DISMOUNT);
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10, 0));
-                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, 10, 0));
-                if (time < 0) {
-                    player.stopRiding();
-                } else {
-                    player.getDataTracker().set(TICKS_BEFORE_DISMOUNT, time - 1);
-                }
+        if (UmbralTrespassData.shouldDamageRiding(player)) {
+            int time = UmbralTrespassData.getTicksBeforeDismount(player);
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10, 0));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, 10, 0));
+            if (time < 0) {
+                player.stopRiding();
+            } else {
+                UmbralTrespassData.setTicksBeforeDismount(player, time - 1);
             }
-        } catch (Exception ignored) {}
+        }
     }
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        try {
-            if (player.getDataTracker().get(SHOULD_DAMAGE_RIDING)) {
-                info.setReturnValue(false);
-            }
-        } catch (Exception ignored) {}
+        if (player.hasStatusEffect(EffectRegistry.GHOSTLY)) {
+            info.setReturnValue(false);
+        }
         int frames = ParryData.getParryFrames(player);
         if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
             player.getWorld().sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);

@@ -18,6 +18,10 @@ public class PacketRegistry {
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.DAMAGING_BOX, DamagingBoxC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.RETURN_THROWN_WEAPON, ReturnThrownWeaponC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_FREYR_SWORD_SUMMON_DATA, FreyrSwordSummonDataSyncC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_DAMAGE_RIDING_DATA, ShouldDamageRidingSyncC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_TICKS_BEFORE_DISMOUNT_DATA, TicksBeforeDismountSyncC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_RETURNING_PROJECTILE_DATA, ReturningProjectileDataSyncC2S::receive);
     }
 
     public static void registerS2CPackets() {
@@ -28,5 +32,9 @@ public class PacketRegistry {
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParrySyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.POSTURE, PostureSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.SUMMONS_UUIDS, SummonUUIDsSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_FREYR_SWORD_SUMMON_DATA, FreyrSwordSummonDataSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_DAMAGE_RIDING_DATA, ShouldDamageRidingSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_TICKS_BEFORE_DISMOUNT_DATA, TicksBeforeDismountSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_RETURNING_PROJECTILE_DATA, ReturningProjectileDataSyncS2C::receive);
     }
 }

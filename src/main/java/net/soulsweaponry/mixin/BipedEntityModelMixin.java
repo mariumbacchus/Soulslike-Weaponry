@@ -6,30 +6,36 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Set;
+
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
     @Unique
-    BipedEntityModel<?> model = ((BipedEntityModel<?>)(Object)this);
+    private final Set<Item> customHoldItems = Set.of(
+            WeaponRegistry.GUTS_SWORD,
+            WeaponRegistry.KRAKEN_SLAYER_CROSSBOW
+    );
     @Unique
     private float parryProgress;
     
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
+        var model = ((BipedEntityModel<?>)(Object)this);
         for (ItemStack stack : entity.getHandItems()) {
-            if (stack.getItem() instanceof SoulHarvestingItem || stack.isOf(WeaponRegistry.GUTS_SWORD) && !stack.isOf(WeaponRegistry.FROSTMOURNE) || stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
+            if (customHoldItems.contains(stack.getItem())) {
                 if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
                     if (stack.isOf(WeaponRegistry.GUTS_SWORD)) {
                         CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
@@ -46,13 +52,10 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "animateArms")
+    @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
-        if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
-            if (model.handSwingProgress > 0.0f && entity.getHandItems().iterator().next().getItem() instanceof SoulHarvestingItem) {
-                ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
-            }
-        }
+        var model = ((BipedEntityModel<?>)(Object)this);
+        // Parry animation
         if (entity instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
             int frames = ParryData.getParryFrames(abstractClientPlayerEntity);
             if (frames >= 1) {
@@ -75,6 +78,13 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 modelPart.pitch -= g * 1.2f + h;
                 modelPart.yaw += model.body.yaw * 2.0f;
                 modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.8f; //0.4
+            }
+        }
+        if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
+            ItemStack stack = entity.getMainHandStack();
+            if (model.handSwingProgress > 0.0f && customHoldItems.contains(stack.getItem())) {
+                ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
+                info.cancel();
             }
         }
     }

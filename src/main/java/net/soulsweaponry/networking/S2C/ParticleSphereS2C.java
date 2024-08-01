@@ -13,7 +13,10 @@ import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.particles.ParticleHandler;
+
+import java.util.List;
 
 public class ParticleSphereS2C {
 
@@ -38,10 +41,15 @@ public class ParticleSphereS2C {
     }
 
     private static void handle(ClientWorld world, PacketByteBuf buf, ParticleType<?> particle, int amount, ItemStack item, double x, double y, double z, float sizeMod) {
+        ParticleEffect particleEffect;
         if (!item.isOf(Items.AIR)) {
-            ParticleHandler.particleSphere(world, amount, x, y, z, getItemParticleEffect(item), sizeMod);
+            particleEffect = getItemParticleEffect(item);
         } else {
-            ParticleHandler.particleSphere(world, amount, x, y, z, readParticle(particle, buf), sizeMod);
+            particleEffect = readParticle(particle, buf);
+        }
+        List<Vec3d> list = ParticleHandler.getSphereParticleCords(amount, sizeMod);
+        for (Vec3d vec : list) {
+            world.addParticle(particleEffect, x, y, z, vec.getX(), vec.getY(), vec.getZ());
         }
     }
 }

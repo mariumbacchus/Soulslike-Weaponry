@@ -16,6 +16,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.particles.ParticleHandler;
 
+import java.util.List;
+
 public class ParticleOutburstS2C {
 
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
@@ -42,10 +44,15 @@ public class ParticleOutburstS2C {
     }
 
     private static void handle(ClientWorld world, PacketByteBuf buf, ParticleType<?> particle, int amount, ItemStack item, double x, double y, double z, Vec3d velDividers, float sizeMod) {
+        ParticleEffect particleEffect;
         if (!item.isOf(Items.AIR)) {
-            ParticleHandler.particleOutburst(world, amount, x, y, z, getItemParticleEffect(item), velDividers, sizeMod);
+            particleEffect = getItemParticleEffect(item);
         } else {
-            ParticleHandler.particleOutburst(world, amount, x, y, z, readParticle(particle, buf), velDividers, sizeMod);
+            particleEffect = readParticle(particle, buf);
+        }
+        List<Vec3d> list = ParticleHandler.getParticleOutburstCords(amount, velDividers, sizeMod);
+        for (Vec3d vec : list) {
+            world.addParticle(particleEffect, x, y, z, vec.x, vec.y, vec.z);
         }
     }
 }

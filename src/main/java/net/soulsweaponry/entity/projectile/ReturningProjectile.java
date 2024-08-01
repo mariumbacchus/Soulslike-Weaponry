@@ -4,9 +4,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -18,11 +15,11 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.entitydata.ReturningProjectileData;
 import net.soulsweaponry.items.Mjolnir;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public abstract class ReturningProjectile extends PersistentProjectileEntity {
@@ -32,7 +29,6 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     private int returnTimer;
     public static final String DEALT_DAMAGE = "DealtDamage";
     public static final String SHOULD_RETURN = "ShouldReturn";
-    public static final TrackedData<Optional<UUID>> THROWN_WEAPON_OPT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world, ItemStack stack) {
         super(entityType, world, stack);
@@ -71,17 +67,18 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     }
 
     public void saveOnPlayer(PlayerEntity player) {
-        Optional<UUID> uuid = Optional.of(this.getUuid());
-        try {
-            if (player.getDataTracker().get(THROWN_WEAPON_OPT).isPresent() && player.getWorld() instanceof ServerWorld) {
-                Entity entity = ((ServerWorld)player.getWorld()).getEntity(player.getDataTracker().get(THROWN_WEAPON_OPT).get());
-                if (entity instanceof ReturningProjectile returning) {
-                    returning.setShouldReturn(true);
-                }
-                player.getDataTracker().set(THROWN_WEAPON_OPT, uuid);
+        UUID uuid = this.getUuid();
+        UUID prevUuid = ReturningProjectileData.getReturningProjectileUuid(player);
+        if (player.getWorld() instanceof ServerWorld serverWorld) {
+            if (prevUuid == null) {
+                ReturningProjectileData.setReturningProjectileUuid(player, uuid);
+                prevUuid = uuid;
             }
-        } catch (Exception exception) {
-            player.getDataTracker().startTracking(THROWN_WEAPON_OPT, uuid);
+            Entity entity = serverWorld.getEntity(prevUuid);
+            if (entity instanceof ReturningProjectile returning) {
+                returning.setShouldReturn(true);
+            }
+            ReturningProjectileData.setReturningProjectileUuid(player, uuid);
         }
     }
 

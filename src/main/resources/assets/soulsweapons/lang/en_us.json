@@ -7,6 +7,7 @@
     "soulsweapons.weapon.collected_souls": "Collected %s souls back to the ",
     "soulsweapons.weapon.no_freyr_sword": "There is no Freyr Sword bound to you!",
     "soulsweapons.weapon.on_cooldown": "Can't cast this ability with the Cooldown effect!",
+    "soulsweapons.weapon.no_soulbound_weapon": "There is no 'Soulbound' weapon bound to you!",
 
     "block.soulsweapons.moonstone_block": "Block of Moonstone",
     "block.soulsweapons.moonstone_ore": "Moonstone Ore",
@@ -524,6 +525,7 @@
     "tooltip.soulsweapons.umbral_trespass_description_3": "the user leaps out, and the target is dealt heavy damage.",
     "tooltip.soulsweapons.umbral_trespass_description_4": "Will target last mob hit. Nothing happens if no mob has",
     "tooltip.soulsweapons.umbral_trespass_description_5": "been hit within certain time or is already dead.",
+    "tooltip.soulsweapons.umbral_trespass_description_6": "You must also be within a certain range of the target.",
     "tooltip.soulsweapons.trick_weapon": "Trick Weapon",
     "tooltip.soulsweapons.trick_weapon_description_1": "- Press keybind to transform the weapon if in main hand.",
     "tooltip.soulsweapons.trick_weapon_description_2": "Keybind: ",

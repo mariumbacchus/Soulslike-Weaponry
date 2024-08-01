@@ -24,6 +24,7 @@ import java.util.List;
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
     
     protected final ServerBossBar bossBar;
+    private boolean hasUpdatedHealth = false;
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -44,6 +45,10 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     @Override
     protected void mobTick() {
+        if (!this.hasUpdatedHealth) {
+            this.setHealth(this.getMaxHealth());
+            this.hasUpdatedHealth = true;
+        }
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
@@ -92,10 +97,19 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     }
 
     @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("HasUpdatedHealth", this.hasUpdatedHealth);
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (this.hasCustomName()) {
            this.bossBar.setName(this.getDisplayName());
+        }
+        if (nbt.contains("HasUpdatedHealth")) {
+            this.hasUpdatedHealth = nbt.getBoolean("HasUpdatedHealth");
         }
     }
 

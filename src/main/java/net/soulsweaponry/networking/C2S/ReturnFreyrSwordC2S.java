@@ -11,9 +11,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.items.FreyrSword;
+import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class ReturnFreyrSwordC2S {
@@ -22,23 +21,18 @@ public class ReturnFreyrSwordC2S {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
             if (serverWorld != null) {
-                try {
-                    Optional<UUID> op = player.getDataTracker().get(FreyrSword.SUMMON_UUID);
-                    if (op.isPresent() && player.getBlockPos() != null) {
-                        Entity sword = serverWorld.getEntity(op.get());
-                        if (sword instanceof FreyrSwordEntity) {
-                            if (!((FreyrSwordEntity)sword).insertStack(player)) {
-                                sword.setPos(player.getX(), player.getEyeY(), player.getZ());
-                                ((FreyrSwordEntity)sword).dropStack();
-                            }
-                            sword.discard();
-                        } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
-                            player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                Text text = Text.translatable("soulsweapons.weapon.no_freyr_sword");
+                UUID uuid = FreyrSwordSummonData.getSummonUuid(player);
+                if (uuid != null && player.getBlockPos() != null) {
+                    Entity sword = serverWorld.getEntity(uuid);
+                    if (sword instanceof FreyrSwordEntity freyrSword) {
+                        if (!freyrSword.insertStack(player)) {
+                            freyrSword.setPos(player.getX(), player.getEyeY(), player.getZ());
+                            freyrSword.dropStack();
                         }
-                    }
-                } catch (Exception e) {
-                    if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
-                        player.sendMessage(Text.literal("There is no Freyr Sword bound to you!"), true);
+                        freyrSword.discard();
+                    } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                        player.sendMessage(text, true);
                     }
                 }
             }
