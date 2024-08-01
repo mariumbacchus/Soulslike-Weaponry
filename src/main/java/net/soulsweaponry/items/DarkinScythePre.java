@@ -27,6 +27,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
@@ -46,8 +47,8 @@ public class DarkinScythePre extends SoulHarvestingItem {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
-            int amount = (target instanceof BossEntity || target instanceof WitherEntity) ? 20 : 1;
-            if (target.getHandItems().iterator().next().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
+            int amount = target.getType().isIn(ModTags.Entities.BOSSES) ? 20 : 1;
+            if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
                 this.addAmount(stack, amount, SoulType.BLUE);
             } else {
                 this.addAmount(stack, amount, SoulType.RED);

@@ -11,8 +11,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
+import net.soulsweaponry.entitydata.ReturningProjectileData;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class ReturnThrownWeaponC2S {
@@ -21,20 +21,17 @@ public class ReturnThrownWeaponC2S {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
             if (serverWorld != null) {
-                try {
-                    Optional<UUID> op = player.getDataTracker().get(ReturningProjectile.THROWN_WEAPON_OPT);
-                    if (op.isPresent()) {
-                        Entity entity = serverWorld.getEntity(op.get());
-                        if (entity instanceof ReturningProjectile projectile) {
-                            projectile.setShouldReturn(true);
-                        } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
-                            player.sendMessage(Text.literal("There is no 'Soulbound' weapon bound to you!"), true);
-                        }
+                UUID uuid = ReturningProjectileData.getReturningProjectileUuid(player);
+                Text text = Text.translatable("soulsweapons.weapon.no_soulbound_weapon");
+                if (uuid != null) {
+                    Entity entity = serverWorld.getEntity(uuid);
+                    if (entity instanceof ReturningProjectile projectile) {
+                        projectile.setShouldReturn(true);
+                    } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+                        player.sendMessage(text, true);
                     }
-                } catch (Exception e) {
-                    if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
-                        player.sendMessage(Text.literal("There is no 'Soulbound' weapon bound to you!"), true);
-                    }
+                } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+                    player.sendMessage(text, true);
                 }
             }
         });

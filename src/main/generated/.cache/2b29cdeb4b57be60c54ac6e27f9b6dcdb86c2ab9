@@ -1,4 +1,4 @@
-// 1.20	2024-07-27T20:28:59.5066232	Marium's Soulslike Weaponry/Recipes
+// 1.20	2024-08-01T18:26:48.0773166	Marium's Soulslike Weaponry/Recipes
 6ac617da1c0aca4adcdebe9d40978c99d55b236d data\soulsweapons\recipes\holy_greatsword.json
 77e2400341d4a08730ea5fd56df357ee5ee94537 data\soulsweapons\advancements\recipes\combat\draugr.json
 58d40c755e5fc68eb99e6f272a31fdc9b5779338 data\soulsweapons\recipes\oleander_dye.json
@@ -56,8 +56,8 @@ b524fe4a2a6f23bc1728bd0403b818e84d0d4c09 data\soulsweapons\advancements\recipes\
 95b4b7e161f21e8cdde86798deecc3ebcb095acf data\soulsweapons\advancements\recipes\combat\moonstone_ring_right.json
 491bd8fcb7b4150fca253168668af956113cf7e7 data\soulsweapons\advancements\recipes\combat\gatling_gun.json
 334fc31225287eb702ab4d0d829d26bffc74253f data\soulsweapons\recipes\moonstone_hoe_left.json
-72b15147bdacd0ea40924a3bee06e3d53a37e427 data\soulsweapons\recipes\moonstone_shovel.json
 88145b8050d724633f466695a68d0fa374cbbcbc data\soulsweapons\recipes\lost_soul.json
+72b15147bdacd0ea40924a3bee06e3d53a37e427 data\soulsweapons\recipes\moonstone_shovel.json
 d3c628558a9b48bb8521e59e8fe3083d3578d9f2 data\soulsweapons\advancements\recipes\combat\pure_moonlight_greatsword.json
 fc3c6021ad005f58dd3da1ff379cd8209df31bac data\soulsweapons\recipes\soul_reaper.json
 5cc79c9e1c1660aabd6f056172a71788f39ca1b5 data\soulsweapons\recipes\darkmoon_longbow.json

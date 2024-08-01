@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:skeleton",
+    "minecraft:blaze",
+    "minecraft:guardian",
+    "minecraft:evoker",
+    "minecraft:elder_guardian",
+    "minecraft:illusioner",
+    "minecraft:shulker",
+    "minecraft:snow_golem",
+    "minecraft:witch",
+    "minecraft:wither"
+  ]
+}

@@ -18,6 +18,9 @@ public class ParryData {
 
     public static int addParryFrames(IEntityDataSaver player, int amount) {
         NbtCompound nbt = player.getPersistentData();
+        if (!nbt.contains(PARRY_FRAMES_ID)) {
+            nbt.putInt(PARRY_FRAMES_ID, 0);
+        }
         int frame = nbt.getInt(PARRY_FRAMES_ID);
         if (frame >= MAX_PARRY_FRAMES) {
             frame = 0;
@@ -37,7 +40,11 @@ public class ParryData {
     }
 
     public static int getParryFrames(PlayerEntity player) {
-        return ((IEntityDataSaver)player).getPersistentData().getInt(PARRY_FRAMES_ID);
+        IEntityDataSaver entity = (IEntityDataSaver)player;
+        if (!entity.getPersistentData().contains(PARRY_FRAMES_ID)) {
+            entity.getPersistentData().putInt(PARRY_FRAMES_ID, 0);
+        }
+        return entity.getPersistentData().getInt(PARRY_FRAMES_ID);
     }
 
     public static boolean successfulParry(PlayerEntity player, boolean checkIfCanBeParried, DamageSource source) {
