@@ -242,7 +242,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
-    @Entry(min=0,max=1) public static double dawnbreaker_ability_chance_modifier = 0.0D;
+    @Entry(min=0,max=1) public static double dawnbreaker_ability_percent_chance_addition = 0.0D;
     @Entry public static boolean dawnbreaker_affect_all_entities = false;
     @Entry public static int empowered_dawnbreaker_damage = 10;
     @Entry public static float empowered_dawnbreaker_attack_speed = 1.2f;

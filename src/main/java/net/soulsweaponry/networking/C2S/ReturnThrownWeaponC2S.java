@@ -9,6 +9,8 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
@@ -22,15 +24,16 @@ public class ReturnThrownWeaponC2S {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.world).orNull();
             if (serverWorld != null) {
                 UUID uuid = ReturningProjectileData.getReturningProjectileUuid(player);
+                Text text = new TranslatableText("soulsweapons.weapon.no_soulbound_weapon");
                 if (uuid != null) {
                     Entity entity = player.getWorld().getEntity(uuid);
                     if (entity instanceof ReturningProjectile projectile) {
                         projectile.setShouldReturn(true);
                     } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
-                        player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
+                        player.sendMessage(text, true);
                     }
                 } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
-                    player.sendMessage(new LiteralText("There is no 'Soulbound' weapon bound to you!"), true);
+                    player.sendMessage(text, true);
                 }
             }
         });
