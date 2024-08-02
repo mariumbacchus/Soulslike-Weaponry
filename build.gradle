@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -30,6 +30,13 @@ repositories {
 		name "KosmX's maven"
 		url 'https://maven.kosmx.dev/'
 	}
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content {
+			includeGroup 'maven.modrinth'
+		}
+	}
 }
 
 dependencies {
@@ -49,6 +56,8 @@ dependencies {
 
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20:${project.geckolib_version}"
 	modImplementation "curse.maven:attributefix-${project.attributefix}"
+	modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
+
 	//Runtime only
 	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
