@@ -1,10 +1,8 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.*;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
@@ -28,7 +26,7 @@ public class WeaponRegistry {
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static DetonateGroundItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().fireproof().maxDamage(1300).rarity(Rarity.EPIC));
+    public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().fireproof().maxDamage(1300).rarity(Rarity.EPIC), () -> Ingredient.ofItems(ItemRegistry.VERGLAS, ItemRegistry.MOONSTONE));
     public static ToolItem TRANSLUCENT_SWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 6, -2.4F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem TRANSLUCENT_GLAIVE = new SwordItem(ModToolMaterials.LOST_SOUL, 7, -2.6F, new FabricItemSettings().rarity(Rarity.RARE));
     public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 8, -2.8F, new FabricItemSettings().rarity(Rarity.RARE));
@@ -56,9 +54,9 @@ public class WeaponRegistry {
     public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem NIGHTS_EDGE_ITEM = new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
     public static ToolItem EMPOWERED_DAWNBREAKER = new EmpoweredDawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().fireproof().rarity(Rarity.EPIC));
-    public static BowItem KRAKEN_SLAYER = new KrakenSlayer(new FabricItemSettings().fireproof().maxDamage(1258).rarity(Rarity.EPIC));
-    public static CrossbowItem KRAKEN_SLAYER_CROSSBOW = new KrakenSlayerCrossbow(new FabricItemSettings().fireproof().maxDamage(1258).rarity(Rarity.EPIC));
-    public static BowItem DARKMOON_LONGBOW = new DarkmoonLongbow(new FabricItemSettings().fireproof().maxDamage(1400).rarity(Rarity.EPIC));
+    public static BowItem KRAKEN_SLAYER = new KrakenSlayer(new FabricItemSettings().fireproof().maxDamage(1258).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT));
+    public static CrossbowItem KRAKEN_SLAYER_CROSSBOW = new KrakenSlayerCrossbow(new FabricItemSettings().fireproof().maxDamage(1258).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT));
+    public static BowItem DARKMOON_LONGBOW = new DarkmoonLongbow(new FabricItemSettings().fireproof().maxDamage(1400).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT));
 
     public static void init() {
         ItemRegistry.registerWeaponItem(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword);

@@ -5,7 +5,6 @@ import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -18,7 +17,8 @@ public class PredicateRegistry {
     
     public static void initClient() {
 
-        PredicateRegistry.registerPull(WeaponRegistry.GALEFORCE);
+        // The Ranged Weapon API adds predicates for you, so this isn't really needed anymore
+        /*PredicateRegistry.registerPull(WeaponRegistry.GALEFORCE);
         PredicateRegistry.registerPulling(WeaponRegistry.GALEFORCE);
         PredicateRegistry.registerPull(WeaponRegistry.KRAKEN_SLAYER);
         PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER);
@@ -26,7 +26,7 @@ public class PredicateRegistry {
         PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW);
         PredicateRegistry.registerCrossbowCharged(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW);
         PredicateRegistry.registerPull(WeaponRegistry.DARKMOON_LONGBOW);
-        PredicateRegistry.registerPulling(WeaponRegistry.DARKMOON_LONGBOW);
+        PredicateRegistry.registerPulling(WeaponRegistry.DARKMOON_LONGBOW);*/
 
         PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
         PredicateRegistry.registerThrowing(WeaponRegistry.NIGHTFALL);
@@ -98,23 +98,25 @@ public class PredicateRegistry {
         });
     }
 
-    protected static void registerPulling(Item item) {
+    // The Ranged Weapon API does this for you
+    /*protected static void registerPulling(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("pulling"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity == null) {
                 return 0.0F;
             }
             return livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
         });
-    }
+    }*/
 
-    protected static void registerPull(Item item) {
+    // The Ranged Weapon API does this for you
+    /*protected static void registerPull(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("pull"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity == null) {
                 return 0.0F;
             }
             return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F - ((IReducedPullTime)itemStack.getItem()).getReducedPullTime());
         });
-    }
+    }*/
 
     protected static void registerThrowing(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("throwing"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
@@ -143,9 +145,9 @@ public class PredicateRegistry {
         });
     }
 
-    protected static void registerCrossbowCharged(Item item) {
+    /*protected static void registerCrossbowCharged(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (stack, world, entity, seed) -> {
             return CrossbowItem.isCharged(stack) ? 1.0f : 0.0f;
         });
-    }
+    }*/
 }
