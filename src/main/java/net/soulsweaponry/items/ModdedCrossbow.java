@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, IShootModProjectile {
@@ -25,6 +26,11 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
 
     public ModdedCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
+    }
+
+    @Override
+    public Predicate<ItemStack> getHeldProjectiles() {
+        return BOW_PROJECTILES;
     }
 
     @Override
