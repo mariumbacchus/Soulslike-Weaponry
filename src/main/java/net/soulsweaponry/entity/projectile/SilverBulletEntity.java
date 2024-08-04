@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -9,6 +10,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -78,9 +80,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (ConfigConstructor.can_projectiles_apply_posture_loss && entityHitResult.getEntity() instanceof LivingEntity target) {
-            PostureData.addPosture((IEntityDataSaver) target, this.getPostureLoss());
+            int posture = this.getPostureLoss();
+            if (target instanceof PlayerEntity) {
+                posture = MathHelper.floor((float) posture * ConfigConstructor.silver_bullet_posture_loss_on_player_modifier);
+            }
+            PostureData.addPosture((IEntityDataSaver) target, posture);
             if (target.isUndead()) {
-                this.setDamage(this.getDamage() + ConfigConstructor.silver_bullet_undead_bonus_damage);
+                this.setDamage(this.getDamage() + (ConfigConstructor.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
             }
         }
         super.onEntityHit(entityHitResult);

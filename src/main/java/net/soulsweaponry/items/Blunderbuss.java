@@ -14,7 +14,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
@@ -31,8 +30,18 @@ public class Blunderbuss extends GunItem {
     }
 
     @Override
-    public int getBulletDamage(ItemStack stack) {
-        return ConfigConstructor.blunderbuss_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+    public float getBulletDamage(ItemStack stack) {
+        return ConfigConstructor.blunderbuss_damage;
+    }
+
+    @Override
+    public float getBulletVelocity(ItemStack stack) {
+        return ConfigConstructor.blunderbuss_velocity;
+    }
+
+    @Override
+    public float getBulletDivergence(ItemStack stack) {
+        return ConfigConstructor.blunderbuss_divergence;
     }
 
     @Override
@@ -42,7 +51,7 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public int bulletsNeeded() {
-        return 2;
+        return ConfigConstructor.blunderbuss_bullets_needed;
     }
 
     @Override
@@ -59,27 +68,14 @@ public class Blunderbuss extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-            int power = EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
-            int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
+            int projectileCount = ConfigConstructor.blunderbuss_projectile_amount + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
 
-            for (int i = 0; i < 3 + power; i++) {
-                SilverBulletEntity entity = new SilverBulletEntity(world, user, itemStack);
-                entity.setPos(user.getX(), user.getEyeY(), user.getZ());
-                entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 10.0F);
-                entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-                entity.setPostureLoss(this.getPostureLoss(stack));
-                entity.setDamage(this.getBulletDamage(stack));
-                if (punch > 0) {
-                    entity.setPunch(punch);
-                }
-                if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) {
-                    entity.setOnFireFor(8);
-                }
+            for (int i = 0; i < projectileCount; i++) {
+                PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
                 world.spawnEntity(entity);
             }
-
             if (world.isClient) {
                 for (int k = 0; k < 50; k++) {
                     world.addParticle(ParticleTypes.FLAME, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .5, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .5);
