@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
+import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,11 @@ public abstract class GunItem extends BowItem implements IConfigDisable {
         float power = (this.getBulletDamage(gunStack) / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
         int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
-        entity.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());// eyeY - 0.2 for gatling gun
+        if (gunStack.isOf(GunRegistry.GATLING_GUN)) {
+            entity.setPos(shooter.getX(), shooter.getEyeY() - 0.2f, shooter.getZ());
+        } else {
+            entity.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
+        }
         entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
         entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         entity.setPostureLoss(this.getPostureLoss(gunStack));

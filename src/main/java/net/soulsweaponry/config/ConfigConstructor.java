@@ -239,7 +239,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkmoon_longbow_damage = 9;
     @Entry public static float darkmoon_longbow_max_velocity = 3f;
     @Entry public static int darkmoon_longbow_pull_time_ticks = 25;
-    @Entry public static double darkmoon_longbow_ability_damage = 5D;
+    @Entry public static double darkmoon_longbow_ability_damage = 13D;
     @Entry public static int darkmoon_longbow_ability_cooldown_ticks = 150;
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
@@ -325,10 +325,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kirkhammer_attack_speed = 1f;
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static float kirkhammer_silver_sword_attack_speed = 1.6f;
-    @Entry public static int kraken_slayer_damage = 9;
+    @Entry public static int kraken_slayer_damage = 7;
     @Entry public static float kraken_slayer_max_velocity = 3f;
     @Entry public static int kraken_slayer_pull_time_ticks = 10;
-    @Entry public static int kraken_slayer_crossbow_damage = 10;
+    @Entry public static int kraken_slayer_crossbow_damage = 9;
     @Entry public static float kraken_slayer_crossbow_max_velocity = 3.15f;
     @Entry public static int kraken_slayer_crossbow_pull_time_ticks = 15;
     @Entry public static float kraken_slayer_bonus_true_damage = 4f;
