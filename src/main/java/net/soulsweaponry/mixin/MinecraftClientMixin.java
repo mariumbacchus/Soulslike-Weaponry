@@ -1,7 +1,6 @@
 package net.soulsweaponry.mixin;
 
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +20,8 @@ import net.soulsweaponry.events.AttemptAttackCallback;
 public abstract class MinecraftClientMixin {
 
     @Shadow public ClientWorld world;
-    @Shadow @Nullable public ClientPlayerEntity player;
+    @Shadow @Nullable
+    public ClientPlayerEntity player;
     @Final
     @Shadow public GameOptions options;
     @Final

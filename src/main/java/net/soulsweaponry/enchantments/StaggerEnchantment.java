@@ -7,6 +7,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.PostureData;
@@ -29,10 +31,10 @@ public class StaggerEnchantment extends Enchantment {
 
     @Override
     public void onTargetDamaged(LivingEntity user, Entity target, int level) {
-        if (target instanceof LivingEntity living && !living.isDead()) {
-            int postureLoss = 5;
+        if (!user.getWorld().isClient && target instanceof LivingEntity living && !living.isDead()) {
+            int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
             if (user.getStackInHand(Hand.MAIN_HAND).getItem() instanceof IUltraHeavy heavy && heavy.isHeavy()) {
-                postureLoss *= 2;
+                postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
             }
             postureLoss *= level;
             PostureData.addPosture((IEntityDataSaver) living, postureLoss);

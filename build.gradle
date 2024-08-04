@@ -1,7 +1,5 @@
 plugins {
-	// Cannot update to 1.1-SNAPSHOT because all the files handling client Screen are missing, resulting in items unable
-	// to check if SHIFT is being pressed. Too big off an inconvenience for an outdated MC version to find a work-around.
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -21,6 +19,13 @@ repositories {
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 
 	maven { url "https://cursemaven.com" }
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content {
+			includeGroup 'maven.modrinth'
+		}
+	}
 
 	// Runtime only
 	maven { url "https://maven.shedaniel.me/" }
@@ -39,9 +44,11 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "software.bernie.geckolib:geckolib-fabric-1.18:${project.geckolib_version}"
 	modImplementation "curse.maven:attributefix-${project.attributefix}"
+	modImplementation "maven.modrinth:projectile-damage-attribute:${project.projectile_damage_attribute_version}-fabric"
 
 	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
+		exclude group: 'net.fabricmc', module: 'fabric-loader'
 	}
 }
 

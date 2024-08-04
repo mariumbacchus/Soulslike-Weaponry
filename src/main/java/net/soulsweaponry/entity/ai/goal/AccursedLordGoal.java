@@ -3,8 +3,6 @@ package net.soulsweaponry.entity.ai.goal;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -29,6 +27,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class AccursedLordGoal extends Goal {
     private final AccursedLordBoss boss;

@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import javax.annotation.Nullable;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -19,6 +17,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.registry.ItemRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public class BossCompassPredicate {
 
