@@ -8,12 +8,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.projectile_damage.api.IProjectileWeapon;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightArrow;
 import net.soulsweaponry.entity.projectile.invisible.ArrowStormEntity;
@@ -26,39 +25,21 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     public DarkmoonLongbow(Settings settings) {
         super(settings);
         this.addTooltipAbility( WeaponUtil.TooltipAbilities.SLOW_PULL, WeaponUtil.TooltipAbilities.MOONLIGHT_ARROW, WeaponUtil.TooltipAbilities.ARROW_STORM);
+        ((IProjectileWeapon)this).setProjectileDamage(ConfigConstructor.darkmoon_longbow_damage);
+        ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.darkmoon_longbow_max_velocity);
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
-            boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemStack = playerEntity.getArrowType(stack);
-            if (!itemStack.isEmpty() || creativeAndInfinity) {
-                if (itemStack.isEmpty()) {
-                    itemStack = new ItemStack(Items.ARROW);
-                }
-                int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
-                float pullProgress = this.getModdedPullProgress(maxUseTime);
-                if (!((double)pullProgress < 0.1D)) {
-                    if (!world.isClient) {
-                        MoonlightArrow projectile = new MoonlightArrow(world, playerEntity);
-                        projectile.setPierceLevel((byte) 4);
-                        projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
-                        this.shootProjectile(world, stack, itemStack, playerEntity, pullProgress, projectile, 0.5f, 3f);
-                    }
-                }
-            }
-        }
+    public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
+        MoonlightArrow projectile = new MoonlightArrow(world, shooter);
+        projectile.setPierceLevel((byte) 4);
+        projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+        return projectile;
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
-    public float getReducedPullTime() {
-        return - ConfigConstructor.darkmoon_longbow_increased_pull_time;
+    public int getPullTime() {
+        return ConfigConstructor.darkmoon_longbow_pull_time_ticks;
     }
 
     @Override
@@ -70,7 +51,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setVelocity(player, 0, player.getYaw(), 0.0F, 1f, 1.0F);
             entity.setOwner(player);
             double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
-            entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage + power * 2f);
+            entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage / 2.6f + power * 1.25f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
             if (!player.isCreative()) {
