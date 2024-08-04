@@ -14,7 +14,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
@@ -31,8 +30,18 @@ public class HunterPistol extends GunItem {
     }
 
     @Override
-    public int getBulletDamage(ItemStack stack) {
-        return ConfigConstructor.hunter_pistol_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+    public float getBulletDamage(ItemStack stack) {
+        return ConfigConstructor.hunter_pistol_damage;
+    }
+
+    @Override
+    public float getBulletVelocity(ItemStack stack) {
+        return ConfigConstructor.hunter_pistol_velocity;
+    }
+
+    @Override
+    public float getBulletDivergence(ItemStack stack) {
+        return ConfigConstructor.hunter_pistol_divergence;
     }
 
     @Override
@@ -42,7 +51,7 @@ public class HunterPistol extends GunItem {
 
     @Override
     public int bulletsNeeded() {
-        return 1;
+        return ConfigConstructor.hunter_pistol_bullets_needed;
     }
 
     @Override
@@ -58,13 +67,9 @@ public class HunterPistol extends GunItem {
             if (itemStack.isEmpty()) {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET.get());
             }
-            
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET.get());
-            int power = this.getBulletDamage(stack);
-            int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
-
             if (world.isClient) {
                 for (int k = 0; k < 10; k++) {
                     world.addParticle(ParticleTypes.FLAME, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
@@ -72,18 +77,7 @@ public class HunterPistol extends GunItem {
                 }
             }
 
-            SilverBulletEntity entity = new SilverBulletEntity(world, user);
-            entity.setPos(user.getX(), user.getEyeY(), user.getZ());
-            entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
-            entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-            entity.setPostureLoss(this.getPostureLoss(stack));
-            entity.setDamage(power);
-            if (punch > 0) {
-                entity.setPunch(punch);
-            }
-            if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) {
-                entity.setOnFireFor(8);
-            }
+            PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
             world.spawnEntity(entity);
             world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f,1f);
             stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));

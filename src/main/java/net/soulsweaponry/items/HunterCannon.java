@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.Cannonball;
+import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
@@ -32,8 +34,18 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
-    public int getBulletDamage(ItemStack stack) {
-        return ConfigConstructor.hunter_cannon_damage + EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+    public float getBulletDamage(ItemStack stack) {
+        return ConfigConstructor.hunter_cannon_damage;
+    }
+
+    @Override
+    public float getBulletVelocity(ItemStack stack) {
+        return ConfigConstructor.hunter_cannon_velocity;
+    }
+
+    @Override
+    public float getBulletDivergence(ItemStack stack) {
+        return ConfigConstructor.hunter_cannon_divergence;
     }
 
     @Override
@@ -43,7 +55,7 @@ public class HunterCannon extends GunItem {
 
     @Override
     public int bulletsNeeded() {
-        return 10;
+        return ConfigConstructor.hunter_cannon_bullets_needed;
     }
 
     @Override
@@ -61,8 +73,6 @@ public class HunterCannon extends GunItem {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET.get());
             }
             boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET.get());
-            int power = this.getBulletDamage(stack);
-            int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             Vec3d pov = user.getRotationVector();
             Vec3d particleBox = pov.multiply(1).add(user.getPos());
             if (world.isClient) {
@@ -72,18 +82,7 @@ public class HunterCannon extends GunItem {
                 }
             }
 
-            Cannonball entity = new Cannonball(world, user);
-            entity.setPos(user.getX(), user.getEyeY(), user.getZ());
-            entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3.0F, 1.0F);
-            entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-            entity.setPostureLoss(this.getPostureLoss(stack));
-            entity.setDamage(power);
-            if (punch > 0) {
-                entity.setPunch(punch);
-            }
-            if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) {
-                entity.setOnFireFor(8);
-            }
+            PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
             world.spawnEntity(entity);
             world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
             stack.damage(bulletsNeeded, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
@@ -109,6 +108,11 @@ public class HunterCannon extends GunItem {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack); 
+    }
+
+    @Override
+    public SilverBulletEntity getModdedProjectile(World world, LivingEntity shooter, ItemStack gunStack) {
+        return new Cannonball(world, shooter);
     }
 
     @Override

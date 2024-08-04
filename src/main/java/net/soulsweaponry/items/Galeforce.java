@@ -9,17 +9,16 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.projectile_damage.api.IProjectileWeapon;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChargedArrow;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -33,47 +32,46 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     public Galeforce(Settings settings) {
         super(settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.GALEFORCE);
+        ((IProjectileWeapon)this).setProjectileDamage(ConfigConstructor.galeforce_damage);
+        ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.galeforce_max_velocity);
     }
     
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
-            boolean creativeAndInfinity = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemStack = playerEntity.getArrowType(stack);
-            if (!itemStack.isEmpty() || creativeAndInfinity) {
-                if (itemStack.isEmpty()) {
-                    itemStack = new ItemStack(Items.ARROW);
-                }
-                int maxUseTime = this.getMaxUseTime(stack) - remainingUseTicks;
-                float pullProgress = BowItem.getPullProgress(maxUseTime);
-                if (!((double)pullProgress < 0.1D)) {
-                    if (!world.isClient) {
-                        this.shootArrow((ServerWorld) world, stack, itemStack, playerEntity, pullProgress, false, null);
-                    }
-                }
+    @Nullable
+    public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
+        shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        return new ChargedArrow(world, shooter, arrowStack, false);
+    }
+
+    @Override
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
+            if (!player.isCreative())
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.galeforce_dash_cooldown, 0));
+            if (player.getAttacking() != null) {
+                LivingEntity target = player.getAttacking();
+                double x = target.getX() - player.getX();
+                double y = target.getEyeY() - player.getBodyY(1f);
+                double z = target.getZ() - player.getZ();
+                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, new Vec3d(x, y, z));
+            } else {
+                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, null);
             }
         }
     }
 
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, float pullProgress, boolean scaleDamageHp, @Nullable Vec3d currentTargetPos) {
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 50, 3));
-        ChargedArrow chargedArrow = new ChargedArrow(world, player, arrowStack, scaleDamageHp);
+    private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, @Nullable Vec3d currentTargetPos) {
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        ChargedArrow chargedArrow = new ChargedArrow(world, player, arrowStack, true);
         chargedArrow.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
         if (currentTargetPos != null) {
-            chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), pullProgress * 3f, 1f);
+            chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), ConfigConstructor.galeforce_max_velocity, 1f);
         } else {
-            chargedArrow.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, pullProgress * 3.0F, 1.0F);
+            chargedArrow.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, ConfigConstructor.galeforce_max_velocity, 1.0F);
         }
-        if (pullProgress == 1.0F) {
-            chargedArrow.setCritical(true);
-        }
-        double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack); // Normal bow: 2.5 -> 5 (power V) -> 10 with crit
-        chargedArrow.setDamage(chargedArrow.getDamage() + power * 0.6f + ConfigConstructor.galeforce_bonus_damage); //This: 3 -> 6 -> 12 with crit
+        chargedArrow.setCritical(true);
+        double damage = EnchantmentHelper.getLevel(Enchantments.POWER, stack) * 0.6f + ConfigConstructor.galeforce_damage / ConfigConstructor.galeforce_max_velocity;
+        chargedArrow.setDamage(damage);
         int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
         if (punch > 0) {
             chargedArrow.setPunch(punch);
@@ -89,7 +87,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
             chargedArrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         }
         world.spawnEntity(chargedArrow);
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + pullProgress * 0.5F);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
         if (!bl2 && !player.getAbilities().creativeMode) {
             arrowStack.decrement(1);
             if (arrowStack.isEmpty()) {
@@ -97,23 +95,6 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
             }
         }
         player.incrementStat(Stats.USED.getOrCreateStat(this));
-    }
-
-    @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
-            if (!player.isCreative())
-                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.galeforce_dash_cooldown, 0));
-            if (player.getAttacking() != null) {
-                LivingEntity target = player.getAttacking();
-                double x = target.getX() - player.getX();
-                double y = target.getEyeY() - player.getBodyY(1f);
-                double z = target.getZ() - player.getZ();
-                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, 1f, true, new Vec3d(x, y, z));
-            } else {
-                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, 1f, true, null);
-            }
-        }
     }
 
     @Override
@@ -134,8 +115,8 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public float getReducedPullTime() {
-        return 0;
+    public int getPullTime() {
+        return ConfigConstructor.galeforce_pull_time_ticks;
     }
 
     @Override

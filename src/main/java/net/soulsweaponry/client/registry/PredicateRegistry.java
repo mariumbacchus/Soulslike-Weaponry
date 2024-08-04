@@ -112,7 +112,7 @@ public class PredicateRegistry {
             if (livingEntity == null) {
                 return 0.0F;
             }
-            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F - ((IReducedPullTime)itemStack.getItem()).getReducedPullTime());
+            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (float) ((IShootModProjectile)itemStack.getItem()).getPullTime();
         });
     }
 

@@ -123,6 +123,8 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_4", String.format("%.1f", ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant)).formatted(Formatting.GRAY));
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
             }
             case LIFE_STEAL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.life_steal").formatted(Formatting.DARK_RED));
@@ -468,19 +470,11 @@ public class WeaponUtil {
             }
             case FAST_PULL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
-                if (stack.getItem() instanceof IReducedPullTime bow) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_2").formatted(Formatting.GRAY).append(new LiteralText(String.valueOf(bow.getReducedPullTime()))));
-                } else {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));
-                }
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));
             }
             case SLOW_PULL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
-                if (stack.getItem() instanceof IReducedPullTime bow) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_2").formatted(Formatting.GRAY).append(new LiteralText(String.valueOf(bow.getReducedPullTime()))));
-                } else {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_1").formatted(Formatting.GRAY));
-                }
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.slow_pull_1").formatted(Formatting.GRAY));
             }
             case THIRD_SHOT -> {
                 float bonus = 0f;

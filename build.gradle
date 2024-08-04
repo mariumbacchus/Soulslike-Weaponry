@@ -41,6 +41,14 @@ repositories {
     maven { url 'https://maven.blamejared.com' }
     mavenCentral()
     maven { url "https://cursemaven.com" }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
+
     //Runtime only repositories
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
@@ -59,6 +67,12 @@ dependencies {
 
     modImplementation "software.bernie.geckolib:geckolib-forge-${project.geckolib_version}"
     modImplementation "curse.maven:attributefix-${project.attributefix}"
+    modImplementation "maven.modrinth:projectile-damage-attribute:${project.projectile_damage_attribute_version}-forge"
+
+    // Mixin extras
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.4.0"))
+
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
