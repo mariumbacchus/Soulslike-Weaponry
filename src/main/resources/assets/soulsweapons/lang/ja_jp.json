@@ -1,4 +1,14 @@
 {
+    "soulsweapons.midnightconfig.recipeComment": "Disable recipes for weapons",
+    "soulsweapons.midnightconfig.useComment": "Disable usage of weapons",
+
+    "soulsweapons.weapon.useDisabled": "§4This item is disabled!§r",
+    "soulsweapons.weapon.no_collected_souls": "There were no bound allies to collect!",
+    "soulsweapons.weapon.collected_souls": "Collected %s souls back to the ",
+    "soulsweapons.weapon.no_freyr_sword": "There is no Freyr Sword bound to you!",
+    "soulsweapons.weapon.on_cooldown": "Can't cast this ability with the Cooldown effect!",
+    "soulsweapons.weapon.no_soulbound_weapon": "There is no 'Soulbound' weapon bound to you!",
+
     "block.soulsweapons.moonstone_block": "ムーンストーンのブロック",
     "block.soulsweapons.moonstone_ore": "ムーンストーン鉱石",
     "block.soulsweapons.moonstone_ore_deepslate": "深層岩のムーンストーン鉱石",
@@ -215,6 +225,7 @@
     "death.attack.obliterated": "%1$s は %2$s によって消去されました",
     "death.attack.obliterated.player": "%1$s は %2$s によって消去されました",
     "death.attack.oblivion": "%1$s は忘却の彼方に送られました",
+    "death.attack.true_magic": "%1$s quickly melted away thanks to magic",
     "death.attack.freyr_sword": "%1$s は %2$s のフレイの剣によって切り取られました",
     "death.attack.shadow_orb": "%1$s は %2$s のシャドウオーブの集中攻撃を受けて死亡しました",
     "death.attack.beam": "%1$sは%2$sのコアビームによって消滅しました",
@@ -238,6 +249,7 @@
     "effect.soulsweapons.blight": "ブライト",
     "effect.soulsweapons.shadow_step": "シャドウステップ",
     "effect.soulsweapons.cooldown": "クールダウン",
+    "effect.soulsweapons.ghostly": "Ghostly",
 
     "item.minecraft.potion.effect.warding": "魔法防御のポーション",
     "item.minecraft.splash_potion.effect.warding": "魔法防御のスプラッシュポーション",
@@ -320,6 +332,7 @@
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] を押して詳細を表示します",
     "tooltip.soulsweapons.control": "[§eCTRL§r] を押して詳細を表示します",
+    "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "スペルブレード",
     "tooltip.soulsweapons.magic_damage_description_1": "- 対象の体力が §c33% 以上ある間、",
     "tooltip.soulsweapons.magic_damage_description_2": "§火属性§r レベルに応じてアーマーを貫通する",
@@ -511,6 +524,9 @@
     "tooltip.soulsweapons.umbral_trespass_description_1": "- 戦闘中に使用し、対象の魂に入り込む。",
     "tooltip.soulsweapons.umbral_trespass_description_2": "この状態では、使用者はダメージを受けない。",
     "tooltip.soulsweapons.umbral_trespass_description_3": "解除時、使用者は飛び出し、対象に大ダメージを与える。",
+    "tooltip.soulsweapons.umbral_trespass_description_4": "Will target last mob hit. Nothing happens if no mob has",
+    "tooltip.soulsweapons.umbral_trespass_description_5": "been hit within certain time or is already dead.",
+    "tooltip.soulsweapons.umbral_trespass_description_6": "You must also be within a certain range of the target.",
     "tooltip.soulsweapons.trick_weapon": "トリックウェポン",
     "tooltip.soulsweapons.trick_weapon_description_1": "- メインハンドにある場合はキーバインドを押して武器を変形させます。",
     "tooltip.soulsweapons.trick_weapon_description_2": "キーバインド: ",
@@ -519,6 +535,8 @@
     "tooltip.soulsweapons.heavy_weapon_description_1": "- §4攻撃力上昇§r 効果を持ちながら、ヒット後に§6ヘイスト§r を獲得します。",
     "tooltip.soulsweapons.heavy_weapon_description_2": "- §f計算された落下§r 効果で着地すると、",
     "tooltip.soulsweapons.heavy_weapon_description_3": "手にした武器に応じた固有の爆発が起きる。",
+    "tooltip.soulsweapons.heavy_weapon_description_4": "- Base §fPosture Loss§r applied on targets is multiplied by %s",
+    "tooltip.soulsweapons.heavy_weapon_description_5": "if this has the §dStagger§r enchantment.",
     "tooltip.soulsweapons.righteous": "義人",
     "tooltip.soulsweapons.righteous_description_1": "- §fアンデッド§rに対して与えるダメージが増加します。",
     "tooltip.soulsweapons.righteous_description_2": "火属性によってスケール、現在のボーナス: ",
@@ -590,6 +608,7 @@
     "tooltip.soulsweapons.arrow_storm_1": "- 嵐の雲を発生させ、威力が低い",
     "tooltip.soulsweapons.arrow_storm_2": "§3月光矢§rを放つ。",
     "tooltip.soulsweapons.gun_posture_loss": "発射ごとに適用される減衰: ",
+    "tooltip.soulsweapons.gun_posture_loss_on_players": "Only %s of it is applied on players",
     "tooltip.soulsweapons.gun_damage": "投射物のダメージ: ",
     "tooltip.soulsweapons.gun_cooldown": "クールダウン： ",
     "tooltip.soulsweapons.gun_max_use_time": "最大使用時間: ",
@@ -610,6 +629,9 @@
     "tooltip.soulsweapons.withered_armor.exalt.2": "- 失った体力に基づく増加量で",
     "tooltip.soulsweapons.withered_armor.exalt.3": "§c攻撃力上昇§rを得る。",
     "tooltip.soulsweapons.withered_armor.exalt.4": "増加量: 1 (< 50%), 2 (< 25%)",
+    "tooltip.soulsweapons.armor.set_bonus": "Full Set Bonus",
+    "tooltip.soulsweapons.armor.set_bonus.gain_effects": "- Gain ",
+    "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- Heal whenever an entity dies near you",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "絶滅したと考えられている珍しい形の魂。",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "暗く、しかしバランスの取れた色は、",
@@ -642,7 +664,7 @@
     "tooltip.soulsweapons.chaos_orb.1": "光と闇のすべての光がこのオーブを通り抜ける。",
     "tooltip.soulsweapons.chaos_orb.2": "これを空に投げれば、",
     "tooltip.soulsweapons.chaos_orb.3": "夜と太陽の神々を召喚することができる。",
-    
+
     "tooltip.soulsweapons.demon_heart.part_1": "最初に接触したとき、古代の種族は",
     "tooltip.soulsweapons.demon_heart.part_2": "魔族と友好的になったが、魔族の本当の力が",
     "tooltip.soulsweapons.demon_heart.part_3": "どれほど強力なものであるかは密かにしか知られていなかった。",
@@ -709,7 +731,7 @@
     "key.soulsweapons.parry": "盾でパリィ",
     "key.soulsweapons.effect_shoot_moonlight": "ルナーヘラルドが月光を放つ",
     "key.soulsweapons.return_thrown_weapon": "「ソウルバウンド」武器を呼び戻す",
-    
+
     "advancements.soulsweapons.root.title": "Soulslike Weaponry",
     "advancements.soulsweapons.root.description": "独自の功績を価値あるものに！",
     "advancements.soulsweapons.end_of_reigns.title": "Oh, The Misery",
@@ -778,4 +800,4 @@
     "advancements.soulsweapons.arkenplate.description": "アーケンプレートを作ってダイヤモンドより強くなる",
     "advancements.soulsweapons.hallowheart.title": "or pvp boss",
     "advancements.soulsweapons.hallowheart.description": "ハロウハートを作成し、枯れ果てるのを拒否する"
-  }
+}
