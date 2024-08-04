@@ -182,7 +182,6 @@
     "entity.soulsweapons.night_prowler": "Night Prowler",
     "entity.soulsweapons.frost_giant": "Frost Giant",
     "entity.soulsweapons.rime_spectre": "Rime Spectre",
-    "entity.soulsweapons.area_effect_sphere": "Area Effect Sphere",
     "entity.soulsweapons.warmth_entity": "Sphere of Warmth",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
@@ -201,6 +200,7 @@
     "entity.soulsweapons.freyr_sword_entity": "Sword of Freyr",
     "entity.soulsweapons.shadow_orb_entity": "Shadow Orb",
     "entity.soulsweapons.draupnir_spear_entity": "Draupnir Spear",
+    "entity.soulsweapons.area_effect_sphere": "Area Effect Sphere",
     "entity.soulsweapons.dragon_staff_projectile": "Dragon Staff Projectile",
     "entity.soulsweapons.withered_wabbajack_projectile": "Withered Wabbajack Projectile",
     "entity.soulsweapons.chaos_skull": "Chaos Skull",
@@ -226,9 +226,10 @@
     "death.attack.obliterated.player": "%1$s was obliterated by %2$s",
     "death.attack.oblivion": "%1$s was sent to oblivion",
     "death.attack.freyr_sword": "%1$s was sliced away by %2$s's Sword of Freyr",
+    "death.attack.true_magic": "%1$s quickly melted away thanks to magic",
     "death.attack.shadow_orb": "%1$s perished after being barraged by %2$s's Shadow Orbs",
     "death.attack.beam": "%1$s was annihilated by %2$s's Core Beam",
-    "death.attack.dragon_mist": "%1$s couldn't breathe in a Hallowed Dragon Mist",
+    "death.attack.dragon_mist": "%1$s couldn't breathe in the concentrated Dragon Mist",
     "death.attack.dragon_mist.player": "%1$s couldn't breathe in %2$s's concentrated Dragon Mist",
 
     "effect.soulsweapons.hallowed_dragon_mist": "Purified Mist",
