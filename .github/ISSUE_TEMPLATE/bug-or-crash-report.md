@@ -16,6 +16,9 @@ Soulslike-Weaponry: 1.1.3
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Add logs**
+A log of the incident, i.e crash log if a crash happened or a log giving other warnings before the issue occured if necessary.
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
