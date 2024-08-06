@@ -61,6 +61,11 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_bluemoon_greatsword;
+    }
+
+    @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }

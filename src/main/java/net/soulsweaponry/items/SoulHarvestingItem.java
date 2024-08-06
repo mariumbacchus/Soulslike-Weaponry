@@ -1,11 +1,8 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 

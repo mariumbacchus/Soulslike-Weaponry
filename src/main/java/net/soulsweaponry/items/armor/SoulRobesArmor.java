@@ -18,6 +18,11 @@ public class SoulRobesArmor extends SetBonusArmor {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_robes_set;
+    }
+
+    @Override
     protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {}
 
     @Override

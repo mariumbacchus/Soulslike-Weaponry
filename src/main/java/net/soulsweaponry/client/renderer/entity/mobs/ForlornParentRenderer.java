@@ -7,7 +7,6 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.ForlornModel;
 import net.soulsweaponry.entity.mobs.Forlorn;
-import net.soulsweaponry.entity.mobs.Remnant;
 
 public class ForlornParentRenderer<T extends Forlorn, M extends ForlornModel<T>> extends BipedEntityRenderer<T, M> {
 

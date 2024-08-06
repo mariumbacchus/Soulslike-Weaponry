@@ -56,6 +56,11 @@ public class Sting extends ModdedSword {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_sting;
+    }
+
+    @Override
     public boolean isDisabled(ItemStack stack) {
         return false;
     }

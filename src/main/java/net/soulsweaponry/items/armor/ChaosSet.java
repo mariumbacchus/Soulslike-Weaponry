@@ -315,6 +315,11 @@ public class ChaosSet extends ModdedArmor implements GeoItem {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_set;
+    }
+
+    @Override
     public void createRenderer(Consumer<Object> consumer) {
         consumer.accept(new RenderProvider() {
             private GeoArmorRenderer<?> renderer;

@@ -5,7 +5,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.LivingEntityInvoker;
 import net.soulsweaponry.util.WeaponUtil;
@@ -34,8 +33,8 @@ public class LichBane extends ModdedSword {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_lich_bane;
     }
 
     @Override

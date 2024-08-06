@@ -172,6 +172,11 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_withered_set;
+    }
+
+    @Override
     public void createRenderer(Consumer<Object> consumer) {
         consumer.accept(new RenderProvider() {
             private GeoArmorRenderer<?> renderer;

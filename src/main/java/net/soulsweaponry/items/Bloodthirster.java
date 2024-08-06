@@ -7,7 +7,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -60,11 +59,6 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
@@ -87,5 +81,10 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_bloodthirster;
     }
 }

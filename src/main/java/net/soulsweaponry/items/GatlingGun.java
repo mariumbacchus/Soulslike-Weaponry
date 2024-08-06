@@ -56,6 +56,11 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_gatling_gun;
+    }
+
+    @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % 4 == 0) {
             if (user instanceof PlayerEntity playerEntity) {

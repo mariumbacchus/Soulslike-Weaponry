@@ -69,4 +69,7 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

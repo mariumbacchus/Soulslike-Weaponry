@@ -20,6 +20,11 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_forlorn_set;
+    }
+
+    @Override
     protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {
         if (player.getWorld().isClient) return;
         for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {

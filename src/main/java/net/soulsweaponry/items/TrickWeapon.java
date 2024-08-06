@@ -33,6 +33,14 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
             ConfigConstructor.disable_use_holy_moonlight_sword,
     };
 
+    private static final boolean[] FIREPROOF = {
+            ConfigConstructor.is_fireproof_kirkhammer,
+            ConfigConstructor.is_fireproof_silver_sword,
+            ConfigConstructor.is_fireproof_ludwigs_holy_blade,
+            ConfigConstructor.is_fireproof_holy_moonlight_greatsword,
+            ConfigConstructor.is_fireproof_holy_moonlight_sword,
+    };
+
     private final int switchWeaponIndex;
     private final int ownWeaponIndex;
     private final boolean undeadBonus;
@@ -88,5 +96,10 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return DISABLE[this.arrayIndex];
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return FIREPROOF[this.arrayIndex];
     }
 }

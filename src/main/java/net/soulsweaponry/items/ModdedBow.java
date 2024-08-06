@@ -63,4 +63,7 @@ public abstract class ModdedBow extends CustomBow implements IConfigDisable, ISh
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }
