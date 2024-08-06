@@ -2,11 +2,14 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,4 +57,15 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable {
     }
 
     public abstract Text[] getAdditionalTooltips();
+
+    public void notifyCooldown(LivingEntity user) {
+        if (!ConfigConstructor.inform_player_about_cooldown_effect) {
+            return;
+        }
+        if (user instanceof PlayerEntity player) {
+            player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"), true);
+        } else {
+            user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"));
+        }
+    }
 }
