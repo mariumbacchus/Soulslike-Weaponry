@@ -75,8 +75,8 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_shadow_assassin_scythe;
     }
 
     @Override

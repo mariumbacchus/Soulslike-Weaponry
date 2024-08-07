@@ -65,4 +65,9 @@ public class ForlornArmor extends SetBonusArmor {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_armor;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_forlorn_set;
+    }
 }

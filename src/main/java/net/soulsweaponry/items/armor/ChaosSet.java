@@ -353,4 +353,9 @@ public class ChaosSet extends ModdedArmor implements GeoItem {
         }
         return false;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_set;
+    }
 }

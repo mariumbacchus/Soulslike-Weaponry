@@ -24,4 +24,7 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable {
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

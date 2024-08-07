@@ -101,4 +101,9 @@ public class Blunderbuss extends GunItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_hunter_blunderbuss;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_blunderbuss;
+    }
 }

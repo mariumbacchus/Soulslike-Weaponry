@@ -33,8 +33,8 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_featherlight;
     }
 
     @Override

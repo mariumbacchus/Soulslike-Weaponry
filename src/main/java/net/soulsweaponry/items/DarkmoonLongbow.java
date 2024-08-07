@@ -30,6 +30,11 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_darkmoon_longbow;
+    }
+
+    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         MoonlightArrow projectile = new MoonlightArrow(world, shooter, arrowStack);
         projectile.setPierceLevel((byte) 4);

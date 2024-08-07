@@ -121,8 +121,8 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_dragonslayer_swordspear;
     }
 
     @Override

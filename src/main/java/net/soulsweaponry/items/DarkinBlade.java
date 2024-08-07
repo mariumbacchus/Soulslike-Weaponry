@@ -79,8 +79,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_darkin_blade;
     }
 
     private PlayState predicate(AnimationState<?> event){

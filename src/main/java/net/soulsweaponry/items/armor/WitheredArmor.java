@@ -199,4 +199,9 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_withered_chest;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_withered_set;
+    }
 }

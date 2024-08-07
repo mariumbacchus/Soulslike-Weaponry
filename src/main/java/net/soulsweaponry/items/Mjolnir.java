@@ -189,8 +189,8 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_mjolnir;
     }
 
     @Override

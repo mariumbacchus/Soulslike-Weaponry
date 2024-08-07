@@ -51,4 +51,9 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_crossbow;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_kraken_slayer_crossbow;
+    }
 }
