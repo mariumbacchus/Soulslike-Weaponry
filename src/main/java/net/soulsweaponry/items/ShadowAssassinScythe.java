@@ -83,4 +83,19 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_shadow_assassin_scythe;
     }
+
+    @Override
+    public float getAbilityDamage() {
+        return ConfigConstructor.shadow_assassin_scythe_ability_damage;
+    }
+
+    @Override
+    public int getAbilityCooldown() {
+        return ConfigConstructor.shadow_assassin_scythe_ability_cooldown;
+    }
+
+    @Override
+    public boolean shouldAbilityHeal() {
+        return false;
+    }
 }

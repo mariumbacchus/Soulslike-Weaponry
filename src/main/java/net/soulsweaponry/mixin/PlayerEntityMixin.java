@@ -53,15 +53,21 @@ public class PlayerEntityMixin {
    @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        if (UmbralTrespassData.shouldDamageRiding(player)) {
-            int time = UmbralTrespassData.getTicksBeforeDismount(player);
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10, 0));
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY.get(), 10, 0));
-            if (time < 0) {
-                player.stopRiding();
-            } else {
-                UmbralTrespassData.setTicksBeforeDismount(player, time - 1);
-            }
+        if (!player.getWorld().isClient && UmbralTrespassData.shouldDamageRiding(player)) {
+           int cooldown = UmbralTrespassData.getAbilityCooldown(player);
+           player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0));
+           if (!player.hasStatusEffect(EffectRegistry.GHOSTLY.get())) {
+               player.stopRiding();
+           }
+        }
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    public void attack(Entity target, CallbackInfo info) {
+        // Can't attack during Umbral Trespass ability
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        if (!player.getWorld().isClient && player.hasStatusEffect(EffectRegistry.GHOSTLY.get())) {
+            info.cancel();
         }
     }
 

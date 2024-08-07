@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -67,27 +68,22 @@ public class LivingEntityMixin {
 
     @Inject(method = "onDismounted", at = @At("HEAD"))
     public void interceptDismount(Entity entity, CallbackInfo info) {
-        LivingEntity living = ((LivingEntity)(Object)this);
-        if (entity instanceof LivingEntity target && living instanceof PlayerEntity player) {
+        LivingEntity thisEntity = ((LivingEntity)(Object)this);
+        if (!thisEntity.getWorld().isClient && entity instanceof LivingEntity target && thisEntity instanceof PlayerEntity player) {
             if (UmbralTrespassData.shouldDamageRiding(player)) {
-                float damage = 20f;
-                ItemCooldownManager cooldownManager = player.getItemCooldownManager();
-                for (Hand hand : Hand.values()) {
-                    ItemStack stack = player.getStackInHand(hand);
-                    if (player.getStackInHand(hand).isOf(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get())) {
-                        damage = ConfigConstructor.shadow_assassin_scythe_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup());
-                        cooldownManager.set(stack.getItem(), ConfigConstructor.shadow_assassin_scythe_ability_cooldown);
-                    } else if (player.getStackInHand(hand).isOf(WeaponRegistry.DARKIN_SCYTHE_PRIME.get())) {
-                        damage = ConfigConstructor.darkin_scythe_prime_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()) + (target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage/100f));
-                        float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
-                        player.heal(healing);
-                        cooldownManager.set(stack.getItem(), ConfigConstructor.darkin_scythe_prime_ability_cooldown);
-                    }
+                float damage = UmbralTrespassData.getAbilityDamage(player);
+                boolean shouldHeal = UmbralTrespassData.shouldAbilityHeal(player);
+                if (shouldHeal) {
+                    damage += target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage / 100f);
+                    float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
+                    player.heal(healing);
                 }
+                player.removeStatusEffect(StatusEffects.INVISIBILITY);
+                player.removeStatusEffect(EffectRegistry.GHOSTLY.get());
                 target.damage(DamageSource.mob(player), damage);
                 UmbralTrespassData.setShouldDamageRiding(player, false);
-                if (!player.world.isClient && player.getBlockPos() != null) {
-                    player.world.playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
+                if (!player.getWorld().isClient && player.getBlockPos() != null) {
+                    player.getWorld().playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
                     ParticleHandler.particleOutburstMap(player.getWorld(), 150, player.getX(), player.getEyeY(), player.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
                 }
             }
