@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
 
+    // TODO: The player with the effect is only invisible to himself, other players on a server still see him.
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public <E extends Entity> void render(E entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
         if (entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.GHOSTLY)) {

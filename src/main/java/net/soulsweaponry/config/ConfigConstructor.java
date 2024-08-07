@@ -231,7 +231,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkin_scythe_bonus_damage = 3;
     @Entry public static int darkin_scythe_max_souls = 100;
     @Entry public static float darkin_scythe_prime_ability_damage = 20f;
-    @Entry public static float darkin_scythe_prime_attack_speed = 1.6f;
+    @Entry public static float darkin_scythe_prime_attack_speed = 1f;
     @Entry(min=0,max=100) public static float darkin_scythe_prime_ability_percent_health_damage = 10f;
     @Entry public static int darkin_scythe_prime_ability_cooldown = 400;
     @Entry public static float darkin_scythe_prime_heal_modifier = 0.25f;

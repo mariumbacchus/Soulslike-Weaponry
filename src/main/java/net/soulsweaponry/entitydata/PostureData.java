@@ -54,6 +54,6 @@ public class PostureData {
     public static void syncData(int data, ServerPlayerEntity entity) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(data);
-        ServerPlayNetworking.send(entity, PacketIds.POSTURE, buf);
+        ServerPlayNetworking.send(entity, PacketIds.POSTURE_SYNC, buf);
     }
 }

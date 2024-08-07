@@ -43,4 +43,19 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_scythe_prime;
     }
+
+    @Override
+    public float getAbilityDamage() {
+        return ConfigConstructor.darkin_scythe_prime_ability_damage;
+    }
+
+    @Override
+    public int getAbilityCooldown() {
+        return ConfigConstructor.darkin_scythe_prime_ability_cooldown;
+    }
+
+    @Override
+    public boolean shouldAbilityHeal() {
+        return true;
+    }
 }
