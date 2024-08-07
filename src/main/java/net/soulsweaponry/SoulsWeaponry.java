@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.soulsweaponry.networking.PacketRegistry;
-import net.soulsweaponry.world.gen.OreGeneration;
 import net.soulsweaponry.world.gen.WorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

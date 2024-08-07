@@ -2,7 +2,6 @@ package net.soulsweaponry.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
