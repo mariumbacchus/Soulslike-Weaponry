@@ -11,7 +11,9 @@ import net.soulsweaponry.networking.PacketIds;
 public class UmbralTrespassData {
 
     public static final String DAMAGE_RIDING_ID = "should_damage_riding";
-    public static final String TICKS_BEFORE_DISMOUNT_ID = "ticks_before_dismount";
+    public static final String UMBRAL_DAMAGE_ID = "umbral_trespass_damage";
+    public static final String COOLDOWN_ID = "umbral_trespass_cooldown";
+    public static final String HEAL_ID = "umbral_trespass_should_heal";
 
     public static boolean shouldDamageRiding(LivingEntity entity) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
@@ -21,30 +23,46 @@ public class UmbralTrespassData {
         return nbt.getBoolean(DAMAGE_RIDING_ID);
     }
 
-    public static boolean setShouldDamageRiding(LivingEntity entity, boolean bl) {
+    public static void setShouldDamageRiding(LivingEntity entity, boolean bl) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
         nbt.putBoolean(DAMAGE_RIDING_ID, bl);
         if (entity instanceof ServerPlayerEntity) {
             syncDamageRidingData(bl, (ServerPlayerEntity) entity);
         }
-        return bl;
     }
 
-    public static int getTicksBeforeDismount(LivingEntity entity) {
+    public static void setOtherStats(LivingEntity entity, float damage, int cooldown, boolean shouldHeal) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
-        if (!nbt.contains(TICKS_BEFORE_DISMOUNT_ID)) {
-            nbt.putInt(TICKS_BEFORE_DISMOUNT_ID, 40);
-        }
-        return nbt.getInt(TICKS_BEFORE_DISMOUNT_ID);
-    }
-
-    public static int setTicksBeforeDismount(LivingEntity entity, int ticksBeforeDismount) {
-        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
-        nbt.putInt(TICKS_BEFORE_DISMOUNT_ID, ticksBeforeDismount);
+        nbt.putFloat(UMBRAL_DAMAGE_ID, damage);
+        nbt.putInt(COOLDOWN_ID, cooldown);
+        nbt.putBoolean(HEAL_ID, shouldHeal);
         if (entity instanceof ServerPlayerEntity) {
-            syncTicksBeforeDismountData(ticksBeforeDismount, (ServerPlayerEntity) entity);
+            syncOtherStats(damage, cooldown, shouldHeal, (ServerPlayerEntity) entity);
         }
-        return ticksBeforeDismount;
+    }
+
+    public static float getAbilityDamage(LivingEntity entity) {
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+        if (!nbt.contains(UMBRAL_DAMAGE_ID)) {
+            nbt.putFloat(UMBRAL_DAMAGE_ID, 20f);
+        }
+        return nbt.getFloat(UMBRAL_DAMAGE_ID);
+    }
+
+    public static int getAbilityCooldown(LivingEntity entity) {
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+        if (!nbt.contains(COOLDOWN_ID)) {
+            nbt.putInt(COOLDOWN_ID, 350);
+        }
+        return nbt.getInt(COOLDOWN_ID);
+    }
+
+    public static boolean shouldAbilityHeal(LivingEntity entity) {
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+        if (!nbt.contains(HEAL_ID)) {
+            nbt.putBoolean(HEAL_ID, false);
+        }
+        return nbt.getBoolean(HEAL_ID);
     }
 
     public static void syncDamageRidingData(boolean bl, ServerPlayerEntity entity) {
@@ -53,9 +71,11 @@ public class UmbralTrespassData {
         ServerPlayNetworking.send(entity, PacketIds.SYNC_DAMAGE_RIDING_DATA, buf);
     }
 
-    public static void syncTicksBeforeDismountData(int amount, ServerPlayerEntity entity) {
+    public static void syncOtherStats(float damage, int cooldown, boolean shouldHeal, ServerPlayerEntity entity) {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(amount);
-        ServerPlayNetworking.send(entity, PacketIds.SYNC_TICKS_BEFORE_DISMOUNT_DATA, buf);
+        buf.writeFloat(damage);
+        buf.writeInt(cooldown);
+        buf.writeBoolean(shouldHeal);
+        ServerPlayNetworking.send(entity, PacketIds.SYNC_UMBRAL_DAMAGE_COOLDOWN, buf);
     }
 }

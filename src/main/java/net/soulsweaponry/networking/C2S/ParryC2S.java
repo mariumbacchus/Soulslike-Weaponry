@@ -21,7 +21,6 @@ public class ParryC2S {
             if (serverWorld != null) {
                 if (ConfigConstructor.enable_shield_parry && player.getStackInHand(Hand.OFF_HAND).getItem() instanceof ShieldItem item && !player.getItemCooldownManager().isCoolingDown(item)) {
                     ParryData.setParryFrames((IEntityDataSaver) player, 1);
-                    ParryData.syncFrames(ParryData.getParryFrames(player), player);
                     player.getItemCooldownManager().set(item, player.isCreative() ? 10 : ConfigConstructor.shield_parry_cooldown);
                 }
             }
