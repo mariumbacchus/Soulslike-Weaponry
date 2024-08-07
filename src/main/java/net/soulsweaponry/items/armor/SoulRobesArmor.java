@@ -58,4 +58,9 @@ public class SoulRobesArmor extends SetBonusArmor {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_robes_armor;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_robes_set;
+    }
 }

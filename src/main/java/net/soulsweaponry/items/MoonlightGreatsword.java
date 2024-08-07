@@ -62,4 +62,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 new TranslatableText("tooltip.soulsweapons.moonlight_greatsword.part_3").formatted(Formatting.DARK_GRAY)
         };
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_moonlight_greatsword;
+    }
 }

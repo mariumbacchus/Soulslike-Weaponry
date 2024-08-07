@@ -55,6 +55,11 @@ public class Blunderbuss extends GunItem {
     }
 
     @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_blunderbuss;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);

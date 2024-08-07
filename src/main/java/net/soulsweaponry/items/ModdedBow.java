@@ -62,4 +62,7 @@ public abstract class ModdedBow extends BowItem implements IShootModProjectile, 
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

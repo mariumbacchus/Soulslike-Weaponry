@@ -324,4 +324,9 @@ public class ChaosSet extends ModdedArmor implements IAnimatable {
         }
         return false;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_set;
+    }
 }

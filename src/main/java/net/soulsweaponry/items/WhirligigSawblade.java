@@ -85,8 +85,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_whirligig_sawblade;
     }
 
     @Override

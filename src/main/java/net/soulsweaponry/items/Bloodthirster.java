@@ -53,16 +53,16 @@ public class Bloodthirster extends ModdedSword implements IAnimatable {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
     public void registerControllers(AnimationData data) {
     }
 
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_bloodthirster;
     }
 }

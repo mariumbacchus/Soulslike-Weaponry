@@ -57,7 +57,9 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    public abstract Text[] getAdditionalTooltips();
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
+    }
 
     public void notifyCooldown(LivingEntity user) {
         if (!ConfigConstructor.inform_player_about_cooldown_effect) {
@@ -67,4 +69,7 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable {
             player.sendMessage(new TranslatableText("soulsweapons.weapon.on_cooldown"), true);
         }
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

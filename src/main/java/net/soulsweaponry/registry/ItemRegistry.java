@@ -60,13 +60,13 @@ public class ItemRegistry {
     public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "arkenstone", 4);
     public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "essence_of_eventide", 2);
     public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE).fireproof(), "essence_of_luminescence", 3);
-    public static final Item CHAOS_CROWN = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item ENHANCED_ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item ENHANCED_WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.WITHERED_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
-    public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
+    public static final Item CHAOS_CROWN = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item CHAOS_HELMET = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.HEAD, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item ENHANCED_ARKENPLATE = new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.CHAOS_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item ENHANCED_WITHERED_CHEST = new WitheredArmor(ModArmorMaterials.WITHERED_ARMOR, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
+    public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, EquipmentSlot.CHEST, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC));
     public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC).fireproof());
 
     public static final ModMusicDiscs CHUNGUS_DISC = new ModMusicDiscs(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().group(MAIN_GROUP).maxCount(1));

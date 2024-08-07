@@ -29,8 +29,8 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_dawnbreaker;
     }
 
     @Override

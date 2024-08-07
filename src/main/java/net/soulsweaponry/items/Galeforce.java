@@ -35,6 +35,11 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
         ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.galeforce_max_velocity);
     }
 
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_galeforce;
+    }
+
     @Nullable
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));

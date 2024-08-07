@@ -61,4 +61,9 @@ public class MoonstoneRing extends Item implements IConfigDisable {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_moonstone_ring;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_moonlight_ring;
+    }
 }
