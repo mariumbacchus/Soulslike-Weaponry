@@ -6,11 +6,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -48,11 +50,14 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
             this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, Explosion.DestructionType.DESTROY);
         }
         DamageSource damageSource = DamageSource.trident(this, owner);
-        boolean bl = target.damage(damageSource, damage);
-        if (bl) {
+        boolean damaged = target.damage(damageSource, damage);
+        if (damaged) {
+            if (target instanceof LivingEntity living) {
+                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack)));
+            }
             LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.stack));
         }
-        return bl;
+        return damaged;
     }
 
     @Override
