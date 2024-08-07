@@ -476,6 +476,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean calculated_fall_hits_immune_entities = false;
     @Entry public static boolean ultra_heavy_haste_when_strength = true;
     @Entry public static float ultra_heavy_posture_loss_modifier_when_stagger_enchant = 2f;
+    @Entry public static boolean prioritize_off_hand_shield_over_weapon = false;
 
     @Entry public static int max_posture_loss = 200;
     @Entry public static int stagger_enchant_posture_loss_applied_per_level = 5;
