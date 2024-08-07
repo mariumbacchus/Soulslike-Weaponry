@@ -34,6 +34,11 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
         ((IProjectileWeapon)this).setProjectileDamage(ConfigConstructor.galeforce_damage);
         ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.galeforce_max_velocity);
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_galeforce;
+    }
     
     @Override
     @Nullable

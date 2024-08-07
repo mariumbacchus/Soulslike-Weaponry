@@ -56,4 +56,9 @@ public class SoulIngotArmor extends SetBonusArmor {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_ingot_armor;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_ingot_set;
+    }
 }

@@ -142,7 +142,7 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_reaper;
     }
 }

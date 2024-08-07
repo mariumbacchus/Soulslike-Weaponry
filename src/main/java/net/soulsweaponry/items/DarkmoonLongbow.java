@@ -69,4 +69,9 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkmoon_longbow;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_darkmoon_longbow;
+    }
 }

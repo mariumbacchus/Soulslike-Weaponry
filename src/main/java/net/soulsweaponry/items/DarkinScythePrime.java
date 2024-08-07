@@ -35,8 +35,8 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_darkin_scythe_prime;
     }
 
     @Override

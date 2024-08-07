@@ -196,7 +196,7 @@ public class WitheredWabbajack extends ModdedSword {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_withered_wabbajack;
     }
 }
