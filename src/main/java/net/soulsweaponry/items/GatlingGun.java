@@ -14,7 +14,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

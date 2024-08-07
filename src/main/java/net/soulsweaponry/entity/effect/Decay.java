@@ -2,14 +2,12 @@ package net.soulsweaponry.entity.effect;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.entity.mobs.BossEntity;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public class Decay extends StatusEffect {

@@ -9,7 +9,6 @@ import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
