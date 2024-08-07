@@ -26,4 +26,7 @@ public abstract class ModdedGeoArmor extends GeoArmorItem implements IConfigDisa
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

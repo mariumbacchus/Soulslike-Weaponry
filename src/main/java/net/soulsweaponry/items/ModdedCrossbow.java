@@ -69,4 +69,7 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IShootModPr
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    @Override
+    public abstract boolean isFireproof();
 }

@@ -106,8 +106,8 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_forlorn_scythe;
     }
 
     @Override

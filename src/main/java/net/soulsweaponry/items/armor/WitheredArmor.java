@@ -168,4 +168,9 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_withered_chest;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_withered_set;
+    }
 }

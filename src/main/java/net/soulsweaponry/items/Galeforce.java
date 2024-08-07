@@ -123,4 +123,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_galeforce;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_galeforce;
+    }
 }

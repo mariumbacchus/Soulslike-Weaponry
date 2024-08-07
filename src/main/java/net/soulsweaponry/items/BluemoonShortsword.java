@@ -14,4 +14,9 @@ public class BluemoonShortsword extends MoonlightShortsword {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_bluemoon_shortsword;
     }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_bluemoon_shortsword;
+    }
 }

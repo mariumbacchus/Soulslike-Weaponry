@@ -89,8 +89,8 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_draupnir_spear;
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
