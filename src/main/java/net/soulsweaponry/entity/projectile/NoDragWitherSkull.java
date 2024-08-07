@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.world.World;

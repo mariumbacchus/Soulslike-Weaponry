@@ -1,13 +1,10 @@
 package net.soulsweaponry.client.renderer.entity.projectile;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;

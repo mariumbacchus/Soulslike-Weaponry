@@ -13,7 +13,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class ReturnThrownWeaponC2S {

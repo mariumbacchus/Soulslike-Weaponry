@@ -7,7 +7,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.config.ConfigConstructor;

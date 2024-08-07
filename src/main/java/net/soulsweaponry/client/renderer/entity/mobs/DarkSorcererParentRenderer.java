@@ -7,7 +7,6 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.DarkSorcererModel;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
-import net.soulsweaponry.entity.mobs.Remnant;
 
 public class DarkSorcererParentRenderer<T extends DarkSorcerer, M extends DarkSorcererModel<T>> extends BipedEntityRenderer<T, M> {
 

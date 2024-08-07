@@ -2,7 +2,6 @@ package net.soulsweaponry.client.model.entity.projectile;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.entity.projectile.NightSkull;
 import software.bernie.geckolib.model.GeoModel;
 

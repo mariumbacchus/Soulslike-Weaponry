@@ -26,7 +26,6 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.EnumSet;
 
