@@ -58,6 +58,6 @@ public class ParryData {
     public static void syncFrames(int frames, ServerPlayerEntity player) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(frames);
-        ServerPlayNetworking.send(player, PacketIds.PARRY, buf);
+        ServerPlayNetworking.send(player, PacketIds.PARRY_SYNC, buf);
     }
 }

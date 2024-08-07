@@ -97,11 +97,11 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
         if (!this.inGround && age > 60) {
             this.setShouldReturn(true);
         }
-        Entity entity = this.getOwner();
+        Entity owner = this.getOwner();
         double returnSpeed = this.getReturnSpeed(this.stack);
-        if (this.shouldReturn() && (this.dealtDamage || this.isNoClip()) && entity != null) {
+        if (this.shouldReturn() && (this.dealtDamage || this.isNoClip()) && owner != null) {
             this.setNoClip(true);
-            Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
+            Vec3d vec3d = owner.getEyePos().subtract(this.getPos());
             if (!this.isOwnerAlive()) {
                 if (this.stack.hasNbt() && this.stack.getNbt().contains(Mjolnir.OWNERS_LAST_POS)) {
                     int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
@@ -124,39 +124,45 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
             }
             this.returnTimer++;
             for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
-                if (entity1 instanceof LivingEntity target && !target.isTeammate(entity)) {
-                    this.collide(entity, target, this.getDamage(target));
+                if (entity1 instanceof LivingEntity target && !target.isTeammate(owner)) {
+                    this.collide(owner, target, this.getDamage(target));
                 }
             }
         }
         List<Entity> list = this.getWorld().getOtherEntities(this, this.getBoundingBox()).stream().filter(e -> e instanceof PlayerEntity).toList();
         if (this.dealtDamage && !list.isEmpty()) {
             PlayerEntity player = (PlayerEntity) list.get(0);
-            if (entity != null) {
+            if (owner != null) {
                 for (Entity entity1 : list) {
-                    if (entity1.equals(entity)) {
+                    if (entity1.equals(owner)) {
                         player = (PlayerEntity) entity1;
                     }
                 }
             }
-            if (!this.insertStack(player)) {
-                this.dropStack(this.asItemStack(), 0.1f);
+            if (this.getOwner() == null) {
+                this.insertStack(player);
+            } else {
+                if (this.isOwner(player)) {
+                    this.insertStack(player);
+                }
             }
-            this.discard();
         }
         super.tick();
     }
 
-    public boolean insertStack(PlayerEntity player) {
+    public void insertStack(PlayerEntity player) {
         int slot = player.getInventory().selectedSlot;
         if (!player.getInventory().getMainHandStack().isEmpty()) {
             slot = -1;
         }
-        boolean bl = player.getInventory().insertStack(slot, this.asItemStack());
-        if (bl) {
+        boolean inserted = player.getInventory().insertStack(slot, this.asItemStack());
+        if (inserted) {
             player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1f, (float) this.random.nextGaussian() + .25f);
         }
-        return bl;
+        if (!inserted) {
+            this.dropStack(this.asItemStack(), 0.1f);
+        }
+        this.discard();
     }
 
     private void dropStack() {
