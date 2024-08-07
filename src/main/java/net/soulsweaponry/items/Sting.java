@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
@@ -48,11 +47,6 @@ public class Sting extends ModdedSword {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
     }
 
     @Override
