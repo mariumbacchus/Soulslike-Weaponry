@@ -331,6 +331,7 @@
     "subtitles.soulsweapons.trinity": "トリニティ爆発",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] を押して詳細を表示します",
+    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.control": "[§eCTRL§r] を押して詳細を表示します",
     "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "スペルブレード",
@@ -632,6 +633,7 @@
     "tooltip.soulsweapons.armor.set_bonus": "Full Set Bonus",
     "tooltip.soulsweapons.armor.set_bonus.gain_effects": "- Gain ",
     "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- Heal whenever an entity dies near you",
+    "tooltip.soulsweapons.epic_fight.crouch_replaces_offhand": "With Epic Fight mod, use while crouching instead of off-hand.",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "絶滅したと考えられている珍しい形の魂。",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "暗く、しかしバランスの取れた色は、",

@@ -57,7 +57,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 int enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);

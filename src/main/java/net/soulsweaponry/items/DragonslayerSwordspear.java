@@ -41,17 +41,9 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
-                if (stack != user.getOffHandStack()) {
-                    stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                    DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
-                    entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
-                    entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-                    world.spawnEntity(entity);
-                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
-                } else {
+                if (stack == user.getOffHandStack() || (WeaponUtil.isModLoaded("epicfight") && user.isSneaking())) {
                     stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 5));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0));
@@ -60,7 +52,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
                     //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items too!
                     for (Entity nearbyEntity : nearbyEntities) {
-                        if (nearbyEntity instanceof LivingEntity target && !(nearbyEntity instanceof TameableEntity)) {
+                        if (nearbyEntity instanceof LivingEntity target && (nearbyEntity instanceof TameableEntity tamed && !tamed.isTamed())) {
                             if (world.isSkyVisible(target.getBlockPos())) {
                                 for (i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
                                     LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
@@ -81,6 +73,14 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     }
                     int sharpness = WeaponUtil.getEnchantDamageBonus(stack);
                     playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_ability_cooldown - (sharpness*20)) / (world.isRaining() ? 2 : 1));
+                } else {
+                    stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                    DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
+                    entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
+                    entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+                    world.spawnEntity(entity);
+                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
                 }
             }
         }

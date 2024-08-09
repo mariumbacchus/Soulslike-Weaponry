@@ -35,7 +35,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
-            int chargeTime = this.getMaxUseTime(stack) - remainingUseTicks;
+            int chargeTime = this.getChargeTime(stack, remainingUseTicks);
             if (chargeTime >= 10) {
                 if (!player.isCreative()) {
                     int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() : 0;

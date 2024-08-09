@@ -10,6 +10,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class ChargeToUseItem extends ModdedSword {
 
@@ -46,6 +47,21 @@ public abstract class ChargeToUseItem extends ModdedSword {
         }
     }
 
+    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
+        int i;
+        if (WeaponUtil.isModLoaded("epicfight")) {
+            i = Integer.MAX_VALUE - remainingUseTicks;
+        } else {
+            i = this.getMaxUseTime(stack) - remainingUseTicks;
+        }
+        return i;
+    }
+
+    /**
+     * NOTE: Epic Fight mod sets the remainingUseTicks to Integer.MAX_VALUE since all the weapons default to having abilities such as blocking when holding right click,
+     * mainly the spears and greatswords weapon types, swords and tridents work fine.
+     * Use the {@link ChargeToUseItem#getChargeTime} method instead of traditional maxUseTime - remainingUseTicks check, so it handles whether the mod is loaded or not.
+     */
     @Override
     public abstract void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks);
 }

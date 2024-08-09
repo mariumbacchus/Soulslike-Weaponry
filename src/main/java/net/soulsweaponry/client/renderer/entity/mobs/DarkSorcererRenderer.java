@@ -11,10 +11,9 @@ public class DarkSorcererRenderer extends DarkSorcererParentRenderer<DarkSorcere
 
     public DarkSorcererRenderer(Context context) {
         super(context, new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
-        this.addFeature(new DarkSorcererFeatureRenderer<>(this, context.getModelLoader()));
     }
 
     public Identifier getTexture(DarkSorcerer remnant) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer_merged.png");
     }
 }

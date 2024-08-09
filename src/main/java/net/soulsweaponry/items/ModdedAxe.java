@@ -29,13 +29,19 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable {
         if (this.isDisabled(stack)) {
             tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
         }
-        if (Screen.hasShiftDown()) {
+        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+        boolean showInfo = !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
+        if (showInfo) {
             for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
                 WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            if (epicFight) {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.alt"));
+            } else {
+                tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            }
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -54,4 +60,14 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable {
 
     @Override
     public abstract boolean isFireproof();
+
+    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
+        int i;
+        if (WeaponUtil.isModLoaded("epicfight")) {
+            i = Integer.MAX_VALUE - remainingUseTicks;
+        } else {
+            i = this.getMaxUseTime(stack) - remainingUseTicks;
+        }
+        return i;
+    }
 }

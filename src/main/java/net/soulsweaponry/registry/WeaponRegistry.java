@@ -59,6 +59,8 @@ public class WeaponRegistry {
     public static RegistryObject<CrossbowItem> KRAKEN_SLAYER_CROSSBOW;
     public static RegistryObject<BowItem> DARKMOON_LONGBOW;
 
+    //public static RegistryObject<Item> TEST_ITEM;
+
     public static void register() {
         BLUEMOON_SHORTSWORD = ItemRegistry.registerWeaponItem("bluemoon_shortsword", () -> new BluemoonShortsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_bluemoon_shortsword);
         BLUEMOON_GREATSWORD = ItemRegistry.registerWeaponItem("bluemoon_greatsword", () -> new BluemoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_bluemoon_greatsword);
@@ -98,8 +100,8 @@ public class WeaponRegistry {
         SILVER_SWORD = ItemRegistry.registerItem("silver_sword", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 0, 1, false, true)); // Switched to by other trick weapons
         HOLY_GREATSWORD = ItemRegistry.registerWeaponItem("holy_greatsword", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.RARE), 1, 2, false, true), ConfigConstructor.disable_recipe_ludwigs_holy_blade);
         DRAUPNIR_SPEAR = ItemRegistry.registerWeaponItem("draupnir_spear", () -> new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_draupnir_spear);
-        HOLY_MOONLIGHT_GREATSWORD = ItemRegistry.registerItem("holy_moonlight_greatsword", () -> new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC), 4)); // Switched to by Holy Moonlight Sword
-        HOLY_MOONLIGHT_SWORD = ItemRegistry.registerWeaponItem("holy_moonlight_sword", () -> new HolyMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_holy_moonlight_sword);
+        HOLY_MOONLIGHT_GREATSWORD = ItemRegistry.registerItem("holy_moonlight_greatsword", () -> new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC), 4)); // Switched to by Holy Moonlight Sword
+        HOLY_MOONLIGHT_SWORD = ItemRegistry.registerWeaponItem("holy_moonlight_sword", () -> new HolyMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_holy_moonlight_sword);
         FROSTMOURNE = ItemRegistry.registerWeaponItem("frostmourne", () -> new Frostmourne(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_frostmourne);
         MASTER_SWORD = ItemRegistry.registerWeaponItem("master_sword", () -> new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_master_sword);
         NIGHTS_EDGE_ITEM = ItemRegistry.registerWeaponItem("nights_edge_item", () -> new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_nights_edge);
@@ -107,5 +109,7 @@ public class WeaponRegistry {
         KRAKEN_SLAYER = ItemRegistry.registerWeaponItem("kraken_slayer", () -> new KrakenSlayer(new Item.Settings().group(MAIN_GROUP).maxDamage(1258).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_kraken_slayer_bow);
         KRAKEN_SLAYER_CROSSBOW = ItemRegistry.registerWeaponItem("kraken_slayer_crossbow", () -> new KrakenSlayerCrossbow(new Item.Settings().group(MAIN_GROUP).maxDamage(1258).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_kraken_slayer_crossbow);
         DARKMOON_LONGBOW = ItemRegistry.registerWeaponItem("darkmoon_longbow", () -> new DarkmoonLongbow(new Item.Settings().group(MAIN_GROUP).maxDamage(1400).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_darkmoon_longbow);
+
+        //TEST_ITEM = ItemRegistry.registerItem("test_item", () -> new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new Item.Settings().group(MAIN_GROUP).rarity(Rarity.EPIC)));
     }
 }

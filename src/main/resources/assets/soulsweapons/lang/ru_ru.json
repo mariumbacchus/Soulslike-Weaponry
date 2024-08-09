@@ -330,6 +330,7 @@
     "subtitles.soulsweapons.trinity": "Trinity explosion",
 
     "tooltip.soulsweapons.shift": "Удерживай [§eSHIFT§r] для получения информации",
+    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.control": "Удерживай [§eCTRL§r] для преданий",
     "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "Магический Клинок",
@@ -631,6 +632,7 @@
     "tooltip.soulsweapons.armor.set_bonus": "Full Set Bonus",
     "tooltip.soulsweapons.armor.set_bonus.gain_effects": "- Gain ",
     "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- Heal whenever an entity dies near you",
+    "tooltip.soulsweapons.epic_fight.crouch_replaces_offhand": "With Epic Fight mod, use while crouching instead of off-hand.",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

@@ -55,7 +55,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));

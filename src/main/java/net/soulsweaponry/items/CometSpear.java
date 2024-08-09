@@ -45,7 +45,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
-                if (stack == user.getOffHandStack()) {
+                if (stack == user.getOffHandStack() || (WeaponUtil.isModLoaded("epicfight") && user.isSneaking())) {
                     float f = user.getYaw();
                     float g = user.getPitch();
                     float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);

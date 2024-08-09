@@ -64,7 +64,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
             int duration = ConfigConstructor.darkin_blade_ability_cooldown;
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());

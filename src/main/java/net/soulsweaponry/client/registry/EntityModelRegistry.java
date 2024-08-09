@@ -4,8 +4,6 @@ import net.minecraft.client.render.entity.DragonFireballEntityRenderer;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderers;
 import net.minecraft.client.render.entity.WitherSkullEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.renderer.entity.mobs.*;
 import net.soulsweaponry.client.renderer.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -13,7 +11,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 public class EntityModelRegistry {
 
     public static void register() {
-        EntityRenderers.register(EntityRegistry.SOUL_REAPER_GHOST.get(), (context) -> new SoulReaperGhostRenderer(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayers.ZOMBIE)), 0.5f));
+        EntityRenderers.register(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhostRenderer::new);
         EntityRenderers.register(EntityRegistry.WITHERED_DEMON.get(), WitheredDemonRenderer::new);
         EntityRenderers.register(EntityRegistry.ACCURSED_LORD_BOSS.get(), AccursedLordBossRenderer::new);
         EntityRenderers.register(EntityRegistry.CHAOS_MONARCH.get(), ChaosMonarchRenderer::new);

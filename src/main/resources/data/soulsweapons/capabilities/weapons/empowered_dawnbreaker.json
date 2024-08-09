@@ -1,0 +1,12 @@
+{
+    "attributes":
+    {
+        "common":
+        {
+            "armor_negation":15.0,
+            "impact":3.2,
+            "max_strikes":3
+        }
+    },
+    "type":"epicfight:longsword"
+}

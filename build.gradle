@@ -70,14 +70,14 @@ dependencies {
     modImplementation "maven.modrinth:projectile-damage-attribute:${project.projectile_damage_attribute_version}-forge"
 
     // Mixin extras
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0")) // NOTE: Doesn't work with forge above 40.2.0
     implementation(include("io.github.llamalad7:mixinextras-forge:0.4.0"))
 
     // Runtime only
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
+    //modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
 }
 
 processResources {
