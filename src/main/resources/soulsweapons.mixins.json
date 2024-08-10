@@ -20,6 +20,7 @@
     "BipedEntityModelMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
+    "KeyBindingMixin",
     "ShieldItemMixin"
   ],
   "injectors": {
