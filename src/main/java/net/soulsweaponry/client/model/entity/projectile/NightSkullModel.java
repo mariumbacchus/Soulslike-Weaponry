@@ -3,23 +3,23 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.NightSkull;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class NightSkullModel extends AnimatedGeoModel<NightSkull> {
+public class NightSkullModel extends GeoModel<NightSkull> {
 
     @Override
-    public Identifier getAnimationFileLocation(NightSkull animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/night_skull.animation.json");
+    public Identifier getAnimationResource(NightSkull animatable) {
+        return new Identifier(SoulsWeaponry.ModId, "animations/entity/night_skull.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(NightSkull object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/night_skull.geo.json");
+    public Identifier getModelResource(NightSkull object) {
+        return new Identifier(SoulsWeaponry.ModId, "geo/entity/night_skull.geo.json");
 
     }
 
     @Override
-    public Identifier getTextureLocation(NightSkull object) {
+    public Identifier getTextureResource(NightSkull object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/night_skull.png");
     }
 }

@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -9,7 +10,6 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -27,7 +28,6 @@ import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class DarkSorcerer extends HostileEntity {
 
@@ -41,22 +41,19 @@ public class DarkSorcerer extends HostileEntity {
 
     public static DefaultAttributeContainer.Builder createSorcererAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
     public boolean canSpawn(WorldView view) {
         BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
-                && this.world.getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
-    }
-
-    public static boolean canSpawn(EntityType<DarkSorcerer> darkSorcererEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return serverWorldAccess.getDifficulty() != Difficulty.PEACEFUL;
+        BlockState state = this.getWorld().getBlockState(this.getBlockPos());
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+                && state.getBlock().canMobSpawnInside(state)
+                && this.getWorld().getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
     }
 
     protected void initDataTracker() {
@@ -74,7 +71,7 @@ public class DarkSorcerer extends HostileEntity {
     }
 
     public void setBeamCords(double x, double y, double z) {
-        this.dataTracker.set(BEAM_CORDS, new BlockPos(x, y, z));
+        this.dataTracker.set(BEAM_CORDS, BlockPos.ofFloored(x, y, z));
     }
 
     public BlockPos getBeamCords() {
@@ -89,6 +86,10 @@ public class DarkSorcerer extends HostileEntity {
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, ReturningKnight.class, true));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
+    public static boolean canSpawn(EntityType<DarkSorcerer> darkSorcererEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return serverWorldAccess.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     static class BeamTargetGoal extends Goal {
@@ -128,9 +129,9 @@ public class DarkSorcerer extends HostileEntity {
                 if (target instanceof ReturningKnight) {
                     if (distanceToEntity < 150f) {
                         this.user.setBeaming(true);
-                        this.user.setBeamCords(target.getX(), target.getEyeY(), target.getZ());
+                        this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (target.getHealth() < target.getMaxHealth()) {
-                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayers().size()/2);
+                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayers().size()/2f);
                         }
                     } else {
                         this.user.setBeaming(false);
@@ -139,9 +140,9 @@ public class DarkSorcerer extends HostileEntity {
                     //Damage target each second
                     if (distanceToEntity < 150f) {
                         this.user.setBeaming(true);
-                        this.user.setBeamCords(target.getX(), target.getEyeY(), target.getZ());
+                        this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (attackTicks < 0) {
-                            target.damage(DamageSource.mob(user), 2f);
+                            target.damage(this.user.getWorld().getDamageSources().mobAttack(user), 2f);
                             attackTicks = 10;
                         }
                     } else {
@@ -156,12 +157,12 @@ public class DarkSorcerer extends HostileEntity {
                     this.user.getNavigation().startMovingAlong(this.path, 1D);
                 }
                 super.tick();
-                
+
             }
         }
     }
 
-    public void tickMovement() {        
+    public void tickMovement() {
         if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
             double f = this.getBeamCords().getY() - this.getEyeY();
@@ -173,8 +174,8 @@ public class DarkSorcerer extends HostileEntity {
             double length = this.random.nextDouble();
             for (int i = 0; i < 10; i++) {
                 length += .5f + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
-                this.world.addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.GLOW, this.getX() + e * length, this.getEyeY() + f * length, this.getZ() + g * length, 0.0D, 0.0D, 0.0D);
             }
 
             double dd = this.random.nextGaussian() * 0.05D;
@@ -185,8 +186,8 @@ public class DarkSorcerer extends HostileEntity {
             float body = this.bodyYaw * 0.017453292F + MathHelper.cos((float)this.age * 0.6662F) * 0.25F;
             float cosBody = MathHelper.cos(body);
             float sinBody = MathHelper.sin(body);
-            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
-            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
         }
         super.tickMovement();
     }

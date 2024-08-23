@@ -9,8 +9,8 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
@@ -54,7 +54,7 @@ public class ParticleOutburstS2C {
 
     // Same as encode
     public void toBytes(PacketByteBuf buf) {
-        buf.writeInt(Registry.PARTICLE_TYPE.getRawId(this.particle.getType()));
+        buf.writeInt(Registries.PARTICLE_TYPE.getRawId(this.particle.getType()));
         buf.writeInt(this.amount);
         buf.writeItemStack(this.item);
         buf.writeDouble(this.x);
@@ -69,7 +69,7 @@ public class ParticleOutburstS2C {
 
     //Same as decode/fromBytes
     public ParticleOutburstS2C(PacketByteBuf buf) {
-        ParticleType<?> particletype = Registry.PARTICLE_TYPE.get(buf.readInt());
+        ParticleType<?> particletype = Registries.PARTICLE_TYPE.get(buf.readInt());
         this.particle = this.readParticle(buf, particletype);
         this.amount = buf.readInt();
         this.item = buf.readItemStack();

@@ -10,26 +10,24 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
+public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     private static final String CRITICAL = "3rd_shot";
     private static final String PREV_UUID = "prev_projectile_uuid";
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
@@ -82,8 +80,7 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
             UUID uuid = stack.getNbt().getUuid(PREV_UUID);
             Entity entity = world.getEntity(uuid);
             if (entity instanceof WitherSkullEntity skull) {
-                Explosion.DestructionType destructionType = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
-                world.createExplosion(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isCharged() ? 2f : 1f, false, destructionType);
+                world.createExplosion(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isCharged() ? 2f : 1f, false, World.ExplosionSourceType.MOB);
                 skull.discard();
             }
         }
@@ -110,20 +107,19 @@ public class ForlornScythe extends SoulHarvestingItem implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private ForlornScytheRenderer renderer = null;
             // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
                 if (this.renderer == null)
                     this.renderer = new ForlornScytheRenderer();
 

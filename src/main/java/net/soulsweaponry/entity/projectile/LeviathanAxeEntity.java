@@ -9,7 +9,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.LeviathanAxe;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -17,14 +16,15 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatable {
+public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
@@ -45,11 +45,11 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
 
     @Override
     public boolean collide(Entity owner, Entity target, float damage) {
-        if (!world.isClient && target instanceof MjolnirProjectile) {
+        if (!this.getWorld().isClient && target instanceof MjolnirProjectile) {
             ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
-            this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, Explosion.DestructionType.DESTROY);
+            this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
         }
-        DamageSource damageSource = DamageSource.trident(this, owner);
+        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
         boolean damaged = target.damage(damageSource, damage);
         if (damaged) {
             if (target instanceof LivingEntity living) {
@@ -74,12 +74,19 @@ public class LeviathanAxeEntity extends ReturningProjectile implements IAnimatab
         }
     }
 
-    @Override
-    public void registerControllers(AnimationData data) {
+    private PlayState predicate(AnimationState<?> state) {
+        if (this.dealtDamage) return PlayState.STOP;
+        state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 }

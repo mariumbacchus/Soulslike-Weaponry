@@ -40,6 +40,7 @@ public class MoonlightArrow extends PersistentProjectileEntity {
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
+    @Override
     public void tick() {
         if (!this.inGround) {
             Vec3d vec3d = this.getVelocity();
@@ -89,9 +90,9 @@ public class MoonlightArrow extends PersistentProjectileEntity {
             i = (int)Math.min(l + (long)i, Integer.MAX_VALUE);
         }
         if ((entity2 = this.getOwner()) == null) {
-            damageSource = DamageSource.magic(this, this);
+            damageSource = getWorld().getDamageSources().indirectMagic(this, this);
         } else {
-            damageSource = DamageSource.magic(this, entity2);
+            damageSource = getWorld().getDamageSources().indirectMagic(this, entity2);
             if (entity2 instanceof LivingEntity) {
                 ((LivingEntity)entity2).onAttacking(entity);
             }
@@ -107,13 +108,13 @@ public class MoonlightArrow extends PersistentProjectileEntity {
         if (entity.damage(damageSource, i)) {
             if (entity instanceof LivingEntity livingEntity) {
                 Vec3d vec3d;
-                if (!this.world.isClient && this.getPierceLevel() <= 0) {
+                if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {
                     livingEntity.setStuckArrowCount(livingEntity.getStuckArrowCount() + 1);
                 }
                 if (this.getPunch() > 0 && (vec3d = this.getVelocity().multiply(1.0, 0.0, 1.0).normalize().multiply((double)this.getPunch() * 0.6)).lengthSquared() > 0.0) {
                     livingEntity.addVelocity(vec3d.x, 0.1, vec3d.z);
                 }
-                if (!this.world.isClient && entity2 instanceof LivingEntity) {
+                if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
                     EnchantmentHelper.onUserDamaged(livingEntity, entity2);
                     EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity);
                 }
@@ -125,7 +126,7 @@ public class MoonlightArrow extends PersistentProjectileEntity {
                     piercingKilledEntities.add(livingEntity);
                     ((PersistentProjectileMixin) this).setPiercingKilledEntities(piercingKilledEntities);
                 }
-                if (!this.world.isClient && entity2 instanceof ServerPlayerEntity serverPlayerEntity) {
+                if (!this.getWorld().isClient && entity2 instanceof ServerPlayerEntity serverPlayerEntity) {
                     if (piercingKilledEntities != null && this.isShotFromCrossbow()) {
                         Criteria.KILLED_BY_CROSSBOW.trigger(serverPlayerEntity, piercingKilledEntities);
                     } else if (!entity.isAlive() && this.isShotFromCrossbow()) {
@@ -142,7 +143,7 @@ public class MoonlightArrow extends PersistentProjectileEntity {
             this.setVelocity(this.getVelocity().multiply(-0.1));
             this.setYaw(this.getYaw() + 180.0f);
             this.prevYaw += 180.0f;
-            if (!this.world.isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
+            if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
                 if (this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1f);
                 }

@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.soulsweaponry.config.ConfigConstructor;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,19 +18,19 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class CometSpearEntity extends PersistentProjectileEntity implements IAnimatable, IAnimationTickable {
+public class CometSpearEntity extends PersistentProjectileEntity implements GeoEntity {
 
     private static final TrackedData<Boolean> ENCHANTED;
     private ItemStack spearStack;
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
@@ -63,26 +62,17 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
     }
 
     @Override
-    public int tickTimer() {
-        return age;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override
     protected ItemStack asItemStack() {
         return this.spearStack.copy();
-    }
-
-    public boolean isEnchanted() {
-        return (Boolean)this.dataTracker.get(ENCHANTED);
     }
 
     @Nullable
@@ -105,7 +95,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements IAni
         }
 
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = DamageSource.thrownProjectile(this, entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {

@@ -10,7 +10,8 @@ import net.soulsweaponry.entity.mobs.DarkSorcerer;
 public class DarkSorcererRenderer extends DarkSorcererParentRenderer<DarkSorcerer, DarkSorcererModel<DarkSorcerer>>{
 
     public DarkSorcererRenderer(Context context) {
-        super(context, new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
+        super(context, new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE)),
+                new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
     }
 
     public Identifier getTexture(DarkSorcerer remnant) {

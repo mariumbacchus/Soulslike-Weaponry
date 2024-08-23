@@ -66,7 +66,7 @@ public class GatlingGun extends GunItem {
         if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % 4 == 0) {
             if (user instanceof PlayerEntity playerEntity) {
                 boolean bl = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-                ItemStack itemStack = playerEntity.getArrowType(stack);
+                ItemStack itemStack = playerEntity.getProjectileType(stack);
                 if (!itemStack.isEmpty() || bl) {
                     if (itemStack.isEmpty()) {
                         itemStack = new ItemStack(ItemRegistry.SILVER_BULLET.get());

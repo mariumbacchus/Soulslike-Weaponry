@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "soulsweapons:demon_chunk"
-  },
-  "result": "soulsweapons:crimson_ingot",
-  "experience": 0.1,
-  "cookingtime": 200
-}

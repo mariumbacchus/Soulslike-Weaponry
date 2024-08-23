@@ -6,22 +6,20 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
@@ -30,23 +28,19 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeybindAbility {
+public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindAbility {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public static final String SPEARS_ID = "thrown_spears_id";
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
@@ -57,7 +51,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 int enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
@@ -72,19 +66,33 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
         }
     }
 
-    private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event){
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+    private PlayState predicate(AnimationState<?> event){
+        event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private DraupnirSpearItemRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new DraupnirSpearItemRenderer();
+
+                return renderer;
+            }
+        });
     }
 
     @Override
@@ -126,10 +134,9 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                         this.saveSpearData(stack, entity);
                         ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
                     }
-                    if (!player.isCreative())
-                        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
+                    if (!player.isCreative()) player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
                 } else if (ConfigConstructor.inform_player_about_cooldown_effect) {
-                    player.sendMessage(new TranslatableText("soulsweapons.weapon.on_cooldown"), true);
+                    player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown", "Can't cast this ability with the Cooldown effect!"), true);
                 }
             } else {
                 Box box = player.getBoundingBox().expand(3);
@@ -137,7 +144,7 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
                 float power = ConfigConstructor.draupnir_spear_projectile_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity) {
-                        entity.damage(DamageSource.mob(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.addVelocity(0, .1f, 0);
                     }
                 }
@@ -160,20 +167,6 @@ public class DraupnirSpear extends ChargeToUseItem implements IAnimatable, IKeyb
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
-    }
-
-    @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            private DraupnirSpearItemRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new DraupnirSpearItemRenderer();
-
-                return renderer;
-            }
-        });
     }
 
     @Override

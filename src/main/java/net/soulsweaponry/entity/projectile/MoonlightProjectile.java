@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -23,13 +24,12 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class MoonlightProjectile extends NonArrowProjectile implements IAnimatable, IAnimationTickable{
+public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity {
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final TrackedData<Integer> POINTS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
@@ -40,13 +40,13 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
     private static final TrackedData<ParticleEffect> EXPLOSION_PARTICLE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<Integer> APPLY_FIRE_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private ItemStack stackShotFrom;
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
-    
+
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
         super(type, owner, world);
     }
@@ -105,11 +105,11 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         double f = vec3d.y;
         double g = vec3d.z;
         for (int i = 0; i < this.getTickParticleAmount(); ++i) {
-            this.world.addParticle(this.getTrailParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
+            this.getWorld().addParticle(this.getTrailParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
         }
 
         if (this.age > this.getMaxAge()) {
-            this.discard(); 
+            this.discard();
         }
     }
 
@@ -149,16 +149,16 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
             world.addParticle(this.getExplosionParticleType(), true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
-        } 
+        }
     }
 
     @Override
     public void onRemoved() {
         super.onRemoved();
         if (this.dataTracker.get(HUGE_EXPLOSION)) {
-            this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), 750, 0.5f);
+            this.detonateEntity(getWorld(), this.getX(), this.getY(), this.getZ(), 750, 0.5f);
         } else {
-            this.detonateEntity(world, this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
+            this.detonateEntity(getWorld(), this.getX(), this.getY(), this.getZ(), this.getMaxParticlePoints(), 0.125f);
         }
     }
 
@@ -169,11 +169,6 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
 
     protected float getDragInWater() {
         return 1.01F;
-    }
-
-    @Override
-    public boolean isFireImmune() {
-        return true;
     }
 
     protected ItemStack asItemStack() {
@@ -187,17 +182,19 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
     public boolean hasNoGravity() {
         return true;
     }
+
     @Override
-    public int tickTimer() {
-        return age;
-    }
-    @Override
-    public void registerControllers(AnimationData data) {        
+    public boolean isFireImmune() {
+        return true;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     public void setExplosionParticleType(ParticleEffect particle) {
@@ -237,14 +234,14 @@ public class MoonlightProjectile extends NonArrowProjectile implements IAnimatab
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Particle", 8)) {
             try {
-                this.setExplosionParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle"))));
+                this.setExplosionParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
             } catch (CommandSyntaxException var5) {
                 LOGGER.warn("Couldn't load custom particle {}", nbt.getString("Particle"), var5);
             }
         }
         if (nbt.contains("TrailParticle", 8)) {
             try {
-                this.setTrailParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("TrailParticle"))));
+                this.setTrailParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("TrailParticle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
             } catch (CommandSyntaxException var5) {
                 LOGGER.warn("Couldn't load custom particle {}", nbt.getString("TrailParticle"), var5);
             }

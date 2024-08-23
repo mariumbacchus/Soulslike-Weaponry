@@ -5,8 +5,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
@@ -19,16 +18,16 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBindRegistry {
 
-    private static KeyBinding returnFreyrSword;
-    private static KeyBinding stationaryFreyrSword;
-    private static KeyBinding collectSummons;
+    public static KeyBinding returnFreyrSword;
+    public static KeyBinding stationaryFreyrSword;
+    public static KeyBinding collectSummons;
     public static KeyBinding switchWeapon;
     public static KeyBinding keybindAbility;
-    private static KeyBinding parry;
+    public static KeyBinding parry;
     public static KeyBinding effectShootMoonlight;
     public static KeyBinding returnThrownWeapon;
 
-    public static void register() {
+    public static void register(RegisterKeyMappingsEvent event) {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
         stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_Z);
         collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
@@ -37,9 +36,18 @@ public class KeyBindRegistry {
         parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
         effectShootMoonlight = registerKeyboard("effect_shoot_moonlight", GLFW.GLFW_KEY_H);
         returnThrownWeapon = registerKeyboard("return_thrown_weapon", GLFW.GLFW_KEY_N);
+
+        event.register(KeyBindRegistry.returnFreyrSword);
+        event.register(KeyBindRegistry.stationaryFreyrSword);
+        event.register(KeyBindRegistry.collectSummons);
+        event.register(KeyBindRegistry.switchWeapon);
+        event.register(KeyBindRegistry.keybindAbility);
+        event.register(KeyBindRegistry.parry);
+        event.register(KeyBindRegistry.effectShootMoonlight);
+        event.register(KeyBindRegistry.returnThrownWeapon);
     }
 
-    public static void registerKeyInputs(TickEvent.ClientTickEvent event) {
+    public static void registerKeyInputs() {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client == null) return;
         while (returnFreyrSword.wasPressed()) {
@@ -96,8 +104,6 @@ public class KeyBindRegistry {
     }
 
     private static KeyBinding registerKeyboard(String name, int keycode) {
-        KeyBinding key = new KeyBinding("key." + SoulsWeaponry.ModId + "." + name, keycode, "category." + SoulsWeaponry.ModId + ".main");
-        ClientRegistry.registerKeyBinding(key);
-        return key;
+        return new KeyBinding("key." + SoulsWeaponry.ModId + "." + name, keycode, "category." + SoulsWeaponry.ModId + ".main");
     }
 }

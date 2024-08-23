@@ -10,7 +10,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.loot_tables.BossLootTables;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
@@ -24,7 +23,7 @@ import static net.soulsweaponry.SoulsWeaponry.ModId;
 
 public class EntityRegistry {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, ModId);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ModId);
 
     public static final RegistryObject<EntityType<WitheredDemon>> WITHERED_DEMON = registerWithSpawnEgg("withered_demon", () -> EntityType.Builder.create(WitheredDemon::new, SpawnGroup.MONSTER).setDimensions(1F, 2F).build("withered_demon"), 10027008, 0);
     public static final RegistryObject<EntityType<AccursedLordBoss>> ACCURSED_LORD_BOSS = registerWithSpawnEgg("accursed_lord_boss", () -> EntityType.Builder.create(AccursedLordBoss::new, SpawnGroup.MONSTER).setDimensions(3F, 6F).build("accursed_lord_boss"), 0, 10027008);
@@ -84,7 +83,8 @@ public class EntityRegistry {
 
     public static <E extends EntityType<? extends MobEntity>> RegistryObject<E> registerWithSpawnEgg(String id, Supplier<E> entity, int primaryColor, int secondaryColor) {
         RegistryObject<E> returnable = registerEntity(id, entity);
-        ItemRegistry.registerItem(id + "_spawn_egg",  () -> new ForgeSpawnEggItem(returnable, primaryColor, secondaryColor, new Item.Settings().group(SoulsWeaponry.MAIN_GROUP)));
+        Supplier<Item> egg = () -> new ForgeSpawnEggItem(returnable, primaryColor, secondaryColor, new Item.Settings());
+        ItemRegistry.registerItem(id + "_spawn_egg", egg);
         return returnable;
     }
 

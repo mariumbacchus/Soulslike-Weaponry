@@ -3,8 +3,10 @@ package net.soulsweaponry.util;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
@@ -28,12 +30,12 @@ public class ModifyDamageUtil {
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
             newAmount += amountAdded;
         }
-        if (source.isMagic() && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE.get()) && !source.isOutOfWorld()) {
+        if ((source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE.get())) {
             int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE.get()).getAmplifier();
             float amountReduced = newAmount * ((amplifier + 1)*.2f);
             newAmount -= amountReduced;
         }
-        if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get()) && !source.isProjectile()) {
+        if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get()) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK.get()).getAmplifier();
             float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
             float totalAdded = baseAdded * (amplifier + 1);

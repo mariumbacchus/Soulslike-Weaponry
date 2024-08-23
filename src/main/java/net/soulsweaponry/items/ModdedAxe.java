@@ -6,7 +6,6 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -27,21 +26,15 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (this.isDisabled(stack)) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
-        boolean showInfo = !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
-        if (showInfo) {
+        if (Screen.hasShiftDown()) {
             for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
                 WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            if (epicFight) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.alt"));
-            } else {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-            }
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -60,14 +53,4 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable {
 
     @Override
     public abstract boolean isFireproof();
-
-    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
-        int i;
-        if (WeaponUtil.isModLoaded("epicfight")) {
-            i = Integer.MAX_VALUE - remainingUseTicks;
-        } else {
-            i = this.getMaxUseTime(stack) - remainingUseTicks;
-        }
-        return i;
-    }
 }

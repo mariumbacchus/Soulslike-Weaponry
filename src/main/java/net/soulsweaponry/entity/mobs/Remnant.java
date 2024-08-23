@@ -24,6 +24,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -37,7 +38,7 @@ public class Remnant extends TameableEntity {
         this.setTamed(false);
         this.initEquip();
     }
-    
+
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
@@ -63,33 +64,34 @@ public class Remnant extends TameableEntity {
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     public void initEquip() {
         int[] chance = {6, 6, 2, 4, 1, 2, 2, 2};
         Item[] equipment = {
-            ArmorRegistry.SOUL_INGOT_HELMET.get(),
-            ArmorRegistry.SOUL_INGOT_CHESTPLATE.get(),
-            ArmorRegistry.SOUL_INGOT_LEGGINGS.get(),
-            ArmorRegistry.SOUL_INGOT_BOOTS.get(),
-            Items.SHIELD,
-            WeaponRegistry.TRANSLUCENT_SWORD.get(),
-            WeaponRegistry.TRANSLUCENT_GLAIVE.get(),
-            WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get(),
+                ArmorRegistry.SOUL_INGOT_HELMET.get(),
+                ArmorRegistry.SOUL_INGOT_CHESTPLATE.get(),
+                ArmorRegistry.SOUL_INGOT_LEGGINGS.get(),
+                ArmorRegistry.SOUL_INGOT_BOOTS.get(),
+                Items.SHIELD,
+                WeaponRegistry.TRANSLUCENT_SWORD.get(),
+                WeaponRegistry.TRANSLUCENT_GLAIVE.get(),
+                WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get(),
         };
         EquipmentSlot[] spot = {
-            EquipmentSlot.HEAD,
-            EquipmentSlot.CHEST,
-            EquipmentSlot.LEGS,
-            EquipmentSlot.FEET,
-            EquipmentSlot.OFFHAND,
-            EquipmentSlot.MAINHAND, //trenger en mainhand for hvert sverd
-            EquipmentSlot.MAINHAND,
-            EquipmentSlot.MAINHAND,
+                EquipmentSlot.HEAD,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET,
+                EquipmentSlot.OFFHAND,
+                //Needs a main-hand slot for each weapon
+                EquipmentSlot.MAINHAND,
+                EquipmentSlot.MAINHAND,
+                EquipmentSlot.MAINHAND,
         };
         for (int i = 0; i < chance.length; i++) {
             int random = (new Random()).nextInt(10);
@@ -97,6 +99,14 @@ public class Remnant extends TameableEntity {
                 this.equipStack(spot[i], new ItemStack(equipment[i]));
             }
         }
+    }
+
+    public int getSoulAmount() {
+        return this.soulAmount;
+    }
+
+    public void setSoulAmount(int amount) {
+        this.soulAmount = amount;
     }
 
     @Override
@@ -111,21 +121,13 @@ public class Remnant extends TameableEntity {
         super.tickMovement();
     }
 
-    public int getSoulAmount() {
-        return this.soulAmount;
-    }
-
-    public void setSoulAmount(int amount) {
-        this.soulAmount = amount;
-    }
-
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         if (this.isOwner(player) && player.getStackInHand(hand).isEmpty()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
             this.navigation.stop();
-            this.setTarget((LivingEntity)null);
+            this.setTarget(null);
             return ActionResult.SUCCESS;
         }
         return super.interactMob(player, hand);
@@ -171,6 +173,11 @@ public class Remnant extends TameableEntity {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
     }
 
     @Override

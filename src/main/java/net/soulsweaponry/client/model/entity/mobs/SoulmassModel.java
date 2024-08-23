@@ -3,25 +3,11 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.Soulmass;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class SoulmassModel extends AnimatedGeoModel<Soulmass>{
+public class SoulmassModel extends DefaultedEntityGeoModel<Soulmass> {
 
-    @Override
-    public Identifier getModelLocation(Soulmass object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "geo/soulmass.geo.json");
-    }
-
-    @Override
-    public Identifier getTextureLocation(Soulmass object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/soulmass_texture.png");
-    }
-
-    @Override
-    public Identifier getAnimationFileLocation(Soulmass object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "animations/soulmass.animation.json");
+    public SoulmassModel() {
+        super(new Identifier(SoulsWeaponry.ModId, "soulmass"), true);
     }
 }

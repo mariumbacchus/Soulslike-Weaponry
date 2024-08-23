@@ -39,7 +39,7 @@ description="Adds lots of legendary weapons and bosses!"
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[40.2.0,)" #mandatory
+    versionRange="[47.3.0,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -49,18 +49,18 @@ description="Adds lots of legendary weapons and bosses!"
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18.2,1.19)"
+    versionRange="[1.20.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.soulsweapons]]
-    modId="geckolib3"
+    modId="geckolib"
     mandatory=true
-    versionRange="[3.0.57,)"
+    versionRange="[4.2.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.soulsweapons]]
     modId="projectile_damage"
     mandatory=true
-    versionRange="[3.1.0,)"
+    versionRange="[3.2.2,)"
     ordering="AFTER"
     side="BOTH"

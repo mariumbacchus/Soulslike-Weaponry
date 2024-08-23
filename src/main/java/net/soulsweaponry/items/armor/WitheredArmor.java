@@ -3,9 +3,11 @@ package net.soulsweaponry.items.armor;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,32 +16,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybindAbility {
+public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbility {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
-    public WitheredArmor(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public WitheredArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
@@ -80,31 +86,31 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
         return !chest.isEmpty() && !this.isDisabled(chest) && chest.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get());
     }
 
-    private <P extends IAnimatable> PlayState souls(AnimationEvent<P> event) {
+    private PlayState souls(AnimationState<?> event) {
         if (this.equals(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_spin"));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("no_souls"));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
         }
         return PlayState.CONTINUE;
     }
 
-    private <P extends IAnimatable> PlayState heart(AnimationEvent<P> event) {
+    private PlayState heart(AnimationState<?> event) {
         //Note: maybe figure out how to use ISyncable and add different animations (already in .animations.json).
         if (this.equals(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_heartbeat"));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("idle_heartbeat"));
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "heart", 0, this::heart));
-        animationData.addAnimationController(new AnimationController<>(this, "souls", 0, this::souls));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "souls", 0, this::souls));
+        controllers.add(new AnimationController<>(this, "heart", 0, this::heart));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -127,50 +133,68 @@ public class WitheredArmor extends ModdedGeoArmor implements IAnimatable, IKeybi
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
                 boolean bl = stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get());
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.unceasing").formatted(Formatting.DARK_PURPLE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing").formatted(Formatting.DARK_PURPLE));
                 for (int i = 1; i <= 4; i++) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
                 }
                 WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
                 if (bl) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.infectious.3").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.fire_immune").formatted(Formatting.GOLD));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.fire_immune.1").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.exalt").formatted(Formatting.RED));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.exalt.1").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.exalt.2").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.exalt.3").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_armor.exalt.4").formatted(Formatting.DARK_GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.3").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune").formatted(Formatting.GOLD));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune.1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt").formatted(Formatting.RED));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.2").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.3").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.4").formatted(Formatting.DARK_GRAY));
                 }
                 if (Screen.hasControlDown()) {
                     if (bl) {
                         for (int i = 1; i <= 3; i++) {
-                            tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_chest.lore.enhanced." + i).formatted(Formatting.DARK_GRAY));
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.withered_chest.lore.enhanced." + i).formatted(Formatting.DARK_GRAY));
                         }
                     } else {
                         for (int i = 1; i <= 4; i++) {
-                            tooltip.add(new TranslatableText("tooltip.soulsweapons.withered_chest.lore." + i).formatted(Formatting.DARK_GRAY));
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.withered_chest.lore." + i).formatted(Formatting.DARK_GRAY));
                         }
                     }
                 } else {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
             }
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-    }
-
-    @Override
-    public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_withered_chest;
     }
 
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_withered_set;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GeoArmorRenderer<?> renderer;
+
+            @Override
+            public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<?> original) {
+                if (this.renderer == null) {
+                    if (itemStack.isOf(ItemRegistry.WITHERED_CHEST.get()) || itemStack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
+                        this.renderer = new WitheredArmorRenderer();
+                    }
+                }
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_withered_chest;
     }
 }

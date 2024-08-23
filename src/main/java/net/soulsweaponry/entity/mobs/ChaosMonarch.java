@@ -12,6 +12,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -25,6 +26,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
@@ -34,19 +37,18 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationTickable {
+public class ChaosMonarch extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
@@ -55,40 +57,40 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         super(entityType, world, Color.PURPLE);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         switch (this.getAttack()) {
-            case SPAWN -> event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
-            case TELEPORT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("teleport"));
-            case MELEE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("swing_staff"));
-            case LIGHTNING -> event.getController().setAnimation(new AnimationBuilder().addAnimation("lightning_call"));
-            case SHOOT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("shoot"));
-            case BARRAGE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("barrage"));
-            case DEATH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
-            default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+            case TELEPORT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
+            case MELEE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
+            case LIGHTNING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
+            case SHOOT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
+            case BARRAGE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
+            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+            default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(1, new ChaosMonarchGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, AccursedLordBoss.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 4.0D)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 4.0D)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -115,9 +117,9 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME.get());
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -134,7 +136,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
             }
             if (this.spawnTicks == 40) {
                 this.particleExplosion(dragonParticles, .5f);
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_DEATH, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_DEATH, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 60) {
                 this.setAttack(0);;
@@ -155,10 +157,10 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (source == DamageSource.LIGHTNING_BOLT) {
+        if (source == (this.getWorld().getDamageSources().lightningBolt())) {
             return false;
         }
-        if (source.equals(DamageSource.WITHER)) {
+        if (source.isOf(DamageTypes.WITHER)) {
             return false;
         }
         return super.damage(source, amount);
@@ -186,7 +188,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
         if (this.hasStatusEffect(StatusEffects.WITHER)) {
             this.removeStatusEffect(StatusEffects.WITHER);
         }
-        this.turnBlocks(this.world, this.getBlockPos());
+        this.turnBlocks(this.getWorld(), this.getBlockPos());
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
@@ -195,7 +197,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     }
 
     private void particleExplosion(DefaultParticleType[] particles, float sizeModifier) {
-        this.roundParticleOutburst(this.world, 1000, particles, this.getX(), this.getY() + 3, this.getZ(), sizeModifier);
+        this.roundParticleOutburst(this.getWorld(), 1000, particles, this.getX(), this.getY() + 3, this.getZ(), sizeModifier);
     }
 
     public void roundParticleOutburst(World world, double points, DefaultParticleType[] particles, double x, double y, double z, float sizeModifier) {
@@ -209,7 +211,7 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
             for (DefaultParticleType particle : particles) {
                 world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
-        } 
+        }
     }
 
     /**
@@ -230,14 +232,14 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     /**
      * Turns the given integer previously to the datatracker into an enum for switch
      * statements.
-     * 
+     *
      * <p> Was previously:
      * public int getAttack() {
      *      return this.dataTracker.get(ATTACK);
      * }
      * <p> Was changed to current function for clarity reasons.
      */
-    
+
     public Attack getAttack() {
         return Attack.values()[this.dataTracker.get(ATTACK)];
     }
@@ -245,7 +247,17 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     public enum Attack {
         IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
     }
-    
+
+    public Vec3d getRotationVec(float pitch, float yaw) {
+        float f = pitch * ((float)Math.PI / 180);
+        float g = -yaw * ((float)Math.PI / 180);
+        float h = MathHelper.cos(g);
+        float i = MathHelper.sin(g);
+        float j = MathHelper.cos(f);
+        float k = MathHelper.sin(f);
+        return new Vec3d(i * j, -k, h * j);
+    }
+
     @Override
     public boolean disablesShield() {
         return true;
@@ -267,18 +279,13 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     }
 
     @Override
-    public int tickTimer() {
-        return age;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

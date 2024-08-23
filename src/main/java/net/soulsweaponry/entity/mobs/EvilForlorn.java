@@ -1,26 +1,28 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.RevengeGoal;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.*;
 import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
-import java.util.Random;
 
 public class EvilForlorn extends Forlorn {
 
@@ -35,12 +37,12 @@ public class EvilForlorn extends Forlorn {
 
     public static DefaultAttributeContainer.Builder createForlornAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 250D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 15D)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 250D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 15D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
-    
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0D, true));
@@ -55,11 +57,11 @@ public class EvilForlorn extends Forlorn {
     public void tick() {
         super.tick();
         this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
-        if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
+        if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && !getWorld().isClient) {
             this.discard();
         }
         if (this.isInLava() && this.age % 10 == 0) {
-            this.damage(DamageSource.MAGIC, 1f);
+            this.damage(this.getDamageSources().magic(), 1f);
         }
     }
 
@@ -75,11 +77,12 @@ public class EvilForlorn extends Forlorn {
 
     @Override
     public boolean canSpawn(WorldView view) {
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox())
-                && this.world.getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside()
-                && world.getDifficulty() != Difficulty.PEACEFUL
-                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
-                && !world.getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
+        BlockState state = this.getWorld().getBlockState(this.getBlockPos());
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+                && state.getBlock().canMobSpawnInside(state)
+                && getWorld().getDifficulty() != Difficulty.PEACEFUL
+                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
+                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

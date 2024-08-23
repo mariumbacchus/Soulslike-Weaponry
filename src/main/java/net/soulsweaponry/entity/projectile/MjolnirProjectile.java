@@ -18,14 +18,14 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class MjolnirProjectile extends ReturningProjectile implements IAnimatable {
+public class MjolnirProjectile extends ReturningProjectile implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world) {
         super(entityType, world);
@@ -51,7 +51,7 @@ public class MjolnirProjectile extends ReturningProjectile implements IAnimatabl
 
     @Override
     public boolean collide(Entity owner, Entity target, float damage) {
-        DamageSource damageSource = DamageSource.trident(this, owner);
+        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
@@ -82,11 +82,11 @@ public class MjolnirProjectile extends ReturningProjectile implements IAnimatabl
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 }

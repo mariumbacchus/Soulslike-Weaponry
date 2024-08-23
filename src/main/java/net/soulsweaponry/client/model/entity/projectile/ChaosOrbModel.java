@@ -3,22 +3,22 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ChaosOrbModel extends AnimatedGeoModel<ChaosOrbEntity> {
+public class ChaosOrbModel extends GeoModel<ChaosOrbEntity> {
 
     @Override
-    public Identifier getAnimationFileLocation(ChaosOrbEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/chaos_orb.animation.json");
+    public Identifier getAnimationResource(ChaosOrbEntity animatable) {
+        return new Identifier(SoulsWeaponry.ModId, "animations/entity/chaos_orb.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(ChaosOrbEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/chaos_orb.geo.json");
+    public Identifier getModelResource(ChaosOrbEntity object) {
+        return new Identifier(SoulsWeaponry.ModId, "geo/entity/chaos_orb.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(ChaosOrbEntity object) {
+    public Identifier getTextureResource(ChaosOrbEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_0.png");
     }
 }

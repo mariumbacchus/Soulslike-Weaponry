@@ -7,16 +7,15 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.ForlornModel;
 import net.soulsweaponry.entity.mobs.Forlorn;
-import net.soulsweaponry.entity.mobs.Remnant;
 
 public class ForlornParentRenderer<T extends Forlorn, M extends ForlornModel<T>> extends BipedEntityRenderer<T, M> {
 
     public ForlornParentRenderer(Context ctx, M model, M legsArmorModel, M bodyArmorModel) {
         super(ctx, model, 0.5F);
-        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel));
+        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel, ctx.getModelManager()));
     }
 
-    public Identifier getTexture(Remnant entity) {
+    public Identifier getTexture(T entity) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/forlorn_inner.png");
     }
 }

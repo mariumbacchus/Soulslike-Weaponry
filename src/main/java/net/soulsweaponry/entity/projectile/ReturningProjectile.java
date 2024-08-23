@@ -114,7 +114,7 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
                 }
             }
             this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
-            if (this.world.isClient) {
+            if (this.getWorld().isClient) {
                 this.lastRenderY = this.getY();
             }
             double d = 0.05 * returnSpeed;
@@ -166,7 +166,7 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     }
 
     private void dropStack() {
-        if (!this.world.isClient && this.pickupType == PickupPermission.ALLOWED) {
+        if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
             this.dropStack(this.asItemStack(), 0.1f);
         }
         this.discard();

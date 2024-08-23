@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -31,29 +33,25 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class DayStalker extends BossEntity implements IAnimatable {
+public class DayStalker extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
     public int flightTimer = 0;
-    public static final int ATTACKS_LENGTH = Attacks.values().length;
+    public static final int ATTACKS_LENGTH = DayStalker.Attacks.values().length;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -77,7 +75,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
         this.goalSelector.add(2, new DayStalkerGoal(this, 0.75D, true));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
@@ -101,50 +99,41 @@ public class DayStalker extends BossEntity implements IAnimatable {
         this.dataTracker.set(INITIATING_PHASE_2, bl);
     }
 
-    private <E extends IAnimatable> PlayState chains(AnimationEvent<E> event) {
+    private PlayState chains(AnimationState<?> state) {
         if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
             if (this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
                 return PlayState.STOP;
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_chains_2", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("idle_chains_2", Animation.LoopType.LOOP));
             }
         }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState idles(AnimationEvent<E> event) {
-        if (this.isInitiatingPhaseTwo()) {
-            return PlayState.STOP;
-        }
+    private PlayState idles(AnimationState<?> state) {
         if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death_2", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death_1", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("death_1", Animation.LoopType.LOOP));
             }
         } else {
-            // NOTE:
-            // Old geckolib doesn't manage to play multiple animations at the same time, apparently.
-            // If the idle animations play during attacks, it messes things up.
-            if (!this.getAttackAnimation().equals(Attacks.IDLE)) {
-                return PlayState.STOP;
-            }
             if (!this.isInitiatingPhaseTwo()) {
                 if (this.isPhaseTwo()) {
                     if (!this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_2", ILoopType.EDefaultLoopTypes.LOOP));
+                        state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
                     } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_flames_reach_2", ILoopType.EDefaultLoopTypes.LOOP));
+                        state.getController().setAnimation(RawAnimation.begin().then("idle_flames_reach_2", Animation.LoopType.LOOP));
                     }
                 } else {
                     if (!this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
                         if (this.isFlying()) {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_flying_1", ILoopType.EDefaultLoopTypes.LOOP));
+                            state.getController().setAnimation(RawAnimation.begin().then("idle_flying_1", Animation.LoopType.LOOP));
                         } else {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_1", ILoopType.EDefaultLoopTypes.LOOP));
+                            state.getController().setAnimation(RawAnimation.begin().then("idle_1", Animation.LoopType.LOOP));
                         }
                     } else {
-                        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_flames_reach_1", ILoopType.EDefaultLoopTypes.LOOP));
+                        state.getController().setAnimation(RawAnimation.begin().then("idle_flames_reach_1", Animation.LoopType.LOOP));
                     }
                 }
             }
@@ -152,43 +141,43 @@ public class DayStalker extends BossEntity implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
+    private PlayState attacks(AnimationState<?> state) {
         if (this.isDead()) return PlayState.STOP;
         if (this.isInitiatingPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_phase_2", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
         } else if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn_1", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
                 switch (this.getAttackAnimation()) {
-                    case AIR_COMBUSTION -> event.getController().setAnimation(new AnimationBuilder().addAnimation("air_combustion_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DECIMATE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("decimate_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DAWNBREAKER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("dawnbreaker_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case CHAOS_STORM -> event.getController().setAnimation(new AnimationBuilder().addAnimation("chaos_storm_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMETHROWER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flamethrower_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case SUNFIRE_RUSH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("sunfire_rush_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case CONFLAGRATION -> event.getController().setAnimation(new AnimationBuilder().addAnimation("conflagration_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMES_EDGE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flames_edge_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flames_reach_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case AIR_COMBUSTION -> state.getController().setAnimation(RawAnimation.begin().then("air_combustion_1", Animation.LoopType.LOOP));
+                    case DECIMATE -> state.getController().setAnimation(RawAnimation.begin().then("decimate_1", Animation.LoopType.LOOP));
+                    case DAWNBREAKER -> state.getController().setAnimation(RawAnimation.begin().then("dawnbreaker_1", Animation.LoopType.LOOP));
+                    case CHAOS_STORM -> state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_1", Animation.LoopType.LOOP));
+                    case FLAMETHROWER -> state.getController().setAnimation(RawAnimation.begin().then("flamethrower_1", Animation.LoopType.LOOP));
+                    case SUNFIRE_RUSH -> state.getController().setAnimation(RawAnimation.begin().then("sunfire_rush_1", Animation.LoopType.LOOP));
+                    case CONFLAGRATION -> state.getController().setAnimation(RawAnimation.begin().then("conflagration_1", Animation.LoopType.LOOP));
+                    case FLAMES_EDGE -> state.getController().setAnimation(RawAnimation.begin().then("flames_edge_1", Animation.LoopType.LOOP));
+                    case FLAMES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("flames_reach_1", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_1", Animation.LoopType.LOOP));
                 }
             } else {
                 switch (this.getAttackAnimation()) {
-                    case AIR_COMBUSTION -> event.getController().setAnimation(new AnimationBuilder().addAnimation("air_combustion_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DECIMATE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("decimate_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DAWNBREAKER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("dawnbreaker_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case CHAOS_STORM -> event.getController().setAnimation(new AnimationBuilder().addAnimation("chaos_storm_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMETHROWER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flamethrower_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case SUNFIRE_RUSH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("sunfire_rush_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case CONFLAGRATION -> event.getController().setAnimation(new AnimationBuilder().addAnimation("conflagration_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMES_EDGE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flames_edge_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case RADIANCE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("radiance_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case WARMTH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("warmth_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case OVERHEAT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("overheat_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case INFERNO -> event.getController().setAnimation(new AnimationBuilder().addAnimation("inferno_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case FLAMES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("flames_reach_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case SKY_HIGH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("sky_high_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case AIR_COMBUSTION -> state.getController().setAnimation(RawAnimation.begin().then("air_combustion_2", Animation.LoopType.LOOP));
+                    case DECIMATE -> state.getController().setAnimation(RawAnimation.begin().then("decimate_2", Animation.LoopType.LOOP));
+                    case DAWNBREAKER -> state.getController().setAnimation(RawAnimation.begin().then("dawnbreaker_2", Animation.LoopType.LOOP));
+                    case CHAOS_STORM -> state.getController().setAnimation(RawAnimation.begin().then("chaos_storm_2", Animation.LoopType.LOOP));
+                    case FLAMETHROWER -> state.getController().setAnimation(RawAnimation.begin().then("flamethrower_2", Animation.LoopType.LOOP));
+                    case SUNFIRE_RUSH -> state.getController().setAnimation(RawAnimation.begin().then("sunfire_rush_2", Animation.LoopType.LOOP));
+                    case CONFLAGRATION -> state.getController().setAnimation(RawAnimation.begin().then("conflagration_2", Animation.LoopType.LOOP));
+                    case FLAMES_EDGE -> state.getController().setAnimation(RawAnimation.begin().then("flames_edge_2", Animation.LoopType.LOOP));
+                    case RADIANCE -> state.getController().setAnimation(RawAnimation.begin().then("radiance_2", Animation.LoopType.LOOP));
+                    case WARMTH -> state.getController().setAnimation(RawAnimation.begin().then("warmth_2", Animation.LoopType.LOOP));
+                    case OVERHEAT -> state.getController().setAnimation(RawAnimation.begin().then("overheat_2", Animation.LoopType.LOOP));
+                    case INFERNO -> state.getController().setAnimation(RawAnimation.begin().then("inferno_2", Animation.LoopType.LOOP));
+                    case FLAMES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("flames_reach_2", Animation.LoopType.LOOP));
+                    case SKY_HIGH -> state.getController().setAnimation(RawAnimation.begin().then("sky_high_2", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_2", Animation.LoopType.LOOP));
                 }
             }
         }
@@ -198,9 +187,9 @@ public class DayStalker extends BossEntity implements IAnimatable {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
+        if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -246,15 +235,15 @@ public class DayStalker extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "idles", 0, this::idles));
-        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attacks));
-        data.addAnimationController(new AnimationController<>(this, "chains", 0, this::chains));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "idles", 0, this::idles));
+        controllers.add(new AnimationController<>(this, "attacks", 0, this::attacks));
+        controllers.add(new AnimationController<>(this, "chains", 0, this::chains));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override
@@ -350,7 +339,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
     }
 
     public boolean isEmpowered() {
-        return (!this.world.isClient && this.world.isDay()) || this.isPhaseTwo();
+        return (!this.getWorld().isClient && this.getWorld().isDay()) || this.isPhaseTwo();
     }
 
     @Override
@@ -361,8 +350,8 @@ public class DayStalker extends BossEntity implements IAnimatable {
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (!this.world.isClient) {
-            LivingEntity partner = this.getPartner((ServerWorld) this.world);
+        if (!this.getWorld().isClient) {
+            LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.clearStatusEffects();
                 this.setInitiatePhaseTwo(true);
@@ -379,14 +368,15 @@ public class DayStalker extends BossEntity implements IAnimatable {
         }
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
+            this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
             if (this.phaseTwoTicks == 76) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE.get(), SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE.get(), SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.phaseTwoTicks == 81) {
-                if (!world.isClient) {
+                if (!getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
@@ -419,8 +409,8 @@ public class DayStalker extends BossEntity implements IAnimatable {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getParticleState() == 1 && this.world.isClient) {
-            Vec3d pos = Vec3d.ofCenter(this.getFlamethrowerTarget());
+        if (this.getParticleState() == 1 && this.getWorld().isClient) {
+            Vec3d pos = this.getFlamethrowerTarget().toCenterPos();
             double e = pos.getX() - (this.getX());
             double f = pos.getY() + 1D - this.getBodyY(1.0D);
             double g = pos.getZ() - this.getZ();
@@ -430,7 +420,7 @@ public class DayStalker extends BossEntity implements IAnimatable {
                 double velX = e + this.getRandom().nextGaussian()/2 * h;
                 double velY = f + this.getRandom().nextGaussian()/2 * h;
                 double velZ = g + this.getRandom().nextGaussian()/2 * h;
-                this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
+                this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
             }
         }
         if (this.getAttackAnimation().equals(Attacks.FLAMES_EDGE)) {
@@ -441,11 +431,11 @@ public class DayStalker extends BossEntity implements IAnimatable {
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);
                 double z = z0 + r * Math.sin(theta * Math.PI / 180);
                 if (this.getParticleState() == 2 && this.age % 8 == 0) {
-                    this.world.addParticle(ParticleTypes.FLAME, x, this.getBodyY(0.5D), z, 0, 0, 0);
+                    this.getWorld().addParticle(ParticleTypes.FLAME, x, this.getBodyY(0.5D), z, 0, 0, 0);
                 } else if (this.getParticleState() == 3) {
-                    this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.getBodyY(0.5D), z,
+                    this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, this.getBodyY(0.5D), z,
                             this.random.nextGaussian()/8, this.random.nextGaussian()/8, this.random.nextGaussian()/8);
-                    this.world.addParticle(ParticleTypes.LARGE_SMOKE, x, this.getBodyY(0.5D), z,
+                    this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, x, this.getBodyY(0.5D), z,
                             0, 0.2f, 0);
                 }
             }
@@ -533,13 +523,13 @@ public class DayStalker extends BossEntity implements IAnimatable {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        if (source.isFromFalling()) {
+        if (source.isOf(DamageTypes.FALL)) {
             return false;
         }
         if (this.getAttackAnimation().equals(Attacks.OVERHEAT)) {
             amount = amount * 0.6f;
         }
-        if (this.isEmpowered() && source.isProjectile() && !this.isFlying()) {
+        if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && !this.isFlying()) {
             amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
                     ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
         }

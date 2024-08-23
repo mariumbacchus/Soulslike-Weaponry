@@ -1,14 +1,10 @@
 package net.soulsweaponry.util;
 
-import java.util.ArrayList;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import net.minecraft.advancement.Advancement;
-import net.minecraft.loot.condition.LootConditionManager;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
 
 public class JsonCreator {
 
@@ -189,9 +185,5 @@ public class JsonCreator {
         json.add("requirements", requirements);
 
         return json;
-    }
-
-    public static Advancement.Builder buildAdvancement(JsonObject recipeBookObject, Identifier advancementId) {
-        return Advancement.Builder.fromJson(recipeBookObject, new AdvancementEntityPredicateDeserializer(advancementId, new LootConditionManager()));
     }
 }

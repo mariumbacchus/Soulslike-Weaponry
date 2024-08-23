@@ -3,7 +3,6 @@ package net.soulsweaponry.items;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -46,7 +45,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
         if (remainingUseTicks > 0) {
             for (Entity nearbyEntity : nearbyEntities) {
                 if (nearbyEntity instanceof LivingEntity target) {
-                    if (target.damage(DamageSource.mob(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
+                    if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(1F, 0, 0);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), 100, 0));

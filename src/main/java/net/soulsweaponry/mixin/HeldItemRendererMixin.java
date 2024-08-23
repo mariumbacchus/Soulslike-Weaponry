@@ -7,7 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.client.entitydata.ClientParryData;
 import net.soulsweaponry.entitydata.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,7 +29,7 @@ public class HeldItemRendererMixin {
         int frames = ClientParryData.getParryFrames();
         if (frames >= 1) {
             this.parryProgress = frames == 1 ? 0.1f : parryProgress;
-            float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 3f;//6
+            float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 3f;
             this.parryProgress = Math.min(this.parryProgress + added, 1f);
 
             float h;
@@ -41,7 +41,7 @@ public class HeldItemRendererMixin {
             }
             h = 1.0f - (float)Math.pow(g, 27.0);
             matrices.translate(0.9f - h, h / 4f, -h / 4f);
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(h * 20f));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(h * 20f));
         }
     }
 }

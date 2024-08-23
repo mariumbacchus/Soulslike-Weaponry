@@ -27,8 +27,8 @@ public class Freezing extends StatusEffect {
         if (entity instanceof FrostGiant || entity instanceof RimeSpectre) return;
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
-        if (!entity.world.isClient) {
-            ((ServerWorld)entity.world).spawnParticles(ParticleTypes.SNOWFLAKE, entity.getParticleX(0.5D), entity.getRandomBodyY(), entity.getParticleZ(0.5D), 1, 0, 0, 0, 0);
+        if (!entity.getWorld().isClient) {
+            ((ServerWorld)entity.getWorld()).spawnParticles(ParticleTypes.SNOWFLAKE, entity.getParticleX(0.5D), entity.getRandomBodyY(), entity.getParticleZ(0.5D), 1, 0, 0, 0, 0);
         }
         if (entity.isDead()) {
             if (entity instanceof IAnimatedDeath animated) {

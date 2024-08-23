@@ -20,25 +20,21 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class DraupnirSpearEntity extends PersistentProjectileEntity implements IAnimatable {
+public class DraupnirSpearEntity extends PersistentProjectileEntity implements GeoEntity {
 
     private static final TrackedData<Boolean> ENCHANTED;
     private final ItemStack stack;
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -53,11 +49,11 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
     }
 
     public void detonate() {
-        if (this.getOwner() != null && this.getBlockPos() != null && !world.isClient) {
+        if (this.getOwner() != null && this.getBlockPos() != null && !getWorld().isClient) {
             float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
-            this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, Explosion.DestructionType.NONE);
+            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.NONE);
             if (power > 2f) {
-                for (Entity entity : world.getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
+                for (Entity entity : getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
                     if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 100, MathHelper.floor(power - 2)));
                     }
@@ -79,7 +75,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
         }
 
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = DamageSource.thrownProjectile(this, entity2);
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
@@ -135,19 +131,19 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements I
         return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+    private PlayState predicate(AnimationState<?> state) {
+        state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected float getDragInWater() {

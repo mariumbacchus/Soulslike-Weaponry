@@ -23,24 +23,21 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.EnumSet;
 
-public class WarmthEntity extends TameableEntity implements IAnimatable {
+public class WarmthEntity extends TameableEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private static final TrackedData<Integer> STATES = DataTracker.registerData(WarmthEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public WarmthEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -59,11 +56,11 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
                 entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
     }
 
-    private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
+    private PlayState attacks(AnimationState<?> state) {
         switch (this.getState()) {
-            case 1 -> event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP));
-            case 2 -> event.getController().setAnimation(new AnimationBuilder().addAnimation("buff", ILoopType.EDefaultLoopTypes.LOOP));
-            default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+            case 1 -> state.getController().setAnimation(RawAnimation.begin().then("attack", Animation.LoopType.LOOP));
+            case 2 -> state.getController().setAnimation(RawAnimation.begin().then("buff", Animation.LoopType.LOOP));
+            default -> state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
@@ -100,6 +97,11 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 30D);
     }
 
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
+    }
+
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
@@ -112,19 +114,19 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::attacks));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "attacks", 0, this::attacks));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
     public void tickMovement() {
-        if (this.world.isClient) {
-            this.world.addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
+        if (this.getWorld().isClient) {
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
         }
         super.tickMovement();
     }
@@ -137,7 +139,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
     @Override
     public void onSpawnPacket(EntitySpawnS2CPacket packet) {
         super.onSpawnPacket(packet);
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             this.particleExplosion();
         }
     }
@@ -153,7 +155,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             this.particleExplosion();
         }
         this.discard();
@@ -185,7 +187,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.FLAME, true, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
+            getWorld().addParticle(ParticleTypes.FLAME, true, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
         }
     }
 
@@ -197,7 +199,7 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
 
         public WarmthEntityGoal(WarmthEntity entity) {
             this.entity = entity;
-            this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
+            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
         }
 
         @Override
@@ -246,10 +248,10 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
             double f = livingEntity.getBodyY(0.5) - this.entity.getBodyY(0.5);
             double g = livingEntity.getZ() - this.entity.getZ();
             if (this.attackStatus == 7 || this.attackStatus == 15 || this.attackStatus == 21) {
-                this.entity.world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.world, this.entity, e, f, g);
+                this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
+                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.getWorld(), this.entity, e, f, g);
                 smallFireballEntity.setPosition(smallFireballEntity.getX(), this.entity.getBodyY(0.5f), smallFireballEntity.getZ());
-                this.entity.world.spawnEntity(smallFireballEntity);
+                this.entity.getWorld().spawnEntity(smallFireballEntity);
             }
             if (this.attackStatus >= 28) {
                 this.reset();
@@ -258,11 +260,11 @@ public class WarmthEntity extends TameableEntity implements IAnimatable {
 
         private void buff() {
             this.attackStatus++;
-            if (attackStatus == 1) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
-            if (attackStatus == 30) this.entity.world.playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 1) this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 30) this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             if (this.attackStatus == 35) {
                 boolean bl = this.entity.isTamed() && this.entity.getOwner() != null;
-                for (Entity en : this.entity.world.getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
+                for (Entity en : this.entity.getWorld().getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
                     if (en instanceof LivingEntity living) {
                         if (bl && !(living instanceof HostileEntity)) {
                             this.addEffects(living);

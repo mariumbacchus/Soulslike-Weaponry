@@ -3,23 +3,23 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.WarmthEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class WarmthEntityModel extends AnimatedGeoModel<WarmthEntity> {
+public class WarmthEntityModel extends GeoModel<WarmthEntity> {
 
     @Override
-    public Identifier getAnimationFileLocation(WarmthEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/warmth_entity.animation.json");
+    public Identifier getAnimationResource(WarmthEntity animatable) {
+        return new Identifier(SoulsWeaponry.ModId, "animations/entity/warmth_entity.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(WarmthEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/warmth_entity.geo.json");
+    public Identifier getModelResource(WarmthEntity object) {
+        return new Identifier(SoulsWeaponry.ModId, "geo/entity/warmth_entity.geo.json");
 
     }
 
     @Override
-    public Identifier getTextureLocation(WarmthEntity object) {
+    public Identifier getTextureResource(WarmthEntity object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/warmth_entity.png");
     }
 }

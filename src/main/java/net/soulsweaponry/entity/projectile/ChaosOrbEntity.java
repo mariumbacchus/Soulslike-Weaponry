@@ -5,8 +5,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -21,27 +19,23 @@ import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEntity {
+public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int lifespan;
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("spin", ILoopType.EDefaultLoopTypes.LOOP));
+    private PlayState predicate(AnimationState<?> event){
+        event.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -53,7 +47,7 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
         double e = this.getY() + vec3d.y + 0.1f;
         double f = this.getZ() + vec3d.z;
         double g = vec3d.horizontalLength();
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             double h = this.getX() - d;
             double i = this.getZ() - f;
             float j = (float)Math.sqrt(h * h + i * i);
@@ -69,18 +63,18 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
         }
         if (this.isTouchingWater()) {
             for (int p = 0; p < 4; ++p) {
-                this.world.addParticle(ParticleTypes.BUBBLE, d - vec3d.x * 0.25, e - vec3d.y * 0.25, f - vec3d.z * 0.25, vec3d.x, vec3d.y, vec3d.z);
+                this.getWorld().addParticle(ParticleTypes.BUBBLE, d - vec3d.x * 0.25, e - vec3d.y * 0.25, f - vec3d.z * 0.25, vec3d.x, vec3d.y, vec3d.z);
             }
         } else {
-            this.world.addParticle(ParticleTypes.PORTAL, d - vec3d.x * 0.25 + this.random.nextDouble() * 0.6 - 0.3, e - vec3d.y * 0.25 - 0.5, f - vec3d.z * 0.25 + this.random.nextDouble() * 0.6 - 0.3, vec3d.x, vec3d.y, vec3d.z);
+            this.getWorld().addParticle(ParticleTypes.PORTAL, d - vec3d.x * 0.25 + this.random.nextDouble() * 0.6 - 0.3, e - vec3d.y * 0.25 - 0.5, f - vec3d.z * 0.25 + this.random.nextDouble() * 0.6 - 0.3, vec3d.x, vec3d.y, vec3d.z);
         }
-        if (!this.world.isClient && world instanceof ServerWorld) {
+        if (!this.getWorld().isClient && getWorld() instanceof ServerWorld) {
             this.setPosition(d, e, f);
             ++this.lifespan;
-            if (this.lifespan > 100 && !this.world.isClient) {
+            if (this.lifespan > 100 && !this.getWorld().isClient) {
                 this.playSound(SoundEvents.ENTITY_ENDER_EYE_DEATH, 1.0f, 1.0f);
                 this.discard();
-                this.world.syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
+                this.getWorld().syncWorldEvent(WorldEvents.EYE_OF_ENDER_BREAKS, this.getBlockPos(), 0);
 
                 NightProwler prowler = new NightProwler(EntityRegistry.NIGHT_PROWLER.get(), this.getWorld());
                 DayStalker stalker = new DayStalker(EntityRegistry.DAY_STALKER.get(), this.getWorld());
@@ -111,11 +105,6 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
-        return new EntitySpawnS2CPacket(this);
-    }
-
-    @Override
     protected void initDataTracker() {
     }
 
@@ -128,12 +117,12 @@ public class ChaosOrbEntity extends Entity implements IAnimatable, FlyingItemEnt
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 

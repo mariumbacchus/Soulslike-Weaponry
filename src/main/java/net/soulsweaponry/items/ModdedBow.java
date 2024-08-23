@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -38,7 +37,7 @@ public abstract class ModdedBow extends BowItem implements IShootModProjectile, 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (this.isDisabled(stack)) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
         }
         if (Screen.hasShiftDown()) {
             for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
@@ -46,7 +45,7 @@ public abstract class ModdedBow extends BowItem implements IShootModProjectile, 
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

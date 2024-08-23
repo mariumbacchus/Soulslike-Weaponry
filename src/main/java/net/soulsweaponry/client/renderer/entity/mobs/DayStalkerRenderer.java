@@ -1,18 +1,16 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
-import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
-import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class DayStalkerRenderer extends GeoEntityRendererFixed<DayStalker> {
+public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
 
     int[] rgbColorOne = {252, 34, 34};
     int[] rgbColorTwo = {250, 186, 132};
@@ -26,7 +24,7 @@ public class DayStalkerRenderer extends GeoEntityRendererFixed<DayStalker> {
     }
 
     @Override
-    public RenderLayer getRenderType(DayStalker animatable, float partialTick, MatrixStack poseStack, @Nullable VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, Identifier texture) {
+    public RenderLayer getRenderType(DayStalker animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
         return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
     }
 
@@ -39,6 +37,7 @@ public class DayStalkerRenderer extends GeoEntityRendererFixed<DayStalker> {
     public void render(DayStalker entity, float entityYaw, float partialTicks, MatrixStack stack,
                        VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
                 entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }

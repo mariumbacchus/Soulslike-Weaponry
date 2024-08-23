@@ -15,24 +15,24 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CometSpear extends DetonateGroundItem implements IAnimatable{
+public class CometSpear extends DetonateGroundItem implements GeoItem {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
@@ -45,7 +45,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
-                if (stack == user.getOffHandStack() || (WeaponUtil.isModLoaded("epicfight") && user.isSneaking())) {
+                if (stack == user.getOffHandStack()) {
                     float f = user.getYaw();
                     float g = user.getPitch();
                     float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
@@ -56,7 +56,7 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                     h *= n / m;
                     k *= n / m;
                     l *= n / m;
-                    
+
                     user.addVelocity(h, k, l);
                     playerEntity.useRiptide(20);
                     world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -65,11 +65,11 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 600, ConfigConstructor.comet_spear_ability_damage));
-                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_skyfall_ability_cooldown - (enchant*20)));
+                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_skyfall_ability_cooldown-(enchant*20)));
                     stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown - (enchant*5)));
+                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown-(enchant*5)));
 
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
@@ -82,12 +82,25 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private CometSpearItemRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new CometSpearItemRenderer();
+
+                return renderer;
+            }
+        });
     }
 
     @Override
@@ -143,20 +156,6 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
         Map<ParticleEffect, Vec3d> map = new HashMap<>();
         map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
         return map;
-    }
-
-    @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            private CometSpearItemRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new CometSpearItemRenderer();
-
-                return renderer;
-            }
-        });
     }
 
     @Override

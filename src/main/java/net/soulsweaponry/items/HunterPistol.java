@@ -67,7 +67,7 @@ public class HunterPistol extends GunItem {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        ItemStack itemStack = user.getArrowType(stack);
+        ItemStack itemStack = user.getProjectileType(stack);
         if (!itemStack.isEmpty() || bl) {
             if (itemStack.isEmpty()) {
                 itemStack = new ItemStack(ItemRegistry.SILVER_BULLET.get());

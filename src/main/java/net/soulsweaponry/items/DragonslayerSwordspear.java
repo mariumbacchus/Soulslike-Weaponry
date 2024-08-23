@@ -9,7 +9,6 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.TameableEntity;
@@ -63,7 +62,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                                 double x = target.getX() - user.getX();
                                 double z = target.getX() - user.getX();
                                 target.takeKnockback(5F, -x, -z);
-                                target.damage(DamageSource.mob(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
+                                target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
                                 if (!world.isClient) {
                                     ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                                 }

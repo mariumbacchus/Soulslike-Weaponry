@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.gen.structure.Structure;
 import net.soulsweaponry.SoulsWeaponry;
 
 @SuppressWarnings("unused")
@@ -16,11 +16,11 @@ public class ModTags {
     public static class Blocks {
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier(SoulsWeaponry.ModId, name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Block> createCommonTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier("c", name));
         }
     }
 
@@ -34,20 +34,20 @@ public class ModTags {
         public static final TagKey<Item> IRON_INGOTS = createCommonTag("iron_ingots");
 
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier(SoulsWeaponry.ModId, name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier(SoulsWeaponry.ModId, name));
         }
 
         private static TagKey<Item> createCommonTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier("c", name));
         }
     }
 
     public static class Structures {
-        public static final TagKey<ConfiguredStructureFeature<?, ?>> DECAYING_KINGDOM = createTag("decaying_kingdom");
-        public static final TagKey<ConfiguredStructureFeature<?, ?>> CHAMPIONS_GRAVES = createTag("champions_graves");
+        public static final TagKey<Structure> DECAYING_KINGDOM = createTag("decaying_kingdom");
+        public static final TagKey<Structure> CHAMPIONS_GRAVES = createTag("champions_graves");
 
-        private static TagKey<ConfiguredStructureFeature<?, ?>> createTag(String id) {
-            return TagKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, new Identifier(SoulsWeaponry.ModId, id));
+        private static TagKey<Structure> createTag(String id) {
+            return TagKey.of(RegistryKeys.STRUCTURE, new Identifier(SoulsWeaponry.ModId, id));
         }
     }
 
@@ -57,7 +57,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> BOSSES = createCommonTag("bosses");
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {
-            return TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier("c", id));
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("c", id));
         }
     }
 
@@ -65,7 +65,7 @@ public class ModTags {
         public static final TagKey<StatusEffect> DAMAGE_OVER_TIME = createCommonTag("damage_over_time");
 
         private static TagKey<StatusEffect> createCommonTag(String id) {
-            return TagKey.of(Registry.MOB_EFFECT_KEY, new Identifier("c", id));
+            return TagKey.of(RegistryKeys.STATUS_EFFECT, new Identifier("c", id));
         }
     }
 }

@@ -1,7 +1,6 @@
 package net.soulsweaponry.entity.effect;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -28,7 +27,7 @@ public class VeilOfFire extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         for (LivingEntity target : entity.getWorld().getNonSpectatingEntities(LivingEntity.class, entity.getBoundingBox().expand(1.5D))) {
-            target.damage(DamageSource.IN_FIRE, 2f + amplifier);
+            target.damage(entity.getDamageSources().inFire(), 2f + amplifier);
             target.setOnFireFor(2 + amplifier);
         }
         if (entity.getWorld().isClient) {

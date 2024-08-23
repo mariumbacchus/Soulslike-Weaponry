@@ -4,11 +4,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.AccursedLordBossModel;
-import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.util.CustomDeathHandler;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class AccursedLordBossRenderer extends GeoEntityRendererFixed<AccursedLordBoss> {
+public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss> {
 
     int[] rgbColorOne = {247, 94, 94};
     int[] rgbColorTwo = {140, 1, 1};
@@ -20,7 +20,7 @@ public class AccursedLordBossRenderer extends GeoEntityRendererFixed<AccursedLor
         super(ctx, new AccursedLordBossModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
     protected float getDeathMaxRotation(AccursedLordBoss entityLivingBaseIn) {
         return 0f;
@@ -28,10 +28,10 @@ public class AccursedLordBossRenderer extends GeoEntityRendererFixed<AccursedLor
 
     @Override
     public void render(AccursedLordBoss entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
+                entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }
 }

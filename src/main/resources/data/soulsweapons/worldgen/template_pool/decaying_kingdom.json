@@ -1,15 +1,15 @@
 {
-    "name": "soulsweapons:decaying_kingdom",
-    "fallback": "minecraft:empty",
-    "elements": [
-      {
-        "weight": 1,
-        "element": {
-          "element_type": "minecraft:single_pool_element",
-          "location": "soulsweapons:decaying_kingdom_altarnate",
-          "projection": "rigid",
-          "processors": "minecraft:empty"
-        }
+  "name": "soulsweapons:decaying_kingdom",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "soulsweapons:decaying_kingdom_altarnate",
+        "projection": "rigid",
+        "processors": "minecraft:empty"
       }
-    ]
-  }
+    }
+  ]
+}

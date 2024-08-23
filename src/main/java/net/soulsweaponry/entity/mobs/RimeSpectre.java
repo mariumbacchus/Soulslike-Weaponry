@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -28,20 +29,18 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.EnumSet;
 
-public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath {
+public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     protected static final TrackedData<Boolean> CHARGING = DataTracker.registerData(RimeSpectre.class, TrackedDataHandlerRegistry.BOOLEAN);
     protected static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(RimeSpectre.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -74,8 +73,8 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (source.equals(DamageSource.FREEZE)) return false;
-        if (source.isMagic()) {
+        if (source.isOf(DamageTypes.FREEZE)) return false;
+        if (source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) {
             return super.damage(source, amount);
         }
         return super.damage(source, amount * 0.1f);
@@ -135,32 +134,32 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
         } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("sit"));
+            state.getController().setAnimation(RawAnimation.begin().then("sit", Animation.LoopType.LOOP));
         } else if (this.getShooting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            state.getController().setAnimation(RawAnimation.begin().then("attack", Animation.LoopType.PLAY_ONCE));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState idle(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+    private PlayState idle(AnimationState<?> state) {
+        state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "idle", 0, this::idle));
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "idle", 0, this::idle));
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -202,7 +201,7 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
         super.tick();
         this.noClip = false;
         this.setNoGravity(true);
-        for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox().expand(6D))) {
+        for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(6D))) {
             if (entity instanceof LivingEntity target && !this.isOwner(target) && !this.isTeammate(target)) {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 20, 0));
             }
@@ -219,7 +218,7 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
     @Override
     public void tickMovement() {
         super.tickMovement();
-        this.world.addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        this.getWorld().addParticle(ParticleTypes.SNOWFLAKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         if (this.getShootingParticle()) {
             BlockPos pos = this.getShootPos();
             double distanceToEntity = this.squaredDistanceTo(pos.getX(), pos.getY() + 0.5f, pos.getZ());
@@ -228,8 +227,8 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
                 double f = pos.getY() + 0.5f - this.getBodyY(1.0D);
                 double g = pos.getZ() - this.getZ();
                 double h = Math.sqrt(Math.sqrt(distanceToEntity)) * 0.5D;
-                if (this.world.isClient) {
-                    world.addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getEyeY(), this.getZ(), (e + this.getRandom().nextGaussian() * h)/4f, (f + this.getRandom().nextGaussian())/4f, (g + this.getRandom().nextGaussian() * h)/4f);
+                if (this.getWorld().isClient) {
+                    getWorld().addParticle(ParticleTypes.SNOWFLAKE, this.getX(), this.getEyeY(), this.getZ(), (e + this.getRandom().nextGaussian() * h)/4f, (f + this.getRandom().nextGaussian())/4f, (g + this.getRandom().nextGaussian() * h)/4f);
                 }
             }
         }
@@ -238,13 +237,13 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            if (!world.isClient) {
-                ParticleHandler.particleSphere(world, 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            if (!getWorld().isClient) {
+                ParticleHandler.particleSphere(this.getWorld(), 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
             }
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -315,10 +314,10 @@ public class RimeSpectre extends Remnant implements IAnimatable, IAnimatedDeath 
                 this.mob.setShootingParticle(true);
                 if (attackStatus % 2 == 0) {
                     Box box = new Box(target.getBlockPos(), this.mob.getBlockPos().add(0, 1, 0)).expand(1D);
-                    for (Entity entity : this.mob.world.getOtherEntities(this.mob, box)) {
+                    for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
                             living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 40, 2));
-                            living.damage(DamageSource.mob(this.mob), 2f);
+                            living.damage(mob.getWorld().getDamageSources().mobAttack(this.mob), 2f);
                         }
                     }
                 }

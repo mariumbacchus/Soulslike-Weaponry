@@ -1,5 +1,6 @@
 package net.soulsweaponry.client.registry;
 
+import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
@@ -11,6 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.GunRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 public class PredicateRegistry {
@@ -66,7 +68,13 @@ public class PredicateRegistry {
             return 0.0f;
         });
 
-        BossCompassPredicate.init();
+        ModelPredicateProviderRegistry.register(ItemRegistry.BOSS_COMPASS.get(), new Identifier("angle"), new CompassAnglePredicateProvider((world, stack, entity) -> {
+            if (stack.isOf(ItemRegistry.BOSS_COMPASS.get())) {
+                BossCompass item = (BossCompass) stack.getItem();
+                return item.getStructurePos(world, stack);
+            }
+            return null;
+        }));
 
         PredicateRegistry.registerPrime(WeaponRegistry.MASTER_SWORD.get(), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.isOf(WeaponRegistry.MASTER_SWORD.get()) && livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth()) {
@@ -87,7 +95,7 @@ public class PredicateRegistry {
 
     protected static void registerNightActive(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("night"), (stack, clientWorld, livingEntity, number) -> {
-            if (livingEntity != null && livingEntity.world.getDimension().hasSkyLight() && livingEntity.world.getTimeOfDay() % 24000 > 13000 && livingEntity.world.getTimeOfDay() % 24000 < 23000) {
+            if (livingEntity != null && livingEntity.getWorld().getDimension().hasSkyLight() && livingEntity.getWorld().getTimeOfDay() % 24000 > 13000 && livingEntity.getWorld().getTimeOfDay() % 24000 < 23000) {
                 if (stack.getEnchantments().size() > 0) {
                     return 0.5F;
                 }

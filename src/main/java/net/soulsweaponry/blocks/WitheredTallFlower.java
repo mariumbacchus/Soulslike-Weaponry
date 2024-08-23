@@ -6,12 +6,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
 
     private final Supplier<StatusEffect> effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
-    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registry.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
     public WitheredTallFlower(Supplier<StatusEffect> effect, Settings settings, Block replacedBlock) {
         super(settings, replacedBlock);

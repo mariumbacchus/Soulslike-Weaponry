@@ -6,12 +6,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.TallPlantBlock;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -20,38 +20,40 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.blocks.*;
+import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
+import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
+public class ChaosSet extends ModdedArmor implements GeoItem {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
@@ -59,8 +61,8 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
     private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
-    
-    public ChaosSet(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+
+    public ChaosSet(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK.get());
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT.get());
@@ -72,10 +74,11 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         this.turnableTallPlant.put(Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS.get());
         this.turnableTallPlant.put(Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN.get());
     }
-    
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
+
         if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
@@ -107,9 +110,9 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         if (!entity.isOnGround()) {
             return;
         }
-        float f = Math.min(16, 3 + bonusRadius);
+        int f = Math.min(16, 3 + bonusRadius);
         BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-f, -1.0, -f), blockPos.add(f, -1.0, f))) {
+        for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-f, -1, -f), blockPos.add(f, -1, f))) {
             if (!world.getBlockState(blockPos2).isAir()) {
                 for (Block turnBlock : this.turnableBlocks.keySet()) {
                     if (world.getBlockState(blockPos2).getBlock() == turnBlock) {
@@ -128,7 +131,7 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
                             TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.get().getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
                         }
                         world.setBlockState(blockPos2, blockState);
-                        world.createAndScheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
+                        world.scheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
                     } else if (world.getBlockState(blockPos2).getBlock() == this.turnableBlocks.get(turnBlock)) {
                         WitheredBlock block = (WitheredBlock) world.getBlockState(blockPos2).getBlock();
                         block.resetAge(world.getBlockState(blockPos2), world, blockPos2);
@@ -185,10 +188,10 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         if (!world.isClient) ((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 1, 0, 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
-                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
+                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2));
                 }
-                target.damage(DamageSource.mob(player), ConfigConstructor.arkenplate_shockwave_damage);
+                target.damage(player.getDamageSources().mobAttack(player), ConfigConstructor.arkenplate_shockwave_damage);
                 double x = player.getX() - target.getX();
                 double z = player.getZ() - target.getZ();
                 target.takeKnockback(i * 0.5f, x, z);
@@ -215,25 +218,25 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         return !chest.isEmpty() && !this.isDisabled(chest) && (chest.isOf(ItemRegistry.ARKENPLATE.get()) || chest.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) && player.getHealth() < player.getMaxHealth()/2;
     }
 
-	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        if (this.equals(ItemRegistry.CHAOS_ROBES.get())) {
-            //event.getController().setAnimation(new AnimationBuilder().addAnimation("idle")); Fix
+    private PlayState predicate(AnimationState<?> event) {
+        if (this == ItemRegistry.CHAOS_ROBES.get()) {
+            event.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
         if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_spin"));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
         } else if (this.equals(ItemRegistry.ARKENPLATE.get())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("no_souls"));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
         }
-		return PlayState.CONTINUE;
-	}
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        return PlayState.CONTINUE;
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -242,72 +245,99 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
             if (stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_3").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.reversal_4").formatted(Formatting.DARK_GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_4").formatted(Formatting.DARK_GRAY));
                 if (stack.isOf(ItemRegistry.CHAOS_CROWN.get())) {
                     if (Screen.hasControlDown()) {
                         for (int i = 1; i <= 4; i++) {
-                            tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_crown_lore_" + i).formatted(Formatting.DARK_GRAY));
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_lore_" + i).formatted(Formatting.DARK_GRAY));
                         }
                     } else {
-                        tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                     }
                 } else {
                     if (Screen.hasControlDown()) {
                         for (int i = 1; i <= 4; i++) {
-                            tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_helm_lore_" + i).formatted(Formatting.DARK_GRAY));
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_helm_lore_" + i).formatted(Formatting.DARK_GRAY));
                         }
                     } else {
-                        tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                     }
                 }
             } else if (stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
                 if (Screen.hasControlDown()) {
                     for (int i = 1; i <= 4; i++) {
-                        tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_robes_lore_" + i).formatted(Formatting.DARK_GRAY));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_lore_" + i).formatted(Formatting.DARK_GRAY));
                     }
                 } else {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                 }
             } else if (stack.isOf(ItemRegistry.ARKENPLATE.get()) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock").formatted(Formatting.DARK_GREEN));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock").formatted(Formatting.DARK_GREEN));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
                 if (stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(new LiteralText((int)(ConfigConstructor.arkenplate_mirror_trigger_percent * 100f) + "%").formatted(Formatting.RED)));
-                    tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(Text.literal((int)(ConfigConstructor.arkenplate_mirror_trigger_percent * 100f) + "%").formatted(Formatting.RED)));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
                 }
                 if (!stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
                     if (Screen.hasControlDown()) {
                         for (int i = 1; i <= 4; i++) {
-                            tooltip.add(new TranslatableText("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_lore_" + i).formatted(Formatting.DARK_GRAY));
                         }
                     } else {
-                        tooltip.add(new TranslatableText("tooltip.soulsweapons.control"));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
                     }
                 }
             }
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_set;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GeoArmorRenderer<?> renderer;
+
+            @Override
+            public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<?> original) {
+                if (this.renderer == null) {
+                    if (itemStack.isOf(ItemRegistry.CHAOS_HELMET.get()) || itemStack.isOf(ItemRegistry.ARKENPLATE.get())) {
+                        this.renderer = new ChaosArmorRenderer();
+                    } else if (itemStack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
+                        this.renderer = new EChaosArmorRenderer();
+                    } else {
+                        this.renderer = new ChaosSetRenderer();
+                    }
+                }
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+                return this.renderer;
+            }
+        });
     }
 
     @Override
@@ -320,10 +350,5 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
             return ConfigConstructor.disable_use_chaos_robes;
         }
         return false;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_set;
     }
 }

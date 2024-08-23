@@ -4,12 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
@@ -47,7 +48,7 @@ public class DamagingBoxC2S {
         this.knockbackStrength = buf.readFloat();
         this.knockbackX = buf.readFloat();
         this.knockbackZ = buf.readFloat();
-        this.sound = Registry.SOUND_EVENT.get(buf.readIdentifier());
+        this.sound = Registries.SOUND_EVENT.get(buf.readIdentifier());
         this.soundPos = buf.readBlockPos();
         this.attackerUUID = buf.readUuid();
     }
@@ -75,14 +76,15 @@ public class DamagingBoxC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, DamagingBoxC2S packet) {
-        Entity attacker = player.getWorld().getEntity(packet.attackerUUID);
+        ServerWorld serverWorld = (ServerWorld) player.getWorld();
+        Entity attacker = serverWorld.getEntity(packet.attackerUUID);
         DamageSource source;
         if (attacker instanceof LivingEntity living) {
-            source = DamageSource.mob(living);
+            source = serverWorld.getDamageSources().mobAttack(living);
         } else {
-            source = DamageSource.GENERIC;
+            source = serverWorld.getDamageSources().generic();
         }
-        for (Entity entity : player.getWorld().getOtherEntities(player, new Box(packet.blockPos).expand(packet.expansion))) {
+        for (Entity entity : serverWorld.getOtherEntities(player, new Box(packet.blockPos).expand(packet.expansion))) {
             if (entity instanceof LivingEntity target) {
                 target.damage(source, packet.damage);
                 if (packet.knockbackX == 0 && packet.knockbackZ == 0) {
@@ -94,6 +96,6 @@ public class DamagingBoxC2S {
                 }
             }
         }
-        player.getWorld().playSound(null, packet.soundPos, packet.sound, SoundCategory.HOSTILE, 1f, 1f);
+        serverWorld.playSound(null, packet.soundPos, packet.sound, SoundCategory.HOSTILE, 1f, 1f);
     }
 }

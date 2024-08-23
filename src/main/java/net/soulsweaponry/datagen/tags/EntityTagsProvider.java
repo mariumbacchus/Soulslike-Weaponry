@@ -1,21 +1,23 @@
 package net.soulsweaponry.datagen.tags;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.server.EntityTypeTagProvider;
+import net.minecraft.data.DataOutput;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.soulsweaponry.SoulsWeaponry;
+import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.ModTags;
 
-public class EntityTagsProvider extends EntityTypeTagProvider {
+import java.util.concurrent.CompletableFuture;
 
-    public EntityTagsProvider(DataGenerator root, ExistingFileHelper helper) {
-        super(root, SoulsWeaponry.ModId, helper);
+public class EntityTagsProvider extends ForgeEntityTypeTagsProvider {
+
+    public EntityTagsProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, existingFileHelper);
     }
 
     @Override
-    protected void configure() {
+    public void configure(RegistryWrapper.WrapperLookup arg) {
         this.getOrCreateTagBuilder(ModTags.Entities.RANGED_MOBS)
                 .add(EntityType.SKELETON)
                 .add(EntityType.BLAZE)

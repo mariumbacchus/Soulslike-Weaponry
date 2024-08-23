@@ -7,16 +7,16 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.DarkSorcererModel;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
-import net.soulsweaponry.entity.mobs.Remnant;
 
 public class DarkSorcererParentRenderer<T extends DarkSorcerer, M extends DarkSorcererModel<T>> extends BipedEntityRenderer<T, M> {
 
     public DarkSorcererParentRenderer(Context ctx, M model, M legsArmorModel, M bodyArmorModel) {
         super(ctx, model, 0.5F);
-        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel));
+        this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel, ctx.getModelManager()));
     }
 
-    public Identifier getTexture(Remnant entity) {
+    @Override
+    public Identifier getTexture(T entity) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
     }
 }

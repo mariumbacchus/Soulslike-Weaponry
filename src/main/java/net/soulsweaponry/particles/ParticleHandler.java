@@ -108,7 +108,7 @@ public class ParticleHandler {
     public static void flashParticle(World world, double x, double y, double z, RGB rgb, float expansion) {
         if (world.isClient) {
             Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, x, y, z, 0, 0, 0);
-            flash.setBoundingBox(new Box(new BlockPos(x, y, z)).expand(expansion));
+            flash.setBoundingBox(new Box(BlockPos.ofFloored(x, y, z)).expand(expansion));
             flash.setColor(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
         } else {
             ModMessages.sendToAllPlayers(new FlashParticleS2C(x, y, z, rgb, expansion));

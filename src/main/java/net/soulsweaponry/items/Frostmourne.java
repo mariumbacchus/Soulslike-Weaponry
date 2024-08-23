@@ -53,7 +53,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
         }
         if (this.getSouls(stack) >= 5 && !world.isClient && this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
-            BlockPos on = new BlockPos(vecBlocksAway);
+            BlockPos on = BlockPos.ofFloored(vecBlocksAway);
             Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT.get(), world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE.get(), world);
             entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
             entity.setOwner(user);

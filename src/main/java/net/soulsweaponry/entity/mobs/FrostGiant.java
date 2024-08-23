@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -28,18 +29,18 @@ import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
+public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private static final TrackedData<Boolean> SMASH = DataTracker.registerData(FrostGiant.class, TrackedDataHandlerRegistry.BOOLEAN);
 
@@ -72,18 +73,18 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
         this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.isSmashing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("attack"));
         } else {
-            if (event.isMoving()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            if (state.isMoving()) {
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
             } else if (this.isSitting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting_idle"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("sitting_idle"));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+                state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
             }
         }
         return PlayState.CONTINUE;
@@ -92,7 +93,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
     @Override
     public boolean damage(DamageSource source, float amount) {
         float x = amount;
-        if (source.equals(DamageSource.FREEZE)) return false;
+        if (source.isOf(DamageTypes.FREEZE)) return false;
         if (this.isFireDamage(source)) {
             x *= 2;
         }
@@ -101,20 +102,20 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        LeviathanAxe.iceExplosion(this.world, this.getBlockPos(), null, 1);
+        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), null, 1);
         super.onDeath(damageSource);
     }
 
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            if (!world.isClient) {
-                ParticleHandler.particleSphere(world, 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            if (!getWorld().isClient) {
+                ParticleHandler.particleSphere(this.getWorld(), 600, this.getX(), this.getY() + .5f, this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
             }
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -133,7 +134,7 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
     public void setDeath() {}
 
     private boolean isFireDamage(DamageSource source) {
-        return source.isFire();
+        return source.isOf(DamageTypes.IN_FIRE) || source.isOf(DamageTypes.ON_FIRE) || source.isOf(DamageTypes.FIREBALL);
     }
 
     public boolean isSmashing() {
@@ -157,12 +158,12 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -249,17 +250,17 @@ public class FrostGiant extends Remnant implements IAnimatable, IAnimatedDeath {
                     this.attackStatus++;
                     this.mob.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 20));
                     if (this.attackStatus == 32) {
-                        for (Entity entity : this.mob.world.getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
+                        for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
                             if (entity instanceof LivingEntity living && !this.isOwner(living)) {
                                 if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 60, 0));
                             }
                         }
-                        if (!this.mob.world.isClient) {
+                        if (!this.mob.getWorld().isClient) {
                             ParticleHandler.particleOutburstMap(mob.getWorld(), 150, mob.getX(), mob.getY(), mob.getZ(), ParticleEvents.ICE_SMASH_MAP, 1f);
                         }
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
-                        this.mob.world.playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                     }
                     if (attackStatus >= 51) {
                         this.mob.setSmash(false);

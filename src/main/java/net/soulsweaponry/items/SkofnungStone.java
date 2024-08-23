@@ -7,13 +7,12 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -26,7 +25,7 @@ public class SkofnungStone extends Item implements IConfigDisable {
     public SkofnungStone(Settings settings) {
         super(settings);
     }
-    
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stoneStack = user.getStackInHand(hand);
@@ -44,14 +43,14 @@ public class SkofnungStone extends Item implements IConfigDisable {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-        for (StatusEffect effect : Registry.STATUS_EFFECT) {
+        for (StatusEffect effect : Registries.STATUS_EFFECT) {
             if (effect.getCategory().equals(StatusEffectCategory.HARMFUL) && user.hasStatusEffect(effect)) {
                 user.removeStatusEffect(effect);
                 world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 shouldDamage = true;
             }
         }
-        
+
         if (shouldDamage) {
             stoneStack.damage(1, user, e -> e.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
@@ -63,12 +62,12 @@ public class SkofnungStone extends Item implements IConfigDisable {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (this.isDisabled(stack)) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_DEBUFS, stack, tooltip);
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

@@ -1,14 +1,10 @@
 package net.soulsweaponry.events;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -16,7 +12,10 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
-import net.soulsweaponry.client.registry.*;
+import net.soulsweaponry.client.registry.BlockRenderLayers;
+import net.soulsweaponry.client.registry.EntityModelRegistry;
+import net.soulsweaponry.client.registry.KeyBindRegistry;
+import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -26,23 +25,28 @@ public class ClientModBusEvents {
     public static void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             BlockRenderLayers.register();
-            ArmorRenderRegistry.register();
             PredicateRegistry.register();
             EntityModelRegistry.register();
-            //NOTE: 1.19 does registry differently through a client mod bus event instead, see https://www.youtube.com/watch?v=J3a7JT0rxTM
-            OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "posture_bar", PostureHudOverlay.HUD_POSTURE);
         });
-        //NOTE: 1.19 does registry differently, check https://www.youtube.com/watch?v=NN-k74NMKRc&list=PLKGarocXCE1HrC60yuTNTGRoZc6hf5Uvl&index=14 for more info.
-        KeyBindRegistry.register();
     }
 
     @SubscribeEvent
-    public static void registerParticleFactories(final ParticleFactoryRegisterEvent event) {
-        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.NIGHTFALL_PARTICLE.get(), FlameParticle.Factory::new);
-        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.DAZZLING_PARTICLE.get(), FlameParticle.Factory::new);
-        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.PURPLE_FLAME.get(), FlameParticle.Factory::new);
-        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.DARK_STAR.get(), FlameParticle.Factory::new);
-        MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Factory::new);
+    public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ParticleRegistry.NIGHTFALL_PARTICLE.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.DAZZLING_PARTICLE.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.PURPLE_FLAME.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.DARK_STAR.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Factory::new);
+    }
+
+    @SubscribeEvent
+    public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+        KeyBindRegistry.register(event);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("posture_bar", PostureHudOverlay.HUD_POSTURE);
     }
 
     public static final EntityModelLayer BIG_CHUNGUS_LAYER = new EntityModelLayer(new Identifier(SoulsWeaponry.ModId, "big_chungus"), "main");

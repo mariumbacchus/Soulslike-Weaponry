@@ -2,27 +2,28 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.items.WitheredWabbajack.LuckType;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -63,7 +64,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
@@ -86,15 +87,15 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                                 ItemStack separate = itemStack.copy();
                                 living.dropStack(separate);
                                 itemStack.decrement(1);
-                                world.playSound(null, living.getBlockPos(), SoundEvents.ENTITY_ARMOR_STAND_BREAK, SoundCategory.PLAYERS, 1f, 1f);
+                                getWorld().playSound(null, living.getBlockPos(), SoundEvents.ENTITY_ARMOR_STAND_BREAK, SoundCategory.PLAYERS, 1f, 1f);
                             }
                         });
                     }
                     default -> {
                         if (power > 50) {
-                            world.playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
+                            getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                         }
-                        target.damage(DamageSource.MAGIC, power);
+                        target.damage(this.getWorld().getDamageSources().magic(), power);
                     }
                 }
             }
@@ -114,11 +115,12 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             this.onEntityHit((EntityHitResult)hitResult);
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
-            this.onBlockHit((BlockHitResult)hitResult);
-        }
-        if (type != HitResult.Type.MISS) {
-            this.emitGameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
+            BlockHitResult blockHitResult = (BlockHitResult)hitResult;
+            this.onBlockHit(blockHitResult);
+            BlockPos blockPos = blockHitResult.getBlockPos();
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         if (this.getOwner() != null && this.getOwner() instanceof LivingEntity) {
             this.randomCollisionEffect((LivingEntity)this.getOwner());
@@ -130,54 +132,62 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         int power = this.getBound(10 , 1, user) + this.getLuckFactor(user);
         boolean unluckyAf = this.getBound(100 , 10, user) == 1;
         if (unluckyAf) {
+            boolean isWarden = this.random.nextBoolean();
             for (int i = 0; i < 3; i++) {
-                WitherEntity boss = new WitherEntity(EntityType.WITHER, world);
-                boss.setPos(this.getX(), this.getY(), this.getZ());
-                world.spawnEntity(boss);
+                if (isWarden && !this.getWorld().isClient) {
+                    WardenEntity warden = new WardenEntity(EntityType.WARDEN, getWorld());
+                    warden.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null, null);
+                    warden.setPos(this.getX(), this.getY(), this.getZ());
+                    warden.increaseAngerAt(user, 80, true);
+                    getWorld().spawnEntity(warden);
+                } else {
+                    WitherEntity boss = new WitherEntity(EntityType.WITHER, getWorld());
+                    boss.setPos(this.getX(), this.getY(), this.getZ());
+                    getWorld().spawnEntity(boss);
+                }
             }
             return;
         }
         switch (this.getCollisionEffectType(user)) {
             case BATS -> {
                 for (int i = 0; i < power * 2; i++) {
-                    BatEntity bat = new BatEntity(EntityType.BAT, world);
+                    BatEntity bat = new BatEntity(EntityType.BAT, getWorld());
                     bat.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(bat);
+                    this.getWorld().spawnEntity(bat);
                 }
             }
             case DARKNESS -> {
-                world.playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE, SoundCategory.AMBIENT, 1f, 1f);
-                world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-                world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_CREEPER_PRIMED, SoundCategory.HOSTILE, 1f, 1f);
-                user.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30, 0));
+                getWorld().playSound(null, this.getBlockPos(), SoundEvents.AMBIENT_CAVE.value(), SoundCategory.AMBIENT, 1f, 1f);
+                getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WARDEN_EMERGE, SoundCategory.HOSTILE, 1f, 1f);
+                user.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0));
             }
             case LIGHTNING -> {
                 for (int i = 0; i < power; i++) {
-                    LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+                    LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, getWorld());
                     entity.setPos(this.getX(), this.getY(), this.getZ());
-                    this.world.spawnEntity(entity);
+                    this.getWorld().spawnEntity(entity);
                 }
             }
             case PARTICLES -> {
-                if (!this.world.isClient) {
+                if (!this.getWorld().isClient) {
                     DefaultParticleType particle = this.getRandomParticle();
                     int amount = 1000;
                     if (particle == ParticleTypes.ELDER_GUARDIAN) {
                         amount = 1;
                     }
-                    ParticleHandler.particleSphereList(world, amount, this.getX(), this.getY(), this.getZ(), 1f, particle);
+                    ParticleHandler.particleSphereList(this.getWorld(), amount, this.getX(), this.getY(), this.getZ(), 1f, particle);
                 }
             }
             case RANDOM_ENTITY -> this.summonRandomEntity(user, power);
             case SPECIFIC_ENTITY -> this.summonSpecificEntity(user, power);
             case CURSE -> {
-                this.world.addParticle(ParticleTypes.ELDER_GUARDIAN, this.getX(), this.getY(), this.getZ(), 0f, 0f, 0f);
-                this.world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().addParticle(ParticleTypes.ELDER_GUARDIAN, this.getX(), this.getY(), this.getZ(), 0f, 0f, 0f);
+                this.getWorld().playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.HOSTILE, 1f, 1f);
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 5));
             }
             default -> {
-                boolean bl = world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-                this.world.createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? Explosion.DestructionType.BREAK : Explosion.DestructionType.NONE);
+                boolean bl = getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+                this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.NONE);
             }
         }
     }
@@ -185,7 +195,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     private DefaultParticleType getRandomParticle() {
         Random number = new Random();
         ArrayList<DefaultParticleType> arr = new ArrayList<>();
-        Registry.PARTICLE_TYPE.stream().forEach(p -> {
+        Registries.PARTICLE_TYPE.stream().forEach(p -> {
             if (p instanceof DefaultParticleType d) {
                 arr.add(d);
             }
@@ -195,19 +205,19 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             EntityType<?> type = this.getEntityType(user);
             for (int i = 0; i < power; i++) {
-                type.spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
+                type.spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
             }
         }
     }
 
     private void summonRandomEntity(LivingEntity user, int power) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             for (int i = 0; i < power; i++) {
                 EntityType<?> type = this.getEntityType(user);
-                type.spawn((ServerWorld) this.world, null, null, null, this.getBlockPos(), SpawnReason.EVENT, false, false);
+                type.spawn((ServerWorld) this.getWorld(), this.getBlockPos(), SpawnReason.EVENT);
             }
         }
     }
@@ -234,7 +244,6 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                 {CollisionEffect.PARTICLES, LuckType.BAD},
                 {CollisionEffect.DARKNESS, LuckType.BAD},
                 {CollisionEffect.EXPLOSION, LuckType.GOOD},
-                {CollisionEffect.CURSE, LuckType.BAD},
         };
     }
 
@@ -326,7 +335,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     private HashMap<StatusEffect, LuckType> getEffectMap() {
         HashMap<StatusEffect, LuckType> map = new HashMap<>();
-        for (StatusEffect effect : Registry.STATUS_EFFECT) {
+        for (StatusEffect effect : Registries.STATUS_EFFECT) {
             if (effect.getCategory().equals(StatusEffectCategory.HARMFUL)) {
                 map.put(effect, LuckType.BAD);
             } else if (effect.getCategory().equals(StatusEffectCategory.BENEFICIAL)) {

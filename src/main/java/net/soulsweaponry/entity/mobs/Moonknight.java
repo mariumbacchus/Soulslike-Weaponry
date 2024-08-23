@@ -19,36 +19,33 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.ParticleKeyFrameEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.keyframe.event.ParticleKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+public class Moonknight extends BossEntity implements GeoEntity {
 
-public class Moonknight extends BossEntity implements IAnimatable {
-
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private int unbreakableTicks;
@@ -66,19 +63,19 @@ public class Moonknight extends BossEntity implements IAnimatable {
     private static final TrackedData<BlockPos> BEAM_LOCATION = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Boolean> INCREASING_BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    
+
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world, Color.WHITE);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 20.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 20.0D);
     }
 
     public void setSpawning(boolean bl) {
@@ -124,7 +121,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     public void setBeamLocation(BlockPos pos) {
         this.dataTracker.set(BEAM_LOCATION, pos);
     }
-    
+
     public BlockPos getBeamLocation() {
         return this.dataTracker.get(BEAM_LOCATION);
     }
@@ -187,22 +184,19 @@ public class Moonknight extends BossEntity implements IAnimatable {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        if (source.equals(CustomDamageSource.BLEED)) {
-            return false;
-        }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
             this.clearStatusEffects();
             this.initiatePhaseTwo(true);
-            world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+            getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
             return false;
         }
         if (this.isInvulnerableTo(source)) {
-           return false;
+            return false;
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity && entity.getBlockPos() != null) {
-                if (!this.world.isClient) {
-                    ParticleHandler.particleSphereList(world, 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
+                if (!this.getWorld().isClient) {
+                    ParticleHandler.particleSphereList(this.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
                 return false;
             }
@@ -231,33 +225,32 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
                 this.setPhaseTwo(true);
                 this.initiatePhaseTwo(false);
                 this.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
-                this.setCustomName(new TranslatableText("entity.soulsweapons.moonknight_phase_2"));
+                this.setCustomName(Text.translatable("entity.soulsweapons.moonknight_phase_2"));
                 this.bossBar.setColor(Color.BLUE);
             }
         }
-        
+
         if (ConfigConstructor.can_bosses_break_blocks) {
             int j;
             int i;
             int k;
             if (this.blockBreakingCooldown > 0) {
                 --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                     i = MathHelper.floor(this.getY());
                     j = MathHelper.floor(this.getX());
                     k = MathHelper.floor(this.getZ());
                     for (int l = -3; l <= 3; ++l) {
                         for (int m = -3; m <= 3; ++m) {
                             for (int n = 0; n <= 8; ++n) {
-                                BlockPos pos = new BlockPos(j + l, i + n, k + m);
-                                if (!(this.world.getBlockState(pos).getBlock() instanceof BlockWithEntity)) {
-                                    this.world.breakBlock(pos, true);
+                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
                                 }
                             }
                         }
@@ -274,7 +267,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
             this.spawnTicks++;
             this.summonParticles();
             if (this.spawnTicks % 10 == 0) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
                 this.setSpawning(false);
@@ -284,8 +277,8 @@ public class Moonknight extends BossEntity implements IAnimatable {
         if (!this.isDead() && !this.isPhaseTwo() && this.getUnbreakable()) {
             this.unbreakableTicks++;
             if (this.unbreakableTicks == 38) {
-                this.world.playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, .75f, 1f);
-                for (Entity entity : world.getOtherEntities(this, this.getBoundingBox().expand(20))) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, .75f, 1f);
+                for (Entity entity : getWorld().getOtherEntities(this, this.getBoundingBox().expand(20))) {
                     if (entity instanceof LivingEntity living) {
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 400, 1));
                         living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 400, 1));
@@ -298,9 +291,9 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 this.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
             }
         }
-        if (this.getWorld().isClient && this.isPhaseTwo() && !this.isDead() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
+        if (this.getWorld().isClient && !this.isDead() && this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
             Vec3d start = this.getPos().add(0, 6f, 0);
-            Vec3d end = new Vec3d(this.getBeamLocation().getX() + 0.5f, this.getBeamLocation().getY() + 0.5f, this.getBeamLocation().getZ() + 0.5f).add(0, this.getBeamHeight() + 1.4f, 0);
+            Vec3d end = this.getBeamLocation().toCenterPos().add(0, this.getBeamHeight() + 1.4f, 0);
             Vec3d between = new Vec3d(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
             int numberOfParticles = 40;
             double stepSize = 1.0 / numberOfParticles;
@@ -309,7 +302,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 0, 0, 0);
                 this.getWorld().addParticle(ParticleTypes.GLOW, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 0, 0, 0);
                 this.getWorld().addParticle(ParticleTypes.WAX_OFF, particlePos.getX(), particlePos.getY(), particlePos.getZ(),
-                        (double)this.random.nextInt(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextInt(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextInt(-numberOfParticles, numberOfParticles)/10);
+                        (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10, (double)this.random.nextBetween(-numberOfParticles, numberOfParticles)/10);
                 //Looks like wind blows particles away
                 this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, particlePos.getX(), particlePos.getY(), particlePos.getZ(), this.random.nextDouble() - .05f, this.random.nextDouble() - .05f, this.random.nextDouble() - .05f);
             }
@@ -319,19 +312,15 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + q;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
         if (this.isPhaseTwo() && !this.isDead() && this.isSwordCharging()) {
             if (this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.IDLE)) this.setChargingSword(false);
             for (int i = 0; i < 100; i++) {
-                this.world.addParticle(ParticleRegistry.NIGHTFALL_PARTICLE.get(), this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
+                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE.get(), this.getParticleX(this.getWidth()), this.getRandomBodyY(), this.getParticleZ(this.getWidth()), 0.0D, 0.2D, 0.0D);
             }
         }
-    }
-
-    private int nextBetween(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private boolean isPosNullish(BlockPos pos) {
@@ -339,7 +328,7 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     private void summonParticles() {
-        if (world.isClient) {
+        if (getWorld().isClient) {
             for(int i = 0; i < 50; ++i) {
                 Random random = this.getRandom();
                 double d = random.nextGaussian() * 0.05D;
@@ -347,8 +336,8 @@ public class Moonknight extends BossEntity implements IAnimatable {
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.SOUL, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX/2, newY/2, newZ/2);
             }
         }
     }
@@ -370,10 +359,10 @@ public class Moonknight extends BossEntity implements IAnimatable {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks == 40 && this.getBlockPos() != null) this.world.playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT.get(), SoundCategory.HOSTILE , 1f, 1f);
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+        if (this.deathTicks == 40 && this.getBlockPos() != null) this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT.get(), SoundCategory.HOSTILE , 1f, 1f);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -399,30 +388,30 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<Moonknight> controller = new AnimationController<>(this, "controller", 0, this::predicate);
-        data.addAnimationController(controller);  
-        controller.registerParticleListener(this::particleListener);          
+        controllers.add(controller);
+        controller.setParticleKeyframeHandler(this::particleListener);
     }
 
-    private <ENTITY extends IAnimatable> void particleListener(ParticleKeyFrameEvent<ENTITY> event) {
+    private void particleListener(ParticleKeyframeEvent<Moonknight> moonknightParticleKeyframeEvent) {
         this.setChargingSword(!this.isSwordCharging());
-	}
+    }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new MoonknightGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -451,57 +440,56 @@ public class Moonknight extends BossEntity implements IAnimatable {
         this.dataTracker.startTracking(INCREASING_BEAM_HEIGHT, false);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death_phase_2"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else if (this.getSpawning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn_phase_1"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn_phase_1"));
         } else if (this.getUnbreakable()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("unbreakable_phase_1"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable_phase_1"));
         } else if (this.isInitiatingPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("initiate_phase_2"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("initiate_phase_2"));
         } else {
             if (this.isPhaseTwo()) {
                 switch (this.getPhaseTwoAttack()) {
                     case BLINDING_LIGHT ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_2"));
                     case CORE_BEAM ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("core_beam_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
                     case IDLE -> {
                         if (this.isAttacking()) {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_2"));
                         } else {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_2"));
                         }
                     }
                     case MOONFALL ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
                     case MOONVEIL ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("moon_explosion_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
                     case SWORD_OF_LIGHT ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("sword_of_light_phase_2"));
-                    case THRUST ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("thrust_phase_2"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
+                    case THRUST -> state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
                 }
             } else {
                 switch (this.getPhaseOneAttack()) {
                     case BLINDING_LIGHT ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_light_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light_phase_1"));
                     case IDLE -> {
                         if (this.isAttacking()) {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk_phase_1"));
                         } else {
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle_phase_1"));
                         }
                     }
                     case MACE_OF_SPADES ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
                     case OBLITERATE ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
                     case RUPTURE ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
                     case SUMMON ->
-                            event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors_phase_1"));
+                            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
                 }
             }
         }
@@ -509,18 +497,29 @@ public class Moonknight extends BossEntity implements IAnimatable {
     }
 
     public enum MoonknightPhaseOne {
-        IDLE, MACE_OF_SPADES, OBLITERATE, SUMMON, RUPTURE, BLINDING_LIGHT,
+        IDLE,
+        MACE_OF_SPADES,
+        OBLITERATE,
+        SUMMON,
+        RUPTURE,
+        BLINDING_LIGHT,
     }
 
     public enum MoonknightPhaseTwo {
-        IDLE, SWORD_OF_LIGHT, MOONFALL, MOONVEIL, THRUST, BLINDING_LIGHT, CORE_BEAM,
+        IDLE,
+        SWORD_OF_LIGHT,
+        MOONFALL,
+        MOONVEIL,
+        THRUST,
+        BLINDING_LIGHT,
+        CORE_BEAM,
     }
-    /* 
+    /*
      * NB!!! So there was a bug in the Goal class where while using a certain attack, all attacks would stop.
-     * That was because the index of the attack in phase 2 enum and the phase one spawn enum were the same 
+     * That was because the index of the attack in phase 2 enum and the phase one spawn enum were the same
      * (it was SWORD_OF_LIGHT vs SPAWN). So even though they were two different constants, it would
      * still think that when it attacked, it was spawning, and since the goal stops ticking if it is spawning (to
-     * prevent the boss from attacking early), the boss would simply freeze forever. 
+     * prevent the boss from attacking early), the boss would simply freeze forever.
      * It could have something to do with the fact that the boss passes integers it generates based on the enum value
      * array index, haven't bothered looking into it. All I know is that in my desperate attempt to make the code better
      * and more readable, it got worse and just overall chaotic. At least I have learned my lesson.

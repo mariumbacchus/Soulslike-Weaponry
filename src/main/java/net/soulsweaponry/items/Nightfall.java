@@ -17,13 +17,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -35,17 +34,17 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybindAbility, ISummonAllies {
-    
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbility, ISummonAllies {
+
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
@@ -55,23 +54,23 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
-                BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
+                BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int) user.getY(), (int) vecBlocksAway.z);
                 Box aoe = new Box(targetArea).expand(3);
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(CustomDamageSource.obliterateDamageSource(player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                         this.spawnRemnant(target, user);
                     }
                 }
-                player.world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 if (!world.isClient) {
                     ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
@@ -88,17 +87,17 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
-        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity player && !this.isDisabled(attacker.getMainHandStack())) {
+        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !this.isDisabled(attacker.getMainHandStack())) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
                 Remnant entity = new Remnant(EntityRegistry.REMNANT.get(), world);
                 entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
-                entity.setOwner(player);
+                entity.setOwner((PlayerEntity) attacker);
                 world.spawnEntity(entity);
                 this.saveSummonUuid(attacker, entity.getUuid());
                 world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
-                if (!attacker.world.isClient) {
+                if (!attacker.getWorld().isClient) {
                     ParticleHandler.particleOutburstMap(attacker.getWorld(), 50, target.getX(), target.getY(), target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }
             }
@@ -106,21 +105,33 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private NightfallRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new NightfallRenderer();
+
+                return renderer;
+            }
+        });
     }
 
     @Override
     public Text[] getAdditionalTooltips() {
         return new Text[] {
-                new TranslatableText("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
-                new TranslatableText("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
-                new TranslatableText("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
+                Text.translatable("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
         };
     }
 
@@ -209,20 +220,6 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
-    }
-
-    @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            private NightfallRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new NightfallRenderer();
-
-                return renderer;
-            }
-        });
     }
 
     @Override

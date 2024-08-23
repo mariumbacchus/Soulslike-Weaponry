@@ -10,11 +10,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.invisible.FlamePillar;
@@ -22,8 +21,8 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ import java.util.function.Consumer;
  */
 public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybindAbility {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
@@ -44,7 +43,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
@@ -82,18 +81,22 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private EmpoweredDawnbreakerRenderer renderer = null;
+            // Don't instantiate until ready. This prevents race conditions breaking things
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new EmpoweredDawnbreakerRenderer();
 
-    @Override
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
+                return renderer;
+            }
+        });
     }
 
     @Override
@@ -106,7 +109,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little
         too laggy with the particles from the explosion.
-
         double phi = Math.PI * (3. - Math.sqrt(5.));
         float points = 90;
         for (int i = 0; i < points; i++) {
@@ -124,20 +126,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
-    }
-
-    @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
-            private EmpoweredDawnbreakerRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new EmpoweredDawnbreakerRenderer();
-
-                return renderer;
-            }
-        });
     }
 
     @Override

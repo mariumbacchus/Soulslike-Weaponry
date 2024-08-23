@@ -64,16 +64,16 @@ public class BlackflameSnakeLogic {
     private void ruptureLogic(World world, Vec3d target) {
         if (!world.isClient) {
             ParticleHandler.particleOutburstMap(world, 250, target.getX(), target.getY(), target.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
-            for (Entity entity : world.getOtherEntities(this.getOwner(world), new Box(new BlockPos(target)).expand(2D))) {
+            for (Entity entity : world.getOtherEntities(this.getOwner(world), new Box(BlockPos.ofFloored(target)).expand(2D))) {
                 if (entity instanceof LivingEntity living && !this.isOwner(living) && !(entity instanceof NightProwler)) {
                     DamageSource src = (this.getOwner(world) != null && this.getOwner(world) instanceof LivingEntity) ?
-                            DamageSource.mob((LivingEntity) this.getOwner(world)) : DamageSource.GENERIC;
+                            world.getDamageSources().mobAttack((LivingEntity) this.getOwner(world)) : world.getDamageSources().generic();
                     if (living.damage(src, 35f * ConfigConstructor.night_prowler_damage_modifier)) {
                         living.addVelocity(0, 1f, 0);
                     }
                 }
             }
-            world.playSound(null, new BlockPos(target), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            world.playSound(null, BlockPos.ofFloored(target), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
         }
     }
 

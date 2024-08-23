@@ -13,7 +13,6 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,8 +26,8 @@ public class LivingEntityMixin {
     /*
      * NB! Only called if the damage is bigger than 0 (decimals count)
      */
-    @Inject(method = "applyEnchantmentsToDamage", at = @At("TAIL"), cancellable = true)
-    protected void interceptApplyEnchantmentsToDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
+    @Inject(method = "modifyAppliedDamage", at = @At("TAIL"), cancellable = true)
+    protected void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         float newAmount = info.getReturnValue();
         info.setReturnValue(ModifyDamageUtil.modifyDamageTaken(entity, newAmount, source));
@@ -39,14 +38,6 @@ public class LivingEntityMixin {
         LivingEntity entity = ((LivingEntity)(Object)this);
         if (entity.hasStatusEffect(EffectRegistry.DISABLE_HEAL.get())) {
             info.cancel();
-        }
-    }
-
-    @Inject(method = "damage", at = @At("HEAD"))
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
-        LivingEntity entity = ((LivingEntity)(Object)this);
-        if (source == CustomDamageSource.TRUE_MAGIC) {
-            ((LivingEntityInvoker)entity).invokeApplyDamage(source, amount);
         }
     }
 
@@ -75,7 +66,7 @@ public class LivingEntityMixin {
                 }
                 player.removeStatusEffect(StatusEffects.INVISIBILITY);
                 player.removeStatusEffect(EffectRegistry.GHOSTLY.get());
-                target.damage(DamageSource.mob(player), damage);
+                target.damage(player.getWorld().getDamageSources().mobAttack(player), damage);
                 UmbralTrespassData.setShouldDamageRiding(player, false);
                 if (!player.getWorld().isClient && player.getBlockPos() != null) {
                     player.getWorld().playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);

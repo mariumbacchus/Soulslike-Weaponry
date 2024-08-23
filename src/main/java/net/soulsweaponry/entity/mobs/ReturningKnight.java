@@ -26,34 +26,32 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
-import java.util.Random;
 
-public class ReturningKnight extends BossEntity implements IAnimatable, IAnimationTickable {
+public class ReturningKnight extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private int blockBreakingCooldown;
-    
+
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
     }
@@ -68,27 +66,27 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSpawning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
         } else if (this.getUnbreakable()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("unbreakable"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
         } else if (this.getSummon()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("summon_warriors"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
         } else if (this.getObliterate()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("obliterate"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
         } else if (this.getBlind()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("blinding_reflection"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
         } else if (this.getRupture()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("rupture"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
         } else if (this.getMaceOfSpades()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("mace_of_spades"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
         } else if (this.isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
         return PlayState.CONTINUE;
     }
@@ -107,24 +105,24 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 8.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 8.0D);
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new ReturningKnightGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     @Override
     public int getTicksUntilDeath() {
@@ -144,9 +142,9 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get());
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -220,7 +218,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
         if (this.getSpawning()) {
             this.spawnTicks++;
-            
+
             for(int i = 0; i < 50; ++i) {
                 Random random = this.getRandom();
                 BlockPos pos = this.getBlockPos();
@@ -229,12 +227,12 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
                 double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
                 double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
                 double newY = random.nextDouble() - 0.5D + random.nextDouble() * 0.5D;
-                world.addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
-                world.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
+                getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
-            
+
             if (this.spawnTicks % 10 == 0) {
-                this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
                 this.setSpawning(false);
@@ -252,7 +250,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
                 double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
-                this.world.addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
+                this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
             }
         }
     }
@@ -262,11 +260,8 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         if (this.blockBreakingCooldown <= 0) {
             this.blockBreakingCooldown = 20;
         }
-        if (source.equals(CustomDamageSource.BLEED)) {
-            return false;
-        }
         if (this.isInvulnerableTo(source)) {
-           return false;
+            return false;
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity) {
@@ -295,20 +290,14 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     public boolean isFireImmune() {
         return true;
     }
-    
-    @Override
-    public int tickTimer() {
-        return age;
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override
@@ -318,11 +307,11 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
 
     protected void mobTick() {
         super.mobTick();
-        
+
         //Reflect all projectiles
         //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
         Box chunkBox = this.getBoundingBox().expand(3);
-        List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
+        List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
             if (entity instanceof PersistentProjectileEntity projectile) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
@@ -335,15 +324,16 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
             int k;
             if (this.blockBreakingCooldown > 0) {
                 --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                     i = MathHelper.floor(this.getY());
                     j = MathHelper.floor(this.getX());
                     k = MathHelper.floor(this.getZ());
                     for (int l = -3; l <= 3; ++l) {
                         for (int m = -3; m <= 3; ++m) {
                             for (int n = 0; n <= 8; ++n) {
-                                if (!(this.world.getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.world.breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                                BlockPos pos = new BlockPos(j + l, i + n, k + m);
+                                if (!(this.getWorld().getBlockState(pos).getBlock() instanceof BlockWithEntity)) {
+                                    this.getWorld().breakBlock(pos, true);
                                 }
                             }
                         }

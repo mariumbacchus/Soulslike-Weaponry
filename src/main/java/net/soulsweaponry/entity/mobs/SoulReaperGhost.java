@@ -17,7 +17,7 @@ public class SoulReaperGhost extends Remnant {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        this.world.addParticle(ParticleTypes.SOUL, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        this.getWorld().addParticle(ParticleTypes.SOUL, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
     }
 
     @Override

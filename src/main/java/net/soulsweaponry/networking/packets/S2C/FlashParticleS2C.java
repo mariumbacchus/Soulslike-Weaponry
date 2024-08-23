@@ -81,7 +81,7 @@ public class FlashParticleS2C {
 
     private void handlePacket(ClientWorld world, FlashParticleS2C packet) {
         Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, packet.getX(), packet.getY(), packet.getZ(), 0, 0, 0);
-        flash.setBoundingBox(new Box(new BlockPos(packet.getX(), packet.getY(), packet.getZ())).expand(packet.getExpansion()));
+        flash.setBoundingBox(new Box(BlockPos.ofFloored(x, y, z)).expand(packet.getExpansion()));
         flash.setColor(packet.getRgb().getRed(), packet.getRgb().getGreen(), packet.getRgb().getBlue());
     }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:forest"
+  ],
+  "spawners": {
+    "type": "soulsweapons:big_chungus",
+    "weight": 100,
+    "minCount": 4,
+    "maxCount": 8
+  }
+}

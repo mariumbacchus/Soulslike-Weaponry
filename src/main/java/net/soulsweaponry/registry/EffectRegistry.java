@@ -3,12 +3,11 @@ package net.soulsweaponry.registry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.tag.EntityTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -84,10 +83,10 @@ public class EffectRegistry {
         @Override
         public void applyUpdateEffect(LivingEntity entity, int amplifier) {
             if (this == EffectRegistry.BLEED.get() && !entity.getType().isIn(EntityTypeTags.SKELETONS) && !entity.getType().isIn(ModTags.Entities.SKELETONS)) {
-                entity.damage(CustomDamageSource.BLEED, 1f + amplifier);
+                entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), 1f + amplifier);
             }
             if (this == EffectRegistry.BLOODTHIRSTY.get()) {
-                entity.damage(DamageSource.WITHER, 1F);
+                entity.damage(entity.getWorld().getDamageSources().wither(), 1F);
             }
         }
     }

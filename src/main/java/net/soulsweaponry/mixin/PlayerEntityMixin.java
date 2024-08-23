@@ -10,15 +10,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.ShieldBreaker;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -30,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
@@ -40,25 +42,16 @@ public class PlayerEntityMixin {
             info.cancel();
         }
     }
-    
-    @Inject(method = "takeShieldHit", at = @At("TAIL"))
-    protected void interceptTakeShieldHit(LivingEntity attacker, CallbackInfo info) {
-        if (attacker instanceof ShieldBreaker) {
-            if (((ShieldBreaker)attacker).disablesShield()) {
-                ((PlayerEntity)(Object)this).disableShield(true);
-            }
-        }
-    }
 
-   @Inject(method = "tickRiding", at = @At("HEAD"))
+    @Inject(method = "tickRiding", at = @At("HEAD"))
     public void interceptTickRiding(CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
         if (!player.getWorld().isClient && UmbralTrespassData.shouldDamageRiding(player)) {
-           int cooldown = UmbralTrespassData.getAbilityCooldown(player);
-           player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0));
-           if (!player.hasStatusEffect(EffectRegistry.GHOSTLY.get())) {
-               player.stopRiding();
-           }
+            int cooldown = UmbralTrespassData.getAbilityCooldown(player);
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0));
+            if (!player.hasStatusEffect(EffectRegistry.GHOSTLY.get())) {
+                player.stopRiding();
+            }
         }
     }
 
@@ -71,6 +64,7 @@ public class PlayerEntityMixin {
         }
     }
 
+
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
@@ -78,15 +72,15 @@ public class PlayerEntityMixin {
             info.setReturnValue(false);
         }
         int frames = ParryData.getParryFrames(player);
-        if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isUnblockable()) {
-            player.world.sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
-            if (source.isProjectile() && source.getSource() instanceof ProjectileEntity) {
+        if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
+            player.getWorld().sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
+            if (source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity) {
                 info.setReturnValue(false);
                 return;
             }
             if (source.getAttacker() instanceof LivingEntity attacker) {
                 if (!attacker.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get())) {
-                    attacker.world.playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
+                    attacker.getWorld().playSound(null, attacker.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                 }
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK.get(), 60, 0));
                 attacker.takeKnockback(0.4f,  player.getX() - attacker.getX(), player.getZ() - attacker.getZ());
@@ -95,7 +89,7 @@ public class PlayerEntityMixin {
         }
         // Enhanced arkenplate && health < 1/3 && projectile
         if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE.get()) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
-                && source.isProjectile() && source.getSource() instanceof ProjectileEntity projectile) {
+                && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
             Vec3d playerPos = player.getPos();
             Vec3d projectilePos = projectile.getPos();
             Vec3d projectileMotion = projectile.getVelocity();
@@ -109,7 +103,7 @@ public class PlayerEntityMixin {
                 && (stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.WITHERED_CHEST.get()))) {
             double x = player.getX() - attacker.getX();
             double z = player.getZ() - attacker.getZ();
-            attacker.damage(DamageSource.WITHER, 1f);
+            attacker.damage(player.getDamageSources().wither(), 1f);
             attacker.takeKnockback(0.5f, x, z);
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, ConfigConstructor.withered_chest_apply_wither_duration, ConfigConstructor.withered_chest_apply_wither_amplifier));
             if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
@@ -117,8 +111,6 @@ public class PlayerEntityMixin {
             }
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {
-                    //ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME, player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
-                           // player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f);
                     ((ServerWorld)player.getWorld()).spawnParticles(ParticleRegistry.BLACK_FLAME.get(), player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D), 1, 0, 0, 0, player.getRandom().nextGaussian() / 10f);
                 }
             }

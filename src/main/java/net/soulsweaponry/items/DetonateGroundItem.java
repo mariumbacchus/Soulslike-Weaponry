@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -39,7 +40,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         List<Entity> entities = world.getOtherEntities(user, box);
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
-                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
+                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, fallDistance * this.getLaunchModifier(), 0);
                     if (this.shouldHeal()) user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power * this.getHealFromDamageModifier() : 0)); // power was prev. divided by 10
@@ -114,7 +115,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
      * @return whether the event was successful, i.e. had the effect, damage was from falling and the ground was detonated
      */
     public static boolean triggerCalculateFall(LivingEntity entity, float fallDistance, DamageSource source) {
-        if (source.isFromFalling() && entity.hasStatusEffect(EffectRegistry.CALCULATED_FALL.get())) {
+        if (source.isOf(DamageTypes.FALL) && entity.hasStatusEffect(EffectRegistry.CALCULATED_FALL.get())) {
             StatusEffectInstance effect = entity.getStatusEffect(EffectRegistry.CALCULATED_FALL.get());
             DetonateGroundItem item = WeaponRegistry.COMET_SPEAR.get();
             ItemStack stack = new ItemStack(item);

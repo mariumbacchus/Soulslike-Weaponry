@@ -3,6 +3,7 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.items.IConfigDisable;
@@ -42,7 +43,7 @@ public class KeybindAbilityC2S {
                 if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
                     return;
                 }
-                keybindItem.useKeybindAbilityServer(player.getWorld(), stack, player);
+                keybindItem.useKeybindAbilityServer((ServerWorld) player.getWorld(), stack, player);
             }
         }
         for (ItemStack armorStack : player.getArmorItems()) {
@@ -50,7 +51,7 @@ public class KeybindAbilityC2S {
                 if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
                     return;
                 }
-                abilityItem.useKeybindAbilityServer(player.getWorld(), armorStack, player);
+                abilityItem.useKeybindAbilityServer((ServerWorld) player.getWorld(), armorStack, player);
             }
         }
     }

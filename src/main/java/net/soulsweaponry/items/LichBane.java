@@ -6,7 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.mixin.LivingEntityInvoker;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class LichBane extends ModdedSword {
@@ -22,7 +22,7 @@ public class LichBane extends ModdedSword {
             return super.postHit(stack, target, attacker);
         }
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
-            target.damage(CustomDamageSource.TRUE_MAGIC, this.getBonusMagicDamage(stack));
+            ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
         }
         target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
         return super.postHit(stack, target, attacker);

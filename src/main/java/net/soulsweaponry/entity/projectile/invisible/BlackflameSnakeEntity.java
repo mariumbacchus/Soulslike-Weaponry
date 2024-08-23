@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.projectile.invisible;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -12,9 +11,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -45,7 +42,7 @@ public class BlackflameSnakeEntity extends InvisibleEntity {
             if (this.age % 4 == 0) {
                 for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
                     if (entity instanceof LivingEntity living && !this.isOwner(living) && !(entity instanceof NightProwler)) {
-                        if (living.damage(DamageSource.mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage())) {
+                        if (living.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage())) {
                             living.addVelocity(0, 1.5f, 0);
                             if (living instanceof PlayerEntity) {
                                 this.hasHitPlayer = true;
@@ -58,8 +55,7 @@ public class BlackflameSnakeEntity extends InvisibleEntity {
             }
         }
         if (this.age > 100 || this.hasHitPlayer) {
-            Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
-            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2f, true, destructionType);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2f, true, World.ExplosionSourceType.TNT);
             this.discard();
         }
     }

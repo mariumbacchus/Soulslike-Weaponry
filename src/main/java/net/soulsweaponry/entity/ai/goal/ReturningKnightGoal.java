@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.ai.goal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
@@ -83,7 +82,7 @@ public class ReturningKnightGoal extends Goal {
         LivingEntity target = this.boss.getTarget();
 
         if (target != null && !this.boss.getSpawning()) {
-            this.boss.setAttacking(true);                
+            this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);
@@ -102,7 +101,7 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.setUnbreakable(true);
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 40));
             } else if (this.unbreakableTimer == 19) {
-                this.boss.world.playSound(null, this.boss.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, .75f, 1f);
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, .75f, 1f);
             }
             if (this.unbreakableTimer < 0) {
                 this.boss.setUnbreakable(false);
@@ -116,7 +115,6 @@ public class ReturningKnightGoal extends Goal {
             if (this.boss.getSummon()) {
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-
                 if (this.attackStatus == 30) { //58,4 ticks
                     int enemyNumber = this.boss.getRandom().nextInt(5 - 2) + 2;
                     int healerNumber = this.boss.getRandom().nextInt(3 - 1) + 1;
@@ -124,11 +122,11 @@ public class ReturningKnightGoal extends Goal {
                     RandomSummonPos healers = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), healerNumber, 10, this.boss.getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, true));
                     remnants.applySummonSpawns();
                     healers.applySummonSpawns();
-                    if (!this.boss.world.isClient) {
+                    if (!this.boss.getWorld().isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, target.getX(), target.getY(), target.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
                     }
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
-                    this.boss.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 0.7f, 1f);
+                    this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 0.7f, 1f);
                 }
                 if (this.attackStatus >= 48) { //96,6 ticks
                     this.boss.setSummon(false);
@@ -138,7 +136,7 @@ public class ReturningKnightGoal extends Goal {
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
                 }
             }
-            
+
             //Mace of Spades
             if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 50D && this.randomAttack == 5 && target.getBlockPos() != null) {
                 this.targetPos = target.getBlockPos();
@@ -150,31 +148,31 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
                 this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
-                
+
                 Box aoe = new Box(targetPos.getX() - 5, targetPos.getY() - 2, targetPos.getZ() - 5, targetPos.getX() + 5, targetPos.getY() + 2, targetPos.getZ() + 5);
-                List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
+                List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
                 if (this.attackStatus == 7) {
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.takeKnockback(2f, -(livingEntity.getX() - this.boss.getX()), -(livingEntity.getZ() - this.boss.getZ()));
-                            livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(20f));
+                            livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(20f));
                         }
                     }
-                    this.boss.world.playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+                    this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
                 }
                 if (this.attackStatus == 13 && target.getBlockPos() != null) {
                     this.targetPos = target.getBlockPos();
                 }
                 if (this.attackStatus == 21 && this.targetPos != null) {
-                    entities = this.boss.world.getOtherEntities(this.boss, new Box(this.targetPos).expand(3D));
+                    entities = this.boss.getWorld().getOtherEntities(this.boss, new Box(this.targetPos).expand(3D));
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.addVelocity(0, 1, 0);
-                            livingEntity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(25f));
+                            livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(25f));
                         }
                     }
-                    this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-                    if (!this.boss.world.isClient) {
+                    this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+                    if (!this.boss.getWorld().isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                     }
                 }
@@ -199,23 +197,21 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
                 this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-                //this.boss.getMoveControl().moveTo(this.obliterateX, this.obliterateY, this.obliterateZ, 0.0D);
-                //Box aoe = new Box(obliterateX - 3, obliterateY - 2, obliterateZ - 3, obliterateX + 3, obliterateY + 2, obliterateZ + 3);
                 Box aoe = new Box(targetPos).expand(3D);
-                List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
-                
+                List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
+
                 if (this.attackStatus == 18) { //23
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity living) {
-                            entity.damage(CustomDamageSource.obliterateDamageSource(this.boss), this.getModifiedDamage(60f));
+                            entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
                             if (living.isUndead() && living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                                 this.summonAllies(living.getPos(), false);
                             }
                         }
                     }
-                    this.boss.world.playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-                    if (!this.boss.world.isClient) {
+                    this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+                    if (!this.boss.getWorld().isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                     }
                 }
@@ -239,12 +235,12 @@ public class ReturningKnightGoal extends Goal {
                 double x = target.getX() - this.boss.getX();
                 double z = target.getZ() - this.boss.getZ();
                 if (attackStatus == 12 && distanceToEntity < 25f) {
-                    target.damage(DamageSource.mob(this.boss), this.getModifiedDamage(10f));
+                    target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(10f));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
                     target.takeKnockback(2f, -x, -z);
-                    this.boss.world.playSound(null, target.getBlockPos(), SoundEvents.BLOCK_AMETHYST_BLOCK_FALL, SoundCategory.HOSTILE, 1f, 1f);
-                    if (!this.boss.world.isClient) {
+                    this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.BLOCK_AMETHYST_BLOCK_FALL, SoundCategory.HOSTILE, 1f, 1f);
+                    if (!this.boss.getWorld().isClient) {
                         ParticleHandler.particleOutburstMap(this.boss.getWorld(), 150, target.getX(), target.getEyeY(), target.getZ(), ParticleEvents.BLINDING_LIGHT_MAP, 1f);
                     }
                 }
@@ -264,19 +260,19 @@ public class ReturningKnightGoal extends Goal {
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 Box aoe = new Box(this.boss.getX() - 18, this.boss.getY() - 8, this.boss.getZ() - 18, this.boss.getX() + 18, this.boss.getY() + 8, this.boss.getZ() + 18);
-                List<Entity> entities = this.boss.world.getOtherEntities(this.boss, aoe);
+                List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
                 if (attackStatus == 21 || attackStatus == 33) {
-                    for (Entity entity : this.boss.world.getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
-                        this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
+                    for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
+                        this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
                     }
                 }
                 if (this.attackStatus == 52) {
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity) {
-                            entity.damage(DamageSource.mob(this.boss), this.getModifiedDamage(30f));
+                            entity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
                             entity.setVelocity(entity.getVelocity().x, 1.5f, entity.getVelocity().z);
-                            this.boss.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-                            if (!this.boss.world.isClient) {
+                            this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                            if (!this.boss.getWorld().isClient) {
                                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
                             }
                         }

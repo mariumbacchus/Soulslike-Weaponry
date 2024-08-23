@@ -71,7 +71,7 @@ public class HunterCannon extends GunItem {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
         boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        ItemStack itemStack = user.getArrowType(stack);
+        ItemStack itemStack = user.getProjectileType(stack);
         int bulletsNeeded = this.bulletsNeeded();
         if (!itemStack.isEmpty() && itemStack.getCount() >= bulletsNeeded || bl) {
             if (itemStack.isEmpty()) {

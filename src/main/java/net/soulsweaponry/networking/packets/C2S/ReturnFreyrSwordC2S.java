@@ -3,8 +3,8 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
@@ -39,10 +39,10 @@ public class ReturnFreyrSwordC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, ReturnFreyrSwordC2S packet) {
-        Text text = new TranslatableText("soulsweapons.weapon.no_freyr_sword");
+        Text text = Text.translatable("soulsweapons.weapon.no_freyr_sword");
         UUID uuid = FreyrSwordSummonData.getSummonUuid(player);
         if (uuid != null && player.getBlockPos() != null) {
-            Entity sword = player.getWorld().getEntity(uuid);
+            Entity sword = ((ServerWorld)player.getWorld()).getEntity(uuid);
             if (sword instanceof FreyrSwordEntity freyrSword) {
                 if (!freyrSword.insertStack(player)) {
                     freyrSword.setPos(player.getX(), player.getEyeY(), player.getZ());

@@ -5,7 +5,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +23,7 @@ public class ShieldItemMixin {
         if (Screen.hasShiftDown()) {
             WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.PARRY, stack, tooltip);
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
     }
 }

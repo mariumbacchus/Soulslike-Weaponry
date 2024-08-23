@@ -22,16 +22,16 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
+public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private final StatusEffect[] effects;
-    
+
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
         this.effects = new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY.get()};
@@ -45,10 +45,10 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity target) {
-            target.damage(CustomDamageSource.shadowOrb(this, this.getOwner()), 5f);
+        if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
+            target.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
             for (StatusEffect effect : this.effects) {
-                target.addStatusEffect(new StatusEffectInstance(effect, effect.equals(StatusEffects.BLINDNESS) ? 40 : 150, 0));
+                target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }
         }
         super.onEntityHit(entityHitResult);
@@ -61,14 +61,14 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
         double d = this.getX() + vec3d.x;
         double e = this.getY() + vec3d.y;
         double f = this.getZ() + vec3d.z;
-        this.world.addParticle(ParticleTypes.ENTITY_EFFECT, d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
+        this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.world.isClient) {
-            ParticleHandler.particleSphereList(world, 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.2f);
+        if (!this.getWorld().isClient) {
+            ParticleHandler.particleSphereList(this.getWorld(), 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.2f);
             this.discard();
         }
     }
@@ -99,11 +99,11 @@ public class ShadowOrb extends AbstractFireballEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 }

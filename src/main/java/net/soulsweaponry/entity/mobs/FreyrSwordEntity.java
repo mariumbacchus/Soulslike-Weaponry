@@ -27,6 +27,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
@@ -34,40 +35,18 @@ import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.UUID;
 
-/**
- * NOTE TO SELF: <p>
- * This class had many random comments with dead code before now. It was me attempting to use the animation ticks
- * as the attack ticks, instead of having two seperate ticks, so if the animation speed increases
- * on the entity, the damage timing will work fine. Well, it's been a week now with me non-stop
- * trying to figure things out through data tracking, nbts, sound, particle and custom instruction
- * keyframes, but alas, nothing works. For some reason, I can't pass any data beyond the tick() function
- * or animation predicate functions, meaning I can't even pass booleans or doubles to neither the attack
- * goal nor mobTick() function. Moreover, I can't even interact with any entities beyond gathering their
- * information, not even the .damage() method works. Maybe some day I'll figure it out, but by the looks of it, 
- * other mods also use the two ticks seperately, so for now, I admit defeat. <p>
- * TLDR; Animation functions cannot interact with entities, only gather their information. The tick() function
- * will damage anything regardless if this entity despawned or not. The mobTick() method or Goals cannot
- * get any information from the animation functions, since it can't edit any variables to the entity. <p>
- * Methods I've tried: <p>
- * - Tracked data boolean changed in the animation function. <p>
- * - Tracked data blockPos if not null then animation function SHOULD damage all entities in box of blockPos. <p>
- * - Register custom controllers and interact with entities.
- */
-public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
+public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private final ItemStack stack;
     public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -87,18 +66,18 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         this.setOwner(owner);
     }
 
-    public <E extends Entity & IAnimatable> PlayState attack(AnimationEvent<E> event) {
+    public PlayState attack(AnimationState<?> state) {
         if (this.getAnimationAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack_east", ILoopType.EDefaultLoopTypes.LOOP));
+            state.getController().setAnimation(RawAnimation.begin().then("attack_east", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         }
-        event.getController().clearAnimationCache();
+        state.getController().stop();
         return PlayState.STOP;
     }
 
-    private <E extends Entity & IAnimatable> PlayState idle(AnimationEvent<E> event) {
+    private PlayState idle(AnimationState<?> state) {
         if (!this.getAnimationAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
             return PlayState.CONTINUE;
         } else {
             return PlayState.STOP;
@@ -106,12 +85,11 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<FreyrSwordEntity> attackController = new AnimationController<>(this, "attackController", 0, this::attack);
         AnimationController<FreyrSwordEntity> idleController = new AnimationController<>(this, "idleController", 0, this::idle);
-        //attackController.registerCustomInstructionListener(this::attackTargetListener); //Check GeoExampleEntity for more info/examples.
-        data.addAnimationController(attackController);
-        data.addAnimationController(idleController);
+        controllers.add(attackController);
+        controllers.add(idleController);
     }
 
     @Override
@@ -159,7 +137,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
             } else {
                 if (this.getTarget() == null || this.squaredDistanceTo(this.getOwner()) > this.getFollowRange()) {
                     Vec3d vecOwner = this.getOwner().getRotationVector();
-                    double xAdd = 0;                    
+                    double xAdd = 0;
                     if (this.getOwner().getPitch() < -50 || this.getOwner().getPitch() > 50) {
                         xAdd = vecOwner.getX() > 0 ? -1 : 1;
                     }
@@ -171,12 +149,22 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         }
     }
 
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
+    }
+
+    @Override
+    public int getAir() {
+        return 300;
+    }
+
     @Nullable
     @Override
     public LivingEntity getOwner() {
         try {
             UUID uUID = this.getOwnerUuid();
-            LivingEntity owner = uUID == null ? null : this.world.getPlayerByUuid(uUID);
+            LivingEntity owner = uUID == null ? null : this.getWorld().getPlayerByUuid(uUID);
             if (owner instanceof PlayerEntity player) {
                 UUID swordUuid = FreyrSwordSummonData.getSummonUuid(player);
                 if (swordUuid != null && swordUuid.equals(this.getUuid())) {
@@ -217,9 +205,10 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         if (entity != null) entity.setCovetedItem();
     }
 
+    @Override
     public void onDeath(DamageSource damageSource) {
-        if (!world.isClient && this.getBlockPos() != null) {
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
+        if (!getWorld().isClient && this.getBlockPos() != null) {
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
             this.stack.damage(10, this.getRandom(), null);
             if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
                 if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
@@ -235,6 +224,11 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         super.onDeath(damageSource);
     }
 
+    @Override
+    public boolean canUsePortals() {
+        return false;
+    }
+
     /**
      * Since servers crash when the input is null, this function checks if the blockPos is
      * "null-ish", since it is highly unlikely the player will be on the coords xyz 0,
@@ -242,8 +236,7 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
      * deciding whether it should stay behind the owner or not.
      */
     public boolean isBlockPosNullish(BlockPos pos) {
-        if (pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0) return true;
-        else return false;
+        return pos.getX() == 0 && pos.getY() == 0 && pos.getZ() == 0;
     }
 
     @Override
@@ -251,9 +244,9 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
         super.tickMovement();
         if (this.age % 4 == 0) {
             double random = this.getRandom().nextDouble();
-            this.world.addParticle(ParticleTypes.GLOW, false, 
-                this.getX() + random/4 - random/8, this.getEyeY() - random*6 + random*6/2, this.getZ() + random/4 - random/8, 
-                random/16 - random/32, random - random/2, random/16 - random/32);
+            this.getWorld().addParticle(ParticleTypes.GLOW, false,
+                    this.getX() + random/4 - random/8, this.getEyeY() - random*6 + random*6/2, this.getZ() + random/4 - random/8,
+                    random/16 - random/32, random - random/2, random/16 - random/32);
         }
     }
 
@@ -277,9 +270,9 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
 
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return PathAwareEntity.createLivingAttributes()
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) ConfigConstructor.sword_of_freyr_damage);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) ConfigConstructor.sword_of_freyr_damage);
     }
 
     public double getFollowRange() {
@@ -291,8 +284,8 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     public void setAnimationAttacking(boolean bl) {
@@ -360,16 +353,6 @@ public class FreyrSwordEntity extends TameableEntity implements IAnimatable {
     @Override
     protected boolean canStartRiding(Entity entity) {
         return false;
-    }
-
-    @Override
-    public boolean canUsePortals() {
-        return false;
-    }
-
-    @Override
-    public int getAir() {
-        return 300;
     }
 
     @Override

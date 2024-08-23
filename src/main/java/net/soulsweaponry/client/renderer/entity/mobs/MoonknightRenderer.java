@@ -7,14 +7,18 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.util.CustomDeathHandler;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class MoonknightRenderer extends GeoEntityRendererFixed<Moonknight> {
+public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
 
     int[] rgbColorOne = {254, 200, 203};
     int[] rgbColorTwo = {254, 254, 218};
@@ -23,7 +27,7 @@ public class MoonknightRenderer extends GeoEntityRendererFixed<Moonknight> {
     double[] translation = {0, 4, 0};
     public static final Identifier CRYSTAL_BEAM_TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
-    
+
     public MoonknightRenderer(Context ctx) {
         super(ctx, new MoonknightModel());
         this.shadowRadius = 2.5F;
@@ -36,11 +40,11 @@ public class MoonknightRenderer extends GeoEntityRendererFixed<Moonknight> {
 
     @Override
     public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
+                entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
         BlockPos blockPos = entity.getBeamLocation();
         if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
@@ -66,8 +70,8 @@ public class MoonknightRenderer extends GeoEntityRendererFixed<Moonknight> {
         float vecLength = MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
         matrices.push();
         matrices.translate(0.0f, 2.0f, 0.0f);
-        matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float)(-Math.atan2(dz, dx)) - 1.5707964f));
-        matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion((float)(-Math.atan2(xzLength, dy)) - 1.5707964f));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float)(-Math.atan2(dz, dx)) - 1.5707964f));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float)(-Math.atan2(xzLength, dy)) - 1.5707964f));
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(CRYSTAL_BEAM_LAYER);
         float h = 0.0f - ((float)age + tickDelta) * 0.01f;
         float i = vecLength / 32.0f - ((float)age + tickDelta) * 0.01f;

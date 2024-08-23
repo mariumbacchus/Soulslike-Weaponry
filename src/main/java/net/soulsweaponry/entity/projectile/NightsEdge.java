@@ -1,9 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -17,15 +14,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +31,7 @@ import java.util.UUID;
  * Why this is the case? No clue and well, the only thing I care about is whether this works or not, so I've got no
  * reason to look for an answer or fix either.
  */
-public class NightsEdge extends PathAwareEntity implements IAnimatable {
+public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
     @Nullable
     private LivingEntity owner;
     @Nullable
@@ -47,7 +41,7 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
     private int ticksLeft = maxTicks;
     private float damage = 15f;
     private boolean startedAttack;
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(NightsEdge.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public NightsEdge(EntityType<? extends NightsEdge> type, World world) {
@@ -116,12 +110,12 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
         LivingEntity livingEntity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && target != livingEntity) {
             if (livingEntity == null) {
-                if (target.damage(DamageSource.MAGIC, this.getDamage())) {
+                if (target.damage(this.getDamageSources().magic(), this.getDamage())) {
                     target.addVelocity(0, 0.5f, 0);
                 }
             } else {
                 if (!livingEntity.isTeammate(target)) {
-                    if (target.damage(DamageSource.magic(this, livingEntity), this.getDamage())) {
+                    if (target.damage(this.getDamageSources().indirectMagic(this, livingEntity), this.getDamage())) {
                         target.addVelocity(0, 0.5f, 0);
                     }
                 }
@@ -185,6 +179,7 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
         }
     }
 
+    @Override
     @Nullable
     public LivingEntity getOwner() {
         Entity entity;
@@ -199,22 +194,22 @@ public class NightsEdge extends PathAwareEntity implements IAnimatable {
         this.ownerUuid = owner == null ? null : owner.getUuid();
     }
 
-    private <E extends IAnimatable> PlayState idle(AnimationEvent<E> event) {
+    private PlayState idle(AnimationState<?> state) {
         if (this.getEmerge()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("emerge", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
+            state.getController().setAnimation(RawAnimation.begin().then("emerge", Animation.LoopType.HOLD_ON_LAST_FRAME));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+            state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "idle", 0, this::idle));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "idle", 0, this::idle));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
     }
 }

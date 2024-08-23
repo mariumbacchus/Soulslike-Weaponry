@@ -31,11 +31,11 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
             WeaponRegistry.GUTS_SWORD.get(),
             WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get()
     );
-    
+
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
-        for (ItemStack stack : entity.getItemsHand()) {
+        for (ItemStack stack : entity.getHandItems()) {
             if (customHoldItems.contains(stack.getItem())) {
                 if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
                     if (stack.isOf(WeaponRegistry.GUTS_SWORD.get())) {

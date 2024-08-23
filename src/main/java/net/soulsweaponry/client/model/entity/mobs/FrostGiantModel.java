@@ -3,41 +3,11 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.FrostGiant;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class FrostGiantModel extends AnimatedGeoModel<FrostGiant>{
+public class FrostGiantModel extends DefaultedEntityGeoModel<FrostGiant> {
 
-    @Override
-    public Identifier getModelLocation(FrostGiant object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "geo/frost_giant.geo.json");
-    }
-
-    @Override
-    public Identifier getTextureLocation(FrostGiant object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/frost_giant.png");
-    }
-
-    @Override
-    public Identifier getAnimationFileLocation(FrostGiant object)
-    {
-        return new Identifier(SoulsWeaponry.ModId, "animations/frost_giant.animation.json");
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void setCustomAnimations(FrostGiant entity, int uniqueID, AnimationEvent customPredicate) {
-        super.setCustomAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
-
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        if (head != null) {
-            head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
-            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
-        }
+    public FrostGiantModel() {
+        super(new Identifier(SoulsWeaponry.ModId, "frost_giant"), true);
     }
 }

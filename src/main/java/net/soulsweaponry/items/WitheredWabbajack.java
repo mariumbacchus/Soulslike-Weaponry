@@ -50,8 +50,8 @@ public class WitheredWabbajack extends ModdedSword {
             entity.setPos(user.getX(), user.getEyeY(), user.getZ());
             if (entity instanceof GrowingFireball ball) {
                 float power = 1f + user.getRandom().nextFloat() * 10 * this.getLuckFactor(user);
-                int duration = user.getRandom().nextInt(10, 100 + 20 * this.getLuckFactor(user));
-                float speed = user.getRandom().nextInt(25, 300 + 20 * this.getLuckFactor(user)) / 100f;
+                int duration = user.getRandom().nextBetween(10, 100 + 20 * this.getLuckFactor(user));
+                float speed = user.getRandom().nextBetween(25, 300 + 20 * this.getLuckFactor(user)) / 100f;
                 ball.setMaxAge(duration);
                 ball.setRadiusGrowth(power / (float) duration);
                 ball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, speed, 0f);

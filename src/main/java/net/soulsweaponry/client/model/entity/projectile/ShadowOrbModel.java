@@ -3,23 +3,23 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ShadowOrbModel extends AnimatedGeoModel<ShadowOrb>{
+public class ShadowOrbModel extends GeoModel<ShadowOrb> {
 
     @Override
-    public Identifier getAnimationFileLocation(ShadowOrb animatable) {
+    public Identifier getAnimationResource(ShadowOrb animatable) {
         return null;
     }
 
     @Override
-    public Identifier getModelLocation(ShadowOrb object) {
+    public Identifier getModelResource(ShadowOrb object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(ShadowOrb object) {
+    public Identifier getTextureResource(ShadowOrb object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/shadow_orb.png");
     }
-    
+
 }

@@ -3,6 +3,7 @@ package net.soulsweaponry.entitydata;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.ModMessages;
@@ -51,7 +52,7 @@ public class ParryData {
         int frames = ParryData.getParryFrames(player);
         boolean bl = true;
         if (checkIfCanBeParried) {
-            bl = !source.isUnblockable();
+            bl = !source.isIn(DamageTypeTags.BYPASSES_SHIELD);
         }
         return frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && bl;
     }

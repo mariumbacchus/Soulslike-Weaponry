@@ -7,6 +7,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -16,16 +17,19 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.util.BlackflameSnakeLogic;
@@ -33,23 +37,19 @@ import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
-public class NightProwler extends BossEntity implements IAnimatable {
+public class NightProwler extends BossEntity implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
@@ -71,7 +71,6 @@ public class NightProwler extends BossEntity implements IAnimatable {
     private static final TrackedData<Integer> SPAWN_PARTICLES_STATE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> DARKNESS_RISE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
 
-
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
         super(entityType, world, Color.PURPLE);
     }
@@ -86,16 +85,16 @@ public class NightProwler extends BossEntity implements IAnimatable {
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
-    public void setAttackAnimation(Attacks attack) {
+    public void setAttackAnimation(NightProwler.Attacks attack) {
         for (int i = 0; i < ATTACKS_LENGTH; i++) {
-            if (Attacks.values()[i].equals(attack)) {
+            if (NightProwler.Attacks.values()[i].equals(attack)) {
                 this.dataTracker.set(ATTACKS, i);
             }
         }
     }
 
-    public Attacks getAttackAnimation() {
-        return Attacks.values()[this.dataTracker.get(ATTACKS)];
+    public NightProwler.Attacks getAttackAnimation() {
+        return NightProwler.Attacks.values()[this.dataTracker.get(ATTACKS)];
     }
 
     public boolean isInitiatingPhaseTwo() {
@@ -106,89 +105,86 @@ public class NightProwler extends BossEntity implements IAnimatable {
         this.dataTracker.set(INITIATING_PHASE_2, bl);
     }
 
-    private <E extends IAnimatable> PlayState attacks(AnimationEvent<E> event) {
+    private PlayState attacks(AnimationState<?> state) {
         if (this.isDead()) return PlayState.STOP;
         if (this.isInitiatingPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_phase_2", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
-        } else if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn_1", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+        } else if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+            state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
                 switch (this.getAttackAnimation()) {
-                    case TRINITY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("trinity_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case REAPING_SLASH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("reaping_slash_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case NIGHTS_EMBRACE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("nights_embrace_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case RIPPLE_FANG -> event.getController().setAnimation(new AnimationBuilder().addAnimation("ripple_fang_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case BLADES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blades_reach_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case SOUL_REAPER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_reaper_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DIMINISHING_LIGHT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("diminishing_light_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DARKNESS_RISE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("darkness_rise_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case ENGULF -> event.getController().setAnimation(new AnimationBuilder().addAnimation("engulf_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case BLACKFLAME_SNAKE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blackflame_snake_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DEATHBRINGERS_GRASP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("deaths_grasp_1", ILoopType.EDefaultLoopTypes.LOOP));
-                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_1", Animation.LoopType.LOOP));
+                    case REAPING_SLASH -> state.getController().setAnimation(RawAnimation.begin().then("reaping_slash_1", Animation.LoopType.LOOP));
+                    case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_1", Animation.LoopType.LOOP));
+                    case RIPPLE_FANG -> state.getController().setAnimation(RawAnimation.begin().then("ripple_fang_1", Animation.LoopType.LOOP));
+                    case BLADES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("blades_reach_1", Animation.LoopType.LOOP));
+                    case SOUL_REAPER -> state.getController().setAnimation(RawAnimation.begin().then("soul_reaper_1", Animation.LoopType.LOOP));
+                    case DIMINISHING_LIGHT -> state.getController().setAnimation(RawAnimation.begin().then("diminishing_light_1", Animation.LoopType.LOOP));
+                    case DARKNESS_RISE -> state.getController().setAnimation(RawAnimation.begin().then("darkness_rise_1", Animation.LoopType.LOOP));
+                    case ENGULF -> state.getController().setAnimation(RawAnimation.begin().then("engulf_1", Animation.LoopType.LOOP));
+                    case BLACKFLAME_SNAKE -> state.getController().setAnimation(RawAnimation.begin().then("blackflame_snake_1", Animation.LoopType.LOOP));
+                    case DEATHBRINGERS_GRASP -> state.getController().setAnimation(RawAnimation.begin().then("deaths_grasp_1", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_1", Animation.LoopType.LOOP));
                 }
             } else {
                 switch (this.getAttackAnimation()) {
-                    case TRINITY -> event.getController().setAnimation(new AnimationBuilder().addAnimation("trinity_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case NIGHTS_EMBRACE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("nights_embrace_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case RIPPLE_FANG -> event.getController().setAnimation(new AnimationBuilder().addAnimation("ripple_fang_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case BLADES_REACH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blades_reach_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case SOUL_REAPER -> event.getController().setAnimation(new AnimationBuilder().addAnimation("soul_reaper_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DIMINISHING_LIGHT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("diminishing_light_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DARKNESS_RISE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("darkness_rise_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case ECLIPSE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("eclipse_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case ENGULF -> event.getController().setAnimation(new AnimationBuilder().addAnimation("engulf_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case BLACKFLAME_SNAKE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("blackflame_snake_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case LUNAR_DISPLACEMENT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("lunar_displacement_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    case DEATHBRINGERS_GRASP -> event.getController().setAnimation(new AnimationBuilder().addAnimation("deaths_grasp_2", ILoopType.EDefaultLoopTypes.LOOP));
-                    default -> event.getController().setAnimation(new AnimationBuilder().addAnimation("empty_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_2", Animation.LoopType.LOOP));
+                    case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_2", Animation.LoopType.LOOP));
+                    case RIPPLE_FANG -> state.getController().setAnimation(RawAnimation.begin().then("ripple_fang_2", Animation.LoopType.LOOP));
+                    case BLADES_REACH -> state.getController().setAnimation(RawAnimation.begin().then("blades_reach_2", Animation.LoopType.LOOP));
+                    case SOUL_REAPER -> state.getController().setAnimation(RawAnimation.begin().then("soul_reaper_2", Animation.LoopType.LOOP));
+                    case DIMINISHING_LIGHT -> state.getController().setAnimation(RawAnimation.begin().then("diminishing_light_2", Animation.LoopType.LOOP));
+                    case DARKNESS_RISE -> state.getController().setAnimation(RawAnimation.begin().then("darkness_rise_2", Animation.LoopType.LOOP));
+                    case ECLIPSE -> state.getController().setAnimation(RawAnimation.begin().then("eclipse_2", Animation.LoopType.LOOP));
+                    case ENGULF -> state.getController().setAnimation(RawAnimation.begin().then("engulf_2", Animation.LoopType.LOOP));
+                    case BLACKFLAME_SNAKE -> state.getController().setAnimation(RawAnimation.begin().then("blackflame_snake_2", Animation.LoopType.LOOP));
+                    case LUNAR_DISPLACEMENT -> state.getController().setAnimation(RawAnimation.begin().then("lunar_displacement_2", Animation.LoopType.LOOP));
+                    case DEATHBRINGERS_GRASP -> state.getController().setAnimation(RawAnimation.begin().then("deaths_grasp_2", Animation.LoopType.LOOP));
+                    default -> state.getController().setAnimation(RawAnimation.begin().then("empty_2", Animation.LoopType.LOOP));
                 }
             }
         }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState idle(AnimationEvent<E> event) {
-        if (this.isInitiatingPhaseTwo()) {
-            return PlayState.STOP;
-        }
+    private PlayState idle(AnimationState<?> state) {
         if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death_2", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("death_1", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("death_1", Animation.LoopType.LOOP));
             }
         } else {
-            if (!this.getAttackAnimation().equals(Attacks.IDLE)) {
+            if (this.isInitiatingPhaseTwo()) {
                 return PlayState.STOP;
             } else {
                 if (this.isPhaseTwo()) {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("wings_2", ILoopType.EDefaultLoopTypes.LOOP));
+                    state.getController().setAnimation(RawAnimation.begin().then("wings_2", Animation.LoopType.LOOP));
                 } else {
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("wings_1", ILoopType.EDefaultLoopTypes.LOOP));
+                    state.getController().setAnimation(RawAnimation.begin().then("wings_1", Animation.LoopType.LOOP));
                 }
             }
         }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState cape(AnimationEvent<E> event) {
+    private PlayState cape(AnimationState<?> state) {
         if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("cape_2", ILoopType.EDefaultLoopTypes.LOOP));
+            state.getController().setAnimation(RawAnimation.begin().then("cape_2", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState flying(AnimationEvent<E> event) {
+    private PlayState flying(AnimationState<?> state) {
         if (!this.isFlying()) {
             return PlayState.STOP;
         } else {
             if (this.isPhaseTwo()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("flying_2", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("flying_2", Animation.LoopType.LOOP));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("flying_1", ILoopType.EDefaultLoopTypes.LOOP));
+                state.getController().setAnimation(RawAnimation.begin().then("flying_1", Animation.LoopType.LOOP));
             }
         }
         return PlayState.CONTINUE;
@@ -347,15 +343,15 @@ public class NightProwler extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "attacks", 0, this::attacks));
-        data.addAnimationController(new AnimationController<>(this, "idle", 0, this::idle));
-        data.addAnimationController(new AnimationController<>(this, "cape", 0, this::cape));
-        data.addAnimationController(new AnimationController<>(this, "flying", 0, this::flying));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "attacks", 0, this::attacks));
+        controllers.add(new AnimationController<>(this, "idle", 0, this::idle));
+        controllers.add(new AnimationController<>(this, "flying", 0, this::flying));
+        controllers.add(new AnimationController<>(this, "cape", 0, this::cape));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
 
@@ -382,6 +378,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
         }
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
+            this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
             float healPerTick = this.getMaxHealth() / maxHealTicks;
             this.heal(healPerTick);
@@ -399,19 +396,18 @@ public class NightProwler extends BossEntity implements IAnimatable {
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
                 this.setInitiatePhaseTwo(false);
-                this.setFlying(false);
             }
         }
-        if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
+        if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
-                this.setAttackAnimation(Attacks.IDLE);
+                this.setAttackAnimation(NightProwler.Attacks.IDLE);
             }
         }
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
         if (this.getRemainingAniTicks() <= 0 && this.shouldWaitAnimation()) {
             this.setWaitAnimation(false);
-            this.setAttackAnimation(Attacks.IDLE);
+            this.setAttackAnimation(NightProwler.Attacks.IDLE);
             this.getNavigation().stop();
         }
         if (this.getDarknessRise()) {
@@ -422,7 +418,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
             for (Entity entity : this.getWorld().getOtherEntities(this, box)) {
                 if (this.darknessRiseTicks % 4 == 0 && entity instanceof LivingEntity living) {
                     living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY.get(), 60, 0));
-                    living.damage(DamageSource.MAGIC, 1f);
+                    living.damage(this.getWorld().getDamageSources().magic(), 1f);
                 }
             }
             if (this.getDarknessRiseTicks() >= (this.isPhaseTwo() ? 200 : 120)) {
@@ -443,11 +439,11 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
-        if (source.isFromFalling()) {
+        if (source.isOf(DamageTypes.FALL)) {
             return false;
         }
         if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
-                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isProjectile() ? 1.5f : 1)
+                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 1.5f : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
             if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
@@ -462,7 +458,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 }
             }
         }
-        if (this.isEmpowered() && source.isProjectile() &&
+        if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) &&
                 this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
             this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
             this.heal(ConfigConstructor.night_prowler_projectile_heal_amount);
@@ -471,25 +467,28 @@ public class NightProwler extends BossEntity implements IAnimatable {
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
             amount = amount * 0.75f;
         }
-        if (source.isExplosive()) {
+        if (source.isOf(DamageTypes.EXPLOSION)) {
             amount = amount * 0.25f;
         }
         return super.damage(source, amount);
     }
 
+    @SuppressWarnings({"deprecation"})
     public boolean teleportTo(double x, double y, double z) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
-        while (mutable.getY() > this.getWorld().getBottomY() && !this.getWorld().getBlockState(mutable).getMaterial().blocksMovement()) {
+        while (mutable.getY() > this.getWorld().getBottomY() && !this.getWorld().getBlockState(mutable).blocksMovement()) {
             mutable.move(Direction.DOWN);
         }
         BlockState blockState = this.getWorld().getBlockState(mutable);
-        boolean bl = blockState.getMaterial().blocksMovement();
+        boolean bl = blockState.blocksMovement();
         boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
         if (!bl || bl2) {
             return false;
         }
+        Vec3d vec3d = this.getPos();
         boolean bl3 = this.teleport(x, y, z, true);
         if (bl3) {
+            this.getWorld().emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(this));
             if (!this.isSilent()) {
                 this.getWorld().playSound(null, this.prevX, this.prevY, this.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
                 this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -612,7 +611,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                     if (this.getTargetPos() != null) {
                         for (int i = 0; i < 500; ++i) {
                             Random random = this.getRandom();
-                            Vec3d pos = Vec3d.ofCenter(this.getTargetPos());
+                            Vec3d pos = this.getTargetPos().toCenterPos();
                             double d = random.nextGaussian() * 0.05D;
                             double e = random.nextGaussian() * 0.05D;
                             double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d);
@@ -628,7 +627,7 @@ public class NightProwler extends BossEntity implements IAnimatable {
                     if (this.getTargetPos() != null) {
                         for (int i = 0; i < 250; ++i) {
                             Random random = this.getRandom();
-                            Vec3d pos = Vec3d.ofCenter(this.getTargetPos());
+                            Vec3d pos = this.getTargetPos().toCenterPos();
                             double d = random.nextGaussian() * 0.05D;
                             double e = random.nextGaussian() * 0.05D;
                             double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d) / 2;

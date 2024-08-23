@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.ModTags;
 
@@ -35,7 +35,7 @@ public class LifeLeach extends StatusEffect {
         if (target != null) {
             for (StatusEffectInstance instance : target.getStatusEffects()) {
                 StatusEffect effect = instance.getEffectType();
-                if (Registry.STATUS_EFFECT.getOrCreateEntry(Registry.STATUS_EFFECT.getKey(effect).orElseThrow()).isIn(ModTags.Effects.DAMAGE_OVER_TIME)) {
+                if (Registries.STATUS_EFFECT.getEntry(effect).isIn(ModTags.Effects.DAMAGE_OVER_TIME)) {
                     entity.heal(1);
                     break;
                 }

@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -14,34 +13,30 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.entitydata.ParryData;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class GrowingFireball extends UntargetableFireball implements IAnimatable {
+public class GrowingFireball extends UntargetableFireball implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int maxAge = 126;
     private boolean hasChangedCourse;
     private static final TrackedData<Optional<UUID>> TARGET_UUID = DataTracker.registerData(GrowingFireball.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
@@ -66,9 +61,9 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
     public void tick() {
         super.tick();
         float radius = this.getRadius();
-        if (world.isClient && this.random.nextBoolean()) {
+        if (getWorld().isClient && this.random.nextBoolean()) {
             int points = MathHelper.floor(this.getRadius() * 4f);
-            AreaEffectSphere.randomParticleBox(this.world, this.getX(), this.getY() + this.getRadius()/2, this.getZ(), points, this.getRadius() * 0.5f, ParticleTypes.FLAME, this.random);
+            AreaEffectSphere.randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getRadius()/2, this.getZ(), points, this.getRadius() * 0.5f, ParticleTypes.FLAME, this.random);
         }
         if (this.radiusGrowth != 0.0F) {
             radius += this.radiusGrowth;
@@ -79,7 +74,7 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
             this.setRadius(radius);
         }
         Entity target;
-        if (!this.world.isClient && this.age >= this.getMaxAge() && !this.hasChangedCourse && (target = this.getSavedTarget((ServerWorld) this.world)) != null) {
+        if (!this.getWorld().isClient && this.age >= this.getMaxAge() && !this.hasChangedCourse && (target = this.getSavedTarget((ServerWorld) this.getWorld())) != null) {
             double f = target.getX() - this.getX();
             double g = target.getBodyY(0.5) - (this.getBodyY(0.5D));
             double h = target.getZ() - this.getZ();
@@ -89,8 +84,8 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
         if (this.age >= this.getMaxAge() * 3) {
             this.detonate();
         }
-        if (!(this.getOwner() instanceof DayStalker) && !this.world.isClient) {
-            for (Entity entity : this.world.getOtherEntities(this, this.getBoundingBox())) {
+        if (!(this.getOwner() instanceof DayStalker) && !this.getWorld().isClient) {
+            for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
                 if (!this.isOwner(entity) && entity instanceof LivingEntity) {
                     this.detonate();
                 }
@@ -112,8 +107,8 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             if (((EntityHitResult) hitResult).getEntity() instanceof PlayerEntity player) {
-                if (ParryData.successfulParry(player, false, DamageSource.explosion(this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : player))) {
-                    if (!this.world.isClient) {
+                if (ParryData.successfulParry(player, false, this.getDamageSources().explosion(this, this.getOwner()))) {
+                    if (!this.getWorld().isClient) {
                         Vec3d vec3d = player.getRotationVector();
                         this.setVelocity(vec3d);
                         this.powerX = vec3d.x * 0.1;
@@ -125,20 +120,20 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
                 }
             }
             this.onEntityHit((EntityHitResult)hitResult);
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
-            this.onBlockHit((BlockHitResult)hitResult);
-        }
-        if (type != HitResult.Type.MISS) {
-            this.emitGameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
+            BlockHitResult blockHitResult = (BlockHitResult)hitResult;
+            this.onBlockHit(blockHitResult);
+            BlockPos blockPos = blockHitResult.getBlockPos();
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         this.detonate();
     }
 
     private void detonate() {
-        if (!this.world.isClient) {
-            boolean bl = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-            Explosion.DestructionType destructionType = bl ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), this.getExplosionPower(), bl, destructionType);
+        if (!this.getWorld().isClient) {
+            boolean bl = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), this.getExplosionPower(), bl, World.ExplosionSourceType.MOB);
             this.discard();
         }
     }
@@ -151,7 +146,7 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
     }
 
     public void setRadius(float radius) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.getDataTracker().set(RADIUS, MathHelper.clamp(radius, 0.0F, 32.0F));
         }
     }
@@ -231,18 +226,18 @@ public class GrowingFireball extends UntargetableFireball implements IAnimatable
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate (AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("spin2", ILoopType.EDefaultLoopTypes.LOOP));
+    private PlayState predicate(AnimationState<?> event){
+        event.getController().setAnimation(RawAnimation.begin().then("spin2", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 }

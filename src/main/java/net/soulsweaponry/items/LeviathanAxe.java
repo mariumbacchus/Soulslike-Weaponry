@@ -5,7 +5,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -20,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
@@ -28,24 +27,29 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class LeviathanAxe extends ModdedAxe implements IAnimatable {
+public class LeviathanAxe extends ModdedAxe implements GeoItem {
 
-    public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.HEAVY_THROW, WeaponUtil.TooltipAbilities.RETURNING);
     }
-    
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_leviathan_axe;
+    }
+
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (this.isDisabled(stack)) {
@@ -57,15 +61,10 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
     }
 
     @Override
-    public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_leviathan_axe;
-    }
-
-    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 if (stack.hasNbt()) {
@@ -73,7 +72,7 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
                 }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
                 entity.saveOnPlayer(playerEntity);
-                float speed = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5f;
+                float speed = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
@@ -113,7 +112,7 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
         List<Entity> entities = world.getOtherEntities(attacker, box);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity && !(entity instanceof PlayerEntity)) {
-                livingEntity.damage(DamageSource.FREEZE, (amplifier + 1) * 1.5f);
+                livingEntity.damage(world.getDamageSources().freeze(), (amplifier + 1) * 1.5f);
                 livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, amplifier));
             }
         }
@@ -130,20 +129,19 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private LeviathanAxeRenderer renderer = null;
             // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
                 if (this.renderer == null)
                     this.renderer = new LeviathanAxeRenderer();
 

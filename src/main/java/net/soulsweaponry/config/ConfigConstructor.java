@@ -9,16 +9,16 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean inform_player_about_no_souls_to_collect = true;
     @Entry public static boolean inform_player_about_collected_souls = true;
 
-    // 1.19.2 and down still generate ores through code so this will work fine
-    @Entry public static int moonstone_ore_vein_size = 5;
-    @Entry public static int moonstone_ore_count_per_chunk = 4;
-    @Entry public static int moonstone_ore_min_height = -63;
-    @Entry public static int moonstone_ore_max_height = 16;
+    // Config changes won't apply to generated json files/runtime so no point in having these as entries.
+    public static int moonstone_ore_vein_size = 5;
+    public static int moonstone_ore_count_per_chunk = 4;
+    public static int moonstone_ore_min_height = -63;
+    public static int moonstone_ore_max_height = 16;
 
-    @Entry public static int verglas_ore_vein_size = 3;
-    @Entry public static int verglas_ore_count_per_chunk = 48;
-    @Entry public static int verglas_ore_min_height = -80;
-    @Entry public static int verglas_ore_max_height = 120;
+    public static int verglas_ore_vein_size = 3;
+    public static int verglas_ore_count_per_chunk = 48;
+    public static int verglas_ore_min_height = -80;
+    public static int verglas_ore_max_height = 120;
 
     @Entry public static boolean disable_weapon_recipes = false;
     @Entry public static boolean disable_gun_recipes = false;
@@ -206,10 +206,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_forlorn_set = true;
     @Entry public static boolean is_fireproof_withered_set = true;
 
-    @Entry(min=0,max=100) public static int withered_demon_spawnweight = 20;
-    @Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnweight = 100;
+    // Forge does entity spawning via jsons so these aren't needed
+    //@Entry(min=0,max=100) public static int withered_demon_spawnweight = 20;
+    //@Entry(min=0,max=100) public static int moderatly_sized_chungus_spawnweight = 100;
+    //@Entry(min=0,max=100) public static int evil_forlorn_spawnweight = 15;
     @Entry public static int chungus_monolith_radius = 32;
-    @Entry(min=0,max=100) public static int evil_forlorn_spawnweight = 15;
 
     @Entry public static boolean can_withered_demon_spawn = true;
     @Entry public static boolean can_moderatly_sized_chungus_spawn = true;

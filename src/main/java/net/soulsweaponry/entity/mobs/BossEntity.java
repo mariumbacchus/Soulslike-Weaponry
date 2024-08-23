@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BossEntity extends HostileEntity implements IAnimatedDeath, ShieldBreaker {
+public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
     
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
@@ -63,7 +63,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      */
     public List<LivingEntity> getAttackers() {
         Box box = this.getBoundingBox().expand(10);
-        List<Entity> entities = this.world.getOtherEntities(this, box);
+        List<Entity> entities = this.getWorld().getOtherEntities(this, box);
         ArrayList<LivingEntity> attackers = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity && ((LivingEntity)entity).getAttacking() == this) {

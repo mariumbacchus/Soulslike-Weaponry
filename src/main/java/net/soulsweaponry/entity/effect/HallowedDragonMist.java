@@ -6,6 +6,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
+import net.soulsweaponry.util.CustomDamageSource;
 
 public class HallowedDragonMist extends StatusEffect{
     public HallowedDragonMist() {
@@ -32,7 +33,7 @@ public class HallowedDragonMist extends StatusEffect{
                 entity.heal(amplifier + 1);
             }
         } else {
-            entity.damage(DamageSource.MAGIC, 2.0F + (float) amplifier);
+            entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.DRAGON_MIST), 2.0F + (float) amplifier);
         }
     }
 }

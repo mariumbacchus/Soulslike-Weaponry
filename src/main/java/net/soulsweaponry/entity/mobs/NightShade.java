@@ -6,11 +6,11 @@ import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -31,18 +31,15 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class NightShade extends BossEntity implements IAnimatable {
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class NightShade extends BossEntity implements GeoEntity {
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private boolean isCopy = false;
@@ -113,7 +110,7 @@ public class NightShade extends BossEntity implements IAnimatable {
         if (this.isCopy) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
-                this.setHealth((float) (ConfigConstructor.frenzied_shade_health / 4f));
+                this.setHealth((float)ConfigConstructor.frenzied_shade_health / 4f);
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
@@ -135,30 +132,30 @@ public class NightShade extends BossEntity implements IAnimatable {
             }
         }
         for(int i = 0; i < 3; ++i) {
-            this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+            this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
         if (!this.isCopy && !this.hasDuplicated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
-                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.world);
+                    NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.getWorld());
                     copy.setCopy(true);
                     copy.setPos(this.getX(), this.getY(), this.getZ());
                     copy.setVelocity((float) i / 10f, (float) i / 10f, - (float) i / 10f);
                     copy.setSpawn();
                     copy.setTarget(this.getTarget());
-                    world.spawnEntity(copy);
+                    getWorld().spawnEntity(copy);
 
-                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.world);
+                    NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.getWorld());
                     copy2.setCopy(true);
                     copy2.setPos(this.getX(), this.getY(), this.getZ());
                     copy2.setVelocity(- (float) i / 10f, (float) i / 10f,  (float) i / 10f);
                     copy2.setSpawn();
                     copy2.setTarget(this.getTarget());
-                    world.spawnEntity(copy2);
+                    getWorld().spawnEntity(copy2);
                 }
             }
             if (this.duplicateTicks >= 60) {
@@ -191,16 +188,16 @@ public class NightShade extends BossEntity implements IAnimatable {
     public void updatePostDeath() {
         this.deathTicks++;
         if (this.deathTicks % 30 == 0) {
-            this.world.playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
         }
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             if (this.isCopy) {
-                this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+                this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
                 this.remove(RemovalReason.KILLED);
                 return;
             }
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.DARK_STAR.get());
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -285,26 +282,26 @@ public class NightShade extends BossEntity implements IAnimatable {
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
+            state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
         }
         switch (this.getAttackState()) {
-            case IDLE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
-            case SPAWN -> event.getController().setAnimation(new AnimationBuilder().addAnimation("spawn", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case DEATH -> event.getController().setAnimation(new AnimationBuilder().addAnimation("death", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case BIG_SWIPES -> event.getController().setAnimation(new AnimationBuilder().addAnimation("big_swipes", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case GENERIC_CHARGE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("charge", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case AOE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("aoe", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case DUPLICATE -> event.getController().setAnimation(new AnimationBuilder().addAnimation("duplicate", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case THROW_MOONLIGHT -> event.getController().setAnimation(new AnimationBuilder().addAnimation("throw_moonlight", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-            case SHADOW_ORBS -> event.getController().setAnimation(new AnimationBuilder().addAnimation("shadow_orbs", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
+            case IDLE -> state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().then("spawn", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case DEATH -> state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case BIG_SWIPES -> state.getController().setAnimation(RawAnimation.begin().then("big_swipes", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case GENERIC_CHARGE -> state.getController().setAnimation(RawAnimation.begin().then("charge", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case AOE -> state.getController().setAnimation(RawAnimation.begin().then("aoe", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case DUPLICATE -> state.getController().setAnimation(RawAnimation.begin().then("duplicate", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case THROW_MOONLIGHT -> state.getController().setAnimation(RawAnimation.begin().then("throw_moonlight", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            case SHADOW_ORBS -> state.getController().setAnimation(RawAnimation.begin().then("shadow_orbs", Animation.LoopType.HOLD_ON_LAST_FRAME));
         }
         return PlayState.CONTINUE;
     }
 
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     public void setCopy(boolean bl) {
@@ -355,7 +352,7 @@ public class NightShade extends BossEntity implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
 

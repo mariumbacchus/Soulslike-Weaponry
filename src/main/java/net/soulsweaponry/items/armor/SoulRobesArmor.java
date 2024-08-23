@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 
 public class SoulRobesArmor extends SetBonusArmor {
 
-    public SoulRobesArmor(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public SoulRobesArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 

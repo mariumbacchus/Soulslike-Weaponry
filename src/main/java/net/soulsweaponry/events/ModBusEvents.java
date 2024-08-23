@@ -3,25 +3,19 @@ package net.soulsweaponry.events;
 import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.resource.ResourcePackSource;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.resource.metadata.PackResourceMetadata;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.forgespi.language.IModFileInfo;
-import net.minecraftforge.forgespi.locating.IModFile;
-import net.minecraftforge.resource.PathResourcePack;
+import net.minecraftforge.resource.PathPackResources;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.registry.EntityRegistry;
-
-import java.io.IOException;
-import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusEvents {
@@ -54,26 +48,12 @@ public class ModBusEvents {
     @SubscribeEvent
     public static void addBuiltinPack(AddPackFindersEvent event) {
         // NOTE: Maybe done differently in other versions, if so see https://github.com/MinecraftForge/MinecraftForge/blob/1.18.x/src/test/java/net/minecraftforge/debug/AddPackFinderEventTest.java
-        try {
-            if (event.getPackType() == ResourceType.CLIENT_RESOURCES) {
-                IModFileInfo info = ModList.get().getModFileById(SoulsWeaponry.ModId);
-                if (info == null) {
-                    return;
-                }
-                IModFile file = info.getFile();
-                Path resourcePath = file.findResource("resourcepacks/2d_weapons");
-                PathResourcePack pack = new PathResourcePack(file.getFileName() + ":" + resourcePath, resourcePath);
-                PackResourceMetadata metadata = pack.parseMetadata(PackResourceMetadata.READER);
-                event.addRepositorySource((consumer, constructor) -> {
-                    consumer.accept(constructor.create("builtin/2d_weapons", new LiteralText("2D Weapon Models"), false,
-                            () -> pack, metadata, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
-                });
-            }
+        if (event.getPackType() == ResourceType.CLIENT_RESOURCES) {
+            var resourcePath = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/2d_weapons");
+            var pack = ResourcePackProfile.create("builtin/2d_weapons", Text.literal("2D Weapon Models"), false,
+                    (path) -> new PathPackResources(path, true, resourcePath), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
         }
-        catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-
     }
 
     @SubscribeEvent

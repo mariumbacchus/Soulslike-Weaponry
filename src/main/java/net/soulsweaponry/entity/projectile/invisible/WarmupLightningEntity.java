@@ -18,10 +18,10 @@ public class WarmupLightningEntity extends InvisibleWarmupEntity {
             this.setWarmup(this.getWarmup() - 1);
             if (this.getWarmup() < 0) {
                 if (this.getWarmup() == -7) {
-                    if (world.isSkyVisible(this.getBlockPos())) {
-                        LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+                    if (this.getWorld().isSkyVisible(this.getBlockPos())) {
+                        LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, this.getWorld());
                         entity.setPos(this.getX(), this.getY(), this.getZ());
-                        world.spawnEntity(entity);
+                        this.getWorld().spawnEntity(entity);
                     }
                     this.discard();
                 }

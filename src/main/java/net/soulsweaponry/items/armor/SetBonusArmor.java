@@ -3,14 +3,12 @@ package net.soulsweaponry.items.armor;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +18,7 @@ import java.util.List;
 
 public abstract class SetBonusArmor extends ModdedArmor {
 
-    public SetBonusArmor(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public SetBonusArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
@@ -61,13 +59,13 @@ public abstract class SetBonusArmor extends ModdedArmor {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
             for (StatusEffectInstance effect : this.getFullSetEffects()) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
             }
             tooltip.addAll(Arrays.asList(this.getCustomTooltips()));
         } else {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
     }
 }

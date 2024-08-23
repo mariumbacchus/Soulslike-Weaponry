@@ -3,22 +3,22 @@ package net.soulsweaponry.client.model.entity.projectile;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.projectile.NightsEdge;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class NightsEdgeModel extends AnimatedGeoModel<NightsEdge> {
+public class NightsEdgeModel extends GeoModel<NightsEdge> {
 
     @Override
-    public Identifier getAnimationFileLocation(NightsEdge animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/nights_edge.animation.json");
+    public Identifier getAnimationResource(NightsEdge animatable) {
+        return new Identifier(SoulsWeaponry.ModId, "animations/entity/nights_edge.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(NightsEdge object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/nights_edge.geo.json");
+    public Identifier getModelResource(NightsEdge object) {
+        return new Identifier(SoulsWeaponry.ModId, "geo/entity/nights_edge.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(NightsEdge object) {
+    public Identifier getTextureResource(NightsEdge object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/nights_edge.png");
     }
 }

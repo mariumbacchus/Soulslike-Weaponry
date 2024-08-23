@@ -11,6 +11,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
@@ -40,31 +41,33 @@ public class DragonStaffProjectile extends DragonFireballEntity {
         this.stack = stack;
     }
 
+    @Override
     protected void onCollision(HitResult hitResult) {
         HitResult.Type type = hitResult.getType();
         if (type == HitResult.Type.ENTITY) {
             this.onEntityHit((EntityHitResult)hitResult);
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this, null));
         } else if (type == HitResult.Type.BLOCK) {
-            this.onBlockHit((BlockHitResult)hitResult);
-        }
-        if (type != HitResult.Type.MISS) {
-            this.emitGameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
+            BlockHitResult blockHitResult = (BlockHitResult)hitResult;
+            this.onBlockHit(blockHitResult);
+            BlockPos blockPos = blockHitResult.getBlockPos();
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
         this.detonate();
     }
 
     private void detonate() {
-        if (!this.world.isClient) {
-            List<LivingEntity> list = this.world.getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(4.0, 2.0, 4.0));
-            AreaEffectSphere areaEffectCloudEntity = new AreaEffectSphere(this.world, this.getX(), this.getY(), this.getZ());
+        if (!this.getWorld().isClient) {
+            List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(4.0, 2.0, 4.0));
+            AreaEffectSphere areaEffectCloudEntity = new AreaEffectSphere(this.getWorld(), this.getX(), this.getY(), this.getZ());
             Entity entity = this.getOwner();
             if (entity instanceof LivingEntity) {
-                areaEffectCloudEntity.setOwner((LivingEntity) entity);
+                areaEffectCloudEntity.setOwner((LivingEntity)entity);
             }
             areaEffectCloudEntity.setParticleType(ParticleTypes.DRAGON_BREATH);
-            areaEffectCloudEntity.setRadius(this.radius + (float) WeaponUtil.getEnchantDamageBonus(this.stack) / 2.5f);
+            areaEffectCloudEntity.setRadius(this.radius + (float) WeaponUtil.getEnchantDamageBonus(this.stack)/2.5f);
             areaEffectCloudEntity.setDuration(200 + WeaponUtil.getEnchantDamageBonus(this.stack) * 20);
-            areaEffectCloudEntity.setRadiusGrowth((3.0f - areaEffectCloudEntity.getRadius() + (float) WeaponUtil.getEnchantDamageBonus(this.stack) / 2.5f) / (float) areaEffectCloudEntity.getDuration());
+            areaEffectCloudEntity.setRadiusGrowth((3.0f - areaEffectCloudEntity.getRadius() + (float) WeaponUtil.getEnchantDamageBonus(this.stack)/2.5f) / (float)areaEffectCloudEntity.getDuration());
             areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 50, ConfigConstructor.dragon_staff_aura_strength));
             if (!list.isEmpty()) {
                 for (LivingEntity livingEntity : list) {
@@ -74,8 +77,8 @@ public class DragonStaffProjectile extends DragonFireballEntity {
                     break;
                 }
             }
-            this.world.syncWorldEvent(WorldEvents.DRAGON_BREATH_CLOUD_SPAWNS, this.getBlockPos(), this.isSilent() ? -1 : 1);
-            this.world.spawnEntity(areaEffectCloudEntity);
+            this.getWorld().syncWorldEvent(WorldEvents.DRAGON_BREATH_CLOUD_SPAWNS, this.getBlockPos(), this.isSilent() ? -1 : 1);
+            this.getWorld().spawnEntity(areaEffectCloudEntity);
             this.discard();
         }
     }

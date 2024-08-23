@@ -3,12 +3,12 @@ package net.soulsweaponry.client.renderer.entity.mobs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.soulsweaponry.client.model.entity.mobs.GeoEntityRendererFixed;
 import net.soulsweaponry.client.model.entity.mobs.NightProwlerModel;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.util.CustomDeathHandler;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class NightProwlerRenderer extends GeoEntityRendererFixed<NightProwler> {
+public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
 
     int[] rgbColorOne = {54, 122, 156};
     int[] rgbColorTwo = {147, 188, 210};

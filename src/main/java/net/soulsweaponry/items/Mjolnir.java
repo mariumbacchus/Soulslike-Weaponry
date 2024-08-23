@@ -12,7 +12,6 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity.PickupPermission;
 import net.minecraft.item.ItemStack;
@@ -26,24 +25,24 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.invisible.WarmupLightningEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.WeaponUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Mjolnir extends ChargeToUseItem implements IAnimatable {
+public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public static final String RAINING = "raining";
     public static final String OWNERS_LAST_POS = "owners_last_pos";
 
@@ -54,7 +53,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        int i = this.getChargeTime(stack, remainingUseTicks);
+        int i = this.getMaxUseTime(stack) - remainingUseTicks;
         if (user instanceof PlayerEntity player && i >= 10) {
             int cooldown = 0;
             stack.damage(3, player, p -> p.sendToolBreakStatus(user.getActiveHand()));
@@ -78,7 +77,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
         projectile.saveOnPlayer(player);
-        float speed = WeaponUtil.getEnchantDamageBonus(stack)/5f;
+        float speed = (float) WeaponUtil.getEnchantDamageBonus(stack)/5;
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(projectile);
@@ -114,7 +113,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         float power = ConfigConstructor.mjolnir_smash_damage;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
-                entity.damage(DamageSource.mob(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                entity.damage(world.getDamageSources().mobAttack(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
                 entity.addVelocity(0, .25f, 0);
             }
         }
@@ -163,7 +162,7 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     private boolean isRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled(stack)) {
+        if (stack.hasNbt() && stack.getNbt().contains(RAINING)) {
             return stack.getNbt().getBoolean(RAINING);
         } else {
             return false;
@@ -175,12 +174,12 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
         Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
         if (slot == EquipmentSlot.MAINHAND) {
             Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) ? ConfigConstructor.mjolnir_rain_bonus_damage - 1 + ConfigConstructor.mjolnir_damage : ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) && !this.isDisabled(stack) ? ConfigConstructor.mjolnir_rain_bonus_damage - 1 + ConfigConstructor.mjolnir_damage : ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - ConfigConstructor.mjolnir_rain_total_attack_speed), EntityAttributeModifier.Operation.ADDITION));
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {
-            return super.getAttributeModifiers(slot, stack);
+            return super.getAttributeModifiers(slot);
         }
     }
 
@@ -190,20 +189,19 @@ public class Mjolnir extends ChargeToUseItem implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {        
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-        consumer.accept(new IItemRenderProperties() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private MjolnirItemRenderer renderer = null;
             // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getItemStackRenderer() {
+            @Override public BuiltinModelItemRenderer getCustomRenderer() {
                 if (this.renderer == null)
                     this.renderer = new MjolnirItemRenderer();
 

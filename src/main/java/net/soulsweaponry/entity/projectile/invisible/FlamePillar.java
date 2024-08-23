@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -58,7 +57,7 @@ public class FlamePillar extends InvisibleWarmupEntity {
 
     @Override
     public void onRemoved() {
-        Random random = this.random;
+        Random random = new Random();
         double d = random.nextGaussian() * 0.05D * this.getParticleDivergence();
         double e = random.nextGaussian() * 0.05D * this.getParticleDivergence();
         double f = random.nextGaussian() * 0.05D * this.getParticleDivergence();
@@ -77,7 +76,7 @@ public class FlamePillar extends InvisibleWarmupEntity {
         Entity entity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && entity instanceof LivingEntity livingEntity && target != livingEntity) {
             if (!livingEntity.isTeammate(target)) {
-                if (target.damage(DamageSource.mob(livingEntity), (float) this.getDamage())) {
+                if (target.damage(this.getDamageSources().mobAttack((LivingEntity) entity), (float) this.getDamage())) {
                     target.addVelocity(0, 0.5f, 0);
                 }
             }

@@ -33,24 +33,19 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.*;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable, IAnimatedDeath {
+public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    public final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private List<Integer> summonIds = new ArrayList<>();
 
@@ -67,25 +62,25 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
         this.experiencePoints = 30;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getSacrifice()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("sacrifice"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("sacrifice"));
         } else if (this.getStartBeam()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_beam"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("start_beam"));
         } else if (this.isSneaking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("start_beam", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
+            state.getController().setAnimation(RawAnimation.begin().then("start_beam", Animation.LoopType.HOLD_ON_LAST_FRAME));
         } else if (this.getStopBeam()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("stop_beam"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("stop_beam"));
         } else if (this.getBeaming()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("beaming"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("beaming"));
         } else if (this.getClap()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("clap"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("clap"));
         } else if (this.getSmash()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("smash_ground"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("smash_ground"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
-        
+
         return PlayState.CONTINUE;
     }
 
@@ -98,6 +93,11 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public boolean isPushable() {
         return false;
+    }
+
+    @Override
+    public int getSoulAmount() {
+        return 30;
     }
 
     @Override
@@ -114,17 +114,12 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 50D)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 4.0D);
-    }
-
-    @Override
-    public int getSoulAmount() {
-        return 30;
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, 4.0D);
     }
 
     public void setClap(boolean bl) {
@@ -176,7 +171,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     }
 
     public void setBeamCords(double x, double y, double z) {
-        this.dataTracker.set(BEAM_CORDS, new BlockPos(x, y, z));
+        this.dataTracker.set(BEAM_CORDS, BlockPos.ofFloored(x, y, z));
     }
 
     public BlockPos getBeamCords() {
@@ -215,9 +210,9 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(world, this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.PURPLE_FLAME.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), ParticleRegistry.PURPLE_FLAME.get(), ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.sacrificeEvent();
             this.remove(RemovalReason.KILLED);
         }
@@ -225,13 +220,13 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
-        List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
+        List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
         for (Entity nearbyEntity : nearbyEntities) {
             if (nearbyEntity instanceof HostileEntity) {
                 LivingEntity closestTarget = (LivingEntity) nearbyEntity;
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
-                closestTarget.damage(DamageSource.MAGIC, 16F);
+                closestTarget.damage(this.getWorld().getDamageSources().magic(), 16F);
             }
         }
     }
@@ -255,9 +250,9 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     }
 
     public boolean hasSummonsAlive() {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             for (int id : summonIds) {
-                if (world.getEntityById(id) != null) {
+                if (getWorld().getEntityById(id) != null) {
                     return true;
                 }
             }
@@ -307,7 +302,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             if (attackCooldown > -1) {attackCooldown--;}
             if (uniqueCooldown > -1) {uniqueCooldown--;}
             LivingEntity target = this.entity.getTarget();
-            
+
             if (target != null) {
                 double distanceToEntity = this.entity.squaredDistanceTo(target);
                 this.entity.setAttacking(true);
@@ -349,18 +344,19 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                         int[][] cords = {{4,4}, {-4,4}, {4,-4}, {-4,-4}};
                         for (int[] cord : cords) {
                             Vec3d pos = new Vec3d(this.entity.getX() + cord[0], this.entity.getY(), this.entity.getZ() + cord[1]);
-                            if (!this.entity.world.isClient) {
+                            if (!this.entity.getWorld().isClient) {
                                 ParticleHandler.particleOutburstMap(this.entity.getWorld(), 50, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                             }
-                            this.entity.world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.6f, 1f);
-                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST.get(), this.entity.world);
+
+                            this.entity.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.6f, 1f);
+                            SoulReaperGhost mob = new SoulReaperGhost(EntityRegistry.SOUL_REAPER_GHOST.get(), this.entity.getWorld());
                             mob.setSoulAmount(0);
                             this.entity.addSummonIds(mob.getId());
                             mob.setPos(this.entity.getX() + cord[0], this.entity.getY() + .1f, this.entity.getZ() + cord[1]);
                             if (this.entity.getOwner() instanceof PlayerEntity) {
                                 mob.setOwner((PlayerEntity) this.entity.getOwner());
                             }
-                            this.entity.world.spawnEntity(mob);
+                            this.entity.getWorld().spawnEntity(mob);
                         }
                     } else if (this.attackStatus >= 20) {
                         this.entity.setSmash(false);
@@ -382,11 +378,11 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                         this.entity.setStopBeam(true);
                         this.attackStatus = 0;
                     }
-                    this.entity.setBeamCords(target.getX(), target.getEyeY() - 1.5f, target.getZ());
+                    this.entity.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                     if (attackStatus % 5 == 0 && distanceToEntity < 130f) {
-                        target.damage(DamageSource.mob(this.entity), 6f);
+                        target.damage(this.entity.getWorld().getDamageSources().mobAttack(this.entity), 6f);
                         this.entity.heal(2f);
-                        this.entity.world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
+                        this.entity.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                     }
                 }
                 if (this.entity.getStopBeam()) {
@@ -396,7 +392,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                         this.resetCooldowns(150, 10);
                     }
                 }
-                
+
                 super.tick();
             }
         }
@@ -426,7 +422,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
 
         @SuppressWarnings("all")
         private void conjureFangs(double x, double z, double maxY, double y, float yaw, int warmup) {
-            BlockPos blockPos = new BlockPos(x, y, z);
+            BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
             boolean bl = false;
             double d = 0.0;
             do {
@@ -434,15 +430,15 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
                 VoxelShape voxelShape;
                 BlockPos blockPos2;
                 BlockState blockState;
-                if (!(blockState = this.entity.world.getBlockState(blockPos2 = blockPos.down())).isSideSolidFullSquare(this.entity.world, blockPos2, Direction.UP)) continue;
-                if (!this.entity.world.isAir(blockPos) && !(voxelShape = (blockState2 = this.entity.world.getBlockState(blockPos)).getCollisionShape(this.entity.world, blockPos)).isEmpty()) {
+                if (!(blockState = this.entity.getWorld().getBlockState(blockPos2 = blockPos.down())).isSideSolidFullSquare(this.entity.getWorld(), blockPos2, Direction.UP)) continue;
+                if (!this.entity.getWorld().isAir(blockPos) && !(voxelShape = (blockState2 = this.entity.getWorld().getBlockState(blockPos)).getCollisionShape(this.entity.getWorld(), blockPos)).isEmpty()) {
                     d = voxelShape.getMax(Direction.Axis.Y);
                 }
                 bl = true;
                 break;
             } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
             if (bl) {
-                this.entity.world.spawnEntity(new EvokerFangsEntity(this.entity.world, x, (double)blockPos.getY() + d, z, yaw, warmup, this.entity));
+                this.entity.getWorld().spawnEntity(new EvokerFangsEntity(this.entity.getWorld(), x, (double)blockPos.getY() + d, z, yaw, warmup, this.entity));
             }
         }
     }
@@ -450,14 +446,14 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public void tickMovement() {
         super.tickMovement();
-        this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
+        this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.isSneaking() && !this.isDead()) {
-            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            this.soulCircle(this.getWorld(), this.getX(), this.getEyeY() + 1.0F, this.getZ());
             if (this.getHealth() < this.getMaxHealth()) this.heal(1f);
         } else if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
@@ -470,14 +466,14 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             double j = this.random.nextDouble();
             for (int i = 0; i < 10; i++) {
                 j += .5f + this.random.nextDouble();
-                this.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
-                this.world.addParticle(ParticleTypes.SOUL, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
+                this.getWorld().addParticle(ParticleTypes.SOUL, this.getX() + e * j, this.getEyeY() + 1 + f * j, this.getZ() + g * j, 0.0D, 0.0D, 0.0D);
             }
-            this.soulCircle(this.world, this.getX(), this.getEyeY() + 1.0F, this.getZ());
+            this.soulCircle(this.getWorld(), this.getX(), this.getEyeY() + 1.0F, this.getZ());
         }
     }
 
-    public void soulCircle(World world, double x, double y, double z) {        
+    public void soulCircle(World world, double x, double y, double z) {
         double points = 30;
         double phi = Math.PI * (3. - Math.sqrt(5.));
         for (int i = 0; i < points; i++) {
@@ -487,7 +483,7 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, x + velocityX/2, y + velocityY/2, z + velocityZ/2, 0, 0, 0);
-        } 
+        }
     }
 
     @Override
@@ -508,19 +504,13 @@ public class Soulmass extends Remnant implements IAnimatable, IAnimationTickable
     @Override
     public void initEquip() {}
 
-    @Override
-    public int tickTimer() {
-        return 0;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-    
 }

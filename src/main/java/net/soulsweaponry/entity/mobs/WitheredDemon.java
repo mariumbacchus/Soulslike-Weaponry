@@ -25,21 +25,20 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Random;
 
-public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimationTickable, IAnimatedDeath {
+public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimatedDeath {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -51,17 +50,17 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.experiencePoints = 20;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSwingArm()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("attack"));
         } else if (this.isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
-        
+
         return PlayState.CONTINUE;
     }
 
@@ -88,14 +87,8 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         this.dataTracker.set(DEATH, bl);
     }
 
-    @Override
-    public int tickTimer() {
-        return age;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));    
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     public boolean isFireImmune() {
@@ -103,12 +96,17 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
-    
+
     @Override
-	protected void initGoals() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
+    }
+
+    @Override
+    protected void initGoals() {
         this.goalSelector.add(1, new DemonAttackGoal(this, 1.7D, false));
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
@@ -125,34 +123,46 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         }));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
         this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 80D)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 80D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
     public boolean canSpawn(WorldView view) {
-        BlockPos blockUnderEntity = new BlockPos(this.getX(), this.getY() - 1, this.getZ());
-        BlockPos positionEntity = new BlockPos(this.getX(), this.getY(), this.getZ());
-        return view.doesNotIntersectEntities(this) && !world.containsFluid(this.getBoundingBox()) 
-            && this.world.getBlockState(positionEntity).getBlock().canMobSpawnInside()
-            && !world.getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
-            && world.getDifficulty() != Difficulty.PEACEFUL
-            && world.getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
-            && this.world.getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON.get())
-            && this.isSpawnable();
+        BlockPos blockUnderEntity = new BlockPos(this.getBlockX(), this.getBlockY() - 1, this.getBlockZ());
+        BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        BlockState state = this.getWorld().getBlockState(positionEntity);
+        return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
+                && state.getBlock().canMobSpawnInside(state)
+                && !getWorld().getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
+                && getWorld().getDifficulty() != Difficulty.PEACEFUL
+                && getWorld().getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
+                && this.getWorld().getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON.get())
+                && this.isSpawnable();
     }
 
     public boolean isSpawnable() {
         return ConfigConstructor.can_withered_demon_spawn;
+    }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        super.onDeath(damageSource);
+        this.setDeath();
+    }
+
+    @Override
+    public void setDeath() {
+        this.setDeath(true);
     }
 
     @Override
@@ -165,28 +175,12 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         return this.deathTicks;
     }
 
-    @Override
-    public void onDeath(DamageSource damageSource) {
-        super.onDeath(damageSource);
-        this.setDeath(true);
-    }
-
-    @Override
-    public void setDeath() {
-        this.setDeath(true);        
-    }
-
-    @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
-    }
-
-    //Now the renderer won't recognize the variable deathTicks so it won't turn red
+    //Now the renderer won't recognize the variable deathTicks, so it won't turn red
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.world.isClient()) {
-            this.world.sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -195,12 +189,12 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(DamageSource.mob(this), g);
+        boolean bl = target.damage(this.getWorld().getDamageSources().mobAttack(this), g);
         if (bl) {
-           target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
-           this.applyDamageEffects(this, target);
+            target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
+            this.applyDamageEffects(this, target);
         }
-        
+
         return bl;
     }
 
@@ -273,7 +267,7 @@ public class WitheredDemon extends HostileEntity implements IAnimatable, IAnimat
         Random random = new Random();
         double ran = random.nextDouble();
         if (ran < 0.05D) {
-            this.world.addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 1.4F, this.getZ(), ran - 0.025D, ran - 0.025D, ran - 0.025D);
+            this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getY() + 1.4F, this.getZ(), ran - 0.025D, ran - 0.025D, ran - 0.025D);
         }
     }
 

@@ -35,7 +35,7 @@ public class ModEvents {
         if (event.isWasDeath()) {
             event.getOriginal().reviveCaps();
             PlayerEntity original = event.getOriginal();
-            PlayerEntity player = event.getPlayer();
+            PlayerEntity player = event.getEntity();
             //original.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> player.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
             PostureData.setPosture(player, PostureData.getPosture(original));
             event.getOriginal().invalidateCaps();
@@ -62,8 +62,8 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingEntityTicks(LivingEvent.LivingUpdateEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    public static void onLivingEntityTicks(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
         int posture = PostureData.getPosture(entity);
         if (posture >= ConfigConstructor.max_posture_loss) {
             if (!entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get())) {

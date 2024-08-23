@@ -8,7 +8,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -53,11 +52,11 @@ public class ChaosOrb extends Item implements IConfigDisable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (this.isDisabled(stack)) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
         super.appendTooltip(stack, world, tooltip, context);
         for (int i = 1; i < 3 + 1; i++) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));
+            tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));
         }
     }
 

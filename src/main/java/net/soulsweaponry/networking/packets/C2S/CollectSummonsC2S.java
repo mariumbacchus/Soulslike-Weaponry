@@ -7,7 +7,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -53,16 +52,16 @@ public class CollectSummonsC2S {
                     if (entity instanceof Remnant remnant && remnant.getOwner() != null && remnant.getOwner().equals(player)) {
                         collectedSouls += remnant.getSoulAmount();
                         ParticleHandler.particleSphereList(player.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
-                        player.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0.7f);
+                        player.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0.7f);
                         entity.discard();
                     }
                 }
                 SoulHarvestingItem item = (SoulHarvestingItem)player.getStackInHand(hand).getItem();
                 Text msg = null;
                 if (ConfigConstructor.inform_player_about_no_souls_to_collect && collectedSouls == 0) {
-                    msg = new TranslatableText("soulsweapons.weapon.no_collected_souls");
+                    msg = Text.translatableWithFallback("soulsweapons.weapon.no_collected_souls", "There were no bound allies to collect!");
                 } else if (ConfigConstructor.inform_player_about_collected_souls && collectedSouls > 0) {
-                    msg = new TranslatableText("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
+                    msg = Text.translatable("soulsweapons.weapon.collected_souls", collectedSouls).append(item.getName());
                 }
                 item.addAmount(player.getStackInHand(hand), collectedSouls);
                 if (msg != null) {

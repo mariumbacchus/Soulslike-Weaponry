@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
@@ -41,25 +40,18 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 
-
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (this.isDisabled(stack)) {
-            tooltip.add(new TranslatableText("tooltip.soulsweapons.disabled"));
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
-        boolean showInfo = !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
-        if (showInfo) {
+        if (Screen.hasShiftDown()) {
             for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
                 WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            if (epicFight) {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.alt"));
-            } else {
-                tooltip.add(new TranslatableText("tooltip.soulsweapons.shift"));
-            }
+            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -73,7 +65,9 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable {
             return;
         }
         if (user instanceof PlayerEntity player) {
-            player.sendMessage(new TranslatableText("soulsweapons.weapon.on_cooldown"), true);
+            player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"), true);
+        } else {
+            user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"));
         }
     }
 

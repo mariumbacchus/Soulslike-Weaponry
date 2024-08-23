@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.projectile.invisible;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -74,7 +73,7 @@ public class HolyMoonlightPillar extends InvisibleWarmupEntity {
         Entity entity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && entity instanceof LivingEntity livingEntity && target != livingEntity) {
             if (!livingEntity.isTeammate(target)) {
-                target.damage(DamageSource.mob((LivingEntity) entity), (float) this.getDamage() + 2 * EnchantmentHelper.getAttackDamage(this.getStack(), target.getGroup()));
+                target.damage(this.getDamageSources().mobAttack((LivingEntity)entity), (float) this.getDamage() + 2 * EnchantmentHelper.getAttackDamage(this.getStack(), target.getGroup()));
                 target.addVelocity(0, this.getKnockup(), 0);
             }
         }

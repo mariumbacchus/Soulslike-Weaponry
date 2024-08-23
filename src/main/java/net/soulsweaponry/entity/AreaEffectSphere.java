@@ -14,12 +14,15 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -68,7 +71,7 @@ public class AreaEffectSphere extends Entity {
     }
 
     public void setRadius(float radius) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.getDataTracker().set(RADIUS, MathHelper.clamp(radius, 0.0F, 32.0F));
         }
     }
@@ -117,12 +120,12 @@ public class AreaEffectSphere extends Entity {
         super.tick();
         boolean bl = this.isWaiting();
         float f = this.getRadius();
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             if (bl && this.random.nextBoolean()) {
                 return;
             }
             int points = MathHelper.floor(this.getRadius() * 6.7f);
-            randomParticleBox(this.world, this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
+            randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();
@@ -154,7 +157,7 @@ public class AreaEffectSphere extends Entity {
                 if (list.isEmpty()) {
                     this.affectedEntities.clear();
                 } else {
-                    List<LivingEntity> list2 = this.world.getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
+                    List<LivingEntity> list2 = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
                     if (!list2.isEmpty()) {
                         Iterator<LivingEntity> var27 = list2.iterator();
 
@@ -263,8 +266,8 @@ public class AreaEffectSphere extends Entity {
 
     @Nullable
     public LivingEntity getOwner() {
-        if (this.owner == null && this.ownerUuid != null && this.world instanceof ServerWorld) {
-            Entity entity = ((ServerWorld)this.world).getEntity(this.ownerUuid);
+        if (this.owner == null && this.ownerUuid != null && this.getWorld() instanceof ServerWorld) {
+            Entity entity = ((ServerWorld)this.getWorld()).getEntity(this.ownerUuid);
             if (entity instanceof LivingEntity) {
                 this.owner = (LivingEntity)entity;
             }
@@ -286,7 +289,7 @@ public class AreaEffectSphere extends Entity {
         }
         if (nbt.contains("Particle", 8)) {
             try {
-                this.setParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle"))));
+                this.setParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
             } catch (CommandSyntaxException var5) {
                 LOGGER.warn("Couldn't load custom particle {}", nbt.getString("Particle"), var5);
             }
@@ -338,7 +341,7 @@ public class AreaEffectSphere extends Entity {
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
+    public Packet<ClientPlayPacketListener> createSpawnPacket() {
         return new EntitySpawnS2CPacket(this);
     }
 

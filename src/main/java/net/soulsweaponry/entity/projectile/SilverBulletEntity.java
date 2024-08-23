@@ -17,14 +17,14 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class SilverBulletEntity extends NonArrowProjectile implements IAnimatable {
+public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity {
 
-    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int postureLoss;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
@@ -48,7 +48,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
             double f = vec3d.y;
             double g = vec3d.z;
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
+                this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
             }
         }
         Vec3d vec3d = this.getVelocity();
@@ -63,14 +63,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
         return SoundEvents.BLOCK_STONE_BREAK;
     }
 
-    @Override
     public boolean isFireImmune() {
         return true;
     }
 
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        this.discard(); 
+        this.discard();
     }
 
     @Override
@@ -94,12 +93,12 @@ public class SilverBulletEntity extends NonArrowProjectile implements IAnimatabl
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
     }
 
     @Override

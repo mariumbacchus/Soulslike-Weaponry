@@ -1,12 +1,11 @@
 package net.soulsweaponry.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class DrippingBlock extends Block {
@@ -18,6 +17,7 @@ public class DrippingBlock extends Block {
         this.particle = particle;
     }
 
+    @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         if (random.nextInt(5) == 0) {
             Direction direction = Direction.random(random);

@@ -28,8 +28,8 @@ public class Fear extends StatusEffect {
             if (target.getTarget() != null) {
                 target.setTarget(null);
             }
-            double x = target.getX() + target.getRandom().nextInt(-25, 25);
-            double z = target.getZ() + target.getRandom().nextInt(-25, 25);
+            double x = target.getX() + target.getRandom().nextBetween(-25, 25);
+            double z = target.getZ() + target.getRandom().nextBetween(-25, 25);
             target.getNavigation().startMovingTo(x, target.getY(), z, 1.1f);
         }
     }

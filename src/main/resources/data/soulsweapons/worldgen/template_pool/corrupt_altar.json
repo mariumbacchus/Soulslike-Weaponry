@@ -1,12 +1,12 @@
 {
-  "name": "soulsweapons:decaying_kingdom",
+  "name": "soulsweapons:corrupt_altar",
   "fallback": "minecraft:empty",
   "elements": [
     {
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "soulsweapons:decaying_kingdom_altarnate",
+        "location": "soulsweapons:corrupt_altar_main_altarnate",
         "projection": "rigid",
         "processors": "minecraft:empty"
       }

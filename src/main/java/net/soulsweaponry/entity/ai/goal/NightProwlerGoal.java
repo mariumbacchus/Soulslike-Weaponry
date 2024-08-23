@@ -255,7 +255,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     private Vec3d randomizeVecAdder() {
-        return new Vec3d(this.boss.getRandom().nextInt(3, 10) * (this.boss.getRandom().nextBoolean() ? -1 : 1), 0, this.boss.getRandom().nextInt(3, 10) * (this.boss.getRandom().nextBoolean() ? -1 : 1));
+        return new Vec3d(this.boss.getRandom().nextBetween(3, 10) * (this.boss.getRandom().nextBoolean() ? -1 : 1), 0, this.boss.getRandom().nextBetween(3, 10) * (this.boss.getRandom().nextBoolean() ? -1 : 1));
     }
 
     private void moveAboveTarget(LivingEntity target) {
@@ -311,7 +311,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.boss.isPartner(target)) {
             return false;
         }
-        if (target.damage(DamageSource.mob(this.boss), this.getModifiedDamage(damage))) {
+        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
             if (this.boss.isEmpowered()) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
                 if (target.isDead()) {
@@ -353,7 +353,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         boolean bl1 = this.attackStatus >= (phase2 ? 16 : 26) && this.attackStatus <= (phase2 ? 60 : 68);
         boolean bl2 = this.attackStatus >= (phase2 ? 38 : 45) && this.attackStatus <= (phase2 ? 43 : 51);
         if (bl1 && this.attackStatus % 3 == 0 && !bl2) {
-            this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float)this.boss.getRandom().nextInt(6, 10)/10f);
+            this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float)this.boss.getRandom().nextBetween(6, 10)/10f);
         }
         if (phase2) {
             if (this.attackStatus == 5) {
@@ -449,7 +449,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         int trigger = phase2 ? 75 : 61;
         boolean bl1 = this.attackStatus >= (phase2 ? 18 : 13) && this.attackStatus <= (phase2 ? 46 : 56);
         if (bl1 && this.attackStatus % 3 == 0) {
-            this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float)this.boss.getRandom().nextInt(6, 10)/10f);
+            this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float)this.boss.getRandom().nextBetween(6, 10)/10f);
         }
         if (!this.boss.getWorld().isClient && this.attackStatus == trigger) {
             DayStalker partner = phase2 ? null : this.boss.getPartner((ServerWorld) this.boss.getWorld());
@@ -463,7 +463,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 double z0 = start.getZ();
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);
                 double z = z0 + r * Math.sin(theta * Math.PI / 180);
-                BlockPos pos = new BlockPos(x, start.getY() - 3, z);
+                BlockPos pos = BlockPos.ofFloored(x, start.getY() - 3, z);
                 Remnant entity;
                 if (phase2) {
                     entity = new Forlorn(EntityRegistry.FORLORN.get(), this.boss.getWorld());
@@ -491,8 +491,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.checkAndReset(phase2 ? 10 : 60, phase2 ? 120 : 200);
     }
 
+    @SuppressWarnings("deprecation")
     private BlockPos getNonAirPos(BlockPos start, World world) {
-        if (!world.getBlockState(start).getMaterial().blocksMovement() && !world.getBlockState(start.up()).getMaterial().blocksMovement()) {
+        if (!world.getBlockState(start).blocksMovement() && !world.getBlockState(start.up()).blocksMovement()) {
             return start;
         } else {
             return getNonAirPos(start.add(0, 1, 0), world);
@@ -672,26 +673,26 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         boolean phase2 = this.boss.isPhaseTwo();
         Vec3d vec = this.boss.getRotationVector().multiply(4D).add(this.boss.getPos());
         vec = new Vec3d(vec.getX(), target.getY(), vec.getZ());
-        this.boss.setTargetPos(new BlockPos(vec).withY(this.boss.getBlockY()));
+        this.boss.setTargetPos(BlockPos.ofFloored(vec).withY(this.boss.getBlockY()));
         HashMap<Integer, Box> map = new HashMap<>();
         if (!phase2) {
-            map.put(14, new Box(new BlockPos(vec)).expand(2D));
-            map.put(29, new Box(new BlockPos(vec)).expand(2D));
+            map.put(14, new Box(BlockPos.ofFloored(vec)).expand(2D));
+            map.put(29, new Box(BlockPos.ofFloored(vec)).expand(2D));
             map.put(49, this.boss.getBoundingBox().expand(2D));
             map.put(72, this.boss.getBoundingBox().expand(2D));
         } else {
-            map.put(17, new Box(new BlockPos(vec)).expand(2D));
-            map.put(28, new Box(new BlockPos(vec)).expand(2D));
+            map.put(17, new Box(BlockPos.ofFloored(vec)).expand(2D));
+            map.put(28, new Box(BlockPos.ofFloored(vec)).expand(2D));
             map.put(50, this.boss.getBoundingBox().expand(2D));
-            map.put(61, new Box(new BlockPos(vec)).expand(2D));
-            map.put(74, new Box(new BlockPos(vec)).expand(2D));
+            map.put(61, new Box(BlockPos.ofFloored(vec)).expand(2D));
+            map.put(74, new Box(BlockPos.ofFloored(vec)).expand(2D));
             map.put(96, this.boss.getBoundingBox().expand(2D));
-            map.put(109, new Box(new BlockPos(vec)).expand(2D));
-            map.put(128, new Box(new BlockPos(vec)).expand(3D));
+            map.put(109, new Box(BlockPos.ofFloored(vec)).expand(2D));
+            map.put(128, new Box(BlockPos.ofFloored(vec)).expand(3D));
         }
         for (int frame : map.keySet()) {
             if (this.attackStatus == frame) {
-                this.playSound(null, SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float) this.boss.getRandom().nextInt(6, 10) / 10f);
+                this.playSound(null, SoundRegistry.SCYTHE_SWIPE.get(), 1f, (float) this.boss.getRandom().nextBetween(6, 10) / 10f);
                 this.aoe(map.get(frame), 20f, 0.4f, true);
                 this.bonusDmg += phase2 ? 3 : 5;
                 this.boss.setVelocity(vel.multiply(0.1D));
@@ -804,8 +805,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus == 54) {
             Vec3d vec = this.boss.getRotationVector().multiply(4D).add(this.boss.getPos());
             vec = new Vec3d(vec.getX(), this.boss.getY(), vec.getZ());
-            this.boss.setTargetPos(new BlockPos(vec));
-            this.aoe(new Box(new BlockPos(vec)).expand(2D), 30f, 1.5f, true);
+            this.boss.setTargetPos(BlockPos.ofFloored(vec));
+            this.aoe(new Box(BlockPos.ofFloored(vec)).expand(2D), 30f, 1.5f, true);
             this.boss.setParticleState(2);
             this.boss.playSound(SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1f, 1f);
         } else {
@@ -903,7 +904,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         boolean phase2 = this.boss.isPhaseTwo();
         if (this.attackStatus == (phase2 ? 18 : 23)) {
             Vec3d out = this.boss.getRotationVector().multiply(5.5D, 0, 5.5D).add(this.boss.getPos().getX(), target.getY(), this.boss.getPos().getZ());
-            Box box = new Box(new BlockPos(out)).expand(3D);
+            Box box = new Box(BlockPos.ofFloored(out)).expand(3D);
             this.aoe(box, 10f, 1f, false, phase2 ? new StatusEffect[]{StatusEffects.BLINDNESS} : new StatusEffect[0]);
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, 0.75f);
             if (phase2) {

@@ -75,7 +75,7 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
-        return SOUNDS.register(name, () -> new SoundEvent(new Identifier(SoulsWeaponry.ModId, name)));
+        return SOUNDS.register(name, () -> SoundEvent.of(new Identifier(SoulsWeaponry.ModId, name)));
     }
 
     public static void register(IEventBus eventBus) {

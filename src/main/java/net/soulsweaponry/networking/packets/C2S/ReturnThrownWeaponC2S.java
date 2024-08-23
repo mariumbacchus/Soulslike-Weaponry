@@ -3,8 +3,8 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
@@ -40,9 +40,9 @@ public class ReturnThrownWeaponC2S {
 
     private void handlePacket(ServerPlayerEntity player, ReturnThrownWeaponC2S packet) {
         UUID uuid = ReturningProjectileData.getReturningProjectileUuid(player);
-        Text text = new TranslatableText("soulsweapons.weapon.no_soulbound_weapon");
+        Text text = Text.translatable("soulsweapons.weapon.no_soulbound_weapon");
         if (uuid != null) {
-            Entity entity = player.getWorld().getEntity(uuid);
+            Entity entity = ((ServerWorld)player.getWorld()).getEntity(uuid);
             if (entity instanceof ReturningProjectile projectile) {
                 projectile.setShouldReturn(true);
             } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
