@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GSG",
+    "G/G"
+  ],
+  "result": {
+    "item": "soulsweapons:dragonslayer_swordspear"
+  },
+  "show_notification": true
+}

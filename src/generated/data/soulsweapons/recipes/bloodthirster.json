@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "S": {
+      "item": "soulsweapons:crimson_ingot"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "iSi",
+    "iSi",
+    " / "
+  ],
+  "result": {
+    "item": "soulsweapons:bloodthirster"
+  },
+  "show_notification": true
+}

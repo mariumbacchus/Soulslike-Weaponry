@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "soulsweapons:essence_of_luminescence"
+    },
+    {
+      "item": "soulsweapons:withered_demon_heart"
+    },
+    {
+      "item": "soulsweapons:arkenstone"
+    },
+    {
+      "item": "soulsweapons:chaos_crown"
+    }
+  ],
+  "result": {
+    "item": "soulsweapons:chaos_orb"
+  }
+}

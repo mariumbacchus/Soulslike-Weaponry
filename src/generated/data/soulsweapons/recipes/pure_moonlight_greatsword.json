@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "soulsweapons:essence_of_luminescence"
+  },
+  "base": {
+    "tag": "soulsweapons:moonlight_sword"
+  },
+  "result": {
+    "item": "soulsweapons:pure_moonlight_greatsword"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

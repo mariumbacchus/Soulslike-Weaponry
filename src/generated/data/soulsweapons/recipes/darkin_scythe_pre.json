@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:crimson_ingot"
+    },
+    "O": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "X": {
+      "tag": "c:wood_sticks"
+    }
+  },
+  "pattern": [
+    " ##",
+    "OX ",
+    " X "
+  ],
+  "result": {
+    "item": "soulsweapons:darkin_scythe_pre"
+  },
+  "show_notification": true
+}

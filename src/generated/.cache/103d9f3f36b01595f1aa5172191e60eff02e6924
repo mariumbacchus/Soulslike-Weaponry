@@ -1,0 +1,7 @@
+// 1.20.1	2024-08-23T22:13:20.158368	Registries
+7661a34150e00405bc5b244e19f7cadbf03d59fc data/soulsweapons/forge/biome_modifier/add_moonstone_ore.json
+bb63f96676d9275960e4f565411e58a7a07fbeb7 data/soulsweapons/forge/biome_modifier/add_verglas_ore.json
+a72d525a5fb1c0650902bf4749f3d3c2f375b4c0 data/soulsweapons/worldgen/configured_feature/moonstone_ore.json
+dd6d5bdcd9af0f5712f03156592ac2037da981f2 data/soulsweapons/worldgen/configured_feature/verglas_ore.json
+7f3180f34f3fea048522d72a6b193b2b31cc41a7 data/soulsweapons/worldgen/placed_feature/moonstone_ore_placed.json
+25d700fe8bf20318e33ae2d7f2456a004cdeda7b data/soulsweapons/worldgen/placed_feature/verglas_ore_placed.json
