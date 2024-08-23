@@ -59,6 +59,12 @@ description="Adds lots of legendary weapons and bosses!"
     ordering="NONE"
     side="BOTH"
 [[dependencies.soulsweapons]]
+    modId="attributefix"
+    mandatory=true
+    versionRange="[21.0.4,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.soulsweapons]]
     modId="projectile_damage"
     mandatory=true
     versionRange="[3.2.2,)"
