@@ -3,18 +3,23 @@ package net.soulsweaponry.util;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static net.soulsweaponry.items.SoulHarvestingItem.KILLS;
 
@@ -22,6 +27,10 @@ public class WeaponUtil {
 
     public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
     public static final String PREV_TRICK_WEAPON = "trick_weapon_to_transform";
+    public static final Set<Item> CUSTOM_HOLD_WEAPONS = Set.of(
+            WeaponRegistry.GUTS_SWORD.get(),
+            WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get()
+    );
 
     // NOTE: May be changed in future versions.
     public static boolean isModLoaded(String modId) {
