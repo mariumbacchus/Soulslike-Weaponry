@@ -33,6 +33,7 @@
     import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
     import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
     import net.soulsweaponry.config.ConfigConstructor;
+    import net.soulsweaponry.items.ICooldownItem;
     import net.soulsweaponry.particles.ParticleHandler;
     import net.soulsweaponry.registry.BlockRegistry;
     import net.soulsweaponry.registry.ItemRegistry;
@@ -51,7 +52,7 @@
     import java.util.function.Consumer;
     import java.util.function.Supplier;
 
-public class ChaosSet extends ModdedArmor implements GeoItem {
+public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -176,8 +177,10 @@ public class ChaosSet extends ModdedArmor implements GeoItem {
             player.removeStatusEffect(effectToRemove);
         }
         if (triggered && !player.isCreative()) {
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN, ConfigConstructor.chaos_crown_flip_effect_cooldown);
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET, ConfigConstructor.chaos_crown_flip_effect_cooldown);
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN, Math.max(ConfigConstructor.chaos_crown_flip_effect_min_cooldown, ConfigConstructor.chaos_crown_flip_effect_cooldown
+                    - this.getReduceCooldownEnchantLevel(player.getEquippedStack(EquipmentSlot.HEAD)) * 40));
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET, Math.max(ConfigConstructor.chaos_crown_flip_effect_min_cooldown, ConfigConstructor.chaos_crown_flip_effect_cooldown
+                    - this.getReduceCooldownEnchantLevel(player.getEquippedStack(EquipmentSlot.HEAD)) * 40));
         }
     }
 
@@ -200,7 +203,8 @@ public class ChaosSet extends ModdedArmor implements GeoItem {
         }
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.arkenplate_shockwave_cooldown);
+            player.getItemCooldownManager().set(stack.getItem(), Math.max(ConfigConstructor.arkenplate_shockwave_min_cooldown, ConfigConstructor.arkenplate_shockwave_cooldown
+                    - this.getReduceCooldownEnchantLevel(stack) * 20));
         }
     }
 
@@ -357,5 +361,14 @@ public class ChaosSet extends ModdedArmor implements GeoItem {
             return ConfigConstructor.disable_use_chaos_robes;
         }
         return false;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (((stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) && ConfigConstructor.chaos_crown_flip_effect_unbreaking_reduces_cooldown)
+                || ((stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && ConfigConstructor.arkenplate_shockwave_unbreaking_reduces_cooldown)) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 }

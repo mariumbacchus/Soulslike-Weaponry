@@ -36,6 +36,11 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
 
     @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_dawnbreaker;
     }

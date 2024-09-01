@@ -41,4 +41,9 @@ public class LichBane extends ModdedSword {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_lich_bane;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

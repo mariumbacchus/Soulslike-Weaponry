@@ -1,6 +1,8 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,21 +62,34 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
-            int duration = ConfigConstructor.darkin_blade_ability_cooldown;
+            float cooldownMod = 1f;
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());
                 world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
-                duration = MathHelper.floor(duration/1.5f);
+                cooldownMod = 0.75f;
                 //NOTE: Ground Smash method is in parent class DetonateGroundItem
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.darkin_blade_ability_damage));
             } else {
                 this.detonateGroundEffect(user, ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
             }
             stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-            player.getItemCooldownManager().set(this, duration);
+            this.applyCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.darkin_blade_ability_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldown(ItemStack stack) {
+        int base = ConfigConstructor.darkin_blade_ability_cooldown;
+        return Math.max(ConfigConstructor.darkin_blade_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 15);
     }
 
     @Override

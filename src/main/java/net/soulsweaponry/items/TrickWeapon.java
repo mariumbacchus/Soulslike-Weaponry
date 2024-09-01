@@ -102,4 +102,9 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     public boolean isFireproof() {
         return FIREPROOF[this.arrayIndex];
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

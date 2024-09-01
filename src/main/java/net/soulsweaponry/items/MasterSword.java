@@ -38,6 +38,11 @@ public class MasterSword extends ChargeToUseItem {
     }
 
     @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (user.getHealth() < user.getMaxHealth()) {
             return TypedActionResult.fail(user.getStackInHand(hand));

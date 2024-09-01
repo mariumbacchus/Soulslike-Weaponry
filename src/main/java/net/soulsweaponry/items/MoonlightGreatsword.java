@@ -54,6 +54,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
     public Text[] getAdditionalTooltips() {
         return new Text[] {
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_1").formatted(Formatting.DARK_GRAY),

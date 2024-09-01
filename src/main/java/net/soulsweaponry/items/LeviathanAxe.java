@@ -154,4 +154,9 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

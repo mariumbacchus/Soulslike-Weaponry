@@ -55,17 +55,46 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
         if (user instanceof PlayerEntity playerEntity) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                int enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
                 world.spawnEntity(entity);
                 world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 this.saveSpearData(stack, entity);
-                playerEntity.getItemCooldownManager().set(this, ConfigConstructor.draupnir_spear_throw_cooldown - enchant * 5);
+                this.applyCooldown(playerEntity, this.getScaledCooldownThrow(stack));
                 stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             }
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.draupnir_spear_damage_enchant_reduces_throw_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
+    }
+
+    protected int getReduceCooldownEnchantLevelAbility(ItemStack stack) {
+        if (ConfigConstructor.draupnir_spear_damage_enchant_reduces_ability_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldownThrow(ItemStack stack) {
+        int base = ConfigConstructor.draupnir_spear_throw_cooldown;
+        return Math.max(ConfigConstructor.draupnir_spear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
+    }
+
+    protected int getScaledCooldownSummon(ItemStack stack) {
+        int base = ConfigConstructor.draupnir_spear_summon_spears_cooldown;
+        return Math.max(ConfigConstructor.draupnir_spear_summon_spears_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 20);
+    }
+
+    protected int getScaledCooldownExplode(ItemStack stack) {
+        int base = ConfigConstructor.draupnir_spear_detonate_cooldown;
+        return Math.max(ConfigConstructor.draupnir_spear_detonate_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 7);
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -139,7 +168,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                         this.saveSpearData(stack, entity);
                         ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
                     }
-                    if (!player.isCreative()) player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.draupnir_spear_summon_spears_cooldown, 0));
+                    if (!player.isCreative()) player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, this.getScaledCooldownSummon(stack), 0));
                 } else if (ConfigConstructor.inform_player_about_cooldown_effect) {
                     player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown", "Can't cast this ability with the Cooldown effect!"), true);
                 }
@@ -155,7 +184,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                 }
                 ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
                 world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-                player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.draupnir_spear_detonate_cooldown);
+                this.applyCooldown(player, this.getScaledCooldownExplode(stack));
                 if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
                     int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
                     for (int id : ids) {

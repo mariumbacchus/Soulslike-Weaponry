@@ -41,6 +41,11 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         return TypedActionResult.fail(user.getStackInHand(hand));
     }
