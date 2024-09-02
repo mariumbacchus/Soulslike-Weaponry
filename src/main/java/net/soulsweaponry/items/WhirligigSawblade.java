@@ -69,13 +69,23 @@ public class WhirligigSawblade extends ChargeToUseItem {
         this.stop(user, stack);
     }
 
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.whirligig_sawblade_damage_enchant_reduces_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
+    }
+
     private void stop(LivingEntity user, ItemStack stack) {
-        if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
+        if (user instanceof PlayerEntity player) {
+            this.applyCooldown(player, this.getCooldown(stack));
+        }
         stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
 
     private int getCooldown(ItemStack stack) {
-        return ConfigConstructor.whirligig_sawblade_cooldown - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
+        return Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
     }
 
     @Override

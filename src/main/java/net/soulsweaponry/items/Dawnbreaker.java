@@ -66,4 +66,9 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dawnbreaker;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

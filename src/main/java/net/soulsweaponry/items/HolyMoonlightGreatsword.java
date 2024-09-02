@@ -39,7 +39,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
             if (chargeTime >= 10) {
                 if (!player.isCreative()) {
                     int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() : 0;
-                    player.getItemCooldownManager().set(this, ConfigConstructor.holy_moonlight_ability_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 30 - emp);
+                    this.applyCooldown(player, Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
                 }
                 stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 int ruptures = ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack);
@@ -155,5 +155,13 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     public int getAddedCharge(ItemStack stack) {
         int base = ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack) * 2;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.holy_moonlight_ability_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 }

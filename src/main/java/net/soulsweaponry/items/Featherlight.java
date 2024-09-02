@@ -103,4 +103,9 @@ public class Featherlight extends UltraHeavyWeapon {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_featherlight;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

@@ -138,4 +138,9 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_scythe;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

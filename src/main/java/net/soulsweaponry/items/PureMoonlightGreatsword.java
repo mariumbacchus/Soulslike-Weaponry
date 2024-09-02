@@ -48,4 +48,9 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_pure_moonlight_greatsword;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

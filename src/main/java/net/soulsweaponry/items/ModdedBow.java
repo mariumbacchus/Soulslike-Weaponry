@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedBow extends BowItem implements IShootModProjectile, IConfigDisable {
+public abstract class ModdedBow extends BowItem implements IShootModProjectile, IConfigDisable, ICooldownItem {
 
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 

@@ -45,8 +45,10 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
-            if (!player.isCreative())
-                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, ConfigConstructor.galeforce_dash_cooldown, 0));
+            if (!player.isCreative()) {
+                int cooldown = Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0));
+            }
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
@@ -127,5 +129,13 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_galeforce;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.galeforce_dash_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 }

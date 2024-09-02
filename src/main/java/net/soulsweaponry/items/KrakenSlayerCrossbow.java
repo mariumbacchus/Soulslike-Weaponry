@@ -56,4 +56,9 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_kraken_slayer_crossbow;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

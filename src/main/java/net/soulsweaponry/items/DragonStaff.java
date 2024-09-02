@@ -69,7 +69,9 @@ public class DragonStaff extends ModdedSword {
     }
 
     private void stop(LivingEntity user, ItemStack stack) {
-        if (user instanceof PlayerEntity && !((PlayerEntity)user).isCreative()) ((PlayerEntity) user).getItemCooldownManager().set(this, this.getCooldown(stack));
+        if (user instanceof PlayerEntity player) {
+            this.applyCooldown(player, this.getCooldown(stack));
+        }
         stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
 
@@ -112,7 +114,7 @@ public class DragonStaff extends ModdedSword {
     }
 
     private int getCooldown(ItemStack stack) {
-        return ConfigConstructor.dragon_staff_cooldown - (WeaponUtil.getEnchantDamageBonus(stack) * 10);
+        return Math.max(ConfigConstructor.dragon_staff_min_cooldown, ConfigConstructor.dragon_staff_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
     }
 
     @Override
@@ -123,5 +125,13 @@ public class DragonStaff extends ModdedSword {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragon_staff;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.dragon_staff_damage_enchant_reduces_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
     }
 }

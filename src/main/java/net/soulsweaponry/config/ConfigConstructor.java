@@ -225,7 +225,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int[] withered_armor_armor_points = {4, 7, 10, 5};
 
     @Entry public static int chaos_crown_flip_effect_cooldown = 300;
+    @Entry public static int chaos_crown_flip_effect_min_cooldown = 100;
+    @Entry public static boolean chaos_crown_flip_effect_unbreaking_reduces_cooldown = false;
     @Entry public static int arkenplate_shockwave_cooldown = 200;
+    @Entry public static int arkenplate_shockwave_min_cooldown = 80;
+    @Entry public static boolean arkenplate_shockwave_unbreaking_reduces_cooldown = false;
     @Entry public static float arkenplate_shockwave_knockback = 2f;
     @Entry public static float arkenplate_shockwave_damage = 6f;
     @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.334f;
@@ -234,6 +238,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_1 = 0.5f;
     @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_2 = 0.25f;
     @Entry public static int withered_chest_ability_cooldown = 500;
+    @Entry public static int withered_chest_ability_min_cooldown = 100;
+    @Entry public static boolean withered_chest_ability_unbreaking_reduces_cooldown = false;
     @Entry public static int withered_chest_apply_wither_duration = 100;
     @Entry public static int withered_chest_apply_wither_amplifier = 0;
     @Entry public static int withered_chest_apply_fire_seconds = 6;
@@ -246,6 +252,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int lifesteal_item_base_healing = 2;
     @Entry public static boolean lifesteal_item_heal_scales = true;
     @Entry public static int lifesteal_item_cooldown = 60;
+    @Entry public static int lifesteal_item_min_cooldown = 10;
+    @Entry public static boolean lifesteal_item_damage_enchant_reduces_cooldown = false;
     @Entry public static int bluemoon_greatsword_damage = 8;
     @Entry public static float bluemoon_greatsword_attack_speed = 1.2f;
     @Entry public static int bluemoon_greatsword_charge_needed = 8;
@@ -257,8 +265,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_attack_speed = 1.4f;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
     @Entry public static int comet_spear_ability_damage = 10;
+    @Entry public static boolean comet_spear_damage_enchant_reduces_cooldown = true;
     @Entry public static int comet_spear_skyfall_ability_cooldown = 400;
+    @Entry public static int comet_spear_skyfall_ability_min_cooldown = 200;
     @Entry public static int comet_spear_throw_ability_cooldown = 25;
+    @Entry public static int comet_spear_throw_ability_min_cooldown = 0;
     @Entry public static float comet_spear_calculated_fall_base_radius = 0f;
     @Entry public static float comet_spear_calculated_fall_height_increase_radius_modifier = 2f;
     @Entry public static float comet_spear_calculated_fall_max_radius = 100f;
@@ -271,10 +282,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float crucible_sword_attack_speed = 1.6f;
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
+    @Entry public static int crucible_sword_empowered_min_cooldown = 100;
+    @Entry public static boolean crucible_sword_damage_enchant_reduces_cooldown = true;
     @Entry public static int darkin_blade_damage = 11;
     @Entry public static float darkin_blade_attack_speed = 1f;
     @Entry public static int darkin_blade_ability_damage = 12;
     @Entry public static int darkin_blade_ability_cooldown = 150;
+    @Entry public static int darkin_blade_ability_min_cooldown = 40;
+    @Entry public static boolean darkin_blade_ability_unbreaking_reduces_cooldown = false;
     @Entry public static float darkin_blade_calculated_fall_base_radius = 3f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_radius_modifier = 1.75f;
     @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.25f;
@@ -291,6 +306,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_scythe_prime_attack_speed = 1f;
     @Entry(min=0,max=100) public static float darkin_scythe_prime_ability_percent_health_damage = 10f;
     @Entry public static int darkin_scythe_prime_ability_cooldown = 400;
+    @Entry public static int darkin_scythe_prime_ability_min_cooldown = 100;
+    @Entry public static boolean darkin_scythe_prime_ability_damage_enchant_reduces_cooldown = false;
     @Entry public static float darkin_scythe_prime_heal_modifier = 0.25f;
     @Entry public static int darkin_scythe_prime_ticks_before_dismount = 80;
     @Entry public static int darkmoon_longbow_damage = 9;
@@ -298,6 +315,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkmoon_longbow_pull_time_ticks = 25;
     @Entry public static double darkmoon_longbow_ability_damage = 13D;
     @Entry public static int darkmoon_longbow_ability_cooldown_ticks = 150;
+    @Entry public static int darkmoon_longbow_ability_min_cooldown_ticks = 60;
+    @Entry public static boolean darkmoon_longbow_unbreaking_reduces_cooldown = true;
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
@@ -307,9 +326,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float empowered_dawnbreaker_attack_speed = 1.2f;
     @Entry public static float empowered_dawnbreaker_ability_damage = 15f;
     @Entry public static int empowered_dawnbreaker_ability_cooldown = 180;
+    @Entry public static int empowered_dawnbreaker_ability_min_cooldown = 100;
+    @Entry public static boolean empowered_dawnbreaker_ability_fire_aspect_reduces_cooldown = false;
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static float heap_of_raw_iron_attack_speed = 1f;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
+    @Entry public static int heap_of_raw_iron_min_cooldown = 40;
+    @Entry public static boolean heap_of_raw_iron_unbreaking_reduces_cooldown = false;
     @Entry public static float heap_of_raw_iron_calculated_fall_base_radius = 2.5f;
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_radius_modifier = 1.6f;
     @Entry public static float heap_of_raw_iron_calculated_fall_target_launch_modifier = 0.25f;
@@ -326,11 +349,16 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
     @Entry public static int dragonslayer_swordspear_lightning_amount = 1;
     @Entry public static int dragonslayer_swordspear_throw_cooldown = 100;
+    @Entry public static int dragonslayer_swordspear_throw_min_cooldown = 20;
     @Entry public static int dragonslayer_swordspear_ability_cooldown = 300;
+    @Entry public static int dragonslayer_swordspear_ability_min_cooldown = 80;
+    @Entry public static boolean dragonslayer_swordspear_damage_enchant_reduces_cooldown = true;
     @Entry public static int dragon_staff_damage = 8;
     @Entry public static float dragon_staff_attack_speed = 1.2f;
     @Entry public static int dragon_staff_aura_strength = 1;
     @Entry public static int dragon_staff_cooldown = 100;
+    @Entry public static int dragon_staff_min_cooldown = 10;
+    @Entry public static boolean dragon_staff_damage_enchant_reduces_cooldown = true;
     @Entry public static int dragon_staff_use_time = 100;
     @Entry public static int draugr_damage_at_night = 11;
     @Entry public static float draugr_attack_speed = 1.6f;
@@ -339,8 +367,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float draupnir_spear_projectile_damage = 10f;
     @Entry public static float draupnir_spear_detonate_power = 1f;
     @Entry public static int draupnir_spear_throw_cooldown = 40;
+    @Entry public static int draupnir_spear_throw_min_cooldown = 10;
     @Entry public static int draupnir_spear_detonate_cooldown = 100;
+    @Entry public static int draupnir_spear_detonate_min_cooldown = 40;
     @Entry public static int draupnir_spear_summon_spears_cooldown = 300;
+    @Entry public static int draupnir_spear_summon_spears_min_cooldown = 80;
+    @Entry public static boolean draupnir_spear_damage_enchant_reduces_throw_cooldown = true;
+    @Entry public static boolean draupnir_spear_damage_enchant_reduces_ability_cooldown = false;
     @Entry public static int draupnir_spear_max_age = 400;
     @Entry public static int forlorn_scythe_damage = 11;
     @Entry public static float forlorn_scythe_attack_speed = 1f;
@@ -363,6 +396,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int galeforce_speed_effect_duration_ticks = 50;
     @Entry public static int galeforce_speed_effect_amplifier = 4;
     @Entry public static int galeforce_dash_cooldown = 80;
+    @Entry public static int galeforce_dash_min_cooldown = 20;
+    @Entry public static boolean galeforce_dash_unbreaking_reduces_cooldown = false;
     @Entry public static int rageblade_damage = 7;
     @Entry public static float rageblade_attack_speed = 1.6f;
     @Entry public static boolean rageblade_haste_cap = true;
@@ -373,6 +408,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_ability_damage = 20f;
     @Entry public static float holy_moonlight_ability_knockup = 0.3f;
     @Entry public static int holy_moonlight_ability_cooldown = 150;
+    @Entry public static int holy_moonlight_ability_min_cooldown = 60;
+    @Entry public static boolean holy_moonlight_ability_unbreaking_reduces_cooldown = true;
     @Entry public static int holy_moonlight_ruptures_amount = 8;
     @Entry public static int holy_moonlight_sword_damage = 7;
     @Entry public static float holy_moonlight_sword_attack_speed = 1.6f;
@@ -412,6 +449,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int mjolnir_lightning_smash_cooldown = 200;
     @Entry public static int mjolnir_lightning_circle_amount = 3;
     @Entry public static int mjolnir_riptide_cooldown = 300;
+    @Entry public static int mjolnir_ability_min_cooldown = 60;
+    @Entry public static boolean mjolnir_ability_unbreaking_reduces_cooldown = false;
     @Entry public static double mjolnir_return_speed = 4D;
     @Entry public static int moonlight_greatsword_damage = 9;
     @Entry public static float moonlight_greatsword_attack_speed = 1.2f;
@@ -428,7 +467,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float nightfall_ability_damage = 18.0f;
     @Entry public static int nightfall_ability_shield_power = 2;
     @Entry public static int nightfall_shield_cooldown = 500;
+    @Entry public static int nightfall_shield_min_cooldown = 60;
     @Entry public static int nightfall_smash_cooldown = 300;
+    @Entry public static int nightfall_smash_min_cooldown = 80;
+    @Entry public static boolean nightfall_unbreaking_reduces_cooldown = true;
     @Entry public static int nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
     @Entry public static float nightfall_calculated_fall_base_radius = 3f;
@@ -442,6 +484,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int nights_edge_weapon_damage = 10;
     @Entry public static float nights_edge_weapon_attack_speed = 1.2f;
     @Entry public static int nights_edge_ability_cooldown = 120;
+    @Entry public static int nights_edge_ability_min_cooldown = 40;
+    @Entry public static boolean nights_edge_damage_enchant_reduces_cooldown = false;
     @Entry public static float nights_edge_ability_damage = 10f;
     @Entry public static int shadow_assassin_scythe_shadow_step_bonus_damage = 2;
     @Entry public static float shadow_assassin_scythe_attack_speed = 1f;
@@ -449,6 +493,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int shadow_assassin_scythe_shadow_step_cooldown = 160;
     @Entry public static float shadow_assassin_scythe_ability_damage = 40f;
     @Entry public static int shadow_assassin_scythe_ability_cooldown = 300;
+    @Entry public static int shadow_assassin_scythe_ability_min_cooldown = 100;
+    @Entry public static boolean shadow_assassin_scythe_ability_damage_enchant_reduces_cooldown = false;
     @Entry public static int shadow_assassin_scythe_ticks_before_dismount = 120;
     @Entry public static int skofnung_damage = 8;
     @Entry public static float skofnung_attack_speed = 1.6f;
@@ -469,6 +515,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float whirligig_sawblade_attack_speed = 1.6f;
     @Entry public static float whirligig_sawblade_ability_damage = 5.0f;
     @Entry public static int whirligig_sawblade_cooldown = 100;
+    @Entry public static int whirligig_sawblade_min_cooldown = 10;
+    @Entry public static boolean whirligig_sawblade_damage_enchant_reduces_cooldown = true;
     @Entry public static int whirligig_sawblade_use_time = 100;
     @Entry public static int withered_wabbajack_damage = 8;
     @Entry public static float withered_wabbajack_attack_speed = 1.2f;

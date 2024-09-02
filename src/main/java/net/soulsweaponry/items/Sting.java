@@ -58,4 +58,9 @@ public class Sting extends ModdedSword {
     public boolean isDisabled(ItemStack stack) {
         return false;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

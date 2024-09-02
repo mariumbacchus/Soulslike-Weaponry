@@ -67,11 +67,11 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.comet_spear_ability_damage));
-                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_skyfall_ability_cooldown-(enchant*20)));
+                    this.applyCooldown(playerEntity, this.getScaledCooldownSkyfall(stack));
                     stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                    playerEntity.getItemCooldownManager().set(this, (int) (ConfigConstructor.comet_spear_throw_ability_cooldown-(enchant*5)));
+                    this.applyCooldown(playerEntity, this.getScaledCooldownThrow(stack));
 
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
@@ -81,6 +81,24 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
                 }
             }
         }
+    }
+
+    protected int getScaledCooldownSkyfall(ItemStack stack) {
+        int base = ConfigConstructor.comet_spear_skyfall_ability_cooldown;
+        return Math.max(ConfigConstructor.comet_spear_skyfall_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
+    }
+
+    protected int getScaledCooldownThrow(ItemStack stack) {
+        int base = ConfigConstructor.comet_spear_throw_ability_cooldown;
+        return Math.max(ConfigConstructor.comet_spear_throw_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.comet_spear_damage_enchant_reduces_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
     }
 
     @Override

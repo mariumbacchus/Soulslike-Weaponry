@@ -191,6 +191,11 @@ public class WitheredWabbajack extends ModdedSword {
         return ConfigConstructor.disable_use_withered_wabbajack;
     }
 
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
     public enum LuckType {
         GOOD, NEUTRAL, BAD
     }

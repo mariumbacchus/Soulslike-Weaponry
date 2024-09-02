@@ -53,4 +53,9 @@ public class KrakenSlayer extends ModdedBow {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_kraken_slayer_bow;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }
