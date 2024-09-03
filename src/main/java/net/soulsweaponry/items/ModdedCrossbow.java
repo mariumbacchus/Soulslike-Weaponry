@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, IShootModProjectile {
+public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, IShootModProjectile, ICooldownItem {
 
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 

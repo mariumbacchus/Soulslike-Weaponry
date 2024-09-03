@@ -52,7 +52,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     public int getAbilityCooldown(ItemStack stack) {
         int base = ConfigConstructor.darkin_scythe_prime_ability_cooldown;
         if (ConfigConstructor.darkin_scythe_prime_ability_damage_enchant_reduces_cooldown) {
-            base = Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, base - WeaponUtil.getEnchantDamageBonus(stack) * 25);
+            base = Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 25);
         }
         return base;
     }

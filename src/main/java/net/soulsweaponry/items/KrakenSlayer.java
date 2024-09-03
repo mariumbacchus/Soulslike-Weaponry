@@ -50,4 +50,9 @@ public class KrakenSlayer extends ModdedBow {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_bow;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

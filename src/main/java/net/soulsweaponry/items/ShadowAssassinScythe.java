@@ -92,7 +92,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     public int getAbilityCooldown(ItemStack stack) {
         int base = ConfigConstructor.shadow_assassin_scythe_ability_cooldown;
         if (ConfigConstructor.shadow_assassin_scythe_ability_damage_enchant_reduces_cooldown) {
-            base = Math.max(ConfigConstructor.shadow_assassin_scythe_ability_min_cooldown, base - WeaponUtil.getEnchantDamageBonus(stack) * 25);
+            base = Math.max(ConfigConstructor.shadow_assassin_scythe_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 25);
         }
         return base;
     }

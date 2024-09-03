@@ -315,6 +315,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkmoon_longbow_pull_time_ticks = 25;
     @Entry public static double darkmoon_longbow_ability_damage = 13D;
     @Entry public static int darkmoon_longbow_ability_cooldown_ticks = 150;
+    @Entry public static int darkmoon_longbow_ability_min_cooldown_ticks = 60;
+    @Entry public static boolean darkmoon_longbow_unbreaking_reduces_cooldown = true;
     @Entry public static int dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
@@ -394,6 +396,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int galeforce_speed_effect_duration_ticks = 50;
     @Entry public static int galeforce_speed_effect_amplifier = 4;
     @Entry public static int galeforce_dash_cooldown = 80;
+    @Entry public static int galeforce_dash_min_cooldown = 20;
+    @Entry public static boolean galeforce_dash_unbreaking_reduces_cooldown = false;
     @Entry public static int rageblade_damage = 7;
     @Entry public static float rageblade_attack_speed = 1.6f;
     @Entry public static boolean rageblade_haste_cap = true;
@@ -404,6 +408,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_ability_damage = 20f;
     @Entry public static float holy_moonlight_ability_knockup = 0.3f;
     @Entry public static int holy_moonlight_ability_cooldown = 150;
+    @Entry public static int holy_moonlight_ability_min_cooldown = 60;
+    @Entry public static boolean holy_moonlight_ability_unbreaking_reduces_cooldown = true;
     @Entry public static int holy_moonlight_ruptures_amount = 8;
     @Entry public static int holy_moonlight_sword_damage = 7;
     @Entry public static float holy_moonlight_sword_attack_speed = 1.6f;
