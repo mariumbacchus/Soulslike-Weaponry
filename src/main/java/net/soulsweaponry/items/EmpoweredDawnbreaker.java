@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -53,9 +52,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
-                if (!player.isCreative()) {
-                    this.applyCooldown(player, this.getScaledCooldown(stack));
-                }
+                this.applyCooldown(player, this.getScaledCooldown(stack));
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
             }
         }
@@ -119,16 +116,6 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     @Override
     public Supplier<Object> getRenderProvider() {
         return this.renderProvider;
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    @Override
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
     }
 
     @Override
