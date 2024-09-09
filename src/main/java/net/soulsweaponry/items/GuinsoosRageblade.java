@@ -49,4 +49,9 @@ public class GuinsoosRageblade extends ModdedSword {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_rageblade;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

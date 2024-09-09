@@ -151,4 +151,9 @@ public class LeviathanAxe extends ModdedAxe implements IAnimatable {
             }
         });
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

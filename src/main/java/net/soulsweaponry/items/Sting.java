@@ -58,4 +58,9 @@ public class Sting extends ModdedSword {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_sting;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

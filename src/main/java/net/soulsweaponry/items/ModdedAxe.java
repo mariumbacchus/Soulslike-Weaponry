@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedAxe extends AxeItem implements IConfigDisable {
+public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem {
 
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 

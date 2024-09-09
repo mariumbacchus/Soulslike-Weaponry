@@ -56,4 +56,9 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_crossbow;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

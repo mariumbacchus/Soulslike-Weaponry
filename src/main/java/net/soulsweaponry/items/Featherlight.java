@@ -102,4 +102,9 @@ public class Featherlight extends UltraHeavyWeapon {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_featherlight;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

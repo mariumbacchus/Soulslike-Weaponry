@@ -93,4 +93,9 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_frostmourne;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

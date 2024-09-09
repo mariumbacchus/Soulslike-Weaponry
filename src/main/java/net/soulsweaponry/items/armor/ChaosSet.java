@@ -33,6 +33,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.blocks.*;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.ICooldownItem;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -49,7 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
+public class ChaosSet extends ModdedGeoArmor implements IAnimatable, ICooldownItem {
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
@@ -172,8 +173,10 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
             player.removeStatusEffect(effectToRemove);
         }
         if (triggered && !player.isCreative()) {
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN.get(), ConfigConstructor.chaos_crown_flip_effect_cooldown);
-            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET.get(), ConfigConstructor.chaos_crown_flip_effect_cooldown);
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_CROWN.get(), Math.max(ConfigConstructor.chaos_crown_flip_effect_min_cooldown, ConfigConstructor.chaos_crown_flip_effect_cooldown
+                    - this.getReduceCooldownEnchantLevel(player.getEquippedStack(EquipmentSlot.HEAD)) * 40));
+            player.getItemCooldownManager().set(ItemRegistry.CHAOS_HELMET.get(), Math.max(ConfigConstructor.chaos_crown_flip_effect_min_cooldown, ConfigConstructor.chaos_crown_flip_effect_cooldown
+                    - this.getReduceCooldownEnchantLevel(player.getEquippedStack(EquipmentSlot.HEAD)) * 40));
         }
     }
 
@@ -196,7 +199,8 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
         }
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.arkenplate_shockwave_cooldown);
+            player.getItemCooldownManager().set(stack.getItem(), Math.max(ConfigConstructor.arkenplate_shockwave_min_cooldown, ConfigConstructor.arkenplate_shockwave_cooldown
+                    - this.getReduceCooldownEnchantLevel(stack) * 20));
         }
     }
 
@@ -325,5 +329,14 @@ public class ChaosSet extends ModdedGeoArmor implements IAnimatable {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_chaos_set;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (((stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) && ConfigConstructor.chaos_crown_flip_effect_unbreaking_reduces_cooldown)
+                || ((stack.isOf(ItemRegistry.ARKENPLATE.get()) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) && ConfigConstructor.arkenplate_shockwave_unbreaking_reduces_cooldown)) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 }

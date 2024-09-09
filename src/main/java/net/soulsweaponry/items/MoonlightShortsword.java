@@ -80,4 +80,9 @@ public class MoonlightShortsword extends ModdedSword {
         }
         return super.postHit(stack, target, attacker);
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

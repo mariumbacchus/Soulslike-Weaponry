@@ -2,6 +2,8 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -43,7 +45,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-            player.getItemCooldownManager().set(this, ConfigConstructor.heap_of_raw_iron_cooldown);
+            player.getItemCooldownManager().set(this, this.getScaledCooldown(stack));
             int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), 200, power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 0));
@@ -58,6 +60,19 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.heap_of_raw_iron_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldown(ItemStack stack) {
+        int base = ConfigConstructor.heap_of_raw_iron_cooldown;
+        return Math.max(ConfigConstructor.heap_of_raw_iron_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
     }
 
     @Override
