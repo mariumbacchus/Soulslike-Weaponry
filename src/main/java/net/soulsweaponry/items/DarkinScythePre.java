@@ -144,6 +144,11 @@ public class DarkinScythePre extends SoulHarvestingItem {
         return ConfigConstructor.disable_use_darkin_scythe;
     }
 
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
+
     public enum SoulType {
         RED("red_soul"), BLUE("blue_soul");
 

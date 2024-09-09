@@ -144,4 +144,9 @@ public class SoulReaper extends SoulHarvestingItem implements IAnimatable, ISumm
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_soul_reaper;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

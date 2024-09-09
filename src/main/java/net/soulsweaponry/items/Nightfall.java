@@ -53,7 +53,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
         if (user instanceof PlayerEntity player) {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
-                if (!player.isCreative()) player.getItemCooldownManager().set(this, ConfigConstructor.nightfall_smash_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 50);
+                this.applyCooldown(player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos targetArea = new BlockPos(vecBlocksAway.x, user.getY(), vecBlocksAway.z);
@@ -73,6 +73,24 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
                 }
             }
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.nightfall_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldownSmash(ItemStack stack) {
+        int base = ConfigConstructor.nightfall_smash_cooldown;
+        return Math.max(ConfigConstructor.nightfall_smash_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 50);
+    }
+
+    protected int getScaledCooldownShield(ItemStack stack) {
+        int base = ConfigConstructor.nightfall_shield_cooldown;
+        return Math.max(ConfigConstructor.nightfall_shield_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 100);
     }
 
     @Override
@@ -128,7 +146,7 @@ public class Nightfall extends UltraHeavyWeapon implements IAnimatable, IKeybind
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            player.getItemCooldownManager().set(this, (ConfigConstructor.nightfall_shield_cooldown - EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack) * 100));
+            this.applyCooldown(player, this.getScaledCooldownShield(stack));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));

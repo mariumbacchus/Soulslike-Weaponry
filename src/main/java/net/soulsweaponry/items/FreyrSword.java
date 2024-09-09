@@ -83,4 +83,9 @@ public class FreyrSword extends ModdedSword implements IAnimatable, ISyncable {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_sword_of_freyr;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

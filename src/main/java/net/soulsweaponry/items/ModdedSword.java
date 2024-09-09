@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedSword extends SwordItem implements IConfigDisable {
+public abstract class ModdedSword extends SwordItem implements IConfigDisable, ICooldownItem {
 
     protected final float attackSpeed;
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
