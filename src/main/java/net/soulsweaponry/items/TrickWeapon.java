@@ -115,4 +115,9 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
         }
         return i;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

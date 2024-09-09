@@ -8,7 +8,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -27,10 +26,10 @@ public class CrucibleSword extends ModdedSword {
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity && !this.isDisabled(stack)) {
-            ItemCooldownManager cooldownManager = ((PlayerEntity) attacker).getItemCooldownManager();
-            if (!cooldownManager.isCoolingDown(this)) {
-                cooldownManager.set(this, ConfigConstructor.crucible_sword_empowered_cooldown - WeaponUtil.getEnchantDamageBonus(stack) * 20);
+        if (attacker instanceof PlayerEntity player && !this.isDisabled(stack)) {
+            if (!player.getItemCooldownManager().isCoolingDown(this)) {
+                this.applyCooldown(player, Math.max(ConfigConstructor.crucible_sword_empowered_min_cooldown,
+                        ConfigConstructor.crucible_sword_empowered_cooldown - this.getReduceCooldownEnchantLevel(stack) * 20));
             }
         }
         return super.postHit(stack, target, attacker);
@@ -80,5 +79,13 @@ public class CrucibleSword extends ModdedSword {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_crucible_sword;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.crucible_sword_damage_enchant_reduces_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
     }
 }

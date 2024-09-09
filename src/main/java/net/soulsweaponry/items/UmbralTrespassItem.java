@@ -44,7 +44,7 @@ public abstract class UmbralTrespassItem extends ModdedSword {
             if (user.startRiding(target, true)) {
                 if (!UmbralTrespassData.shouldDamageRiding(user)) {
                     UmbralTrespassData.setShouldDamageRiding(user, true);
-                    UmbralTrespassData.setOtherStats(user, this.getAbilityDamage() + EnchantmentHelper.getAttackDamage(stack, target.getGroup()), this.getAbilityCooldown(), this.shouldAbilityHeal());
+                    UmbralTrespassData.setOtherStats(user, this.getAbilityDamage() + EnchantmentHelper.getAttackDamage(stack, target.getGroup()), this.getAbilityCooldown(stack), this.shouldAbilityHeal());
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, this.ticksBeforeDismount, 0));
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY.get(), this.ticksBeforeDismount, 0));
                 }
@@ -57,6 +57,6 @@ public abstract class UmbralTrespassItem extends ModdedSword {
     }
 
     public abstract float getAbilityDamage();
-    public abstract int getAbilityCooldown();
+    public abstract int getAbilityCooldown(ItemStack stack);
     public abstract boolean shouldAbilityHeal();
 }

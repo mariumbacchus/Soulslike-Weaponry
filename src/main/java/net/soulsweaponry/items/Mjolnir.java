@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -67,8 +68,19 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
             } else {
                 this.throwHammer(world, player, stack);
             }
-            if (!player.isCreative()) player.getItemCooldownManager().set(this, cooldown);
+            if (cooldown != 0) {
+                cooldown = Math.max(ConfigConstructor.mjolnir_ability_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 30);
+            }
+            this.applyCooldown(player, cooldown);
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.mjolnir_ability_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 
     private void throwHammer(World world, PlayerEntity player, ItemStack stack) {

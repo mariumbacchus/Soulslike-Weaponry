@@ -149,4 +149,9 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
             }
         });
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

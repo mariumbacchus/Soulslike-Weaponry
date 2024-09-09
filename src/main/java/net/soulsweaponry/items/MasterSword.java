@@ -55,4 +55,9 @@ public class MasterSword extends ChargeToUseItem {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_master_sword;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

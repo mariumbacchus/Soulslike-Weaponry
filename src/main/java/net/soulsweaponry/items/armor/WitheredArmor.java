@@ -5,6 +5,8 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.ICooldownItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -41,7 +44,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbility {
+public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbility, ICooldownItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
@@ -118,7 +121,8 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), ConfigConstructor.withered_chest_life_leach_duration, ConfigConstructor.withered_chest_life_leach_amplifier));
-            player.getItemCooldownManager().set(stack.getItem(), ConfigConstructor.withered_chest_ability_cooldown);
+            player.getItemCooldownManager().set(stack.getItem(), Math.max(ConfigConstructor.withered_chest_ability_min_cooldown,
+                    ConfigConstructor.withered_chest_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 60));
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
         }
     }
@@ -196,5 +200,13 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_withered_chest;
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if ((stack.isOf(ItemRegistry.WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) && ConfigConstructor.withered_chest_ability_unbreaking_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        }
+        return 0;
     }
 }
