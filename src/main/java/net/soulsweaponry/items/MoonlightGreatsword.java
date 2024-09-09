@@ -67,4 +67,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_moonlight_greatsword;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

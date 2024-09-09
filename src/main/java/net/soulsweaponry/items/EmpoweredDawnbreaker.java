@@ -2,6 +2,8 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -9,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -44,12 +45,23 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
-                if (!player.isCreative()) {
-                    player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
-                }
+                this.applyCooldown(player, this.getScaledCooldown(stack));
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
             }
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.empowered_dawnbreaker_ability_fire_aspect_reduces_cooldown) {
+            return EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldown(ItemStack stack) {
+        int base = ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
+        return Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
     }
 
     private void summonFlamePillars(World world, ItemStack stack, LivingEntity user) {
@@ -83,21 +95,11 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    @Override
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
-    }
-
-    @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-            player.getItemCooldownManager().set(this, ConfigConstructor.empowered_dawnbreaker_ability_cooldown);
+            this.applyCooldown(player, this.getScaledCooldown(stack));
         }
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little

@@ -98,4 +98,9 @@ public class Skofnung extends ModdedSword {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_skofnung;
     }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        return 0;
+    }
 }

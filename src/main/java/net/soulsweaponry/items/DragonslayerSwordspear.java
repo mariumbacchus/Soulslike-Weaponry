@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -50,7 +48,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
                     world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_throw_cooldown - (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)*20)) / (world.isRaining() ? 2 : 1));
+                    this.applyCooldown(playerEntity, this.getScaledCooldownThrow(world, stack));
                 } else {
                     stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 5));
@@ -78,11 +76,28 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
-                    int sharpness = WeaponUtil.getEnchantDamageBonus(stack);
-                    playerEntity.getItemCooldownManager().set(this, (ConfigConstructor.dragonslayer_swordspear_ability_cooldown - (sharpness*20)) / (world.isRaining() ? 2 : 1));
+                    this.applyCooldown(playerEntity, this.getScaledCooldownAbility(world, stack));
                 }
             }
         }
+    }
+
+    @Override
+    public int getReduceCooldownEnchantLevel(ItemStack stack) {
+        if (ConfigConstructor.dragonslayer_swordspear_damage_enchant_reduces_cooldown) {
+            return WeaponUtil.getEnchantDamageBonus(stack);
+        }
+        return 0;
+    }
+
+    protected int getScaledCooldownAbility(World world, ItemStack stack) {
+        int base = ConfigConstructor.dragonslayer_swordspear_ability_cooldown;
+        return Math.max(ConfigConstructor.dragonslayer_swordspear_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20 / (world.isRaining() ? 2 : 1));
+    }
+
+    protected int getScaledCooldownThrow(World world, ItemStack stack) {
+        int base = ConfigConstructor.dragonslayer_swordspear_throw_cooldown;
+        return Math.max(ConfigConstructor.dragonslayer_swordspear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 10 / (world.isRaining() ? 2 : 1));
     }
 
     @Override
