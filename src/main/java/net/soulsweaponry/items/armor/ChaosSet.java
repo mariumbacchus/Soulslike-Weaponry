@@ -334,11 +334,18 @@ public class ChaosSet extends ModdedArmor implements IAnimatable, ICooldownItem 
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (((stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) && ConfigConstructor.chaos_crown_flip_effect_unbreaking_reduces_cooldown)
-                || ((stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && ConfigConstructor.arkenplate_shockwave_unbreaking_reduces_cooldown)) {
-            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ((stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) && ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown)
+                || ((stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) && ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown);
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
+            return ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown_id;
+        } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
+            return ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown_id;
         }
-        return 0;
+        return null;
     }
 }

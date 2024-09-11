@@ -22,7 +22,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyCooldown(player, Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceCooldownEnchantLevel(stack) * 6));
+                this.applyItemCooldown(player, Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
                 if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
@@ -50,11 +50,8 @@ public class DarkinScythePrime extends UmbralTrespassItem {
 
     @Override
     public int getAbilityCooldown(ItemStack stack) {
-        int base = ConfigConstructor.darkin_scythe_prime_ability_cooldown;
-        if (ConfigConstructor.darkin_scythe_prime_ability_damage_enchant_reduces_cooldown) {
-            base = Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 25);
-        }
-        return base;
+        return Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, ConfigConstructor.darkin_scythe_prime_ability_cooldown
+                - this.getReduceCooldownEnchantLevel(stack) * 25);
     }
 
     @Override
@@ -63,10 +60,12 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.lifesteal_item_damage_enchant_reduces_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown_id;
     }
 }

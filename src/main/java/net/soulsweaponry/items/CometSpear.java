@@ -61,11 +61,11 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.comet_spear_ability_damage));
-                    this.applyCooldown(playerEntity, this.getScaledCooldownSkyfall(stack));
+                    this.applyItemCooldown(playerEntity, this.getScaledCooldownSkyfall(stack));
                     stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 } else {
                     stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                    this.applyCooldown(playerEntity, this.getScaledCooldownThrow(stack));
+                    this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(stack));
 
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
@@ -88,11 +88,13 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.comet_spear_damage_enchant_reduces_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.comet_spear_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.comet_spear_enchant_reduces_cooldown_id;
     }
 
     @Override
