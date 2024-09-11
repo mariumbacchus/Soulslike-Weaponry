@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,10 +13,12 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -61,23 +64,34 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                 world.spawnEntity(entity);
                 world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 this.saveSpearData(stack, entity);
-                this.applyCooldown(playerEntity, this.getScaledCooldownThrow(stack));
+                this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(stack));
                 stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             }
         }
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.draupnir_spear_damage_enchant_reduces_throw_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.draupnir_spear_enchant_reduces_throw_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.draupnir_spear_enchant_reduces_throw_cooldown_id;
     }
 
     protected int getReduceCooldownEnchantLevelAbility(ItemStack stack) {
-        if (ConfigConstructor.draupnir_spear_damage_enchant_reduces_ability_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
+        if (ConfigConstructor.draupnir_spear_enchant_reduces_ability_cooldown) {
+            String string = ConfigConstructor.draupnir_spear_enchant_reduces_ability_cooldown_id;
+            if (string.equals("damage")) {
+                return WeaponUtil.getEnchantDamageBonus(stack);
+            } else {
+                Identifier id = new Identifier(string);
+                Enchantment enchantment = Registries.ENCHANTMENT.get(id);
+                if (enchantment != null) {
+                    return EnchantmentHelper.getLevel(enchantment, stack);
+                }
+            }
         }
         return 0;
     }
@@ -184,7 +198,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                 }
                 ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
                 world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-                this.applyCooldown(player, this.getScaledCooldownExplode(stack));
+                this.applyItemCooldown(player, this.getScaledCooldownExplode(stack));
                 if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
                     int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
                     for (int id : ids) {

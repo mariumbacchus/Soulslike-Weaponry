@@ -56,8 +56,9 @@ public class MoonlightShortsword extends ModdedSword {
                 /* itemStack.damage(1, user, (p_220045_0_) -> {
                     p_220045_0_.sendToolBreakStatus(hand);
                 }); */
-                if (itemStack.getItem() instanceof BluemoonShortsword) {
-                    user.getItemCooldownManager().set(WeaponRegistry.BLUEMOON_SHORTSWORD, ConfigConstructor.bluemoon_shortsword_projectile_cooldown);
+                if (itemStack.getItem() instanceof BluemoonShortsword bluemoon) {
+                    bluemoon.applyItemCooldown(user, Math.max(ConfigConstructor.bluemoon_shortsword_projectile_min_cooldown, ConfigConstructor.bluemoon_shortsword_projectile_cooldown
+                            - bluemoon.getReduceCooldownEnchantLevel(itemStack) * 10));
                 }
 
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -81,7 +82,12 @@ public class MoonlightShortsword extends ModdedSword {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return null;
     }
 }

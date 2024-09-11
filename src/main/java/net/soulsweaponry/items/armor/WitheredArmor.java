@@ -5,8 +5,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -210,10 +208,15 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if ((stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) && ConfigConstructor.withered_chest_ability_unbreaking_reduces_cooldown) {
-            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) && ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+            return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_id;
         }
-        return 0;
+        return null;
     }
 }
