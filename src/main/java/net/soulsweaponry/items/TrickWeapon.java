@@ -84,11 +84,6 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
     public boolean isHeavy() {
         return this.isHeavy;
     }
@@ -104,7 +99,12 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return null;
     }
 }
