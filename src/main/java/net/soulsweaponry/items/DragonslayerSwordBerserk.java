@@ -49,7 +49,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity user) {
         if (!user.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-            user.getItemCooldownManager().set(this, this.getScaledCooldown(stack));
+            this.applyItemCooldown(user, this.getScaledCooldown(stack));
             int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 200, power));
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 0));
@@ -66,11 +66,13 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.heap_of_raw_iron_unbreaking_reduces_cooldown) {
-            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown_id;
     }
 
     protected int getScaledCooldown(ItemStack stack) {
