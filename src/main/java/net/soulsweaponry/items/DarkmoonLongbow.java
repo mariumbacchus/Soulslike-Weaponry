@@ -59,7 +59,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage / 2.6f + power * 1.25f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
-            this.applyCooldown(player, Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
+            this.applyItemCooldown(player, Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
                     ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - this.getReduceCooldownEnchantLevel(stack) * 30));
             stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }
@@ -75,10 +75,12 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.darkmoon_longbow_unbreaking_reduces_cooldown) {
-            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.darkmoon_longbow_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.darkmoon_longbow_enchant_reduces_cooldown_id;
     }
 }

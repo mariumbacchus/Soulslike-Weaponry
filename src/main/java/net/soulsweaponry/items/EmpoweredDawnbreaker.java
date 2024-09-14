@@ -3,8 +3,6 @@ package net.soulsweaponry.items;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -49,18 +47,20 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
-                this.applyCooldown(player, this.getScaledCooldown(stack));
+                this.applyItemCooldown(player, this.getScaledCooldown(stack));
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
             }
         }
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.empowered_dawnbreaker_ability_fire_aspect_reduces_cooldown) {
-            return EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown_id;
     }
 
     protected int getScaledCooldown(ItemStack stack) {
@@ -117,7 +117,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-            this.applyCooldown(player, this.getScaledCooldown(stack));
+            this.applyItemCooldown(player, this.getScaledCooldown(stack));
         }
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little

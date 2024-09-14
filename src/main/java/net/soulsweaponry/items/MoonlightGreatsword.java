@@ -33,7 +33,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
 
@@ -68,7 +68,12 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return null;
     }
 }

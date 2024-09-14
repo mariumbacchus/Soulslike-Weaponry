@@ -85,7 +85,7 @@ dependencies {
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    //modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
+    modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
 }
 
 processResources {

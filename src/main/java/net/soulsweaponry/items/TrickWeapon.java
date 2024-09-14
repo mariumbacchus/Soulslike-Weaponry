@@ -3,7 +3,6 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -97,11 +96,6 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
     public boolean isFireproof() {
         return FIREPROOF[this.arrayIndex];
     }
@@ -117,7 +111,12 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return null;
     }
 }

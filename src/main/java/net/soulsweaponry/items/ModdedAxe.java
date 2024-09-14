@@ -53,4 +53,14 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
 
     @Override
     public abstract boolean isFireproof();
+
+    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
+        int i;
+        if (WeaponUtil.isModLoaded("epicfight")) {
+            i = Integer.MAX_VALUE - remainingUseTicks;
+        } else {
+            i = this.getMaxUseTime(stack) - remainingUseTicks;
+        }
+        return i;
+    }
 }

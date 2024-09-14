@@ -57,7 +57,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.castSpell(player, world, stack, false);
-                this.applyCooldown(player, this.getScaledCooldown(stack));
+                this.applyItemCooldown(player, this.getScaledCooldown(stack));
             }
         }
     }
@@ -66,7 +66,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.castSpell(player, world, stack, true);
-            this.applyCooldown(player, this.getScaledCooldown(stack));
+            this.applyItemCooldown(player, this.getScaledCooldown(stack));
             stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }
     }
@@ -77,11 +77,13 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.nights_edge_damage_enchant_reduces_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.nights_edge_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.nights_edge_enchant_reduces_cooldown_id;
     }
 
     protected void castSpell(PlayerEntity user, World world, ItemStack stack, boolean ripple) {
