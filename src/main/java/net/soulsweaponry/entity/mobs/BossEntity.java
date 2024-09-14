@@ -13,12 +13,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
@@ -167,8 +169,51 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public abstract boolean isUndead();
 
     @Override
-    public abstract EntityGroup getGroup();
+    public EntityGroup getGroup() {
+        String id = this.getGroupId();
+        if (id == null) {
+            return EntityGroup.DEFAULT;
+        }
+        return switch (id.toUpperCase()) {
+            case "UNDEAD" -> EntityGroup.UNDEAD;
+            case "ARTHROPOD" -> EntityGroup.ARTHROPOD;
+            case "ILLAGER" -> EntityGroup.ILLAGER;
+            case "AQUATIC" -> EntityGroup.AQUATIC;
+            default -> EntityGroup.DEFAULT;
+        };
+    }
 
     @Override
     public abstract boolean disablesShield();
+
+    public abstract String getGroupId();
+
+    /**
+     * Should be called during damage method for bosses that are projectile immune to check whether the entity
+     * should damage the boss or not.
+     */
+    public boolean isProjectileWhitelisted(DamageSource source) {
+        if (source.getSource() != null) {
+            return this.isProjectileWhitelisted(source.getSource());
+        }
+        return false;
+    }
+
+    /**
+     * Should be called during damage method for bosses that are projectile immune to check whether the entity
+     * should damage the boss or not.
+     */
+    public boolean isProjectileWhitelisted(Entity entity) {
+        Identifier attackerId = EntityType.getId(entity.getType());
+        int index = Arrays.binarySearch(this.getWhitelistedProjectiles(), attackerId.getPath());
+        return index >= 0;
+    }
+
+    /**
+     * Should be overwritten to get a list of projectiles that should damage the boss regardless of abilities the boss
+     * has, such as projectile immunity.
+     */
+    public String[] getWhitelistedProjectiles() {
+        return new String[0];
+    }
 }

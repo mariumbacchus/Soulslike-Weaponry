@@ -194,7 +194,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
            return false;
         } else {
             Entity entity = source.getSource();
-            if (entity instanceof ProjectileEntity && entity.getBlockPos() != null) {
+            if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile) && entity.getBlockPos() != null) {
                 if (!this.getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.getWorld(), 10, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
@@ -202,6 +202,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
             }
             return super.damage(source, amount);
         }
+    }
+
+    @Override
+    public String[] getWhitelistedProjectiles() {
+        return ConfigConstructor.fallen_icon_projectile_immunity_whitelist;
     }
 
     @Override
@@ -369,22 +374,22 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.fallen_icon_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return false;
+        return ConfigConstructor.fallen_icon_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.DEFAULT;
+    public String getGroupId() {
+        return ConfigConstructor.fallen_icon_group_type;
     }
 
     @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.fallen_icon_disables_shields;
     }
 
     @Override

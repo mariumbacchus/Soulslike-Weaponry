@@ -1,7 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -216,22 +215,22 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.day_stalker_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return false;
+        return ConfigConstructor.day_stalker_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.DEFAULT;
+    public String getGroupId() {
+        return ConfigConstructor.day_stalker_group_type;
     }
 
     @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.day_stalker_disables_shields;
     }
 
     @Override
