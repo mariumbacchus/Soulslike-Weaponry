@@ -69,7 +69,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
-                    this.applyCooldown(playerEntity, this.getScaledCooldownAbility(world, stack));
+                    this.applyItemCooldown(playerEntity, this.getScaledCooldownAbility(world, stack));
                 } else {
                     stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                     DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
@@ -77,18 +77,20 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
                     world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    this.applyCooldown(playerEntity, this.getScaledCooldownThrow(world, stack));
+                    this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(world, stack));
                 }
             }
         }
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.dragonslayer_swordspear_damage_enchant_reduces_cooldown) {
-            return WeaponUtil.getEnchantDamageBonus(stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown_id;
     }
 
     protected int getScaledCooldownAbility(World world, ItemStack stack) {

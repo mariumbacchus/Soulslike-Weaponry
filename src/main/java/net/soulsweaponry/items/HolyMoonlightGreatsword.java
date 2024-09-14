@@ -1,7 +1,6 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +37,7 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
             int chargeTime = this.getChargeTime(stack, remainingUseTicks);
             if (chargeTime >= 10) {
                 int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() : 0;
-                this.applyCooldown(player, Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
+                this.applyItemCooldown(player, Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
                 stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
                 int ruptures = ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack);
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
@@ -159,10 +158,12 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        if (ConfigConstructor.holy_moonlight_ability_unbreaking_reduces_cooldown) {
-            return EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
-        }
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_id;
     }
 }

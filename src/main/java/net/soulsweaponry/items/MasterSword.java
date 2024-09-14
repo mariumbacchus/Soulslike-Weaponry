@@ -57,7 +57,12 @@ public class MasterSword extends ChargeToUseItem {
     }
 
     @Override
-    public int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return null;
     }
 }

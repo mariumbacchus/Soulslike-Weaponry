@@ -19,4 +19,14 @@ public class BluemoonShortsword extends MoonlightShortsword {
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_bluemoon_shortsword;
     }
+
+    @Override
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return ConfigConstructor.bluemoon_shortsword_enchant_reduces_cooldown;
+    }
+
+    @Override
+    public String getReduceCooldownEnchantId(ItemStack stack) {
+        return ConfigConstructor.bluemoon_shortsword_enchant_reduces_cooldown_id;
+    }
 }
