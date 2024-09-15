@@ -20,7 +20,6 @@ import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
@@ -205,8 +204,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      */
     public boolean isProjectileWhitelisted(Entity entity) {
         Identifier attackerId = EntityType.getId(entity.getType());
-        int index = Arrays.binarySearch(this.getWhitelistedProjectiles(), attackerId.getPath());
-        return index >= 0;
+        return List.of(this.getWhitelistedProjectiles()).contains(attackerId.getPath());
     }
 
     /**
