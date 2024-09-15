@@ -593,12 +593,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
     @Entry(min=0) public static float decaying_king_damage_modifier = 1f;
     @Entry(min=0) public static int decaying_king_xp = 500;
+    @Entry public static boolean decaying_king_disables_shields = true;
+    @Entry public static boolean decaying_king_is_fire_immune = true;
+    @Entry public static boolean decaying_king_is_undead = true;
+    @Entry public static String decaying_king_group_type = "UNDEAD";
 
     @Entry(min=1, max=1000000D) public static double returning_knight_health = 400D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
     @Entry(min=0) public static float returning_knight_damage_modifier = 1f;
     @Entry(min=0) public static int returning_knight_xp = 500;
+    @Entry public static String[] returning_knight_projectile_immunity_whitelist = {};
+    @Entry public static boolean returning_knight_disables_shields = true;
+    @Entry public static boolean returning_knight_is_fire_immune = true;
+    @Entry public static boolean returning_knight_is_undead = true;
+    @Entry public static String returning_knight_group_type = "UNDEAD";
 
     @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 200D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
@@ -606,15 +615,28 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
     @Entry public static int old_champions_remains_xp = 200;
+    @Entry public static boolean old_champions_remains_disables_shields = true;
+    @Entry public static boolean old_champions_remains_disables_shields_all_attacks = false;
+    @Entry public static boolean old_champions_remains_is_fire_immune = true;
+    @Entry public static boolean old_champions_remains_is_undead = true;
+    @Entry public static String old_champions_remains_group_type = "UNDEAD";
     @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 100D;
     @Entry public static float frenzied_shade_damage_modifier = 1f;
     @Entry public static int frenzied_shade_cooldown = 10;
     @Entry public static int frenzied_shade_xp = 400;
+    @Entry public static boolean frenzied_shade_disables_shields = false;
+    @Entry public static boolean frenzied_shade_is_fire_immune = true;
+    @Entry public static boolean frenzied_shade_is_undead = true;
+    @Entry public static String frenzied_shade_group_type = "UNDEAD";
 
     @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 400D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
     @Entry(min=0) public static int chaos_monarch_xp = 500;
+    @Entry public static boolean chaos_monarch_disables_shields = true;
+    @Entry public static boolean chaos_monarch_is_fire_immune = true;
+    @Entry public static boolean chaos_monarch_is_undead = true;
+    @Entry public static String chaos_monarch_group_type = "UNDEAD";
 
     @Entry(min=1, max=1000000D) public static double fallen_icon_health = 500D;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_1 = 30;
@@ -622,12 +644,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int fallen_icon_special_cooldown_ticks = 50;
     @Entry(min=0) public static float fallen_icon_damage_modifier = 1f;
     @Entry(min=0) public static int fallen_icon_xp = 600;
+    @Entry public static String[] fallen_icon_projectile_immunity_whitelist = {};
+    @Entry public static boolean fallen_icon_disables_shields = true;
+    @Entry public static boolean fallen_icon_is_fire_immune = true;
+    @Entry public static boolean fallen_icon_is_undead = false;
+    @Entry public static String fallen_icon_group_type = "DEFAULT";
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
     @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_1 = 0.8f;
     @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_2 = 0.6f;
     @Entry(min=0) public static int day_stalker_xp = 500;
+    @Entry public static boolean day_stalker_disables_shields = true;
+    @Entry public static boolean day_stalker_is_fire_immune = true;
+    @Entry public static boolean day_stalker_is_undead = false;
+    @Entry public static String day_stalker_group_type = "DEFAULT";
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_2 = 1D;
     @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_1 = 1D;
@@ -637,9 +668,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
     @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.1667f;
+    @Entry public static String[] night_prowler_projectile_immunity_whitelist = {};
     @Entry(min=0) public static float night_prowler_projectile_heal_amount = 5f;
     @Entry(min=0) public static double night_prowler_teleport_chance = 0.3D;
     @Entry(min=0) public static int night_prowler_xp = 500;
+    @Entry public static boolean night_prowler_disables_shields = true;
+    @Entry public static boolean night_prowler_is_fire_immune = true;
+    @Entry public static boolean night_prowler_is_undead = false;
+    @Entry public static String night_prowler_group_type = "DEFAULT";
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_2 = 1D;
     @Entry(min=0) public static double night_prowler_special_cooldown_modifier_phase_1 = 1D;

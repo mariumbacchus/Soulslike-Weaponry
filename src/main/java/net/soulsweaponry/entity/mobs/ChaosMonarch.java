@@ -248,22 +248,22 @@ public class ChaosMonarch extends BossEntity implements IAnimatable, IAnimationT
     
     @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.chaos_monarch_disables_shields;
     }
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.chaos_monarch_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return true;
+        return ConfigConstructor.chaos_monarch_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
+    public String getGroupId() {
+        return ConfigConstructor.chaos_monarch_group_type;
     }
 
     @Override
