@@ -55,8 +55,9 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         super(entityType, world, BossBar.Color.RED);
     }
 
+    @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.decaying_king_is_fire_immune;
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
@@ -214,16 +215,17 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isUndead() {
-        return true;
+        return ConfigConstructor.decaying_king_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
+    public String getGroupId() {
+        return ConfigConstructor.decaying_king_group_type;
     }
 
+    @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.decaying_king_disables_shields;
     }
 
     @Override

@@ -282,17 +282,17 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isUndead() {
-        return true;
+        return ConfigConstructor.old_champions_remains_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
+    public String getGroupId() {
+        return ConfigConstructor.old_champions_remains_group_type;
     }
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.old_champions_remains_is_fire_immune;
     }
 
     @Override
@@ -332,7 +332,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean disablesShield() {
-        return this.shouldDisableShield;
+        return ConfigConstructor.old_champions_remains_disables_shields && this.shouldDisableShield || ConfigConstructor.old_champions_remains_disables_shields_all_attacks;
     }
 
     public void updateDisableShield(boolean bl) {
