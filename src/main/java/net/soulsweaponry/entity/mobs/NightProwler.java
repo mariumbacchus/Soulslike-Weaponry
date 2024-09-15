@@ -318,22 +318,22 @@ public class NightProwler extends BossEntity implements IAnimatable {
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.night_prowler_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return false;
+        return ConfigConstructor.night_prowler_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.DEFAULT;
+    public String getGroupId() {
+        return ConfigConstructor.night_prowler_group_type;
     }
 
     @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.night_prowler_disables_shields;
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -462,8 +462,8 @@ public class NightProwler extends BossEntity implements IAnimatable {
                 }
             }
         }
-        if (this.isEmpowered() && source.isProjectile() &&
-                this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+        if (this.isEmpowered() && source.isProjectile() && !this.isProjectileWhitelisted(source)
+                && this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
             this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
             this.heal(ConfigConstructor.night_prowler_projectile_heal_amount);
             return false;
@@ -720,5 +720,10 @@ public class NightProwler extends BossEntity implements IAnimatable {
     @Override
     protected boolean shouldDropLoot() {
         return this.isPhaseTwo();
+    }
+
+    @Override
+    public String[] getWhitelistedProjectiles() {
+        return ConfigConstructor.night_prowler_projectile_immunity_whitelist;
     }
 }

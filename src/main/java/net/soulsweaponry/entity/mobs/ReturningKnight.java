@@ -269,7 +269,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
            return false;
         } else {
             Entity entity = source.getSource();
-            if (entity instanceof ProjectileEntity) {
+            if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
                 return false;
             }
             return super.damage(source, amount);
@@ -277,23 +277,28 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
     }
 
     @Override
+    public String[] getWhitelistedProjectiles() {
+        return ConfigConstructor.returning_knight_projectile_immunity_whitelist;
+    }
+
+    @Override
     public boolean disablesShield() {
-        return true;
+        return ConfigConstructor.returning_knight_disables_shields;
     }
 
     @Override
     public boolean isUndead() {
-        return true;
+        return ConfigConstructor.returning_knight_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.DEFAULT;
+    public String getGroupId() {
+        return ConfigConstructor.returning_knight_group_type;
     }
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.returning_knight_is_fire_immune;
     }
     
     @Override
@@ -324,7 +329,7 @@ public class ReturningKnight extends BossEntity implements IAnimatable, IAnimati
         Box chunkBox = this.getBoundingBox().expand(3);
         List<Entity> nearbyEntities = this.world.getOtherEntities(this, chunkBox);
         for (Entity entity : nearbyEntities) {
-            if (entity instanceof PersistentProjectileEntity projectile) {
+            if (entity instanceof PersistentProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
             }
         }
