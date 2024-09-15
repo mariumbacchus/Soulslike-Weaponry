@@ -333,22 +333,22 @@ public class NightShade extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return true;
+        return ConfigConstructor.frenzied_shade_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return true;
+        return ConfigConstructor.frenzied_shade_is_undead;
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.DEFAULT;
+    public String getGroupId() {
+        return ConfigConstructor.frenzied_shade_group_type;
     }
 
     @Override
     public boolean disablesShield() {
-        return false;
+        return ConfigConstructor.frenzied_shade_disables_shields;
     }
 
     @Override
