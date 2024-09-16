@@ -146,6 +146,11 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.darkin_blade_calculated_fall_target_max_launch_power;
+    }
+
+    @Override
     public float getMaxExpansion() {
         return ConfigConstructor.darkin_blade_calculated_fall_max_radius;
     }

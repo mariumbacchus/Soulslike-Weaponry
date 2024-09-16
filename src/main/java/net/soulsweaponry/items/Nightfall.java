@@ -196,6 +196,11 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.nightfall_calculated_fall_target_max_launch_power;
+    }
+
+    @Override
     public float getMaxExpansion() {
         return ConfigConstructor.nightfall_calculated_fall_max_radius;
     }
