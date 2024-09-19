@@ -61,6 +61,11 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.featherlight_calculated_fall_target_max_launch_power;
+    }
+
+    @Override
     public float getMaxExpansion() {
         return ConfigConstructor.featherlight_calculated_fall_max_radius;
     }
