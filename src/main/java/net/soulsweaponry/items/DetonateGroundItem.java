@@ -41,7 +41,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
             if (targets instanceof LivingEntity livingEntity) {
                 boolean canDamageTarget = livingEntity.damage(CustomDamageSource.obliterateDamageSource(user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
-                    livingEntity.addVelocity(0, fallDistance * this.getLaunchModifier(), 0);
+                    livingEntity.addVelocity(0, Math.min(fallDistance * this.getLaunchModifier(), this.getMaxLaunchPower()), 0);
                     if (this.shouldHeal()) user.heal(ConfigConstructor.lifesteal_item_base_healing - 1 + (ConfigConstructor.lifesteal_item_heal_scales ? power * this.getHealFromDamageModifier() : 0)); // power was prev. divided by 10
                     this.doCustomEffects(livingEntity, user);
                 }
@@ -65,6 +65,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
      */
     public abstract float getExpansionModifier();
     public abstract float getLaunchModifier();
+    public abstract float getMaxLaunchPower();
     public abstract float getMaxExpansion();
 
     /**

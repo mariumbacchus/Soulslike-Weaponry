@@ -127,6 +127,11 @@ public class CometSpear extends DetonateGroundItem implements IAnimatable{
     }
 
     @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.comet_spear_calculated_fall_target_max_launch_power;
+    }
+
+    @Override
     public float getMaxExpansion() {
         return ConfigConstructor.comet_spear_calculated_fall_max_radius;
     }

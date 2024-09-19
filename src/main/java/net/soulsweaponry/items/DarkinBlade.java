@@ -1,7 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -126,6 +124,11 @@ public class DarkinBlade extends UltraHeavyWeapon implements IAnimatable {
     @Override
     public float getLaunchModifier() {
         return ConfigConstructor.darkin_blade_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.darkin_blade_calculated_fall_target_max_launch_power;
     }
 
     @Override

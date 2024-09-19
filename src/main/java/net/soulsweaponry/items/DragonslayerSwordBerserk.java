@@ -2,8 +2,6 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -99,6 +97,11 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public float getLaunchModifier() {
         return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_max_launch_power;
     }
 
     @Override
