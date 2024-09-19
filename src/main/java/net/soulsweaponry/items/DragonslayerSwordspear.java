@@ -56,7 +56,10 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
                     List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
                     //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items too!
                     for (Entity nearbyEntity : nearbyEntities) {
-                        if (nearbyEntity instanceof LivingEntity target && !(nearbyEntity instanceof TameableEntity)) {
+                        if (nearbyEntity instanceof LivingEntity target) {
+                            if (nearbyEntity instanceof TameableEntity tamed && tamed.isTamed()) {
+                                continue;
+                            }
                             if (world.isSkyVisible(target.getBlockPos())) {
                                 for (i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
                                     LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
