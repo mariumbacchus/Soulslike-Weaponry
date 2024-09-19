@@ -45,7 +45,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
             int i = this.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
-                if (stack == user.getOffHandStack()) {
+                if (stack == user.getOffHandStack() || (WeaponUtil.isModLoaded("epicfight") && user.isSneaking())) {
                     float f = user.getYaw();
                     float g = user.getPitch();
                     float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
@@ -141,6 +141,11 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     @Override
     public float getLaunchModifier() {
         return ConfigConstructor.comet_spear_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.comet_spear_calculated_fall_target_max_launch_power;
     }
 
     @Override

@@ -4,7 +4,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -188,6 +187,11 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public float getLaunchModifier() {
         return ConfigConstructor.nightfall_calculated_fall_target_launch_modifier;
+    }
+
+    @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.nightfall_calculated_fall_target_max_launch_power;
     }
 
     @Override

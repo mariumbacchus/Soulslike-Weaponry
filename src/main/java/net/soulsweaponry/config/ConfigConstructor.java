@@ -284,7 +284,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_calculated_fall_max_radius = 100f;
     @Entry public static float comet_spear_calculated_fall_max_damage = 100f;
     @Entry public static float comet_spear_calculated_fall_height_increase_damage_modifier = 0.2f;
-    @Entry public static float comet_spear_calculated_fall_target_launch_modifier = 0.35f;
+    @Entry public static float comet_spear_calculated_fall_target_launch_modifier = 0.0125f;
+    @Entry public static float comet_spear_calculated_fall_target_max_launch_power = 1.1f;
     @Entry public static boolean comet_spear_calculated_fall_should_heal = false;
     @Entry public static float comet_spear_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int crucible_sword_normal_damage = 9;
@@ -303,7 +304,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String darkin_blade_ability_reduces_cooldown_id = "unbreaking";
     @Entry public static float darkin_blade_calculated_fall_base_radius = 3f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_radius_modifier = 1.75f;
-    @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.25f;
+    @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.04f;
+    @Entry public static float darkin_blade_calculated_fall_target_max_launch_power = 1.25f;
     @Entry public static float darkin_blade_calculated_fall_max_radius = 100f;
     @Entry public static float darkin_blade_calculated_fall_max_damage = 100f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_damage_modifier = 0.2f;
@@ -350,7 +352,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String heap_of_raw_iron_enchant_reduces_cooldown_id = "unbreaking";
     @Entry public static float heap_of_raw_iron_calculated_fall_base_radius = 2.5f;
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_radius_modifier = 1.6f;
-    @Entry public static float heap_of_raw_iron_calculated_fall_target_launch_modifier = 0.25f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_target_launch_modifier = 0.03f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_target_max_launch_power = 1.1f;
     @Entry public static float heap_of_raw_iron_calculated_fall_max_radius = 100f;
     @Entry public static float heap_of_raw_iron_calculated_fall_max_damage = 100f;
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_damage_modifier = 0.2f;
@@ -400,7 +403,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float featherlight_attack_speed = 1.6f;
     @Entry public static float featherlight_calculated_fall_base_radius = 2.5f;
     @Entry public static float featherlight_calculated_fall_height_increase_radius_modifier = 1.6f;
-    @Entry public static float featherlight_calculated_fall_target_launch_modifier = 0.20f;
+    @Entry public static float featherlight_calculated_fall_target_launch_modifier = 0.025f;
+    @Entry public static float featherlight_calculated_fall_target_max_launch_power = 1.05f;
     @Entry public static float featherlight_calculated_fall_max_radius = 100f;
     @Entry public static float featherlight_calculated_fall_max_damage = 100f;
     @Entry public static float featherlight_calculated_fall_height_increase_damage_modifier = 0.2f;
@@ -498,7 +502,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
     @Entry public static float nightfall_calculated_fall_base_radius = 3f;
     @Entry public static float nightfall_calculated_fall_height_increase_radius_modifier = 1.5f;
-    @Entry public static float nightfall_calculated_fall_target_launch_modifier = 0.30f;
+    @Entry public static float nightfall_calculated_fall_target_launch_modifier = 0.045f;
+    @Entry public static float nightfall_calculated_fall_target_max_launch_power = 1.35f;
     @Entry public static float nightfall_calculated_fall_max_radius = 100f;
     @Entry public static float nightfall_calculated_fall_max_damage = 100f;
     @Entry public static float nightfall_calculated_fall_height_increase_damage_modifier = 0.2f;
