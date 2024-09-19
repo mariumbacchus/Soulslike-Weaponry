@@ -96,6 +96,11 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
+    public float getMaxLaunchPower() {
+        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_max_launch_power;
+    }
+
+    @Override
     public float getMaxExpansion() {
         return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_radius;
     }
