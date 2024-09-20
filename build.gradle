@@ -65,6 +65,10 @@ dependencies {
 	modRuntimeOnly("maven.modrinth:better-combat:${project.better_combat}-fabric")
 	modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
 	modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
+	modRuntimeOnly("curse.maven:pufferfish_skills-${project.pufferfish_skills}")
+	modRuntimeOnly("curse.maven:pufferfish_attributes-${project.pufferfish_attributes}")
+	modRuntimeOnly("curse.maven:pufferfish_default_skills-${project.pufferfish_default_skills}")
+	//modRuntimeOnly("curse.maven:neat_health_bar-${project.neat_health_bar}")
 }
 
 loom {

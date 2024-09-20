@@ -5,13 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ArrowItemMixin",
+    "DamageSourcesMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "ModelInvoker",
-    "PersistentProjectileMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "WitherEntityMixin"
