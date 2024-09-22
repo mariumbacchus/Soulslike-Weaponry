@@ -70,7 +70,7 @@ public class ItemRegistry {
     public static final RegistryObject<Item> CHAOS_ROBES = registerItem("chaos_robes",() -> new ChaosSet(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> CHAOS_ORB = registerItem("chaos_orb", () -> new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
 
-    public static final RegistryObject<MusicDiscItem> CHUNGUS_DISC = registerItem("chungus_disc", () -> new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 112));
+    public static final RegistryObject<MusicDiscItem> CHUNGUS_DISC = registerItem("chungus_disc", () -> new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 2240));
 
     public static <I extends Item> RegistryObject<I> registerItem(String id, Supplier<I> item) {
         RegistryObject<I> registered = ITEMS.register(id, item);
