@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:moonlight_projectile",
+    "soulsweapons:big_moonlight_projectile",
+    "soulsweapons:vertical_moonlight_projectile",
+    "soulsweapons:sunlight_projectile_small",
+    "soulsweapons:sunlight_projectile_big",
+    "soulsweapons:vertical_sunlight_projectile",
+    "soulsweapons:swordspear_entity",
+    "soulsweapons:comet_spear_entity",
+    "soulsweapons:charged_arrow_entity",
+    "soulsweapons:silver_bullet_entity",
+    "soulsweapons:cannonball_entity_type",
+    "soulsweapons:leviathan_axe_entity",
+    "soulsweapons:mjolnir_entity",
+    "soulsweapons:freyr_sword_entity",
+    "soulsweapons:shadow_orb_entity",
+    "soulsweapons:draupnir_spear_entity",
+    "soulsweapons:dragon_staff_projectile",
+    "soulsweapons:withered_wabbajack_projectile",
+    "soulsweapons:chaos_skull",
+    "soulsweapons:growing_fireball",
+    "soulsweapons:night_skull",
+    "soulsweapons:fog_entity",
+    "soulsweapons:blackflame_snake_entity",
+    "soulsweapons:no_drag_wither_skull",
+    "soulsweapons:night_wave",
+    "soulsweapons:kraken_slayer_projectile",
+    "soulsweapons:moonlight_arrow",
+    "soulsweapons:arrow_storm_entity"
+  ]
+}

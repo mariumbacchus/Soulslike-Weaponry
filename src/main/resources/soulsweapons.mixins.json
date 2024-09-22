@@ -7,11 +7,11 @@
     "ArrowItemMixin",
     "BowItemMixin",
     "CrossbowItemMixin",
+    "DamageSourcesMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
-    "PersistentProjectileMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "WitherEntityMixin"
