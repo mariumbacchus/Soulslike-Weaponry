@@ -4,22 +4,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.*;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
@@ -56,13 +52,17 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && !getWorld().isClient) {
             this.discard();
         }
         if (this.isInLava() && this.age % 10 == 0) {
             this.damage(this.getDamageSources().magic(), 1f);
         }
+    }
+
+    @Override
+    public boolean isGlowing() {
+        return true;
     }
 
     @Override
