@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:moonstone_ore",
+    "soulsweapons:moonstone_ore_deepslate",
+    "soulsweapons:verglas_ore",
+    "soulsweapons:verglas_ore_deepslate"
+  ]
+}
