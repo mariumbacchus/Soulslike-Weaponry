@@ -7,8 +7,6 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,13 +52,17 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
             this.discard();
         }
         if (this.isInLava() && this.age % 10 == 0) {
             this.damage(DamageSource.MAGIC, 1f);
         }
+    }
+
+    @Override
+    public boolean isGlowing() {
+        return true;
     }
 
     @Override
