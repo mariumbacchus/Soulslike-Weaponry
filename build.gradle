@@ -50,6 +50,9 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 		exclude group: 'net.fabricmc', module: 'fabric-loader'
 	}
+	modRuntimeOnly("curse.maven:pufferfish_skills-${project.pufferfish_skills}")
+	modRuntimeOnly("curse.maven:pufferfish_attributes-${project.pufferfish_attributes}")
+	modRuntimeOnly("curse.maven:pufferfish_default_skills-${project.pufferfish_default_skills}")
 }
 
 loom {

@@ -54,13 +54,17 @@ public class EvilForlorn extends Forlorn {
     @Override
     public void tick() {
         super.tick();
-        this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0, false, false));
         if (this.world.getDifficulty() == Difficulty.PEACEFUL && !world.isClient) {
             this.discard();
         }
         if (this.isInLava() && this.age % 10 == 0) {
             this.damage(DamageSource.MAGIC, 1f);
         }
+    }
+
+    @Override
+    public boolean isGlowing() {
+        return true;
     }
 
     @Override
