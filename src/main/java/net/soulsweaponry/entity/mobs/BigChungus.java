@@ -3,12 +3,20 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +28,9 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public class BigChungus extends HostileEntity {
+
+    private static final TrackedData<Boolean> IS_BOSNIAN = DataTracker.registerData(BigChungus.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private boolean healthUpdated = false;
 
     public BigChungus(EntityType<? extends BigChungus> entityType, World world) {
         super(entityType, world);
@@ -33,13 +44,13 @@ public class BigChungus extends HostileEntity {
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
-    
+
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 14D)
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 14D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -92,5 +103,51 @@ public class BigChungus extends HostileEntity {
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
+
+    @Override
+    protected void mobTick() {
+        super.mobTick();
+        if (!this.healthUpdated) {
+            int rand = this.getRandom().nextInt(100);
+            this.setBosnian(rand == 1);
+            if (this.isBosnian()) {
+                this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50D);
+                this.setHealth(50f);
+            }
+            this.healthUpdated = true;
+        }
+    }
+
+    public boolean isBosnian() {
+        return this.dataTracker.get(IS_BOSNIAN);
+    }
+
+    public void setBosnian(boolean bl) {
+        this.dataTracker.set(IS_BOSNIAN, bl);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(IS_BOSNIAN, false);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("healthUpdated")) {
+            this.healthUpdated = nbt.getBoolean("healthUpdated");
+        }
+        if (nbt.contains("bosnian")) {
+            this.setBosnian(nbt.getBoolean("bosnian"));
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("healthUpdated", this.healthUpdated);
+        nbt.putBoolean("bosnian", this.isBosnian());
     }
 }

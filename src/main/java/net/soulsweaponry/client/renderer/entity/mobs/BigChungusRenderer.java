@@ -10,12 +10,11 @@ import net.soulsweaponry.events.ClientModBusEvents;
 public class BigChungusRenderer extends MobEntityRenderer<BigChungus, BigChungusModel<BigChungus>> {
 
     public BigChungusRenderer(Context context) {
-        super(context, new BigChungusModel<BigChungus>(context.getPart(ClientModBusEvents.BIG_CHUNGUS_LAYER)), 0.5f);
+        super(context, new BigChungusModel<>(context.getPart(ClientModBusEvents.BIG_CHUNGUS_LAYER)), 0.5f);
     }
 
     @Override
     public Identifier getTexture(BigChungus entity) {
-        return new Identifier("soulsweapons", "textures/entity/big_chungus.png");
+        return new Identifier("soulsweapons", "textures/entity/" + (entity.isBosnian() ? "bosnian_big_chungus.png" : "big_chungus.png"));
     }
-    
 }
