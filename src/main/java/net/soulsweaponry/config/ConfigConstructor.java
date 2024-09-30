@@ -444,6 +444,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static float kirkhammer_silver_sword_attack_speed = 1.6f;
     @Entry public static int kraken_slayer_damage = 7;
+    @Entry public static String kraken_slayer_bow_use_animation = "SPEAR";
     @Entry public static float kraken_slayer_max_velocity = 3f;
     @Entry public static int kraken_slayer_pull_time_ticks = 10;
     @Entry public static int kraken_slayer_crossbow_damage = 9;

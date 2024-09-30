@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "soulsweapons:item/kraken_slayer_standby"
+        "layer0": "soulsweapons:item/kraken_slayer"
     },
     "display": {
         "thirdperson_righthand": {
@@ -34,33 +34,5 @@
             "translation": [1, -1, 0],
             "scale": [1.3, 1.3, 1.3]
         }
-    },
-    "overrides": [
-        {
-            "predicate": {
-                "pulling": 1
-            },
-            "model": "soulsweapons:item/kraken_slayer_crossbow_0"
-        },
-        {
-            "predicate": {
-                "pulling": 1,
-                "pull": 0.58
-            },
-            "model": "soulsweapons:item/kraken_slayer_crossbow_1"
-        },
-        {
-            "predicate": {
-                "pulling": 1,
-                "pull": 1.0
-            },
-            "model": "soulsweapons:item/kraken_slayer_crossbow_2"
-        },
-        {
-            "predicate": {
-                "charged": 1
-            },
-            "model": "soulsweapons:item/kraken_slayer_crossbow_charged"
-        }
-    ]
+    }
 }

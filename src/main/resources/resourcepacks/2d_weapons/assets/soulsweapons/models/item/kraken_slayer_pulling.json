@@ -1,7 +1,7 @@
 {
     "parent": "soulsweapons:item/kraken_slayer",
     "textures": {
-        "layer0": "soulsweapons:item/kraken_slayer_1"
+        "layer0": "soulsweapons:item/kraken_slayer"
     },
     "display": {
         "thirdperson_righthand": {
