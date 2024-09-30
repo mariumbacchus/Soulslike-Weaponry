@@ -60,6 +60,14 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, "2D Weapon Models", ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "old_kraken_slayer_2d"), modContainer, "Old 2D Kraken Slayer Model", ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Old 2D Kraken Slayer Model resourcepack!");
+        });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "old_kraken_slayer_3d"), modContainer, "Old 3D Kraken Slayer Model", ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Old 3D Kraken Slayer Model resourcepack!");
+        });
 
         long end = System.currentTimeMillis();
         LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");
