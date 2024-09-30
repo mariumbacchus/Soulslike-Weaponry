@@ -15,13 +15,13 @@
             "scale": [ 2, 2, 1.25 ]
         },
         "firstperson_righthand": {
-            "rotation": [ -90, 0, -55 ],
-            "translation": [ 3, -8, 0],
+            "rotation": [ -90, 0, -45 ],
+            "translation": [ 1, -8, 0],
             "scale": [ 4, 4, 1.25 ]
         },
         "firstperson_lefthand": {
-            "rotation": [ -90, 0, 55 ],
-            "translation": [ 3, -8, 0],
+            "rotation": [ -90, 0, 45 ],
+            "translation": [ 0, -8, 0],
             "scale": [ 4, 4, 1.25 ]
         },
         "gui": {
