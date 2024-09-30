@@ -1,0 +1,54 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "soulsweapons:item/kraken_slayer"
+    },
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ -80, 260, -40 ],
+            "translation": [ -1, -2, -2.5 ],
+            "scale": [ 1.2, 1.2, 1.2 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ -80, -280, 40 ],
+            "translation": [ -1, -2, -2.5 ],
+            "scale": [ 1.2, 1.2, 1.2 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, -90, 25 ],
+            "translation": [ 12, 3.2, -3],
+            "scale": [ 1.2, 1.2, 1.2 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 90, -25 ],
+            "translation": [ 2, 3.2, -3],
+            "scale": [ 1.2, 1.2, 1.2 ]
+        },
+        "head": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.8, 0.8, 0.8]
+        },
+        "gui": {
+            "rotation": [0, 0, 0],
+            "translation": [-1.15, 1.5, 0],
+            "scale": [1.1, 1.1, 1.1]
+        }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "pulling": 1,
+                "pull": 0.65
+            },
+            "model": "soulsweapons:item/kraken_slayer_1"
+        },
+        {
+            "predicate": {
+                "pulling": 1,
+                "pull": 0.9
+            },
+            "model": "soulsweapons:item/kraken_slayer_2"
+        }
+    ]
+}

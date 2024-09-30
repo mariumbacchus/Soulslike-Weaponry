@@ -61,12 +61,29 @@ public class ModBusEvents {
                     return;
                 }
                 IModFile file = info.getFile();
+
                 Path resourcePath = file.findResource("resourcepacks/2d_weapons");
                 PathResourcePack pack = new PathResourcePack(file.getFileName() + ":" + resourcePath, resourcePath);
                 PackResourceMetadata metadata = pack.parseMetadata(PackResourceMetadata.READER);
                 event.addRepositorySource((consumer, constructor) -> {
                     consumer.accept(constructor.create("builtin/2d_weapons", new LiteralText("2D Weapon Models"), false,
                             () -> pack, metadata, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                });
+
+                Path pathKrakenSlayer2D = file.findResource("resourcepacks/old_kraken_slayer_2d");
+                PathResourcePack packKrakenSlayer2D = new PathResourcePack(file.getFileName() + ":" + pathKrakenSlayer2D, pathKrakenSlayer2D);
+                PackResourceMetadata metadataKrakenSlayer2D = packKrakenSlayer2D.parseMetadata(PackResourceMetadata.READER);
+                event.addRepositorySource((consumer, constructor) -> {
+                    consumer.accept(constructor.create("builtin/old_kraken_slayer_2d", new LiteralText("Old 2D Kraken Slayer Model"), false,
+                            () -> packKrakenSlayer2D, metadataKrakenSlayer2D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                });
+
+                Path pathKrakenSlayer3D = file.findResource("resourcepacks/old_kraken_slayer_3d");
+                PathResourcePack packKrakenSlayer3D = new PathResourcePack(file.getFileName() + ":" + pathKrakenSlayer3D, pathKrakenSlayer3D);
+                PackResourceMetadata metadataKrakenSlayer3D = packKrakenSlayer3D.parseMetadata(PackResourceMetadata.READER);
+                event.addRepositorySource((consumer, constructor) -> {
+                    consumer.accept(constructor.create("builtin/old_kraken_slayer_3d", new LiteralText("Old 3D Kraken Slayer Model"), false,
+                            () -> packKrakenSlayer3D, metadataKrakenSlayer3D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
                 });
             }
         }
