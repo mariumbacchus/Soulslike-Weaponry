@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "soulsweapons:item/kraken_slayer_0"
+        "layer0": "soulsweapons:item/kraken_slayer"
     },
     "display": {
         "thirdperson_righthand": {
@@ -23,6 +23,11 @@
             "rotation": [ -90, 0, 55 ],
             "translation": [ 3, -2, 0],
             "scale": [ 4, 4, 1.25 ]
+        },
+        "head": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.8, 0.8, 0.8]
         },
         "gui": {
             "rotation": [0, 0, 0],
