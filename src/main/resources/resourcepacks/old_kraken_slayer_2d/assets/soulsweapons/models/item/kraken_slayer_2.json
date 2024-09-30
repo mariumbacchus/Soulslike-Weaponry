@@ -1,5 +1,5 @@
 {
-    "parent": "soulsweapons:item/kraken_slayer_crossbow_0",
+    "parent": "soulsweapons:item/kraken_slayer",
     "textures": {
         "layer0": "soulsweapons:item/kraken_slayer_1"
     }

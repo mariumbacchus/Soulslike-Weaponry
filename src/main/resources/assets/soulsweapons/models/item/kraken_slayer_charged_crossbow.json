@@ -867,22 +867,22 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [90, 0, 0],
-			"translation": [0, 0, 1.75],
+			"rotation": [12, -5, 2],
+			"translation": [0, -2.5, -0.75],
 			"scale": [0.7, 0.7, 0.7]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [90, 0, 0],
-			"translation": [0, 0, 1.75],
+			"rotation": [12, -5, 2],
+			"translation": [0, -2.5, -0.75],
 			"scale": [0.7, 0.7, 0.7]
 		},
 		"firstperson_righthand": {
-			"rotation": [0, 4, 0],
-			"translation": [4, 1.5, 9]
+			"translation": [4, 1.5, 9],
+			"scale": [0.7, 0.7, 0.7]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, 4, 0],
-			"translation": [4, 1.5, 6.75]
+			"translation": [4, 1.5, 6.75],
+			"scale": [0.7, 0.7, 0.7]
 		},
 		"ground": {
 			"rotation": [45, 0, 0],
@@ -1037,28 +1037,6 @@
 					]
 				}
 			]
-		}
-	],
-	"overrides": [
-		{
-			"predicate": {
-				"pulling": 1
-			},
-			"model": "soulsweapons:item/kraken_slayer_pulling"
-		},
-		{
-			"predicate": {
-				"pulling": 1,
-				"pull": 0.65
-			},
-			"model": "soulsweapons:item/kraken_slayer_pull_1"
-		},
-		{
-			"predicate": {
-				"pulling": 1,
-				"pull": 0.9
-			},
-			"model": "soulsweapons:item/kraken_slayer_pull_2"
 		}
 	]
 }

@@ -5,6 +5,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.projectile_damage.api.IProjectileWeapon;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -61,5 +62,15 @@ public class KrakenSlayer extends ModdedBow {
     @Override
     public String getReduceCooldownEnchantId(ItemStack stack) {
         return null;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        for (UseAction action : UseAction.values()) {
+            if (action.toString().equals(ConfigConstructor.kraken_slayer_bow_use_animation)) {
+                return action;
+            }
+        }
+        return UseAction.SPEAR;
     }
 }
