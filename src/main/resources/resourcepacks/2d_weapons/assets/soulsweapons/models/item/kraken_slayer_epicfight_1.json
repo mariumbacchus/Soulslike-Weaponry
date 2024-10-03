@@ -1,0 +1,6 @@
+{
+    "parent": "soulsweapons:item/kraken_slayer_epicfight_0",
+    "textures": {
+        "layer0": "soulsweapons:item/kraken_slayer_1"
+    }
+}

@@ -125,7 +125,7 @@
   "overrides": [
     {
       "predicate": {
-        "bettercombat_hold": 1
+        "bettercombat": 1
       },
       "model": "soulsweapons:item/forlorn_scythe_bettercombat"
     }

@@ -9,11 +9,11 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class PredicateRegistry {
 
@@ -36,11 +36,12 @@ public class PredicateRegistry {
         PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD.get());
         PredicateRegistry.registerThrowing(WeaponRegistry.DRAUPNIR_SPEAR.get());
 
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SOUL_REAPER.get());
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.FORLORN_SCYTHE.get());
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRE.get());
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get());
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRIME.get());
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SOUL_REAPER.get(), "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.FORLORN_SCYTHE.get(), "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRE.get(), "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE.get(), "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRIME.get(), "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER.get(), "epicfight");
 
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get());
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD.get());
@@ -133,13 +134,8 @@ public class PredicateRegistry {
         });
     }
 
-    protected static void registerBetterCombatHold(Item item) {
-        ModelPredicateProviderRegistry.register(item , new Identifier("bettercombat_hold"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (FMLLoader.getLoadingModList().getModFileById("bettercombat") != null) {
-                return 1.0F;
-            }
-            return 0.0f;
-        });
+    protected static void registerOtherModIsLoaded(Item item, String id) {
+        ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
     }
 
    protected static void registerCharged(Item item) {

@@ -53,6 +53,16 @@ public class ModBusEvents {
             var pack = ResourcePackProfile.create("builtin/2d_weapons", Text.literal("2D Weapon Models"), false,
                     (path) -> new PathPackResources(path, true, resourcePath), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
             event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
+
+            var pathKrakenSlayer2D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/old_kraken_slayer_2d");
+            var packKrakenSlayer2D = ResourcePackProfile.create("builtin/old_kraken_slayer_2d", Text.literal("Old 2D Kraken Slayer Model"), false,
+                    (path) -> new PathPackResources(path, true, pathKrakenSlayer2D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packKrakenSlayer2D));
+
+            var pathKrakenSlayer3D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/old_kraken_slayer_3d");
+            var packKrakenSlayer3D = ResourcePackProfile.create("builtin/old_kraken_slayer_3d", Text.literal("Old 3D Kraken Slayer Model"), false,
+                    (path) -> new PathPackResources(path, true, pathKrakenSlayer3D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packKrakenSlayer3D));
         }
     }
 
