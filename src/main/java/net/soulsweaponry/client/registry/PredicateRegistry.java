@@ -40,11 +40,12 @@ public class PredicateRegistry {
         PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD);
         PredicateRegistry.registerThrowing(WeaponRegistry.DRAUPNIR_SPEAR);
 
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SOUL_REAPER);
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.FORLORN_SCYTHE);
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRE);
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.DARKIN_SCYTHE_PRIME);
-        PredicateRegistry.registerBetterCombatHold(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE);
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SOUL_REAPER, "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.FORLORN_SCYTHE, "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRE, "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE, "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRIME, "bettercombat");
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER, "epicfight");
 
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
@@ -125,13 +126,8 @@ public class PredicateRegistry {
         });
     }
 
-    protected static void registerBetterCombatHold(Item item) {
-        ModelPredicateProviderRegistry.register(item , new Identifier("bettercombat_hold"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (FabricLoader.getInstance().isModLoaded("bettercombat")) {
-                return 1.0F;
-            }
-            return 0.0f;
-        });
+    protected static void registerOtherModIsLoaded(Item item, String id) {
+        ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> FabricLoader.getInstance().isModLoaded(id) ? 1f : 0f);
     }
 
     protected static void registerCharged(Item item) {

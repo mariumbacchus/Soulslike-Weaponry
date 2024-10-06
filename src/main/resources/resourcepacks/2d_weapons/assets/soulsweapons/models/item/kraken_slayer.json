@@ -55,6 +55,35 @@
                 "pull": 0.9
             },
             "model": "soulsweapons:item/kraken_slayer_2"
+        },
+        {
+            "predicate": {
+                "epicfight": 1.0
+            },
+            "model": "soulsweapons:item/kraken_slayer_epicfight"
+        },
+        {
+            "predicate": {
+                "epicfight": 1.0,
+                "pulling": 1
+            },
+            "model": "soulsweapons:item/kraken_slayer_epicfight_0"
+        },
+        {
+            "predicate": {
+                "epicfight": 1.0,
+                "pulling": 1,
+                "pull": 0.65
+            },
+            "model": "soulsweapons:item/kraken_slayer_epicfight_1"
+        },
+        {
+            "predicate": {
+                "epicfight": 1.0,
+                "pulling": 1,
+                "pull": 0.9
+            },
+            "model": "soulsweapons:item/kraken_slayer_epicfight_2"
         }
     ]
 }
