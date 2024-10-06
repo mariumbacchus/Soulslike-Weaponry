@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -31,7 +30,6 @@ public class SoulsWeaponry implements ModInitializer {
 
     public static final String ModId = "soulsweapons";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
-    public static ItemGroup MAIN_GROUP;
     public static final ArrayList<Item> ITEM_GROUP_LIST = new ArrayList<>();
 
     @Override
@@ -61,12 +59,12 @@ public class SoulsWeaponry implements ModInitializer {
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "old_kraken_slayer_2d"), modContainer, Text.literal("Old 2D Kraken Slayer Model"), ResourcePackActivationType.NORMAL);
-            LOGGER.info("Successfully registered built-in Old 2D Kraken Slayer Model resourcepack!");
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_2d"), modContainer, Text.literal("Legacy 2D Models"), ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Legacy 2D Models resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "old_kraken_slayer_3d"), modContainer, Text.literal("Old 3D Kraken Slayer Model"), ResourcePackActivationType.NORMAL);
-            LOGGER.info("Successfully registered built-in Old 3D Kraken Slayer Model resourcepack!");
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_3d"), modContainer, Text.literal("Legacy 3D Models"), ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Old Legacy 3D Models resourcepack!");
         });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
