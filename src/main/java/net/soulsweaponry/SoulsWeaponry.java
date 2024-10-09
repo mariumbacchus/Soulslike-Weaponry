@@ -64,7 +64,7 @@ public class SoulsWeaponry implements ModInitializer {
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_3d"), modContainer, Text.literal("Legacy 3D Models"), ResourcePackActivationType.NORMAL);
-            LOGGER.info("Successfully registered built-in Old Legacy 3D Models resourcepack!");
+            LOGGER.info("Successfully registered built-in Legacy 3D Models resourcepack!");
         });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
