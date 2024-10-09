@@ -54,15 +54,15 @@ public class ModBusEvents {
                     (path) -> new PathPackResources(path, true, resourcePath), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
             event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
 
-            var pathKrakenSlayer2D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/old_kraken_slayer_2d");
-            var packKrakenSlayer2D = ResourcePackProfile.create("builtin/old_kraken_slayer_2d", Text.literal("Old 2D Kraken Slayer Model"), false,
-                    (path) -> new PathPackResources(path, true, pathKrakenSlayer2D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packKrakenSlayer2D));
+            var pathLegacy2D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/legacy_2d");
+            var packLegacy2D = ResourcePackProfile.create("builtin/legacy_2d", Text.literal("Legacy 2D Models"), false,
+                    (path) -> new PathPackResources(path, true, pathLegacy2D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packLegacy2D));
 
-            var pathKrakenSlayer3D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/old_kraken_slayer_3d");
-            var packKrakenSlayer3D = ResourcePackProfile.create("builtin/old_kraken_slayer_3d", Text.literal("Old 3D Kraken Slayer Model"), false,
-                    (path) -> new PathPackResources(path, true, pathKrakenSlayer3D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packKrakenSlayer3D));
+            var pathLegacy3D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/legacy_3d");
+            var packLegacy3D = ResourcePackProfile.create("builtin/legacy_3d", Text.literal("Legacy 3D Models"), false,
+                    (path) -> new PathPackResources(path, true, pathLegacy3D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packLegacy3D));
         }
     }
 
