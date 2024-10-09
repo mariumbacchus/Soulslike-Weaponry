@@ -45,13 +45,19 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        if (Screen.hasShiftDown()) {
+        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+        boolean showInfo = !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
+        if (showInfo) {
             for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
                 WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            if (epicFight) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.alt"));
+            } else {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            }
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
