@@ -7,20 +7,18 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
-import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;
 import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
-import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 
@@ -42,7 +40,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.OLEANDER);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockRegistry.VERGLAS_BLOCK);
 
-        EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, (context) -> new SoulReaperGhostRenderer(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayers.ZOMBIE)), 0.5f));
+        EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, SoulReaperGhostRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);

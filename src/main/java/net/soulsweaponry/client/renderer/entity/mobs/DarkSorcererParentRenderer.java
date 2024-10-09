@@ -15,6 +15,7 @@ public class DarkSorcererParentRenderer<T extends DarkSorcerer, M extends DarkSo
         this.addFeature(new ArmorFeatureRenderer<>(this, legsArmorModel, bodyArmorModel, ctx.getModelManager()));
     }
 
+    @Override
     public Identifier getTexture(T entity) {
         return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
     }

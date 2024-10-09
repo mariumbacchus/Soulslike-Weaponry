@@ -11,11 +11,10 @@ public class ForlornRenderer extends ForlornParentRenderer<Forlorn, ForlornModel
 
     public ForlornRenderer(Context context) {
         super(context, new ForlornModel<>(context.getPart(EntityModelLayers.ZOMBIE)), new ForlornModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new ForlornModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
-        this.addFeature(new ForlornFeatureRenderer<>(this, context.getModelLoader()));
         this.shadowRadius = 0.7f;
     }
-    
+
     public Identifier getTexture(Forlorn remnant) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/forlorn_inner.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
     }
 }
