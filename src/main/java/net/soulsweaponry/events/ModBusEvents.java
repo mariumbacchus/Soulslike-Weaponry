@@ -70,20 +70,20 @@ public class ModBusEvents {
                             () -> pack, metadata, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
                 });
 
-                Path pathKrakenSlayer2D = file.findResource("resourcepacks/old_kraken_slayer_2d");
-                PathResourcePack packKrakenSlayer2D = new PathResourcePack(file.getFileName() + ":" + pathKrakenSlayer2D, pathKrakenSlayer2D);
-                PackResourceMetadata metadataKrakenSlayer2D = packKrakenSlayer2D.parseMetadata(PackResourceMetadata.READER);
+                Path pathLegacy2D = file.findResource("resourcepacks/legacy_2d");
+                PathResourcePack packLegacy2D = new PathResourcePack(file.getFileName() + ":" + pathLegacy2D, pathLegacy2D);
+                PackResourceMetadata metadataLegacy2D = packLegacy2D.parseMetadata(PackResourceMetadata.READER);
                 event.addRepositorySource((consumer, constructor) -> {
-                    consumer.accept(constructor.create("builtin/old_kraken_slayer_2d", new LiteralText("Old 2D Kraken Slayer Model"), false,
-                            () -> packKrakenSlayer2D, metadataKrakenSlayer2D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                    consumer.accept(constructor.create("builtin/legacy_2d", new LiteralText("Legacy 2D Models"), false,
+                            () -> packLegacy2D, metadataLegacy2D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
                 });
 
-                Path pathKrakenSlayer3D = file.findResource("resourcepacks/old_kraken_slayer_3d");
-                PathResourcePack packKrakenSlayer3D = new PathResourcePack(file.getFileName() + ":" + pathKrakenSlayer3D, pathKrakenSlayer3D);
-                PackResourceMetadata metadataKrakenSlayer3D = packKrakenSlayer3D.parseMetadata(PackResourceMetadata.READER);
+                Path pathLegacy3D = file.findResource("resourcepacks/legacy_3d");
+                PathResourcePack packLegacy3D = new PathResourcePack(file.getFileName() + ":" + pathLegacy3D, pathLegacy3D);
+                PackResourceMetadata metadataLegacy3D = packLegacy3D.parseMetadata(PackResourceMetadata.READER);
                 event.addRepositorySource((consumer, constructor) -> {
-                    consumer.accept(constructor.create("builtin/old_kraken_slayer_3d", new LiteralText("Old 3D Kraken Slayer Model"), false,
-                            () -> packKrakenSlayer3D, metadataKrakenSlayer3D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                    consumer.accept(constructor.create("builtin/legacy_3d", new LiteralText("Legacy 3D Models"), false,
+                            () -> packLegacy3D, metadataLegacy3D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
                 });
             }
         }
