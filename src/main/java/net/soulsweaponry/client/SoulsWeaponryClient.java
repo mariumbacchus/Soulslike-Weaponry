@@ -7,18 +7,19 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
-import net.soulsweaponry.client.model.entity.mobs.SoulReaperGhostModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.client.registry.EntityModelRegistry;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.client.registry.ParticleClientRegistry;
 import net.soulsweaponry.client.registry.PredicateRegistry;
-import net.soulsweaponry.client.renderer.armor.*;
+import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
+import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
+import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
 import net.soulsweaponry.client.renderer.entity.mobs.SoulReaperGhostRenderer;
 import net.soulsweaponry.client.renderer.item.*;
 import net.soulsweaponry.networking.PacketRegistry;
@@ -70,7 +71,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         GeoArmorRenderer.registerArmorRenderer(new WitheredArmorRenderer(), ItemRegistry.WITHERED_CHEST);
         GeoArmorRenderer.registerArmorRenderer(new WitheredArmorRenderer(), ItemRegistry.ENHANCED_WITHERED_CHEST);
 
-        EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, (context) -> new SoulReaperGhostRenderer(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayers.ZOMBIE)), 0.5f));
+        EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, SoulReaperGhostRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);
