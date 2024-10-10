@@ -7,16 +7,12 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.RemnantModel;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class RemnantRenderer extends GhostParentRenderer<Remnant, RemnantModel<Remnant>>{
     
     public RemnantRenderer(Context context) {
         super(context, new RemnantModel<>(context.getPart(EntityModelLayers.ZOMBIE)), new RemnantModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new RemnantModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
-        if (!WeaponUtil.isModLoaded("epicfight")) {
-            this.addFeature(new RemnantFeatureRenderer<>(this, context.getModelLoader()));
-        }
         this.shadowRadius = 0.7f;
     }
 
