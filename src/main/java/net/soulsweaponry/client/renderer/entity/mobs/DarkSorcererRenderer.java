@@ -1,17 +1,17 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.DarkSorcererModel;
+import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 
 public class DarkSorcererRenderer extends DarkSorcererParentRenderer<DarkSorcerer, DarkSorcererModel<DarkSorcerer>>{
 
     public DarkSorcererRenderer(Context context) {
-        super(context, new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE)),
-                new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_INNER_ARMOR)), new DarkSorcererModel<>(context.getPart(EntityModelLayers.ZOMBIE_OUTER_ARMOR)));
+        super(context, new DarkSorcererModel<>(context.getPart(EntityModelLayerModRegistry.DARK_SORCERER_LAYER)),
+                new DarkSorcererModel<>(context.getPart(EntityModelLayerModRegistry.DARK_SORCERER_INNER_ARMOR)), new DarkSorcererModel<>(context.getPart(EntityModelLayerModRegistry.DARK_SORCERER_OUTER_ARMOR)));
     }
 
     public Identifier getTexture(DarkSorcerer remnant) {

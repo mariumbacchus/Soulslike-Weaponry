@@ -63,6 +63,11 @@ public class ModBusEvents {
             var packLegacy3D = ResourcePackProfile.create("builtin/legacy_3d", Text.literal("Legacy 3D Models"), false,
                     (path) -> new PathPackResources(path, true, pathLegacy3D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
             event.addRepositorySource((packConsumer) -> packConsumer.accept(packLegacy3D));
+
+            var pathFACompat = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/fresh_animations_compat");
+            var packFACompat = ResourcePackProfile.create("builtin/fresh_animations_compat", Text.literal("Fresh Animations Compat."), false,
+                    (path) -> new PathPackResources(path, true, pathFACompat), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packFACompat));
         }
     }
 
