@@ -32,8 +32,4 @@ public class SoulReaperGhostModel <T extends SoulReaperGhost> extends BipedEntit
             this.rightArm.pivotY = 5.2F;
         }
     }
-
-    public boolean isAttacking(T entity) {
-        return entity.isAttacking();
-    }
 }

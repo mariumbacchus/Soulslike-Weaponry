@@ -11,10 +11,6 @@ public class DarkSorcererModel <T extends DarkSorcerer> extends BipedEntityModel
         super(root);
     }
 
-    public boolean isAttacking(T entity) {
-        return entity.isAttacking();
-    }
-
     public void setAngles(T entity, float f, float g, float h, float i, float j) {
         super.setAngles(entity, f, g, h, i, j);
         if (entity.getBeaming()) {

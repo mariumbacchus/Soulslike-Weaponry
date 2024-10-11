@@ -66,6 +66,10 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_3d"), modContainer, Text.literal("Legacy 3D Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Legacy 3D Models resourcepack!");
         });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "fresh_animations_compat"), modContainer, Text.literal("Fresh Animations Compat."), ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Fresh Animations Compat. resourcepack!");
+        });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.RARE)), "test_item");
