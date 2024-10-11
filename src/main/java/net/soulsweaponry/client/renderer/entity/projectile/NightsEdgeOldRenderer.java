@@ -6,8 +6,8 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;
+import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 
 public class NightsEdgeOldRenderer extends EntityRenderer<NightsEdge> {
@@ -16,7 +16,7 @@ public class NightsEdgeOldRenderer extends EntityRenderer<NightsEdge> {
 
     public NightsEdgeOldRenderer(EntityRendererFactory.Context context) {
         super(context);
-        this.model = new NightsEdgeOldModel(context.getPart(SoulsWeaponryClient.NIGHTS_EDGE_LAYER));
+        this.model = new NightsEdgeOldModel(context.getPart(EntityModelLayerModRegistry.NIGHTS_EDGE_LAYER));
     }
 
     @Override

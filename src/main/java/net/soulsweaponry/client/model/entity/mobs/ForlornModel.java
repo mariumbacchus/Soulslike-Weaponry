@@ -11,10 +11,6 @@ public class ForlornModel <T extends Forlorn> extends BipedEntityModel<T>{
     public ForlornModel(ModelPart root) {
         super(root);
     }
-    
-    public boolean isAttacking(T entity) {
-        return entity.isAttacking();
-    }
 
     public void setAngles(T entity, float f, float g, float h, float i, float j) {
         super.setAngles((T)entity, f, g, h, i, j);
