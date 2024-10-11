@@ -68,6 +68,10 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_3d"), modContainer, "Legacy 3D Models", ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Legacy 3D Models resourcepack!");
         });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "fresh_animations_compat"), modContainer, "Fresh Animations Compat.", ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Fresh Animations Compat. resourcepack!");
+        });
 
         long end = System.currentTimeMillis();
         LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");

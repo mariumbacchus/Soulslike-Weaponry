@@ -64,5 +64,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.ARROW_STORM_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.HOLY_MOONLIGHT_PILLAR, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.WARMUP_LIGHTNING, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.SOUL_REAPER_GHOST, SoulReaperGhostRenderer::new);
     }
 }
