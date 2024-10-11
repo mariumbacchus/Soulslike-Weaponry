@@ -45,12 +45,8 @@ public class ClientModBusEvents {
         MinecraftClient.getInstance().particleManager.registerFactory(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Factory::new);
     }
 
-    public static final EntityModelLayer BIG_CHUNGUS_LAYER = new EntityModelLayer(new Identifier(SoulsWeaponry.ModId, "big_chungus"), "main");
-    public static final EntityModelLayer DRAGONSLAYER_SWORDSPEAR_LAYER = new EntityModelLayer(new Identifier(SoulsWeaponry.ModId, "swordspear_entity"), "main");
-
     @SubscribeEvent
     public static void registerLayerDefinition(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
-        event.registerLayerDefinition(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);
+        EntityModelLayerModRegistry.initClient(event);
     }
 }

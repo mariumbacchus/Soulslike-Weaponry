@@ -85,6 +85,14 @@ public class ModBusEvents {
                     consumer.accept(constructor.create("builtin/legacy_3d", new LiteralText("Legacy 3D Models"), false,
                             () -> packLegacy3D, metadataLegacy3D, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
                 });
+
+                Path pathFACompat = file.findResource("resourcepacks/fresh_animations_compat");
+                PathResourcePack packFACompat = new PathResourcePack(file.getFileName() + ":" + pathFACompat, pathFACompat);
+                PackResourceMetadata metadataFACompat = packFACompat.parseMetadata(PackResourceMetadata.READER);
+                event.addRepositorySource((consumer, constructor) -> {
+                    consumer.accept(constructor.create("builtin/fresh_animations_compat", new LiteralText("Fresh Animations Compat."), false,
+                            () -> packFACompat, metadataFACompat, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.PACK_SOURCE_BUILTIN, false));
+                });
             }
         }
         catch (IOException ex) {

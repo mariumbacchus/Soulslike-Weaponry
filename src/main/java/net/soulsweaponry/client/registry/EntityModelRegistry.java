@@ -11,7 +11,6 @@ import net.soulsweaponry.registry.EntityRegistry;
 public class EntityModelRegistry {
 
     public static void register() {
-        EntityRenderers.register(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhostRenderer::new);
         EntityRenderers.register(EntityRegistry.WITHERED_DEMON.get(), WitheredDemonRenderer::new);
         EntityRenderers.register(EntityRegistry.ACCURSED_LORD_BOSS.get(), AccursedLordBossRenderer::new);
         EntityRenderers.register(EntityRegistry.CHAOS_MONARCH.get(), ChaosMonarchRenderer::new);
@@ -65,5 +64,6 @@ public class EntityModelRegistry {
         EntityRenderers.register(EntityRegistry.ARROW_STORM_ENTITY.get(), EmptyEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), EmptyEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.WARMUP_LIGHTNING.get(), EmptyEntityRenderer::new);
+        EntityRenderers.register(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhostRenderer::new);
     }
 }
