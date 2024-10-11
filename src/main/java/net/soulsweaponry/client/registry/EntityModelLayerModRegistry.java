@@ -28,10 +28,12 @@ public class EntityModelLayerModRegistry {
     public static final EntityModelLayer DARK_SORCERER_INNER_ARMOR = createInnerArmor("dark_sorcerer");
     public static final EntityModelLayer FORLORN_INNER_ARMOR = createInnerArmor("forlorn");
     public static final EntityModelLayer REMNANT_INNER_ARMOR = createInnerArmor("remnant");
+    public static final EntityModelLayer SOUL_REAPER_GHOST_INNER_ARMOR = createInnerArmor("soul_reaper_ghost");
 
     public static final EntityModelLayer DARK_SORCERER_OUTER_ARMOR = createOuterArmor("dark_sorcerer");
     public static final EntityModelLayer FORLORN_OUTER_ARMOR = createOuterArmor("forlorn");
     public static final EntityModelLayer REMNANT_OUTER_ARMOR = createOuterArmor("remnant");
+    public static final EntityModelLayer SOUL_REAPER_GHOST_OUTER_ARMOR = createOuterArmor("soul_reaper_ghost");
 
     public static void initClient() {
         EntityModelLayerRegistry.registerModelLayer(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
@@ -46,10 +48,12 @@ public class EntityModelLayerModRegistry {
         registerBipedInnerArmor(DARK_SORCERER_INNER_ARMOR);
         registerBipedInnerArmor(FORLORN_INNER_ARMOR);
         registerBipedInnerArmor(REMNANT_INNER_ARMOR);
+        registerBipedInnerArmor(SOUL_REAPER_GHOST_INNER_ARMOR);
 
         registerBipedOuterArmor(DARK_SORCERER_OUTER_ARMOR);
         registerBipedOuterArmor(FORLORN_OUTER_ARMOR);
         registerBipedOuterArmor(REMNANT_OUTER_ARMOR);
+        registerBipedOuterArmor(SOUL_REAPER_GHOST_OUTER_ARMOR);
     }
 
     private static EntityModelLayer createOuterArmor(String id) {
