@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUltraHeavy {
@@ -26,5 +27,10 @@ public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUl
             this.gainStrength(attacker);
         }
         return super.postHit(stack, target, attacker);
+    }
+
+    @Override
+    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
+        return ConfigConstructor.ultra_heavy_disables_shields && this.isHeavy;
     }
 }
