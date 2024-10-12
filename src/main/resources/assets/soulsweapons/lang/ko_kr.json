@@ -598,6 +598,7 @@
     "tooltip.soulsweapons.heavy_weapon_description_3": "장착된 무기에 따라 독특한 지면 폭발이 발생합니다.",
     "tooltip.soulsweapons.heavy_weapon_description_4": "- 이 무기에 §d기절§r 마법 부여가 있으면, %s 배로",
     "tooltip.soulsweapons.heavy_weapon_description_5": "기본 §f자세 상실§r효과가 증가합니다.",
+    "tooltip.soulsweapons.heavy_weapon_description_6": "- This weapon disables shields.",
 
     "tooltip.soulsweapons.righteous": "정의로운",
     "tooltip.soulsweapons.righteous_description_1": "- §f언데드§r에 대해 피해가 증가합니다.",

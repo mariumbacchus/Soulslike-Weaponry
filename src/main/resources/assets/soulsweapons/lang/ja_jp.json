@@ -538,6 +538,7 @@
     "tooltip.soulsweapons.heavy_weapon_description_3": "手にした武器に応じた固有の爆発が起きる。",
     "tooltip.soulsweapons.heavy_weapon_description_4": "- Base §fPosture Loss§r applied on targets is multiplied by %s",
     "tooltip.soulsweapons.heavy_weapon_description_5": "if this has the §dStagger§r enchantment.",
+    "tooltip.soulsweapons.heavy_weapon_description_6": "- This weapon disables shields.",
     "tooltip.soulsweapons.righteous": "義人",
     "tooltip.soulsweapons.righteous_description_1": "- §fアンデッド§rに対して与えるダメージが増加します。",
     "tooltip.soulsweapons.righteous_description_2": "火属性によってスケール、現在のボーナス: ",

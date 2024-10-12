@@ -125,6 +125,9 @@ public class WeaponUtil {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_4", String.format("%.1f", ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant)).formatted(Formatting.GRAY));
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
+                if (ConfigConstructor.ultra_heavy_disables_shields) {
+                    tooltip.add(new TranslatableText("tooltip.soulsweapons.heavy_weapon_description_6").formatted(Formatting.GRAY));
+                }
             }
             case LIFE_STEAL -> {
                 tooltip.add(new TranslatableText("tooltip.soulsweapons.life_steal").formatted(Formatting.DARK_RED));
