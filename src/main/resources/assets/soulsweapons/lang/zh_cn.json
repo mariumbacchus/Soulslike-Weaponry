@@ -536,6 +536,7 @@
     "tooltip.soulsweapons.heavy_weapon_description_3": "unique ground detonation based on held weapon.",
     "tooltip.soulsweapons.heavy_weapon_description_4": "- Base §fPosture Loss§r applied on targets is multiplied by %s",
     "tooltip.soulsweapons.heavy_weapon_description_5": "if this has the §dStagger§r enchantment.",
+    "tooltip.soulsweapons.heavy_weapon_description_6": "- This weapon disables shields.",
     "tooltip.soulsweapons.righteous": "正义之力",
     "tooltip.soulsweapons.righteous_description_1": "- 攻击§f亡灵§r时，基于火焰附加等级造成额外伤害",
     "tooltip.soulsweapons.righteous_description_2": "当前额外伤害: ",
