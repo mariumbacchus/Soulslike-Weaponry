@@ -9,6 +9,7 @@ import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -73,6 +74,16 @@ public class LivingEntityMixin {
                     ParticleHandler.particleOutburstMap(player.getWorld(), 150, player.getX(), player.getEyeY(), player.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
                 }
             }
+        }
+    }
+
+    // Disable shields with ultra heavy if config line is enabled
+    @Inject(method = "disablesShield", at = @At("HEAD"), cancellable = true)
+    private void interceptDisablesShield(CallbackInfoReturnable<Boolean> info) {
+        if (ConfigConstructor.ultra_heavy_disables_shields) {
+            LivingEntity entity = ((LivingEntity)(Object)this);
+            info.setReturnValue(entity.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy());
+            info.cancel();
         }
     }
 }

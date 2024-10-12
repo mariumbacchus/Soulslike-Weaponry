@@ -537,6 +537,7 @@
   "tooltip.soulsweapons.heavy_weapon_description_3": "detonación única en el suelo basada en el arma sostenida.",
   "tooltip.soulsweapons.heavy_weapon_description_4": "- La §fPérdida de postura§r básica aplicada a los objetivos se multiplica por %s",
   "tooltip.soulsweapons.heavy_weapon_description_5": "si esto tiene el encantamiento §dStagger§r.",
+  "tooltip.soulsweapons.heavy_weapon_description_6": "- This weapon disables shields.",
   "tooltip.soulsweapons.righteous": "Justo",
   "tooltip.soulsweapons.righteous_description_1": "- Hace más daño contra §fNo-muertos§r.",
   "tooltip.soulsweapons.righteous_description_2": "Escala con Fire Aspect, bono actual: ",

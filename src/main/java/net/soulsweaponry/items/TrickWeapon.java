@@ -119,4 +119,9 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     public String getReduceCooldownEnchantId(ItemStack stack) {
         return null;
     }
+
+    @Override
+    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
+        return ConfigConstructor.ultra_heavy_disables_shields && this.isHeavy;
+    }
 }

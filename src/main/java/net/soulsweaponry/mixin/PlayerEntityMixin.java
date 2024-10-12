@@ -2,6 +2,7 @@ package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -19,11 +20,12 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
-import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -131,6 +133,31 @@ public class PlayerEntityMixin {
             float attackCooldown = player.getAttackCooldownProgress(0.5f);
             float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY.get()).getAmplifier()) * attackCooldown;
             player.heal(heal);
+        }
+    }
+
+    // Disable off-hand if ultra heavy weapons is held and config line is enabled
+    @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
+    public void interceptGetEquippedStackHead(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> info) {
+        if (WeaponUtil.isModLoaded("bettercombat") || WeaponUtil.isModLoaded("epicfight")) {
+            return;
+        }
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        ItemStack stack = player.getInventory().getMainHandStack();
+        boolean mainHeavy = stack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        ItemStack offStack = player.getInventory().offHand.get(0);
+        boolean offHeavy = offStack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
+            // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.
+            // Therefore, only disable offhand completely if main hand is heavy, while give mining fatigue if heavy
+            // is in offhand and not main hand.
+            if (slot == EquipmentSlot.OFFHAND && mainHeavy) {
+                info.setReturnValue(ItemStack.EMPTY);
+                info.cancel();
+            }
+            if (offHeavy && !stack.isEmpty() && !mainHeavy) {
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 10, 3));
+            }
         }
     }
 }
