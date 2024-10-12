@@ -1,7 +1,9 @@
 package net.soulsweaponry.mixin;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -17,6 +19,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ShieldBreaker;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -46,6 +49,13 @@ public class PlayerEntityMixin {
         if (attacker instanceof ShieldBreaker) {
             if (((ShieldBreaker)attacker).disablesShield()) {
                 ((PlayerEntity)(Object)this).disableShield(true);
+            }
+        }
+        // Disable shields with ultra heavy if config line is enabled
+        if (ConfigConstructor.ultra_heavy_disables_shields) {
+            PlayerEntity entity = ((PlayerEntity)(Object)this);
+            if (attacker.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy()) {
+                entity.disableShield(true);
             }
         }
     }
@@ -138,6 +148,31 @@ public class PlayerEntityMixin {
             float attackCooldown = player.getAttackCooldownProgress(0.5f);
             float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY).getAmplifier()) * attackCooldown;
             player.heal(heal);
+        }
+    }
+
+    // Disable off-hand if ultra heavy weapons is held and config line is enabled
+    @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
+    public void interceptGetEquippedStackHead(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> info) {
+        if (FabricLoader.getInstance().isModLoaded("bettercombat")) {
+            return;
+        }
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        ItemStack stack = player.getInventory().getMainHandStack();
+        boolean mainHeavy = stack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        ItemStack offStack = player.getInventory().offHand.get(0);
+        boolean offHeavy = offStack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
+            // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.
+            // Therefore, only disable offhand completely if main hand is heavy, while give mining fatigue if heavy
+            // is in offhand and not main hand.
+            if (slot == EquipmentSlot.OFFHAND && mainHeavy) {
+                info.setReturnValue(ItemStack.EMPTY);
+                info.cancel();
+            }
+            if (offHeavy && !stack.isEmpty() && !mainHeavy) {
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 10, 3));
+            }
         }
     }
 }
