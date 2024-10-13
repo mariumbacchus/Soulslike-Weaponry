@@ -14,5 +14,5 @@
             "max_strikes":4
         }
     },
-    "type":"epicfight:spear"
+    "type":"soulsweapons:throwable_spear"
 }

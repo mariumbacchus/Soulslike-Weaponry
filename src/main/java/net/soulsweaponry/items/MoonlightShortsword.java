@@ -69,7 +69,9 @@ public class MoonlightShortsword extends ModdedSword {
 
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD.get(), ConfigConstructor.moonlight_shortsword_projectile_cooldown);
-                user.swingHand(Hand.MAIN_HAND, true);
+                if (!WeaponUtil.isModLoaded("epicfight")) {
+                    user.swingHand(Hand.MAIN_HAND, true);
+                }
             }
         }
     }

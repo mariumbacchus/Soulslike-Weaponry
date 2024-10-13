@@ -3,9 +3,9 @@
     {
         "common":
         {
-            "armor_negation":27.0,
-            "impact":2.4,
-            "max_strikes":5
+            "armor_negation": 30.0,
+            "impact": 2.0,
+            "max_strikes": 5
         }
     },
     "type":"soulsweapons:scythe"

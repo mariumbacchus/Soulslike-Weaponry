@@ -1,0 +1,57 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.5,
+      0.8,
+      1.3
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  },
+  "hit_particle": "epicfight:hit_blunt",
+  "hit_sound": "epicfight:entity.hit.blade",
+  "livingmotion_modifier": {
+    "two_hand": {
+      "creative_fly": "epicfight:biped/living/hold_greatsword",
+      "idle": "epicfight:biped/living/hold_greatsword",
+      "run": "epicfight:biped/living/run_greatsword",
+      "float": "epicfight:biped/living/hold_greatsword",
+      "fly": "epicfight:biped/living/hold_greatsword",
+      "creative_idle": "epicfight:biped/living/hold_greatsword",
+      "fall": "epicfight:biped/living/fall",
+      "block": "epicfight:biped/skill/steel_whirlwind_charging",
+      "sneak": "epicfight:biped/living/hold_greatsword",
+      "walk": "epicfight:biped/living/walk_greatsword",
+      "swim": "epicfight:biped/living/hold_greatsword",
+      "kneel": "epicfight:biped/living/hold_greatsword",
+      "sit": "epicfight:biped/living/hold_greatsword"
+    }
+  },
+  "swing_sound": "epicfight:entity.weapon.whoosh_hard",
+  "styles": {
+    "default": "two_hand",
+    "cases": [
+      {
+        "style": "two_hand",
+        "conditions": []
+      }
+    ]
+  },
+  "combos": {
+    "two_hand": [
+      "epicfight:biped/combat/greatsword_auto1",
+      "epicfight:biped/combat/greatsword_auto2",
+      "epicfight:biped/combat/greatsword_dash",
+      "epicfight:biped/combat/greatsword_airslash"
+    ]
+  },
+  "category": "greatsword",
+  "innate_skills": {
+    "two_hand": "epicfight:steel_whirlwind"
+  },
+  "usable_in_offhand": false
+}
