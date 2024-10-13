@@ -4,9 +4,9 @@
         "common":
         {
             "armor_negation":15.0,
-            "impact":3.2,
-            "max_strikes":3
+            "impact":1.4,
+            "max_strikes":1
         }
     },
-    "type":"soulsweapons:zweihander"
+    "type":"epicfight:sword"
 }

@@ -1,5 +1,4 @@
 {
-    "type":"epicfight:greatsword",
     "attributes":
     {
         "common":
@@ -8,5 +7,6 @@
             "impact": 4.6,
             "max_strikes": 5
         }
-    }
+    },
+    "type":"soulsweapons:greatsword_charge_stance"
 }

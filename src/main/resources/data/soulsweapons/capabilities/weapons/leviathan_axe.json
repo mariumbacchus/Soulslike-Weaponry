@@ -8,5 +8,5 @@
             "max_strikes":2
         }
     },
-    "type":"epicfight:sword"
+    "type":"soulsweapons:throwable_sword"
 }

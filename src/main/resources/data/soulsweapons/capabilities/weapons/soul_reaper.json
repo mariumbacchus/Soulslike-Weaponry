@@ -3,10 +3,10 @@
     {
         "common":
         {
-            "armor_negation":25.0,
-            "impact":1.8,
+            "armor_negation":27.0,
+            "impact":2.4,
             "max_strikes":5
         }
     },
-    "type":"epicfight:sword"
+    "type":"soulsweapons:scythe"
 }
