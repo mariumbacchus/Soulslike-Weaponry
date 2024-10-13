@@ -352,9 +352,9 @@
 			"scale": [0.83, 0.86, 1]
 		},
 		"head": {
-            "rotation": [0, 0, -55],
-            "translation": [-2, 0, 0.5],
-            "scale": [0.7, 0.7, 0.7]
+            "rotation": [0, 0, 135],
+            "translation": [1, 9, 0.5],
+            "scale": [1.5, 1.5, 1.5]
         }
 	},
 	"overrides": [
