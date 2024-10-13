@@ -380,6 +380,11 @@
 		"fixed": {
 			"rotation": [90, -45, 90],
 			"translation": [-2.5, -2.5, -1.5]
+		},
+		"head": {
+			"rotation": [ -90, -45, -90 ],
+			"translation": [ -1, 5, 2],
+			"scale":[ 0.8, 0.8, 0.8 ]
 		}
 	},
 	"groups": [

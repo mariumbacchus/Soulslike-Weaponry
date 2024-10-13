@@ -37,9 +37,9 @@
 			"scale": [1.2, 1.2, 1]
 		},
         "head": {
-            "rotation": [0, 0, -50],
-            "translation": [-4, 0, 0],
-            "scale": [0.6, 0.6, 0.6]
+            "rotation": [0, 0, -45],
+            "translation": [-8, -1, 0.5],
+            "scale": [1.1, 1.1, 1.1]
         }
     }
 }
