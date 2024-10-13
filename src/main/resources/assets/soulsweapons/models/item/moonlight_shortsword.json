@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "soulsweapons:item//moonlight_greatsword_textures",
-		"particle": "soulsweapons:item//moonlight_greatsword_textures"
+		"0": "soulsweapons:item/moonlight_greatsword_textures",
+		"particle": "soulsweapons:item/moonlight_greatsword_textures"
 	},
 	"elements": [
 		{
@@ -176,10 +176,10 @@
 			"scale": [1, 1.1, 1]
 		},
 		"head": {
-            "rotation": [0, 0, -50],
-            "translation": [-2, 2, 0.5],
-            "scale": [0.6, 0.6, 0.6]
-        }
+			"rotation": [0, 0, -45],
+			"translation": [-3, 4, 0.5],
+			"scale": [1.25, 1.25, 1.25]
+		}
 	},
 	"groups": [
 		{

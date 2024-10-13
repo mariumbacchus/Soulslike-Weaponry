@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [16, 32],
 	"textures": {
-		"0": "soulsweapons:item//wabbajack_textures",
-		"particle": "soulsweapons:item//wabbajack_textures"
+		"0": "soulsweapons:item/wabbajack_textures",
+		"particle": "soulsweapons:item/wabbajack_textures"
 	},
 	"elements": [
 		{
@@ -276,8 +276,8 @@
 		},
 		"head": {
             "rotation": [0, 0, 135],
-            "translation": [0, 4, 0.5],
-            "scale": [0.8, 0.8, 0.8]
+            "translation": [2, 8, 0.5],
+            "scale": [1.8, 1.8, 1.8]
         }
 	},
 	"groups": [

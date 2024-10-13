@@ -13,6 +13,11 @@
         "rotation": [-45, 90, 0],
         "translation": [0.0, -4, -3],
         "scale": [1.5, 1.5, 1.5]
+      },
+      "head": {
+        "rotation": [ 0, 0, 0 ],
+        "translation": [ 0, 8, 0],
+        "scale":[ 1.0, 1.0, 1.0 ]
       }
     },
     "overrides": [

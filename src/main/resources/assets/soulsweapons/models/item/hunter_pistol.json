@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "soulsweapons:item//hunter_pistol_texture",
-		"particle": "soulsweapons:item//hunter_pistol_texture"
+		"0": "soulsweapons:item/hunter_pistol_texture",
+		"particle": "soulsweapons:item/hunter_pistol_texture"
 	},
 	"elements": [
 		{
@@ -204,10 +204,10 @@
 			"scale": [1.14, 1.36, 1.14]
 		},
 		"head": {
-            "rotation": [-90, 45, -90],
-            "translation": [1, 2, -0],
-            "scale": [0.5, 0.5, 0.5]
-        }
+			"rotation": [-90, 45, -90],
+			"translation": [3, 7, -0],
+			"scale": [1, 1, 1]
+		}
 	},
 	"groups": [
 		{
