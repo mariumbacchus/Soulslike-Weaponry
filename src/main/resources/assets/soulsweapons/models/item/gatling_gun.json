@@ -329,8 +329,8 @@
 		},
 		"head": {
 			"rotation": [-90, 45, -90],
-			"translation": [-7, 5, 2],
-			"scale": [1, 1, 1.6]
+			"translation": [-4, 2, 1.5],
+			"scale": [0.5, 0.5, 0.7]
 		}
 	},
 	"overrides": [

@@ -35,8 +35,8 @@
     },
     "head": {
       "rotation": [ 0, 0, 0 ],
-      "translation": [ 2, 9, 0],
-      "scale":[ 1.8, 1.8, 1.8 ]
+      "translation": [ 1, 4.5, 0.25],
+      "scale":[ 0.8, 0.8, 0.8 ]
     }
   },
   "overrides": [

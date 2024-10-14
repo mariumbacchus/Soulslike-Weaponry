@@ -23,8 +23,8 @@
         },
         "head": {
             "rotation": [0, 0, -45],
-            "translation": [-13, -4, 1],
-            "scale": [1.5, 1.5, 1.5]
+            "translation": [-7, -2, 1],
+            "scale": [0.7, 0.7, 0.7]
         },
         "ground": {
             "rotation": [0, 0, 45],

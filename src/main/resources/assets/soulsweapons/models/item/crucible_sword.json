@@ -615,8 +615,8 @@
 		},
 		"head": {
 			"rotation": [ -90, -45, -90 ],
-			"translation": [ -2, 5, 0],
-			"scale":[ 0.8, 0.8, 0.8 ]
+			"translation": [ -2, 2, 0.5],
+			"scale":[ 0.4, 0.4, 0.4 ]
 		}
 	},
 	"groups": [

@@ -100,14 +100,8 @@
         45,
         0
       ],
-      "translation": [
-        14,
-        18,
-        0
-      ],
-      "scale": [
-        1, 1, 1
-      ]
+      "translation": [6, 9, 0],
+      "scale": [0.5, 0.5, 0.5]
     },
     "fixed": {
       "rotation": [

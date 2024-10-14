@@ -118,8 +118,8 @@
     },
     "head": {
       "rotation": [0, 0, -55],
-      "translation": [-4, 0, 0],
-      "scale": [0.5, 0.5, 0.5]
+      "translation": [-4, 0, 0.5],
+      "scale": [0.2, 0.2, 0.2]
     }
   }
 }
