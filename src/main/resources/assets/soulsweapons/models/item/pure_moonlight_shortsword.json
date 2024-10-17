@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "soulsweapons:item/bluemoon_greatsword",
-		"particle": "soulsweapons:item/bluemoon_greatsword"
+		"0": "soulsweapons:item/pure_moonlight_textures",
+		"particle": "soulsweapons:item/pure_moonlight_textures"
 	},
 	"elements": [
 		{
@@ -176,19 +176,11 @@
 			"scale": [1, 1.1, 1]
 		},
 		"head": {
-            "rotation": [0, 0, -45],
-            "translation": [-3, 4, 0.5],
-            "scale": [1.25, 1.25, 1.25]
-        }
-	},
-	"overrides": [
-		{
-			"predicate": {
-				"charged": 1
-			},
-			"model": "soulsweapons:item/bluemoon_shortsword_charged"
+			"rotation": [0, 0, -45],
+			"translation": [-3, 4, 0.5],
+			"scale": [1.25, 1.25, 1.25]
 		}
-	],
+	},
 	"groups": [
 		{
 			"name": "main",

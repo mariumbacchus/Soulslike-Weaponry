@@ -338,8 +338,8 @@
 		},
 		"head": {
             "rotation": [-90, 45, -90],
-            "translation": [2, 3, -0],
-            "scale": [0.5, 0.5, 0.5]
+            "translation": [5, 6, -0],
+            "scale": [1, 1, 1]
         }
 	},
 	"groups": [
