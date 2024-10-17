@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "soulsweapons:item//dragonslayer_swordspear_textures",
-		"particle": "soulsweapons:item//dragonslayer_swordspear_textures"
+		"0": "soulsweapons:item/dragonslayer_swordspear_textures",
+		"particle": "soulsweapons:item/dragonslayer_swordspear_textures"
 	},
 	"elements": [
 		{
@@ -352,9 +352,9 @@
 			"scale": [0.83, 0.86, 1]
 		},
 		"head": {
-            "rotation": [0, 0, -55],
-            "translation": [-2, 0, 0.5],
-            "scale": [0.7, 0.7, 0.7]
+            "rotation": [0, 0, 135],
+            "translation": [1, 6, 0.5],
+            "scale": [0.65, 0.8, 0.65]
         }
 	},
 	"overrides": [

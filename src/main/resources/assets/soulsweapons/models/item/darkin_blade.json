@@ -22,9 +22,9 @@
             "scale": [1.2, 1.2, 1]
         },
         "head": {
-            "rotation": [0, 0, -50],
-            "translation": [-6, -1, 0.5],
-            "scale": [0.6, 0.6, 0.6]
+            "rotation": [0, 0, -45],
+            "translation": [-7, -2, 1],
+            "scale": [0.7, 0.7, 0.7]
         },
         "ground": {
             "rotation": [0, 0, 45],

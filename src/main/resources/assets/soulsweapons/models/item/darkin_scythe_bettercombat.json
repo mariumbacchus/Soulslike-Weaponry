@@ -1,28 +1,33 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-      "layer0": "soulsweapons:item/darkin_scythe"
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "soulsweapons:item/darkin_scythe"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 0, -90, 55 ],
+      "translation": [0.0, 0, 0],
+      "scale": [2.25, 2.25, 1.25]
     },
-    "display": {
-      "thirdperson_righthand": {
-        "rotation": [ 0, -90, 55 ],
-        "translation": [0.0, 0, 0],
-        "scale": [2.25, 2.25, 1.25]
-      },
-      "thirdperson_lefthand": {
-        "rotation": [ 0, -90, 55 ],
-        "translation": [0.0, 0, 0],
-        "scale": [1.75, 1.75, 1]
-      },
-      "firstperson_righthand": {
-        "rotation": [-30, -90, 0],
-        "translation": [1.0, 3.0, 0.0],
-        "scale": [1.75, 1.75, 1]
-      },
-      "firstperson_lefthand": {
-        "rotation": [-30, 90, 0],
-        "translation": [0, 3.0, 0.0],
-        "scale": [1.75, 1.75, 1]
-      }
+    "thirdperson_lefthand": {
+      "rotation": [ 0, -90, 55 ],
+      "translation": [0.0, 0, 0],
+      "scale": [1.75, 1.75, 1]
+    },
+    "firstperson_righthand": {
+      "rotation": [-30, -90, 0],
+      "translation": [1.0, 3.0, 0.0],
+      "scale": [1.75, 1.75, 1]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-30, 90, 0],
+      "translation": [0, 3.0, 0.0],
+      "scale": [1.75, 1.75, 1]
+    },
+    "head": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 1, 3, 0],
+      "scale":[ 1, 1, 1 ]
     }
+  }
 }

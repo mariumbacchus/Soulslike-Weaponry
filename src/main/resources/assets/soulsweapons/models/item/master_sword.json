@@ -32,6 +32,11 @@
     "ground": {
       "translation": [0, 3, 0],
       "scale": [0.75, 0.75, 0.75]
+    },
+    "head": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 1, 4.5, 0.25],
+      "scale":[ 0.8, 0.8, 0.8 ]
     }
   },
   "overrides": [

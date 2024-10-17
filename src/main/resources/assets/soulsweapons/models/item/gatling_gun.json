@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "soulsweapons:item//gatling_gun_texture",
-		"particle": "soulsweapons:item//gatling_gun_texture"
+		"0": "soulsweapons:item/gatling_gun_texture",
+		"particle": "soulsweapons:item/gatling_gun_texture"
 	},
 	"elements": [
 		{
@@ -328,10 +328,10 @@
 			"scale": [0.98, 1, 1.07]
 		},
 		"head": {
-            "rotation": [-90, 45, -90],
-            "translation": [-3, 2, 1],
-            "scale": [0.5, 0.5, 0.5]
-        }
+			"rotation": [-90, 45, -90],
+			"translation": [-4, 2, 1.5],
+			"scale": [0.5, 0.5, 0.7]
+		}
 	},
 	"overrides": [
         {
