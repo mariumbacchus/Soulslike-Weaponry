@@ -32,6 +32,7 @@
   "block.soulsweapons.soulfire_stain": "Bloque de Mancha de Fuego del Alma",
   "block.soulsweapons.soul_lamp": "Lámpara de Fuego del Alma",
   "block.soulsweapons.chungus_monolith": "Monolito de Chungus",
+  "block.soulsweapons.chungus_emerald_block": "Chungus Emerald Block",
 
   "item.soulsweapons.lord_soul_red": "Alma de Señor",
   "item.soulsweapons.lord_soul_rose": "Alma de Señor",
@@ -250,6 +251,7 @@
   "effect.soulsweapons.shadow_step": "Paso Sombrío",
   "effect.soulsweapons.cooldown": "Enfriamiento",
   "effect.soulsweapons.ghostly": "Fantasmal",
+  "effect.soulsweapons.chungus_tonic_effect": "Chungus Tonic",
 
   "item.minecraft.potion.effect.warding": "Poción de Protección Mágica",
   "item.minecraft.splash_potion.effect.warding": "Poción de Protección Mágica Lanzada",
@@ -267,6 +269,10 @@
   "item.minecraft.splash_potion.effect.tainted_ambrosia": "§cAmbrosía Contaminada Lanzada§r",
   "item.minecraft.lingering_potion.effect.tainted_ambrosia": "§cAmbrosía Contaminada Persistente§r",
   "item.minecraft.tipped_arrow.effect.tainted_ambrosia": "§cFlecha de Ambrosía Contaminada§r",
+
+  "item.soulsweapons.chungus_tonic_potion": "§3Chungus Tonic§r",
+  "item.soulsweapons.chungus_tonic_splash": "§3Splash Chungus Tonic§r",
+  "item.soulsweapons.chungus_tonic_lingering": "§3Lingering Chungus Tonic§r",
 
   "subtitles.soulsweapons.moonlight_big": "Aparece proyectil de luz de luna",
   "subtitles.soulsweapons.moonlight_small": "Aparece pequeño proyectil de luz de luna",

@@ -15,6 +15,9 @@ import net.soulsweaponry.items.armor.ChaosSet;
 import net.soulsweaponry.items.armor.WitheredArmor;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 import net.soulsweaponry.items.material.ModToolMaterials;
+import net.soulsweaponry.items.potion.CustomLingeringPotion;
+import net.soulsweaponry.items.potion.CustomPotionItem;
+import net.soulsweaponry.items.potion.CustomSplashPotion;
 import net.soulsweaponry.util.RecipeHandler;
 
 public class ItemRegistry {
@@ -66,6 +69,9 @@ public class ItemRegistry {
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
     public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
 
+    public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
+    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
+    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
     public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
 
     public static void init() {
@@ -111,6 +117,9 @@ public class ItemRegistry {
         registerItem(CHAOS_ROBES, "chaos_robes");
         registerItem(CHAOS_ORB, "chaos_orb");
 
+        registerItem(CHUNGUS_TONIC_POTION, "chungus_tonic_potion");
+        registerItem(CHUNGUS_TONIC_SPLASH, "chungus_tonic_splash");
+        registerItem(CHUNGUS_TONIC_LINGERING, "chungus_tonic_lingering");
         registerItem(CHUNGUS_DISC, "chungus_disc");
     }
 

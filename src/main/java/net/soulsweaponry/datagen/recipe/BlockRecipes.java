@@ -103,5 +103,14 @@ public class BlockRecipes {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.DEMON_HEART).build()))
                 .offerTo(consumer);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.CHUNGUS_EMERALD_BLOCK)
+                .input('#', ItemRegistry.CHUNGUS_EMERALD)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.CHUNGUS_EMERALD).build()))
+                .offerTo(consumer);
     }
 }

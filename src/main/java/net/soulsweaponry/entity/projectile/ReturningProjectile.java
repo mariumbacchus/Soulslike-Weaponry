@@ -20,7 +20,6 @@ import net.soulsweaponry.entitydata.ReturningProjectileData;
 import net.soulsweaponry.items.Mjolnir;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.UUID;
 
 public abstract class ReturningProjectile extends PersistentProjectileEntity {
@@ -129,21 +128,16 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
                 }
             }
         }
-        List<Entity> list = this.getWorld().getOtherEntities(this, this.getBoundingBox()).stream().filter(e -> e instanceof PlayerEntity).toList();
-        if (this.dealtDamage && !list.isEmpty()) {
-            PlayerEntity player = (PlayerEntity) list.get(0);
-            if (owner != null) {
-                for (Entity entity1 : list) {
-                    if (entity1.equals(owner)) {
-                        player = (PlayerEntity) entity1;
+        if (this.pickupType != PickupPermission.DISALLOWED) {
+            for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
+                if (entity instanceof PlayerEntity player && this.dealtDamage) {
+                    if (this.getOwner() == null) {
+                        this.insertStack(player);
+                    } else {
+                        if (this.isOwner(player)) {
+                            this.insertStack(player);
+                        }
                     }
-                }
-            }
-            if (this.getOwner() == null) {
-                this.insertStack(player);
-            } else {
-                if (this.isOwner(player)) {
-                    this.insertStack(player);
                 }
             }
         }

@@ -32,6 +32,7 @@
     "block.soulsweapons.soulfire_stain": "灵魂岩浆块",
     "block.soulsweapons.soul_lamp": "灵魂灯",
     "block.soulsweapons.chungus_monolith": "Chungus Monolith",
+    "block.soulsweapons.chungus_emerald_block": "Chungus Emerald Block",
 
     "item.soulsweapons.lord_soul_red": "王的灵魂",
     "item.soulsweapons.lord_soul_rose": "王的灵魂",
@@ -249,6 +250,7 @@
     "effect.soulsweapons.shadow_step": "Shadow Step",
     "effect.soulsweapons.cooldown": "Cooldown",
     "effect.soulsweapons.ghostly": "Ghostly",
+    "effect.soulsweapons.chungus_tonic_effect": "Chungus Tonic",
 
     "item.minecraft.potion.effect.warding": "魔法防护药水",
     "item.minecraft.splash_potion.effect.warding": "喷溅型魔法防护药水",
@@ -266,6 +268,10 @@
     "item.minecraft.splash_potion.effect.tainted_ambrosia": "§cSplash Tainted Ambrosia§r",
     "item.minecraft.lingering_potion.effect.tainted_ambrosia": "§cLingering Tainted Ambrosia§r",
     "item.minecraft.tipped_arrow.effect.tainted_ambrosia": "§cArrow of Tainted Ambrosia§r",
+
+    "item.soulsweapons.chungus_tonic_potion": "§3Chungus Tonic§r",
+    "item.soulsweapons.chungus_tonic_splash": "§3Splash Chungus Tonic§r",
+    "item.soulsweapons.chungus_tonic_lingering": "§3Lingering Chungus Tonic§r",
 
     "subtitles.soulsweapons.moonlight_big": "生成大型月光波",
     "subtitles.soulsweapons.moonlight_small": "生成小型月光波",

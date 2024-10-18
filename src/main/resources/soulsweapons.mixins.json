@@ -9,10 +9,13 @@
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
+    "EntityMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "ModelInvoker",
     "PlayerEntityMixin",
+    "PotionEntityMixin",
+    "PotionUtilMixin",
     "RecipeManagerMixin",
     "WitherEntityMixin"
   ],

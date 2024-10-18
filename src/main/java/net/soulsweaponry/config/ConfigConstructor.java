@@ -566,6 +566,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int shield_parry_cooldown = 40;
     @Entry(min=2) public static int shield_parry_max_animation_frames = 10;
     @Entry(min=2) public static int shield_parry_frames = 3;
+    @Entry public static boolean chungus_tonic_can_use = true;
+    @Entry public static int chungus_tonic_ticks_until_chungified = 300;
+    @Entry public static String[] chungus_tonic_excluded_entities_to_become = {
+            "minecraft:command_block_minecart", "minecraft:spawner_minecart", "soulsweapons:freyr_sword_entity", "minecraft:fishing_bobber", "minecraft:player"
+    };
+
     @Entry public static boolean can_projectiles_apply_posture_loss = true;
     @Entry public static float silver_bullet_undead_bonus_damage = 4f;
     @Entry(min=0) public static float silver_bullet_posture_loss_on_player_modifier = 0.75f;

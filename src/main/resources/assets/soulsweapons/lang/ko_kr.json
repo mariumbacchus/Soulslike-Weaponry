@@ -32,6 +32,7 @@
     "block.soulsweapons.soulfire_stain": "영혼 불 얼룩 블록",
     "block.soulsweapons.soul_lamp": "영혼 불 램프",
     "block.soulsweapons.chungus_monolith": "청거스 거석",
+    "block.soulsweapons.chungus_emerald_block": "Chungus Emerald Block",
 
     "item.soulsweapons.lord_soul_red": "군주의 혼",
     "item.soulsweapons.lord_soul_rose": "군주의 혼",
@@ -249,6 +250,7 @@
     "effect.soulsweapons.shadow_step": "그림자 이동",
     "effect.soulsweapons.cooldown": "쿨다운",
     "effect.soulsweapons.ghostly": "유령의",
+    "effect.soulsweapons.chungus_tonic_effect": "Chungus Tonic",
 
     "item.minecraft.potion.effect.warding": "마법 방어의 물약",
     "item.minecraft.splash_potion.effect.warding": "투척용 마법 방어의 물약",
@@ -266,6 +268,10 @@
     "item.minecraft.splash_potion.effect.tainted_ambrosia": "§c투척용 오염된 암브로시아§r",
     "item.minecraft.lingering_potion.effect.tainted_ambrosia": "§c잔류형 오염된 암브로시아§r",
     "item.minecraft.tipped_arrow.effect.tainted_ambrosia": "§c오염된 암브로시아의 화살§r",
+
+    "item.soulsweapons.chungus_tonic_potion": "§3Chungus Tonic§r",
+    "item.soulsweapons.chungus_tonic_splash": "§3Splash Chungus Tonic§r",
+    "item.soulsweapons.chungus_tonic_lingering": "§3Lingering Chungus Tonic§r",
 
     "subtitles.soulsweapons.moonlight_big": "달빛 발사체 생성됨",
     "subtitles.soulsweapons.moonlight_small": "작은 달빛 발사체 생성됨",
