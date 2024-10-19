@@ -3,35 +3,53 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.InventoryOwner;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.BlockRegistry;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.*;
 
-public class BigChungus extends HostileEntity {
+import java.util.List;
+
+public class BigChungus extends HostileEntity implements InventoryOwner {
 
     private static final TrackedData<Boolean> IS_BOSNIAN = DataTracker.registerData(BigChungus.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> TRADE_TICKS = DataTracker.registerData(BigChungus.class, TrackedDataHandlerRegistry.INTEGER);
     private boolean healthUpdated = false;
+    private final SimpleInventory inventory = new SimpleInventory(1);
+    private int maxTradeCount = 16;
+    private float turnChance = 1f / this.maxTradeCount;
 
     public BigChungus(EntityType<? extends BigChungus> entityType, World world) {
         super(entityType, world);
@@ -113,11 +131,62 @@ public class BigChungus extends HostileEntity {
             int rand = this.getRandom().nextInt(100);
             this.setBosnian(rand == 1);
             if (this.isBosnian()) {
-                this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50D);
-                this.setHealth(50f);
+                this.updateStats();
             }
             this.healthUpdated = true;
         }
+        if (!this.getInventory().isEmpty()) {
+            this.increaseTradeTicks(1);
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30, 250, true, false));
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 30, 250, true, false));
+            if (this.getTradeTicks() >= 60 && !this.getWorld().isClient) {
+                this.inventory.clearToList();
+                if (!this.isBosnian()) {
+                    ItemEntity entity = new ItemEntity(this.getWorld(), this.getX(), this.getY(), this.getZ(), this.getBarterItem());
+                    entity.setVelocity(0, 0.5f, 0);
+                    this.getWorld().spawnEntity(entity);
+                    this.maxTradeCount = Math.max(this.maxTradeCount - 1, 1);
+                    this.turnChance = 1f / this.maxTradeCount;
+                    if (this.getRandom().nextFloat() < this.turnChance) {
+                        this.setBosnian(true);
+                        this.updateStats();
+                    }
+                } else {
+                    ParticleHandler.particleSphereList(this.getWorld(), 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.2f);
+                }
+                this.setTradeTicks(0);
+            }
+        }
+    }
+
+    private void updateStats() {
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50D);
+        this.setHealth(50f);
+        this.experiencePoints = 200;
+    }
+
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (this.getTradeTicks() > 0) {
+            if (this.getTradeTicks() % 4 == 0) {
+                for (int i = 0; i < 3; i++) {
+                    this.getWorld().addParticle(ParticleTypes.COMPOSTER, this.getParticleX(0.8f), this.getRandomBodyY() + .2f, this.getParticleZ(0.8f), 0, 0, 0);
+                }
+            }
+        }
+    }
+
+    public int getTradeTicks() {
+        return this.dataTracker.get(TRADE_TICKS);
+    }
+
+    public void increaseTradeTicks(int i) {
+        this.setTradeTicks(this.getTradeTicks() + i);
+    }
+
+    public void setTradeTicks(int i) {
+        this.dataTracker.set(TRADE_TICKS, i);
     }
 
     public boolean isBosnian() {
@@ -132,6 +201,7 @@ public class BigChungus extends HostileEntity {
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(IS_BOSNIAN, false);
+        this.dataTracker.startTracking(TRADE_TICKS, 0);
     }
 
     @Override
@@ -143,6 +213,13 @@ public class BigChungus extends HostileEntity {
         if (nbt.contains("bosnian")) {
             this.setBosnian(nbt.getBoolean("bosnian"));
         }
+        if (nbt.contains("tradeCounter")) {
+            this.maxTradeCount = nbt.getInt("tradeCounter");
+        }
+        if (nbt.contains("turnChance")) {
+            this.turnChance = nbt.getFloat("turnChance");
+        }
+        this.readInventory(nbt);
     }
 
     @Override
@@ -150,5 +227,58 @@ public class BigChungus extends HostileEntity {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("healthUpdated", this.healthUpdated);
         nbt.putBoolean("bosnian", this.isBosnian());
+        nbt.putInt("tradeCounter", this.maxTradeCount);
+        nbt.putFloat("turnChance", this.turnChance);
+        this.writeInventory(nbt);
+    }
+
+    protected ItemStack addItem(ItemStack stack) {
+        return this.inventory.addStack(stack);
+    }
+
+    @Override
+    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        super.dropEquipment(source, lootingMultiplier, allowDrops);
+        this.inventory.clearToList().forEach(this::dropStack);
+    }
+
+    @Override
+    public SimpleInventory getInventory() {
+        return inventory;
+    }
+
+    @Override
+    protected ActionResult interactMob(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+        if (stack.isOf(ItemRegistry.CHUNGUS_EMERALD) && this.getInventory().isEmpty()) {
+            this.addItem(stack);
+            if (!player.isCreative()) {
+                stack.decrement(1);
+            }
+            return ActionResult.SUCCESS;
+        }
+        return super.interactMob(player, hand);
+    }
+
+    private ItemStack getBarterItem() {
+        LootTable lootTable = this.getWorld().getServer().getLootManager().getLootTable(new Identifier(SoulsWeaponry.ModId, "gameplay/chungus_bartering"));
+        List<ItemStack> list = lootTable.generateLoot(
+                new LootContextParameterSet.Builder((ServerWorld)this.getWorld()).add(LootContextParameters.THIS_ENTITY, this).build(LootContextTypes.BARTER)
+        );
+        return list.isEmpty() ? Items.DIRT.getDefaultStack() : list.get(0);
+    }
+
+    @Override
+    public boolean canPickUpLoot() {
+        return this.inventory.isEmpty();
+    }
+
+    @Override
+    protected void loot(ItemEntity item) {
+        if (item.getStack().isOf(ItemRegistry.CHUNGUS_EMERALD)) {
+            this.getInventory().addStack(item.getStack());
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_PICKUP, this.getSoundCategory(), 1f, 1f);
+            item.getStack().decrement(1);
+        }
     }
 }
