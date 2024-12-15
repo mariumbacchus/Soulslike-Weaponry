@@ -198,6 +198,7 @@
     "entity.soulsweapons.big_moonlight_projectile": "大型月光波",
     "entity.soulsweapons.moonlight_projectile": "月光波",
     "entity.soulsweapons.vertical_moonlight_projectile": "巨型月光波",
+    "entity.soulsweapons.horizontal_moonlight_projectile": "巨型月光波",
     "entity.soulsweapons.charged_arrow_entity": "充能箭",
     "entity.soulsweapons.silver_bullet_entity": "银制子弹",
     "entity.soulsweapons.cannonball_entity_type": "银制炮弹",
@@ -232,6 +233,7 @@
     "entity.soulsweapons.moonveil_horizontal": "Moonveil Horizontal Wave",
     "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
+    "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
 
     "death.attack.bleed": "%1$s流血至死",
     "death.attack.bleed.player": "%1$s流血至死",

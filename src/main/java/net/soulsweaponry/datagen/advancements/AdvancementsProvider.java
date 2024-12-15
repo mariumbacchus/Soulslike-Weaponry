@@ -67,13 +67,14 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
         Advancement bloodthirsty = this.generateAdvancement(consumer, "bloodthirsty", demonHeart, WeaponRegistry.BLOODTHIRSTER,
                 AdvancementFrame.TASK, true, true, false,
                 InventoryChangedCriterion.Conditions.items(WeaponRegistry.BLOODTHIRSTER),
-                EffectsChangedCriterion.Conditions.create(EntityEffectPredicate.create().withEffect(EffectRegistry.BLOODTHIRSTY)));//TODO test
+                EffectsChangedCriterion.Conditions.create(EntityEffectPredicate.create().withEffect(EffectRegistry.BLOODTHIRSTY)));
 
         // Boss kills
         Advancement returningKnight = this.generateAdvancement(consumer, "returning_knight", root, ItemRegistry.ARKENSTONE, AdvancementFrame.CHALLENGE, true, true, false,
                 OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.RETURNING_KNIGHT)));
         Advancement draugrBoss = this.generateAdvancement(consumer, "draugr_boss", root, ItemRegistry.ESSENCE_OF_EVENTIDE, AdvancementFrame.GOAL, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.DRAUGR_BOSS)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.DRAUGR_BOSS)),
+                InventoryChangedCriterion.Conditions.items(ItemRegistry.ESSENCE_OF_EVENTIDE));
         Advancement moonknight = this.generateAdvancement(consumer, "moonknight", draugrBoss, ItemRegistry.ESSENCE_OF_LUMINESCENCE, AdvancementFrame.CHALLENGE, true, true, false,
                 OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.MOONKNIGHT)));
         Advancement decayingKing = this.generateAdvancement(consumer, "end_of_reigns", bloodthirsty, ItemRegistry.WITHERED_DEMON_HEART, AdvancementFrame.CHALLENGE, true, true, false,
@@ -105,7 +106,7 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 AdvancementFrame.GOAL, true, true, false,
                 WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD);
         Advancement transformScythe = this.generateAdvancementAcceptEither(consumer, "transform_scythe", lordSoul, WeaponRegistry.DARKIN_SCYTHE_PRE,
-                AdvancementFrame.CHALLENGE, true, true, false,//TODO test
+                AdvancementFrame.CHALLENGE, true, true, false,
                 WeaponRegistry.DARKIN_SCYTHE_PRIME, WeaponRegistry.SHADOW_ASSASSIN_SCYTHE);
         Advancement rageblade = this.generateAdvancement(consumer, "rageblade", lordSoul, WeaponRegistry.GUINSOOS_RAGEBLADE,
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.GUINSOOS_RAGEBLADE);
@@ -122,7 +123,7 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
         Advancement wands = this.generateAdvancement(consumer, "lords_on_stick", chaosMonarch, WeaponRegistry.DRAGON_STAFF,
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.DRAGON_STAFF, WeaponRegistry.WITHERED_WABBAJACK);
         Advancement trickWeapon = this.generateAdvancement(consumer, "trickweapon", pistol, WeaponRegistry.HOLY_GREATSWORD,
-                AdvancementFrame.GOAL, true, true, false, ModTags.Items.TRICK_WEAPONS);//TODO test
+                AdvancementFrame.GOAL, true, true, false, ModTags.Items.TRICK_WEAPONS);
 
         // Special
         Advancement chaosOrb = this.generateAdvancement(consumer, "chaos_orb", decayingKing, ItemRegistry.CHAOS_ORB,
@@ -138,9 +139,6 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 ));
         Advancement allWeapons = this.generateAdvancement(consumer, "all_weapons", moonlightSwords, ItemRegistry.LORD_SOUL_PURPLE,
                 AdvancementFrame.CHALLENGE, true, true, false, ALL_WEAPONS.toArray(Item[]::new));
-
-        //TODO replace all advancements with datagen ones
-        //TODO implement trick weapon changes, then make the new advancement that checks for items in the trickweapon tag instead. Make sure to delete the old advancement!
     }
 
     /**

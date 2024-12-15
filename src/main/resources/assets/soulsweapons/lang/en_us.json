@@ -199,6 +199,7 @@
     "entity.soulsweapons.big_moonlight_projectile": "Moonlight Wave",
     "entity.soulsweapons.moonlight_projectile": "Moonlight Spear",
     "entity.soulsweapons.vertical_moonlight_projectile": "Large Moonlight Wave",
+    "entity.soulsweapons.horizontal_moonlight_projectile": "Large Moonlight Wave",
     "entity.soulsweapons.sunlight_projectile_small": "Sunlight Wave",
     "entity.soulsweapons.sunlight_projectile_big": "Sunlight Spear",
     "entity.soulsweapons.vertical_sunlight_projectile": "Large Sunlight Wave",
@@ -233,6 +234,7 @@
     "entity.soulsweapons.moonveil_horizontal": "Moonveil Horizontal Wave",
     "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
+    "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",

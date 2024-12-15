@@ -195,6 +195,7 @@
     "entity.soulsweapons.big_moonlight_projectile": "Лунный Снаряд",
     "entity.soulsweapons.moonlight_projectile": "Копьё Лунного Света",
     "entity.soulsweapons.vertical_moonlight_projectile": "Большая Волна Лунного Света",
+    "entity.soulsweapons.horizontal_moonlight_projectile": "Большая Волна Лунного Света",
     "entity.soulsweapons.charged_arrow_entity": "Заряженная Стрела",
     "entity.soulsweapons.silver_bullet_entity": "Серебрянная Пуля",
     "entity.soulsweapons.cannonball_entity_type": "Серебрянное Пушечное Ядро",
@@ -233,6 +234,7 @@
     "entity.soulsweapons.moonveil_horizontal": "Moonveil Horizontal Wave",
     "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
+    "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
 
     "death.attack.bleed": "%1$s истёк кровью",
     "death.attack.bleed.player": "%1$s истёк кровью",

@@ -198,6 +198,7 @@
     "entity.soulsweapons.big_moonlight_projectile": "달빛의 파도",
     "entity.soulsweapons.moonlight_projectile": "월광 창",
     "entity.soulsweapons.vertical_moonlight_projectile": "큰 달빛의 파도",
+    "entity.soulsweapons.horizontal_moonlight_projectile": "큰 달빛의 파도",
     "entity.soulsweapons.sunlight_projectile_small": "햇빛의 파도",
     "entity.soulsweapons.sunlight_projectile_big": "일광 창",
     "entity.soulsweapons.vertical_sunlight_projectile": "큰 햇빛의 파도",
@@ -232,6 +233,7 @@
     "entity.soulsweapons.moonveil_horizontal": "Moonveil Horizontal Wave",
     "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
+    "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
 
     "death.attack.bleed": "%1$s가 출혈로 사망했습니다.",
     "death.attack.bleed.player": "%1$s가 출혈로 사망했습니다.",

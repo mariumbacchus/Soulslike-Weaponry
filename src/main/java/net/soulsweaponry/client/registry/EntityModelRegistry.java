@@ -29,6 +29,7 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, (ctx) -> new MoonlightProjectileRenderer(ctx, new MoonlightProjectileBigModel()));
         EntityRendererRegistry.register(EntityRegistry.DARK_MOON_PROJECTILE, (ctx) -> new MoonlightProjectileRenderer(ctx, new DarkMoonProjectileModel()));
         EntityRendererRegistry.register(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE, (ctx) -> new MoonlightProjectileRenderer(ctx, new VerticalMoonlightProjectileModel()));
+        EntityRendererRegistry.register(EntityRegistry.HORIZONTAL_MOONLIGHT_ENTITY_TYPE, (ctx) -> new MoonlightProjectileRenderer(ctx, new VerticalMoonlightProjectileModel()));
         EntityRendererRegistry.register(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, DragonslayerSwordspearRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, ChargedArrowRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, SilverBulletRenderer::new);
@@ -71,5 +72,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOONVEIL_HORIZONTAL, MoonveilWaveRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONVEIL_VERTICAL, MoonveilWaveRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.ABSORBED_PROJECTILES_ORB_ENTITY, EmptyEntityRenderer::new);
     }
 }

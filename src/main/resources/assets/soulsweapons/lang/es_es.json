@@ -199,6 +199,7 @@
   "entity.soulsweapons.big_moonlight_projectile": "Onda de Luz de Luna",
   "entity.soulsweapons.moonlight_projectile": "Lanza de Luz de Luna",
   "entity.soulsweapons.vertical_moonlight_projectile": "Gran Onda de Luz de Luna",
+  "entity.soulsweapons.horizontal_moonlight_projectile": "Gran Onda de Luz de Luna",
   "entity.soulsweapons.sunlight_projectile_small": "Onda de Luz Solar",
   "entity.soulsweapons.sunlight_projectile_big": "Lanza de Luz Solar",
   "entity.soulsweapons.vertical_sunlight_projectile": "Gran Onda de Luz Solar",
@@ -233,6 +234,7 @@
   "entity.soulsweapons.moonveil_horizontal": "Moonveil Horizontal Wave",
   "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
   "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
+  "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
 
   "death.attack.bleed": "%1$s se desangró",
   "death.attack.bleed.player": "%1$s se desangró",

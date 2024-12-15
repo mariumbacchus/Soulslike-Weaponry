@@ -14,6 +14,18 @@
         ]
       },
       "trigger": "minecraft:player_killed_entity"
+    },
+    "condition_1": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:essence_of_eventide"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -34,6 +46,9 @@
   "requirements": [
     [
       "condition_0"
+    ],
+    [
+      "condition_1"
     ]
   ],
   "sends_telemetry_event": true
