@@ -10,6 +10,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
@@ -30,18 +31,6 @@ import static net.soulsweaponry.items.SoulHarvestingItem.KILLS;
 public class WeaponUtil {
     
     public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
-    public static final String PREV_TRICK_WEAPON = "trick_weapon_to_transform";
-
-    /**
-     * Define all trick weapons here, which is gathered by PacketsServer to switch to the given weapon's index
-     */
-    public static final TrickWeapon[] TRICK_WEAPONS = {
-            WeaponRegistry.KIRKHAMMER,
-            WeaponRegistry.SILVER_SWORD,
-            WeaponRegistry.HOLY_GREATSWORD,
-            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD,
-            WeaponRegistry.HOLY_MOONLIGHT_SWORD,
-    };
 
     /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
@@ -55,13 +44,13 @@ public class WeaponUtil {
         return 0;
     }
 
-    public static Text getSwitchWeaponName(ItemStack stack, TrickWeapon weapon) {
+    /*public static Text getSwitchWeaponName(ItemStack stack, TrickWeapon weapon) {
         TrickWeapon switchWeapon = TRICK_WEAPONS[weapon.getSwitchWeaponIndex()];
         if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
             switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
         }
         return switchWeapon.getName();
-    }
+    }*///TODO
 
     public static List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
@@ -157,13 +146,14 @@ public class WeaponUtil {
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {
-                if (stack.getItem() instanceof TrickWeapon weapon) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                            .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
+                Text text = TrickWeaponUtil.getMappedItemName(stack.getItem());
+                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
+                        .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
+                if (text != null) {//TODO test this
                     tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
-                            .append(getSwitchWeaponName(stack, weapon).copy().formatted(Formatting.WHITE)));
+                            .append(text).copy().formatted(Formatting.WHITE));
                 }
             }
             case CHARGE -> {

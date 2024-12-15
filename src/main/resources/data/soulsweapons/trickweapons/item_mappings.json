@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": {
+    "soulsweapons:kirkhammer": "soulsweapons:silver_sword",
+    "soulsweapons:silver_sword": "soulsweapons:kirkhammer",
+    "soulsweapons:holy_greatsword": "soulsweapons:silver_sword",
+    "soulsweapons:holy_moonlight_greatsword": "soulsweapons:holy_moonlight_sword",
+    "soulsweapons:holy_moonlight_sword": "soulsweapons:holy_moonlight_greatsword"
+  }
+}

@@ -7,7 +7,8 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class TrickWeapon extends ModdedSword implements IUltraHeavy {
-
+    //TODO now that trick weapons can be made from jsons, rewrite this to make
+    // the weapons have right values instead of referring to another list
     private static final int[] DAMAGE = {
             ConfigConstructor.kirkhammer_damage,
             ConfigConstructor.kirkhammer_silver_sword_damage,
