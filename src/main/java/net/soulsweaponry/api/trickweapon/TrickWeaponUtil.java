@@ -24,8 +24,8 @@ public class TrickWeaponUtil {
     public static Map<Identifier, Identifier> itemMappings = new HashMap<>();
     public static final String MAPPED_TRICK_WEAPON = "mapped_trick_weapon";
 
-    //TODO håndterer overriding som hvordan tags har replace = false by default
-   /* public static void loadMappings(ResourceManager manager) {
+    // Default method without "replace" value handling
+    /*public static void loadMappings(ResourceManager manager) {
         try {
             Gson gson = new Gson();
             var resource = manager.getResource(new Identifier(SoulsWeaponry.ModId, "trickweapons/item_mappings.json"));
@@ -49,69 +49,43 @@ public class TrickWeaponUtil {
         }
     }*/
 
-    //TODO test if the value = false or true overwrites or doesnt overwrite the main json file by modifying the testpack file (datapack)
     public static void loadMappings(ResourceManager manager) {
         try {
             Gson gson = new Gson();
-            Identifier resourceIdentifier = new Identifier(SoulsWeaponry.ModId, "trickweapons/item_mappings.json");
-            var resources = manager.getAllResources(resourceIdentifier);
-
-            // Temporary storage for new mappings
+            Type type = new TypeToken<Map<String, Object>>() {}.getType();
             Map<Identifier, Identifier> newMappings = new HashMap<>();
-            boolean replaceFlagEncountered = false;
-
-            // Process resources in reverse order (higher-priority first)
-            List<? extends Resource> resourceList = resources.stream().toList();
-            for (int i = resourceList.size() - 1; i >= 0; i--) {
-                var resource = resourceList.get(i);
-
-                SoulsWeaponry.LOGGER.info("Processing resource: {}", resource.getPack().getName()); // Debug: Track resource source
-
-                try (var stream = resource.getInputStream();
-                     var reader = new InputStreamReader(stream)) {
-
-                    Type topLevelType = new TypeToken<Map<String, Object>>() {}.getType();
-                    Map<String, Object> rawJson = gson.fromJson(reader, topLevelType);
-
-                    // Check the "replace" flag (default is false)
-                    boolean replace = rawJson.getOrDefault("replace", false) instanceof Boolean && (boolean) rawJson.get("replace");
-                    SoulsWeaponry.LOGGER.info("Resource replace flag: {} from {}", replace, resource.getPack().getName()); // Debug: Track replace flag
-
-                    // If replace is true and we haven't encountered a replace flag yet, clear existing mappings
-                    if (replace && !replaceFlagEncountered) {
-                        SoulsWeaponry.LOGGER.info("Clearing existing mappings due to replace flag from {}", resource.getPack().getName());
-                        itemMappings.clear();
-                        replaceFlagEncountered = true;
+            // Get all resources with the same path
+            List<Resource> resources = manager.getAllResources(new Identifier(SoulsWeaponry.ModId, "trickweapons/item_mappings.json"));
+            boolean shouldReplace = false;
+            for (Resource resource : resources) {
+                try (var stream = resource.getInputStream(); InputStreamReader reader = new InputStreamReader(stream)) {
+                    Map<String, Object> rawJson = gson.fromJson(reader, type);
+                    // Check if "replace" is specified and clear mappings if replace is true
+                    Object replaceValue = rawJson.get("replace");
+                    if (replaceValue instanceof Boolean && (Boolean) replaceValue) {
+                        shouldReplace = true;
+                        newMappings.clear();
                     }
-
-                    // Get the "values" object, which contains the item mappings
-                    Object valuesObject = rawJson.get("values");
-                    if (valuesObject instanceof Map<?, ?> rawValuesMap) {
-                        for (Map.Entry<?, ?> entry : rawValuesMap.entrySet()) {
-                            if (entry.getKey() instanceof String && entry.getValue() instanceof String) {
-                                Identifier key = Identifier.tryParse((String) entry.getKey());
-                                Identifier value = Identifier.tryParse((String) entry.getValue());
-                                if (key != null && value != null) {
-                                    newMappings.put(key, value);
-                                } else {
-                                    SoulsWeaponry.LOGGER.warn("Invalid identifier in trick weapon item_mappings: {}", entry);
-                                }
-                            } else {
-                                SoulsWeaponry.LOGGER.warn("Invalid entry in 'values' inside trick weapon item_mappings: {}", entry);
-                            }
+                    for (Map.Entry<String, Object> entry : rawJson.entrySet()) {
+                        if ("replace".equals(entry.getKey())) continue;
+                        String key = entry.getKey();
+                        String value = entry.getValue().toString();
+                        Identifier keyId = Identifier.tryParse(key);
+                        Identifier valueId = Identifier.tryParse(value);
+                        if (keyId != null && valueId != null) {
+                            newMappings.put(keyId, valueId);
+                        } else {
+                            SoulsWeaponry.LOGGER.warn("Invalid identifier in item mappings: {}", entry);
                         }
                     }
-                } catch (Exception e) {
-                    SoulsWeaponry.LOGGER.error("Failed to load trick weapon item mappings from resource.", e);
                 }
             }
-
-            // Merge the new mappings into the global mappings
-            SoulsWeaponry.LOGGER.info("Merging {} new mappings into global mappings.", newMappings.size());
+            if (shouldReplace) {
+                itemMappings.clear();
+            }
             itemMappings.putAll(newMappings);
-
         } catch (Exception e) {
-            SoulsWeaponry.LOGGER.error("Failed to load trick weapon item_mappings.", e);
+            SoulsWeaponry.LOGGER.error("Failed to load trick weapon item mappings.", e);
         }
     }
 
@@ -130,7 +104,16 @@ public class TrickWeaponUtil {
     }
 
     @Nullable
-    public static Text getMappedItemName(Item heldItem) {
+    public static Item getMappedItem(ItemStack heldStack) {
+        if (heldStack.hasNbt() && heldStack.getNbt().contains(MAPPED_TRICK_WEAPON)) {
+            return Registries.ITEM.get(Identifier.tryParse(heldStack.getNbt().getString(MAPPED_TRICK_WEAPON)));
+        } else {
+            return getMappedItem(heldStack.getItem());
+        }
+    }
+
+    @Nullable
+    public static Text getMappedItemName(ItemStack heldItem) {
         Item mappedItem = getMappedItem(heldItem);
         if (mappedItem != null) {
             return mappedItem.getName();
@@ -140,18 +123,11 @@ public class TrickWeaponUtil {
 
     @Nullable
     public static ItemStack getMappedStack(ItemStack heldStack) {
-        ItemStack stack = null;
-        if (heldStack.hasNbt() && heldStack.getNbt().contains(MAPPED_TRICK_WEAPON)) {
-            stack = Registries.ITEM.get(Identifier.tryParse(heldStack.getNbt().getString(MAPPED_TRICK_WEAPON))).getDefaultStack();
-        } else {
-            Item item = getMappedItem(heldStack.getItem());
-            if (item != null) {
-                stack = item.getDefaultStack();
-            }
-        }
-        if (stack == null) {
+        Item item = getMappedItem(heldStack);
+        if (item == null) {
             return null;
         }
+        ItemStack stack = item.getDefaultStack();
         stack.setCount(heldStack.getCount());
         if (heldStack.hasNbt()) {
             stack.setNbt(heldStack.getNbt().copy());

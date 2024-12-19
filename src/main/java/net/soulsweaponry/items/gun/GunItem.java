@@ -1,9 +1,5 @@
 package net.soulsweaponry.items.gun;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -12,23 +8,29 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.ITooltipInfo;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.EnchantRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GunItem extends BowItem implements IConfigDisable {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
+
+public abstract class GunItem extends BowItem implements IConfigDisable, ITooltipInfo {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
+    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public GunItem(Settings settings) {
         super(settings);
+        this.addTooltipAbility(WeaponUtil.TooltipAbilities.GUN_ITEM);
     }
     
     @Override
@@ -83,19 +85,22 @@ public abstract class GunItem extends BowItem implements IConfigDisable {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        if (Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(Text.literal(String.valueOf(this.getPostureLoss(stack)))).formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.format("%.1f", this.getBulletDamage(stack)))).formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(this.getCooldown(stack)))).formatted(Formatting.GRAY));
-            tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(this.bulletsNeeded()))).formatted(Formatting.GRAY));
-            if (this.getMaxUseTime(stack) != 0) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(this.getMaxUseTime(stack)))).formatted(Formatting.GRAY));
-            }
-        }
-        else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+        return this.tooltipAbilities;
+    }
+
+    @Override
+    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+        Collections.addAll(this.tooltipAbilities, abilities);
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 }

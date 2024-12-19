@@ -1,13 +1,9 @@
 package net.soulsweaponry.items;
 
-import net.fabric_extras.ranged_weapon.api.CustomBow;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -15,23 +11,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
-public abstract class ModdedBow extends CustomBow implements IConfigDisable, IShootModProjectile, ICooldownItem, ITooltipInfo {
+public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo {
 
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
-    public ModdedBow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (this.isDisabled(user.getStackInHand(hand))) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-        return super.use(world, user, hand);
+    public ModdedItem(Settings settings) {
+        super(settings);
     }
 
     @Override

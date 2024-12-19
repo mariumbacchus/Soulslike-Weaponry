@@ -1,6 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,11 +13,10 @@ import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedSword extends SwordItem implements IConfigDisable, ICooldownItem {
+public abstract class ModdedSword extends SwordItem implements IConfigDisable, ICooldownItem, ITooltipInfo {
 
     protected final float attackSpeed;
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
@@ -32,12 +30,19 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         return attackSpeed;
     }
 
+    @Override
     public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
+    @Override
     public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
     }
 
     @Override
@@ -45,19 +50,8 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        if (Screen.hasShiftDown()) {
-            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
-                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
-            }
-            tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
         super.appendTooltip(stack, world, tooltip, context);
-    }
-
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
     }
 
     public void notifyCooldown(LivingEntity user) {

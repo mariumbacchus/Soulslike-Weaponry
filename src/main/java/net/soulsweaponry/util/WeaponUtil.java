@@ -1,9 +1,11 @@
 package net.soulsweaponry.util;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,6 +16,9 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.armor.ChaosSet;
+import net.soulsweaponry.items.armor.WitheredArmor;
+import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
 import net.soulsweaponry.items.spear.GlaiveOfHodir;
@@ -43,14 +48,6 @@ public class WeaponUtil {
         }
         return 0;
     }
-
-    /*public static Text getSwitchWeaponName(ItemStack stack, TrickWeapon weapon) {
-        TrickWeapon switchWeapon = TRICK_WEAPONS[weapon.getSwitchWeaponIndex()];
-        if (stack.hasNbt() && stack.getNbt().contains(WeaponUtil.PREV_TRICK_WEAPON)) {
-            switchWeapon = TRICK_WEAPONS[stack.getNbt().getInt(WeaponUtil.PREV_TRICK_WEAPON)];
-        }
-        return switchWeapon.getName();
-    }*///TODO
 
     public static List<Integer> arrayToList(int[] array) {
         List<Integer> list = new ArrayList<>();
@@ -146,14 +143,22 @@ public class WeaponUtil {
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {
-                Text text = TrickWeaponUtil.getMappedItemName(stack.getItem());
-                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                        .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
-                if (text != null) {//TODO test this
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
-                            .append(text).copy().formatted(Formatting.WHITE));
+                ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
+                if (mappedStack != null) {
+                    Item item = stack.getItem();
+                    if (Screen.hasShiftDown()) {
+                        Text text = TrickWeaponUtil.getMappedItemName(stack);
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
+                                .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
+                        if (text != null) {
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
+                                    .append(text).formatted(Formatting.WHITE));
+                        }
+                    } else if (!(item instanceof ITooltipInfo || item instanceof ChaosSet || item instanceof WitheredArmor || (item instanceof LoreItem lore && lore.isInfo()))) { //TODO remove the hardcode check for armor items when those items are cleaned up
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+                    }
                 }
             }
             case CHARGE -> {
@@ -633,6 +638,18 @@ public class WeaponUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.3").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.4").formatted(Formatting.GRAY));
             }
+            case GUN_ITEM -> {
+                if (stack.getItem() instanceof GunItem gun) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(Text.literal(String.valueOf(gun.getPostureLoss(stack)))).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.format("%.1f", gun.getBulletDamage(stack)))).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(gun.getCooldown(stack)))).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(gun.bulletsNeeded()))).formatted(Formatting.GRAY));
+                    if (gun.getMaxUseTime(stack) != 0) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(gun.getMaxUseTime(stack)))).formatted(Formatting.GRAY));
+                    }
+                }
+            }
         }
     }
 
@@ -645,6 +662,6 @@ public class WeaponUtil {
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
         KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT, FAST_PULL, THIRD_SHOT, SLOW_PULL, MOONLIGHT_ARROW,
-        ARROW_STORM, TRANSPARENT, CHUNGUS_INFUSED, FROST_MOON, GLAIVE_DANCE, GHOST_GLAIVE, SONIC_BOOM, LIFE_GUARD, TRANSIENT_MOONLIGHT
+        ARROW_STORM, TRANSPARENT, CHUNGUS_INFUSED, FROST_MOON, GLAIVE_DANCE, GHOST_GLAIVE, SONIC_BOOM, LIFE_GUARD, TRANSIENT_MOONLIGHT, GUN_ITEM
     }
 }

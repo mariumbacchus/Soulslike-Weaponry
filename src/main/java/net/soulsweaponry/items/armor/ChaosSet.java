@@ -245,6 +245,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
         return this.factory;
     }
 
+    //TODO gotta make this cleaner by using ITooltipInfo
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);

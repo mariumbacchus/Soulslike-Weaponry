@@ -46,4 +46,8 @@ public class LoreItem extends Item {
         Identifier id = Registries.ITEM.getId(stack.getItem());
         return id.getPath();
     }
+
+    public boolean isInfo() {
+        return isInfo;
+    }
 }

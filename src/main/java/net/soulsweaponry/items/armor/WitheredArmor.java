@@ -130,6 +130,7 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 
+    //TODO gotta make this cleaner by using ITooltipInfo
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);

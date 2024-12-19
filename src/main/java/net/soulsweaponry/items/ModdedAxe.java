@@ -1,6 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
@@ -11,11 +10,10 @@ import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem {
+public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem, ITooltipInfo {
 
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
@@ -28,25 +26,21 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        if (Screen.hasShiftDown()) {
-            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
-                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
-            }
-            tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
         super.appendTooltip(stack, world, tooltip, context);
     }
 
+    @Override
     public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
+    @Override
     public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 
+    @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }

@@ -54,7 +54,6 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
         this.arrayIndex = damageIndex;
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRICK_WEAPON);
         if (this.isHeavy()) {
             this.addTooltipAbility(WeaponUtil.TooltipAbilities.HEAVY);
         }
