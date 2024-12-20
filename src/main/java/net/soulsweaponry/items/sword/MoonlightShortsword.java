@@ -44,7 +44,7 @@ public class MoonlightShortsword extends ModdedSword {
                     return;
                 }
                 float damage = ConfigConstructor.moonlight_shortsword_projectile_damage;
-                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user);
+                MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user, itemStack);
                 if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && !itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
                     damage += user.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() * 2f;
                 }

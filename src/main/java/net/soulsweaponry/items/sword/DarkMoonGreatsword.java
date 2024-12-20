@@ -46,7 +46,7 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
                 stack.damage(1, playerEntity, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
                 int duration = ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_duration;
                 int amp = ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack);
-                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.DARK_MOON_PROJECTILE, world, user);
+                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.DARK_MOON_PROJECTILE, world, user, stack);
                 entity.setAppliedStatusEffect(EffectRegistry.FREEZING);
                 entity.setEffectAmplifier(amp);
                 entity.setAppliedEffectTicks(duration);

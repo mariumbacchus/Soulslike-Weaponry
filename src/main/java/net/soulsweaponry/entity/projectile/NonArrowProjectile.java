@@ -8,6 +8,9 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -18,6 +21,8 @@ import net.minecraft.world.World;
 
 public abstract class NonArrowProjectile extends PersistentProjectileEntity {
 
+    private ItemStack stackShotFrom;
+
     public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -27,12 +32,13 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
         this.setPosition(x, y, z);
     }
 
-    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
+    public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
         this(type, owner.getX(), owner.getEyeY() - (double)0.1f, owner.getZ(), world);
         this.setOwner(owner);
         if (owner instanceof PlayerEntity) {
             this.pickupType = PickupPermission.ALLOWED;
         }
+        this.setItemStack(stack);
     }
 
     @Override
@@ -96,5 +102,28 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
                 this.discard();
             }
         }
+    }
+
+    @Override
+    protected ItemStack asItemStack() {
+        return this.stackShotFrom;
+    }
+
+    public void setItemStack(ItemStack stackShotFrom) {
+        this.stackShotFrom = stackShotFrom;
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
+            this.stackShotFrom = ItemStack.fromNbt(nbt.getCompound("Stack"));
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.put("Stack", this.stackShotFrom.writeNbt(new NbtCompound()));
     }
 }

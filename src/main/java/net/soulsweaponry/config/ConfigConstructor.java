@@ -557,7 +557,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int moonveil_damage = 9;
     @Entry public static float moonveil_attack_speed = 1.6f;
     @Entry public static float moonveil_wave_damage = 8f;
-    @Entry public static float moonveil_horizontal_damage = 12f;
+    @Entry public static float moonveil_vertical_damage = 12f;
     @Entry public static int moonveil_ability_cooldown = 30;
     @Entry public static int nightfall_damage = 11;
     @Entry public static float nightfall_attack_speed = 1f;

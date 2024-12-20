@@ -2,8 +2,10 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.GunRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -16,8 +18,12 @@ public class Cannonball extends SilverBulletEntity implements GeoEntity {
         super(entityType, world);
     }
 
+    public Cannonball(World world, LivingEntity owner, ItemStack stack) {
+        super(EntityRegistry.CANNONBALL, world, owner, stack);
+    }
+
     public Cannonball(World world, LivingEntity owner) {
-        super(EntityRegistry.CANNONBALL, world, owner);
+        super(EntityRegistry.CANNONBALL, world, owner, GunRegistry.HUNTER_CANNON.getDefaultStack());
     }
 
     @Override

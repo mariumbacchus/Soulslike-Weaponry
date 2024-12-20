@@ -51,14 +51,17 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     private static final TrackedData<Integer> EFFECT_AMPLIFIER = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> APPLIED_EFFECT_ID = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.STRING);
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private ItemStack stackShotFrom;
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
     
+    public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner, ItemStack stack) {
+        super(type, owner, world, stack);
+    }
+
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
-        super(type, owner, world);
+        super(type, owner, world, null);
     }
 
     @Override
@@ -145,16 +148,16 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
 
     @Override
     public int getPunch() {
-        if (stackShotFrom != null) {
-            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, stackShotFrom);
+        if (this.asItemStack() != null) {
+            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, this.asItemStack());
         }
         return super.getPunch();
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity && this.asItemStack() != null) {
-            float bonus = EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entityHitResult.getEntity()).getGroup());
+        if (entityHitResult.getEntity() instanceof LivingEntity living && this.asItemStack() != null) {
+            float bonus = EnchantmentHelper.getAttackDamage(this.asItemStack(), living.getGroup());
             this.setDamage(this.getDamage() + (bonus >= 5 ? bonus * 0.7f : bonus));
         }
         super.onEntityHit(entityHitResult);
@@ -192,14 +195,6 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
 
     protected float getDragInWater() {
         return 1.01F;
-    }
-
-    protected ItemStack asItemStack() {
-        return this.stackShotFrom;
-    }
-
-    public void setItemStack(ItemStack stackShotFrom) {
-        this.stackShotFrom = stackShotFrom;
     }
 
     public boolean hasNoGravity() {

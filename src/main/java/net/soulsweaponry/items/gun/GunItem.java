@@ -77,7 +77,7 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
     }
 
     public SilverBulletEntity getModdedProjectile(World world, LivingEntity shooter, ItemStack gunStack) {
-        return new SilverBulletEntity(world, shooter);
+        return new SilverBulletEntity(world, shooter, gunStack);
     }
 
     @Override

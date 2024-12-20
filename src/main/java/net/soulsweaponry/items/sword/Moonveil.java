@@ -31,14 +31,14 @@ public class Moonveil extends ChargeToUseItem {
                     entity.setModelRotation(90);
                     entity.setModelTranslationY(1f);
                     entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1f, 1.0F);
-                    entity.setDamage(ConfigConstructor.moonveil_horizontal_damage);
+                    entity.setDamage(ConfigConstructor.moonveil_vertical_damage + WeaponUtil.getEnchantDamageBonus(stack));
                     world.spawnEntity(entity);
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_VERTICAL, SoundCategory.PLAYERS, 1f, 1f);
                 } else {
                     MoonveilWave entity = new MoonveilWave(world, user, 6);
                     entity.setPos(player.getX(), player.getEyeY() - 0.3f, player.getZ());
                     entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.0f, 1.0F);
-                    entity.setDamage(ConfigConstructor.moonveil_wave_damage);
+                    entity.setDamage(ConfigConstructor.moonveil_wave_damage + ((float)WeaponUtil.getEnchantDamageBonus(stack) * 0.8f));
                     world.spawnEntity(entity);
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL, SoundCategory.PLAYERS, 1f, 1f);
                 }
