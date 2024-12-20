@@ -8,15 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.noclip.HolyMoonlightPillar;
+import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.items.TrickWeapon;
+import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -25,10 +23,10 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeeded {
+public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded, IUndeadBonus {
 
-    public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings, int switchWeaponIndex) {
-        super(toolMaterial, 3, settings, switchWeaponIndex, 3, false, true);
+    public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.NEED_CHARGE, WeaponUtil.TooltipAbilities.LUNAR_HERALD_NO_CHARGE, WeaponUtil.TooltipAbilities.CHARGE, WeaponUtil.TooltipAbilities.MOONFALL);
     }
 
@@ -92,30 +90,6 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled(itemStack)) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(itemStack);
-        }
-        if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) || user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
-            user.setCurrentHand(hand);
-            return TypedActionResult.success(itemStack);
-        }
-        else {
-            return TypedActionResult.fail(itemStack);
-        }
-    }
-
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
-    }
-
-    public int getMaxUseTime(ItemStack stack) {
-        return 72000;
-    }
-
-    @Override
     public int getMaxCharge() {
         return ConfigConstructor.holy_moonlight_ability_charge_needed;
     }
@@ -127,6 +101,11 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     }
 
     @Override
+    public boolean acceptsMoonHeraldEffect(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public boolean canEnchantReduceCooldown(ItemStack stack) {
         return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown;
     }
@@ -134,5 +113,25 @@ public class HolyMoonlightGreatsword extends TrickWeapon implements IChargeNeede
     @Override
     public String getReduceCooldownEnchantId(ItemStack stack) {
         return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_id;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_holy_moonlight_greatsword;
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_holy_moonlight_greatsword;
+    }
+
+    @Override
+    public boolean isRighteous() {
+        return true;
+    }
+
+    @Override
+    public float getUndeadBonus(ItemStack stack) {
+        return ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage;
     }
 }

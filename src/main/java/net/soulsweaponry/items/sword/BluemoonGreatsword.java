@@ -1,16 +1,11 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
@@ -35,23 +30,6 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled(itemStack)) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(itemStack);
-        }
-        if (itemStack.getDamage() < itemStack.getMaxDamage() - 1 && (this.isCharged(itemStack) ||
-                user.isCreative() || user.hasStatusEffect(EffectRegistry.MOON_HERALD))) {
-            user.setCurrentHand(hand);
-            return TypedActionResult.success(itemStack);
-        }
-        else {
-            return TypedActionResult.fail(itemStack);
-        }
-    }
-
-    @Override
     public int getMaxCharge() {
         return ConfigConstructor.bluemoon_greatsword_charge_needed;
     }
@@ -59,6 +37,11 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     @Override
     public int getAddedCharge(ItemStack stack) {
         return ConfigConstructor.bluemoon_greatsword_charge_added_post_hit;
+    }
+
+    @Override
+    public boolean acceptsMoonHeraldEffect(ItemStack stack) {
+        return true;
     }
 
     @Override

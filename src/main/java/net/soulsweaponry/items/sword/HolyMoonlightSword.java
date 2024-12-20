@@ -17,7 +17,8 @@ import net.soulsweaponry.util.WeaponUtil;
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, 4, settings, 3, 4, false, true);
+        super(toolMaterial, ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,false,
+                ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_holy_moonlight_sword, ConfigConstructor.disable_use_holy_moonlight_sword);
         this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHARGE, WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE);
     }
 
@@ -58,5 +59,10 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     public int getAddedCharge(ItemStack stack) {
         int base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack);
+    }
+
+    @Override
+    public boolean acceptsMoonHeraldEffect(ItemStack stack) {
+        return true;
     }
 }

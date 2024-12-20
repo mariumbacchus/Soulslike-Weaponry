@@ -60,11 +60,11 @@ public class WeaponRegistry {
     public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 0, new FabricItemSettings().rarity(Rarity.RARE), 1, 0, true, false);
-    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 1, new FabricItemSettings().rarity(Rarity.RARE), 0, 1, false, true);
-    public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, 2, new FabricItemSettings().rarity(Rarity.RARE), 1, 2, false, true);
+    public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), true, 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
+    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, ConfigConstructor.kirkhammer_silver_sword_damage, ConfigConstructor.kirkhammer_silver_sword_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.kirkhammer_silver_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_silver_sword, ConfigConstructor.disable_use_silver_sword);
+    public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK,  ConfigConstructor.ludwigs_holy_greatsword_damage,  ConfigConstructor.ludwigs_holy_greatsword_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.ludwigs_holy_greatsword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_ludwigs_holy_blade, ConfigConstructor.disable_use_ludwigs_holy_greatsword);
     public static ToolItem DRAUPNIR_SPEAR = new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static HolyMoonlightGreatsword HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new FabricItemSettings().rarity(Rarity.EPIC), 4);
+    public static HolyMoonlightGreatsword HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new FabricItemSettings().rarity(Rarity.EPIC));
     public static TrickWeapon HOLY_MOONLIGHT_SWORD = new HolyMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new FabricItemSettings().rarity(Rarity.EPIC));
     public static Frostmourne FROSTMOURNE = new Frostmourne(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem MASTER_SWORD = new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));

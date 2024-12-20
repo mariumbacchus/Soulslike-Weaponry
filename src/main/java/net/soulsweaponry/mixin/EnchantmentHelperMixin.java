@@ -12,7 +12,8 @@ import net.minecraft.registry.Registries;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.enchantments.FastHandsEnchantment;
 import net.soulsweaponry.enchantments.VisceralEnchantment;
-import net.soulsweaponry.items.TrickWeapon;
+import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -54,11 +55,10 @@ public class EnchantmentHelperMixin {
             modifiedDamage += ConfigConstructor.sting_bonus_arthropod_damage;
         }
         if (group == EntityGroup.UNDEAD &&
-                (stack.getItem() instanceof TrickWeapon trickWeapon &&
-                        trickWeapon.hasUndeadBonus() &&
-                        !trickWeapon.isDisabled(stack) ||
-                        stack.isOf(WeaponRegistry.MASTER_SWORD))) {
-            modifiedDamage += ConfigConstructor.righteous_undead_bonus_damage
+                (stack.getItem() instanceof IUndeadBonus undeadBonus
+                        && undeadBonus.isRighteous()
+                        && (stack.getItem() instanceof IConfigDisable disable && !disable.isDisabled(stack)))) {
+            modifiedDamage += undeadBonus.getUndeadBonus(stack)
                     + (float) EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
         }
         return modifiedDamage;

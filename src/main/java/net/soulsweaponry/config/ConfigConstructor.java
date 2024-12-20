@@ -488,6 +488,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean rageblade_haste_cap = true;
     @Entry public static int holy_moonlight_greatsword_damage = 10;
     @Entry public static float holy_moonlight_greatsword_attack_speed = 1.2f;
+    @Entry public static float holy_moonlight_greatsword_righteous_undead_bonus_damage = 2f;
     @Entry public static int holy_moonlight_ability_charge_needed = 50;
     @Entry public static int holy_moonlight_greatsword_charge_added_post_hit = 3;
     @Entry public static float holy_moonlight_ability_damage = 20f;
@@ -499,12 +500,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int holy_moonlight_ruptures_amount = 8;
     @Entry public static int holy_moonlight_sword_damage = 7;
     @Entry public static float holy_moonlight_sword_attack_speed = 1.6f;
+    @Entry public static float holy_moonlight_sword_righteous_undead_bonus_damage = 2f;
     @Entry public static int holy_moonlight_sword_max_bonus_damage = 2;
     @Entry public static int holy_moonlight_sword_charge_added_post_hit = 1;
     @Entry public static int kirkhammer_damage = 9;
     @Entry public static float kirkhammer_attack_speed = 1f;
     @Entry public static int kirkhammer_silver_sword_damage = 6;
     @Entry public static float kirkhammer_silver_sword_attack_speed = 1.6f;
+    @Entry public static float kirkhammer_silver_sword_righteous_undead_bonus_damage = 2f;
     @Entry public static int kraken_slayer_damage = 7;
     @Entry public static String kraken_slayer_bow_use_animation = "SPEAR";
     @Entry public static float kraken_slayer_max_velocity = 3f;
@@ -523,9 +526,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
     @Entry public static int ludwigs_holy_greatsword_damage = 8;
     @Entry public static float ludwigs_holy_greatsword_attack_speed = 1.2f;
-    @Entry public static float righteous_undead_bonus_damage = 2f;
+    @Entry public static float ludwigs_holy_greatsword_righteous_undead_bonus_damage = 2f;
     @Entry public static int master_sword_damage = 8;
     @Entry public static float master_sword_attack_speed = 1.6f;
+    @Entry public static float master_sword_righteous_undead_bonus_damage = 2f;
     @Entry public static float master_sword_projectile_damage = 11.0f;
     @Entry public static int mjolnir_damage = 9;
     @Entry public static float mjolnir_attack_speed = 1.2f;

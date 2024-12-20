@@ -11,11 +11,12 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class MasterSword extends ChargeToUseItem {
+public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
@@ -64,5 +65,15 @@ public class MasterSword extends ChargeToUseItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_master_sword;
+    }
+
+    @Override
+    public boolean isRighteous() {
+        return true;
+    }
+
+    @Override
+    public float getUndeadBonus(ItemStack stack) {
+        return ConfigConstructor.master_sword_righteous_undead_bonus_damage;
     }
 }

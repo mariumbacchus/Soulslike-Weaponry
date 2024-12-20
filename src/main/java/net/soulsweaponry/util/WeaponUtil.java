@@ -182,10 +182,12 @@ public class WeaponUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_no_charge_2").formatted(Formatting.DARK_GRAY));
             }
             case RIGHTEOUS -> {
-                int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + ConfigConstructor.righteous_undead_bonus_damage);
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(amount))));
+                if (stack.getItem() instanceof IUndeadBonus undeadBonus) {
+                    int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + undeadBonus.getUndeadBonus(stack));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(amount))));
+                }
             }
             case MOONFALL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall").formatted(Formatting.AQUA, Formatting.BOLD));

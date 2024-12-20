@@ -10,6 +10,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EffectRegistry;
 
 public abstract class ChargeToUseItem extends ModdedSword {
 
@@ -36,11 +37,15 @@ public abstract class ChargeToUseItem extends ModdedSword {
         ItemStack itemStack = user.getStackInHand(hand);
         if (ConfigConstructor.prioritize_off_hand_shield_over_weapon && user.getOffHandStack().getItem() instanceof ShieldItem) {
             return TypedActionResult.fail(itemStack);
-        }
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
+        } else if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        }
-        else {
+        } else if (this instanceof IChargeNeeded charge
+                && !charge.isCharged(itemStack)
+                && !user.isCreative()
+                && charge.acceptsMoonHeraldEffect(itemStack)
+                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
+            return TypedActionResult.fail(itemStack);
+        } else {
             user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
         }
