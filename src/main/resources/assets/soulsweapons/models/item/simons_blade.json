@@ -1,0 +1,48 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/simons_blade"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [-40, -90, 0],
+        "translation": [0.00, 12.0, 3.00],
+        "scale": [1.5, 1.5, 1.0]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [-40, 90, 0],
+        "translation": [0.00, 12.0, 3.00],
+        "scale": [1.5, 1.5, 1.0]
+      },
+      "firstperson_righthand": {
+        "rotation": [-60, -90, 0],
+        "translation": [0.00, 10.0, 0.00],
+        "scale": [1.0, 1, 1.0]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-70, 90, 0],
+        "translation": [0.00, 9.0, 0.00],
+        "scale": [1.0, 1, 1.0]
+      },
+      "ground": {
+        "rotation": [0, 0, 0],
+        "translation": [0, 2.5, 0],
+        "scale": [0.7, 0.7, 0.7]
+      },
+      "gui": {
+        "rotation": [0, 0, 0],
+        "translation": [1.2, 0.65, 0],
+        "scale": [1.2, 1.2, 1.2]
+      },
+      "fixed": {
+        "rotation": [0, 0, 0],
+        "translation": [0, 0, 0],
+        "scale": [1.2, 1.2, 1.2]
+      },
+      "head": {
+        "rotation": [ 0, 0, 0 ],
+        "translation": [ 0, 7, 0],
+        "scale":[ 1.5, 1.5, 1.5 ]
+      }
+    }
+}

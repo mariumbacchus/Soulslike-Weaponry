@@ -481,6 +481,30 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "simons_blade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:simons_blade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "simons_bowblade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:simons_bowblade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "skofnung": {
       "conditions": {
         "items": [
@@ -692,6 +716,12 @@
     ],
     [
       "moonveil"
+    ],
+    [
+      "simons_bowblade"
+    ],
+    [
+      "simons_blade"
     ]
   ],
   "sends_telemetry_event": true

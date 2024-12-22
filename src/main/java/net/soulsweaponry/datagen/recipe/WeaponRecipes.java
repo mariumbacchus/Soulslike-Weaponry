@@ -403,6 +403,16 @@ public class WeaponRecipes {
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SIMONS_BOWBLADE)
+                .input('X', Items.IRON_SWORD)
+                .input('#', Items.STRING)
+                .input('S', Items.IRON_INGOT)
+                .pattern(" X#")
+                .pattern("S #")
+                .pattern(" X#")
+                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(Items.IRON_INGOT).build()))
+                .offerTo(consumer);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, consumer);

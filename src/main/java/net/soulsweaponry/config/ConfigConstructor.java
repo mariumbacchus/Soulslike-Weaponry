@@ -78,6 +78,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_glaive_of_hodir = false;
     @Entry public static boolean disable_recipe_excalibur = false;
     @Entry public static boolean disable_recipe_moonveil = false;
+    @Entry public static boolean disable_recipe_simons_bowblade = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -155,6 +156,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_glaive_of_hodir = false;
     @Entry public static boolean disable_use_excalibur = false;
     @Entry public static boolean disable_use_moonveil = false;
+    @Entry public static boolean disable_use_simons_bowblade = false;
+    @Entry public static boolean disable_use_simons_blade = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -215,6 +218,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_glaive_of_hodir = true;
     @Entry public static boolean is_fireproof_excalibur = true;
     @Entry public static boolean is_fireproof_moonveil = true;
+    @Entry public static boolean is_fireproof_simons_bowblade = false;
+    @Entry public static boolean is_fireproof_simons_blade = false;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -597,6 +602,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean shadow_assassin_scythe_ability_enchant_reduces_cooldown = false;
     @Entry public static String shadow_assassin_scythe_ability_enchant_reduces_cooldown_id = "damage";
     @Entry public static int shadow_assassin_scythe_ticks_before_dismount = 120;
+    @Entry public static int simons_blade_damage = 6;
+    @Entry public static float simons_blade_attack_speed = 1.6f;
+    @Entry public static float simons_blade_righteous_undead_bonus_damage = 3f;
+    @Entry public static int simons_bowblade_projectile_damage = 6;
+    @Entry public static float simons_bowblade_max_velocity = 3f;
+    @Entry public static int simons_bowblade_pull_time_ticks = 25;
+    @Entry public static float simons_bowblade_projectile_righteous_undead_bonus_damage = 4f;
+    @Entry public static int simons_bowblade_projectile_posture_loss = 30;
     @Entry public static int skofnung_damage = 8;
     @Entry public static float skofnung_attack_speed = 1.6f;
     @Entry public static int skofnung_bonus_damage = 2;

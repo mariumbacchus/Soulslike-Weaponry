@@ -6,18 +6,18 @@ import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.projectile.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.SilverArrow;
 
 @Environment(EnvType.CLIENT)
-public class MoonlightArrowRenderer extends ProjectileEntityRenderer<MoonlightArrow> {
+public class SilverArrowRenderer extends ProjectileEntityRenderer<SilverArrow> {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/moonlight_arrow.png");
+    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/silver_arrow.png");
 
-    public MoonlightArrowRenderer(Context context) {
+    public SilverArrowRenderer(Context context) {
         super(context);
     }
 
-    public Identifier getTexture(MoonlightArrow entity) {
+    public Identifier getTexture(SilverArrow entity) {
         return TEXTURE;
     }
 }

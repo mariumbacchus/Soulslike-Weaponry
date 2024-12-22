@@ -10,6 +10,7 @@ import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.items.bow.DarkmoonLongbow;
 import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
+import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
 import net.soulsweaponry.items.hammer.Mjolnir;
 import net.soulsweaponry.items.hammer.Nightfall;
@@ -78,6 +79,8 @@ public class WeaponRegistry {
     public static ToolItem GLAIVE_OF_HODIR = new GlaiveOfHodir(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem EXCALIBUR = new Excalibur(ModToolMaterials.ECHO_SHARD, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem MOONVEIL = new Moonveil(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static BowItem SIMONS_BOWBLADE = new SimonsBowblade(new FabricItemSettings().maxDamage(1354).rarity(Rarity.RARE), () -> Ingredient.ofItems(Items.IRON_BLOCK, ItemRegistry.SOUL_INGOT));
+    public static TrickWeapon SIMONS_BLADE = new TrickWeapon(ModToolMaterials.IRON_BLOCK,  ConfigConstructor.simons_blade_damage,  ConfigConstructor.simons_blade_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.simons_blade_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_simons_blade, ConfigConstructor.disable_use_simons_blade);
 
     public static void init() {
         ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword);
@@ -132,5 +135,7 @@ public class WeaponRegistry {
         ItemRegistry.registerLegendaryWeapon(GLAIVE_OF_HODIR, "glaive_of_hodir", ConfigConstructor.disable_recipe_glaive_of_hodir);
         ItemRegistry.registerLegendaryWeapon(EXCALIBUR, "excalibur", ConfigConstructor.disable_recipe_excalibur);
         ItemRegistry.registerLegendaryWeapon(MOONVEIL, "moonveil", ConfigConstructor.disable_recipe_moonveil);
+        ItemRegistry.registerLegendaryWeapon(SIMONS_BOWBLADE, "simons_bowblade", ConfigConstructor.disable_recipe_simons_bowblade);
+        ItemRegistry.registerLegendaryItem(SIMONS_BLADE, "simons_blade"); // Switched to by Simon's Bowblade
     }
 }

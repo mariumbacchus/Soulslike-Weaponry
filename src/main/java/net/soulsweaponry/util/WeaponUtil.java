@@ -652,6 +652,12 @@ public class WeaponUtil {
                     }
                 }
             }
+            case PROJECTILE_POSTURE_LOSS -> {
+                if (stack.getItem() instanceof IPostureLossItem postureLoss) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss").formatted(Formatting.LIGHT_PURPLE));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss.1", postureLoss.getPostureLoss()).formatted(Formatting.GRAY));
+                }
+            }
         }
     }
 
@@ -664,6 +670,6 @@ public class WeaponUtil {
         MOONLIGHT_ATTACK, LUNAR_HERALD, SUMMON_GHOST, SHIELD, OBLITERATE, TRIPLE_MOONLIGHT, SHADOW_STEP, DISABLE_HEAL,
         SHARPEN, IS_SHARPENED, DISABLE_DEBUFS, LUMINATE, SPIDERS_BANE, SAWBLADE, WABBAJACK, LUCK_BASED, PARRY, SKYWARD_STRIKES,
         KEYBIND_ABILITY, NIGHTS_EDGE, CHAOS_STORM, VEIL_OF_FIRE, BLIGHT, FAST_PULL, THIRD_SHOT, SLOW_PULL, MOONLIGHT_ARROW,
-        ARROW_STORM, TRANSPARENT, CHUNGUS_INFUSED, FROST_MOON, GLAIVE_DANCE, GHOST_GLAIVE, SONIC_BOOM, LIFE_GUARD, TRANSIENT_MOONLIGHT, GUN_ITEM
+        ARROW_STORM, TRANSPARENT, CHUNGUS_INFUSED, FROST_MOON, GLAIVE_DANCE, GHOST_GLAIVE, SONIC_BOOM, LIFE_GUARD, TRANSIENT_MOONLIGHT, GUN_ITEM, PROJECTILE_POSTURE_LOSS
     }
 }

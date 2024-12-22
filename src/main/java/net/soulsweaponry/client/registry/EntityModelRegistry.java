@@ -73,5 +73,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOONVEIL_VERTICAL, MoonveilWaveRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ABSORBED_PROJECTILES_ORB_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.SILVER_ARROW, SilverArrowRenderer::new);
     }
 }

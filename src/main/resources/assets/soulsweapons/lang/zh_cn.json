@@ -151,6 +151,8 @@
     "item.soulsweapons.glaive_of_hodir": "Glaive of Hodir",
     "item.soulsweapons.excalibur": "Excalibur",
     "item.soulsweapons.moonveil": "Moonveil",
+    "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
+    "item.soulsweapons.simons_blade": "Simon's Blade",
 
     "item.soulsweapons.big_chungus_spawn_egg": "中型蠢古斯兔刷怪蛋",
     "item.soulsweapons.withered_demon_spawn_egg": "凋零恶魔刷怪蛋",
@@ -696,6 +698,8 @@
     "tooltip.soulsweapons.transient_moonlight.2": "through blocks, damaging mobs it passes through",
     "tooltip.soulsweapons.transient_moonlight.3": "- Use while sneaking to instead shoot out a",
     "tooltip.soulsweapons.transient_moonlight.4": "vertical wave",
+    "tooltip.soulsweapons.projectile_posture_loss": "Posture Loss",
+    "tooltip.soulsweapons.projectile_posture_loss.1": "- Projectiles apply %s posture loss on targets hit",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",
