@@ -15,7 +15,7 @@ import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ import java.util.function.Predicate;
 public abstract class GunItem extends BowItem implements IConfigDisable, ITooltipInfo {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public GunItem(Settings settings) {
         super(settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.GUN_ITEM);
+        this.addTooltipAbility(TooltipAbilities.GUN_ITEM);
     }
     
     @Override
@@ -90,12 +90,12 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
     }
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 

@@ -15,7 +15,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class Featherlight extends UltraHeavyWeapon {
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FEATHERLIGHT);
+        this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
     }
 
     @Override

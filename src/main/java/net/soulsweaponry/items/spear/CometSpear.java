@@ -20,6 +20,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -39,7 +40,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYFALL, WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.CRIT);
+        this.addTooltipAbility(TooltipAbilities.SKYFALL, TooltipAbilities.INFINITY, TooltipAbilities.CRIT);
     }
 
     @Override

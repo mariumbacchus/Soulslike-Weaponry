@@ -31,6 +31,7 @@ import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -51,7 +52,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MJOLNIR_LIGHTNING, WeaponUtil.TooltipAbilities.THROW_LIGHTNING, WeaponUtil.TooltipAbilities.RETURNING, WeaponUtil.TooltipAbilities.WEATHERBORN, WeaponUtil.TooltipAbilities.OFF_HAND_FLIGHT);
+        this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.RETURNING, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
     @Override

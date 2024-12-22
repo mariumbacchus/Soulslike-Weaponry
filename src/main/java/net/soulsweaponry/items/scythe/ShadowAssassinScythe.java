@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UmbralTrespassItem;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class ShadowAssassinScythe extends UmbralTrespassItem {
@@ -26,7 +27,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.shadow_assassin_scythe_attack_speed, settings, ConfigConstructor.shadow_assassin_scythe_ticks_before_dismount);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SHADOW_STEP);
+        this.addTooltipAbility(TooltipAbilities.SHADOW_STEP);
     }
 
     @Override

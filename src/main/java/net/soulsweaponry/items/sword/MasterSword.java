@@ -14,13 +14,13 @@ import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SKYWARD_STRIKES, WeaponUtil.TooltipAbilities.RIGHTEOUS);
+        this.addTooltipAbility(TooltipAbilities.SKYWARD_STRIKES, TooltipAbilities.RIGHTEOUS);
     }
 
     @Override

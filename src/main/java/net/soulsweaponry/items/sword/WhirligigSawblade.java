@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     public WhirligigSawblade(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SAWBLADE);
+        this.addTooltipAbility(TooltipAbilities.SAWBLADE);
     }
 
     @Override

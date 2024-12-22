@@ -7,7 +7,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 /**
  * TODO for another time: Make it light up if it is active like how Dynamic Lights or shaders do it
@@ -18,7 +18,7 @@ public class Sting extends ModdedSword {
 
     public Sting(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.LUMINATE, WeaponUtil.TooltipAbilities.SPIDERS_BANE);
+        this.addTooltipAbility(TooltipAbilities.LUMINATE, TooltipAbilities.SPIDERS_BANE);
     }
 
     @Override

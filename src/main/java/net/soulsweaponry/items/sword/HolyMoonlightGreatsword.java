@@ -21,13 +21,14 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded, IUndeadBonus {
 
     public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.NEED_CHARGE, WeaponUtil.TooltipAbilities.LUNAR_HERALD_NO_CHARGE, WeaponUtil.TooltipAbilities.CHARGE, WeaponUtil.TooltipAbilities.MOONFALL);
+        this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.LUNAR_HERALD_NO_CHARGE, TooltipAbilities.CHARGE, TooltipAbilities.MOONFALL);
     }
 
     @Override

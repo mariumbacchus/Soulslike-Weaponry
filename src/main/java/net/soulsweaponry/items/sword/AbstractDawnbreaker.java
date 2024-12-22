@@ -17,7 +17,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
@@ -27,7 +27,7 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements Geo
 
     public AbstractDawnbreaker(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DAWNBREAKER, WeaponUtil.TooltipAbilities.BLAZING_BLADE);
+        this.addTooltipAbility(TooltipAbilities.DAWNBREAKER, TooltipAbilities.BLAZING_BLADE);
     }
 
     @Override

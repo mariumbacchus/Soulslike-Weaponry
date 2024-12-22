@@ -12,6 +12,7 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.items.TrickWeapon;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
@@ -19,7 +20,7 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,false,
                 ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_holy_moonlight_sword, ConfigConstructor.disable_use_holy_moonlight_sword);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHARGE, WeaponUtil.TooltipAbilities.CHARGE_BONUS_DAMAGE);
+        this.addTooltipAbility(TooltipAbilities.CHARGE, TooltipAbilities.CHARGE_BONUS_DAMAGE);
     }
 
     @Override

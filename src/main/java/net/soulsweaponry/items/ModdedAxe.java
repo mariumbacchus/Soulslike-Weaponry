@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem, ITooltipInfo {
 
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedAxe(ToolMaterial material, float attackDamage, float ingameAttackSpeed, Settings settings) {
         super(material, attackDamage, - (4f - ingameAttackSpeed), settings);
@@ -31,12 +31,12 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
     }
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 

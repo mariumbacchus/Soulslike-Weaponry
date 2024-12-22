@@ -27,7 +27,7 @@ import net.soulsweaponry.items.ModdedAxe;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -46,7 +46,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.HEAVY_THROW, WeaponUtil.TooltipAbilities.RETURNING);
+        this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
     }
 
     @Override

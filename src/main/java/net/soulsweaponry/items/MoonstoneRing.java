@@ -12,13 +12,13 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class MoonstoneRing extends ModdedItem {
 
     public MoonstoneRing(Settings settings) {
         super(settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.LUNAR_HERALD);
+        this.addTooltipAbility(TooltipAbilities.LUNAR_HERALD);
     }
     
     @Override

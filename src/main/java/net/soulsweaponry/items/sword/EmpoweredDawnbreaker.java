@@ -19,6 +19,7 @@ import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -40,7 +41,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHAOS_STORM, WeaponUtil.TooltipAbilities.VEIL_OF_FIRE);
+        this.addTooltipAbility(TooltipAbilities.CHAOS_STORM, TooltipAbilities.VEIL_OF_FIRE);
     }
 
     @Override

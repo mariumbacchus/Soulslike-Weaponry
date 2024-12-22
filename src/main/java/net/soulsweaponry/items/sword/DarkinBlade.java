@@ -17,6 +17,7 @@ import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -37,7 +38,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP, WeaponUtil.TooltipAbilities.SWORD_SLAM);
+        this.addTooltipAbility(TooltipAbilities.OMNIVAMP, TooltipAbilities.SWORD_SLAM);
     }
 
     @Override

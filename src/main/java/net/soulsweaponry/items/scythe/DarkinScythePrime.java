@@ -7,13 +7,14 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UmbralTrespassItem;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class DarkinScythePrime extends UmbralTrespassItem {
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.darkin_scythe_prime_attack_speed, settings, ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.OMNIVAMP);
+        this.addTooltipAbility(TooltipAbilities.OMNIVAMP);
     }
 
     @Override

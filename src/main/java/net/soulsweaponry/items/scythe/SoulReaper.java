@@ -24,7 +24,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -43,7 +43,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
 
     public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE);
+        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE);
     }
 
     @Override

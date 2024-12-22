@@ -23,7 +23,7 @@ import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
 
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.LIGHTNING_CALL, WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.THROW_LIGHTNING, WeaponUtil.TooltipAbilities.STORM_STOMP, WeaponUtil.TooltipAbilities.WEATHERBORN);
+        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL, TooltipAbilities.INFINITY, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.STORM_STOMP, TooltipAbilities.WEATHERBORN);
     }
 
     @Override

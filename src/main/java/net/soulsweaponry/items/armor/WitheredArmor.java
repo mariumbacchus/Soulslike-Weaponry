@@ -25,7 +25,8 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.TooltipUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -141,7 +142,7 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
                 for (int i = 1; i <= 4; i++) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
                 }
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                TooltipUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));

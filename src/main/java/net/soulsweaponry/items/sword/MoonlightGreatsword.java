@@ -14,7 +14,7 @@ import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class MoonlightGreatsword extends ChargeToUseItem {
 
@@ -24,7 +24,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MOONLIGHT);
+        this.addTooltipAbility(TooltipAbilities.MOONLIGHT);
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.RAGE);
+        this.addTooltipAbility(TooltipAbilities.RAGE);
     }
 
     @Override

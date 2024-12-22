@@ -13,7 +13,7 @@ import net.soulsweaponry.entity.projectile.SilverArrow;
 import net.soulsweaponry.items.IPostureLossItem;
 import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.items.ModdedBow;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
 
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.RIGHTEOUS, WeaponUtil.TooltipAbilities.PROJECTILE_POSTURE_LOSS, WeaponUtil.TooltipAbilities.SLOW_PULL);
+        this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
         this.configure(new RangedConfig(ConfigConstructor.simons_bowblade_pull_time_ticks, ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity));
     }
 

@@ -16,7 +16,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -34,7 +34,7 @@ public class FreyrSword extends ModdedSword implements GeoItem {
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SUMMON_WEAPON);
+        this.addTooltipAbility(TooltipAbilities.SUMMON_WEAPON);
     }
 
     @Override

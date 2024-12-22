@@ -26,6 +26,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE, WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST);
+        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE, TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST);
     }
 
     @Override

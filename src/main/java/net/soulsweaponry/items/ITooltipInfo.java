@@ -5,6 +5,8 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,18 +15,18 @@ import java.util.List;
 
 public interface ITooltipInfo {
 
-    List<WeaponUtil.TooltipAbilities> getTooltipAbilities();
+    List<TooltipAbilities> getTooltipAbilities();
     Text[] getAdditionalTooltips();
-    void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities);
+    void addTooltipAbility(TooltipAbilities... abilities);
 
     /**
      * Adds all tooltip abilities listed in {@link #getTooltipAbilities()} and {@link #getAdditionalTooltips()} to the
-     * item tooltip. {@link WeaponUtil} handles the displaying of {@link WeaponUtil.TooltipAbilities}.
+     * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
      */
     default void appendTooltipAbilities(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (Screen.hasShiftDown()) {
-            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
-                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
+            for (TooltipAbilities ability : this.getTooltipAbilities()) {
+                TooltipUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {

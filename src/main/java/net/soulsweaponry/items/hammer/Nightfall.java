@@ -34,7 +34,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -52,7 +52,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SUMMON_GHOST, WeaponUtil.TooltipAbilities.SHIELD, WeaponUtil.TooltipAbilities.OBLITERATE);
+        this.addTooltipAbility(TooltipAbilities.SUMMON_GHOST, TooltipAbilities.SHIELD, TooltipAbilities.OBLITERATE);
     }
 
     @Override

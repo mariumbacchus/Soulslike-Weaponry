@@ -8,13 +8,13 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.mixin.LivingEntityInvoker;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class LichBane extends ModdedSword {
 
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MAGIC_DAMAGE, WeaponUtil.TooltipAbilities.BLAZING_BLADE);
+        this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE, TooltipAbilities.BLAZING_BLADE);
     }
 
     @Override

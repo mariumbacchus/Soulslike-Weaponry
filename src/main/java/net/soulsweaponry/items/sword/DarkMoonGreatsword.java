@@ -20,13 +20,14 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbility {
 
     public DarkMoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.dark_moon_greatsword_damage, ConfigConstructor.dark_moon_greatsword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FREEZE, WeaponUtil.TooltipAbilities.PERMAFROST, WeaponUtil.TooltipAbilities.FROST_MOON);
+        this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.FROST_MOON);
     }
 
     @Override

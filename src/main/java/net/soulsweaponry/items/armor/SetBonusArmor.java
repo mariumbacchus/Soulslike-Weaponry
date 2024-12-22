@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.ITooltipInfo;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -58,12 +58,12 @@ public abstract class SetBonusArmor extends ModdedArmor implements ITooltipInfo 
     protected abstract Text[] getCustomTooltips();
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return List.of();
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
 
     }
 

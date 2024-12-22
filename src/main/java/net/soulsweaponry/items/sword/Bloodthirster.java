@@ -11,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.client.renderer.item.BloodthirsterRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -28,7 +29,7 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
 
     public Bloodthirster(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.bloodthirster_damage, ConfigConstructor.bloodthirster_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.LIFE_STEAL, WeaponUtil.TooltipAbilities.OVERHEAL);
+        this.addTooltipAbility(TooltipAbilities.LIFE_STEAL, TooltipAbilities.OVERHEAL);
     }
 
     @Override

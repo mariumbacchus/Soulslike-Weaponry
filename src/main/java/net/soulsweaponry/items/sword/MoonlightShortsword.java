@@ -15,7 +15,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class MoonlightShortsword extends ModdedSword {
 
@@ -25,7 +25,7 @@ public class MoonlightShortsword extends ModdedSword {
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.MOONLIGHT_ATTACK);
+        this.addTooltipAbility(TooltipAbilities.MOONLIGHT_ATTACK);
     }
 
     @Override

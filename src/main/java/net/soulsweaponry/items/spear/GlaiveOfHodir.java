@@ -16,13 +16,14 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.noclip.GhostGlaiveEntity;
 import net.soulsweaponry.items.BladeDanceItem;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class GlaiveOfHodir extends BladeDanceItem {
 
     public GlaiveOfHodir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.glaive_of_hodir_damage, ConfigConstructor.glaive_of_hodir_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.GHOST_GLAIVE);
+        this.addTooltipAbility(TooltipAbilities.GHOST_GLAIVE);
     }
 
     @Override

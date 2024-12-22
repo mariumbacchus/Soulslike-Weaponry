@@ -25,7 +25,7 @@ import net.soulsweaponry.entity.projectile.ChargedArrow;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -34,7 +34,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     public Galeforce(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.GALEFORCE);
+        this.addTooltipAbility(TooltipAbilities.GALEFORCE);
         this.configure(new RangedConfig(ConfigConstructor.galeforce_pull_time_ticks, ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_max_velocity));
     }
 

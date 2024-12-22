@@ -11,13 +11,14 @@ import net.soulsweaponry.entity.projectile.noclip.MoonveilWave;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class Moonveil extends ChargeToUseItem {
 
     public Moonveil(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.moonveil_damage, ConfigConstructor.moonveil_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRANSIENT_MOONLIGHT);
+        this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT);
     }
 
     @Override

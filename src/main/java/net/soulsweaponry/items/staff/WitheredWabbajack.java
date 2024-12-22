@@ -21,7 +21,7 @@ import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.WitheredWabbajackProjectile;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,7 +30,7 @@ public class WitheredWabbajack extends ModdedSword {
 
     public WitheredWabbajack(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, ConfigConstructor.withered_wabbajack_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.WABBAJACK, WeaponUtil.TooltipAbilities.LUCK_BASED);
+        this.addTooltipAbility(TooltipAbilities.WABBAJACK, TooltipAbilities.LUCK_BASED);
     }
 
     @Override

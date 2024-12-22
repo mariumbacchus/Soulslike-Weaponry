@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.util.ModTags;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public abstract class SoulHarvestingItem extends ModdedSword {
 
@@ -15,7 +15,7 @@ public abstract class SoulHarvestingItem extends ModdedSword {
 
     public SoulHarvestingItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_TRAP, WeaponUtil.TooltipAbilities.COLLECT);
+        this.addTooltipAbility(TooltipAbilities.SOUL_TRAP, TooltipAbilities.COLLECT);
     }
 
     @Override

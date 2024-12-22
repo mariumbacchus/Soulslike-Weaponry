@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -34,7 +34,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_RELEASE_WITHER);
+        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE_WITHER);
     }
 
     @Override

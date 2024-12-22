@@ -19,6 +19,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.SkofnungStone;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class Skofnung extends ModdedSword {
@@ -33,7 +34,7 @@ public class Skofnung extends ModdedSword {
      */
     public Skofnung(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DISABLE_HEAL, WeaponUtil.TooltipAbilities.SHARPEN, WeaponUtil.TooltipAbilities.IS_SHARPENED);
+        this.addTooltipAbility(TooltipAbilities.DISABLE_HEAL, TooltipAbilities.SHARPEN, TooltipAbilities.IS_SHARPENED);
     }
 
     @Override

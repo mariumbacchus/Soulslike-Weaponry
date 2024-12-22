@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
 import net.soulsweaponry.items.ModdedBow;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.function.Supplier;
 
@@ -20,7 +20,7 @@ public class KrakenSlayer extends ModdedBow {
 
     public KrakenSlayer(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.FAST_PULL, WeaponUtil.TooltipAbilities.THIRD_SHOT);
+        this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
         this.configure(new RangedConfig(ConfigConstructor.kraken_slayer_pull_time_ticks, ConfigConstructor.kraken_slayer_damage, ConfigConstructor.kraken_slayer_max_velocity));
     }
 

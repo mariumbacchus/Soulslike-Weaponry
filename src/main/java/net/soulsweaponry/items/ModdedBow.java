@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 public abstract class ModdedBow extends CustomBow implements IConfigDisable, IShootModProjectile, ICooldownItem, ITooltipInfo {
 
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedBow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
@@ -44,12 +44,12 @@ public abstract class ModdedBow extends CustomBow implements IConfigDisable, ISh
     }
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 

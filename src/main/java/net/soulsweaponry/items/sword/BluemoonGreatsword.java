@@ -6,13 +6,13 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
 
     public BluemoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.bluemoon_greatsword_damage, ConfigConstructor.bluemoon_greatsword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.NEED_CHARGE, WeaponUtil.TooltipAbilities.CHARGE);
+        this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.CHARGE);
     }
 
     @Override

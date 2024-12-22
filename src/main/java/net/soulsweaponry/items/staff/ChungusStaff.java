@@ -14,13 +14,13 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class ChungusStaff extends ModdedSword {
 
     public ChungusStaff(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.chungus_staff_damage, ConfigConstructor.chungus_staff_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.CHUNGUS_INFUSED);
+        this.addTooltipAbility(TooltipAbilities.CHUNGUS_INFUSED);
     }
 
     @Override

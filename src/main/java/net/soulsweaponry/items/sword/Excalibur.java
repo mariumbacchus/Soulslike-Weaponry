@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.ILifeGuard;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.function.Predicate;
 
@@ -27,7 +27,7 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
 
     public Excalibur(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.excalibur_damage, ConfigConstructor.excalibur_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SONIC_BOOM, WeaponUtil.TooltipAbilities.LIFE_GUARD);
+        this.addTooltipAbility(TooltipAbilities.SONIC_BOOM, TooltipAbilities.LIFE_GUARD);
     }
 
     @Override

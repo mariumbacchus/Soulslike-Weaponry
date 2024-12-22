@@ -14,7 +14,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class CrucibleSword extends ModdedSword {
 
@@ -22,7 +22,7 @@ public class CrucibleSword extends ModdedSword {
 
     public CrucibleSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.crucible_sword_normal_damage, ConfigConstructor.crucible_sword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DOOM);
+        this.addTooltipAbility(TooltipAbilities.DOOM);
     }
 
     @Override

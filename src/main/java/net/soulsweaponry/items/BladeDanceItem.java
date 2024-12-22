@@ -15,13 +15,13 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public abstract class BladeDanceItem extends ModdedSword{
 
     public BladeDanceItem(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, ingameAttackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.GLAIVE_DANCE);
+        this.addTooltipAbility(TooltipAbilities.GLAIVE_DANCE);
     }
 
     @Override

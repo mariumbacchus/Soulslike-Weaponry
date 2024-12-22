@@ -27,6 +27,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -48,7 +49,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.INFINITY, WeaponUtil.TooltipAbilities.DETONATE_SPEARS);
+        this.addTooltipAbility(TooltipAbilities.INFINITY, TooltipAbilities.DETONATE_SPEARS);
     }
 
     @Override

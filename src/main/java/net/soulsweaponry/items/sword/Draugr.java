@@ -13,7 +13,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class Draugr extends ModdedSword {
 
@@ -21,7 +21,7 @@ public class Draugr extends ModdedSword {
 
     public Draugr(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, 1, ConfigConstructor.draugr_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.NIGHT_PROWLER);
+        this.addTooltipAbility(TooltipAbilities.NIGHT_PROWLER);
     }
 
     @Override

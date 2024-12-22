@@ -23,13 +23,14 @@ import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class DragonStaff extends ModdedSword {
 
     public DragonStaff(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.dragon_staff_damage, ConfigConstructor.dragon_staff_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.DRAGON_STAFF, WeaponUtil.TooltipAbilities.VENGEFUL_FOG);
+        this.addTooltipAbility(TooltipAbilities.DRAGON_STAFF, TooltipAbilities.VENGEFUL_FOG);
     }
 
     @Override

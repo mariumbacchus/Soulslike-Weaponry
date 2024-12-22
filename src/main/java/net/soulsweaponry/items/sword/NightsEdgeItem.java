@@ -16,13 +16,14 @@ import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     public NightsEdgeItem(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.NIGHTS_EDGE, WeaponUtil.TooltipAbilities.BLIGHT);
+        this.addTooltipAbility(TooltipAbilities.NIGHTS_EDGE, TooltipAbilities.BLIGHT);
     }
 
     @Override

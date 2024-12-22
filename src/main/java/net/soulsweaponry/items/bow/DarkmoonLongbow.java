@@ -20,7 +20,7 @@ import net.soulsweaponry.entity.projectile.noclip.ArrowStormEntity;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.function.Supplier;
 
@@ -28,7 +28,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
-        this.addTooltipAbility( WeaponUtil.TooltipAbilities.SLOW_PULL, WeaponUtil.TooltipAbilities.MOONLIGHT_ARROW, WeaponUtil.TooltipAbilities.ARROW_STORM);
+        this.addTooltipAbility( TooltipAbilities.SLOW_PULL, TooltipAbilities.MOONLIGHT_ARROW, TooltipAbilities.ARROW_STORM);
         this.configure(new RangedConfig(ConfigConstructor.darkmoon_longbow_pull_time_ticks, ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity));
     }
 

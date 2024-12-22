@@ -26,7 +26,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModTags;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     public DarkinScythePre(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.darkin_scythe_damage, ConfigConstructor.darkin_scythe_attack_speed, settings);
         this.getTooltipAbilities().clear();
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRANSFORMATION);
+        this.addTooltipAbility(TooltipAbilities.TRANSFORMATION);
     }
 
     @Override

@@ -11,13 +11,13 @@ import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRIPLE_MOONLIGHT);
+        this.addTooltipAbility(TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 
     @Override

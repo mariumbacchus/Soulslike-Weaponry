@@ -3,7 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonus {
 
@@ -19,10 +19,10 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
         this.isFireproof = isFireproof;
         this.isDisabled = isDisabled;
         if (this.isHeavy()) {
-            this.addTooltipAbility(WeaponUtil.TooltipAbilities.HEAVY);
+            this.addTooltipAbility(TooltipAbilities.HEAVY);
         }
         if (this.isRighteous()) {
-            this.addTooltipAbility(WeaponUtil.TooltipAbilities.RIGHTEOUS);
+            this.addTooltipAbility(TooltipAbilities.RIGHTEOUS);
         }
     }
 

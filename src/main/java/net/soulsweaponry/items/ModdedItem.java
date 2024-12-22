@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo {
 
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedItem(Settings settings) {
         super(settings);
@@ -30,12 +30,12 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     }
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 

@@ -8,13 +8,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public class TranslucentWeapon extends ModdedSword {
 
     public TranslucentWeapon(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, ingameAttackSpeed, settings);
-        this.tooltipAbilities.add(WeaponUtil.TooltipAbilities.TRANSPARENT);
+        this.tooltipAbilities.add(TooltipAbilities.TRANSPARENT);
     }
 
     @Override

@@ -9,7 +9,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class ModdedSword extends SwordItem implements IConfigDisable, ICooldownItem, ITooltipInfo {
 
     protected final float attackSpeed;
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, - (4f - ingameAttackSpeed), settings);
@@ -31,12 +31,12 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
     }
 
     @Override
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
     @Override
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 
