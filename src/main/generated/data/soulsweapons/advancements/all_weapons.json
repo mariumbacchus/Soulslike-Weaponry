@@ -1,5 +1,5 @@
 {
-  "parent": "soulsweapons:moonlight_tools",
+  "parent": "soulsweapons:all_moonlight_weapons",
   "criteria": {
     "bloodthirster": {
       "conditions": {

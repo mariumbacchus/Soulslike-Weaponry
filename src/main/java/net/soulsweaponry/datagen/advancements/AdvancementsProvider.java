@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.NumberRange;
@@ -85,8 +86,12 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
         // Armor
         Advancement arkenplate = this.generateAdvancement(consumer, "arkenplate", returningKnight, ItemRegistry.ARKENPLATE,
                 AdvancementFrame.TASK, true, true, false, ItemRegistry.ARKENPLATE);
+        Advancement infusedArkenplate = this.generateAdvancement(consumer, "infused_arkenplate", arkenplate, ItemRegistry.ENHANCED_ARKENPLATE,
+                AdvancementFrame.CHALLENGE, true, true, false, ItemRegistry.ENHANCED_ARKENPLATE);
         Advancement hallowheart = this.generateAdvancement(consumer, "hallowheart", decayingKing, ItemRegistry.WITHERED_CHEST,
                 AdvancementFrame.TASK, true, true, false, ItemRegistry.WITHERED_CHEST);
+        Advancement infusedHallowheart = this.generateAdvancement(consumer, "infused_hallowheart", hallowheart, ItemRegistry.ENHANCED_WITHERED_CHEST,
+                AdvancementFrame.CHALLENGE, true, true, false, ItemRegistry.ENHANCED_WITHERED_CHEST);
 
         // Guns
         Advancement pistol = this.generateAdvancement(consumer, "hunter_pistol", root, GunRegistry.HUNTER_PISTOL,
@@ -105,6 +110,10 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
         Advancement moonlightSwords = this.generateAdvancementAcceptEither(consumer, "moonlight_tools", bluemoonSwords, WeaponRegistry.MOONLIGHT_GREATSWORD,
                 AdvancementFrame.GOAL, true, true, false,
                 WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD);
+        Advancement allMoonlight = this.generateAdvancement(consumer, "all_moonlight_weapons", moonlightSwords, WeaponRegistry.DARK_MOON_GREATSWORD,
+                AdvancementFrame.GOAL, true, true, false,
+                WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD, WeaponRegistry.BLUEMOON_GREATSWORD, WeaponRegistry.BLUEMOON_SHORTSWORD,
+                WeaponRegistry.MOONVEIL, WeaponRegistry.DARK_MOON_GREATSWORD, WeaponRegistry.PURE_MOONLIGHT_GREATSWORD, WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD, WeaponRegistry.HOLY_MOONLIGHT_SWORD);
         Advancement transformScythe = this.generateAdvancementAcceptEither(consumer, "transform_scythe", lordSoul, WeaponRegistry.DARKIN_SCYTHE_PRE,
                 AdvancementFrame.CHALLENGE, true, true, false,
                 WeaponRegistry.DARKIN_SCYTHE_PRIME, WeaponRegistry.SHADOW_ASSASSIN_SCYTHE);
@@ -124,6 +133,12 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.DRAGON_STAFF, WeaponRegistry.WITHERED_WABBAJACK);
         Advancement trickWeapon = this.generateAdvancement(consumer, "trickweapon", pistol, WeaponRegistry.HOLY_GREATSWORD,
                 AdvancementFrame.GOAL, true, true, false, ModTags.Items.TRICK_WEAPONS);
+        Advancement hodirGlaive = this.generateAdvancement(consumer, "glaive_of_hodir", lordSoul, WeaponRegistry.GLAIVE_OF_HODIR,
+                AdvancementFrame.GOAL, true, true, false, WeaponRegistry.GLAIVE_OF_HODIR);
+        Advancement excalibur = this.generateAdvancement(consumer, "excalibur", lordSoul, WeaponRegistry.EXCALIBUR,
+                AdvancementFrame.CHALLENGE, true, true, false,
+                InventoryChangedCriterion.Conditions.items(WeaponRegistry.EXCALIBUR),
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityType.WARDEN)));
 
         // Special
         Advancement chaosOrb = this.generateAdvancement(consumer, "chaos_orb", decayingKing, ItemRegistry.CHAOS_ORB,
@@ -137,7 +152,7 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                         DistancePredicate.y(NumberRange.FloatRange.atLeast(50.0f)),
                         LocationPredicate.y(NumberRange.FloatRange.ANY)
                 ));
-        Advancement allWeapons = this.generateAdvancement(consumer, "all_weapons", moonlightSwords, ItemRegistry.LORD_SOUL_PURPLE,
+        Advancement allWeapons = this.generateAdvancement(consumer, "all_weapons", allMoonlight, ItemRegistry.LORD_SOUL_PURPLE,
                 AdvancementFrame.CHALLENGE, true, true, false, ALL_WEAPONS.toArray(Item[]::new));
     }
 
