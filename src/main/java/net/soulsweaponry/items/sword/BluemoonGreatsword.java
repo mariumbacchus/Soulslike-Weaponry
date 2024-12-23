@@ -53,4 +53,9 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    @Override
+    public float getProjectileDamage() {
+        return ConfigConstructor.bluemoon_greatsword_projectile_damage;
+    }
 }

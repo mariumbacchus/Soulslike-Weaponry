@@ -28,4 +28,9 @@ public class BluemoonShortsword extends MoonlightShortsword {
     public String getReduceCooldownEnchantId(ItemStack stack) {
         return ConfigConstructor.bluemoon_shortsword_enchant_reduces_cooldown_id;
     }
+
+    @Override
+    public float getProjectileDamage() {
+        return ConfigConstructor.bluemoon_shortsword_projectile_damage;
+    }
 }

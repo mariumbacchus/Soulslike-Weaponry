@@ -43,7 +43,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
-                entity.setDamage(ConfigConstructor.moonlight_greatsword_projectile_damage);
+                entity.setDamage(this.getProjectileDamage());
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (this instanceof BluemoonGreatsword) {
@@ -77,5 +77,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_moonlight_greatsword;
+    }
+
+    public float getProjectileDamage() {
+        return ConfigConstructor.moonlight_greatsword_projectile_damage;
     }
 }

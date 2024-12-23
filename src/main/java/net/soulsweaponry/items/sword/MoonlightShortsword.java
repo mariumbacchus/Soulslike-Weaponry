@@ -11,10 +11,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.TooltipAbilities;
 
 public class MoonlightShortsword extends ModdedSword {
@@ -36,17 +33,14 @@ public class MoonlightShortsword extends ModdedSword {
     public static void summonSmallProjectile(World world, PlayerEntity user) {
         for (Hand hand : Hand.values()) {
             ItemStack itemStack = user.getStackInHand(hand);
-            if (!user.getItemCooldownManager().isCoolingDown(WeaponRegistry.MOONLIGHT_SHORTSWORD) && itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)
-                    || user.hasStatusEffect(EffectRegistry.MOON_HERALD)
-                    || (itemStack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD) && !user.getItemCooldownManager().isCoolingDown(WeaponRegistry.BLUEMOON_SHORTSWORD))) {
-                boolean bl = itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) || itemStack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD);
-                if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && bl && user.getStatusEffect(EffectRegistry.MOON_HERALD).getDuration() % 4 != 0) {
-                    return;
-                }
-                float damage = ConfigConstructor.moonlight_shortsword_projectile_damage;
+            boolean effect = user.hasStatusEffect(EffectRegistry.MOON_HERALD);
+            boolean acceptItem = itemStack.getItem() instanceof MoonlightShortsword;
+            if ((acceptItem && !user.getItemCooldownManager().isCoolingDown(itemStack.getItem())) || (effect && !user.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING))) {
+                float damage = itemStack.getItem() instanceof MoonlightShortsword item ? item.getProjectileDamage() : ConfigConstructor.moonlight_shortsword_projectile_damage;
                 MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, user, itemStack);
-                if (user.hasStatusEffect(EffectRegistry.MOON_HERALD) && !itemStack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD)) {
+                if (effect && !acceptItem) {
                     damage += user.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() * 2f;
+                    user.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, 4);
                 }
                 projectile.setAgeAndPoints(15, 30, 1);
                 projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
@@ -61,7 +55,6 @@ public class MoonlightShortsword extends ModdedSword {
                     bluemoon.applyItemCooldownNoCheck(user, Math.max(ConfigConstructor.bluemoon_shortsword_projectile_min_cooldown, ConfigConstructor.bluemoon_shortsword_projectile_cooldown
                             - bluemoon.getReduceCooldownEnchantLevel(itemStack) * 10));
                 }
-
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD, ConfigConstructor.moonlight_shortsword_projectile_cooldown);
                 user.swingHand(Hand.MAIN_HAND, true);
@@ -90,5 +83,9 @@ public class MoonlightShortsword extends ModdedSword {
     @Override
     public String getReduceCooldownEnchantId(ItemStack stack) {
         return null;
+    }
+
+    public float getProjectileDamage() {
+        return ConfigConstructor.moonlight_shortsword_projectile_damage;
     }
 }

@@ -288,8 +288,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bluemoon_greatsword_attack_speed = 1.2f;
     @Entry public static int bluemoon_greatsword_charge_needed = 8;
     @Entry public static int bluemoon_greatsword_charge_added_post_hit = 1;
+    @Entry public static float bluemoon_greatsword_projectile_damage = 8.0f;
     @Entry public static int bluemoon_shortsword_damage = 7;
     @Entry public static float bluemoon_shortsword_attack_speed = 1.6f;
+    @Entry public static float bluemoon_shortsword_projectile_damage = 3.0f;
     @Entry public static int bluemoon_shortsword_projectile_cooldown = 120;
     @Entry public static int bluemoon_shortsword_projectile_min_cooldown = 10;
     @Entry public static boolean bluemoon_shortsword_enchant_reduces_cooldown = false;
@@ -554,6 +556,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float moonlight_greatsword_projectile_damage = 8.0f;
     @Entry public static int pure_moonlight_greatsword_damage = 11;
     @Entry public static float pure_moonlight_greatsword_attack_speed = 1.2f;
+    @Entry public static float pure_moonlight_greatsword_projectile_damage = 9.0f;
     @Entry public static int moonlight_shortsword_damage = 8;
     @Entry public static float moonlight_shortsword_attack_speed = 1.6f;
     @Entry public static float moonlight_shortsword_projectile_damage = 3.0f;
