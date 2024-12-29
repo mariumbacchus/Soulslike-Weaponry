@@ -78,7 +78,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.darkmoon_longbow_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.darkmoon_longbow_enchant_reduces_cooldown_ids;
     }
 }

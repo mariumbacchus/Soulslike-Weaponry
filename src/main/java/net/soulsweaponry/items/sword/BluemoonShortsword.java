@@ -25,8 +25,8 @@ public class BluemoonShortsword extends MoonlightShortsword {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.bluemoon_shortsword_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.bluemoon_shortsword_enchant_reduces_cooldown_ids;
     }
 
     @Override

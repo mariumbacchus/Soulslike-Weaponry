@@ -84,8 +84,8 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.mjolnir_ability_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.mjolnir_ability_enchant_reduces_cooldown_ids;
     }
 
     private void throwHammer(World world, PlayerEntity player, ItemStack stack) {

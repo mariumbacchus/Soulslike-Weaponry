@@ -85,8 +85,8 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.dark_moon_greatsword_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.dark_moon_greatsword_enchant_reduces_cooldown_ids;
     }
 
     @Override

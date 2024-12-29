@@ -69,7 +69,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                         this.spawnRemnant(target, user);
                     }
@@ -88,8 +88,8 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.nightfall_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.nightfall_enchant_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldownSmash(ItemStack stack) {

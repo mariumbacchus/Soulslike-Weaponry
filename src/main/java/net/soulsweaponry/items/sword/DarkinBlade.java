@@ -85,8 +85,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.darkin_blade_ability_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.darkin_blade_ability_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldown(ItemStack stack) {

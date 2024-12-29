@@ -104,7 +104,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 }

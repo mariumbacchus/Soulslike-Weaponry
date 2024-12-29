@@ -145,7 +145,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 

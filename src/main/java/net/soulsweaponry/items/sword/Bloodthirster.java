@@ -96,7 +96,7 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.lifesteal_item_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.lifesteal_item_enchant_reduces_cooldown_ids;
     }
 }

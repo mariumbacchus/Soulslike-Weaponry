@@ -371,11 +371,11 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         if (stack.isOf(ItemRegistry.CHAOS_CROWN) || stack.isOf(ItemRegistry.CHAOS_HELMET)) {
-            return ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown_id;
+            return ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown_ids;
         } else if (stack.isOf(ItemRegistry.ARKENPLATE) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE)) {
-            return ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown_id;
+            return ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown_ids;
         }
         return null;
     }

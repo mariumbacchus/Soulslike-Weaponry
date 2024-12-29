@@ -107,7 +107,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.shadow_assassin_scythe_ability_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.shadow_assassin_scythe_ability_enchant_reduces_cooldown_ids;
     }
 }

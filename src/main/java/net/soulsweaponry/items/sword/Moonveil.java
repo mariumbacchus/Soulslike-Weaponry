@@ -65,7 +65,7 @@ public class Moonveil extends ChargeToUseItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return "";
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return null;
     }
 }

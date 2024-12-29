@@ -71,8 +71,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldown(ItemStack stack) {

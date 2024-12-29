@@ -45,7 +45,7 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 

@@ -134,7 +134,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.galeforce_dash_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.galeforce_dash_enchant_reduces_cooldown_ids;
     }
 }

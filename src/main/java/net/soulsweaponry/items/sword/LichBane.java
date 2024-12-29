@@ -49,7 +49,7 @@ public class LichBane extends ModdedSword {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 }

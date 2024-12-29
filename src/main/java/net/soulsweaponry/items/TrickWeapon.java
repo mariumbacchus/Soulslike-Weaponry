@@ -55,7 +55,7 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 

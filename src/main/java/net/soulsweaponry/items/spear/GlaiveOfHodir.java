@@ -39,7 +39,7 @@ public class GlaiveOfHodir extends BladeDanceItem {
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2f, 1.0F);
                 world.spawnEntity(entity);
                 world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
-                this.applyItemCooldown(playerEntity, Math.max(ConfigConstructor.glaive_of_hodir_projectile_cooldown, ConfigConstructor.glaive_of_hodir_projectile_cooldown - this.getReduceCooldownEnchantLevel(stack) * 12));
+                this.applyItemCooldown(playerEntity, Math.max(ConfigConstructor.glaive_of_hodir_projectile_min_cooldown, ConfigConstructor.glaive_of_hodir_projectile_cooldown - this.getReduceCooldownEnchantLevel(stack) * 12));
             }
         }
     }
@@ -60,8 +60,8 @@ public class GlaiveOfHodir extends BladeDanceItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.glaive_of_hodir_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.glaive_of_hodir_enchant_reduces_cooldown_ids;
     }
 
     @Override

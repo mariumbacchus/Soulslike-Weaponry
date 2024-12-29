@@ -91,8 +91,8 @@ public class DragonslayerSwordspear extends ChargeToUseItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldownAbility(World world, ItemStack stack) {

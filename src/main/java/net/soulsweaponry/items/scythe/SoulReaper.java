@@ -171,7 +171,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 }

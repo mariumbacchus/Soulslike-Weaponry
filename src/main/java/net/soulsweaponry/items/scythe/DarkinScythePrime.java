@@ -67,7 +67,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown_ids;
     }
 }

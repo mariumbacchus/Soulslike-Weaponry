@@ -112,8 +112,8 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_ids;
     }
 
     @Override

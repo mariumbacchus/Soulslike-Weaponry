@@ -75,14 +75,13 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.draupnir_spear_enchant_reduces_throw_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.draupnir_spear_enchant_reduces_throw_cooldown_ids;
     }
 
     protected int getReduceCooldownEnchantLevelAbility(ItemStack stack) {
         if (ConfigConstructor.draupnir_spear_enchant_reduces_ability_cooldown) {
-            String string = ConfigConstructor.draupnir_spear_enchant_reduces_ability_cooldown_id;
-            return this.getReducedCooldownWithoutCheck(stack, string);
+            return this.getMaxLevel(ConfigConstructor.draupnir_spear_enchant_reduces_ability_cooldown_ids, stack);
         }
         return 0;
     }

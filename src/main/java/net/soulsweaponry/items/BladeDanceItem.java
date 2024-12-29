@@ -17,7 +17,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 
-public abstract class BladeDanceItem extends ModdedSword{
+public abstract class BladeDanceItem extends ModdedSword {
 
     public BladeDanceItem(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, ingameAttackSpeed, settings);

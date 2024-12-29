@@ -74,7 +74,7 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
                     Vec3d vec = new Vec3d(vec3d3.getX() * e, vec3d3.getY() * d, vec3d3.getZ() * e).multiply(ConfigConstructor.excalibur_sonic_boom_knockback_power);
                     target.addVelocity(vec);
                     stack.damage(2, player, (p) -> p.sendToolBreakStatus(player.getActiveHand()));
-                    this.applyItemCooldown(player, Math.max(ConfigConstructor.excalibur_sonic_boom_cooldown, ConfigConstructor.excalibur_sonic_boom_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8));
+                    this.applyItemCooldown(player, Math.max(ConfigConstructor.excalibur_sonic_boom_min_cooldown, ConfigConstructor.excalibur_sonic_boom_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8));
                 } else {
                     world.playSound(null, user.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
                     if (ConfigConstructor.inform_player_about_out_of_range) {
@@ -101,8 +101,8 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.excalibur_enchant_reduces_ability_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.excalibur_enchant_reduces_ability_cooldown_ids;
     }
 
     @Override

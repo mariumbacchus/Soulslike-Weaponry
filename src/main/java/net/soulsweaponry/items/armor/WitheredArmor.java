@@ -215,9 +215,9 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
-            return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_id;
+            return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_ids;
         }
         return null;
     }

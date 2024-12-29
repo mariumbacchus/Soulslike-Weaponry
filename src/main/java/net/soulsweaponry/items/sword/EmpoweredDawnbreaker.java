@@ -63,8 +63,8 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldown(ItemStack stack) {

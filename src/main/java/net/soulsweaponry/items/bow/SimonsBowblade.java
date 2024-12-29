@@ -36,7 +36,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 

@@ -77,8 +77,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.whirligig_sawblade_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.whirligig_sawblade_enchant_reduces_cooldown_ids;
     }
 
     private void stop(LivingEntity user, ItemStack stack) {

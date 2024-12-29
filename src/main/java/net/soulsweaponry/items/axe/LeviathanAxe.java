@@ -163,7 +163,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 }

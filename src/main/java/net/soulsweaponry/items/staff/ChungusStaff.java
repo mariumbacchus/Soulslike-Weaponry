@@ -64,7 +64,7 @@ public class ChungusStaff extends ModdedSword {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.chungus_staff_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.chungus_staff_enchant_reduces_cooldown_ids;
     }
 }

@@ -92,8 +92,8 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.nights_edge_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.nights_edge_enchant_reduces_cooldown_ids;
     }
 
     @Override

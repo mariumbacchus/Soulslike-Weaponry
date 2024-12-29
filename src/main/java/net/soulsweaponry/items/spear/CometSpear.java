@@ -101,8 +101,8 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
-        return ConfigConstructor.comet_spear_enchant_reduces_cooldown_id;
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return ConfigConstructor.comet_spear_enchant_reduces_cooldown_ids;
     }
 
     @Override
