@@ -8,6 +8,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import org.lwjgl.glfw.GLFW;
 
@@ -96,11 +97,29 @@ public class KeyBindRegistry {
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (effectShootMoonlight.wasPressed()) {
-                if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
-                    PacketByteBuf buf = PacketByteBufs.create();
-                    ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
-                    client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
+            boolean effect = effectShootMoonlight.isPressed();
+            boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
+            if (effect || melee) {
+                if (client.player != null) {
+                    boolean accept = false;
+                    if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
+                        accept = true;
+                        client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
+                    } else if (melee) {
+                        for (Hand hand : Hand.values()) {
+                            ItemStack stack = client.player.getStackInHand(hand);
+                            boolean moonlight = stack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) && !ConfigConstructor.disable_use_moonlight_shortsword;
+                            boolean bluemoon = stack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD) && !ConfigConstructor.disable_use_bluemoon_shortsword;
+                            // Sending message each left click with the item is a bit much so don't do that
+                            if (moonlight || bluemoon) {
+                                accept = true;
+                            }
+                        }
+                    }
+                    if (accept) {
+                        PacketByteBuf buf = PacketByteBufs.create();
+                        ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
+                    }
                 }
             }
         });

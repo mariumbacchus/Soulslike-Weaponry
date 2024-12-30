@@ -25,7 +25,6 @@
     "BipedEntityModelMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
-    "MinecraftClientMixin",
     "ShieldItemMixin"
   ],
   "injectors": {
