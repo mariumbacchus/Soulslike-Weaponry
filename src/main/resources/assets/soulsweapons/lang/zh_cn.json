@@ -236,6 +236,7 @@
     "entity.soulsweapons.moonveil_vertical": "Moonveil Vertical Wave",
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
     "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
+    "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
 
     "death.attack.bleed": "%1$s流血至死",
     "death.attack.bleed.player": "%1$s流血至死",

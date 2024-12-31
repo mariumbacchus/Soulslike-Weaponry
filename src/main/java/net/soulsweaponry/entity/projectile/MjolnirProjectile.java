@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.noclip.FrozenLightning;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -55,7 +56,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
-        boolean bl = target.damage(damageSource, damage);
+        boolean bl = target.damage(damageSource, damage) || target instanceof LeviathanAxeEntity;
         int strikes = 1;
         if (this.getWorld().isThundering() || target instanceof LeviathanAxeEntity) strikes = 3;
         if (bl && this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
@@ -65,6 +66,9 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
                 lightningEntity.setChanneler(owner instanceof ServerPlayerEntity ? (ServerPlayerEntity)owner : null);
                 this.getWorld().spawnEntity(lightningEntity);
             }
+            FrozenLightning frozenLightning = EntityRegistry.FROZEN_LIGHTNING.create(this.getWorld());
+            frozenLightning.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
+            this.getWorld().spawnEntity(frozenLightning);
             soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
             g = 5.0f;
         }
