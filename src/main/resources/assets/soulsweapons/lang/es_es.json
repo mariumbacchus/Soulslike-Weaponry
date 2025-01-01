@@ -9,6 +9,7 @@
   "soulsweapons.weapon.on_cooldown": "¡No puedes lanzar esta habilidad con el efecto de enfriamiento!",
   "soulsweapons.weapon.no_soulbound_weapon": "¡No hay un arma 'Vinculada al Alma' vinculada a ti!",
   "soulsweapons.weapon.out_of_range": "Target is out of range!",
+  "soulsweapons.weapon.bossRespawnDisabled": "§4This boss respawn mechanic has been disabled!§r",
 
   "block.soulsweapons.moonstone_block": "Bloque de Piedra Lunar",
   "block.soulsweapons.moonstone_ore": "Mineral de Piedra Lunar",

@@ -9,6 +9,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean inform_player_about_no_souls_to_collect = true;
     @Entry public static boolean inform_player_about_collected_souls = true;
     @Entry public static boolean inform_player_about_out_of_range = true;
+    @Entry public static boolean inform_player_about_disabled_boss_respawning = true;
 
     // Config changes won't apply to generated json files/runtime so no point in having these as entries.
     public static int moonstone_ore_vein_size = 5;
@@ -704,6 +705,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int hunter_pistol_cooldown = 50;
     @Entry public static int hunter_pistol_bullets_needed = 1;
 
+    @Entry public static boolean decaying_king_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double decaying_king_health = 500D;
     @Entry(min=0) public static int decaying_king_attack_cooldown_ticks = 20;
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
@@ -714,6 +716,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean decaying_king_is_undead = true;
     @Entry public static String decaying_king_group_type = "UNDEAD";
 
+    @Entry public static boolean returning_knight_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double returning_knight_health = 400D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
@@ -725,6 +728,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean returning_knight_is_undead = true;
     @Entry public static String returning_knight_group_type = "UNDEAD";
 
+    @Entry public static boolean old_champions_remains_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 200D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
     @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
@@ -745,6 +749,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean frenzied_shade_is_undead = true;
     @Entry public static String frenzied_shade_group_type = "UNDEAD";
 
+    @Entry public static boolean chaos_monarch_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 400D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
@@ -754,6 +759,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean chaos_monarch_is_undead = true;
     @Entry public static String chaos_monarch_group_type = "UNDEAD";
 
+    @Entry public static boolean fallen_icon_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double fallen_icon_health = 500D;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_1 = 30;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_2 = 0;

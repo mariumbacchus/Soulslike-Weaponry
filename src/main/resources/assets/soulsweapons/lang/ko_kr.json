@@ -9,6 +9,7 @@
     "soulsweapons.weapon.on_cooldown": "쿨다운 효과로 인해 이 능력을 사용할 수 없습니다!",
     "soulsweapons.weapon.no_soulbound_weapon": "당신에게 귀속된 '영혼 결속' 무기가 없습니다!",
     "soulsweapons.weapon.out_of_range": "Target is out of range!",
+    "soulsweapons.weapon.bossRespawnDisabled": "§4This boss respawn mechanic has been disabled!§r",
 
     "block.soulsweapons.moonstone_block": "월장석 블록",
     "block.soulsweapons.moonstone_ore": "월장석 광석",

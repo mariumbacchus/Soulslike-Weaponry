@@ -9,6 +9,7 @@
     "soulsweapons.weapon.on_cooldown": "Нельзя использовать эту способность во время эффекта перезарядки!",
     "soulsweapons.weapon.no_soulbound_weapon": "У вас нет привязанного 'Привязанного душой' оружия!",
     "soulsweapons.weapon.out_of_range": "Target is out of range!",
+    "soulsweapons.weapon.bossRespawnDisabled": "§4This boss respawn mechanic has been disabled!§r",
 
     "block.soulsweapons.moonstone_block": "Лунный Блок",
     "block.soulsweapons.moonstone_ore": "Лунная Руда",

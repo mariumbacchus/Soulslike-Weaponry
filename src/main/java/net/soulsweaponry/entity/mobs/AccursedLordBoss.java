@@ -172,7 +172,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 70) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
-            if (this.spawnTicks > 110 && this.spawnTicks <= 112) {
+            if (this.spawnTicks == 111) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);

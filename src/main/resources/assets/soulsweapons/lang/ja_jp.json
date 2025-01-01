@@ -9,6 +9,7 @@
     "soulsweapons.weapon.on_cooldown": "Can't cast this ability with the Cooldown effect!",
     "soulsweapons.weapon.no_soulbound_weapon": "There is no 'Soulbound' weapon bound to you!",
     "soulsweapons.weapon.out_of_range": "Target is out of range!",
+    "soulsweapons.weapon.bossRespawnDisabled": "§4This boss respawn mechanic has been disabled!§r",
 
     "block.soulsweapons.moonstone_block": "ムーンストーンのブロック",
     "block.soulsweapons.moonstone_ore": "ムーンストーン鉱石",
