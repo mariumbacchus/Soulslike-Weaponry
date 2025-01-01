@@ -48,7 +48,6 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     public static final String RAINING = "raining";
-    public static final String OWNERS_LAST_POS = "owners_last_pos";
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
@@ -89,9 +88,6 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     }
 
     private void throwHammer(World world, PlayerEntity player, ItemStack stack) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putIntArray(OWNERS_LAST_POS, new int[]{player.getBlockX(), player.getBlockY(), player.getBlockZ()});
-        }
         MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
         projectile.saveOnPlayer(player);
         float speed = (float) WeaponUtil.getEnchantDamageBonus(stack)/5;

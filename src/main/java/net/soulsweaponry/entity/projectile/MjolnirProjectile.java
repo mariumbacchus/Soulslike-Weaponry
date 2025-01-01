@@ -34,8 +34,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
     }
 
     public MjolnirProjectile(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.MJOLNIR_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
+        super(EntityRegistry.MJOLNIR_ENTITY_TYPE, owner, world, stack);
     }
 
     @Override
@@ -56,9 +55,10 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
-        boolean bl = target.damage(damageSource, damage) || target instanceof LeviathanAxeEntity;
+        boolean hitAxe = target instanceof LeviathanAxeEntity;
+        boolean bl = target.damage(damageSource, damage) || hitAxe;
         int strikes = 1;
-        if (this.getWorld().isThundering() || target instanceof LeviathanAxeEntity) strikes = 3;
+        if (this.getWorld().isThundering() || hitAxe) strikes = 3;
         if (bl && this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
             for (int i = 0; i < strikes; i++) {
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
@@ -66,9 +66,11 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
                 lightningEntity.setChanneler(owner instanceof ServerPlayerEntity ? (ServerPlayerEntity)owner : null);
                 this.getWorld().spawnEntity(lightningEntity);
             }
-            FrozenLightning frozenLightning = EntityRegistry.FROZEN_LIGHTNING.create(this.getWorld());
-            frozenLightning.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
-            this.getWorld().spawnEntity(frozenLightning);
+            if (hitAxe) {
+                FrozenLightning frozenLightning = EntityRegistry.FROZEN_LIGHTNING.create(this.getWorld());
+                frozenLightning.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
+                this.getWorld().spawnEntity(frozenLightning);
+            }
             soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
             g = 5.0f;
         }

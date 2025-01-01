@@ -71,9 +71,6 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                if (stack.hasNbt()) {
-                    stack.getNbt().putIntArray(Mjolnir.OWNERS_LAST_POS, new int[]{playerEntity.getBlockX(), playerEntity.getBlockY(), playerEntity.getBlockZ()});
-                }
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
                 entity.saveOnPlayer(playerEntity);
                 float speed = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;

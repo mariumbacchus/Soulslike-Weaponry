@@ -29,13 +29,10 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE);
-        this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
-        this.ignoreCameraFrustum = true;
+        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE, owner, world, stack);
     }
 
     @Override
