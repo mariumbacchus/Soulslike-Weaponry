@@ -71,6 +71,7 @@ dependencies {
 	//modRuntimeOnly("curse.maven:neat_health_bar-${project.neat_health_bar}")
 	modRuntimeOnly("curse.maven:entity_model_features-${project.entity_model_features}")
 	modRuntimeOnly("curse.maven:entity_texture_features-${project.entity_texture_features}")
+	modCompileOnly 'curse.maven:controllable-851657:4592466'
 }
 
 loom {

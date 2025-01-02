@@ -1,5 +1,7 @@
 package net.soulsweaponry.client.registry;
 
+import com.mrcrayfish.controllable.client.binding.ButtonBindings;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -99,13 +101,17 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             boolean effect = effectShootMoonlight.isPressed();
             boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
-            if (effect || melee) {
+            boolean controller = false;
+            if (FabricLoader.getInstance().isModLoaded("controllable")) {
+                controller = ButtonBindings.ATTACK.isButtonPressed();
+            }
+            if (effect || melee || controller) {
                 if (client.player != null) {
                     boolean accept = false;
                     if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
                         accept = true;
                         client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
-                    } else if (melee) {
+                    } else if (melee || controller) {
                         for (Hand hand : Hand.values()) {
                             ItemStack stack = client.player.getStackInHand(hand);
                             boolean moonlight = stack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) && !ConfigConstructor.disable_use_moonlight_shortsword;
