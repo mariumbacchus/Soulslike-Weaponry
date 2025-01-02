@@ -154,6 +154,6 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
 
     @Override
     public float getBaseDragonBonus(ItemStack stack) {
-        return 2f;
+        return ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus;
     }
 }

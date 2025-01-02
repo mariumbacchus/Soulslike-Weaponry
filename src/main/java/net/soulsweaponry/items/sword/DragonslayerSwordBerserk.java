@@ -19,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -29,7 +30,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
+public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility, IDragonBonus {
 
     private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
             new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
@@ -37,7 +38,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
-        this.addTooltipAbility(TooltipAbilities.RAGE);
+        this.addTooltipAbility(TooltipAbilities.RAGE, TooltipAbilities.DRAGONS_SCOURGE);
     }
 
     @Override
@@ -148,5 +149,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_heap_of_raw_iron;
+    }
+
+    @Override
+    public float getBaseDragonBonus(ItemStack stack) {
+        return ConfigConstructor.heap_of_raw_iron_dragons_scourge_bonus;
     }
 }

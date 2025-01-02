@@ -391,6 +391,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] empowered_dawnbreaker_ability_enchant_reduces_cooldown_ids = {"fire_aspect"};
     @Entry public static int heap_of_raw_iron_damage = 10;
     @Entry public static float heap_of_raw_iron_attack_speed = 1f;
+    @Entry public static float heap_of_raw_iron_dragons_scourge_bonus = 3f;
     @Entry public static int heap_of_raw_iron_cooldown = 200;
     @Entry public static int heap_of_raw_iron_min_cooldown = 40;
     @Entry public static boolean heap_of_raw_iron_enchant_reduces_cooldown = false;
@@ -406,6 +407,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static int dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
+    @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;
     @Entry public static int dragonslayer_swordspear_rain_bonus_damage = 1;
     @Entry public static float dragonslayer_swordspear_rain_total_attack_speed = 1.8f;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
