@@ -555,6 +555,14 @@ public class TooltipUtil {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss.1", postureLoss.getPostureLoss()).formatted(Formatting.GRAY));
                 }
             }
+            case DRAGONS_SCOURGE -> {
+                if (stack.getItem() instanceof IDragonBonus bonus) {
+                    float amount = bonus.getDragonBonus(stack);
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane").formatted(Formatting.DARK_PURPLE));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.1", String.format("%.1f", amount)).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.2").formatted(Formatting.DARK_GRAY));
+                }
+            }
         }
     }
 }

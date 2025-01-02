@@ -50,16 +50,15 @@ public class EnchantmentHelperMixin {
 
     @ModifyReturnValue(method = "getAttackDamage", at = @At("TAIL"))
     private static float modifyAttackDamage(float originalDamage, ItemStack stack, EntityGroup group) {
+        if (stack.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
+            return originalDamage;
+        }
         float modifiedDamage = originalDamage;
         if (stack.isOf(WeaponRegistry.STING) && group == EntityGroup.ARTHROPOD) {
             modifiedDamage += ConfigConstructor.sting_bonus_arthropod_damage;
         }
-        if (group == EntityGroup.UNDEAD &&
-                (stack.getItem() instanceof IUndeadBonus undeadBonus
-                        && undeadBonus.isRighteous()
-                        && (stack.getItem() instanceof IConfigDisable disable && !disable.isDisabled(stack)))) {
-            modifiedDamage += undeadBonus.getUndeadBonus(stack)
-                    + (float) EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
+        if (group == EntityGroup.UNDEAD && stack.getItem() instanceof IUndeadBonus undeadBonus && undeadBonus.isRighteous()) {
+            modifiedDamage += undeadBonus.getUndeadBonus(stack) + (float) EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
         }
         return modifiedDamage;
     }

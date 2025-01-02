@@ -47,5 +47,7 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
         this.getOrCreateTagBuilder(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)
                 .add(EntityRegistry.FROST_GIANT)
                 .add(EntityRegistry.RIME_SPECTRE);
+        this.getOrCreateTagBuilder(ModTags.Entities.DRAGONS)
+                .add(EntityType.ENDER_DRAGON);
     }
 }

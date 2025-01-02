@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
+import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -30,7 +31,10 @@ public class ModifyDamageUtil {
      * @param source Damage source
      * @return new damage amount to be taken
      */
-    public static float modifyDamageTaken(LivingEntity entity, float newAmount, DamageSource source) {
+    public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
+        if (entity.getType().isIn(ModTags.Entities.DRAGONS) && source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().getItem() instanceof IDragonBonus dragonBonus) {
+            newAmount += dragonBonus.getDragonBonus(player.getMainHandStack());
+        }
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);

@@ -44,7 +44,7 @@ public class LivingEntityMixin {
     private float modifyDamageReturnValue(float originalAmount) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (capturedDamageSource != null) {
-            return ModifyDamageUtil.modifyDamageTaken(entity, originalAmount, capturedDamageSource);
+            return ModifyDamageUtil.modifyDamageTakenTail(entity, originalAmount, capturedDamageSource);
         }
         return originalAmount;
     }
