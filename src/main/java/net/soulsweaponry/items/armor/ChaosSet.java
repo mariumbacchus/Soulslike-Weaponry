@@ -89,7 +89,9 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
                 }
             }
             if (this.isRobesEquipped(player)) {
-                this.turnBlocks(player, world, player.getBlockPos(), 0);
+                if (ConfigConstructor.chaos_cape_wither_ground) {
+                    this.turnBlocks(player, world, player.getBlockPos(), 0);
+                }
                 if (player.age % 40 == 0) {
                     for (LivingEntity target : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(3D))) {
                         if (!(target instanceof PlayerEntity) && target != player) {

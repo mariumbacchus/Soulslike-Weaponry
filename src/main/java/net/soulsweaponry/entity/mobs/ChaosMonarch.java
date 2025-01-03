@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -188,7 +187,9 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         if (this.hasStatusEffect(StatusEffects.WITHER)) {
             this.removeStatusEffect(StatusEffects.WITHER);
         }
-        this.turnBlocks(this.getWorld(), this.getBlockPos());
+        if (ConfigConstructor.chaos_monarch_wither_ground) {
+            this.turnBlocks(this.getWorld(), this.getBlockPos());
+        }
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {

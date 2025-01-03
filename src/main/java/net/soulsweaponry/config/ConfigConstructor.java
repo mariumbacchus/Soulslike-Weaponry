@@ -251,6 +251,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int[] forlorn_armor_armor_points = {3, 6, 8, 3};
     @Entry public static int[] withered_armor_armor_points = {4, 7, 10, 5};
 
+    @Entry public static boolean chaos_cape_wither_ground = true;
     @Entry public static int chaos_crown_flip_effect_cooldown = 300;
     @Entry public static int chaos_crown_flip_effect_min_cooldown = 100;
     @Entry public static boolean chaos_crown_flip_effect_enchant_reduces_cooldown = false;
@@ -756,6 +757,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
     @Entry(min=0) public static int chaos_monarch_xp = 500;
+    @Entry public static boolean chaos_monarch_wither_ground = true;
     @Entry public static boolean chaos_monarch_disables_shields = true;
     @Entry public static boolean chaos_monarch_is_fire_immune = true;
     @Entry public static boolean chaos_monarch_is_undead = true;
