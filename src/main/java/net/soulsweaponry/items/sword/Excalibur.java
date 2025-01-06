@@ -109,4 +109,24 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
     public double getLifeGuardPercent(ItemStack stack) {
         return ConfigConstructor.excalibur_life_guard_percent;
     }
+
+    @Override
+    public double getLifeSaveChance(ItemStack stack) {
+        return ConfigConstructor.excalibur_life_save_chance_percent;
+    }
+
+    @Override
+    public float getLifeSaveExplosionDamage(ItemStack stack) {
+        return ConfigConstructor.excalibur_life_save_explosion_damage;
+    }
+
+    @Override
+    public float getLifeSaveExplosionKnockback(ItemStack stack) {
+        return ConfigConstructor.excalibur_life_save_explosion_knockback;
+    }
+
+    @Override
+    public int getLifeSaveStackDamage(ItemStack stack) {
+        return ConfigConstructor.excalibur_life_save_stack_damage;
+    }
 }

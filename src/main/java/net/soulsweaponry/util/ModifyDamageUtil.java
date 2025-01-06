@@ -1,5 +1,6 @@
 package net.soulsweaponry.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -73,14 +74,30 @@ public class ModifyDamageUtil {
             if (stack.getItem() instanceof ILifeGuard guard) {
                 float damage = Math.max(0, (float) (newAmount * (1D - guard.getLifeGuardPercent(stack))));
                 int rounded = Math.round(newAmount);
-                if (rounded > 0) {
-                    stack.damage(rounded, entity, (p) -> p.sendToolBreakStatus(hand));
-                }
                 newAmount = damage;
-                for (int i = 0; i < 4; i++) {
+                int j = Math.min(rounded, 10);
+                for (int i = 0; i < j; i++) {
                     ParticleHandler.singleParticle(entity.getWorld(), ParticleTypes.SOUL, entity.getParticleX(1f), entity.getRandomBodyY(), entity.getParticleZ(1f), 0, 0, 0);
                 }
                 entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
+                // Chance to save the player if it's holding ILifeGuard item
+                if (entity.getHealth() - newAmount < 0 && !entity.getWorld().isClient && guard.getLifeSaveChance(stack) < entity.getRandom().nextDouble()) {
+                    ParticleHandler.particleSphereList(entity.getWorld(), 500, entity.getX(), entity.getY(), entity.getZ(), 0.4f, ParticleTypes.SCULK_SOUL, ParticleTypes.SMOKE);
+                    entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1f, 1f);
+                    for (Entity entity1 : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(2.5D))) {
+                        if (entity1 instanceof LivingEntity living) {
+                            living.damage(entity.getDamageSources().explosion(entity, entity), guard.getLifeSaveExplosionDamage(stack));
+                            double x = entity.getX() - living.getX();
+                            double z = entity.getZ() - living.getZ();
+                            living.takeKnockback(guard.getLifeSaveExplosionKnockback(stack), x, z);
+                        }
+                    }
+                    newAmount = 0f;
+                    rounded += guard.getLifeSaveStackDamage(stack);
+                }
+                if (rounded > 0) {
+                    stack.damage(rounded, entity, (p) -> p.sendToolBreakStatus(hand));
+                }
                 break;
             }
         }

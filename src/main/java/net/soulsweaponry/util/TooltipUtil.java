@@ -529,6 +529,10 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard").formatted(Formatting.RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.1", String.format("%.1f", item.getLifeGuardPercent(stack) * 100) + "%").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.4", String.format("%.1f", item.getLifeSaveChance(stack) * 100) + "%").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.5").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.6", item.getLifeSaveStackDamage(stack)).formatted(Formatting.DARK_GRAY));
             }
             case TRANSIENT_MOONLIGHT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight").formatted(Formatting.AQUA));
