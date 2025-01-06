@@ -79,6 +79,8 @@
 
     "item.soulsweapons.chungus_disc": "大型蠢古斯 音乐唱片",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (官方主题曲)",
+    "item.soulsweapons.fallen_icon_disc": "Fallen Icon Music Disc",
+    "item.soulsweapons.fallen_icon_disc.desc": "Wicked - The Fallen Icon",
 
     "item.soulsweapons.soul_ingot_helmet": "浸魂头盔",
     "item.soulsweapons.soul_ingot_chestplate": "浸魂胸甲",
@@ -357,6 +359,8 @@
     "subtitles.soulsweapons.trinity": "Trinity explosion",
     "subtitles.soulsweapons.moonveil_horizontal": "A horizontal moonlight wave is unleashed",
     "subtitles.soulsweapons.moonveil_vertical": "A vertical moonlight wave is unleashed",
+    "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
+    "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "按[§eshift§r]查看详情",
     "tooltip.soulsweapons.control": "Hold [§eCTRL§r] for Lore",

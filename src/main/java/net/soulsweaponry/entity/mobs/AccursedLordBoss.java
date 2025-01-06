@@ -17,6 +17,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -92,6 +93,16 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     @Override
     public int getXp() {
         return ConfigConstructor.decaying_king_xp;
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     @Override

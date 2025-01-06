@@ -17,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -403,6 +404,16 @@ public class DayStalker extends BossEntity implements GeoEntity {
             this.setWaitAnimation(false);
             this.setAttackAnimation(Attacks.IDLE);
         }
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     @Override

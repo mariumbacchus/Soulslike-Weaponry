@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -344,6 +345,16 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     protected SoundEvent getAmbientSound() {

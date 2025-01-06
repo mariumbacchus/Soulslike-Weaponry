@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -270,6 +271,16 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     @Override
     public int getXp() {
         return ConfigConstructor.old_champions_remains_xp;
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     @Override

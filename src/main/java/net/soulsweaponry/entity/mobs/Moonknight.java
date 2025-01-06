@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -26,6 +27,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -288,6 +290,16 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return ItemRegistry.FALLEN_ICON_DISC;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return true;
     }
 
     @Override

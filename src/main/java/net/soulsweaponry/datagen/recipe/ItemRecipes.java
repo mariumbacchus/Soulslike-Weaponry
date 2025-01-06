@@ -28,6 +28,14 @@ public class ItemRecipes {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CHUNGUS_EMERALD).build()))
                 .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FALLEN_ICON_DISC)
+                .input('#', ItemRegistry.MOONSTONE)
+                .pattern("###")
+                .pattern("# #")
+                .pattern("###")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.MOONSTONE).build()))
+                .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL)
                 .input('Y', ItemRegistry.LOST_SOUL)
                 .input('I', Items.BONE)

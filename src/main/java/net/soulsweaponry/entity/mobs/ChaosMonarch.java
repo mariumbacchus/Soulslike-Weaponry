@@ -19,6 +19,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -190,6 +191,16 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         if (ConfigConstructor.chaos_monarch_wither_ground) {
             this.turnBlocks(this.getWorld(), this.getBlockPos());
         }
+    }
+
+    @Override
+    public Item getMusicDisc() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {

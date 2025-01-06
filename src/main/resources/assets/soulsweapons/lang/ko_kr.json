@@ -79,6 +79,8 @@
 
     "item.soulsweapons.chungus_disc": "Big Chungus 음악 디스크",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (공식 메인 테마)",
+    "item.soulsweapons.fallen_icon_disc": "Fallen Icon Music Disc",
+    "item.soulsweapons.fallen_icon_disc.desc": "Wicked - The Fallen Icon",
 
     "item.soulsweapons.soul_ingot_helmet": "혼철 투구",
     "item.soulsweapons.soul_ingot_chestplate": "혼철 갑옷",
@@ -357,6 +359,8 @@
     "subtitles.soulsweapons.trinity": "트리니티 폭발",
     "subtitles.soulsweapons.moonveil_horizontal": "A horizontal moonlight wave is unleashed",
     "subtitles.soulsweapons.moonveil_vertical": "A vertical moonlight wave is unleashed",
+    "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
+    "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] 키를 눌러 정보를 확인하세요",
     "tooltip.soulsweapons.alt": "[§eALT§r] 키를 눌러 정보를 확인하세요",
