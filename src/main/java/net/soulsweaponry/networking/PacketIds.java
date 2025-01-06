@@ -16,6 +16,7 @@ public class PacketIds {
     public static final Identifier SYNC_RETURNING_PROJECTILE_DATA = new Identifier(SoulsWeaponry.ModId, "returning_projectile_uuid_sync");
     public static final Identifier SYNC_DAMAGE_RIDING_DATA = new Identifier(SoulsWeaponry.ModId, "should_damage_riding_sync");
     public static final Identifier SYNC_UMBRAL_DAMAGE_COOLDOWN = new Identifier(SoulsWeaponry.ModId, "umbral_trespass_damage_cooldown_sync");
+    public static final Identifier STOP_BOSS_MUSIC = new Identifier(SoulsWeaponry.ModId, "stop_boss_music");
 
     // Client to Server
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");

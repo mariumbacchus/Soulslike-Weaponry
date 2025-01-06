@@ -348,7 +348,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public Item getMusicDisc() {
+    public SoundEvent getBossMusic() {
         return null;
     }
 

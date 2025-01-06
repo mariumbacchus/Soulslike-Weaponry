@@ -31,5 +31,6 @@ public class PacketRegistry {
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_DAMAGE_RIDING_DATA, ShouldDamageRidingSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_RETURNING_PROJECTILE_DATA, ReturningProjectileDataSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.SYNC_UMBRAL_DAMAGE_COOLDOWN, UTDamageCooldownSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.STOP_BOSS_MUSIC, StopBossMusicS2C::receive);
     }
 }

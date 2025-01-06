@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
@@ -10,15 +11,18 @@ import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
+import net.soulsweaponry.networking.PacketHelper;
+import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +34,6 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
     private boolean playingMusic = false;
-    private BlockPos musicPos = BlockPos.ORIGIN;
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -52,14 +55,13 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     @Override
     public void tick() {
         super.tick();
-        /*if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
-            this.musicPos = this.getBlockPos();
-            this.getWorld().syncWorldEvent(null, WorldEvents.JUKEBOX_STARTS_PLAYING, this.musicPos, Item.getRawId(this.getMusicDisc()));
+        if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
+            this.getWorld().playSound(null, this.getBlockPos(), this.getBossMusic(), SoundCategory.MUSIC, 1f, 1f);
             this.playingMusic = true;
-        }*/
+        }
     }
 
-    public abstract Item getMusicDisc();
+    public abstract SoundEvent getBossMusic();
     public abstract boolean hasBossMusic();
 
     public boolean isPlayingMusic() {
@@ -149,11 +151,10 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setDeath();
-        if (!this.getWorld().isClient) {
-            // Problem with this is that the sound won't stop if the block isn't rendered by the player
-            // Alternatively, use MinecraftClient.getInstance().getSoundManager().stop(...); to stop and start
-            // the sound from the client side, but I think packets must be sent if that's the case.
-            //this.getWorld().syncWorldEvent(WorldEvents.JUKEBOX_STOPS_PLAYING, this.musicPos, 0);
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeIdentifier(this.getBossMusic().getId());
+            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);
         }
     }
 
