@@ -16,6 +16,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
@@ -148,14 +149,16 @@ public class EntityRegistry {
         ItemRegistry.registerItem(FROST_GIANT_SPAWN_EGG, "frost_giant_spawn_egg");
         ItemRegistry.registerItem(RIME_SPECTRE_SPAWN_EGG, "rime_spectre_spawn_egg");
 
-        registerBossDrops("accursed_lord_boss", ItemRegistry.LORD_SOUL_RED, WeaponRegistry.DARKIN_BLADE, ItemRegistry.WITHERED_DEMON_HEART);
-        registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK, ItemRegistry.LORD_SOUL_VOID, ItemRegistry.CHAOS_CROWN, ItemRegistry.CHAOS_ROBES, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
-        registerBossDrops("day_stalker", WeaponRegistry.DAWNBREAKER, ItemRegistry.LORD_SOUL_DAY_STALKER);
-        registerBossDrops("draugr_boss", WeaponRegistry.DRAUGR);
-        registerBossDrops("moonknight", WeaponRegistry.MOONLIGHT_GREATSWORD, ItemRegistry.LORD_SOUL_WHITE, ItemRegistry.ESSENCE_OF_LUMINESCENCE, ItemRegistry.MOONSTONE, ItemRegistry.MOONSTONE);
-        registerBossDrops("night_prowler", WeaponRegistry.SOUL_REAPER, WeaponRegistry.FORLORN_SCYTHE, ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
-        registerBossDrops("returning_knight", WeaponRegistry.NIGHTFALL, ItemRegistry.LORD_SOUL_ROSE, ItemRegistry.ARKENSTONE, ItemRegistry.SOUL_INGOT, ItemRegistry.SOUL_INGOT);
-        registerBossDrops("night_shade", ItemRegistry.LORD_SOUL_DARK, ItemRegistry.ESSENCE_OF_EVENTIDE);
+        if (DatagenUtil.isDatagenRunning()) {
+            registerBossDrops("accursed_lord_boss", ItemRegistry.LORD_SOUL_RED, WeaponRegistry.DARKIN_BLADE, ItemRegistry.WITHERED_DEMON_HEART);
+            registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK, ItemRegistry.LORD_SOUL_VOID, ItemRegistry.CHAOS_CROWN, ItemRegistry.CHAOS_ROBES, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ItemRegistry.BLOOD_VIAL_RECIPE_PAGE);
+            registerBossDrops("day_stalker", WeaponRegistry.DAWNBREAKER, ItemRegistry.LORD_SOUL_DAY_STALKER);
+            registerBossDrops("draugr_boss", WeaponRegistry.DRAUGR);
+            registerBossDrops("moonknight", WeaponRegistry.MOONLIGHT_GREATSWORD, ItemRegistry.LORD_SOUL_WHITE, ItemRegistry.ESSENCE_OF_LUMINESCENCE, ItemRegistry.MOONSTONE, ItemRegistry.MOONSTONE);
+            registerBossDrops("night_prowler", WeaponRegistry.SOUL_REAPER, WeaponRegistry.FORLORN_SCYTHE, ItemRegistry.LORD_SOUL_NIGHT_PROWLER);
+            registerBossDrops("returning_knight", WeaponRegistry.NIGHTFALL, ItemRegistry.LORD_SOUL_ROSE, ItemRegistry.ARKENSTONE, ItemRegistry.SOUL_INGOT, ItemRegistry.SOUL_INGOT);
+            registerBossDrops("night_shade", ItemRegistry.LORD_SOUL_DARK, ItemRegistry.ESSENCE_OF_EVENTIDE);
+        }
     }
 
     private static <I extends PathAwareEntity> EntityType<I> registerWithSpawnEgg(EntityType<I> type, String id, int primaryColor, int secondaryColor) {
@@ -163,6 +166,7 @@ public class EntityRegistry {
         ItemRegistry.registerItem(egg, id + "_spawn_egg");
         /*
         * Due to bug regarding Valhelsia Core redirecting the mixin used in the model provider, the generation of model jsons has been deprecated.
+        * TODO: this can be re-instated by making sure to only add when running datagen (see DatagenUtil)
         * ModelProvider.ITEMS.put(egg, ModelProvider.SPAWN_EGG);
         */
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, id), type);

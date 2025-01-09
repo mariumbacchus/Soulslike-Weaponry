@@ -50,6 +50,8 @@ public class ItemRegistry {
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new FabricItemSettings().maxDamage(20));
     public static final Item IRON_SKULL = new Item(new FabricItemSettings());
 
+    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 12, true);
+
     public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new FabricItemSettings());
     public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new FabricItemSettings());
     public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f, new FabricItemSettings());
@@ -101,6 +103,7 @@ public class ItemRegistry {
         registerItem(VERGLAS, "verglas");
         registerItem(SKOFNUNG_STONE, "skofnung_stone");
         registerItem(IRON_SKULL, "iron_skull");
+        registerItem(BLOOD_VIAL_RECIPE_PAGE, "blood_vial_recipe_page");
 
         registerItem(MOONSTONE_SHOVEL, "moonstone_shovel");
         registerItem(MOONSTONE_PICKAXE, "moonstone_pickaxe");

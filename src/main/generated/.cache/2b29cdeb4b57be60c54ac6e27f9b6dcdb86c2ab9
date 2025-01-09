@@ -1,4 +1,4 @@
-// 1.20.1	2025-01-04T15:42:28.2472655	Marium's Soulslike Weaponry/Recipes
+// 1.20.1	2025-01-09T13:55:23.5535018	Marium's Soulslike Weaponry/Recipes
 6ac617da1c0aca4adcdebe9d40978c99d55b236d data\soulsweapons\recipes\holy_greatsword.json
 77e2400341d4a08730ea5fd56df357ee5ee94537 data\soulsweapons\advancements\recipes\combat\draugr.json
 58d40c755e5fc68eb99e6f272a31fdc9b5779338 data\soulsweapons\recipes\oleander_dye.json
@@ -20,6 +20,7 @@ a8ccff474873cc4687d175752b6a52d129672d86 data\soulsweapons\advancements\recipes\
 71a48fe6eee0735eca574157c31bc7e69ade0e75 data\soulsweapons\recipes\whirligig_sawblade.json
 7341faf36fde32867f9fbcab78dc729fbd6764fb data\soulsweapons\recipes\forlorn_helmet.json
 c86ff5e4ad018eb62269455e3c91232ed1f84285 data\soulsweapons\advancements\recipes\combat\silver_bullet_iron_ingot.json
+25e87e8594fc69565a831a24bfb552f58d3b0970 data\soulsweapons\advancements\recipes\misc\paper.json
 a342c035ae3dab993615a8dd949fa924c0855e03 data\soulsweapons\advancements\recipes\building_blocks\soulfire_stain.json
 fba9c92d13a869ee4f4aec32061940ab07e21674 data\soulsweapons\advancements\recipes\tools\moonstone_pickaxe.json
 5ced52e0c696c4f92a4f11961b27e6ed1bcc91c1 data\soulsweapons\advancements\recipes\tools\moonstone_shovel.json
@@ -161,6 +162,7 @@ c1a79205800c0a900293203c965c05f154f8448c data\soulsweapons\recipes\chungus_staff
 3e3614e2a7f501a4a47b51b9958d8ba88c45379e data\soulsweapons\advancements\recipes\combat\chaos_helmet.json
 35b7b4d41c1d6cf86636081fcdfab6cd416bde4f data\soulsweapons\advancements\recipes\misc\lost_soul.json
 1c6c81b177fd5f0963aa8d201b258cfc36944cb6 data\soulsweapons\recipes\sting.json
+ceb5cd24cc8a9440bdaf790f3dfff8b485f9222c data\soulsweapons\recipes\paper.json
 35300c6424eecef0eb6ac12e91e95c3c2b0310c0 data\soulsweapons\recipes\kirkhammer.json
 37ec220df8f86b73625869cc82e34ecdbec72406 data\soulsweapons\advancements\recipes\misc\soul_ingot.json
 27473bfc2e8a71ef9fea1a5bb90b8c6c9d9d926f data\soulsweapons\advancements\recipes\misc\moonstone.json
@@ -199,8 +201,8 @@ a6a9c9a400e8bce2414bbf7581bd634077b88ccb data\soulsweapons\recipes\soul_robes_ch
 09d92d21709225f68335d62abf82cf507c700c6f data\soulsweapons\recipes\mjolnir.json
 60e39f84af7931cf0d562a778049832cfd9dd741 data\soulsweapons\recipes\bloodthirster.json
 e89552042718b0b352c8022fc5c0a4d984532d57 data\soulsweapons\advancements\recipes\combat\forlorn_boots.json
-f66e36dc9279bb8040467f3d62e72253acaba192 data\soulsweapons\recipes\master_sword.json
 a020fc91b72c7a1e281caf26163099fbbdbc2afb data\soulsweapons\recipes\holy_moonlight_sword.json
+f66e36dc9279bb8040467f3d62e72253acaba192 data\soulsweapons\recipes\master_sword.json
 4603be629af8719257c0467aac967a2ccba1ec41 data\soulsweapons\recipes\chaos_helmet.json
 4879887365999d41b2a4342af3fe8ffd028fc0fa data\soulsweapons\advancements\recipes\combat\dragon_staff.json
 139ab76209d2b51f6410a88294c71c29f31608f3 data\soulsweapons\recipes\demon_chunk.json

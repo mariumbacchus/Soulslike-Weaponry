@@ -76,6 +76,7 @@
     "item.soulsweapons.blood_vial": "Пузырек с кровью",
     "item.soulsweapons.glass_vial": "Стеклянный флакон",
     "item.soulsweapons.purified_blood_bucket": "Ведро Очищенной Крови",
+    "item.soulsweapons.blood_vial_recipe_page": "Recipe Page",
 
     "item.soulsweapons.chungus_disc": "Музыкальный диск Big Chungus",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (Официальная Основная тема)",
@@ -794,7 +795,20 @@
     "tooltip.soulsweapons.withered_chest.lore.enhanced.1": "Когда сердце и эгида наполняются новой",
     "tooltip.soulsweapons.withered_chest.lore.enhanced.2": "силой и энергией, сердце слабо бьется",
     "tooltip.soulsweapons.withered_chest.lore.enhanced.3": "снова...",
+
     "tooltip.soulsweapons.chungus_emerald.part_1": "Use on Moderately Sized Chunguses to barter with them",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_1": "A torn page detailing how to create Blood Vials.",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_2": "",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_3": "Crimson Obsidian will damage anything that stands",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_4": "on top of it and save it's blood inside it. After",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_5": "a little while and given enough blood has been stored,",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_6": "the purified blood can be filtered through the block",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_7": "by placing a cauldron under it. Using glass vials on",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_8": "this liquid will grant you a Blood Vial, a substance",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_9": "with great healing properties when used.",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_10": "",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_11": "It really is a wonder how the demon hearts can",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_12": "have all these valuable properties...",
 
     "enchantment.soulsweapons.fast_hands": "Быстрые Руки",
     "enchantment.soulsweapons.fast_hands.desc": "Сокращает время перезарядки оружий и луков. (Модель не меняется).",

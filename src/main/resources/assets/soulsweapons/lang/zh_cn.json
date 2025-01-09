@@ -76,6 +76,7 @@
     "item.soulsweapons.glass_vial": "Glass Vial",
     "item.soulsweapons.blood_vial": "Blood Vial",
     "item.soulsweapons.purified_blood_bucket": "Bucket of Purified Blood",
+    "item.soulsweapons.blood_vial_recipe_page": "Recipe Page",
 
     "item.soulsweapons.chungus_disc": "大型蠢古斯 音乐唱片",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (官方主题曲)",
@@ -792,7 +793,20 @@
     "tooltip.soulsweapons.withered_chest.lore.enhanced.1": "As the heart and aegis is filled with new",
     "tooltip.soulsweapons.withered_chest.lore.enhanced.2": "vigor and power, the heart faintly beats",
     "tooltip.soulsweapons.withered_chest.lore.enhanced.3": "yet again...",
+
     "tooltip.soulsweapons.chungus_emerald.part_1": "Use on Moderately Sized Chunguses to barter with them",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_1": "A torn page detailing how to create Blood Vials.",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_2": "",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_3": "Crimson Obsidian will damage anything that stands",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_4": "on top of it and save it's blood inside it. After",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_5": "a little while and given enough blood has been stored,",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_6": "the purified blood can be filtered through the block",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_7": "by placing a cauldron under it. Using glass vials on",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_8": "this liquid will grant you a Blood Vial, a substance",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_9": "with great healing properties when used.",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_10": "",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_11": "It really is a wonder how the demon hearts can",
+    "tooltip.soulsweapons.blood_vial_recipe_page.part_12": "have all these valuable properties...",
 
     "enchantment.soulsweapons.fast_hands": "快枪手",
     "enchantment.soulsweapons.fast_hands.desc": "减少枪械与弓的准备时间（模型不会改变）",
