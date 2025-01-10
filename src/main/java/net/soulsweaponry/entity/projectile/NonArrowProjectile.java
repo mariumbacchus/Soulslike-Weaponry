@@ -124,6 +124,8 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("Stack", this.stackShotFrom.writeNbt(new NbtCompound()));
+        if (this.stackShotFrom != null) {
+            nbt.put("Stack", this.stackShotFrom.writeNbt(new NbtCompound()));
+        }
     }
 }

@@ -27,6 +27,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -61,7 +62,7 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     }
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
-        super(type, owner, world, null);
+        super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack());
     }
 
     @Override
