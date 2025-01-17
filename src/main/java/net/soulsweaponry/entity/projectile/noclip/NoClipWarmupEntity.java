@@ -26,6 +26,10 @@ public abstract class NoClipWarmupEntity extends NoClipEntity {
         this.warmup = warmup;
     }
 
+    public void reduceWarmup(int reduction) {
+        this.warmup -= reduction;
+    }
+
     public int getWarmup() {
         return this.warmup;
     }

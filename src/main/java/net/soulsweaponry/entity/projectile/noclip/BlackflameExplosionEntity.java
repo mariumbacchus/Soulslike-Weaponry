@@ -16,6 +16,11 @@ public class BlackflameExplosionEntity extends DamagingWarmupEntity {
         super(entityType, world);
     }
 
+    @Override
+    public void handleSoundStatus(byte status) {
+
+    }
+
     public BlackflameExplosionEntity(World world) {
         super(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY, world);
     }

@@ -18,10 +18,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.PacketIds;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ParticleHandler {
 
@@ -36,12 +33,12 @@ public class ParticleHandler {
      * @param sizeMod overall size modifier for the whole explosion
      * <p></p>
      * Example usage: <p></p>
-     * {@code HashMap<ParticleOptions, Vec3> map = new HashMap<>();
+     * {@code Map<ParticleOptions, Vec3> map = new HashMap<>();
      * map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3(2, 8, 2));
      * map.put(new ItemParticleOption(ParticleTypes.ITEM, Items.STONE.getDefaultInstance()), new Vec3(1, 2, 1));
      * ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), map, 1f);}
      */
-    public static void particleOutburstMap(World world, int amount, double x, double y, double z, HashMap<ParticleEffect, Vec3d> particleMap, float sizeMod) {
+    public static void particleOutburstMap(World world, int amount, double x, double y, double z, Map<ParticleEffect, Vec3d> particleMap, float sizeMod) {
         for (ParticleEffect particle : particleMap.keySet()) {
             particleOutburst(world, amount, x, y, z, particle, particleMap.get(particle), sizeMod);
         }

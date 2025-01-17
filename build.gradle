@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -17,7 +17,14 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
-	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+	maven {
+		name = 'GeckoLib'
+		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+		content {
+			includeGroupByRegex("software\\.bernie.*")
+			includeGroup("com.eliotlash.mclib")
+		}
+	}
 	maven { url 'https://maven.blamejared.com' }
 	mavenCentral()
 	maven { url "https://cursemaven.com" }
@@ -54,7 +61,9 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20:${project.geckolib_version}"
+	modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+	implementation("com.eliotlash.mclib:mclib:20")
+
 	modImplementation "curse.maven:attributefix-${project.attributefix}"
 	modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
 

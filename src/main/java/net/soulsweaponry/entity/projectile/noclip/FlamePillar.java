@@ -34,6 +34,11 @@ public class FlamePillar extends DamagingWarmupEntity {
     }
 
     @Override
+    public void handleSoundStatus(byte status) {
+
+    }
+
+    @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
         if (wasHit) {
             target.addVelocity(0, 0.5f, 0);

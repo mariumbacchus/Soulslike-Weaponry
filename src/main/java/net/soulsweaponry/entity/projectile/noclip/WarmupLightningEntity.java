@@ -14,6 +14,11 @@ public class WarmupLightningEntity extends DamagingWarmupEntity {
     }
 
     @Override
+    public void handleSoundStatus(byte status) {
+
+    }
+
+    @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
 
     }

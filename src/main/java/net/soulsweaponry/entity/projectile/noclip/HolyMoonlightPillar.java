@@ -1,26 +1,34 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.Random;
+import java.util.Map;
 
-public class HolyMoonlightPillar extends DamagingWarmupEntity {
+public class HolyMoonlightPillar extends DamagingWarmupEntity implements GeoEntity {
 
     private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
     private static final TrackedData<Float> RADIUS = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(HolyMoonlightPillar.class, TrackedDataHandlerRegistry.FLOAT);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -34,35 +42,25 @@ public class HolyMoonlightPillar extends DamagingWarmupEntity {
     }
 
     @Override
+    public void handleSoundStatus(byte status) {
+        this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundRegistry.MOONLIGHT_BIG_EVENT, this.getSoundCategory(), 1f, 1f, false);
+    }
+
+    @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        target.addVelocity(0, this.getKnockup(), 0);
+        if (wasHit) {
+            target.addVelocity(0, this.getKnockup(), 0);
+        }
     }
 
     @Override
     public void onTrigger() {
-        this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-        this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-    }
-
-    @Override
-    public float getBonusDamage(LivingEntity target) {
-        return 2 * EnchantmentHelper.getAttackDamage(this.getStack(), target.getGroup());
-    }
-
-    @Override
-    public void onRemoved() {
-        Random random = new Random();
-        double d = random.nextGaussian() * 0.05D;
-        double e = random.nextGaussian() * 0.05D;
-        double f = random.nextGaussian() * 0.05D;
-        for(int j = 0; j < 200 * this.getParticleMod(); ++j) {
-            double newX = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d;
-            double newZ = random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e;
-            double newY = random.nextDouble() - 0.5D + random.nextGaussian() * 0.5D + f;
-            this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX(), this.getY(), this.getZ(), newX / 2, newY / 0.5f, newZ / 2);
-            this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), newX / 2, newY / 0.5f, newZ / 2);
-        }
-        super.onRemoved();
+        this.setEmerge(true);
+        float spread = 1.2f;
+        float height = 0.34f;
+        Vec3d vec = new Vec3d(spread, height, spread);
+        Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.SOUL_FIRE_FLAME, vec, ParticleTypes.LARGE_SMOKE, vec);
+        ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(20 * (int) this.getParticleMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.5f);
     }
 
     private float getKnockup() {
@@ -90,6 +88,11 @@ public class HolyMoonlightPillar extends DamagingWarmupEntity {
     }
 
     @Override
+    public SoundCategory getSoundCategory() {
+        return SoundCategory.PLAYERS;
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Knockup")) {
@@ -111,6 +114,15 @@ public class HolyMoonlightPillar extends DamagingWarmupEntity {
         nbt.putFloat("ParticleModifier", this.getParticleMod());
     }
 
+    private PlayState idle(AnimationState<?> state) {
+        if (this.getEmerge()) {
+            state.getController().setAnimation(RawAnimation.begin().then("emerge3", Animation.LoopType.HOLD_ON_LAST_FRAME));
+        } else {
+            state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public EntityDimensions getDimensions(EntityPose pose) {
         return EntityDimensions.changing(this.getRadius(), this.getRadius());
@@ -122,5 +134,15 @@ public class HolyMoonlightPillar extends DamagingWarmupEntity {
             this.calculateDimensions();
         }
         super.onTrackedDataSet(data);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "idle", 0, this::idle));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
     }
 }

@@ -30,6 +30,8 @@ import java.util.UUID;
  * conflicting animations (trying to play different animations for each entity). <p></p>
  * Why this is the case? No clue and well, the only thing I care about is whether this works or not, so I've got no
  * reason to look for an answer or fix either.
+ * <p></p>
+ * TODO: This was fixed in the newest geckolib version this mod now uses, so this can be rewritten to a projectile class again
  */
 public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
     @Nullable

@@ -5,9 +5,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.client.model.entity.projectile.MoonveilWaveModel;
 import net.soulsweaponry.entity.projectile.noclip.MoonveilWave;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class MoonveilWaveRenderer extends GeoProjectileRenderer<MoonveilWave> {
 
@@ -27,9 +29,14 @@ public class MoonveilWaveRenderer extends GeoProjectileRenderer<MoonveilWave> {
     }
 
     @Override
-    public void render(MoonveilWave entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
+    public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, MoonveilWave animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
         poseStack.scale(3f, 1.5f, 3f);
-        poseStack.translate(0, entity.getModelTranslationY(), 0);
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        poseStack.translate(0, animatable.getModelTranslationY(), 0);
+        super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
+    }
+
+    @Override
+    protected int getBlockLight(MoonveilWave entity, BlockPos pos) {
+        return 15;
     }
 }
