@@ -1,12 +1,12 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -16,6 +16,8 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     private boolean startedAttack;
     private int ticksLeft = 20;
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Float> RADIUS = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
     public DamagingWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -32,14 +34,19 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
                     this.setEmerge(true);
                     List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
                     for (LivingEntity livingEntity : list) {
-                        if (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity) || !livingEntity.isAlive() || livingEntity.isInvulnerable()) {
+                        if (!livingEntity.isAlive() || livingEntity.isInvulnerable()) {
+                            continue;
+                        }
+                        if (this.getOwner() != null && (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity))) {
                             continue;
                         }
                         boolean wasHit;
-                        if (this.getOwner() instanceof LivingEntity) {
-                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage() + this.getBonusDamage(livingEntity));
+                        if (this.getOwner() instanceof LivingEntity owner) {
+                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, owner),
+                                    (float) this.getDamage() + this.getBonusDamage(livingEntity));
                         } else {
-                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, null), (float) this.getDamage() + this.getBonusDamage(livingEntity));
+                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, null),
+                                    (float) this.getDamage() + this.getBonusDamage(livingEntity));
                         }
                         this.applyDamageEffects(wasHit, livingEntity);
                     }
@@ -84,10 +91,41 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
         return this.dataTracker.get(EMERGE);
     }
 
+    public void setRadius(float radius) {
+        this.dataTracker.set(RADIUS, radius);
+    }
+
+    public float getRadius() {
+        return this.dataTracker.get(RADIUS);
+    }
+
+    public void setParticleAmountMod(float particleMod) {
+        this.dataTracker.set(PARTICLE_MOD, particleMod);
+    }
+
+    public float getParticleAmountMod() {
+        return this.dataTracker.get(PARTICLE_MOD);
+    }
+
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(EMERGE, false);
+        this.dataTracker.startTracking(PARTICLE_MOD, 1f);
+        this.dataTracker.startTracking(RADIUS, 1.85f);
+    }
+
+    @Override
+    public EntityDimensions getDimensions(EntityPose pose) {
+        return EntityDimensions.changing(this.getRadius(), this.getRadius());
+    }
+
+    @Override
+    public void onTrackedDataSet(TrackedData<?> data) {
+        if (RADIUS.equals(data)) {
+            this.calculateDimensions();
+        }
+        super.onTrackedDataSet(data);
     }
 
     /**
@@ -110,5 +148,30 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
      */
     public float getBonusDamage(LivingEntity target) {
         return 0f;
+    }
+
+    /**
+     * Can be used to spawn particles upwards initially, override this to add own values to modify particle spread.
+     */
+    public Vec3d getParticleVec() {
+        return new Vec3d(1.2f, 0.34f, 1.2f);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("Radius")) {
+            this.setRadius(nbt.getFloat("Radius"));
+        }
+        if (nbt.contains("ParticleModifier")) {
+            this.setParticleAmountMod(nbt.getFloat("ParticleModifier"));
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putFloat("Radius", this.getRadius());
+        nbt.putFloat("ParticleModifier", this.getParticleAmountMod());
     }
 }

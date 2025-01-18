@@ -54,7 +54,7 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
                             (Vec3d position, Integer warmup, Float yaw) -> {
                                 HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
                                 pillar.setOwner(user);
-                                pillar.setParticleMod(1f);
+                                pillar.setParticleAmountMod(1f);
                                 pillar.setRadius(1.85f);
                                 pillar.setDamage(this.getAbilityDamage());
                                 pillar.setKnockUp(this.getKnockup(stack));

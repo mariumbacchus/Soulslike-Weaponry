@@ -492,7 +492,7 @@ public class MoonknightGoal extends Goal {
             WeaponUtil.doConsumerOnLine(this.boss.getWorld(), yaw, this.targetPos.toCenterPos(), this.targetPos.getY(), 14, 1.75f, (Vec3d position, Integer warmup, Float yawOutput) -> {
                 HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, this.boss.getWorld());
                 pillar.setOwner(this.boss);
-                pillar.setParticleMod(1.5f);
+                pillar.setParticleAmountMod(1.5f);
                 pillar.setRadius(3.5f);
                 pillar.setDamage(this.getModifiedDamage(30f));
                 pillar.setKnockUp(1f);
@@ -660,7 +660,7 @@ public class MoonknightGoal extends Goal {
     private void spawnPillar(Vec3d pos, int warmup) {
         HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, this.boss.getWorld());
         pillar.setOwner(this.boss);
-        pillar.setParticleMod(1.5f);
+        pillar.setParticleAmountMod(1.5f);
         pillar.setRadius(3.5f);
         pillar.setDamage(this.getModifiedDamage(30f));
         pillar.setKnockUp(1f);

@@ -61,7 +61,7 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.DEATH_SPIRAL_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.NIGHTS_EDGE, NightsEdgeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.NIGHT_WAVE, EmptyEntityRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.FLAME_PILLAR, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.FLAME_PILLAR, FlamePillarRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, KrakenSlayerProjectileRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOONLIGHT_ARROW, MoonlightArrowRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ARROW_STORM_ENTITY, EmptyEntityRenderer::new);

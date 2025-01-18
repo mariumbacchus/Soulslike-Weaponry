@@ -434,11 +434,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.mob.getNavigation().stop();
         boolean phase2 = this.boss.isPhaseTwo();
-        if (this.attackStatus == 1) {
+        if (this.attackStatus == 18) {
             this.playSound(this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, 1f, 1f);
             int i = 0;
             List<BlockPos> list = new ArrayList<>();
             list.add(new BlockPos(0, 0, 0));
+            float radius = phase2 ? 2.1f : 1.85f;
             while (i < (phase2 ? 32 : 16)) {
                 int x = this.boss.getBlockX() + this.boss.getRandom().nextInt(16) - 8;
                 int y = this.boss.getBlockY();
@@ -449,6 +450,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                         FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, this.boss.getWorld());
                         pillar.setDamage(this.getModifiedDamage(48f));
                         pillar.setPos(x, y, z);
+                        pillar.setRadius(radius);
                         pillar.setOwner(this.boss);
                         pillar.setWarmup(i * 2);
                         this.boss.getWorld().spawnEntity(pillar);
@@ -767,8 +769,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                         pillar.setDamage(this.getModifiedDamage(40f));
                         pillar.setPos(vec.getX(), vec.getY(), vec.getZ());
                         pillar.setRadius(2.5f);
-                        pillar.setParticleDivergence(4f);
-                        pillar.setParticleMod(1.5f);
+                        pillar.setParticleAmountMod(1.5f);
                         pillar.setOwner(this.boss);
                         pillar.setWarmup(-6);
                         this.boss.getWorld().spawnEntity(pillar);

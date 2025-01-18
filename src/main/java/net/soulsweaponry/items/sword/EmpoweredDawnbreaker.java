@@ -87,6 +87,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
                         FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, world);
                         pillar.setDamage(ConfigConstructor.empowered_dawnbreaker_ability_damage + WeaponUtil.getEnchantDamageBonus(stack) * 2);
                         pillar.setPos(x, y, z);
+                        pillar.setRadius(1.5f);
                         pillar.setOwner(user);
                         pillar.setWarmup(i * 2);
                         world.spawnEntity(pillar);
