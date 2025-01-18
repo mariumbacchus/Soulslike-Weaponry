@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class BlackflameSnakeEntity extends NoClipEntity {
+
     private boolean hasHitPlayer;
     private static final TrackedData<Optional<UUID>> TARGET_UUID = DataTracker.registerData(BlackflameSnakeEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
@@ -60,7 +61,7 @@ public class BlackflameSnakeEntity extends NoClipEntity {
             }
         } else {
             if (this.age % 4 == 0) {
-                ParticleHandler.particleOutburstMap(this.getWorld(), 250, this.getX(), this.getY(), this.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
+                ParticleHandler.particleOutburstMap(this.getWorld(), 100, this.getX(), this.getY(), this.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
             }
         }
         if (this.age > 100 || this.hasHitPlayer) {

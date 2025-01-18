@@ -816,6 +816,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                     for (int i = 0; i < position.size(); i++) {
                         BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.boss.getWorld());
                         entity.setOwner(this.boss);
+                        entity.setRadius(2f);
                         entity.setDamage(this.getModifiedDamage(35f));
                         entity.setWarmup(i);
                         entity.setPosition(position.get(i));
