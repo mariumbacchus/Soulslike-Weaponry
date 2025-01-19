@@ -50,8 +50,10 @@ public class FlamePillar extends DamagingWarmupEntity implements GeoEntity {
         if (this.getWorld().getBlockState(this.getBlockPos()).isAir()) {
             this.getWorld().setBlockState(this.getBlockPos(), Blocks.FIRE.getDefaultState());
         }
-        Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.WAX_ON, this.getParticleVec(), ParticleTypes.FLAME, this.getParticleVec(), ParticleRegistry.SUN_PARTICLE, this.getParticleVec());
-        ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(30 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.4f);
+        if (this.getParticleAmountMod() > 0) {
+            Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.WAX_ON, this.getParticleVec(), ParticleTypes.FLAME, this.getParticleVec(), ParticleRegistry.SUN_PARTICLE, this.getParticleVec());
+            ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(30 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.4f);
+        }
     }
 
     private PlayState idle(AnimationState<?> state) {

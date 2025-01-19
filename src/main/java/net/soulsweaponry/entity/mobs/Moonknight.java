@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -13,7 +14,9 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -26,6 +29,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
+import net.soulsweaponry.networking.PacketHelper;
+import net.soulsweaponry.networking.PacketIds;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -200,6 +205,12 @@ public class Moonknight extends BossEntity implements GeoEntity {
             return false;
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeIdentifier(this.getBossMusic().getId());
+                PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);
+                this.setPlayingMusic(false);
+            }
             this.clearStatusEffects();
             this.initiatePhaseTwo(true);
             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);

@@ -43,8 +43,10 @@ public class HolyMoonlightPillar extends DamagingWarmupEntity implements GeoEnti
 
     @Override
     public void onTrigger() {
-        Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.SOUL_FIRE_FLAME, this.getParticleVec(), ParticleTypes.LARGE_SMOKE, this.getParticleVec());
-        ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(20 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.5f);
+        if (this.getParticleAmountMod() > 0) {
+            Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.SOUL_FIRE_FLAME, this.getParticleVec(), ParticleTypes.LARGE_SMOKE, this.getParticleVec());
+            ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(20 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.5f);
+        }
     }
 
     private float getKnockup() {

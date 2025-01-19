@@ -40,7 +40,9 @@ public class BlackflameExplosionEntity extends DamagingWarmupEntity implements G
 
     @Override
     public void onTrigger() {
-        ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(20 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
+        if (this.getParticleAmountMod() > 0) {
+            ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(20 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), ParticleEvents.BLACKFLAME_SNAKE_PARTICLE_MAP, 1f);
+        }
     }
 
     private PlayState idle(AnimationState<?> state) {

@@ -22,6 +22,11 @@ import java.util.*;
 
 public class ParticleHandler {
 
+    // Universal random for all the methods.
+    private static final Random RANDOM = new Random();
+    // Cache for outburst particles so no re-calculation is required.
+    private static final Map<String, Vec3d[]> PARTICLE_OUTBURST_CACHE = new HashMap<>();
+
     /**
      * Summon particles going out in random directions.
      * @param world world, either server or client sided
@@ -106,7 +111,10 @@ public class ParticleHandler {
         }
     }
 
-    public static void particleOutburst(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
+    /**
+     * Old implementation that uses a list every call and doesn't save to cache, may therefore be more taxing on the hardware than the other method.
+     */
+    public static void particleOutburstList(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
         if (world.isClient) {
             List<Vec3d> list = getParticleOutburstCords(amount, velDivider, sizeMod);
             for (Vec3d vec : list) {
@@ -117,6 +125,36 @@ public class ParticleHandler {
             if (particle instanceof ItemStackParticleEffect par) {
                 stack = par.getItemStack();
                 particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
+            }
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
+            buf.writeInt(amount);
+            buf.writeItemStack(stack);
+            buf.writeDouble(x);
+            buf.writeDouble(y);
+            buf.writeDouble(z);
+            buf.writeDouble(velDivider.getX());
+            buf.writeDouble(velDivider.getY());
+            buf.writeDouble(velDivider.getZ());
+            buf.writeFloat(sizeMod);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.OUTBURST_PARTICLES, buf);
+        }
+    }
+
+    public static void particleOutburst(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
+        // Generate a cache key based on the particle settings
+        String cacheKey = generateCacheKey(amount, velDivider, sizeMod);
+        // Get particle velocities from cache or generate if not available
+        Vec3d[] particleVelocities = PARTICLE_OUTBURST_CACHE.computeIfAbsent(cacheKey, key -> getParticleOutburstCordsArray(amount, velDivider, sizeMod));
+        if (world.isClient) {
+            for (Vec3d vec : particleVelocities) {
+                world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
+            }
+        } else {
+            ItemStack stack = new ItemStack(Items.AIR);
+            if (particle instanceof ItemStackParticleEffect par) {
+                stack = par.getItemStack();
+                particle = ParticleTypes.FLAME;
             }
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
@@ -183,19 +221,36 @@ public class ParticleHandler {
      * @return list of velocity vectors for the particle
      */
     public static List<Vec3d> getParticleOutburstCords(int particleAmount, Vec3d velDividers, double sizeMod) {
-        Random random = new Random();
-        List<Vec3d> list = new ArrayList<>();
-        double d = random.nextGaussian() * 0.05D;
-        double e = random.nextGaussian() * 0.05D;
-        double f = random.nextGaussian() * 0.05D;
-        for(int j = 0; j < particleAmount; ++j) {
-            double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d) * sizeMod;
-            double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e) * sizeMod;
-            double newY = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + f) * sizeMod;
-            Vec3d vec = new Vec3d(newX/velDividers.getX(), newY/velDividers.getY(), newZ/velDividers.getZ());
-            list.add(vec);
+        List<Vec3d> list = new ArrayList<>(particleAmount);
+        double d = RANDOM.nextGaussian() * 0.05D;
+        double e = RANDOM.nextGaussian() * 0.05D;
+        double f = RANDOM.nextGaussian() * 0.05D;
+        for (int j = 0; j < particleAmount; ++j) {
+            double newX = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + d) * sizeMod;
+            double newZ = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + e) * sizeMod;
+            double newY = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + f) * sizeMod;
+            list.add(new Vec3d(newX / velDividers.getX(), newY / velDividers.getY(), newZ / velDividers.getZ()));
         }
         return list;
+    }
+
+    public static Vec3d[] getParticleOutburstCordsArray(int particleAmount, Vec3d velDividers, double sizeMod) {
+        Vec3d[] results = new Vec3d[particleAmount];
+        double d = RANDOM.nextGaussian() * 0.05D;
+        double e = RANDOM.nextGaussian() * 0.05D;
+        double f = RANDOM.nextGaussian() * 0.05D;
+        for (int j = 0; j < particleAmount; ++j) {
+            double newX = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + d) * sizeMod;
+            double newZ = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + e) * sizeMod;
+            double newY = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + f) * sizeMod;
+            results[j] = new Vec3d(newX / velDividers.getX(), newY / velDividers.getY(), newZ / velDividers.getZ());
+        }
+        return results;
+    }
+
+    // Helper method to generate a unique cache key for particle configurations
+    private static String generateCacheKey(int amount, Vec3d velDivider, float sizeMod) {
+        return amount + ":" + velDivider.x + "," + velDivider.y + "," + velDivider.z + ":" + sizeMod;
     }
 
     /**

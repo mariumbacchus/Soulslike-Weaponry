@@ -68,6 +68,10 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         return playingMusic;
     }
 
+    public void setPlayingMusic(boolean playingMusic) {
+        this.playingMusic = playingMusic;
+    }
+
     /**
      * Gets the reduced cooldown in ticks for the boss' next attack based on number of attackers,
      * increased if the attackers are players. Will make huge raids more interesting.
@@ -151,7 +155,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setDeath();
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getBossMusic() != null && this.getWorld() instanceof ServerWorld serverWorld) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeIdentifier(this.getBossMusic().getId());
             PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);
