@@ -68,9 +68,7 @@ dependencies {
 	modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
 
 	//Runtime only
-	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
-	}
+	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 	modRuntimeOnly("maven.modrinth:better-combat:${project.better_combat}-fabric")
 	modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
 	modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
