@@ -4,6 +4,7 @@
 ### Bug Fixes
 - Added missing translation for Purified Blood fluid block
 - Replaced chungus tonic blacklist with whitelist in config to avoid crashes due to attempting to turn into other mods' entities (new config file called soulsweapons_chungus_tonic_whitelist)
+- Fixed a bug where Glass Vials did not appear in inventory after using a Blood Vial in the first hotbar slot
 
 ## 1.2
 
