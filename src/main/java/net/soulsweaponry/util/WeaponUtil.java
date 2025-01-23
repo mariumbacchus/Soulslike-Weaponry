@@ -3,11 +3,14 @@ package net.soulsweaponry.util;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,5 +113,52 @@ public class WeaponUtil {
         if (bl) {
             consumer.accept(new Vec3d(x, (double)blockPos.getY() + d, z), warmup, yaw);
         }
+    }
+
+    /**
+     * Get the luck attribute of the entity.
+     * Luck = 1 * effect_amplifier, is normally at 0 without other effects or interactions.
+     */
+    public static int getLuckFactor(LivingEntity entity) {
+        return MathHelper.floor(entity.getAttributeValue(EntityAttributes.GENERIC_LUCK) * 2 + 2);
+    }
+
+    /**
+     *
+     * @param user user (checks this entity for luck attribute)
+     * @param list list of LuckChosenObjects that should be picked at random based on LuckType
+     * @return the chosen object, such as a random entity type or random enum
+     * @param <T> the object type stored in LuckChosenObject
+     */
+    @Nullable
+    public static <T> T getRandomlyChosenObject(LivingEntity user, List<LuckChosenObject<T>> list, boolean flipLuckTypes) {
+        List<LuckChosenObject<T>> projectileList = new ArrayList<>();
+        int modifier = flipLuckTypes ? -1 : 1;
+        for (LuckChosenObject<T> luckChosen : list) {
+            switch (luckChosen.getLuckType()) {
+                case BAD -> luckChosen.setLuckFactor(luckChosen.getLuckFactor() + (modifier * - WeaponUtil.getLuckFactor(user)));
+                case GOOD -> luckChosen.setLuckFactor(luckChosen.getLuckFactor() + (modifier * WeaponUtil.getLuckFactor(user)));
+            }
+            if (luckChosen.getLuckFactor() > 0) {
+                projectileList.add(luckChosen);
+            }
+        }
+        int totalChance = 0;
+        for (LuckChosenObject<T> object : projectileList) {
+            totalChance += object.getLuckFactor();
+        }
+        int random = user.getRandom().nextInt(totalChance);
+        int cumulativeFactor = 0;
+        for (LuckChosenObject<T> luckChosen : projectileList) {
+            cumulativeFactor += luckChosen.getLuckFactor();
+            if (random < cumulativeFactor) {
+                return luckChosen.getObject();
+            }
+        }
+        return null;
+    }
+
+    public enum LuckType {
+        GOOD, NEUTRAL, BAD
     }
 }

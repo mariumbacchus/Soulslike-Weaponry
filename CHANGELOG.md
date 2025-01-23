@@ -5,6 +5,8 @@
 - Added missing translation for Purified Blood fluid block
 - Replaced chungus tonic blacklist with whitelist in config to avoid crashes due to attempting to turn into other mods' entities (new config file called soulsweapons_chungus_tonic_whitelist)
 - Fixed a bug where Glass Vials did not appear in inventory after using a Blood Vial in the first hotbar slot
+- The Withered Wabbajack now looks at the luck attribute of the player instead of luck effect (additionally reworked all it's code)
+- Chaos Crown and Chaos Helmet gives the player value to the luck attribute instead of an effect, this value can be changed in the config
 
 ## 1.2
 

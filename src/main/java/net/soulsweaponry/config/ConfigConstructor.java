@@ -252,6 +252,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int[] withered_armor_armor_points = {4, 7, 10, 5};
 
     @Entry public static boolean chaos_cape_wither_ground = true;
+    @Entry public static int chaos_crown_luck_given = 1;
     @Entry public static int chaos_crown_flip_effect_cooldown = 300;
     @Entry public static int chaos_crown_flip_effect_min_cooldown = 100;
     @Entry public static boolean chaos_crown_flip_effect_enchant_reduces_cooldown = false;

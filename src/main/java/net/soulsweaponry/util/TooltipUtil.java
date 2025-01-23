@@ -400,7 +400,6 @@ public class TooltipUtil {
             case LUCK_BASED -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lucky").formatted(Formatting.DARK_GREEN));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lucky_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lucky_description_2").formatted(Formatting.GRAY));
             }
             case PARRY -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry").formatted(Formatting.GOLD));

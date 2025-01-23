@@ -12,6 +12,8 @@
     import net.minecraft.entity.Entity;
     import net.minecraft.entity.EquipmentSlot;
     import net.minecraft.entity.LivingEntity;
+    import net.minecraft.entity.attribute.EntityAttributeModifier;
+    import net.minecraft.entity.attribute.EntityAttributes;
     import net.minecraft.entity.effect.StatusEffect;
     import net.minecraft.entity.effect.StatusEffectCategory;
     import net.minecraft.entity.effect.StatusEffectInstance;
@@ -49,6 +51,7 @@
     import java.util.ArrayList;
     import java.util.HashMap;
     import java.util.List;
+    import java.util.UUID;
     import java.util.function.Consumer;
     import java.util.function.Supplier;
 
@@ -59,6 +62,9 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    private static final UUID LUCK_MODIFIER_UUID = UUID.fromString("ea8c740d-dd7c-4e5e-80aa-41bf5a250f5a");
+    private static final EntityAttributeModifier LUCK_MODIFIER = new EntityAttributeModifier(
+            LUCK_MODIFIER_UUID, "Helmet Luck Bonus", ConfigConstructor.chaos_crown_luck_given, EntityAttributeModifier.Operation.ADDITION);
     /**
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
@@ -76,16 +82,22 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
         this.turnableTallPlant.put(Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS);
         this.turnableTallPlant.put(Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN);
     }
-    
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-
         if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
+                if (!player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
+                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).addPersistentModifier(LUCK_MODIFIER);
+                }
                 if (!player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_HELMET)) {
                     this.flipEffects(player);
+                }
+            } else {
+                // If the helmet is not equipped, remove the luck modifier
+                if (player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
+                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).removeModifier(LUCK_MODIFIER_UUID);
                 }
             }
             if (this.isRobesEquipped(player)) {
@@ -256,7 +268,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3", ConfigConstructor.chaos_crown_luck_given).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));

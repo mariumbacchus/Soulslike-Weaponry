@@ -460,8 +460,7 @@
     "tooltip.soulsweapons.wabbajack_description": "- 무작위 효과를 가진 무작위 발사체를 소환합니다.",
 
     "tooltip.soulsweapons.lucky": "행운의 굴림",
-    "tooltip.soulsweapons.lucky_description_1": "- §a행운§r 상태 효과를 보유하면",
-    "tooltip.soulsweapons.lucky_description_2": "더 나은 굴림을 얻을 확률이 증가합니다.",
+    "tooltip.soulsweapons.lucky_description_1": "- §aLuck§r attribute increases chances for better rolls.",
 
     "tooltip.soulsweapons.galeforce": "구름 폭풍",
     "tooltip.soulsweapons.galeforce_description_1": "- 발사 후 §f속도§r를 부여합니다.",
@@ -497,9 +496,9 @@
     "tooltip.soulsweapons.lunar_herald_description_2": "이 효과로 달빛 광선을 발사하려면 단축키를 누르세요.",
 
     "tooltip.soulsweapons.chaos_crown": "황제",
-    "tooltip.soulsweapons.chaos_crown_description_1": "- 장착하면 §5부패§r 면역과 §d재생§r 효과를 얻으며,",
-    "tooltip.soulsweapons.chaos_crown_description_2": " §5부패§r 효과를 보유할 때",
-    "tooltip.soulsweapons.chaos_crown_description_3": "§2행운§r이 영구적으로 적용됩니다.",
+    "tooltip.soulsweapons.chaos_crown_description_1": "- Equip to gain immunity to §5Decay§r,",
+    "tooltip.soulsweapons.chaos_crown_description_2": " §dRegeneration§r while having §5Decay§r ",
+    "tooltip.soulsweapons.chaos_crown_description_3": "and %s point to the §2Luck§r attribute.",
 
     "tooltip.soulsweapons.reversal": "역전의 주문",
     "tooltip.soulsweapons.reversal_1": "- 쿨다운 상태가 아닐 때,",
