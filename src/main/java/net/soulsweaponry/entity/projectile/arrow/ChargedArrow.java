@@ -1,38 +1,33 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 
-public class ChargedArrow extends PersistentProjectileEntity {
+public class ChargedArrow extends ModArrow {
 
-    private final ItemStack stack;
     private boolean scaleDamageHp;
 
     public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(Items.ARROW);
         this.scaleDamageHp = false;
     }
 
     public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
         super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world);
-        this.stack = new ItemStack(Items.ARROW);
         this.scaleDamageHp = scaleDamageHp;
     }
 
-    public ChargedArrow(World world, LivingEntity owner, ItemStack stack, boolean scaleDamageHp) {
+    public ChargedArrow(World world, LivingEntity owner, boolean scaleDamageHp) {
         super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world);
-        this.stack = stack.copy();
         this.scaleDamageHp = scaleDamageHp;
     }
   
@@ -77,8 +72,8 @@ public class ChargedArrow extends PersistentProjectileEntity {
         return ParticleTypes.GLOW;
     }
 
-    protected ItemStack asItemStack() {
-        this.stack.setCount(1);
-        return this.stack;
+    @Override
+    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+        return ConfigConstructor.galeforce_can_apply_arrow_effects;
     }
 }

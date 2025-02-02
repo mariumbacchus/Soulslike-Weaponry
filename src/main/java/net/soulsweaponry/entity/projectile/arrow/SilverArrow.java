@@ -1,21 +1,22 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.IPostureLossProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 
-public class SilverArrow extends PersistentProjectileEntity implements IPostureLossProjectile {
+public class SilverArrow extends ModArrow implements IPostureLossProjectile {
 
     private int postureLoss;
     private float bonusUndeadDamage;
 
-    public SilverArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+    public SilverArrow(EntityType<? extends ArrowEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -36,11 +37,6 @@ public class SilverArrow extends PersistentProjectileEntity implements IPostureL
             }
         }
         super.onEntityHit(entityHitResult);
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return Items.ARROW.getDefaultStack();
     }
 
     @Override
@@ -77,5 +73,10 @@ public class SilverArrow extends PersistentProjectileEntity implements IPostureL
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("postureLoss", this.getPostureLoss());
         nbt.putFloat("bonusUndeadDamage", this.getBonusUndeadDamage());
+    }
+
+    @Override
+    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+        return ConfigConstructor.simons_bowblade_projectile_can_apply_arrow_effects;
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.projectile.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
 
 @Environment(EnvType.CLIENT)
 public class MoonlightArrowRenderer extends ProjectileEntityRenderer<MoonlightArrow> {

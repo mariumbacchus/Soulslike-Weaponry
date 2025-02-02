@@ -20,6 +20,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;

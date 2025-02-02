@@ -1,25 +1,30 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
-public class MoonlightArrow extends PersistentProjectileEntity {
+public class MoonlightArrow extends ModArrow {
 
     private int maxArrowAge = 1000;
 
-    public MoonlightArrow(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+    public MoonlightArrow(EntityType<? extends ArrowEntity> entityType, World world) {
         super(entityType, world);
         this.pickupType = PickupPermission.DISALLOWED;
+    }
+
+    @Override
+    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+        return ConfigConstructor.darkmoon_longbow_can_apply_arrow_effects;
     }
 
     public MoonlightArrow(World world, LivingEntity owner) {
@@ -60,11 +65,6 @@ public class MoonlightArrow extends PersistentProjectileEntity {
 
     protected ParticleEffect getParticleType() {
         return ParticleRegistry.NIGHTFALL_PARTICLE;
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return Items.ARROW.getDefaultStack();
     }
 
     public void setMaxArrowAge(int maxArrowAge) {

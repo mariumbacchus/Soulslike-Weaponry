@@ -11,7 +11,7 @@ import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 
 public class ChargedArrowModelUnused extends EntityModel<ChargedArrow>{
     

@@ -1,25 +1,28 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 
-public class KrakenSlayerProjectile extends PersistentProjectileEntity {
+/**
+ * Used in {@link net.soulsweaponry.items.bow.KrakenSlayer} and {@link net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow}
+ */
+public class TrueDamageArrow extends ModArrow {
     private float trueDamage;
 
-    public KrakenSlayerProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+    public TrueDamageArrow(EntityType<? extends ArrowEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public KrakenSlayerProjectile(World world, LivingEntity owner) {
+    public TrueDamageArrow(World world, LivingEntity owner) {
         super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world);
     }
 
@@ -63,7 +66,7 @@ public class KrakenSlayerProjectile extends PersistentProjectileEntity {
     }
 
     @Override
-    protected ItemStack asItemStack() {
-        return Items.ARROW.getDefaultStack();
+    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+        return ConfigConstructor.kraken_slayer_can_apply_arrow_effects;
     }
 }

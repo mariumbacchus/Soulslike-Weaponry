@@ -10,7 +10,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.util.TooltipAbilities;
 
@@ -32,7 +32,7 @@ public class KrakenSlayer extends ModdedBow {
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots") && bowStack.getNbt().getInt("firedShots") >= 2) {
-            KrakenSlayerProjectile projectile = new KrakenSlayerProjectile(world, shooter);
+            TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
             projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, bowStack));
             bowStack.getNbt().putInt("firedShots", 0);
             return projectile;

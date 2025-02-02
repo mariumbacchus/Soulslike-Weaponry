@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -64,7 +64,7 @@ public class ModifyDamageUtil {
             double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
             newAmount += increase;
         }
-        if (source.getSource() instanceof KrakenSlayerProjectile projectile) {
+        if (source.getSource() instanceof TrueDamageArrow projectile) {
             float trueDamage = projectile.getTrueDamage();
             newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
         }

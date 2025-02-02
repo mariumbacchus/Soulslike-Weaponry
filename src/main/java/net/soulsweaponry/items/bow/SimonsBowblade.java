@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.SilverArrow;
+import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
 import net.soulsweaponry.items.IPostureLossItem;
 import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.items.ModdedBow;

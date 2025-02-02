@@ -15,7 +15,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
 import net.soulsweaponry.entity.projectile.noclip.ArrowStormEntity;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EntityRegistry;

@@ -22,6 +22,10 @@ import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
+import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.entity.projectile.noclip.*;
 
 public class EntityRegistry {
@@ -79,7 +83,7 @@ public class EntityRegistry {
     public static final EntityType<NightsEdge> NIGHTS_EDGE = registerEntity("nights_edge", FabricEntityTypeBuilder.create(SpawnGroup.MISC, NightsEdge::new).dimensions(EntityDimensions.fixed(0.75f, 2f)).trackRangeChunks(6).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<NightWaveEntity> NIGHT_WAVE = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "night_wave"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, NightWaveEntity::new).dimensions(EntityDimensions.fixed(3.5f, 1f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<FlamePillar> FLAME_PILLAR = registerEntity("flame_pillar", FabricEntityTypeBuilder.create(SpawnGroup.MISC, FlamePillar::new).dimensions(EntityDimensions.changing(1.5f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
-    public static final EntityType<KrakenSlayerProjectile> KRAKEN_SLAYER_PROJECTILE = registerEntity("kraken_slayer_projectile", FabricEntityTypeBuilder.<KrakenSlayerProjectile>create(SpawnGroup.MISC, KrakenSlayerProjectile::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
+    public static final EntityType<TrueDamageArrow> KRAKEN_SLAYER_PROJECTILE = registerEntity("kraken_slayer_projectile", FabricEntityTypeBuilder.<TrueDamageArrow>create(SpawnGroup.MISC, TrueDamageArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<MoonlightArrow> MOONLIGHT_ARROW = registerEntity("moonlight_arrow", FabricEntityTypeBuilder.<MoonlightArrow>create(SpawnGroup.MISC, MoonlightArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<ArrowStormEntity> ARROW_STORM_ENTITY = registerEntity("arrow_storm_entity", FabricEntityTypeBuilder.create(SpawnGroup.MISC, ArrowStormEntity::new).dimensions(EntityDimensions.changing(3f, 1.5f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<HolyMoonlightPillar> HOLY_MOONLIGHT_PILLAR = registerEntity("holy_moonlight_pillar", FabricEntityTypeBuilder.create(SpawnGroup.MISC, HolyMoonlightPillar::new).dimensions(EntityDimensions.changing(1.85f, 1.85f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
