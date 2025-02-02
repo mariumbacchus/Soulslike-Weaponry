@@ -1,4 +1,9 @@
 # Changelog
+
+## 1.2.2
+- All custom bows/crossbows' arrows apply custom effects from tipped arrows (can be disabled in config for each weapon)
+- Galeforce ability doesn't need an arrow in inventory to shoot, won't consume one either and arrows can have custom effects, but they can't be picked up
+
 ## 1.2.1
 
 ### Bug Fixes
