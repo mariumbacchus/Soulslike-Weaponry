@@ -196,6 +196,11 @@ public class ItemRecipes {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.VERGLAS).build()))
                 .offerTo(consumer);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_EMERALD, 9)
+                .input(BlockRegistry.CHUNGUS_EMERALD_BLOCK)
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.CHUNGUS_EMERALD).build()))
+                .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.GLASS_VIAL, 5)
                 .input('#', Items.GLASS)
                 .pattern("# #")
