@@ -15,7 +15,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -50,6 +49,7 @@ import java.util.UUID;
 public class NightProwler extends BossEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private int openPortalTicks;
     public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
@@ -564,13 +564,21 @@ public class NightProwler extends BossEntity implements GeoEntity {
      * <p>- 1 is TRINITY</p>
      * <p>- 2 is SOUL_REAPER/ENGULF slam attack</p>
      * <p>- 3 is SOUL_REAPER X-slash attack</p>
-     * <p>- 4 is ECLIPSE giant circle</p>
+     * <p>- 4 is ECLIPSE particles and portal</p>
      * @param type Set the particle state
      */
     public void setParticleState(int type) {
         this.dataTracker.set(SPAWN_PARTICLES_STATE, type);
     }
 
+    /**
+     * Gets the particle state.
+     * <p>- 0 is idle or false</p>
+     * <p>- 1 is TRINITY</p>
+     * <p>- 2 is SOUL_REAPER/ENGULF slam attack</p>
+     * <p>- 3 is SOUL_REAPER X-slash attack</p>
+     * <p>- 4 is ECLIPSE particles and portal</p>
+     */
     public int getParticleState() {
         return this.dataTracker.get(SPAWN_PARTICLES_STATE);
     }
@@ -589,6 +597,13 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     public int getDarknessRiseTicks() {
         return this.darknessRiseTicks;
+    }
+
+    /**
+     * Mainly a client sided variable determining the tick count of the ECLIPSE portal and particles
+     */
+    public int getOpenPortalTicks() {
+        return this.openPortalTicks;
     }
 
     @Override
@@ -656,21 +671,21 @@ public class NightProwler extends BossEntity implements GeoEntity {
                     }
                 }
                 case 4 -> {
-                    double phi = Math.PI * (3. - Math.sqrt(5.));
-                    int points = 600;
-                    int div = 60;
-                    float sizeMod = 15f;
-                    for (int i = 0; i < points; i++) {
-                        double y = 1 - ((double) i /(points - 1)) * 2;
-                        double radius = Math.sqrt(1 - y*y);
-                        double theta = phi * i;
-                        double x = Math.cos(theta) * radius;
-                        double z = Math.sin(theta) * radius;
-                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR, true, x * sizeMod + this.getX(), y * sizeMod + this.getY(), z * sizeMod + this.getZ(),
-                                this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                    this.openPortalTicks++;
+                    float radius = this.getOpenPortalTicks() >= 30 && this.getOpenPortalTicks() <= 190 ? NightProwlerGoal.PORTAL_RADIUS : 0f;
+                    if (radius != 0 && this.age % 8 == 0) {
+                        for (int i = 0; i < 360; i++) {
+                            float offsetX = (float) (radius * Math.cos(i));
+                            float offsetZ = (float) (radius * Math.sin(i));
+                            double particleX = this.getX() + offsetX;
+                            double particleY = this.getY() + 8f;
+                            double particleZ = this.getZ() + offsetZ;
+                            this.getWorld().addParticle(
+                                    ParticleTypes.LARGE_SMOKE, particleX, particleY, particleZ, 0, 0, 0);
+                        }
                     }
                 }
-                default -> {}
+                default -> this.openPortalTicks = 0;
             }
             if (this.getDarknessRise()) {
                 int div = 30;

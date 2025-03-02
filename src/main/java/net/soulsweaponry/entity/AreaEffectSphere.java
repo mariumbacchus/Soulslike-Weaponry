@@ -34,6 +34,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final TrackedData<Float> RADIUS = DataTracker.registerData(AreaEffectSphere.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> PARTICLE_COUNT_MODIFIER = DataTracker.registerData(AreaEffectSphere.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Boolean> WAITING = DataTracker.registerData(AreaEffectSphere.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<ParticleEffect> PARTICLE_ID = DataTracker.registerData(AreaEffectSphere.class, TrackedDataHandlerRegistry.PARTICLE);
     private final List<StatusEffectInstance> effects;
@@ -66,6 +67,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
 
     protected void initDataTracker() {
         this.getDataTracker().startTracking(RADIUS, 3.0F);
+        this.getDataTracker().startTracking(PARTICLE_COUNT_MODIFIER, 6.7f);
         this.getDataTracker().startTracking(WAITING, false);
         this.getDataTracker().startTracking(PARTICLE_ID, ParticleTypes.ENTITY_EFFECT);
     }
@@ -116,6 +118,17 @@ public class AreaEffectSphere extends Entity implements Ownable {
         this.duration = duration;
     }
 
+    public float getParticleAmountModifier() {
+        return this.getDataTracker().get(PARTICLE_COUNT_MODIFIER);
+    }
+
+    /**
+     * Normally at 6.7. The total particle amount scales with radius, so this modifies the amount of them.
+     */
+    public void setParticleAmountModifier(float modifier) {
+        this.getDataTracker().set(PARTICLE_COUNT_MODIFIER, modifier);
+    }
+
     public void tick() {
         super.tick();
         boolean bl = this.isWaiting();
@@ -124,7 +137,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
             if (bl && this.random.nextBoolean()) {
                 return;
             }
-            int points = MathHelper.floor(this.getRadius() * 6.7f);
+            int points = MathHelper.floor(this.getRadius() * this.getParticleAmountModifier());
             randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
         } else {
             if (this.age >= this.waitTime + this.duration) {
@@ -284,6 +297,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
         this.radiusOnUse = nbt.getFloat("RadiusOnUse");
         this.radiusGrowth = nbt.getFloat("RadiusPerTick");
         this.setRadius(nbt.getFloat("Radius"));
+        this.setParticleAmountModifier(nbt.getFloat("ParticleAmountMod"));
         if (nbt.containsUuid("Owner")) {
             this.ownerUuid = nbt.getUuid("Owner");
         }
@@ -316,6 +330,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
         nbt.putFloat("RadiusOnUse", this.radiusOnUse);
         nbt.putFloat("RadiusPerTick", this.radiusGrowth);
         nbt.putFloat("Radius", this.getRadius());
+        nbt.putFloat("ParticleAmountMod", this.getParticleAmountModifier());
         nbt.putString("Particle", this.getParticleType().asString());
         if (this.ownerUuid != null) {
             nbt.putUuid("Owner", this.ownerUuid);

@@ -72,6 +72,7 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
             if (entity instanceof LivingEntity) {
                 areaEffectCloudEntity.setOwner((LivingEntity)entity);
             }
+            areaEffectCloudEntity.setParticleAmountModifier(2f);
             areaEffectCloudEntity.setParticleType(ParticleRegistry.DARK_STAR);
             areaEffectCloudEntity.setRadius(0.5f);
             areaEffectCloudEntity.setDuration(80);
