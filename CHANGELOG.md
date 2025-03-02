@@ -4,6 +4,11 @@
 - All custom bows/crossbows' arrows apply custom effects from tipped arrows (can be disabled in config for each weapon)
 - Galeforce ability doesn't need an arrow in inventory to shoot, won't consume one either and arrows can have custom effects, but they can't be picked up
 - Added missing recipe to turn Chungus Emerald Blocks back into Chungus Emeralds
+- Changed NightProwler ECLIPSE attack
+  - It now summons a portal above itself
+  - No longer shoots 3 skulls together
+  - Spawns skulls randomly from the summoned portal with shorter interval between
+- Fixed bug where ShadowOrbs would collide with each-other
 
 ## 1.2.1
 

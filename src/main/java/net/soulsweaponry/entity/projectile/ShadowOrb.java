@@ -14,7 +14,6 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.items.armor.ChaosSet;
@@ -76,7 +75,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     @Override
     protected boolean canHit(Entity entity) {
-        if (entity instanceof ChaosMonarch || entity instanceof NightShade || entity instanceof AccursedLordBoss) {
+        if (entity instanceof ChaosMonarch || entity instanceof NightShade || this.isOwner(entity)) {
             return false;
         }
         if (entity instanceof LivingEntity target) {
@@ -87,6 +86,11 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
             }
         }
         return super.canHit(entity);
+    }
+
+    @Override
+    public boolean canHit() {
+        return false;
     }
 
     @Override
