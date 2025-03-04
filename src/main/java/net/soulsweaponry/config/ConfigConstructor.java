@@ -799,6 +799,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
+    @Entry(min=0) public static boolean night_prowler_eclipse_skulls_glow = false;
     @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.1667f;
     @Entry public static String[] night_prowler_projectile_immunity_whitelist = {};
     @Entry(min=0) public static float night_prowler_projectile_heal_amount = 5f;

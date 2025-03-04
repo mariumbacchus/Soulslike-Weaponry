@@ -8,6 +8,7 @@
   - It now summons a portal above itself
   - No longer shoots 3 skulls together
   - Spawns skulls randomly from the summoned portal with shorter interval between
+  - These skulls may be hard to see, so added a config line ```night_prowler_eclipse_skulls_glow``` to make them glow if the player wishes so
 - Fixed bug where ShadowOrbs would collide with each-other
 
 ## 1.2.1
