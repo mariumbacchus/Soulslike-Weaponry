@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.ai.goal;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -14,7 +15,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DayStalker;
@@ -23,12 +23,13 @@ import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.UntargetableFireball;
-import net.soulsweaponry.entity.projectile.invisible.FlamePillar;
+import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -404,21 +405,15 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             if (this.boss.isPhaseTwo()) {
-                double d = Math.min(target.getY(), this.boss.getY());
-                double e = Math.max(target.getY(), this.boss.getY()) + 1.0;
-                float f = (float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX());
-                for (int i = 0; i < 16; ++i) {
-                    double h = 1.25 * (double)(i + 1);
-                    BlockPos p = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
-                    if (p != null) {
-                        this.boss.getWorld().setBlockState(p, Blocks.FIRE.getDefaultState());
-                    }
-                }
+                double maxY = Math.min(target.getY(), this.boss.getY());
+                float rotation = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()));
+                WeaponUtil.doConsumerOnLine(this.boss.getWorld(), rotation, this.boss.getPos(), maxY, 16, 1.25f,
+                        (Vec3d vec, Integer warmup, Float yaw) -> this.boss.getWorld().setBlockState(BlockPos.ofFloored(vec), Blocks.FIRE.getDefaultState()));
             }
         }
         if (this.attackStatus == 42) {
             boolean phase2 = this.boss.isPhaseTwo();
-            this.shootSunlight(target, phase2 ? 1 : 0, phase2 ? 25f : 15f, MoonlightProjectile.RotationState.NORMAL);
+            this.shootSunlight(target, phase2 ? 1 : 0, phase2 ? 25f : 15f, 0);
         }
         this.checkAndReset(30, 0);
     }
@@ -434,45 +429,17 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.getWorld().spawnEntity(projectile);
     }
 
-    /**
-     * When used in a for loop, forms a line directly through the target. (See decimate() function when in phase 2)
-     * @param x start X * rotation
-     * @param z start Z * rotation
-     * @param maxY max Y coordinate
-     * @param y the greater Y coordinate between owner and target
-     * @return Returns a BlockPos to be used in logic, for example to place fire or cause an eruption
-     */
-    private BlockPos conjureFlames(double x, double z, double maxY, double y) {
-        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
-        boolean bl = false;
-        double d = 0.0;
-        do {
-            VoxelShape voxelShape;
-            BlockPos blockPos2;
-            if (!this.boss.getWorld().getBlockState(blockPos2 = blockPos.down()).isSideSolidFullSquare(this.boss.getWorld(), blockPos2, Direction.UP)) continue;
-            if (!this.boss.getWorld().isAir(blockPos) && !(voxelShape = this.boss.getWorld().getBlockState(blockPos).getCollisionShape(this.boss.getWorld(), blockPos)).isEmpty()) {
-                d = voxelShape.getMax(Direction.Axis.Y);
-            }
-            bl = true;
-            break;
-        } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
-        if (bl) {
-            return new BlockPos(blockPos.getX(), (int) (blockPos.getY() + d), blockPos.getZ());
-        } else {
-            return null;
-        }
-    }
-
     private void chaosStorm() {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.mob.getNavigation().stop();
         boolean phase2 = this.boss.isPhaseTwo();
-        if (this.attackStatus == 1) {
+        if (this.attackStatus == 18) {
             this.playSound(this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, 1f, 1f);
             int i = 0;
             List<BlockPos> list = new ArrayList<>();
             list.add(new BlockPos(0, 0, 0));
+            float radius = phase2 ? 2.1f : 1.85f;
             while (i < (phase2 ? 32 : 16)) {
                 int x = this.boss.getBlockX() + this.boss.getRandom().nextInt(16) - 8;
                 int y = this.boss.getBlockY();
@@ -483,6 +450,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                         FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), this.boss.getWorld());
                         pillar.setDamage(this.getModifiedDamage(48f));
                         pillar.setPos(x, y, z);
+                        pillar.setRadius(radius);
                         pillar.setOwner(this.boss);
                         pillar.setWarmup(i * 2);
                         this.boss.getWorld().spawnEntity(pillar);
@@ -502,11 +470,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 10f + (float)this.attackStatus/2f);
                 if (!this.boss.getWorld().isClient) {
-                    ((ServerWorld)this.boss.getWorld()).spawnParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
+                    ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
             }
             if (this.boss.isPhaseTwo()) {
-                this.shootSunlight(target, 0, 20f, MoonlightProjectile.RotationState.NORMAL);
+                this.shootSunlight(target, 0, 20f, 0);
             }
         }
         if (this.attackStatus == 32) {
@@ -514,45 +482,39 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (this.isInMeleeRange(target)) {
                 this.damageTarget(target, 25f);
                 if (!this.boss.getWorld().isClient) {
-                    ((ServerWorld)this.boss.getWorld()).spawnParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 1, 0, 0, 0, 0);
+                    ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
             }
             if (this.boss.isPhaseTwo()) {
-                this.shootSunlight(target, 2, 30f, MoonlightProjectile.RotationState.NORMAL);
+                this.shootSunlight(target, 2, 30f, 0);
             }
         }
         this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 20, 0);
     }
 
-    private void shootSunlight(LivingEntity target, int typeIndex, float damage, MoonlightProjectile.RotationState rotationState) {
+    private void shootSunlight(LivingEntity target, int typeIndex, float damage, int rotationDegrees) {
         if (typeIndex == 0) {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL.get(), this.boss.getWorld(), this.boss);
-            if (this.boss.isEmpowered()) projectile.applyFireTicks(20);
-            projectile.setAgeAndPoints(15, 30, 2);
-            projectile.setDamage(this.getModifiedDamage(damage));
-            projectile.setRotateState(rotationState);
-            projectile.setExplosionParticleType(ParticleTypes.FLAME);
-            projectile.setTrailParticleType(ParticleTypes.WAX_ON);
+            MoonlightProjectile projectile = this.getMoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL.get(), damage, rotationDegrees, 15, 30, 2, 20);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         } else if (typeIndex == 1) {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_BIG.get(), this.boss.getWorld(), this.boss);
-            if (this.boss.isEmpowered()) projectile.applyFireTicks(40);
-            projectile.setAgeAndPoints(30, 150, 2);
-            projectile.setDamage(this.getModifiedDamage(damage));
-            projectile.setRotateState(rotationState);
-            projectile.setExplosionParticleType(ParticleTypes.FLAME);
-            projectile.setTrailParticleType(ParticleTypes.WAX_ON);
+            MoonlightProjectile projectile = this.getMoonlightProjectile(EntityRegistry.SUNLIGHT_PROJECTILE_BIG.get(), damage, rotationDegrees, 30, 75, 2, 40);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         } else {
-            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE.get(), this.boss.getWorld(), this.boss);
-            if (this.boss.isEmpowered()) projectile.applyFireTicks(60);
-            projectile.setAgeAndPoints(30, 75, 5);
-            projectile.setDamage(this.getModifiedDamage(damage));
-            projectile.setHugeExplosion(true);
-            projectile.setExplosionParticleType(ParticleTypes.FLAME);
-            projectile.setTrailParticleType(ParticleTypes.WAX_ON);
+            MoonlightProjectile projectile = this.getMoonlightProjectile(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE.get(), damage, rotationDegrees, 30, 150, 5, 60);
+            projectile.setExplosionExpansion(0.5f);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         }
+    }
+
+    private MoonlightProjectile getMoonlightProjectile(EntityType<? extends MoonlightProjectile> type, float damage, int rotationDegrees, int maxAge, int explosionParticleCount, int trailParticleCount, int fireTicksApplied) {
+        MoonlightProjectile projectile = new MoonlightProjectile(type, this.boss.getWorld(), this.boss);
+        if (this.boss.isEmpowered()) projectile.setAppliedEffectTicks(fireTicksApplied);
+        projectile.setAgeAndPoints(maxAge, explosionParticleCount, trailParticleCount);
+        projectile.setDamage(this.getModifiedDamage(damage));
+        projectile.setModelRotation(rotationDegrees);
+        projectile.setExplosionParticleType(ParticleTypes.FLAME);
+        projectile.setTrailParticleType(ParticleTypes.WAX_ON);
+        return projectile;
     }
 
     private void flamethrower(LivingEntity target, double distance) {
@@ -659,13 +621,13 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void sunfireRush(LivingEntity target) {
         this.attackStatus++;
         if (this.attackStatus == 45 || this.attackStatus == 60) {
-            this.shootSunlight(target, 0, 15f, MoonlightProjectile.RotationState.NORMAL);
+            this.shootSunlight(target, 0, 15f, 0);
         } else if (this.attackStatus == 71) {
-            this.shootSunlight(target, 1, 20f, MoonlightProjectile.RotationState.SWIPE_FROM_RIGHT);
+            this.shootSunlight(target, 1, 20f, -45);
         } else if (this.attackStatus == 83) {
-            this.shootSunlight(target, 1, 20f, MoonlightProjectile.RotationState.SWIPE_FROM_LEFT);
+            this.shootSunlight(target, 1, 20f, 45);
         } else if (this.attackStatus == 96) {
-            this.shootSunlight(target, 2, 25f, MoonlightProjectile.RotationState.NORMAL);
+            this.shootSunlight(target, 2, 25f, 0);
         }
         this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 70, 0);
     }
@@ -797,47 +759,22 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus <= 57) {
             this.targetMaxY = Math.min(target.getY(), this.boss.getY());
             this.targetY = Math.max(target.getY(), this.boss.getY()) + 1.0;
-            this.attackRotation = (float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX());
+            this.attackRotation = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()));
         }
         if (this.attackStatus == 67 && this.attackRotation != 0 && this.targetY != 0 && this.targetMaxY != 0) {
-            double d = this.targetMaxY;
             double e = this.targetY;
-            float f = this.attackRotation;
-            int length = 20;
-            for (int i = 0; i <= length; ++i) {
-                double h = 1.25 * (double)(i + 1)/1.5;
-                BlockPos pos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, d, e);
-                // Old implementation:
-                /*if (pos != null) {
-                    if (!this.boss.getWorld().isClient) {
-                        ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.FLAME_RUPTURE_MAP, 1f);
-                    }
-                    this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-                }*/
-                if (pos != null) {
-                    Vec3d vec = pos.toCenterPos();
-                    FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), this.boss.getWorld());
-                    pillar.setDamage(this.getModifiedDamage(40f));
-                    pillar.setPos(vec.getX(), pos.getY(), vec.getZ());
-                    pillar.setRadius(2.5f);
-                    pillar.setParticleDivergence(4f);
-                    pillar.setParticleMod(1.5f);
-                    pillar.setOwner(this.boss);
-                    pillar.setWarmup(-6);
-                    this.boss.getWorld().spawnEntity(pillar);
-                    this.boss.getWorld().playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-                    i++;
-                }
-            }
-            // Old implementation:
-            /*BlockPos lastPos = this.conjureFlames(this.boss.getX() + (double)MathHelper.cos(f) * 1.25 * (double)(length + 1), this.boss.getZ() + (double)MathHelper.sin(f) * 1.25 * (double)(length + 1), d, e);
-            if (lastPos != null) {
-                for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(this.boss.getPos().add(0, 2, 0), lastPos.toCenterPos()).expand(1D))) {
-                    if (entity instanceof LivingEntity living) {
-                        this.damageTarget(living, 40f);
-                    }
-                }
-            }*/
+            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), this.attackRotation, this.boss.getPos(), this.targetMaxY, 20, 1.25f,
+                    (Vec3d vec, Integer warmup, Float yaw) -> {
+                        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), this.boss.getWorld());
+                        pillar.setDamage(this.getModifiedDamage(40f));
+                        pillar.setPos(vec.getX(), vec.getY(), vec.getZ());
+                        pillar.setRadius(2.5f);
+                        pillar.setParticleAmountMod(1.5f);
+                        pillar.setOwner(this.boss);
+                        pillar.setWarmup(-6);
+                        this.boss.getWorld().spawnEntity(pillar);
+                        this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                    });
         }
         this.checkAndReset(40, 0);
     }

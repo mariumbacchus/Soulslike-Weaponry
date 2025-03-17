@@ -1,0 +1,159 @@
+{
+  "parent": "soulsweapons:moonlight_tools",
+  "criteria": {
+    "bluemoon_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:bluemoon_greatsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "bluemoon_shortsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:bluemoon_shortsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_moon_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:dark_moon_greatsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "holy_moonlight_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:holy_moonlight_greatsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "holy_moonlight_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:holy_moonlight_sword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "moonlight_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:moonlight_greatsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "moonlight_shortsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:moonlight_shortsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "moonveil": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:moonveil"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "pure_moonlight_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:pure_moonlight_greatsword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.all_moonlight_weapons.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:dark_moon_greatsword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.all_moonlight_weapons.title"
+    }
+  },
+  "requirements": [
+    [
+      "moonlight_greatsword"
+    ],
+    [
+      "moonlight_shortsword"
+    ],
+    [
+      "bluemoon_greatsword"
+    ],
+    [
+      "bluemoon_shortsword"
+    ],
+    [
+      "moonveil"
+    ],
+    [
+      "dark_moon_greatsword"
+    ],
+    [
+      "pure_moonlight_greatsword"
+    ],
+    [
+      "holy_moonlight_greatsword"
+    ],
+    [
+      "holy_moonlight_sword"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

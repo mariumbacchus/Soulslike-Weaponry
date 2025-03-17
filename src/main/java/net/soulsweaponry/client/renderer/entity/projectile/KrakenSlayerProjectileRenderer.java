@@ -3,9 +3,9 @@ package net.soulsweaponry.client.renderer.entity.projectile;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 
-public class KrakenSlayerProjectileRenderer extends ProjectileEntityRenderer<KrakenSlayerProjectile> {
+public class KrakenSlayerProjectileRenderer extends ProjectileEntityRenderer<TrueDamageArrow> {
 
     private static final Identifier TEXTURE = new Identifier("soulsweapons", "textures/entity/kraken_slayer_projectile.png");
 
@@ -13,7 +13,7 @@ public class KrakenSlayerProjectileRenderer extends ProjectileEntityRenderer<Kra
         super(context);
     }
 
-    public Identifier getTexture(KrakenSlayerProjectile entity) {
+    public Identifier getTexture(TrueDamageArrow entity) {
         return TEXTURE;
     }
 }

@@ -26,7 +26,8 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.TooltipUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -129,6 +130,7 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
     }
 
+    //TODO gotta make this cleaner by using ITooltipInfo
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
@@ -139,7 +141,7 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
                 for (int i = 1; i <= 4; i++) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
                 }
-                WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                TooltipUtil.addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
@@ -206,9 +208,9 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         if (stack.isOf(ItemRegistry.WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
-            return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_id;
+            return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_ids;
         }
         return null;
     }

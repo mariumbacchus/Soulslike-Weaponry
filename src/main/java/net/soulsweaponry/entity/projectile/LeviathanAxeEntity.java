@@ -10,7 +10,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.LeviathanAxe;
+import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -29,13 +29,10 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
         this.stack = new ItemStack(WeaponRegistry.LEVIATHAN_AXE.get());
-        this.ignoreCameraFrustum = true;
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE.get(), owner, world);
-        this.stack = stack.copy();
-        this.ignoreCameraFrustum = true;
+        super(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE.get(), owner, world, stack);
     }
 
     @Override

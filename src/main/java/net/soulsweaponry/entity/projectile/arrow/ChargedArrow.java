@@ -1,0 +1,79 @@
+package net.soulsweaponry.entity.projectile.arrow;
+
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EntityRegistry;
+
+public class ChargedArrow extends ModArrow {
+
+    private boolean scaleDamageHp;
+
+    public ChargedArrow(EntityType<? extends ChargedArrow> entityType, World world) {
+        super(entityType, world);
+        this.scaleDamageHp = false;
+    }
+
+    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), x, y, z, world);
+        this.scaleDamageHp = scaleDamageHp;
+    }
+
+    public ChargedArrow(World world, LivingEntity owner, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), owner, world);
+        this.scaleDamageHp = scaleDamageHp;
+    }
+
+    public void tick() {
+        if (!this.inGround) {
+            Vec3d vec3d = this.getVelocity();
+            double e = vec3d.x;
+            double f = vec3d.y;
+            double g = vec3d.z;
+            for (int i = 0; i < 4; ++i) {
+                this.getWorld().addParticle(this.getParticleType(), this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D, this.getZ() + g * (double)i / 4.0D, -e, -f + 0.2D, -g);
+            }
+        }
+        super.tick();
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("scaleDmg")) {
+            this.scaleDamageHp = nbt.getBoolean("scaleDmg");
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("scaleDmg", this.scaleDamageHp);
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (this.scaleDamageHp && entityHitResult.getEntity() instanceof LivingEntity target) {
+            float percentMissingHp = 100f - (target.getHealth() / target.getMaxHealth()) * 100f;
+            float increase = 1f + (percentMissingHp / 100f);
+            this.setDamage(this.getDamage() * increase);
+        }
+        super.onEntityHit(entityHitResult);
+    }
+
+    protected ParticleEffect getParticleType() {
+        return ParticleTypes.GLOW;
+    }
+
+    @Override
+    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+        return ConfigConstructor.galeforce_can_apply_arrow_effects;
+    }
+}

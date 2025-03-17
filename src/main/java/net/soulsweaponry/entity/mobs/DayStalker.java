@@ -406,6 +406,16 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
+    }
+
+    @Override
     public void tickMovement() {
         super.tickMovement();
         if (this.getParticleState() == 1 && this.getWorld().isClient) {

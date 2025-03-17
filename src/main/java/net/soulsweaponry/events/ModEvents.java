@@ -3,20 +3,27 @@ package net.soulsweaponry.events;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.entitydata.ReturningProjectileData;
 import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId)
 public class ModEvents {
@@ -31,13 +38,27 @@ public class ModEvents {
 //    }
 
     @SubscribeEvent
+    public static void onServerStarting(ServerStartingEvent event) {
+        TrickWeaponUtil.loadMappings(event.getServer());
+    }
+
+    @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             event.getOriginal().reviveCaps();
-            PlayerEntity original = event.getOriginal();
-            PlayerEntity player = event.getEntity();
-            //original.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> player.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
-            PostureData.setPosture(player, PostureData.getPosture(original));
+            PlayerEntity oldPlayer = event.getOriginal();
+            PlayerEntity newPlayer = event.getEntity();
+            //oldPlayer.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(old -> newPlayer.getCapability(PostureDataProvider.POSTURE_DATA).ifPresent(up -> up.copyFrom(old)));
+            PostureData.setPosture(newPlayer, PostureData.getPosture(oldPlayer));
+
+            NbtCompound oldData = oldPlayer.getPersistentData();
+            NbtCompound newData = newPlayer.getPersistentData();
+            if (oldData.contains(ReturningProjectileData.PROJECTILE_ID) && newPlayer instanceof ServerPlayerEntity serverPlayerEntity) {
+                UUID uuid = oldData.getUuid(ReturningProjectileData.PROJECTILE_ID);
+                newData.putUuid(ReturningProjectileData.PROJECTILE_ID, uuid);
+                ReturningProjectileData.syncData(uuid, serverPlayerEntity);
+            }
+
             event.getOriginal().invalidateCaps();
         }
     }

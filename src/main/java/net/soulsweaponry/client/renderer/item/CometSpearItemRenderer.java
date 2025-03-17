@@ -1,7 +1,7 @@
 package net.soulsweaponry.client.renderer.item;
 
 import net.soulsweaponry.client.model.item.CometSpearItemModel;
-import net.soulsweaponry.items.CometSpear;
+import net.soulsweaponry.items.spear.CometSpear;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class CometSpearItemRenderer extends GeoItemRenderer<CometSpear> {

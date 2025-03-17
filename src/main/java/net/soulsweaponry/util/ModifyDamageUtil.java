@@ -1,15 +1,23 @@
 package net.soulsweaponry.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.KrakenSlayerProjectile;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.items.IDragonBonus;
+import net.soulsweaponry.items.ILifeGuard;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -24,7 +32,10 @@ public class ModifyDamageUtil {
      * @param source Damage source
      * @return new damage amount to be taken
      */
-    public static float modifyDamageTaken(LivingEntity entity, float newAmount, DamageSource source) {
+    public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
+        if (entity.getType().isIn(ModTags.Entities.DRAGONS) && source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().getItem() instanceof IDragonBonus dragonBonus) {
+            newAmount += dragonBonus.getDragonBonus(player.getMainHandStack());
+        }
         if (entity.hasStatusEffect(EffectRegistry.DECAY.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET.get())) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY.get()).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
@@ -53,9 +64,42 @@ public class ModifyDamageUtil {
             double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
             newAmount += increase;
         }
-        if (source.getSource() instanceof KrakenSlayerProjectile projectile) {
+        if (source.getSource() instanceof TrueDamageArrow projectile) {
             float trueDamage = projectile.getTrueDamage();
             newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
+        }
+        // Inflict percent of damage to held ILifeGuard item instead of damage to the user (not stackable)
+        for (Hand hand : Hand.values()) {
+            ItemStack stack = entity.getStackInHand(hand);
+            if (stack.getItem() instanceof ILifeGuard guard) {
+                float damage = Math.max(0, (float) (newAmount * (1D - guard.getLifeGuardPercent(stack))));
+                int rounded = Math.round(newAmount);
+                newAmount = damage;
+                int j = Math.min(rounded, 10);
+                for (int i = 0; i < j; i++) {
+                    ParticleHandler.singleParticle(entity.getWorld(), ParticleTypes.SOUL, entity.getParticleX(1f), entity.getRandomBodyY(), entity.getParticleZ(1f), 0, 0, 0);
+                }
+                entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
+                // Chance to save the player if it's holding ILifeGuard item
+                if (entity.getHealth() - newAmount < 0 && !entity.getWorld().isClient && guard.getLifeSaveChance(stack) < entity.getRandom().nextDouble()) {
+                    ParticleHandler.particleSphereList(entity.getWorld(), 500, entity.getX(), entity.getY(), entity.getZ(), 0.4f, ParticleTypes.SCULK_SOUL, ParticleTypes.SMOKE);
+                    entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1f, 1f);
+                    for (Entity entity1 : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(2.5D))) {
+                        if (entity1 instanceof LivingEntity living) {
+                            living.damage(entity.getDamageSources().explosion(entity, entity), guard.getLifeSaveExplosionDamage(stack));
+                            double x = entity.getX() - living.getX();
+                            double z = entity.getZ() - living.getZ();
+                            living.takeKnockback(guard.getLifeSaveExplosionKnockback(stack), x, z);
+                        }
+                    }
+                    newAmount = 0f;
+                    rounded += guard.getLifeSaveStackDamage(stack);
+                }
+                if (rounded > 0) {
+                    stack.damage(rounded, entity, (p) -> p.sendToolBreakStatus(hand));
+                }
+                break;
+            }
         }
         return newAmount;
     }

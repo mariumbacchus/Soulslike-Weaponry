@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.EmpoweredDawnbreaker;
+import net.soulsweaponry.items.sword.EmpoweredDawnbreaker;
 import software.bernie.geckolib.model.GeoModel;
 
 public class EmpoweredDawnbreakerModel extends GeoModel<EmpoweredDawnbreaker> {

@@ -10,9 +10,14 @@
     "DamageSourcesMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
+    "EntityMixin",
+    "GlassBottleMixin",
+    "ItemMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "PlayerEntityMixin",
+    "PotionEntityMixin",
+    "PotionUtilMixin",
     "RecipeManagerMixin",
     "WitherEntityMixin"
   ],
@@ -21,6 +26,7 @@
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
     "KeyBindingMixin",
+    "RenderPhaseAccessor",
     "ShieldItemMixin"
   ],
   "injectors": {

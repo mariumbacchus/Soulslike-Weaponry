@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.CometSpear;
+import net.soulsweaponry.items.spear.CometSpear;
 import software.bernie.geckolib.model.GeoModel;
 
 public class CometSpearItemModel extends GeoModel<CometSpear> {

@@ -1,30 +1,24 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
+import net.soulsweaponry.util.TooltipAbilities;
 
-import java.util.List;
-
-public class MoonstoneRing extends Item implements IConfigDisable {
+public class MoonstoneRing extends ModdedItem {
 
     public MoonstoneRing(Settings settings) {
         super(settings);
+        this.addTooltipAbility(TooltipAbilities.LUNAR_HERALD);
     }
 
     @Override
@@ -41,19 +35,6 @@ public class MoonstoneRing extends Item implements IConfigDisable {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled(stack)) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.LUNAR_HERALD, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
-        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override

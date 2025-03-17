@@ -1,0 +1,12 @@
+{
+    "attributes":
+    {
+        "common":
+        {
+            "armor_negation":16.0,
+            "impact":1.0,
+            "max_strikes":2
+        }
+    },
+    "type":"soulsweapons:ability_sword"
+}

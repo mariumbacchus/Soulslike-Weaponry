@@ -335,9 +335,8 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                     for (int l = -3; l <= 3; ++l) {
                         for (int m = -3; m <= 3; ++m) {
                             for (int n = 0; n <= 8; ++n) {
-                                BlockPos pos = new BlockPos(j + l, i + n, k + m);
-                                if (!(this.getWorld().getBlockState(pos).getBlock() instanceof BlockWithEntity)) {
-                                    this.getWorld().breakBlock(pos, true);
+                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
+                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
                                 }
                             }
                         }
@@ -345,6 +344,16 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     protected SoundEvent getAmbientSound() {

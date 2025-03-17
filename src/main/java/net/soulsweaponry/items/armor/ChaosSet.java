@@ -12,6 +12,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -36,6 +38,7 @@ import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ICooldownItem;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +53,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
 
@@ -58,6 +63,9 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    private static final UUID LUCK_MODIFIER_UUID = UUID.fromString("ea8c740d-dd7c-4e5e-80aa-41bf5a250f5a");
+    private static final EntityAttributeModifier LUCK_MODIFIER = new EntityAttributeModifier(
+            LUCK_MODIFIER_UUID, "Helmet Luck Bonus", ConfigConstructor.chaos_crown_luck_given, EntityAttributeModifier.Operation.ADDITION);
     /**
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
@@ -79,16 +87,24 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-
         if (entity instanceof PlayerEntity player) {
             if (this.isHelmetEquipped(player)) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 40, 0));
+                if (!player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
+                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).addPersistentModifier(LUCK_MODIFIER);
+                }
                 if (!player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_CROWN.get()) && !player.getItemCooldownManager().isCoolingDown(ItemRegistry.CHAOS_HELMET.get())) {
                     this.flipEffects(player);
                 }
+            } else {
+                // If the helmet is not equipped, remove the luck modifier
+                if (player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
+                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).removeModifier(LUCK_MODIFIER_UUID);
+                }
             }
             if (this.isRobesEquipped(player)) {
-                this.turnBlocks(player, world, player.getBlockPos(), 0);
+                if (ConfigConstructor.chaos_cape_wither_ground) {
+                    this.turnBlocks(player, world, player.getBlockPos(), 0);
+                }
                 if (player.age % 40 == 0) {
                     for (LivingEntity target : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(3D))) {
                         if (!(target instanceof PlayerEntity) && target != player) {
@@ -191,7 +207,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
         if (!world.isClient) ((ServerWorld)world).spawnParticles(ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 1, 0, 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
-                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE)) {
+                if (this.equals(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2));
                 }
                 target.damage(player.getDamageSources().mobAttack(player), ConfigConstructor.arkenplate_shockwave_damage);
@@ -244,6 +260,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
         return this.factory;
     }
 
+    //TODO gotta make this cleaner by using ITooltipInfo
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
@@ -252,7 +269,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3", ConfigConstructor.chaos_crown_luck_given).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));
@@ -363,11 +380,11 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         if (stack.isOf(ItemRegistry.CHAOS_CROWN.get()) || stack.isOf(ItemRegistry.CHAOS_HELMET.get())) {
-            return ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown_id;
+            return ConfigConstructor.chaos_crown_flip_effect_enchant_reduces_cooldown_ids;
         } else if (stack.isOf(ItemRegistry.ARKENPLATE.get()) || stack.isOf(ItemRegistry.ENHANCED_ARKENPLATE.get())) {
-            return ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown_id;
+            return ConfigConstructor.arkenplate_shockwave_enchant_reduces_cooldown_ids;
         }
         return null;
     }

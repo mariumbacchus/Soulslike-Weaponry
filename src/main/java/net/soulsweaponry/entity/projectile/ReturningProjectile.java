@@ -17,10 +17,8 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
-import net.soulsweaponry.items.Mjolnir;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.UUID;
 
 public abstract class ReturningProjectile extends PersistentProjectileEntity {
@@ -34,18 +32,12 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
-        super(type, x, y, z, world);
-    }
-
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
-        super(type, owner, world);
+        this.ignoreCameraFrustum = true;
     }
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
         super(type, owner, world);
+        this.ignoreCameraFrustum = true;
         this.stack = stack.copy();
     }
 
@@ -102,48 +94,35 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
         if (this.shouldReturn() && (this.dealtDamage || this.isNoClip()) && owner != null) {
             this.setNoClip(true);
             Vec3d vec3d = owner.getEyePos().subtract(this.getPos());
+            //Note: When dying while it returns, it can get stuck inside the ground. Calling it back again fixes this though.
             if (!this.isOwnerAlive()) {
-                if (this.stack.hasNbt() && this.stack.getNbt().contains(Mjolnir.OWNERS_LAST_POS)) {
-                    int[] pos = this.stack.getNbt().getIntArray(Mjolnir.OWNERS_LAST_POS);
-                    vec3d = new Vec3d(pos[0], pos[1], pos[2]).subtract(this.getPos());
-                    if (vec3d.getX() == pos[0] && vec3d.getY() == pos[1] && vec3d.getZ() == pos[2]) {
-                        this.dropStack();
-                    }
-                } else {
-                    this.dropStack();
+                this.setNoClip(false);
+                this.setShouldReturn(false);
+            } else {
+                this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
+                if (this.getWorld().isClient) {
+                    this.lastRenderY = this.getY();
                 }
-            }
-            this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * returnSpeed, this.getZ());
-            if (this.getWorld().isClient) {
-                this.lastRenderY = this.getY();
-            }
-            double d = 0.05 * returnSpeed;
-            this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
-            if (this.returnTimer == 0) {
-                this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0f, 1.0f);
-            }
-            this.returnTimer++;
-            for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
-                if (entity1 instanceof LivingEntity target && !target.isTeammate(owner)) {
-                    this.collide(owner, target, this.getDamage(target));
+                double d = 0.05 * returnSpeed;
+                this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
+                this.returnTimer++;
+                for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
+                    if (entity1 instanceof LivingEntity target && !target.isTeammate(owner)) {
+                        this.collide(owner, target, this.getDamage(target));
+                    }
                 }
             }
         }
-        List<Entity> list = this.getWorld().getOtherEntities(this, this.getBoundingBox()).stream().filter(e -> e instanceof PlayerEntity).toList();
-        if (this.dealtDamage && !list.isEmpty()) {
-            PlayerEntity player = (PlayerEntity) list.get(0);
-            if (owner != null) {
-                for (Entity entity1 : list) {
-                    if (entity1.equals(owner)) {
-                        player = (PlayerEntity) entity1;
+        if (this.pickupType != PickupPermission.DISALLOWED) {
+            for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
+                if (entity instanceof PlayerEntity player && this.dealtDamage) {
+                    if (this.getOwner() == null) {
+                        this.insertStack(player);
+                    } else {
+                        if (this.isOwner(player)) {
+                            this.insertStack(player);
+                        }
                     }
-                }
-            }
-            if (this.getOwner() == null) {
-                this.insertStack(player);
-            } else {
-                if (this.isOwner(player)) {
-                    this.insertStack(player);
                 }
             }
         }
@@ -190,6 +169,9 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     private boolean isOwnerAlive() {
         Entity entity = this.getOwner();
         if (entity == null || !entity.isAlive()) {
+            return false;
+        }
+        if (entity instanceof LivingEntity living && living.isDead()) {
             return false;
         }
         return !(entity instanceof ServerPlayerEntity) || !entity.isSpectator();

@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "soulsweapons:item/translucent_sword_invisible"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "scale": [0, 0, 0]
+    }
+  }
+}

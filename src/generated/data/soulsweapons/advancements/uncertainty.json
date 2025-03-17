@@ -1,0 +1,38 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "shard_of_uncertainty": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:shard_of_uncertainty"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.uncertainty.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:shard_of_uncertainty"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.uncertainty.title"
+    }
+  },
+  "requirements": [
+    [
+      "shard_of_uncertainty"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

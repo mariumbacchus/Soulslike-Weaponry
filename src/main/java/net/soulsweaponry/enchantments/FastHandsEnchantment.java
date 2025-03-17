@@ -3,7 +3,7 @@ package net.soulsweaponry.enchantments;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.items.GunItem;
+import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.EnchantRegistry;
 
 public class FastHandsEnchantment extends Enchantment {

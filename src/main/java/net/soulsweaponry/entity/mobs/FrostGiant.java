@@ -23,7 +23,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.LeviathanAxe;
+import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;

@@ -1,11 +1,9 @@
 package net.soulsweaponry.events;
 
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.util.Identifier;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -33,6 +31,9 @@ public class ClientModBusEvents {
         event.registerSpriteSet(ParticleRegistry.PURPLE_FLAME.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.DARK_STAR.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.BLACK_FLAME.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.SUN_PARTICLE.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.MOONVEIL_PARTICLE.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.BLUE_FLAME.get(), FlameParticle.Factory::new);
     }
 
     @SubscribeEvent
@@ -48,5 +49,13 @@ public class ClientModBusEvents {
     @SubscribeEvent
     public static void registerLayerDefinition(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         EntityModelLayerModRegistry.initClient(event);
+    }
+
+    @SubscribeEvent
+    public static void onTextureStitch(TextureStitchEvent event) {
+        if (event.getAtlas().getId().equals(new Identifier("minecraft", "textures/atlas/blocks"))) {
+            event.getAtlas().getTextureLocations().add(new Identifier(SoulsWeaponry.ModId, "block/pruified_blood_still"));
+            event.getAtlas().getTextureLocations().add(new Identifier(SoulsWeaponry.ModId, "block/pruified_blood_flow"));
+        }
     }
 }

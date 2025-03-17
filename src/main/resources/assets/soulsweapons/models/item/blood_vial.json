@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "soulsweapons:item/blood_vial_overlay",
+    "layer1": "soulsweapons:item/glass_vial"
+  }
+}

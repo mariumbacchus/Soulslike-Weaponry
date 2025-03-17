@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:lord_soul",
+  "criteria": {
+    "rageblade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:rageblade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.rageblade.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:rageblade",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.rageblade.title"
+    }
+  },
+  "requirements": [
+    [
+      "rageblade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

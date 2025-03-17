@@ -1,0 +1,40 @@
+{
+  "parent": "soulsweapons:bloodthirsty",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "soulsweapons:accursed_lord_boss"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.end_of_reigns.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:withered_demon_heart"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.end_of_reigns.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

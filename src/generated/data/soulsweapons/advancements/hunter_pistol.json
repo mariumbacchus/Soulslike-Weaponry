@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "hunter_pistol": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:hunter_pistol"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.hunter_pistol.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:hunter_pistol",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.hunter_pistol.title"
+    }
+  },
+  "requirements": [
+    [
+      "hunter_pistol"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

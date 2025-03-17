@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "crafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/obsidian.png",
+    "description": {
+      "translate": "advancements.soulsweapons.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:lost_soul"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.soulsweapons.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "crafting_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

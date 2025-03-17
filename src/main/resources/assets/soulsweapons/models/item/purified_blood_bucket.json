@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soulsweapons:item/purified_blood_bucket"
+  }
+}

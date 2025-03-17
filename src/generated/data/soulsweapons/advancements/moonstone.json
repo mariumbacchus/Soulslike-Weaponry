@@ -1,0 +1,38 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "moonstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:moonstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.moonstone.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:moonstone"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.moonstone.title"
+    }
+  },
+  "requirements": [
+    [
+      "moonstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

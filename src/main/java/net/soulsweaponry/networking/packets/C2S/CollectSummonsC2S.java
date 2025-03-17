@@ -11,7 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.items.DarkinScythePre;
+import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;

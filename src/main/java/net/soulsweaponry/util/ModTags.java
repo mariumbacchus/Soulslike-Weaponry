@@ -28,6 +28,8 @@ public class ModTags {
         public static final TagKey<Item> LORD_SOUL = createTag("lord_soul");
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> MOONLIGHT_SWORD = createTag("moonlight_sword");
+        public static final TagKey<Item> DUO_BOSS_SOULS = createTag("duo_boss_souls");
+        public static final TagKey<Item> TRICK_WEAPONS = createTag("trick_weapons");
 
         public static final TagKey<Item> STICKS = createCommonTag("wood_sticks");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
@@ -56,6 +58,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
         public static final TagKey<EntityType<?>> RANGED_MOBS = createCommonTag("ranged_mobs");
         public static final TagKey<EntityType<?>> BOSSES = createCommonTag("bosses");
+        public static final TagKey<EntityType<?>> DRAGONS = createCommonTag("dragons");
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {
             return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("c", id));

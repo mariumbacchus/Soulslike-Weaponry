@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.Mjolnir;
+import net.soulsweaponry.items.hammer.Mjolnir;
 import software.bernie.geckolib.model.GeoModel;
 
 public class MjolnirItemModel extends GeoModel<Mjolnir> {

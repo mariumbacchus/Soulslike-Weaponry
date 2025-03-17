@@ -1,40 +1,39 @@
 package net.soulsweaponry.datagen.loot_tables;
 
-import net.minecraft.data.server.loottable.EntityLootTableGenerator;
+import net.minecraft.data.server.loottable.LootTableGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.EntityRegistry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
-public class BossLootTables extends EntityLootTableGenerator {
+public class BossLootTables implements LootTableGenerator {
 
-    public static final HashMap<String, ArrayList<Item>> BOSS_DROPS = new HashMap<>();
-
-    protected BossLootTables() {
-        super(FeatureFlags.FEATURE_MANAGER.getFeatureSet());
-    }
+    public static final Map<String, List<Item>> BOSS_DROPS = new HashMap<>();
 
     @Override
-    public void generate() {
+    public void accept(BiConsumer<Identifier, LootTable.Builder> exporter) {
         EntityRegistry.registerBossDrops();
-        for (String id : BOSS_DROPS.keySet()) {
+        for (Map.Entry<String, List<Item>> entry : BOSS_DROPS.entrySet()) {
+            String bossId = entry.getKey();
             LootTable.Builder builder = LootTable.builder();
-            for (Item item : BOSS_DROPS.get(id)) {
+            for (Item item : entry.getValue()) {
                 LootPool.Builder lootPoolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1));
                 lootPoolBuilder.with(ItemEntry.builder(item).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))));
+                lootPoolBuilder.build();
                 builder.pool(lootPoolBuilder);
             }
-            register(ForgeRegistries.ENTITY_TYPES.getValue(new Identifier(SoulsWeaponry.ModId, "entities/" + id)), builder);
+            Identifier lootTableLocation = new Identifier(SoulsWeaponry.ModId, "entities/" + bossId);
+            exporter.accept(lootTableLocation, builder);
         }
     }
 }

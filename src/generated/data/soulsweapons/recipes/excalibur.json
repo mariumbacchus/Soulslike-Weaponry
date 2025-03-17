@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:echo_shard"
+    },
+    "O": {
+      "item": "soulsweapons:moonstone"
+    },
+    "S": {
+      "item": "minecraft:gold_ingot"
+    },
+    "X": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    " ##",
+    "SO#",
+    "XS "
+  ],
+  "result": {
+    "item": "soulsweapons:excalibur"
+  },
+  "show_notification": true
+}

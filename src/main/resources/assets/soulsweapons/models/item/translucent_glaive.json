@@ -34,5 +34,13 @@
             "translation": [ 2, 6, 0],
             "scale":[ 1.8, 1.8, 1.8 ]
         }
-    }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "invisible": 1
+            },
+            "model": "soulsweapons:item/translucent_glaive_invisible"
+        }
+    ]
 }

@@ -1,0 +1,40 @@
+{
+  "parent": "soulsweapons:draugr_boss",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "soulsweapons:moonknight"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.moonknight.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:essence_of_luminescence"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.moonknight.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

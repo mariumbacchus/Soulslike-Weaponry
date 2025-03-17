@@ -16,7 +16,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
 public abstract class UmbralTrespassItem extends ModdedSword {
 
@@ -25,7 +25,7 @@ public abstract class UmbralTrespassItem extends ModdedSword {
     public UmbralTrespassItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int ticksBeforeDismount) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.ticksBeforeDismount = ticksBeforeDismount;
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.UMBRAL_TRESPASS);
+        this.addTooltipAbility(TooltipAbilities.UMBRAL_TRESPASS);
     }
 
     @Override

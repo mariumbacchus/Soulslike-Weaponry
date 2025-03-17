@@ -10,6 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.sword.Skofnung;
+import net.soulsweaponry.items.sword.Sting;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -46,6 +48,10 @@ public class PredicateRegistry {
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get());
         PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD.get());
         PredicateRegistry.registerCharged(WeaponRegistry.BLUEMOON_GREATSWORD.get());
+
+        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_SWORD.get());
+        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_GLAIVE.get());
+        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get());
 
         PredicateRegistry.registerNightActive(WeaponRegistry.DRAUGR.get());
 
@@ -138,7 +144,7 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
     }
 
-   protected static void registerCharged(Item item) {
+    protected static void registerCharged(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (((IChargeNeeded)item).isCharged(itemStack)) {
                 return 1.0f;
@@ -149,5 +155,9 @@ public class PredicateRegistry {
 
     protected static void registerCrossbowCharged(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (stack, world, entity, seed) -> CrossbowItem.isCharged(stack) ? 1.0f : 0.0f);
+    }
+
+    public static void registerTranslucentAbility(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> TranslucentWeapon.isInvisible(itemStack) ? 1f : 0f);
     }
 }

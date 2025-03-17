@@ -11,8 +11,9 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
 
-public class BigChungusModel<T extends HostileEntity> extends SinglePartEntityModel<T> {
+public class BigChungusModel<T extends MobEntity> extends SinglePartEntityModel<T> {
 
     private final ModelPart root;
     

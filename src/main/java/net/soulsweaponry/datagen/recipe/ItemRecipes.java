@@ -29,10 +29,18 @@ public class ItemRecipes extends RecipeProvider {
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_DISC.get())
                 .input('#', ItemRegistry.CHUNGUS_EMERALD.get())
                 .pattern("###")
-                .pattern("###")
+                .pattern("# #")
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CHUNGUS_EMERALD.get()).build()))
+                .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FALLEN_ICON_DISC.get())
+                .input('#', ItemRegistry.MOONSTONE.get())
+                .pattern("###")
+                .pattern("# #")
+                .pattern("###")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.MOONSTONE.get()).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL.get())
                 .input('Y', ItemRegistry.LOST_SOUL.get())
@@ -193,6 +201,24 @@ public class ItemRecipes extends RecipeProvider {
                 .input(BlockRegistry.VERGLAS_BLOCK.get())
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.VERGLAS.get()).build()))
+                .offerTo(consumer);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_EMERALD.get(), 9)
+                .input(BlockRegistry.CHUNGUS_EMERALD_BLOCK.get())
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.CHUNGUS_EMERALD.get()).build()))
+                .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.GLASS_VIAL.get(), 5)
+                .input('#', Items.GLASS)
+                .pattern("# #")
+                .pattern("# #")
+                .pattern(" # ")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(Items.GLASS).build()))
+                .offerTo(consumer);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.PAPER, 1)
+                .input(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE.get())
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE.get()).build()))
                 .offerTo(consumer);
 
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK.get()), ItemRegistry.CRIMSON_INGOT.get(), 0.1f, 200, ItemRegistry.DEMON_HEART.get(), consumer);

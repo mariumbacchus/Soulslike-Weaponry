@@ -1,0 +1,36 @@
+{
+  "parent": "soulsweapons:chaos_orb",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulsweapons:duo_boss_souls"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.kill_day_night_boss.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:lord_soul_day_stalker"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.kill_day_night_boss.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

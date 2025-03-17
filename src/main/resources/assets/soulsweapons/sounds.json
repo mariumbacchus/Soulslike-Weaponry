@@ -23,7 +23,6 @@
                 "name": "soulsweapons:big_chungus_song",
                 "stream": true
             }
-
         ]
     },
     "fart": {
@@ -367,6 +366,34 @@
         "subtitle": "subtitles.soulsweapons.trinity",
         "sounds": [
             "soulsweapons:trinity"
+        ]
+    },
+    "moonveil_horizontal": {
+        "subtitle": "subtitles.soulsweapons.moonveil_horizontal",
+        "sounds": [
+            "soulsweapons:moonveil_horizontal"
+        ]
+    },
+    "moonveil_vertical": {
+        "subtitle": "subtitles.soulsweapons.moonveil_vertical",
+        "sounds": [
+            "soulsweapons:moonveil_vertical"
+        ]
+    },
+    "fallen_icon_song": {
+        "sounds": [
+            {
+                "name": "soulsweapons:fallen_icon_song",
+                "stream": true
+            }
+        ]
+    },
+    "fallen_icon_mono": {
+        "sounds": [
+            {
+                "name": "soulsweapons:fallen_icon_mono",
+                "stream": true
+            }
         ]
     }
 }

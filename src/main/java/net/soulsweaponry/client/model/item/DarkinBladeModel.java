@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.DarkinBlade;
+import net.soulsweaponry.items.sword.DarkinBlade;
 import software.bernie.geckolib.model.GeoModel;
 
 public class DarkinBladeModel extends GeoModel<DarkinBlade> {

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "soulsweapons:soul_ingot"
+    },
+    "X": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    " #",
+    "S#",
+    "SX"
+  ],
+  "result": {
+    "item": "soulsweapons:glaive_of_hodir"
+  },
+  "show_notification": true
+}

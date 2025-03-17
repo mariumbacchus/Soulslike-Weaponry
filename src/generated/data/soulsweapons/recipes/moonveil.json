@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:moonstone"
+    },
+    "O": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " ##",
+    "#O ",
+    "X  "
+  ],
+  "result": {
+    "item": "soulsweapons:moonveil"
+  },
+  "show_notification": true
+}

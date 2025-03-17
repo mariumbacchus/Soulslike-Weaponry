@@ -32,7 +32,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
-import net.soulsweaponry.entity.util.BlackflameSnakeLogic;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -50,6 +49,7 @@ import java.util.UUID;
 public class NightProwler extends BossEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private int openPortalTicks;
     public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
@@ -57,7 +57,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public int maxSpawnTicks = 50;
     public int darknessRiseTicks;
     private int[] aliveSummons = new int[0];
-    @Nullable private BlackflameSnakeLogic blackflameSnakeLogic = null;
     public static final int ATTACKS_LENGTH = Attacks.values().length;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -426,12 +425,16 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 this.darknessRiseTicks = 0;
             }
         }
-        if (this.getBlackflameSnakeLogic() != null) {
-            this.getBlackflameSnakeLogic().tick(this.getWorld());
-            if (this.getBlackflameSnakeLogic().isFinished()) {
-                this.setBlackflameSnakeLogic(null);
-            }
-        }
+    }
+
+    @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     @Override
@@ -561,13 +564,21 @@ public class NightProwler extends BossEntity implements GeoEntity {
      * <p>- 1 is TRINITY</p>
      * <p>- 2 is SOUL_REAPER/ENGULF slam attack</p>
      * <p>- 3 is SOUL_REAPER X-slash attack</p>
-     * <p>- 4 is ECLIPSE giant circle</p>
+     * <p>- 4 is ECLIPSE particles and portal</p>
      * @param type Set the particle state
      */
     public void setParticleState(int type) {
         this.dataTracker.set(SPAWN_PARTICLES_STATE, type);
     }
 
+    /**
+     * Gets the particle state.
+     * <p>- 0 is idle or false</p>
+     * <p>- 1 is TRINITY</p>
+     * <p>- 2 is SOUL_REAPER/ENGULF slam attack</p>
+     * <p>- 3 is SOUL_REAPER X-slash attack</p>
+     * <p>- 4 is ECLIPSE particles and portal</p>
+     */
     public int getParticleState() {
         return this.dataTracker.get(SPAWN_PARTICLES_STATE);
     }
@@ -588,13 +599,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
         return this.darknessRiseTicks;
     }
 
-    public void setBlackflameSnakeLogic(@Nullable BlackflameSnakeLogic object) {
-        this.blackflameSnakeLogic = object;
-    }
-
-    @Nullable
-    public BlackflameSnakeLogic getBlackflameSnakeLogic() {
-        return this.blackflameSnakeLogic;
+    /**
+     * Mainly a client sided variable determining the tick count of the ECLIPSE portal and particles
+     */
+    public int getOpenPortalTicks() {
+        return this.openPortalTicks;
     }
 
     @Override
@@ -662,21 +671,21 @@ public class NightProwler extends BossEntity implements GeoEntity {
                     }
                 }
                 case 4 -> {
-                    double phi = Math.PI * (3. - Math.sqrt(5.));
-                    int points = 600;
-                    int div = 60;
-                    float sizeMod = 15f;
-                    for (int i = 0; i < points; i++) {
-                        double y = 1 - ((double) i /(points - 1)) * 2;
-                        double radius = Math.sqrt(1 - y*y);
-                        double theta = phi * i;
-                        double x = Math.cos(theta) * radius;
-                        double z = Math.sin(theta) * radius;
-                        this.getWorld().addParticle(ParticleRegistry.DARK_STAR.get(), true, x * sizeMod + this.getX(), y * sizeMod + this.getY(), z * sizeMod + this.getZ(),
-                                this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
+                    this.openPortalTicks++;
+                    float radius = this.getOpenPortalTicks() >= 30 && this.getOpenPortalTicks() <= 190 ? NightProwlerGoal.PORTAL_RADIUS : 0f;
+                    if (radius != 0 && this.age % 8 == 0) {
+                        for (int i = 0; i < 360; i++) {
+                            float offsetX = (float) (radius * Math.cos(i));
+                            float offsetZ = (float) (radius * Math.sin(i));
+                            double particleX = this.getX() + offsetX;
+                            double particleY = this.getY() + 8f;
+                            double particleZ = this.getZ() + offsetZ;
+                            this.getWorld().addParticle(
+                                    ParticleTypes.LARGE_SMOKE, particleX, particleY, particleZ, 0, 0, 0);
+                        }
                     }
                 }
-                default -> {}
+                default -> this.openPortalTicks = 0;
             }
             if (this.getDarknessRise()) {
                 int div = 30;

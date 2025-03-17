@@ -273,6 +273,16 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
+    }
+
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains(LAST_WEAPON_DAMAGED_BY)) {

@@ -5,7 +5,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 
 import net.minecraft.util.Identifier;
 
-import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 
 public class ChargedArrowRenderer extends ProjectileEntityRenderer<ChargedArrow> {
 

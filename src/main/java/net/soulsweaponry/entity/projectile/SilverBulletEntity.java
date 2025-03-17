@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -10,11 +9,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -22,7 +19,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity {
+public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity, IPostureLossProjectile {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int postureLoss;
@@ -31,12 +28,12 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
         super(entityType, world);
     }
 
-    public SilverBulletEntity(World world, LivingEntity owner) {
-        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE.get(), owner, world);
+    public SilverBulletEntity(World world, LivingEntity owner, ItemStack stack) {
+        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE.get(), owner, world, stack);
     }
 
-    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner) {
-        super(entityType, owner, world);
+    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner, ItemStack stack) {
+        super(entityType, owner, world, stack);
     }
 
     @Override
@@ -74,12 +71,8 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity 
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (ConfigConstructor.can_projectiles_apply_posture_loss && entityHitResult.getEntity() instanceof LivingEntity target) {
-            int posture = this.getPostureLoss();
-            if (target instanceof PlayerEntity) {
-                posture = MathHelper.floor((float) posture * ConfigConstructor.silver_bullet_posture_loss_on_player_modifier);
-            }
-            PostureData.addPosture(target, posture);
+        if (entityHitResult.getEntity() instanceof LivingEntity target) {
+            this.applyPostureLoss(target);
             if (target.isUndead()) {
                 this.setDamage(this.getDamage() + (ConfigConstructor.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
             }

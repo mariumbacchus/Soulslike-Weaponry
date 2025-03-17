@@ -1,9 +1,12 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class SoulHarvestingItem extends ModdedSword {
@@ -12,7 +15,7 @@ public abstract class SoulHarvestingItem extends ModdedSword {
 
     public SoulHarvestingItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.SOUL_TRAP, WeaponUtil.TooltipAbilities.COLLECT);
+        this.addTooltipAbility(TooltipAbilities.SOUL_TRAP, TooltipAbilities.COLLECT);
     }
 
     @Override
@@ -21,13 +24,30 @@ public abstract class SoulHarvestingItem extends ModdedSword {
             return super.postHit(stack, target, attacker);
         }
         if (target.isDead()) {
-            if (target.getType().isIn(ModTags.Entities.BOSSES)) {
-                this.addAmount(stack, 50);
-            } else {
-                this.addKillCounter(stack);
+            this.handleKill(target, stack);
+        }
+        // Include dead entities hit by sweeping, Better Combat/Epic Fight already does this so ignore if loaded
+        if (attacker instanceof PlayerEntity player && !WeaponUtil.isFightModLoaded()) {
+            for (LivingEntity livingEntity : player.getWorld().getNonSpectatingEntities(LivingEntity.class, target.getBoundingBox().expand(1.0, 0.25, 1.0))) {
+                if (livingEntity != player
+                        && livingEntity != target
+                        && !player.isTeammate(livingEntity)
+                        && (!(livingEntity instanceof ArmorStandEntity) || !((ArmorStandEntity)livingEntity).isMarker())
+                        && player.squaredDistanceTo(livingEntity) < 9.0
+                        && livingEntity.isDead()) {
+                    this.handleKill(livingEntity, stack);
+                }
             }
         }
         return super.postHit(stack, target, attacker);
+    }
+
+    public void handleKill(LivingEntity target, ItemStack stack) {
+        if (target.getType().isIn(ModTags.Entities.BOSSES)) {
+            this.addAmount(stack, 50);
+        } else {
+            this.addKillCounter(stack);
+        }
     }
 
     public void addKillCounter(ItemStack stack) {

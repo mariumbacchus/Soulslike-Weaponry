@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:returning_knight",
+  "criteria": {
+    "nightfall": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:nightfall"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.nightfall.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:nightfall",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.nightfall.title"
+    }
+  },
+  "requirements": [
+    [
+      "nightfall"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

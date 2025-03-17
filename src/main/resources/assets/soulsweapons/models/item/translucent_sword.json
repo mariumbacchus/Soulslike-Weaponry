@@ -2,5 +2,13 @@
     "parent": "item/handheld",
     "textures": {
       "layer0": "soulsweapons:item/translucent_sword"
-    }
+    },
+    "overrides": [
+      {
+        "predicate": {
+          "invisible": 1
+        },
+        "model": "soulsweapons:item/translucent_sword_invisible"
+      }
+    ]
 }

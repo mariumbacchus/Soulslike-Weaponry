@@ -3,7 +3,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.soulsweaponry.entity.projectile.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

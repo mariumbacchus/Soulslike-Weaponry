@@ -95,6 +95,16 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
+    }
+
+    @Override
     public void updatePostDeath() {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient) {
@@ -153,6 +163,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     public void tickMovement() {
         super.tickMovement();
+
         if (this.getAttackAnimation().equals(AccursedLordAnimations.SPAWN)) {
             this.spawnTicks++;
 
@@ -171,7 +182,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 70) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
-            if (this.spawnTicks > 110 && this.spawnTicks <= 112) {
+            if (this.spawnTicks == 111) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);

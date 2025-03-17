@@ -86,6 +86,10 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
+
+    // Compile only
+    // Controllable mod for controller support
+    modCompileOnly 'curse.maven:controllable-317269:6171424'
 }
 
 processResources {

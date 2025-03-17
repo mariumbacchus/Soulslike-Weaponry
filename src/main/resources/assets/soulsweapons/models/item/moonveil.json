@@ -1,0 +1,118 @@
+{
+  "credit": "Made with Blockbench",
+  "texture_size": [64, 64],
+  "textures": {
+    "1": "soulsweapons:item/moonveil"
+  },
+  "elements": [
+    {
+      "name": "Blade",
+      "from": [7.5, 1, 7],
+      "to": [8.5, 23, 9],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+      "faces": {
+        "north": {"uv": [2.5, 1.75, 2.75, 7.25], "texture": "#1"},
+        "east": {"uv": [2, 1.75, 2.5, 7.25], "texture": "#1"},
+        "south": {"uv": [3.25, 1.75, 3.5, 7.25], "texture": "#1"},
+        "west": {"uv": [2.75, 1.75, 3.25, 7.25], "texture": "#1"},
+        "up": {"uv": [2.75, 1.75, 2.5, 1.25], "texture": "#1"},
+        "down": {"uv": [3, 1.25, 2.75, 1.75], "texture": "#1"}
+      }
+    },
+    {
+      "name": "Blade",
+      "from": [7.5, 23, 8],
+      "to": [8.5, 26, 9],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+      "faces": {
+        "north": {"uv": [3.75, 1.5, 4, 2.25], "texture": "#1"},
+        "east": {"uv": [3.5, 1.5, 3.75, 2.25], "texture": "#1"},
+        "south": {"uv": [4.25, 1.5, 4.5, 2.25], "texture": "#1"},
+        "west": {"uv": [4, 1.5, 4.25, 2.25], "texture": "#1"},
+        "up": {"uv": [4, 1.5, 3.75, 1.25], "texture": "#1"},
+        "down": {"uv": [4.25, 1.25, 4, 1.5], "texture": "#1"}
+      }
+    },
+    {
+      "name": "Handle",
+      "from": [7.03, -8.97, 7.03],
+      "to": [8.97, -0.03, 8.97],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+      "faces": {
+        "north": {"uv": [0.5, 0.5, 1, 2.75], "texture": "#1"},
+        "east": {"uv": [0, 0.5, 0.5, 2.75], "texture": "#1"},
+        "south": {"uv": [1.5, 0.5, 2, 2.75], "texture": "#1"},
+        "west": {"uv": [1, 0.5, 1.5, 2.75], "texture": "#1"},
+        "up": {"uv": [1, 0.5, 0.5, 0], "texture": "#1"},
+        "down": {"uv": [1.5, 0, 1, 0.5], "texture": "#1"}
+      }
+    },
+    {
+      "name": "Guard",
+      "from": [6.5, 0, 6],
+      "to": [9.5, 1, 10],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+      "faces": {
+        "north": {"uv": [3, 1, 3.75, 1.25], "texture": "#1"},
+        "east": {"uv": [2, 1, 3, 1.25], "texture": "#1"},
+        "south": {"uv": [4.75, 1, 5.5, 1.25], "texture": "#1"},
+        "west": {"uv": [3.75, 1, 4.75, 1.25], "texture": "#1"},
+        "up": {"uv": [3.75, 1, 3, 0], "texture": "#1"},
+        "down": {"uv": [4.5, 0, 3.75, 1], "texture": "#1"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, 8.25, 1.5]
+    },
+    "thirdperson_lefthand": {
+      "translation": [0, 8.5, 1.5]
+    },
+    "firstperson_righthand": {
+      "translation": [3, 8.25, 0],
+      "scale": [0.9, 0.9, 0.9]
+    },
+    "firstperson_lefthand": {
+      "translation": [3, 8.25, 0],
+      "scale": [0.9, 0.9, 0.9]
+    },
+    "ground": {
+      "rotation": [45, 0, 0],
+      "translation": [0, 2.75, 0],
+      "scale": [0.3, 0.3, 0.3]
+    },
+    "gui": {
+      "rotation": [-90, -45, -90],
+      "scale": [0.7, 0.6, 0.6]
+    },
+    "head": {
+      "translation": [0, 0, -7.5]
+    },
+    "fixed": {
+      "rotation": [-90, 45, 90],
+      "scale": [0.6, 0.7, 0.7]
+    }
+  },
+  "groups": [
+    {
+      "name": "Katana",
+      "origin": [8, 8, 8],
+      "color": 0,
+      "children": [
+        {
+          "name": "Blade",
+          "origin": [8, 8, 8],
+          "color": 0,
+          "children": [0, 1]
+        },
+        {
+          "name": "Handle",
+          "origin": [8, 8, 8],
+          "color": 0,
+          "children": [2, 3]
+        }
+      ]
+    }
+  ]
+}

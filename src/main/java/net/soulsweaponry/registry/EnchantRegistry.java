@@ -11,7 +11,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.enchantments.FastHandsEnchantment;
 import net.soulsweaponry.enchantments.StaggerEnchantment;
 import net.soulsweaponry.enchantments.VisceralEnchantment;
-import net.soulsweaponry.items.GunItem;
+import net.soulsweaponry.items.gun.GunItem;
 
 public class EnchantRegistry {
 

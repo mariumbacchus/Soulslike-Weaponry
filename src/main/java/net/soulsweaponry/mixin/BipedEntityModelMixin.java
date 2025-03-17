@@ -27,7 +27,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
 
     @Inject(at = @At("TAIL"), method = "positionRightArm")
     private void positionRightArm(T entity, CallbackInfo info) {
-        var model = ((BipedEntityModel<?>)(Object)this);
+        /*var model = ((BipedEntityModel<?>)(Object)this);TODO
         for (ItemStack stack : entity.getHandItems()) {
             if (WeaponUtil.CUSTOM_HOLD_WEAPONS.contains(stack.getItem())) {
                 if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
@@ -43,7 +43,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                     CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
                 }
             }
-        }
+        }*/
     }
 
     @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
@@ -74,12 +74,12 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.4f; //0.4, 0.8
             }
         }
-        if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
+        /*if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {TODO
             ItemStack stack = entity.getMainHandStack();
             if (model.handSwingProgress > 0.0f && WeaponUtil.CUSTOM_HOLD_WEAPONS.contains(stack.getItem())) {
                 ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
                 info.cancel();
             }
-        }
+        }*/
     }
 }

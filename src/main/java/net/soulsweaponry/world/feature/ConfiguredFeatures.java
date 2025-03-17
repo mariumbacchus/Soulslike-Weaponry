@@ -43,8 +43,8 @@ public class ConfiguredFeatures {
                 OreFeatureConfig.createTarget(deepslateReplaceables, BlockRegistry.VERGLAS_ORE_DEEPSLATE.get().getDefaultState())
         );
 
-        register(context, MOONSTONE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldMoonstoneOres, ConfigConstructor.moonstone_ore_vein_size));
-        register(context, VERGLAS_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldVerglasOres, ConfigConstructor.verglas_ore_vein_size));
+        register(context, MOONSTONE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldMoonstoneOres, ConfigConstructor.moonstone_ore_vein_size, 0.75f));
+        register(context, VERGLAS_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldVerglasOres, ConfigConstructor.verglas_ore_vein_size, 0.75f));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

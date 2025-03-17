@@ -19,4 +19,14 @@ public interface IConfigDisable {
             }
         }
     }
+
+    default void notifyDisabledBossRespawning(LivingEntity user) {
+        if (ConfigConstructor.inform_player_about_disabled_boss_respawning) {
+            if (user instanceof PlayerEntity player) {
+                player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.bossRespawnDisabled","This boss respawn mechanic has been disabled!"), true);
+            } else {
+                user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.bossRespawnDisabled","This boss respawn mechanic has been disabled!"));
+            }
+        }
+    }
 }

@@ -3,7 +3,10 @@ package net.soulsweaponry.registry;
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 import net.minecraftforge.registries.RegistryObject;
-import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.gun.Blunderbuss;
+import net.soulsweaponry.items.gun.GatlingGun;
+import net.soulsweaponry.items.gun.HunterCannon;
+import net.soulsweaponry.items.gun.HunterPistol;
 
 public class GunRegistry {
 

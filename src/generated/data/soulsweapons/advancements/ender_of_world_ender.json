@@ -1,0 +1,41 @@
+{
+  "parent": "soulsweapons:uncertainty",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "soulsweapons:chaos_monarch"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.ender_of_world_ender.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:chaos_crown",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.ender_of_world_ender.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

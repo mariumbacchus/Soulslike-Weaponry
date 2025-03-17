@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -19,10 +20,14 @@ import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
+import java.util.Set;
 
 public class EvilForlorn extends Forlorn {
 
     public static boolean canSpawn = ConfigConstructor.can_evil_forlorn_spawn;
+    private static final Set<Block> BLOCK_BLACKLIST = Set.of(
+            Blocks.WARPED_WART_BLOCK, Blocks.WARPED_NYLIUM, Blocks.WARPED_STEM, Blocks.SHROOMLIGHT, Blocks.CRIMSON_STEM, Blocks.NETHER_WART_BLOCK, Blocks.BASALT
+    );
 
     public EvilForlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -81,8 +86,7 @@ public class EvilForlorn extends Forlorn {
         return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
                 && state.getBlock().canMobSpawnInside(state)
                 && getWorld().getDifficulty() != Difficulty.PEACEFUL
-                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_WART_BLOCK)
-                && !getWorld().getBlockState(this.getBlockPos().down()).isOf(Blocks.WARPED_NYLIUM)
+                && !BLOCK_BLACKLIST.contains(this.getWorld().getBlockState(this.getBlockPos().down()).getBlock())
                 && this.getBlockY() < 100 && this.getBlockY() > 40;
     }
 

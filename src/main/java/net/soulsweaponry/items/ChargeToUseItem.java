@@ -10,6 +10,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class ChargeToUseItem extends ModdedSword {
@@ -30,18 +31,22 @@ public abstract class ChargeToUseItem extends ModdedSword {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled(itemStack)) {
+        if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
+        ItemStack itemStack = user.getStackInHand(hand);
         if (ConfigConstructor.prioritize_off_hand_shield_over_weapon && user.getOffHandStack().getItem() instanceof ShieldItem) {
             return TypedActionResult.fail(itemStack);
-        }
-        if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
+        } else if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
             return TypedActionResult.fail(itemStack);
-        }
-        else {
+        } else if (this instanceof IChargeNeeded charge
+                && !charge.isCharged(itemStack)
+                && !user.isCreative()
+                && charge.acceptsMoonHeraldEffect(itemStack)
+                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD.get())) {
+            return TypedActionResult.fail(itemStack);
+        } else {
             user.setCurrentHand(hand);
             return TypedActionResult.success(itemStack);
         }
@@ -57,11 +62,6 @@ public abstract class ChargeToUseItem extends ModdedSword {
         return i;
     }
 
-    /**
-     * NOTE: Epic Fight mod sets the remainingUseTicks to Integer.MAX_VALUE since all the weapons default to having abilities such as blocking when holding right click,
-     * mainly the spears and greatswords weapon types, swords and tridents work fine.
-     * Use the {@link ChargeToUseItem#getChargeTime} method instead of traditional maxUseTime - remainingUseTicks check, so it handles whether the mod is loaded or not.
-     */
     @Override
     public abstract void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks);
 }

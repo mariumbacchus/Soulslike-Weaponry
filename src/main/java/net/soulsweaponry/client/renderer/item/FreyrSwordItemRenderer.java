@@ -1,7 +1,7 @@
 package net.soulsweaponry.client.renderer.item;
 
 import net.soulsweaponry.client.model.item.FreyrSwordItemModel;
-import net.soulsweaponry.items.FreyrSword;
+import net.soulsweaponry.items.sword.FreyrSword;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class FreyrSwordItemRenderer extends GeoItemRenderer<FreyrSword> {

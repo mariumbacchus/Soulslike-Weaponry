@@ -1,9 +1,9 @@
 package net.soulsweaponry.registry;
 
 import net.minecraft.block.*;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -13,6 +13,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.blocks.*;
+import net.soulsweaponry.fluid.PurifiedBloodBlock;
+import net.soulsweaponry.fluid.PurifiedBloodCauldronBlock;
 
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -21,12 +23,12 @@ public class BlockRegistry {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SoulsWeaponry.ModId);
 
-    public static final RegistryObject<Block> CRIMSON_OBSIDIAN = registerBlockAndItem("crimson_obsidian", () -> new DrippingBlock(AbstractBlock.Settings
+    public static final RegistryObject<Block> CRIMSON_OBSIDIAN = registerBlockAndItem("crimson_obsidian", () -> new CrimsonObsidian(AbstractBlock.Settings
             .copy(Blocks.OBSIDIAN)
             .strength(50f, 1200f)
             .sounds(BlockSoundGroup.STONE)
             .luminance(state -> 10)
-            .requiresTool(), ParticleTypes.FALLING_LAVA));
+            .requiresTool().nonOpaque()));
     public static final RegistryObject<Block> INFUSED_BLACKSTONE = registerBlockAndItem("infused_blackstone", () -> new Block(AbstractBlock.Settings.copy(Blocks.BLACKSTONE).strength(1.8F, 7.0F).sounds(BlockSoundGroup.STONE).requiresTool()));
     public static final RegistryObject<Block> CRACKED_INFUSED_BLACKSTONE = registerBlockAndItem("cracked_infused_blackstone", () -> new Block(AbstractBlock.Settings.copy(Blocks.BLACKSTONE).strength(1.8F, 7.0F).sounds(BlockSoundGroup.STONE).requiresTool()));
     public static final RegistryObject<Block> MOONSTONE_ORE = registerBlockAndItem("moonstone_ore", () -> new ExperienceDroppingBlock(AbstractBlock.Settings.copy(Blocks.DIAMOND_ORE).strength(3.0F, 3.0F).sounds(BlockSoundGroup.STONE).luminance(state -> 9).requiresTool(), UniformIntProvider.create(4, 8)));
@@ -49,6 +51,17 @@ public class BlockRegistry {
     public static final RegistryObject<Block> SOULFIRE_STAIN = registerBlockAndItem("soulfire_stain", () -> new MagmaBlock(AbstractBlock.Settings.copy(Blocks.MAGMA_BLOCK).mapColor(MapColor.CYAN).requiresTool().luminance(state -> 3).ticksRandomly().strength(0.5f).allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)));
     public static final RegistryObject<Block> SOUL_LAMP = registerBlockAndItem("soul_lamp", () -> new SoulLampBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP).luminance(BlockRegistry.createLightLevelFromLitBlockState(15)).strength(0.3f).sounds(BlockSoundGroup.GLASS).allowsSpawning((state, world, pos, type) -> true)));
     public static final RegistryObject<Block> CHUNGUS_MONOLITH = registerBlockAndItem("chungus_monolith", () -> new ChungusMonolith(AbstractBlock.Settings.copy(Blocks.DEEPSLATE_TILES).strength(3f, 3f).sounds(BlockSoundGroup.STONE).nonOpaque().requiresTool()));
+    public static final RegistryObject<Block> CHUNGUS_EMERALD_BLOCK = registerBlockAndItem("chungus_emerald_block", () -> new Block(AbstractBlock.Settings.create().mapColor(MapColor.EMERALD_GREEN).instrument(Instrument.BIT).requiresTool().strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL)));
+
+    public static final RegistryObject<Block> PURIFIED_BLOOD_BLOCK = BlockRegistry.registerBlockAlone("purified_blood_block", () -> new PurifiedBloodBlock(FluidRegistry.STILL_PURIFIED_BLOOD, AbstractBlock.Settings.copy(Blocks.WATER)));
+    public static RegistryObject<PurifiedBloodCauldronBlock> PURIFIED_BLOOD_CAULDRON = BlockRegistry.registerBlockAlone(
+            "purified_blood_cauldron",
+            () -> new PurifiedBloodCauldronBlock(AbstractBlock.Settings.copy(Blocks.CAULDRON), FluidRegistry.NONE_PREDICATE, FluidRegistry.BLOOD_CAULDRON_BEHAVIOR)
+    );
+
+    public static <I extends Block> RegistryObject<I> registerBlockAlone(String name, Supplier<I> block) {
+        return BLOCKS.register(name, block);
+    }
 
     private static <I extends Block> RegistryObject<I> registerBlockAndItem(String name, Supplier<I> block) {
         RegistryObject<I> registeredBlock = BLOCKS.register(name, block);

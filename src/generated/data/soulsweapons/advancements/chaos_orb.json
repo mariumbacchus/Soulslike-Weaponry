@@ -1,0 +1,38 @@
+{
+  "parent": "soulsweapons:end_of_reigns",
+  "criteria": {
+    "chaos_orb": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:chaos_orb"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.chaos_orb.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:chaos_orb"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.chaos_orb.title"
+    }
+  },
+  "requirements": [
+    [
+      "chaos_orb"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

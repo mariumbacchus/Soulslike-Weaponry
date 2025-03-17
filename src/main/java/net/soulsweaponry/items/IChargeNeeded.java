@@ -9,6 +9,7 @@ public interface IChargeNeeded {
 
     int getMaxCharge();
     int getAddedCharge(ItemStack stack);
+    boolean acceptsMoonHeraldEffect(ItemStack stack);
 
     default int getCharge(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains(CHARGE)) {

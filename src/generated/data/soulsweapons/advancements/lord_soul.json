@@ -1,0 +1,36 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulsweapons:lord_soul"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.lord_soul.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:lord_soul_rose"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.lord_soul.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

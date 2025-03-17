@@ -1,0 +1,38 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "demon_heart": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:demon_heart"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.demon_heart.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:demon_heart"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.demon_heart.title"
+    }
+  },
+  "requirements": [
+    [
+      "demon_heart"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

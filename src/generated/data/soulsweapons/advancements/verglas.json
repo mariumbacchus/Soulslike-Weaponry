@@ -1,0 +1,38 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "verglas": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:verglas"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.verglas.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:verglas"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.verglas.title"
+    }
+  },
+  "requirements": [
+    [
+      "verglas"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

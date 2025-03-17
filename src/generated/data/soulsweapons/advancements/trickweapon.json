@@ -1,0 +1,37 @@
+{
+  "parent": "soulsweapons:hunter_pistol",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "soulsweapons:trick_weapons"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.trickweapon.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:holy_greatsword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.trickweapon.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

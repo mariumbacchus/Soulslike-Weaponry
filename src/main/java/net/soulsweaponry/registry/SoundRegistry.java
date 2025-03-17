@@ -73,6 +73,10 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  PARTNER_DIES = registerSound("partner_dies");
     public static final RegistryObject<SoundEvent>  DARKNESS_RISE = registerSound("darkness_rise");
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
+    public static final RegistryObject<SoundEvent>  MOONVEIL_HORIZONTAL = registerSound("moonveil_horizontal");
+    public static final RegistryObject<SoundEvent>  MOONVEIL_VERTICAL = registerSound("moonveil_vertical");
+    public static final RegistryObject<SoundEvent>  FALLEN_ICON_SONG = registerSound("fallen_icon_song");
+    public static final RegistryObject<SoundEvent>  FALLEN_ICON_MONO = registerSound("fallen_icon_mono");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
         return SOUNDS.register(name, () -> SoundEvent.of(new Identifier(SoulsWeaponry.ModId, name)));

@@ -1,0 +1,6 @@
+{
+  "parent": "soulsweapons:item/simons_bowblade",
+  "textures": {
+    "layer0": "soulsweapons:item/simons_bowblade_pulling_0"
+  }
+}

@@ -1,6 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.CrossbowItem;
@@ -9,18 +8,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class ModdedCrossbow extends CrossbowItem implements IShootModProjectile, IConfigDisable, ICooldownItem {
+public abstract class ModdedCrossbow extends CrossbowItem implements IShootModProjectile, IConfigDisable, ICooldownItem, ITooltipInfo {
 
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedCrossbow(Settings settings) {
         super(settings);
@@ -46,25 +44,21 @@ public abstract class ModdedCrossbow extends CrossbowItem implements IShootModPr
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.disabled"));
         }
-        if (Screen.hasShiftDown()) {
-            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
-                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
-            }
-            tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    @Override
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    @Override
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 
+    @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }

@@ -18,26 +18,25 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.util.BlackflameSnakeLogic;
+import net.soulsweaponry.entity.projectile.NightSkull;
+import net.soulsweaponry.entity.projectile.noclip.*;
+import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
 import net.soulsweaponry.entity.util.DeathSpiralLogic;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
-import net.soulsweaponry.entity.projectile.invisible.BlackflameSnakeEntity;
-import net.soulsweaponry.entity.projectile.invisible.FogEntity;
-import net.soulsweaponry.entity.projectile.invisible.InvisibleEntity;
-import net.soulsweaponry.entity.projectile.invisible.NightWaveEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class NightProwlerGoal extends MeleeAttackGoal {
     private final NightProwler boss;
@@ -51,6 +50,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     private Vec3d flightPosAdder;
     private int bonusDmg;
     private int flipCounter;
+    public static final float PORTAL_RADIUS = 16f;
 
     public NightProwlerGoal(NightProwler boss, double speed, boolean pauseWhenMobIdle) {
         super(boss, speed, pauseWhenMobIdle);
@@ -131,12 +131,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                     this.boss.setAttackAnimation(attack);
                 }
             }
-            case DIMINISHING_LIGHT, ENGULF -> this.boss.setAttackAnimation(attack);
-            case BLACKFLAME_SNAKE -> {
-                if (this.boss.getBlackflameSnakeLogic() == null) {
-                    this.boss.setAttackAnimation(attack);
-                }
-            }
+            case DIMINISHING_LIGHT, ENGULF, BLACKFLAME_SNAKE -> this.boss.setAttackAnimation(attack);
             case ECLIPSE -> {
                 if (this.boss.isPhaseTwo() && this.specialCooldown <= 0) {
                     this.boss.setAttackAnimation(attack);
@@ -530,65 +525,24 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.playSound(SoundRegistry.NIGHT_SKULL_DIE.get(), 1f, 0.75f);
         }
         if (this.attackStatus == (phase2 ? 29 : 18)) {
-            this.castSpell(target, true);
+            WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), (float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()),
+                    this.boss.getPos(), Math.min(target.getY(), this.boss.getY()), 5, new Vec2f(1.5f, 1.75f),
+                    (Vec3d position, Integer warmup, Float yaw) -> this.spawnNightsEdge(position, warmup, yaw * 57.295776F));
         }
         this.checkAndReset(5, 0);
     }
 
-    protected void castSpell(LivingEntity livingEntity, boolean ripple) {
-        Vec3d start = this.boss.getPos();
-        float r;
-        double maxY = Math.min(livingEntity.getY(), this.boss.getY());
-        double y = Math.max(livingEntity.getY(), this.boss.getY()) + 1.0;
-        float f = (float)MathHelper.atan2(livingEntity.getZ() - this.boss.getZ(), livingEntity.getX() - this.boss.getX());
-        if (ripple) {
-            float yaw;
-            int i;
-            for (int waves = 0; waves < 5; waves++) {
-                for (i = 0; i < 360; i += MathHelper.floor((30f * (this.boss.isPhaseTwo() ? 2 : 1)) / (waves + 1f))) {
-                    r = 1.5f + waves * 1.75f;
-                    yaw = (float) (f + i * Math.PI / 180f);
-                    double x0 = start.getX();
-                    double z0 = start.getZ();
-                    double x = x0 + r * Math.cos(i * Math.PI / 180);
-                    double z = z0 + r * Math.sin(i * Math.PI / 180);
-                    this.conjureFangs(x, z, maxY, y, yaw, 3 * (waves + 1));
-                }
-            }
+    private void spawnNightsEdge(Vec3d position, Integer warmup, Float yaw) {
+        if (this.boss.isPhaseTwo()) {
+            NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE.get(), this.boss.getWorld());
+            edge.setOwner(this.boss);
+            edge.setWarmup(warmup);
+            edge.setDamage(this.getModifiedDamage(15.69f));
+            edge.setYaw(yaw);
+            edge.setPos(position.x, position.y, position.z);
+            this.boss.getWorld().spawnEntity(edge);
         } else {
-            for (int i = 0; i < 20; ++i) {
-                double h = 1.25 * (double)(i + 1);
-                this.conjureFangs(this.boss.getX() + (double)MathHelper.cos(f) * h, this.boss.getZ() + (double)MathHelper.sin(f) * h, maxY, y, f, i);
-            }
-        }
-    }
-
-    private void conjureFangs(double x, double z, double maxY, double y, float yaw, int warmup) {
-        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
-        boolean bl = false;
-        double d = 0.0;
-        do {
-            VoxelShape voxelShape;
-            BlockPos blockPos2;
-            if (!this.boss.getWorld().getBlockState(blockPos2 = blockPos.down()).isSideSolidFullSquare(this.boss.getWorld(), blockPos2, Direction.UP)) continue;
-            if (!this.boss.getWorld().isAir(blockPos) && !(voxelShape = this.boss.getWorld().getBlockState(blockPos).getCollisionShape(this.boss.getWorld(), blockPos)).isEmpty()) {
-                d = voxelShape.getMax(Direction.Axis.Y);
-            }
-            bl = true;
-            break;
-        } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
-        if (bl) {
-            if (this.boss.isPhaseTwo()) {
-                NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE.get(), this.boss.getWorld());
-                edge.setOwner(this.boss);
-                edge.setWarmup(warmup);
-                edge.setDamage(this.getModifiedDamage(15.69f));
-                edge.setYaw(yaw * 57.295776F);
-                edge.setPos(x, (double)blockPos.getY() + d, z);
-                this.boss.getWorld().spawnEntity(edge);
-            } else {
-                this.boss.getWorld().spawnEntity(new EvokerFangsEntity(this.boss.getWorld(), x, (double)blockPos.getY() + d, z, yaw, warmup, this.boss));
-            }
+            this.boss.getWorld().spawnEntity(new EvokerFangsEntity(this.boss.getWorld(), position.x, position.y, position.z, yaw, warmup, this.boss));
         }
     }
 
@@ -597,7 +551,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.boss.getNavigation().stop();
         boolean phase2 = this.boss.isPhaseTwo();
         if (this.attackStatus == (phase2 ? 16 : 23)) {
-            this.castSpell(target, false);
+            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), (float) Math.toDegrees((float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX())),
+                    this.boss.getPos(), Math.min(target.getY(), this.boss.getY()), 20, 1.25f, this::spawnNightsEdge);
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, 0.7f);
         }
         if (phase2 && this.attackStatus == 43) {
@@ -743,7 +698,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 24) {
-            this.boss.playSound(SoundRegistry.DARKNESS_RISE.get(), 1f, 1f);
+            this.boss.playSound(SoundRegistry.DARKNESS_RISE.get(), 1f, 1f);// TODO this sounds sucks
             this.boss.setDarknessRise(true);
         }
         this.checkAndReset(10, 0);
@@ -763,9 +718,16 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= 50 && this.attackStatus <= 220) {
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(35))) {
-                if (this.attackStatus % 12 == 0 && entity instanceof LivingEntity target) {
-                    Vec3d vec = new Vec3d(target.getX() - (this.boss.getX()), target.getEyeY() - this.boss.getBodyY(1f), target.getZ() - this.boss.getZ());
-                    this.shootSplitProjectile(vec, 3, 1.75f, EntityRegistry.NIGHT_SKULL.get());
+                if (this.attackStatus % 6 == 0 && entity instanceof LivingEntity target) {
+                    int radius = (int) PORTAL_RADIUS - 6;
+                    Vec3d spawn = new Vec3d(this.boss.getX() + this.boss.getRandom().nextBetween(-radius, radius),
+                            this.boss.getY() + 8f, this.boss.getZ() + this.boss.getRandom().nextBetween(-radius, radius));
+                    Vec3d vec = new Vec3d(target.getX() - spawn.getX(), target.getEyeY() - spawn.getY(), target.getZ() - spawn.getZ());
+                    NightSkull skull = new NightSkull(EntityRegistry.NIGHT_SKULL.get(), this.boss.getWorld());
+                    skull.setPosition(spawn);
+                    skull.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
+                    skull.setOwner(this.boss);
+                    this.boss.getWorld().spawnEntity(skull);
                     if (target.isDead() && target.deathTime < 2) {
                         this.boss.heal(ConfigConstructor.night_prowler_eclipse_healing);
                         DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);
@@ -857,11 +819,21 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 this.boss.setTargetPos(this.boss.getBlockPos());
                 this.boss.setParticleState(2);
                 this.aoe(this.boss.getBoundingBox().expand(2D), 35f, 2f, true);
-                this.boss.setBlackflameSnakeLogic(new BlackflameSnakeLogic(
-                        this.boss.getPos(), target.getPos(), 10f, 1, this.boss.getYaw(), this.boss.getUuid()
-                ));
-
-                BlackflameSnakeEntity entity = new BlackflameSnakeEntity(EntityRegistry.BLACKFLAME_SNAKE_ENTITY.get(), this.boss.getWorld());
+                // Pincer explosions
+                List<List<Vec3d>> positions = BlackflameSnakeUtil.getCurvedPositions(this.boss.getYaw(), 10f, this.boss.getPos(), target.getPos());
+                for (List<Vec3d> position : positions) {
+                    for (int i = 0; i < position.size(); i++) {
+                        BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.boss.getWorld());
+                        entity.setOwner(this.boss);
+                        entity.setRadius(2f);
+                        entity.setDamage(this.getModifiedDamage(35f));
+                        entity.setWarmup(i);
+                        entity.setPosition(position.get(i));
+                        this.boss.getWorld().spawnEntity(entity);
+                    }
+                }
+                // Center snake tracking the target
+                BlackflameSnakeEntity entity = new BlackflameSnakeEntity(this.boss.getWorld());
                 entity.setPosition(this.boss.getPos());
                 entity.setDamage(this.getModifiedDamage(30f));
                 entity.setVelocity(new Vec3d(target.getX() - (this.boss.getX()), target.getY() - this.boss.getY(), target.getZ() - this.boss.getZ()).multiply(0.2f));
@@ -920,10 +892,10 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.checkAndReset(this.boss.isPhaseTwo() ? 1 : 10, 0);
     }
 
-    public static class DeathSpiralEntity extends InvisibleEntity {
+    public static class DeathSpiralEntity extends NoClipEntity {
         private DeathSpiralLogic logic = new DeathSpiralLogic(this.getPos(), 1f);
 
-        public DeathSpiralEntity(EntityType<? extends InvisibleEntity> entityType, World world) {
+        public DeathSpiralEntity(EntityType<? extends NoClipEntity> entityType, World world) {
             super(entityType, world);
         }
 

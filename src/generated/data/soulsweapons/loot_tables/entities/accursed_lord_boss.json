@@ -52,5 +52,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "soulsweapons:entities/accursed_lord_boss"
 }

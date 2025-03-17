@@ -1,8 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": [
-    "minecraft:forest"
-  ],
+  "biomes": "#forge:is_overworld",
   "spawners": {
     "type": "soulsweapons:big_chungus",
     "weight": 100,

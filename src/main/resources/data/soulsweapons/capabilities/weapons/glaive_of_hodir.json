@@ -1,0 +1,18 @@
+{
+    "attributes":
+    {
+        "one_hand":
+        {
+            "armor_negation":28.0,
+            "impact":3.1,
+            "max_strikes":1
+        },
+        "two_hand":
+        {
+            "armor_negation":16.0,
+            "impact":2.4,
+            "max_strikes":4
+        }
+    },
+    "type":"soulsweapons:glaive"
+}

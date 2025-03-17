@@ -16,12 +16,14 @@ import net.soulsweaponry.networking.packets.S2C.FlashParticleS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleOutburstS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleSphereS2C;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ParticleHandler {
+
+    // Universal random for all the methods.
+    private static final Random RANDOM = new Random();
+    // Cache for outburst particles so no re-calculation is required.
+    private static final Map<String, Vec3d[]> PARTICLE_OUTBURST_CACHE = new HashMap<>();
 
     /**
      * Summon particles going out in random directions.
@@ -34,12 +36,12 @@ public class ParticleHandler {
      * @param sizeMod overall size modifier for the whole explosion
      * <p></p>
      * Example usage: <p></p>
-     * {@code HashMap<net.minecraft.particle.ParticleEffect, net.minecraft.util.math.Vec3d> map = new HashMap<>();
-     * map.put(ParticleTypes.SOUL_FIRE_FLAME, new net.minecraft.util.math.Vec3d(2, 8, 2));
-     * map.put(new ItemParticleOption(ParticleTypes.ITEM, Items.STONE.getDefaultInstance()), new net.minecraft.util.math.Vec3d(1, 2, 1));
+     * {@code Map<ParticleOptions, Vec3> map = new HashMap<>();
+     * map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3(2, 8, 2));
+     * map.put(new ItemParticleOption(ParticleTypes.ITEM, Items.STONE.getDefaultInstance()), new Vec3(1, 2, 1));
      * ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), map, 1f);}
      */
-    public static void particleOutburstMap(World world, int amount, double x, double y, double z, HashMap<ParticleEffect, Vec3d> particleMap, float sizeMod) {
+    public static void particleOutburstMap(World world, int amount, double x, double y, double z, Map<ParticleEffect, Vec3d> particleMap, float sizeMod) {
         for (ParticleEffect particle : particleMap.keySet()) {
             particleOutburst(world, amount, x, y, z, particle, particleMap.get(particle), sizeMod);
         }
@@ -56,7 +58,7 @@ public class ParticleHandler {
      * @param sizeMod overall size modifier for the whole sphere
      * <p></p>
      * Example usage: <p></p>
-     * {@code List<ParticleEffect> list = new ArrayList<>();
+     * {@code List<ParticleOptions> list = new ArrayList<>();
      * list.add(ParticleTypes.LARGE_SMOKE);
      * list.add(ParticleTypes.FLAME);
      * ParticleHandler.particleSphereList(world, 150, targetArea.getX(), targetArea.getY(), targetArea.getZ(), list, 1f);}
@@ -73,17 +75,45 @@ public class ParticleHandler {
         }
     }
 
-    public static void particleOutburst(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
+    /**
+     * Reminder to see {@link net.minecraft.server.world.ServerWorld#spawnParticles(ParticleEffect, double, double, double, int, double, double, double, double)} instead of using this method.
+     */
+    @Deprecated
+    public static void singleParticle(World world, ParticleEffect particle, double x, double y, double z, double velX, double velY, double velZ) {}
+
+    /**
+     * Old implementation that uses a list every call and doesn't save to cache, may therefore be more taxing on the hardware than the other method.
+     */
+    public static void particleOutburstList(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
         if (world.isClient) {
             List<Vec3d> list = getParticleOutburstCords(amount, velDivider, sizeMod);
             for (Vec3d vec : list) {
-                world.addParticle(particle, x, y, z, vec.getX(), vec.getY(), vec.getZ());
+                world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
             }
         } else {
             ItemStack stack = new ItemStack(Items.AIR);
             if (particle instanceof ItemStackParticleEffect par) {
                 stack = par.getItemStack();
                 particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
+            }
+            ModMessages.sendToAllPlayers(new ParticleOutburstS2C(amount, x, y, z, particle, velDivider, sizeMod, stack));
+        }
+    }
+
+    public static void particleOutburst(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
+        // Generate a cache key based on the particle settings
+        String cacheKey = generateCacheKey(amount, velDivider, sizeMod);
+        // Get particle velocities from cache or generate if not available
+        Vec3d[] particleVelocities = PARTICLE_OUTBURST_CACHE.computeIfAbsent(cacheKey, key -> getParticleOutburstCordsArray(amount, velDivider, sizeMod));
+        if (world.isClient) {
+            for (Vec3d vec : particleVelocities) {
+                world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
+            }
+        } else {
+            ItemStack stack = new ItemStack(Items.AIR);
+            if (particle instanceof ItemStackParticleEffect par) {
+                stack = par.getItemStack();
+                particle = ParticleTypes.FLAME;
             }
             ModMessages.sendToAllPlayers(new ParticleOutburstS2C(amount, x, y, z, particle, velDivider, sizeMod, stack));
         }
@@ -116,30 +146,47 @@ public class ParticleHandler {
     }
 
     /**
-     * Returns a list of Vec3d which contains the velocity vectors that should apply to a particle that goes in random directions.
+     * Returns a list of Vec3 which contains the velocity vectors that should apply to a particle that goes in random directions.
      * @param particleAmount amount
      * @param velDividers modify the position by dividing the general direction they go
      * @param sizeMod modify the whole explosion size
      * @return list of velocity vectors for the particle
      */
     public static List<Vec3d> getParticleOutburstCords(int particleAmount, Vec3d velDividers, double sizeMod) {
-        Random random = new Random();
-        List<Vec3d> list = new ArrayList<>();
-        double d = random.nextGaussian() * 0.05D;
-        double e = random.nextGaussian() * 0.05D;
-        double f = random.nextGaussian() * 0.05D;
+        List<Vec3d> list = new ArrayList<>(particleAmount);
+        double d = RANDOM.nextGaussian() * 0.05D;
+        double e = RANDOM.nextGaussian() * 0.05D;
+        double f = RANDOM.nextGaussian() * 0.05D;
         for (int j = 0; j < particleAmount; ++j) {
-            double newX = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + d) * sizeMod;
-            double newZ = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + e) * sizeMod;
-            double newY = (random.nextDouble() - 0.5D + random.nextGaussian() * 0.15D + f) * sizeMod;
-            Vec3d vec = new Vec3d(newX/velDividers.getX(), newY/velDividers.getY(), newZ/velDividers.getZ());
-            list.add(vec);
+            double newX = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + d) * sizeMod;
+            double newZ = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + e) * sizeMod;
+            double newY = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + f) * sizeMod;
+            list.add(new Vec3d(newX / velDividers.getX(), newY / velDividers.getY(), newZ / velDividers.getZ()));
         }
         return list;
     }
 
+    public static Vec3d[] getParticleOutburstCordsArray(int particleAmount, Vec3d velDividers, double sizeMod) {
+        Vec3d[] results = new Vec3d[particleAmount];
+        double d = RANDOM.nextGaussian() * 0.05D;
+        double e = RANDOM.nextGaussian() * 0.05D;
+        double f = RANDOM.nextGaussian() * 0.05D;
+        for (int j = 0; j < particleAmount; ++j) {
+            double newX = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + d) * sizeMod;
+            double newZ = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + e) * sizeMod;
+            double newY = (RANDOM.nextDouble() - 0.5D + RANDOM.nextGaussian() * 0.15D + f) * sizeMod;
+            results[j] = new Vec3d(newX / velDividers.getX(), newY / velDividers.getY(), newZ / velDividers.getZ());
+        }
+        return results;
+    }
+
+    // Helper method to generate a unique cache key for particle configurations
+    private static String generateCacheKey(int amount, Vec3d velDivider, float sizeMod) {
+        return amount + ":" + velDivider.x + "," + velDivider.y + "," + velDivider.z + ":" + sizeMod;
+    }
+
     /**
-     * Returns a list of Vec3d which contains the velocity vectors that should apply to a particle forms a circle.
+     * Returns a list of Vec3 which contains the velocity vectors that should apply to a particle forms a circle.
      * @param points amount of particles
      * @param sizeModifier modifies the size of the circle
      * @return list of velocity vectors for the particle

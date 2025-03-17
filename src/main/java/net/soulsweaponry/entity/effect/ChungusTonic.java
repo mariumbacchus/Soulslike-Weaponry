@@ -1,0 +1,52 @@
+package net.soulsweaponry.entity.effect;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.util.Identifier;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.soulsweaponry.config.ChungusTonicWhitelist;
+import net.soulsweaponry.entitydata.DespawnTimerData;
+import net.soulsweaponry.registry.EffectRegistry;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class ChungusTonic extends StatusEffect {
+
+    public ChungusTonic() {
+        super(StatusEffectCategory.BENEFICIAL, 0x29ff90);
+    }
+
+    @Override
+    public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+        Set<String> whitelistString = Set.of(ChungusTonicWhitelist.chungus_tonic_whitelist);
+        List<EntityType<?>> whitelist = whitelistString.stream().map((str) -> {
+            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
+            return ForgeRegistries.ENTITY_TYPES.getValue(entityId);
+        }).collect(Collectors.toList());
+        if (!(entity instanceof PlayerEntity) && DespawnTimerData.getDespawnTicks(entity) == 0 && !entity.getWorld().isClient) {
+            EntityType<?> type = whitelist.get(entity.getRandom().nextInt(whitelist.size()));
+            Entity randomEntity = type.create(entity.getWorld());
+            if (randomEntity != null) {
+                randomEntity.setPosition(entity.getPos());
+                DespawnTimerData.setDespawnTicks(randomEntity, 1);
+                if (randomEntity instanceof LivingEntity living) {
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT.get(), 1000, 0));
+                }
+                if (randomEntity instanceof PersistentProjectileEntity projectile) {
+                    projectile.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
+                }
+                entity.getWorld().spawnEntity(randomEntity);
+            }
+            entity.remove(Entity.RemovalReason.DISCARDED);
+        }
+    }
+}

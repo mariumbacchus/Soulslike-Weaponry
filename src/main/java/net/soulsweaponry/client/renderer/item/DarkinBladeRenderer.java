@@ -1,7 +1,7 @@
 package net.soulsweaponry.client.renderer.item;
 
 import net.soulsweaponry.client.model.item.DarkinBladeModel;
-import net.soulsweaponry.items.DarkinBlade;
+import net.soulsweaponry.items.sword.DarkinBlade;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class DarkinBladeRenderer extends GeoItemRenderer<DarkinBlade> {

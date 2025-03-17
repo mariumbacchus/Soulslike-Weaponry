@@ -1,23 +1,21 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem {
+public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem, ITooltipInfo {
 
-    protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedAxe(ToolMaterial material, float attackDamage, float ingameAttackSpeed, Settings settings) {
         super(material, attackDamage, - (4f - ingameAttackSpeed), settings);
@@ -28,45 +26,25 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
-        boolean showInfo = !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
-        if (showInfo) {
-            for (WeaponUtil.TooltipAbilities ability : this.getTooltipAbilities()) {
-                WeaponUtil.addAbilityTooltip(ability, stack, tooltip);
-            }
-            tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
-        } else {
-            if (epicFight) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.alt"));
-            } else {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-            }
-        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {
+    @Override
+    public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
-    public void addTooltipAbility(WeaponUtil.TooltipAbilities... abilities) {
+    @Override
+    public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
 
+    @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
 
     @Override
     public abstract boolean isFireproof();
-
-    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
-        int i;
-        if (WeaponUtil.isModLoaded("epicfight")) {
-            i = Integer.MAX_VALUE - remainingUseTicks;
-        } else {
-            i = this.getMaxUseTime(stack) - remainingUseTicks;
-        }
-        return i;
-    }
 }

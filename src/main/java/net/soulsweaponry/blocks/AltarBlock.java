@@ -3,10 +3,12 @@ package net.soulsweaponry.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -18,19 +20,16 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.registry.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-public class AltarBlock extends Block {
+public class AltarBlock extends Block implements IConfigDisable {
 
     public static final DirectionProperty FACING = FacingBlock.FACING;
 
@@ -39,7 +38,6 @@ public class AltarBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
-    @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         if (world.isClient && random.nextInt(5) < 2) {
             double e = .5f;
@@ -50,89 +48,51 @@ public class AltarBlock extends Block {
             world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + d + e, (double)pos.getY() + e + d*1.8f, (double)pos.getZ() - f + e, 0.0D, 0.0D, 0.0D);
             world.addParticle(ParticleTypes.FLAME, (double)pos.getX() - d + e, (double)pos.getY() + e + d*1.8f, (double)pos.getZ() + f + e, 0.0D, 0.0D, 0.0D);
 
-            particleCircle(world, pos, 4);
+            particleCircle(world, pos, 3, 4f);
+            particlePentagram(world, pos, this.getParticleType(), 4f);
         }
     }
 
-    private void particleCircle(World world, BlockPos pos, int r) {
-        List<Vec3d> points = new ArrayList<>();
-        double y = pos.getY() + 0.2f;
-        for (int theta = 0; theta < 360; theta += 2) {
+    private void particleCircle(World world, BlockPos pos, int spaceBetweenEach, float radius) {
+        for (int theta = 0; theta < 360; theta += spaceBetweenEach) {
             float x0 = pos.getX() + .5f;
             float z0 = pos.getZ() + .5f;
-            double x = x0 + r * Math.cos(theta * Math.PI / 180);
-            double z = z0 + r * Math.sin(theta * Math.PI / 180);
-            world.addParticle(this.getParticleType(), x, y, z, 0, 0, 0);
-            if (theta % 72 == 0) {
-                points.add(new Vec3d(x, y, z));
-            }
-        }
-        particlePentagon(world, r, points, y);
-
-        // If it works, it works. I don't give a **** that it's bad code at this point.
-        HashMap<Vec3d, Vec3d> map1 = new HashMap<>();
-        HashMap<Vec3d, Vec3d> map2 = new HashMap<>();
-        map1.put(points.get(0), points.get(2));
-        map1.put(points.get(0), points.get(3));
-        map1.put(points.get(1), points.get(3));
-        map1.put(points.get(1), points.get(4));
-        map1.put(points.get(2), points.get(0));
-        map2.put(points.get(2), points.get(4));
-        map2.put(points.get(3), points.get(0));
-        map2.put(points.get(3), points.get(1));
-        map2.put(points.get(4), points.get(1));
-        map2.put(points.get(4), points.get(2));
-
-        particleStar(world, r, map1, y);
-        particleStar(world, r, map2, y);
-        /*for (int i = 0; i < points.size(); i++) {
-            Vec3d start = points.get(i);
-            for (int k = 0; k < points.size(); k++) {
-                if (i != k) {
-                    Vec3d target = points.get(k);
-                    map.put(start, target);
-                }
-            }
-        }
-        particleStar(world, r, map, y);*/
-    }
-
-    private void particlePentagon(World world, int modifier, List<Vec3d> points, double y) {
-        for (int i = 0; i < points.size(); i++) {
-            Vec3d start = points.get(i);
-            Vec3d target = i == points.size() - 1 ? points.get(0) : points.get(i + 1);
-            double e = target.getX() - start.getX();
-            double g = target.getZ() - start.getZ();
-            double h = Math.sqrt(e * e + g * g);
-            /*double x = pos.getX() + .5D;
-            double z = pos.getZ() + .5D;*/
-            double x = start.getX();
-            double z = start.getZ();
-            e /= h;
-            g /= h;
-            double length = 0D;
-            for (int k = 0; k < 6*modifier; k++) {
-                length += (double)5*modifier/100;
-                world.addParticle(this.getParticleType(), x + e * length, y, z + g * length, 0.0D, 0.0D, 0.0D);
-            }
+            double x = x0 + radius * Math.cos(theta * Math.PI / 180);
+            double z = z0 + radius * Math.sin(theta * Math.PI / 180);
+            world.addParticle(this.getParticleType(), x, pos.getY() + 0.2f, z, 0, 0, 0);
         }
     }
 
-    private void particleStar(World world, int modifier, HashMap<Vec3d, Vec3d> map, double y) {
-        for (Vec3d start : map.keySet()) {
-            Vec3d target = map.get(start);
-            double e = target.getX() - start.getX();
-            double g = target.getZ() - start.getZ();
-            double h = Math.sqrt(e * e + g * g);
-            double x = start.getX();
-            double z = start.getZ();
-            e /= h;
-            g /= h;
-            double length = 0D;
-            for (int k = 0; k < 6*modifier; k++) {
-                length += 7.5D*(double)modifier/100;
-                world.addParticle(this.getParticleType(), x + e * length, y, z + g * length, 0.0D, 0.0D, 0.0D);
-            }
+    private void particlePentagram(World world, BlockPos pos, ParticleEffect particle, float radius) {
+        double centerX = pos.getX() + 0.5;
+        double centerY = pos.getY() + 0.2;
+        double centerZ = pos.getZ() + 0.5;
+
+        double[][] points = new double[5][2];
+        for (int i = 0; i < 5; i++) {
+            double angle = Math.toRadians(72 * i - 90); // Pentagram points: 360 deg divided into 5, starting at -90 deg for proper rotation
+            points[i][0] = centerX + radius * Math.cos(angle);
+            points[i][1] = centerZ + radius * Math.sin(angle);
+        }
+
+        // Draw lines between points in a pentagram pattern
+        int[] order = {0, 2, 4, 1, 3, 0}; // Connection order for a pentagram
+        for (int i = 0; i < order.length - 1; i++) {
+            double startX = points[order[i]][0];
+            double startZ = points[order[i]][1];
+            double endX = points[order[i + 1]][0];
+            double endZ = points[order[i + 1]][1];
+
+            drawParticleLine(world, particle, startX, centerY, startZ, endX, endZ, 20); // 20 particles per line
+        }
+    }
+
+    private void drawParticleLine(World world, ParticleEffect particle, double x1, double y, double z1, double x2, double z2, int steps) {
+        for (int i = 0; i <= steps; i++) {
+            double t = (double) i / steps;
+            double x = x1 + t * (x2 - x1);
+            double z = z1 + t * (z2 - z1);
+            world.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -140,40 +100,54 @@ public class AltarBlock extends Block {
         return ParticleRegistry.NIGHTFALL_PARTICLE.get();
     }
 
+    @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.isOf(ItemRegistry.LOST_SOUL.get())) {
-            if (!player.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
-            ReturningKnight boss = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
-            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-            boss.setSpawning(true);
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-            world.spawnEntity(boss);
-            world.removeBlock(pos, false);
-            return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(WeaponRegistry.DRAUGR.get())) {
-            DraugrBoss boss = new DraugrBoss(EntityRegistry.DRAUGR_BOSS.get(), world);
-            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-            boss.setSpawning();
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-            world.spawnEntity(boss);
-            world.removeBlock(pos, false);
-            return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE.get())) {
-            if (!player.getAbilities().creativeMode) {
-                itemStack.decrement(1);
-            }
-            Moonknight boss = new Moonknight(EntityRegistry.MOONKNIGHT.get(), world);
-            boss.setPos(pos.getX(), pos.getY() + .1f, pos.getZ());
-            boss.setSpawning(true);
-            world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-            world.spawnEntity(boss);
-            world.removeBlock(pos, false);
+        if (spawnBoss(world, pos, player, itemStack)) {
             return ActionResult.SUCCESS;
         }
         return ActionResult.FAIL;
+    }
+
+    private boolean spawnBoss(World world, BlockPos pos, PlayerEntity player, ItemStack itemStack) {
+        if (itemStack.isOf(ItemRegistry.LOST_SOUL.get())) {
+            ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
+            entity.setSpawning(true);
+            boolean bl =spawnEntity(world, pos, player, entity, ConfigConstructor.returning_knight_disable_respawn);
+            if (bl) {
+                if (!player.getAbilities().creativeMode) {
+                    itemStack.decrement(1);
+                }
+            }
+            return bl;
+        } else if (itemStack.isOf(WeaponRegistry.DRAUGR.get())) {
+            DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS.get(), world);
+            entity.setSpawning();
+            return spawnEntity(world, pos, player, entity, ConfigConstructor.old_champions_remains_disable_respawn);
+        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE.get())) {
+            Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT.get(), world);
+            entity.setSpawning(true);
+            boolean bl = spawnEntity(world, pos, player, entity, ConfigConstructor.fallen_icon_disable_respawn);
+            if (bl) {
+                if (!player.getAbilities().creativeMode) {
+                    itemStack.decrement(1);
+                }
+            }
+            return bl;
+        }
+        return false;
+    }
+
+    private boolean spawnEntity(World world, BlockPos pos, PlayerEntity player, LivingEntity boss, boolean disableSpawn) {
+        if (disableSpawn) {
+            this.notifyDisabledBossRespawning(player);
+            return false;
+        }
+        boss.setPos(pos.getX(), pos.getY() + 0.1f, pos.getZ());
+        world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+        world.spawnEntity(boss);
+        world.removeBlock(pos, false);
+        return true;
     }
 
     @Override
@@ -194,5 +168,11 @@ public class AltarBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    // Ignore this since it isn't an item
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return false;
     }
 }

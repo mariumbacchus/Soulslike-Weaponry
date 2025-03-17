@@ -1,0 +1,54 @@
+{
+  "parent": "soulsweapons:ender_of_world_ender",
+  "criteria": {
+    "dragon_staff": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:dragon_staff"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "withered_wabbajack": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:withered_wabbajack"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.lords_on_stick.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:dragon_staff",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.lords_on_stick.title"
+    }
+  },
+  "requirements": [
+    [
+      "dragon_staff"
+    ],
+    [
+      "withered_wabbajack"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

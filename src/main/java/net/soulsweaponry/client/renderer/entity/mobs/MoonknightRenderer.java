@@ -10,12 +10,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.random.Random;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
+import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Vector3d;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
@@ -27,6 +31,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     double[] translation = {0, 4, 0};
     public static final Identifier CRYSTAL_BEAM_TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
+    private int currentTick = -1;
 
     public MoonknightRenderer(Context ctx) {
         super(ctx, new MoonknightModel());
@@ -94,5 +99,40 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
             m = q;
         }
         matrices.pop();
+    }
+
+    @Override
+    public void renderFinal(MatrixStack poseStack, Moonknight animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        if (animatable.isPhaseTwo() && !animatable.isDead() && (animatable.isSwordCharging())) {
+            if (this.currentTick < 0 || this.currentTick != animatable.age) {
+                this.currentTick = animatable.age;
+                this.model.getBone("particle1").ifPresent(sword1 ->
+                        this.model.getBone("particle2").ifPresent(sword2 -> {
+                            Random rand = animatable.getRandom();
+                            Vector3d pos1 = sword1.getWorldPosition();
+                            Vector3d pos2 = sword2.getWorldPosition();
+                            int segments = 8;
+                            for (int i = 0; i <= segments; i++) {
+                                double t = i / (double) segments;
+                                double interpolatedX = pos1.x() + t * (pos2.x() - pos1.x());
+                                double interpolatedY = pos1.y() + t * (pos2.y() - pos1.y());
+                                double interpolatedZ = pos1.z() + t * (pos2.z() - pos1.z());
+                                for (int j = 0; j < 4; j++) {
+                                    animatable.getEntityWorld().addParticle(
+                                            ParticleRegistry.NIGHTFALL_PARTICLE.get(),
+                                            interpolatedX,
+                                            interpolatedY,
+                                            interpolatedZ,
+                                            (rand.nextDouble() - 0.5D) * 0.25f,
+                                            (rand.nextDouble() - 0.5D) * 0.25f,
+                                            (rand.nextDouble() - 0.5D) * 0.25f
+                                    );
+                                }
+                            }
+                        })
+                );
+            }
+        }
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

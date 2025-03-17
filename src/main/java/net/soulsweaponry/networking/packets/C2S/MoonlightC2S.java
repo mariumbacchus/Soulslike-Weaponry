@@ -3,7 +3,7 @@ package net.soulsweaponry.networking.packets.C2S;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.items.MoonlightShortsword;
+import net.soulsweaponry.items.sword.MoonlightShortsword;
 
 import java.util.function.Supplier;
 

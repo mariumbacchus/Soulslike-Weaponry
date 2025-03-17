@@ -3,82 +3,31 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
-public class TrickWeapon extends ModdedSword implements IUltraHeavy {
+public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonus {
 
-    private static final int[] DAMAGE = {
-            ConfigConstructor.kirkhammer_damage,
-            ConfigConstructor.kirkhammer_silver_sword_damage,
-            ConfigConstructor.ludwigs_holy_greatsword_damage,
-            ConfigConstructor.holy_moonlight_greatsword_damage,
-            ConfigConstructor.holy_moonlight_sword_damage,
-    };
-
-    private static final float[] ATTACK_SPEED = {
-            ConfigConstructor.kirkhammer_attack_speed,
-            ConfigConstructor.kirkhammer_silver_sword_attack_speed,
-            ConfigConstructor.ludwigs_holy_greatsword_attack_speed,
-            ConfigConstructor.holy_moonlight_greatsword_attack_speed,
-            ConfigConstructor.holy_moonlight_sword_attack_speed,
-    };
-
-    private static final boolean[] DISABLE = {
-            ConfigConstructor.disable_use_kirkhammer,
-            ConfigConstructor.disable_use_silver_sword,
-            ConfigConstructor.disable_use_ludwigs_holy_greatsword,
-            ConfigConstructor.disable_use_holy_moonlight_greatsword,
-            ConfigConstructor.disable_use_holy_moonlight_sword,
-    };
-
-    private static final boolean[] FIREPROOF = {
-            ConfigConstructor.is_fireproof_kirkhammer,
-            ConfigConstructor.is_fireproof_silver_sword,
-            ConfigConstructor.is_fireproof_ludwigs_holy_blade,
-            ConfigConstructor.is_fireproof_holy_moonlight_greatsword,
-            ConfigConstructor.is_fireproof_holy_moonlight_sword,
-    };
-
-    private final int switchWeaponIndex;
-    private final int ownWeaponIndex;
-    private final boolean undeadBonus;
+    private final float undeadBonus;
     private final boolean isHeavy;
-    private final int arrayIndex;
+    private final boolean isFireproof;
+    private final boolean isDisabled;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damageIndex, Settings settings, int switchWeaponIndex, int ownWeaponIndex, boolean isHeavy, boolean undeadBonus) {
-        super(toolMaterial, DAMAGE[damageIndex], ATTACK_SPEED[damageIndex], settings);
-        this.switchWeaponIndex = switchWeaponIndex;
-        this.ownWeaponIndex = ownWeaponIndex;
+    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, boolean isHeavy, float undeadBonus, boolean isFireproof, boolean isDisabled) {
+        super(toolMaterial, damage, attackSpeed, settings);
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
-        this.arrayIndex = damageIndex;
-        this.addTooltipAbility(WeaponUtil.TooltipAbilities.TRICK_WEAPON);
+        this.isFireproof = isFireproof;
+        this.isDisabled = isDisabled;
         if (this.isHeavy()) {
-            this.addTooltipAbility(WeaponUtil.TooltipAbilities.HEAVY);
+            this.addTooltipAbility(TooltipAbilities.HEAVY);
         }
-        if (this.undeadBonus) {
-            this.addTooltipAbility(WeaponUtil.TooltipAbilities.RIGHTEOUS);
+        if (this.isRighteous()) {
+            this.addTooltipAbility(TooltipAbilities.RIGHTEOUS);
         }
-    }
-
-    public int getSwitchWeaponIndex() {
-        return this.switchWeaponIndex;
-    }
-
-    public int getOwnWeaponIndex() {
-        return this.ownWeaponIndex;
-    }
-
-    public boolean hasUndeadBonus() {
-        return this.undeadBonus;
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
         if (this.isHeavy) {
             this.gainStrength(attacker);
         }
@@ -92,22 +41,12 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return DISABLE[this.arrayIndex];
+        return this.isDisabled;
     }
 
     @Override
     public boolean isFireproof() {
-        return FIREPROOF[this.arrayIndex];
-    }
-
-    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
-        int i;
-        if (WeaponUtil.isModLoaded("epicfight")) {
-            i = Integer.MAX_VALUE - remainingUseTicks;
-        } else {
-            i = this.getMaxUseTime(stack) - remainingUseTicks;
-        }
-        return i;
+        return this.isFireproof;
     }
 
     @Override
@@ -116,12 +55,17 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy {
     }
 
     @Override
-    public String getReduceCooldownEnchantId(ItemStack stack) {
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
 
     @Override
-    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
-        return ConfigConstructor.ultra_heavy_disables_shields && this.isHeavy;
+    public boolean isRighteous() {
+        return this.undeadBonus > 0;
+    }
+
+    @Override
+    public float getUndeadBonus(ItemStack stack) {
+        return this.undeadBonus;
     }
 }

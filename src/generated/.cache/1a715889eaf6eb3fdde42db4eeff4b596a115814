@@ -1,4 +1,6 @@
-// 1.20.1	2024-08-23T22:13:20.1558076	Forge EntityType Tags
+// 1.20.1	2025-03-14T20:31:31.9759237	Forge EntityType Tags
 9ed6f58ded647dbe8eace5dd297e6bb37b1c0479 data/c/tags/entity_types/bosses.json
+e00f2931577049b9a4400a87ed9c249373be376c data/c/tags/entity_types/dragons.json
 c42662e3c7d99bd4115e43c7a82ea7b87914ae50 data/c/tags/entity_types/ranged_mobs.json
 6e07fb58a00d6ac5ca53851f6dcafb4dab9aba4b data/c/tags/entity_types/skeletons.json
+7d2c4576ddca5094e15e07a86e75d2aa485ffe1a data/minecraft/tags/entity_types/freeze_immune_entity_types.json

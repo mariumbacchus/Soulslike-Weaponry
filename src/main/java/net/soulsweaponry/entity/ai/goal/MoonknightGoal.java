@@ -25,15 +25,16 @@ import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseOne;
 import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile.RotationState;
+import net.soulsweaponry.entity.projectile.noclip.AbsorbedProjectilesOrb;
+import net.soulsweaponry.entity.projectile.noclip.HolyMoonlightPillar;
 import net.soulsweaponry.entity.util.RandomSummonPos;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -49,7 +50,7 @@ public class MoonknightGoal extends Goal {
     private int targetNotVisibleTicks;
     private BlockPos targetPos;
     private float yaw;
-    private RotationState projectileRotation = RotationState.SWIPE_FROM_RIGHT;
+    private int projectileRotation = -45;
     private float bonusBeamHeight = 0f;
     private double height = 0D;
 
@@ -84,11 +85,10 @@ public class MoonknightGoal extends Goal {
         this.attackStatus = 0;
         this.specialCooldown = 0;
         this.bonusBeamHeight = 0f;
-        this.projectileRotation = RotationState.SWIPE_FROM_RIGHT;
+        this.projectileRotation = -45;
         this.boss.setCanBeam(false);
         this.boss.setIncreasingBeamHeight(false);
         this.boss.setBeamHeight(0f);
-        //this.moonfallRuptureMod = 0.5D; From old moonfall implementation
     }
 
     @Override
@@ -160,6 +160,13 @@ public class MoonknightGoal extends Goal {
                     this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
                 }
             }
+            case UNBREAKABLE -> {
+                if (this.boss.getRandom().nextDouble() < 0.1) {
+                    this.boss.setPhaseOneAttack(attack);
+                } else {
+                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                }
+            }
             default -> this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
         }
     }
@@ -187,7 +194,7 @@ public class MoonknightGoal extends Goal {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
-            case MOONFALL -> {
+            case MOONFALL, RUPTURE -> {
                 if (distance < 80D && target.getBlockPos() != null) {
                     this.boss.setPhaseTwoAttack(attack);
                 } else if (this.attackCooldown < -10) {
@@ -201,7 +208,7 @@ public class MoonknightGoal extends Goal {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
-            case SWORD_OF_LIGHT -> {
+            case SWORD_OF_LIGHT, HEAVY_SWING -> {
                 if (distance < 300D) {
                     this.boss.setPhaseTwoAttack(attack);
                 } else if (this.attackCooldown < -10) {
@@ -215,6 +222,13 @@ public class MoonknightGoal extends Goal {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
+            case UNBREAKABLE -> {
+                if (!this.boss.getAbsorbedProjectileTypes().isEmpty()) {
+                    this.boss.setPhaseTwoAttack(attack);
+                } else {
+                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                }
+            }
             default -> this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
         }
     }
@@ -225,7 +239,7 @@ public class MoonknightGoal extends Goal {
         this.specialCooldown--;
         LivingEntity target = this.boss.getTarget();
         if (this.boss.isInitiatingPhaseTwo()) this.reset();
-        if (target != null && !this.boss.isDead() && !this.boss.getSpawning() && !this.boss.isInitiatingPhaseTwo() && !this.boss.getUnbreakable()) {
+        if (target != null && !this.boss.isDead() && !this.boss.getSpawning() && !this.boss.isInitiatingPhaseTwo()) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);
@@ -257,6 +271,7 @@ public class MoonknightGoal extends Goal {
                             this.obliterateLogic(target, 13, 3, 28, 50f, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), false);
                     case RUPTURE -> this.ruptureLogic();
                     case SUMMON -> this.summonLogic(target);
+                    case UNBREAKABLE -> this.unbreakable(target);
                     default -> this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
                 }
             } else {
@@ -267,6 +282,9 @@ public class MoonknightGoal extends Goal {
                     case MOONVEIL -> this.moonveilLogic();
                     case SWORD_OF_LIGHT -> this.swordOfLight(target);
                     case THRUST -> this.thrustLogic(target);
+                    case RUPTURE -> this.rupturePhase2();
+                    case HEAVY_SWING -> this.heavySwing(target);
+                    case UNBREAKABLE -> this.unbreakable(target);
                     default -> this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
@@ -276,6 +294,57 @@ public class MoonknightGoal extends Goal {
             }
         }
         super.tick();
+    }
+
+    private void unbreakable(LivingEntity target) {
+        this.attackStatus++;
+        this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
+        if (this.attackStatus == 19) {
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+            for (Entity entity : boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(20))) {
+                if (entity instanceof LivingEntity living) {
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 300, 1));
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300, 0));
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 150, 0));
+                }
+            }
+            if (this.boss.isPhaseTwo()) {
+                AbsorbedProjectilesOrb orb = new AbsorbedProjectilesOrb(this.boss.getWorld(), target);
+                orb.setPos(target.getX(), target.getEyeY() + 8f, target.getZ());
+                orb.setOwner(this.boss);
+                orb.setProjectiles(this.boss.getAbsorbedProjectileTypes(), this.boss.getAbsorbedProjectileDamage());
+                this.boss.getWorld().spawnEntity(orb);
+                this.boss.clearAbsorbedProjectiles();
+                this.boss.getWorld().playSound(null, orb.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.HOSTILE, 1f, 1f);
+            }
+        }
+        if (this.attackStatus >= 37) {
+            this.resetAttack(1f, false, 1f);
+        }
+    }
+
+    private void heavySwing(LivingEntity target) {
+        this.attackStatus++;
+        this.boss.getLookControl().lookAt(target.getX(), target.getY(), target.getZ());
+        this.boss.getNavigation().startMovingTo(target.getX(), target.getY(), target.getZ(), 0.0D);
+        this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
+        if (this.attackStatus == 21) {
+            double x = target.getX() - (this.boss.getX());
+            double y = target.getEyeY() - this.boss.getBodyY(1f);
+            double z = target.getZ() - this.boss.getZ();
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.HOSTILE, 1f, 0.75f);
+            MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.HORIZONTAL_MOONLIGHT_ENTITY_TYPE.get(), this.boss.getWorld(), this.boss);
+            projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
+            projectile.setModelRotation(90);
+            projectile.setVelocity(x, y, z, 1.5f, 1f);
+            projectile.setDamage(this.getModifiedDamage(40f));
+            projectile.setExplosionExpansion(0.5f);
+            projectile.setAgeAndPoints(30, 150, 10);
+            this.boss.getWorld().spawnEntity(projectile);
+        }
+        if (this.attackStatus >= 35) {
+            this.resetAttack(1f, false, 1f);
+        }
     }
 
     private void coreBeam(LivingEntity target) {
@@ -312,7 +381,7 @@ public class MoonknightGoal extends Goal {
                 this.boss.setIncreasingBeamHeight(false);
             }
         }
-        if (this.attackStatus >= 77) {
+        if (this.attackStatus >= 85) {
             this.boss.getNavigation().stop();
             this.bonusBeamHeight = 0f;
             this.boss.setBeamHeight(0f);
@@ -339,7 +408,7 @@ public class MoonknightGoal extends Goal {
             this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
             this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-            if (attackStatus == 8 || attackStatus == 15 || attackStatus == 20 || attackStatus == 25) {
+            if (attackStatus == 10 || attackStatus == 16 || attackStatus == 22 || attackStatus == 27) {
                 this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 0.75f);
                 for (Entity entity : this.boss.getWorld().getOtherEntities(boss, new Box(this.targetPos).expand(3))) {
                     if (entity instanceof LivingEntity) {
@@ -350,34 +419,34 @@ public class MoonknightGoal extends Goal {
 
                 this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
                 MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.getWorld(), this.boss);
-                projectile.setAgeAndPoints(30, 150, 4);
+                projectile.setAgeAndPoints(30, 75, 4);
                 projectile.setDamage(this.getModifiedDamage(25f));
                 projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
                 projectile.setVelocity(x, y, z, 1.5f, 1f);
-                projectile.setRotateState(projectileRotation);
-                if (Objects.requireNonNull(projectileRotation) == RotationState.SWIPE_FROM_RIGHT) {
-                    projectileRotation = RotationState.SWIPE_FROM_LEFT;
+                projectile.setModelRotation(projectileRotation);
+                if (projectileRotation == -45) {
+                    projectileRotation = 45;
                 } else {
-                    projectileRotation = RotationState.NORMAL;
+                    projectileRotation = 0;
                 }
                 this.boss.getWorld().spawnEntity(projectile);
             }
-            if (attackStatus == 27) this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWORD_SMASH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-            if (attackStatus == 31) {
+            if (attackStatus == 31) this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWORD_SMASH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
+            if (attackStatus == 35) {
                 this.smashGround(30f, SoundRegistry.KNIGHT_SWORD_SMASH_EVENT.get(), true);
                 this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.HOSTILE, 1f, 0.75f);
                 MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE.get(), this.boss.getWorld(), this.boss);
                 projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
                 projectile.setVelocity(x, y, z, 1.5f, 1f);
                 projectile.setDamage(this.getModifiedDamage(40f));
-                projectile.setHugeExplosion(true);
-                projectile.setAgeAndPoints(30, 75, 10);
+                projectile.setExplosionExpansion(0.5f);
+                projectile.setAgeAndPoints(30, 150, 10);
                 this.boss.getWorld().spawnEntity(projectile);
             }
         }
-        if (attackStatus >= 37) {
+        if (attackStatus >= 40) {
             this.boss.getNavigation().stop();
-            this.projectileRotation = RotationState.SWIPE_FROM_RIGHT;
+            this.projectileRotation = -45;
             this.resetAttack(1f, false, 1f);
         }
     }
@@ -408,45 +477,36 @@ public class MoonknightGoal extends Goal {
                 }
             }
         }
-        if (this.attackStatus >= 23) {
+        if (this.attackStatus >= 27) {
             this.boss.getNavigation().stop();
             this.resetAttack(0.75f, false, 1f);
         }
     }
 
-    //private double moonfallRuptureMod = 0.5D; Variable along with old implementation
     private void moonfallLogic(LivingEntity target) {
         this.obliterateLogic(target, 25, 15, 43, 65f, SoundRegistry.KNIGHT_SWORD_SMASH_EVENT.get(), true);
         if (attackStatus == 18) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_SWORD_SMASH_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
         if (attackStatus == 1) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_CHARGE_SWORD_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
         if (this.attackStatus == 26) {
             float yaw = (this.yaw == 0f ? this.boss.getHeadYaw() : this.yaw) + 90;
-            WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get().castSpell(this.boss, this.boss.getWorld(), WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD.get().getDefaultStack(), this.targetPos.toCenterPos(), 14, this.getModifiedDamage(30f), 1f, yaw, 1.5f, 3.5f);
+            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), yaw, this.targetPos.toCenterPos(), this.targetPos.getY(), 14, 1.75f, (Vec3d position, Integer warmup, Float yawOutput) -> {
+                HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), this.boss.getWorld());
+                pillar.setOwner(this.boss);
+                pillar.setParticleAmountMod(1.5f);
+                pillar.setRadius(3.5f);
+                pillar.setDamage(this.getModifiedDamage(30f));
+                pillar.setKnockUp(1f);
+                pillar.setWarmup(warmup);
+                pillar.setPos(position.getX(), position.getY(), position.getZ());
+                this.boss.getWorld().spawnEntity(pillar);
+            });
         }
-        // Old implementation:
-        /*if (this.attackStatus > 26 && this.attackStatus < 40) {
-            Vec3d direction = new Vec3d(this.targetPos.getX() - this.boss.getBlockX(), 0, this.targetPos.getZ() - this.boss.getBlockZ()).multiply(this.moonfallRuptureMod);
-            Vec3d spot = new Vec3d(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ()).add(direction);
-            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(spot.getX() - 1, spot.getY() - 1, spot.getZ() - 1, spot.getX() + 1, spot.getY() + 1, spot.getZ() + 1))) {
-                if (entity instanceof LivingEntity) {
-                    entity.damage(this.boss.getWorld().getDamageSources().mobAttack(boss), this.getModifiedDamage(30f));
-                    entity.addVelocity(0, 1.0, 0);
-                }
-            }
-            this.boss.getWorld().playSound(null, BlockPos.ofFloored(spot), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-            if (!this.boss.getWorld().isClient) {
-                ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, spot.getX(), spot.getY(), spot.getZ(), ParticleEvents.SOUL_FLAME_RUPTURE_MAP, 1f);
-            }
-            this.moonfallRuptureMod += 0.25D;
-        } else if (this.attackStatus >= 41) {
-            this.moonfallRuptureMod = 0.5D;
-        }*/
     }
 
     private void moonveilLogic() {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 5));
-        if (this.attackStatus == 29 || this.attackStatus == 42) {
+        if (this.attackStatus == 29 || this.attackStatus == 55) {
             this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
             for (Entity entity : this.boss.getWorld().getOtherEntities(boss, this.boss.getBoundingBox().expand(3))) {
                 if (entity instanceof LivingEntity livingEntity) {
@@ -460,7 +520,7 @@ public class MoonknightGoal extends Goal {
                 ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             }
         }
-        if (this.attackStatus >= 55) {
+        if (this.attackStatus >= 67) {
             this.resetAttack(1.2f, true, 1f);
         }
     }
@@ -568,6 +628,47 @@ public class MoonknightGoal extends Goal {
         }
     }
 
+    private void rupturePhase2() {
+        this.attackStatus++;
+        if (this.attackStatus == 5) {
+            for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(12))) {
+                this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.HOSTILE, 1f, 0.6f);
+            }
+        }
+        this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, true, true));
+        if (this.attackStatus == 26) {
+            int per = 10;
+            int delay = 0;
+            for (int theta = 0; theta < 720; theta += per) {
+                float r = theta * 0.03f;
+                double x = r * Math.cos(theta);
+                double z = r * Math.sin(theta);
+                Vec3d pos = new Vec3d(this.boss.getX() + x, this.boss.getY(), this.boss.getZ() + z);
+                this.spawnPillar(pos, delay);
+                if (theta % 20 == 0) delay++;
+            }
+        }
+        if (this.attackStatus == 29) {
+            this.targetPos = this.boss.getBlockPos();
+            this.smashGround(25f, SoundEvents.ENTITY_GENERIC_EXPLODE, false);
+        }
+        if (this.attackStatus >= 58) {
+            this.resetAttack(0.5f, true, 1f);
+        }
+    }
+
+    private void spawnPillar(Vec3d pos, int warmup) {
+        HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), this.boss.getWorld());
+        pillar.setOwner(this.boss);
+        pillar.setParticleAmountMod(1.5f);
+        pillar.setRadius(3.5f);
+        pillar.setDamage(this.getModifiedDamage(30f));
+        pillar.setKnockUp(1f);
+        pillar.setWarmup(warmup);
+        pillar.setPos(pos.getX(), pos.getY(), pos.getZ());
+        this.boss.getWorld().spawnEntity(pillar);
+    }
+
     private void blindingLightLogic() {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
@@ -618,7 +719,7 @@ public class MoonknightGoal extends Goal {
                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, target.getX(), target.getY(), target.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
             }
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 140, 1));
-            this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 0.7f, 1f);
+            this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus >= 48) {
             this.resetAttack(1f, true, 2f);

@@ -4,6 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -44,6 +46,9 @@ public class ReturnThrownWeaponC2S {
         if (uuid != null) {
             Entity entity = ((ServerWorld)player.getWorld()).getEntity(uuid);
             if (entity instanceof ReturningProjectile projectile) {
+                if (!projectile.shouldReturn()) {
+                    player.getWorld().playSound(null, player.getBlockPos(), SoundEvents.ITEM_TRIDENT_RETURN, SoundCategory.PLAYERS, 1f, 1f);
+                }
                 projectile.setShouldReturn(true);
             } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
                 player.sendMessage(text, true);

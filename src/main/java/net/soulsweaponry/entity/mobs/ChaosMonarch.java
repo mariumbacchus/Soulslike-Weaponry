@@ -187,7 +187,19 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         if (this.hasStatusEffect(StatusEffects.WITHER)) {
             this.removeStatusEffect(StatusEffects.WITHER);
         }
-        this.turnBlocks(this.getWorld(), this.getBlockPos());
+        if (ConfigConstructor.chaos_monarch_wither_ground) {
+            this.turnBlocks(this.getWorld(), this.getBlockPos());
+        }
+    }
+
+    @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {

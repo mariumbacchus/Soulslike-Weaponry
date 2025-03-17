@@ -109,6 +109,15 @@ public class BlockRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.DEMON_HEART.get()).build()))
                 .offerTo(consumer);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.CHUNGUS_EMERALD_BLOCK.get())
+                .input('#', ItemRegistry.CHUNGUS_EMERALD.get())
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.CHUNGUS_EMERALD.get()).build()))
+                .offerTo(consumer);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.soulsweaponry.client.registry;
 
+import com.mrcrayfish.controllable.client.binding.ButtonBindings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -13,7 +14,9 @@ import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.C2S.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyBindRegistry {
@@ -92,10 +95,32 @@ public class KeyBindRegistry {
                 ModMessages.sendToServer(new ParryC2S());
             } catch (Exception ignored) {}
         }
-        while (effectShootMoonlight.wasPressed()) {
-            if (client.player != null && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
-                ModMessages.sendToServer(new MoonlightC2S());
-                client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), ConfigConstructor.moonlight_ring_projectile_cooldown);
+        boolean effect = effectShootMoonlight.isPressed();
+        boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();//TODO test, check with and without events calls disabled
+        boolean controller = false;
+        if (WeaponUtil.isModLoaded("controllable")) {
+            controller = ButtonBindings.ATTACK.isButtonPressed();
+        }
+        if (effect || melee || controller) {
+            if (client.player != null) {
+                boolean accept = false;
+                if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
+                    accept = true;
+                    client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), ConfigConstructor.moonlight_ring_projectile_cooldown);
+                } else if (melee || controller) {
+                    for (Hand hand : Hand.values()) {
+                        ItemStack stack = client.player.getStackInHand(hand);
+                        boolean moonlight = stack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD.get()) && !ConfigConstructor.disable_use_moonlight_shortsword;
+                        boolean bluemoon = stack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD.get()) && !ConfigConstructor.disable_use_bluemoon_shortsword;
+                        // Sending message each left click with the item is a bit much so don't do that
+                        if (moonlight || bluemoon) {
+                            accept = true;
+                        }
+                    }
+                }
+                if (accept) {
+                    ModMessages.sendToServer(new MoonlightC2S());
+                }
             }
         }
         while (returnThrownWeapon.wasPressed()) {

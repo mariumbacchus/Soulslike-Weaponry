@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:blunderbuss",
+  "criteria": {
+    "gatling_gun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:gatling_gun"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.gatling_gun.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:gatling_gun",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.gatling_gun.title"
+    }
+  },
+  "requirements": [
+    [
+      "gatling_gun"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

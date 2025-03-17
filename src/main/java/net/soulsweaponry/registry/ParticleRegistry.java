@@ -17,6 +17,9 @@ public class ParticleRegistry {
     public static final RegistryObject<DefaultParticleType> PURPLE_FLAME = PARTICLES.register("purple_flame", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> DARK_STAR = PARTICLES.register("dark_star", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> BLACK_FLAME = PARTICLES.register("black_flame", () -> new DefaultParticleType(true));
+    public static final RegistryObject<DefaultParticleType> SUN_PARTICLE = PARTICLES.register("sun_particle", () -> new DefaultParticleType(true));
+    public static final RegistryObject<DefaultParticleType> MOONVEIL_PARTICLE = PARTICLES.register("moonveil_particle", () -> new DefaultParticleType(true));
+    public static final RegistryObject<DefaultParticleType> BLUE_FLAME = PARTICLES.register("blue_flame", () -> new DefaultParticleType(true));
 
     public static void register(IEventBus bus) {
         PARTICLES.register(bus);

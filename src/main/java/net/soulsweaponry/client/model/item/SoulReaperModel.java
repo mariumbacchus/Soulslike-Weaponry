@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.SoulReaper;
+import net.soulsweaponry.items.scythe.SoulReaper;
 import software.bernie.geckolib.model.GeoModel;
 
 public class SoulReaperModel extends GeoModel<SoulReaper> {

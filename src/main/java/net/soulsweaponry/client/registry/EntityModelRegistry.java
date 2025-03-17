@@ -4,6 +4,7 @@ import net.minecraft.client.render.entity.DragonFireballEntityRenderer;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderers;
 import net.minecraft.client.render.entity.WitherSkullEntityRenderer;
+import net.soulsweaponry.client.model.entity.projectile.*;
 import net.soulsweaponry.client.renderer.entity.mobs.*;
 import net.soulsweaponry.client.renderer.entity.projectile.*;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -24,9 +25,11 @@ public class EntityModelRegistry {
         EntityRenderers.register(EntityRegistry.DARK_SORCERER.get(), DarkSorcererRenderer::new);
         EntityRenderers.register(EntityRegistry.COMET_SPEAR_ENTITY_TYPE.get(), CometSpearRenderer::new);
         EntityRenderers.register(EntityRegistry.BIG_CHUNGUS.get(), BigChungusRenderer::new);
-        EntityRenderers.register(EntityRegistry.MOONLIGHT_ENTITY_TYPE.get(), MoonlightProjectileRenderer::new);
-        EntityRenderers.register(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), MoonlightProjectileBigRenderer::new);
-        EntityRenderers.register(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE.get(), VerticalMoonlightProjectileRenderer::new);
+        EntityRenderers.register(EntityRegistry.MOONLIGHT_ENTITY_TYPE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new MoonlightProjectileModel()));
+        EntityRenderers.register(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new MoonlightProjectileBigModel()));
+        EntityRenderers.register(EntityRegistry.DARK_MOON_PROJECTILE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new DarkMoonProjectileModel()));
+        EntityRenderers.register(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new VerticalMoonlightProjectileModel()));
+        EntityRenderers.register(EntityRegistry.HORIZONTAL_MOONLIGHT_ENTITY_TYPE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new VerticalMoonlightProjectileModel()));
         EntityRenderers.register(EntityRegistry.SWORDSPEAR_ENTITY_TYPE.get(), DragonslayerSwordspearRenderer::new);
         EntityRenderers.register(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), ChargedArrowRenderer::new);
         EntityRenderers.register(EntityRegistry.SILVER_BULLET_ENTITY_TYPE.get(), SilverBulletRenderer::new);
@@ -44,9 +47,9 @@ public class EntityModelRegistry {
         EntityRenderers.register(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE.get(), WitherSkullEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.CHAOS_SKULL.get(), WitherSkullEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.CHAOS_ORB_ENTITY.get(), ChaosOrbRenderer::new);
-        EntityRenderers.register(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL.get(), SunlightProjectileSmallRenderer::new);
-        EntityRenderers.register(EntityRegistry.SUNLIGHT_PROJECTILE_BIG.get(), SunlightProjectileBigRenderer::new);
-        EntityRenderers.register(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE.get(), VerticalSunlightProjectileRenderer::new);
+        EntityRenderers.register(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new SunlightProjectileSmallModel()));
+        EntityRenderers.register(EntityRegistry.SUNLIGHT_PROJECTILE_BIG.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new SunlightProjectileBigModel()));
+        EntityRenderers.register(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE.get(), (ctx) -> new MoonlightProjectileRenderer(ctx, new VerticalSunlightProjectileModel()));
         EntityRenderers.register(EntityRegistry.GROWING_FIREBALL_ENTITY.get(), GrowingFireballRenderer::new);
         EntityRenderers.register(EntityRegistry.WARMTH_ENTITY.get(), WarmthEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.DAY_STALKER.get(), DayStalkerRenderer::new);
@@ -58,12 +61,19 @@ public class EntityModelRegistry {
         EntityRenderers.register(EntityRegistry.DEATH_SPIRAL_ENTITY.get(), EmptyEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.NIGHTS_EDGE.get(), NightsEdgeRenderer::new);
         EntityRenderers.register(EntityRegistry.NIGHT_WAVE.get(), EmptyEntityRenderer::new);
-        EntityRenderers.register(EntityRegistry.FLAME_PILLAR.get(), EmptyEntityRenderer::new);
+        EntityRenderers.register(EntityRegistry.FLAME_PILLAR.get(), FlamePillarRenderer::new);
         EntityRenderers.register(EntityRegistry.KRAKEN_SLAYER_PROJECTILE.get(), KrakenSlayerProjectileRenderer::new);
         EntityRenderers.register(EntityRegistry.MOONLIGHT_ARROW.get(), MoonlightArrowRenderer::new);
         EntityRenderers.register(EntityRegistry.ARROW_STORM_ENTITY.get(), EmptyEntityRenderer::new);
-        EntityRenderers.register(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), EmptyEntityRenderer::new);
+        EntityRenderers.register(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), HolyMoonlightPillarRenderer::new);
         EntityRenderers.register(EntityRegistry.WARMUP_LIGHTNING.get(), EmptyEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhostRenderer::new);
+        EntityRenderers.register(EntityRegistry.GHOST_GLAIVE_TYPE.get(), GhostGlaiveRenderer::new);
+        EntityRenderers.register(EntityRegistry.MOONVEIL_HORIZONTAL.get(), MoonveilWaveRenderer::new);
+        EntityRenderers.register(EntityRegistry.MOONVEIL_VERTICAL.get(), MoonveilWaveRenderer::new);
+        EntityRenderers.register(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY.get(), BlackflameExplosionEntityRenderer::new);
+        EntityRenderers.register(EntityRegistry.ABSORBED_PROJECTILES_ORB_ENTITY.get(), EmptyEntityRenderer::new);
+        EntityRenderers.register(EntityRegistry.FROZEN_LIGHTNING.get(), FrozenLightningRenderer::new);
+        EntityRenderers.register(EntityRegistry.SILVER_ARROW.get(), SilverArrowRenderer::new);
     }
 }

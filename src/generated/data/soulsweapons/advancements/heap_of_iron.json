@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "guts_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:guts_sword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.heap_of_iron.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:guts_sword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.heap_of_iron.title"
+    }
+  },
+  "requirements": [
+    [
+      "guts_sword"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

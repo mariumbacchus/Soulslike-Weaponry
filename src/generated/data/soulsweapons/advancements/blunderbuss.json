@@ -1,0 +1,39 @@
+{
+  "parent": "soulsweapons:hunter_pistol",
+  "criteria": {
+    "blunderbuss": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:blunderbuss"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.soulsweapons.blunderbuss.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "soulsweapons:blunderbuss",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.soulsweapons.blunderbuss.title"
+    }
+  },
+  "requirements": [
+    [
+      "blunderbuss"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

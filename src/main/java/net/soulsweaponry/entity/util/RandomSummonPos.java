@@ -23,7 +23,7 @@ public class RandomSummonPos {
     /**
      * Helper class that handles spawning of enemies during boss fights.
      * @param world world
-     * @param random random (of java util {@link Random} class)
+     * @param random random (of minecraft's own {@link Random} class)
      * @param spawnAmount amount of entities to spawn
      * @param maxFails max amount of fails before aborting
      * @param start start position/center position
@@ -53,7 +53,7 @@ public class RandomSummonPos {
             }
             BlockPos blockPos = this.getRandomValidSpawn();
             if (blockPos != null) {
-                Vec3d pos = new Vec3d(blockPos.getX() + 0.5f, blockPos.getY(), blockPos.getZ() + 0.5);
+                Vec3d pos = blockPos.toCenterPos();
                 this.consumer.accept(pos);
                 spawns++;
             } else {

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/water",
+  "textures": {
+    "particle": "soulsweapons:block/purified_blood_still",
+    "flow": "soulsweapons:block/purified_blood_flow",
+    "still": "soulsweapons:block/purified_blood_still"
+  }
+}

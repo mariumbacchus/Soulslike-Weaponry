@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.item;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.FreyrSword;
+import net.soulsweaponry.items.sword.FreyrSword;
 import software.bernie.geckolib.model.GeoModel;
 
 public class FreyrSwordItemModel extends GeoModel<FreyrSword> {

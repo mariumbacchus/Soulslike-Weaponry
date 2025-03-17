@@ -1,29 +1,28 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.TooltipAbilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SkofnungStone extends Item implements IConfigDisable {
+public class SkofnungStone extends ModdedItem {
 
     public SkofnungStone(Settings settings) {
         super(settings);
+        this.addTooltipAbility(TooltipAbilities.DISABLE_DEBUFS);
     }
 
     @Override
@@ -43,15 +42,16 @@ public class SkofnungStone extends Item implements IConfigDisable {
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);
             }
         }
-        for (StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (effect.getCategory().equals(StatusEffectCategory.HARMFUL) && user.hasStatusEffect(effect)) {
-                user.removeStatusEffect(effect);
-                world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
+        List<StatusEffect> effects = new ArrayList<>();
+        for (StatusEffectInstance effectInstance : user.getStatusEffects()) {
+            if (effectInstance.getEffectType().getCategory().equals(StatusEffectCategory.HARMFUL)) {
+                effects.add(effectInstance.getEffectType());
                 shouldDamage = true;
             }
         }
-
+        effects.forEach(user::removeStatusEffect);
         if (shouldDamage) {
+            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
             stoneStack.damage(1, user, e -> e.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
         } else {
@@ -60,16 +60,8 @@ public class SkofnungStone extends Item implements IConfigDisable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (this.isDisabled(stack)) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
-        if (Screen.hasShiftDown()) {
-            WeaponUtil.addAbilityTooltip(WeaponUtil.TooltipAbilities.DISABLE_DEBUFS, stack, tooltip);
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-        }
-        super.appendTooltip(stack, world, tooltip, context);
+    public boolean isFireproof() {
+        return false;
     }
 
     @Override

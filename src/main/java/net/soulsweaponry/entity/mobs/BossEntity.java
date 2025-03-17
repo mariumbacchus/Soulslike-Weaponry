@@ -12,20 +12,26 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.networking.packets.S2C.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
-    
+
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
+    private boolean playingMusic = false;
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -34,7 +40,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     }
 
     public abstract int getXp();
-    
+
     @Override
     protected void mobTick() {
         if (!this.hasUpdatedHealth) {
@@ -42,6 +48,26 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
             this.hasUpdatedHealth = true;
         }
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
+            this.getWorld().playSound(null, this.getBlockPos(), this.getBossMusic(), SoundCategory.MUSIC, 1f, 1f);
+            this.playingMusic = true;
+        }
+    }
+
+    public abstract SoundEvent getBossMusic();
+    public abstract boolean hasBossMusic();
+
+    public boolean isPlayingMusic() {
+        return playingMusic;
+    }
+
+    public void setPlayingMusic(boolean playingMusic) {
+        this.playingMusic = playingMusic;
     }
 
     /**
@@ -98,7 +124,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (this.hasCustomName()) {
-           this.bossBar.setName(this.getDisplayName());
+            this.bossBar.setName(this.getDisplayName());
         }
         if (nbt.contains("HasUpdatedHealth")) {
             this.hasUpdatedHealth = nbt.getBoolean("HasUpdatedHealth");
@@ -127,6 +153,9 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setDeath();
+        if (this.getBossMusic() != null && this.getWorld() instanceof ServerWorld) {
+            ModMessages.sendToAllPlayers(new StopBossMusicS2C(this.getBossMusic().getId()));
+        }
     }
 
     @Override

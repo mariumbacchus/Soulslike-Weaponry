@@ -75,7 +75,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     @Override
     protected boolean canHit(Entity entity) {
-        if (entity instanceof ChaosMonarch || entity instanceof NightShade) {
+        if (entity instanceof ChaosMonarch || entity instanceof NightShade || this.isOwner(entity)) {
             return false;
         }
         if (entity instanceof LivingEntity target) {
@@ -86,6 +86,11 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
             }
         }
         return super.canHit(entity);
+    }
+
+    @Override
+    public boolean canHit() {
+        return false;
     }
 
     @Override

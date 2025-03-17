@@ -118,6 +118,16 @@ public class NightShade extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return null;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return false;
+    }
+
+    @Override
     protected boolean shouldDropLoot() {
         return !this.isCopy();
     }

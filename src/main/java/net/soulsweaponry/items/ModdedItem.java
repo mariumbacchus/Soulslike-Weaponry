@@ -1,0 +1,49 @@
+package net.soulsweaponry.items;
+
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
+import net.soulsweaponry.util.TooltipAbilities;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo {
+
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
+
+    public ModdedItem(Settings settings) {
+        super(settings);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (this.isDisabled(stack)) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
+        this.appendTooltipAbilities(stack, world, tooltip, context);
+        super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public List<TooltipAbilities> getTooltipAbilities() {
+        return this.tooltipAbilities;
+    }
+
+    @Override
+    public void addTooltipAbility(TooltipAbilities... abilities) {
+        Collections.addAll(this.tooltipAbilities, abilities);
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[0];
+    }
+
+    @Override
+    public abstract boolean isFireproof();
+}

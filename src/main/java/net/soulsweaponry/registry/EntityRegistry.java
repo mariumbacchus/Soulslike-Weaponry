@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,7 +16,11 @@ import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.*;
-import net.soulsweaponry.entity.projectile.invisible.*;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
+import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
+import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
+import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.entity.projectile.noclip.*;
 
 import java.util.function.Supplier;
 
@@ -32,7 +37,7 @@ public class EntityRegistry {
     public static final RegistryObject<EntityType<ReturningKnight>> RETURNING_KNIGHT = registerWithSpawnEgg("returning_knight", () -> EntityType.Builder.create(ReturningKnight::new, SpawnGroup.MONSTER).setDimensions(3.0F, 8.0F).build("returning_knight"), 2251096, 6554982);
     public static final RegistryObject<EntityType<Remnant>> REMNANT = registerWithSpawnEgg("remnant", () -> EntityType.Builder.create(Remnant::new, SpawnGroup.MONSTER).setDimensions(1F, 1.75F).build("remnant"), 6447971, 65514);
     public static final RegistryObject<EntityType<DarkSorcerer>> DARK_SORCERER = registerWithSpawnEgg("dark_sorcerer", () -> EntityType.Builder.create(DarkSorcerer::new, SpawnGroup.MONSTER).setDimensions(1F, 1.75f).build("dark_sorcerer"), 0, 2572343);
-    public static final RegistryObject<EntityType<BigChungus>> BIG_CHUNGUS = registerWithSpawnEgg("big_chungus", () -> EntityType.Builder.create(BigChungus::new, SpawnGroup.MONSTER).setDimensions(0.75f, 0.75f).build("big_chungus"), 12636653, 0);
+    public static final RegistryObject<EntityType<BigChungus>> BIG_CHUNGUS = registerWithSpawnEgg("big_chungus", () -> EntityType.Builder.create(BigChungus::new, SpawnGroup.MONSTER).setDimensions(0.75f, 1f).build("big_chungus"), 12636653, 0);
     public static final RegistryObject<EntityType<SoulReaperGhost>> SOUL_REAPER_GHOST = registerWithSpawnEgg("soul_reaper_ghost", () -> EntityType.Builder.create(SoulReaperGhost::new, SpawnGroup.MONSTER).setDimensions(1F, 1.75F).build("soul_reaper_ghost"), 13480150, 13200614);
     public static final RegistryObject<EntityType<Forlorn>> FORLORN = registerWithSpawnEgg("forlorn", () -> EntityType.Builder.create(Forlorn::new, SpawnGroup.MONSTER).setDimensions(1F, 1.75F).build("forlorn"), 4859716, 5701896);
     public static final RegistryObject<EntityType<EvilForlorn>> EVIL_FORLORN = registerWithSpawnEgg("evil_forlorn", () -> EntityType.Builder.create(EvilForlorn::new, SpawnGroup.MONSTER).setDimensions(1F, 1.75F).build("evil_forlorn"), 5701896, 4859716);
@@ -47,7 +52,9 @@ public class EntityRegistry {
 
     public static final RegistryObject<EntityType<MoonlightProjectile>> MOONLIGHT_ENTITY_TYPE = registerEntity("moonlight_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(1F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("moonlight_projectile"));
     public static final RegistryObject<EntityType<MoonlightProjectile>> MOONLIGHT_BIG_ENTITY_TYPE = registerEntity("big_moonlight_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(2F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("big_moonlight_projectile"));
+    public static final RegistryObject<EntityType<MoonlightProjectile>> DARK_MOON_PROJECTILE = registerEntity("dark_moon_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(2F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("big_moonlight_projectile"));
     public static final RegistryObject<EntityType<MoonlightProjectile>> VERTICAL_MOONLIGHT_ENTITY_TYPE = registerEntity("vertical_moonlight_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(1F, 3F).maxTrackingRange(4).trackingTickInterval(20).build("vertical_moonlight_projectile"));
+    public static final RegistryObject<EntityType<MoonlightProjectile>> HORIZONTAL_MOONLIGHT_ENTITY_TYPE = registerEntity("horizontal_moonlight_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(3F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("horizontal_moonlight_projectile"));
     public static final RegistryObject<EntityType<MoonlightProjectile>> SUNLIGHT_PROJECTILE_SMALL = registerEntity("sunlight_projectile_small", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(1F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("sunlight_projectile_small"));
     public static final RegistryObject<EntityType<MoonlightProjectile>> SUNLIGHT_PROJECTILE_BIG = registerEntity("sunlight_projectile_big", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(2F, 1F).maxTrackingRange(4).trackingTickInterval(20).build("sunlight_projectile_big"));
     public static final RegistryObject<EntityType<MoonlightProjectile>> VERTICAL_SUNLIGHT_PROJECTILE = registerEntity("vertical_sunlight_projectile", () -> EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).setDimensions(1F, 3F).maxTrackingRange(4).trackingTickInterval(20).build("vertical_sunlight_projectile"));
@@ -69,17 +76,24 @@ public class EntityRegistry {
     public static final RegistryObject<EntityType<GrowingFireball>> GROWING_FIREBALL_ENTITY = registerEntity("growing_fireball", () -> EntityType.Builder.<GrowingFireball>create(GrowingFireball::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).maxTrackingRange(10).trackingTickInterval(20).build("growing_fireball"));
     public static final RegistryObject<EntityType<NightSkull>> NIGHT_SKULL = registerEntity("night_skull", () -> EntityType.Builder.create(NightSkull::new, SpawnGroup.MISC).setDimensions(0.5f, 0.75f).maxTrackingRange(15).trackingTickInterval(20).build("night_skull"));
     public static final RegistryObject<EntityType<FogEntity>> FOG_ENTITY = registerEntity("fog_entity", () -> EntityType.Builder.create(FogEntity::new, SpawnGroup.MISC).setDimensions(8f, 3f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("fog_entity"));
-    public static final RegistryObject<EntityType<BlackflameSnakeEntity>> BLACKFLAME_SNAKE_ENTITY = registerEntity("blackflame_snake_entity", () -> EntityType.Builder.create(BlackflameSnakeEntity::new, SpawnGroup.MISC).setDimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("blackflame_snake_entity"));
+    public static final RegistryObject<EntityType<BlackflameSnakeEntity>> BLACKFLAME_SNAKE_ENTITY = registerEntity("blackflame_snake_entity", () -> EntityType.Builder.<BlackflameSnakeEntity>create(BlackflameSnakeEntity::new, SpawnGroup.MISC).setDimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("blackflame_snake_entity"));
     public static final RegistryObject<EntityType<NoDragWitherSkull>> NO_DRAG_WITHER_SKULL = registerEntity("no_drag_wither_skull", () -> EntityType.Builder.create(NoDragWitherSkull::new, SpawnGroup.MISC).setDimensions(0.3125f, 0.3125f).maxTrackingRange(15).trackingTickInterval(20).build("no_drag_wither_skull"));
     public static final RegistryObject<EntityType<NightProwlerGoal.DeathSpiralEntity>> DEATH_SPIRAL_ENTITY = registerEntity("death_spiral", () -> EntityType.Builder.create(NightProwlerGoal.DeathSpiralEntity::new, SpawnGroup.MISC).setDimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("death_spiral"));
     public static final RegistryObject<EntityType<NightsEdge>> NIGHTS_EDGE = registerEntity("nights_edge", () -> EntityType.Builder.create(NightsEdge::new, SpawnGroup.MISC).setDimensions(0.75f, 2f).maxTrackingRange(6).trackingTickInterval(Integer.MAX_VALUE).build("nights_edge"));
     public static final RegistryObject<EntityType<NightWaveEntity>> NIGHT_WAVE = registerEntity("night_wave", () -> EntityType.Builder.create(NightWaveEntity::new, SpawnGroup.MISC).setDimensions(3.5f, 1f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("night_wave"));
     public static final RegistryObject<EntityType<FlamePillar>> FLAME_PILLAR = registerEntity("flame_pillar", () -> EntityType.Builder.create(FlamePillar::new, SpawnGroup.MISC).setDimensions(1.5f, 1.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("flame_pillar"));
-    public static final RegistryObject<EntityType<KrakenSlayerProjectile>> KRAKEN_SLAYER_PROJECTILE = registerEntity("kraken_slayer_projectile", () -> EntityType.Builder.<KrakenSlayerProjectile>create(KrakenSlayerProjectile::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build("kraken_slayer_projectile"));
+    public static final RegistryObject<EntityType<TrueDamageArrow>> KRAKEN_SLAYER_PROJECTILE = registerEntity("kraken_slayer_projectile", () -> EntityType.Builder.<TrueDamageArrow>create(TrueDamageArrow::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build("kraken_slayer_projectile"));
     public static final RegistryObject<EntityType<MoonlightArrow>> MOONLIGHT_ARROW = registerEntity("moonlight_arrow", () -> EntityType.Builder.<MoonlightArrow>create(MoonlightArrow::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).maxTrackingRange(4).trackingTickInterval(20).build("moonlight_arrow"));
     public static final RegistryObject<EntityType<ArrowStormEntity>> ARROW_STORM_ENTITY = registerEntity("arrow_storm_entity", () -> EntityType.Builder.create(ArrowStormEntity::new, SpawnGroup.MISC).setDimensions(3f, 1.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("arrow_storm_entity"));
     public static final RegistryObject<EntityType<HolyMoonlightPillar>> HOLY_MOONLIGHT_PILLAR = registerEntity("holy_moonlight_pillar", () -> EntityType.Builder.create(HolyMoonlightPillar::new, SpawnGroup.MISC).setDimensions(1.85f, 1.85f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("holy_moonlight_pillar"));
     public static final RegistryObject<EntityType<WarmupLightningEntity>> WARMUP_LIGHTNING = registerEntity("warmup_lightning", () -> EntityType.Builder.create(WarmupLightningEntity::new, SpawnGroup.MISC).setDimensions(1.5f, 1.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("warmup_lightning"));
+    public static final RegistryObject<EntityType<GhostGlaiveEntity>> GHOST_GLAIVE_TYPE = registerEntity("ghost_glaive", () -> EntityType.Builder.<GhostGlaiveEntity>create(GhostGlaiveEntity::new, SpawnGroup.MISC).setDimensions(1f, 1f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("ghost_glaive"));
+    public static final RegistryObject<EntityType<MoonveilWave>> MOONVEIL_HORIZONTAL = registerEntity("moonveil_horizontal", () -> EntityType.Builder.<MoonveilWave>create(MoonveilWave::new, SpawnGroup.MISC).setDimensions(4.5f, 0.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("moonveil_horizontal"));
+    public static final RegistryObject<EntityType<MoonveilWave>> MOONVEIL_VERTICAL = registerEntity("moonveil_vertical", () -> EntityType.Builder.<MoonveilWave>create(MoonveilWave::new, SpawnGroup.MISC).setDimensions(0.5f, 3.0f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("moonveil_vertical"));
+    public static final RegistryObject<EntityType<BlackflameExplosionEntity>> BLACKFLAME_EXPLOSION_ENTITY = registerEntity("blackflame_explosion_entity", () -> EntityType.Builder.<BlackflameExplosionEntity>create(BlackflameExplosionEntity::new, SpawnGroup.MISC).setDimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("blackflame_explosion_entity"));
+    public static final RegistryObject<EntityType<AbsorbedProjectilesOrb>> ABSORBED_PROJECTILES_ORB_ENTITY = registerEntity("absorbed_projectiles_orb_entity", () -> EntityType.Builder.<AbsorbedProjectilesOrb>create(AbsorbedProjectilesOrb::new, SpawnGroup.MISC).setDimensions(1f, 1f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build("absorbed_projectiles_orb_entity"));
+    public static final RegistryObject<EntityType<FrozenLightning>> FROZEN_LIGHTNING = registerEntity("frozen_lightning", () -> EntityType.Builder.<FrozenLightning>create(FrozenLightning::new, SpawnGroup.MISC).setDimensions(2f, 5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(20).build("frozen_lightning"));
+    public static final RegistryObject<EntityType<SilverArrow>> SILVER_ARROW = registerEntity("silver_arrow", () -> EntityType.Builder.<SilverArrow>create(SilverArrow::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(20).build("silver_arrow"));
 
     public static <E extends EntityType<? extends MobEntity>> RegistryObject<E> registerWithSpawnEgg(String id, Supplier<E> entity, int primaryColor, int secondaryColor) {
         RegistryObject<E> returnable = registerEntity(id, entity);
@@ -102,7 +116,7 @@ public class EntityRegistry {
 
     public static void registerBossDrops() {
         registerBossDrops("accursed_lord_boss", ItemRegistry.LORD_SOUL_RED.get(), WeaponRegistry.DARKIN_BLADE.get(), ItemRegistry.WITHERED_DEMON_HEART.get());
-        registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK.get(), ItemRegistry.LORD_SOUL_VOID.get(), ItemRegistry.CHAOS_CROWN.get(), ItemRegistry.CHAOS_ROBES.get());
+        registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK.get(), ItemRegistry.LORD_SOUL_VOID.get(), ItemRegistry.CHAOS_CROWN.get(), ItemRegistry.CHAOS_ROBES.get(), Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ItemRegistry.BLOOD_VIAL_RECIPE_PAGE.get());
         registerBossDrops("day_stalker", WeaponRegistry.DAWNBREAKER.get(), ItemRegistry.LORD_SOUL_DAY_STALKER.get());
         registerBossDrops("draugr_boss", WeaponRegistry.DRAUGR.get());
         registerBossDrops("moonknight", WeaponRegistry.MOONLIGHT_GREATSWORD.get(), ItemRegistry.LORD_SOUL_WHITE.get(), ItemRegistry.ESSENCE_OF_LUMINESCENCE.get(), ItemRegistry.MOONSTONE.get(), ItemRegistry.MOONSTONE.get());

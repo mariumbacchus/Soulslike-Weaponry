@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:verglas"
+    },
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "0": {
+      "item": "soulsweapons:moonstone"
+    },
+    "L": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    " #0",
+    "#L#",
+    "/# "
+  ],
+  "result": {
+    "item": "soulsweapons:dark_moon_greatsword"
+  },
+  "show_notification": true
+}
