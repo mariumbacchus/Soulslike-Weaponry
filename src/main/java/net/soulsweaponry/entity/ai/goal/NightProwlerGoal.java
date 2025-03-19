@@ -814,6 +814,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 this.boss.setFlying(false);
                 this.boss.setVelocity(0, -1f, 0);
             }
+            if (this.attackStatus >= 84) this.boss.setFlying(false);
             if (!this.hasExploded && this.boss.isOnGround() && this.attackStatus >= 88 && this.attackStatus <= 110) {
                 this.hasExploded = true;
                 this.boss.setTargetPos(this.boss.getBlockPos());

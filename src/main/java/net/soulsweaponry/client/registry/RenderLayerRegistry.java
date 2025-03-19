@@ -17,7 +17,7 @@ public class RenderLayerRegistry {
             false,
             false,
             RenderLayer.MultiPhaseParameters.builder()
-                    .program(RenderPhaseAccessor.getEndPortalProgram())//TODO test
+                    .program(RenderPhaseAccessor.getEndPortalProgram())
                     .texture(
                             RenderPhase.Textures.create()
                                     // 2-3x .add(EndPortalBlockEntityRenderer.SKY_TEXTURE, false, false) alone gives blue-white-ish dimension looking like an orbital strike preparing, kinda cool

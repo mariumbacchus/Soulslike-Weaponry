@@ -3,17 +3,10 @@ package net.soulsweaponry.mixin;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.client.entitydata.ClientParryData;
-import net.soulsweaponry.client.model.entity.mobs.ScythePosing;
-import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entitydata.ParryData;
-import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,31 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
+
     @Unique
     private float parryProgress;
 
-    @Inject(at = @At("TAIL"), method = "positionRightArm")
-    private void positionRightArm(T entity, CallbackInfo info) {
-        /*var model = ((BipedEntityModel<?>)(Object)this);TODO
-        for (ItemStack stack : entity.getHandItems()) {
-            if (WeaponUtil.CUSTOM_HOLD_WEAPONS.contains(stack.getItem())) {
-                if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {
-                    if (stack.isOf(WeaponRegistry.GUTS_SWORD.get())) {
-                        CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                    } else if (!stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())) {
-                        ScythePosing.hold(model.rightArm, model.leftArm, model.head, true);
-                    }
-                } else if (entity instanceof Remnant) {
-                    CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                }
-                if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())) {
-                    CrossbowPosing.hold(model.rightArm, model.leftArm, model.head, true);
-                }
-            }
-        }*/
-    }
-
-    @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
         // Parry animation
@@ -74,12 +47,5 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.4f; //0.4, 0.8
             }
         }
-        /*if (FMLLoader.getLoadingModList().getModFileById("bettercombat") == null) {TODO
-            ItemStack stack = entity.getMainHandStack();
-            if (model.handSwingProgress > 0.0f && WeaponUtil.CUSTOM_HOLD_WEAPONS.contains(stack.getItem())) {
-                ScythePosing.meleeAttack(model.leftArm, model.rightArm, entity, entity.handSwingProgress, animationProgress);
-                info.cancel();
-            }
-        }*/
     }
 }

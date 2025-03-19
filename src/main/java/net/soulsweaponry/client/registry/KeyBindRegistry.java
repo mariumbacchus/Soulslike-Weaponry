@@ -96,7 +96,7 @@ public class KeyBindRegistry {
             } catch (Exception ignored) {}
         }
         boolean effect = effectShootMoonlight.isPressed();
-        boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();//TODO test, check with and without events calls disabled
+        boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();// TODO Cant seem to test this since the game crashes whenever I try to load the controllable mod for some reason, but hopefully it works
         boolean controller = false;
         if (WeaponUtil.isModLoaded("controllable")) {
             controller = ButtonBindings.ATTACK.isButtonPressed();
