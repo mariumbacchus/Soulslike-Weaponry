@@ -6,7 +6,7 @@
       "item": "soulsweapons:lost_soul"
     },
     "C": {
-      "tag": "c:iron_ingots"
+      "tag": "forge:ingots/iron"
     }
   },
   "pattern": [

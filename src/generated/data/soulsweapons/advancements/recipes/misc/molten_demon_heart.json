@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:demon_hearts"
+            "tag": "forge:demon_hearts"
           }
         ]
       },

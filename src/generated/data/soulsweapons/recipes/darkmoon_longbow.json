@@ -9,7 +9,7 @@
       "item": "minecraft:string"
     },
     "X": {
-      "tag": "c:wood_sticks"
+      "tag": "forge:wood_sticks"
     },
     "Y": {
       "item": "soulsweapons:essence_of_eventide"

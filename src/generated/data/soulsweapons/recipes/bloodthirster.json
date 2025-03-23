@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "/": {
-      "tag": "c:wood_sticks"
+      "tag": "forge:wood_sticks"
     },
     "S": {
       "item": "soulsweapons:crimson_ingot"
     },
     "i": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     }
   },
   "pattern": [

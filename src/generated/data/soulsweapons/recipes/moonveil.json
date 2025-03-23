@@ -9,7 +9,7 @@
       "tag": "soulsweapons:lord_soul"
     },
     "X": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     }
   },
   "pattern": [

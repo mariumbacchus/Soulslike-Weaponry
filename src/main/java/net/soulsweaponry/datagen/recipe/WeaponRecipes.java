@@ -73,7 +73,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .items(ItemRegistry.MOONSTONE.get()).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLOODTHIRSTER.get())
-                .input('i', Items.IRON_INGOT)
+                .input('i', ModTags.Items.IRON_INGOTS)
                 .input('S', ItemRegistry.CRIMSON_INGOT.get())
                 .input('/', ModTags.Items.STICKS)
                 .pattern("iSi")
@@ -183,7 +183,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.WHIRLIGIG_SAWBLADE.get())
-                .input('i', Items.IRON_INGOT)
+                .input('i', ModTags.Items.IRON_INGOTS)
                 .input('/', ModTags.Items.STICKS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern(" i ")
@@ -234,7 +234,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.FREYR_SWORD.get())
-                .input('#', Items.IRON_INGOT)
+                .input('#', ModTags.Items.IRON_INGOTS)
                 .input('Y', ItemRegistry.MOONSTONE.get())
                 .input('X', ItemRegistry.VERGLAS.get())
                 .input('O', ModTags.Items.LORD_SOUL)
@@ -284,7 +284,7 @@ public class WeaponRecipes extends RecipeProvider {
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.HOLY_GREATSWORD.get())
                 .input('X', Items.IRON_SWORD)
-                .input('#', Items.IRON_INGOT)
+                .input('#', ModTags.Items.IRON_INGOTS)
                 .pattern(" # ")
                 .pattern("###")
                 .pattern("#X#")
@@ -324,7 +324,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .items(ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get()).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER.get())
-                .input('#', Items.IRON_INGOT)
+                .input('#', ModTags.Items.IRON_INGOTS)
                 .input('X', Items.GOLD_BLOCK)
                 .input('Y', ModTags.Items.LORD_SOUL)
                 .input('A', Items.BOW)
@@ -335,7 +335,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER_CROSSBOW.get())
-                .input('#', Items.IRON_INGOT)
+                .input('#', ModTags.Items.IRON_INGOTS)
                 .input('X', Items.GOLD_BLOCK)
                 .input('Y', ModTags.Items.LORD_SOUL)
                 .input('A', Items.CROSSBOW)
@@ -401,7 +401,7 @@ public class WeaponRecipes extends RecipeProvider {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.MOONVEIL.get())
                 .input('#', ItemRegistry.MOONSTONE.get())
                 .input('O', ModTags.Items.LORD_SOUL)
-                .input('X', Items.IRON_INGOT)
+                .input('X', ModTags.Items.IRON_INGOTS)
                 .pattern(" ##")
                 .pattern("#O ")
                 .pattern("X  ")
@@ -411,7 +411,7 @@ public class WeaponRecipes extends RecipeProvider {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SIMONS_BOWBLADE.get())
                 .input('X', Items.IRON_SWORD)
                 .input('#', Items.STRING)
-                .input('S', Items.IRON_INGOT)
+                .input('S', ModTags.Items.IRON_INGOTS)
                 .pattern(" X#")
                 .pattern("S #")
                 .pattern(" X#")

@@ -3,7 +3,7 @@
   "category": "equipment",
   "ingredients": [
     {
-      "tag": "c:silver_ingots"
+      "tag": "forge:ingots/silver"
     },
     {
       "item": "soulsweapons:lost_soul"

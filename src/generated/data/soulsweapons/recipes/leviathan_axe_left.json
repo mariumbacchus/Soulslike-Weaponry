@@ -6,7 +6,7 @@
       "item": "soulsweapons:verglas"
     },
     "/": {
-      "tag": "c:wood_sticks"
+      "tag": "forge:wood_sticks"
     },
     "S": {
       "tag": "soulsweapons:lord_soul"

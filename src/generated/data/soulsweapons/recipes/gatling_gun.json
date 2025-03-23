@@ -12,7 +12,7 @@
       "item": "minecraft:iron_block"
     },
     "S": {
-      "tag": "c:wood_sticks"
+      "tag": "forge:wood_sticks"
     }
   },
   "pattern": [
