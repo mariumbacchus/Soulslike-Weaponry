@@ -71,9 +71,9 @@ public class WeaponRegistry {
     public static DetonateGroundItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static BowItem GALEFORCE = new Galeforce(new Item.Settings().maxDamage(1300).rarity(Rarity.EPIC));
-    public static ToolItem TRANSLUCENT_SWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 6, -2.4F, new Item.Settings().rarity(Rarity.RARE));
-    public static ToolItem TRANSLUCENT_GLAIVE = new SwordItem(ModToolMaterials.LOST_SOUL, 7, -2.6F, new Item.Settings().rarity(Rarity.RARE));
-    public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new SwordItem(ModToolMaterials.LOST_SOUL, 8, -2.8F, new Item.Settings().rarity(Rarity.RARE));
+    public static ToolItem TRANSLUCENT_SWORD = new SwordItem(ModToolMaterials.LOST_SOUL, new Item.Settings().rarity(Rarity.RARE).attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.LOST_SOUL, 6, -2.4F)));
+    public static ToolItem TRANSLUCENT_GLAIVE = new SwordItem(ModToolMaterials.LOST_SOUL, new Item.Settings().rarity(Rarity.RARE).attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.LOST_SOUL, 7, -2.6F)));
+    public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new SwordItem(ModToolMaterials.LOST_SOUL, new Item.Settings().rarity(Rarity.RARE).attributeModifiers(SwordItem.createAttributeModifiers(ModToolMaterials.LOST_SOUL, 8, -2.4F)));
     public static ToolItem DRAUGR = new Draugr(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem DAWNBREAKER = new Dawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem SOUL_REAPER = new SoulReaper(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));

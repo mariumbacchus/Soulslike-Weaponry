@@ -11,7 +11,6 @@ public class SoundRegistry {
     public static SoundEvent MOONLIGHT_BIG_EVENT = registerSound("moonlight_big");
     public static SoundEvent MOONLIGHT_SMALL_EVENT = registerSound("moonlight_small");
     public static SoundEvent BIG_CHUNGUS_EVENT = registerSound("big_chungus");
-    public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
     public static SoundEvent FART_EVENT = registerSound("fart");
     public static SoundEvent DEMON_IDLE_EVENT = registerSound("demon_idle");
     public static SoundEvent DEMON_WALK_EVENT = registerSound("demon_walk");
@@ -71,7 +70,7 @@ public class SoundRegistry {
     public static SoundEvent TRINITY = registerSound("trinity");
 
 	public static Identifier registerId(String name) {
-		return Identifier.of(SoulsWeaponry.ModId + ":" + name);
+		return Identifier.of(SoulsWeaponry.ModId, name);
 	}
 
     public static SoundEvent registerSound(String id) {

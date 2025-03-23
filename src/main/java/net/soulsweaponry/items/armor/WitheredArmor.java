@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -45,7 +46,7 @@ public class WitheredArmor extends ModdedArmor implements GeoItem, IKeybindAbili
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
-    public WitheredArmor(ArmorMaterial material, Type slot, Settings settings) {
+    public WitheredArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 

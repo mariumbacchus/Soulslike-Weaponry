@@ -50,11 +50,11 @@ public class ChaosOrb extends Item implements IConfigDisable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+        super.appendTooltip(stack, context, tooltip, type);
         for (int i = 1; i < 3 + 1; i++) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_orb." + i).formatted(Formatting.DARK_GRAY));
         }

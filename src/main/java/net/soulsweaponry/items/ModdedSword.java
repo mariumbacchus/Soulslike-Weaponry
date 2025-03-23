@@ -22,7 +22,8 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
     protected final List<WeaponUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, - (4f - ingameAttackSpeed), settings);
+        // TODO: "- (4f - ingameAttackSpeed)" (sob)
+        super(toolMaterial, settings);
         this.attackSpeed = - (4f - ingameAttackSpeed);
     }
 
@@ -69,6 +70,7 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         }
     }
 
+    // TODO
     @Override
     public abstract boolean isFireproof();
 }

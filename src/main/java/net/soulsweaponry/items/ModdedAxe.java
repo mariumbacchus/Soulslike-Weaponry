@@ -24,7 +24,7 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
@@ -36,7 +36,7 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
         } else {
             tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
         }
-        super.appendTooltip(stack, world, tooltip, context);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     public List<WeaponUtil.TooltipAbilities> getTooltipAbilities() {

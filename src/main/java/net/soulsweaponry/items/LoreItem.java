@@ -26,8 +26,8 @@ public class LoreItem extends Item {
     }
     
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipType context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
         if (Screen.hasControlDown()) {
             for (int i = 1; i < linesOfLore + 1; i++) {
                 tooltip.add(Text.translatable("tooltip.soulsweapons." + this.name + ".part_" + i).formatted(Formatting.DARK_GRAY));

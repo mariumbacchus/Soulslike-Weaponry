@@ -20,6 +20,7 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -70,7 +71,7 @@ public class ChaosSet extends ModdedArmor implements GeoItem, ICooldownItem {
      */
     private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
     
-    public ChaosSet(ArmorMaterial material, Type slot, Settings settings) {
+    public ChaosSet(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT);

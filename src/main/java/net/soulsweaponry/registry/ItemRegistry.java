@@ -7,7 +7,6 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.registry.Registries;
@@ -41,7 +40,7 @@ public class ItemRegistry {
     public static final Item MOONSTONE = new Item(new Item.Settings());
     public static final Item CHUNGUS_EMERALD = new Item(new Item.Settings().rarity(Rarity.UNCOMMON));
     public static final Item DEMON_HEART = new LoreItem(new Item.Settings().food(new FoodComponent.Builder()
-            .nutrition(4).saturationModifier(6f).meat().alwaysEdible()
+            .nutrition(4).saturationModifier(6f)/*.meat()*/.alwaysEdible()
             .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
             .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
             .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()),
@@ -58,10 +57,10 @@ public class ItemRegistry {
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20));
     public static final Item IRON_SKULL = new Item(new Item.Settings());
 
-    public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new Item.Settings());
-    public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings());
-    public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f, new Item.Settings());
-    public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new Item.Settings());
+    public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f)));
+    public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 1.0f, -2.8f)));
+    public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f)));
+    public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, -3.0f, 0.0f)));
 
     public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), "withered_demon_heart", 4);
     public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), "arkenstone", 4);
@@ -76,7 +75,7 @@ public class ItemRegistry {
     public static final Item CHAOS_ROBES = new ChaosSet(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC));
     public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof());
 
-    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 112);
+    public static final Item CHUNGUS_DISC = new Item(new Item.Settings().maxCount(1).jukeboxPlayable(JukeboxSongRegistry.BIG_CHUNGUS_SONG));
 
     public static void init() {
         registerLoreItem(LORD_SOUL_RED);

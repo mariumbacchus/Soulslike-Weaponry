@@ -10,6 +10,7 @@ import net.soulsweaponry.items.material.ModArmorMaterials;
 
 public class ArmorRegistry {
 
+    // TODO: copy durability from ModArmorMaterials
     public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings());
     public static final Item SOUL_INGOT_CHESTPLATE = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new Item.Settings());
     public static final Item SOUL_INGOT_LEGGINGS = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.LEGGINGS, new Item.Settings());

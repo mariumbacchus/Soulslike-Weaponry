@@ -6,6 +6,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -93,9 +94,9 @@ public class ParticleHandler {
                 stack = par.getItemStack();
                 particle = ParticleTypes.FLAME; //Placeholder since the packet replaces this particle with an ItemStackParticle
             }
-            PacketByteBuf buf = PacketByteBufs.create();
+            RegistryByteBuf buf = new RegistryByteBuf(PacketByteBufs.create(), world.getRegistryManager());
             buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
-            buf.writeItemStack(stack);
+            ItemStack.PACKET_CODEC.encode(buf, stack);
             buf.writeDouble(x);
             buf.writeDouble(y);
             buf.writeDouble(z);
@@ -118,10 +119,10 @@ public class ParticleHandler {
                 stack = par.getItemStack();
                 particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
             }
-            PacketByteBuf buf = PacketByteBufs.create();
+            RegistryByteBuf buf = new RegistryByteBuf(PacketByteBufs.create(), world.getRegistryManager());
             buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
             buf.writeInt(amount);
-            buf.writeItemStack(stack);
+            ItemStack.PACKET_CODEC.encode(buf, stack);
             buf.writeDouble(x);
             buf.writeDouble(y);
             buf.writeDouble(z);
@@ -145,10 +146,10 @@ public class ParticleHandler {
                 stack = par.getItemStack();
                 particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
             }
-            PacketByteBuf buf = PacketByteBufs.create();
+            RegistryByteBuf buf = new RegistryByteBuf(PacketByteBufs.create(), world.getRegistryManager());
             buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
             buf.writeInt(amount);
-            buf.writeItemStack(stack);
+            ItemStack.PACKET_CODEC.encode(buf, stack);
             buf.writeDouble(x);
             buf.writeDouble(y);
             buf.writeDouble(z);

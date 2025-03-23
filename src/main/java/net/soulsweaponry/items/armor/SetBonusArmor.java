@@ -8,6 +8,7 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public abstract class SetBonusArmor extends ModdedArmor {
 
-    public SetBonusArmor(ArmorMaterial material, Type slot, Settings settings) {
+    public SetBonusArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
