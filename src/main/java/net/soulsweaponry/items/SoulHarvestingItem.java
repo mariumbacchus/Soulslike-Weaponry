@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -35,20 +36,10 @@ public abstract class SoulHarvestingItem extends ModdedSword {
     }
 
     public void addAmount(ItemStack stack, int amount) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(KILLS)) {
-                stack.getNbt().putInt(KILLS, stack.getNbt().getInt(KILLS) + amount);
-            } else {
-                stack.getNbt().putInt(KILLS, amount);
-            }
-        }
+        stack.apply(ComponentRegistry.KILLS, 0, i -> i + amount);
     }
 
     public int getSouls(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-            return stack.getNbt().getInt(KILLS);
-        } else {
-            return 0;
-        }
+        return stack.getOrDefault(ComponentRegistry.KILLS, 0);
     }
 }

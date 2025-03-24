@@ -94,4 +94,8 @@ public class SoulsWeaponry implements ModInitializer {
         long end = System.currentTimeMillis();
         LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");
     }
+
+    public static Identifier id(String path) {
+        return Identifier.of(ModId, path);
+    }
 }
