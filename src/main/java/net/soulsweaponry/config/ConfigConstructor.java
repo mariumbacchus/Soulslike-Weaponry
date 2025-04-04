@@ -366,6 +366,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int darkmoon_longbow_ability_min_cooldown_ticks = 60;
     @Entry public static boolean darkmoon_longbow_enchant_reduces_cooldown = true;
     @Entry public static String[] darkmoon_longbow_enchant_reduces_cooldown_ids = {"unbreaking"};
+    @Entry public static boolean darkmoon_longbow_can_apply_arrow_effects = true;
     @Entry public static int dark_moon_greatsword_damage = 10;
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
     @Entry public static int dark_moon_greatsword_post_hit_permafrost_base_amplifier = 0;
@@ -486,6 +487,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int galeforce_dash_min_cooldown = 20;
     @Entry public static boolean galeforce_dash_enchant_reduces_cooldown = false;
     @Entry public static String[] galeforce_dash_enchant_reduces_cooldown_ids = {"unbreaking"};
+    @Entry public static boolean galeforce_can_apply_arrow_effects = true;
     @Entry public static int glaive_of_hodir_damage = 8;
     @Entry public static float glaive_of_hodir_attack_speed = 1.3f;
     @Entry public static float glaive_of_hodir_bonus_damage_per_stack = 0.8f;
@@ -535,6 +537,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int kraken_slayer_crossbow_pull_time_ticks = 15;
     @Entry public static float kraken_slayer_bonus_true_damage = 4f;
     @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
+    @Entry public static boolean kraken_slayer_can_apply_arrow_effects = true;
     @Entry public static int leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
@@ -624,6 +627,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int simons_bowblade_pull_time_ticks = 25;
     @Entry public static float simons_bowblade_projectile_righteous_undead_bonus_damage = 4f;
     @Entry public static int simons_bowblade_projectile_posture_loss = 30;
+    @Entry public static boolean simons_bowblade_projectile_can_apply_arrow_effects = true;
     @Entry public static int skofnung_damage = 8;
     @Entry public static float skofnung_attack_speed = 1.6f;
     @Entry public static int skofnung_bonus_damage = 2;
@@ -795,6 +799,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
+    @Entry(min=0) public static boolean night_prowler_eclipse_skulls_glow = false;
     @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.1667f;
     @Entry public static String[] night_prowler_projectile_immunity_whitelist = {};
     @Entry(min=0) public static float night_prowler_projectile_heal_amount = 5f;

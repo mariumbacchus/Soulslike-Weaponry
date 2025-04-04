@@ -5,6 +5,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.soulsweaponry.entity.projectile.arrow.ModArrow;
 import net.soulsweaponry.items.IShootModProjectile;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +20,9 @@ public class ArrowItemMixin {
         ItemStack bowStack = shooter.getStackInHand(shooter.getActiveHand());
         if (bowStack.getItem() instanceof IShootModProjectile bow) {
             PersistentProjectileEntity projectile = bow.getModifiedProjectile(world, bowStack, arrowStack, shooter, info.getReturnValue());
+            if (projectile instanceof ModArrow modArrow && modArrow.canHaveArrowEffects(arrowStack, bowStack)) {
+                modArrow.initFromStack(arrowStack);
+            }
             if (projectile != null) {
                 info.setReturnValue(projectile);
                 info.cancel();

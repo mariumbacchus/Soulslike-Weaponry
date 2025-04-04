@@ -20,6 +20,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.NightSkull;
 import net.soulsweaponry.entity.projectile.noclip.*;
 import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
 import net.soulsweaponry.entity.util.DeathSpiralLogic;
@@ -49,6 +50,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     private Vec3d flightPosAdder;
     private int bonusDmg;
     private int flipCounter;
+    public static final float PORTAL_RADIUS = 16f;
 
     public NightProwlerGoal(NightProwler boss, double speed, boolean pauseWhenMobIdle) {
         super(boss, speed, pauseWhenMobIdle);
@@ -696,7 +698,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 24) {
-            this.boss.playSound(SoundRegistry.DARKNESS_RISE, 1f, 1f);
+            this.boss.playSound(SoundRegistry.DARKNESS_RISE, 1f, 1f);// TODO this sounds sucks
             this.boss.setDarknessRise(true);
         }
         this.checkAndReset(10, 0);
@@ -716,9 +718,16 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= 50 && this.attackStatus <= 220) {
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(35))) {
-                if (this.attackStatus % 12 == 0 && entity instanceof LivingEntity target) {
-                    Vec3d vec = new Vec3d(target.getX() - (this.boss.getX()), target.getEyeY() - this.boss.getBodyY(1f), target.getZ() - this.boss.getZ());
-                    this.shootSplitProjectile(vec, 3, 1.75f, EntityRegistry.NIGHT_SKULL);
+                if (this.attackStatus % 6 == 0 && entity instanceof LivingEntity target) {
+                    int radius = (int) PORTAL_RADIUS - 6;
+                    Vec3d spawn = new Vec3d(this.boss.getX() + this.boss.getRandom().nextBetween(-radius, radius),
+                            this.boss.getY() + 8f, this.boss.getZ() + this.boss.getRandom().nextBetween(-radius, radius));
+                    Vec3d vec = new Vec3d(target.getX() - spawn.getX(), target.getEyeY() - spawn.getY(), target.getZ() - spawn.getZ());
+                    NightSkull skull = new NightSkull(EntityRegistry.NIGHT_SKULL, this.boss.getWorld());
+                    skull.setPosition(spawn);
+                    skull.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
+                    skull.setOwner(this.boss);
+                    this.boss.getWorld().spawnEntity(skull);
                     if (target.isDead() && target.deathTime < 2) {
                         this.boss.heal(ConfigConstructor.night_prowler_eclipse_healing);
                         DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);

@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -63,6 +64,11 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
         return super.canHit(entity);
     }
 
+    @Override
+    public boolean isGlowing() {
+        return ConfigConstructor.night_prowler_eclipse_skulls_glow;
+    }
+
     private void detonate() {
         if (!this.getWorld().isClient) {
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 2.0f, false, World.ExplosionSourceType.MOB);
@@ -72,6 +78,7 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
             if (entity instanceof LivingEntity) {
                 areaEffectCloudEntity.setOwner((LivingEntity)entity);
             }
+            areaEffectCloudEntity.setParticleAmountModifier(2f);
             areaEffectCloudEntity.setParticleType(ParticleRegistry.DARK_STAR);
             areaEffectCloudEntity.setRadius(0.5f);
             areaEffectCloudEntity.setDuration(80);

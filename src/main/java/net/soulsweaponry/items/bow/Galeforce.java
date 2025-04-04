@@ -21,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.ChargedArrow;
+import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
@@ -47,7 +47,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Nullable
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
-        return new ChargedArrow(world, shooter, arrowStack, false);
+        return new ChargedArrow(world, shooter, false);
     }
 
     @Override
@@ -57,21 +57,28 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
                 int cooldown = Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0));
             }
+            ItemStack arrowStack = player.getProjectileType(stack);
+            if (arrowStack.isEmpty()) {
+                arrowStack = new ItemStack(Items.ARROW);
+            }
             if (player.getAttacking() != null) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
                 double y = target.getEyeY() - player.getBodyY(1f);
                 double z = target.getZ() - player.getZ();
-                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, new Vec3d(x, y, z));
+                this.shootArrow(world, stack, arrowStack, player, new Vec3d(x, y, z));
             } else {
-                this.shootArrow(world, stack, new ItemStack(Items.ARROW), player, null);
+                this.shootArrow(world, stack, arrowStack, player, null);
             }
         }
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, @Nullable Vec3d currentTargetPos) {
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
-        ChargedArrow chargedArrow = new ChargedArrow(world, player, arrowStack, true);
+        ChargedArrow chargedArrow = new ChargedArrow(world, player, true);
+        if (chargedArrow.canHaveArrowEffects(arrowStack, stack)) {
+            chargedArrow.initFromStack(arrowStack);
+        }
         chargedArrow.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
         if (currentTargetPos != null) {
             chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), ConfigConstructor.galeforce_max_velocity, 1f);
@@ -89,20 +96,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
             chargedArrow.setOnFireFor(8);
         }
         stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-
-        boolean creativeAndInfinity = player.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        boolean bl2 = creativeAndInfinity && arrowStack.isOf(Items.ARROW);
-        if (bl2 || player.getAbilities().creativeMode && (arrowStack.isOf(Items.SPECTRAL_ARROW) || arrowStack.isOf(Items.TIPPED_ARROW))) {
-            chargedArrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-        }
+        chargedArrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(chargedArrow);
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);
-        if (!bl2 && !player.getAbilities().creativeMode) {
-            arrowStack.decrement(1);
-            if (arrowStack.isEmpty()) {
-                player.getInventory().removeOne(arrowStack);
-            }
-        }
         player.incrementStat(Stats.USED.getOrCreateStat(this));
     }
 
