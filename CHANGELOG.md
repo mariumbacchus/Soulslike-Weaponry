@@ -10,6 +10,8 @@
   - Spawns skulls randomly from the summoned portal with shorter interval between
   - These skulls may be hard to see, so added a config line ```night_prowler_eclipse_skulls_glow``` to make them glow if the player wishes so
 - Fixed bug where ShadowOrbs would collide with each-other
+- Removed custom hold animations for some weapons due to messing with Sinytra Connector and forge
+- Weapons saving to NBT generate a new one if it doesn't exist already
 
 ## 1.2.1
 
