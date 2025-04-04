@@ -47,8 +47,8 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 if (this instanceof BluemoonGreatsword) {
-                    if (stack.hasNbt() && !playerEntity.isCreative()) {
-                        stack.getNbt().putInt(IChargeNeeded.CHARGE, 0);
+                    if (!playerEntity.isCreative()) {
+                        stack.getOrCreateNbt().putInt(IChargeNeeded.CHARGE, 0);
                     }
                 }
             }

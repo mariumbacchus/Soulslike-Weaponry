@@ -55,12 +55,10 @@ public abstract class SoulHarvestingItem extends ModdedSword {
     }
 
     public void addAmount(ItemStack stack, int amount) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(KILLS)) {
-                stack.getNbt().putInt(KILLS, stack.getNbt().getInt(KILLS) + amount);
-            } else {
-                stack.getNbt().putInt(KILLS, amount);
-            }
+        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
+            stack.getNbt().putInt(KILLS, stack.getNbt().getInt(KILLS) + amount);
+        } else {
+            stack.getOrCreateNbt().putInt(KILLS, amount);
         }
     }
 

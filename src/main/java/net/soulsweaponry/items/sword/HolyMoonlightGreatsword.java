@@ -64,8 +64,8 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
                             }
                     );
                 }
-                if (stack.hasNbt() && !player.isCreative()) {
-                    stack.getNbt().putInt(IChargeNeeded.CHARGE, 0);
+                if (!player.isCreative()) {
+                    stack.getOrCreateNbt().putInt(IChargeNeeded.CHARGE, 0);
                 }
                 world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);

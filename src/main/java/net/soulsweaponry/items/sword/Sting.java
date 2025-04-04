@@ -37,9 +37,7 @@ public class Sting extends ModdedSword {
     }
 
     private void setActive(ItemStack stack, boolean bl) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(ACTIVE, bl);
-        }
+        stack.getOrCreateNbt().putBoolean(ACTIVE, bl);
     }
 
     public boolean isActive(ItemStack stack) {

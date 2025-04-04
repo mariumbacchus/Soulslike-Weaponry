@@ -19,15 +19,13 @@ public interface IChargeNeeded {
     }
 
     default void addCharge(ItemStack stack, int amount) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(CHARGE)) {
-                int currentCharge = this.getCharge(stack);
-                int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
-                int maxCharge = this.getMaxCharge();
-                stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
-            } else {
-                stack.getNbt().putInt(CHARGE, 0);
-            }
+        if (stack.hasNbt() && stack.getNbt().contains(CHARGE)) {
+            int currentCharge = this.getCharge(stack);
+            int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
+            int maxCharge = this.getMaxCharge();
+            stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
+        } else {
+            stack.getOrCreateNbt().putInt(CHARGE, 0);
         }
     }
 

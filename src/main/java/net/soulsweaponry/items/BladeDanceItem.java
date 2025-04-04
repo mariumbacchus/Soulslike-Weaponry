@@ -12,7 +12,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
-import net.soulsweaponry.particles.ParticleHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -32,22 +32,27 @@ public abstract class BladeDanceItem extends ModdedSword {
         int amp = attacker.hasStatusEffect(EffectRegistry.BLADE_DANCE.get()) ? attacker.getStatusEffect(EffectRegistry.BLADE_DANCE.get()).getAmplifier() + 1 : 0;
         amp = Math.min(amp, this.getMaxStacks() - 1);
         attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE.get(), 160, amp));
-        if (!WeaponUtil.isFightModLoaded() && (amp + 1) == this.getMaxStacks() && stack.hasNbt()) {
-            int counter = stack.getNbt().contains("AOECounter") ? stack.getNbt().getInt("AOECounter") : 0;
-            stack.getNbt().putInt("AOECounter", counter + 1);
+        if (!WeaponUtil.isFightModLoaded() && (amp + 1) == this.getMaxStacks()) {
+            int counter = 0;
+            if (stack.hasNbt()) {
+                counter = stack.getNbt().contains("AOECounter") ? stack.getNbt().getInt("AOECounter") : 0;
+            }
+            stack.getOrCreateNbt().putInt("AOECounter", counter + 1);
             if (stack.getNbt().getInt("AOECounter") >= 3) {
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
                         living.damage(attacker.getDamageSources().mobAttack(attacker), this.getTotalDamage(stack));
                     }
                 }
-                for (int i = 0; i < 360; i += 30) {
-                    float r = 2f;
-                    double x0 = attacker.getX();
-                    double z0 = attacker.getZ();
-                    double x = x0 + r * Math.cos(i * Math.PI / 180);
-                    double z = z0 + r * Math.sin(i * Math.PI / 180);
-                    ParticleHandler.singleParticle(attacker.getWorld(), ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 0, 0, 0);
+                if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+                    for (int i = 0; i < 360; i += 30) {
+                        float r = 2f;
+                        double x0 = attacker.getX();
+                        double z0 = attacker.getZ();
+                        double x = x0 + r * Math.cos(i * Math.PI / 180);
+                        double z = z0 + r * Math.sin(i * Math.PI / 180);
+                        serverWorld.spawnParticles(ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 1, 0, 0, 0, 0);
+                    }
                 }
                 stack.getNbt().putInt("AOECounter", 0);
             }
@@ -70,9 +75,9 @@ public abstract class BladeDanceItem extends ModdedSword {
     }
 
     public static void updateBladeDanceItem(ItemStack stack, int effectAmplifier) {
-        if (stack.getItem() instanceof BladeDanceItem item && stack.hasNbt()) {
-            stack.getNbt().putFloat("BladeDanceBonusDamage", item.getBonusDamagePerStack() * effectAmplifier);
-            stack.getNbt().putFloat("BladeDanceBonusAttackSpeed", item.getBonusAttackSpeedPerStack() * effectAmplifier);
+        if (stack.getItem() instanceof BladeDanceItem item) {
+            stack.getOrCreateNbt().putFloat("BladeDanceBonusDamage", item.getBonusDamagePerStack() * effectAmplifier);
+            stack.getOrCreateNbt().putFloat("BladeDanceBonusAttackSpeed", item.getBonusAttackSpeedPerStack() * effectAmplifier);
         }
     }
 

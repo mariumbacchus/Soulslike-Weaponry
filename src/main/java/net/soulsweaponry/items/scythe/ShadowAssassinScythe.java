@@ -49,9 +49,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(HAS_EFFECT, stack.hasNbt() && entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP.get()));
-        }
+        stack.getOrCreateNbt().putBoolean(HAS_EFFECT, entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP.get()));
     }
 
     private boolean canGetBonus(ItemStack stack) {

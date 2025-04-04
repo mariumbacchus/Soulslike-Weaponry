@@ -167,9 +167,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     }
 
     private void refreshRaining(World world, ItemStack stack) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(RAINING, world.isRaining());
-        }
+        stack.getOrCreateNbt().putBoolean(RAINING, world.isRaining());
     }
 
     private boolean isRaining(ItemStack stack) {

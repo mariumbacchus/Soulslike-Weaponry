@@ -7,6 +7,7 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -79,7 +80,11 @@ public class ParticleHandler {
      * Reminder to see {@link net.minecraft.server.world.ServerWorld#spawnParticles(ParticleEffect, double, double, double, int, double, double, double, double)} instead of using this method.
      */
     @Deprecated
-    public static void singleParticle(World world, ParticleEffect particle, double x, double y, double z, double velX, double velY, double velZ) {}
+    public static void singleParticle(World world, ParticleEffect particle, double x, double y, double z, double velX, double velY, double velZ) {
+        if (world instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(particle, x, y, z, 1, velX, velY, velZ, 0);
+        }
+    }
 
     /**
      * Old implementation that uses a list every call and doesn't save to cache, may therefore be more taxing on the hardware than the other method.

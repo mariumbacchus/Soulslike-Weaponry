@@ -134,7 +134,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
-        if (stack.hasNbt()) {
+        if (stack.getOrCreateNbt() != null) {
             List<Integer> ids = new ArrayList<>();
             if (stack.getNbt().contains(SPEARS_ID)) {
                 int[] arr = stack.getNbt().getIntArray(SPEARS_ID);

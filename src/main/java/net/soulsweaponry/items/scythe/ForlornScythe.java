@@ -45,27 +45,25 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(KILLS)) {
-                int power = this.getSouls(stack);
-                if (power > 0 || user.isCreative()) {
-                    WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
-                    entity.setPos(user.getX(), user.getEyeY(), user.getZ());
-                    entity.setOwner(user);
-                    if (this.isCritical(stack)) {
-                        entity.setCharged(true);
-                        stack.getNbt().putInt(CRITICAL, 1);
-                    } else {
-                        stack.getNbt().putInt(CRITICAL, stack.getNbt().getInt(CRITICAL) + 1);
-                    }
-                    entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
-                    world.spawnEntity(entity);
-                    this.setPrevUuid(stack, entity);
-                    if (!user.isCreative()) this.addAmount(stack, -1);
-                    user.getItemCooldownManager().set(this, 10);
-                    stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
-                    return TypedActionResult.success(stack, world.isClient());
+        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
+            int power = this.getSouls(stack);
+            if (power > 0 || user.isCreative()) {
+                WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
+                entity.setPos(user.getX(), user.getEyeY(), user.getZ());
+                entity.setOwner(user);
+                if (this.isCritical(stack)) {
+                    entity.setCharged(true);
+                    stack.getNbt().putInt(CRITICAL, 1);
+                } else {
+                    stack.getNbt().putInt(CRITICAL, stack.getNbt().getInt(CRITICAL) + 1);
                 }
+                entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
+                world.spawnEntity(entity);
+                this.setPrevUuid(stack, entity);
+                if (!user.isCreative()) this.addAmount(stack, -1);
+                user.getItemCooldownManager().set(this, 10);
+                stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
+                return TypedActionResult.success(stack, world.isClient());
             }
         }
         return TypedActionResult.fail(stack);
@@ -88,16 +86,14 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     }
 
     private void setPrevUuid(ItemStack stack, Entity entityToSet) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putUuid(PREV_UUID, entityToSet.getUuid());
-        }
+        stack.getOrCreateNbt().putUuid(PREV_UUID, entityToSet.getUuid());
     }
 
     private boolean isCritical(ItemStack stack) {
         if (stack.hasNbt() && stack.getNbt().contains(CRITICAL)) {
             return stack.getNbt().getInt(CRITICAL) >= 3;
         } else {
-            stack.getNbt().putInt(CRITICAL, 1);
+            stack.getOrCreateNbt().putInt(CRITICAL, 1);
         }
         return false;
     }
