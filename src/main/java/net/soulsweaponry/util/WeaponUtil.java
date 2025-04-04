@@ -1,5 +1,6 @@
 package net.soulsweaponry.util;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -29,6 +30,14 @@ public class WeaponUtil {
             }
         }
         return 0;
+    }
+
+    public static boolean isModLoaded(String modId) {
+        return FabricLoader.getInstance().isModLoaded(modId);
+    }
+
+    public static boolean isFightModLoaded() {
+        return isModLoaded("bettercombat") || isModLoaded("epicfight");
     }
 
     public static List<Integer> arrayToList(int[] array) {

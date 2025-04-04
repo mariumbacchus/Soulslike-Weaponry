@@ -45,9 +45,7 @@ public class CrucibleSword extends ModdedSword {
     }
 
     private void updateEmpowered(ItemStack stack, boolean bl) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(EMP, bl);
-        }
+        stack.getOrCreateNbt().putBoolean(EMP, bl);
     }
 
     private boolean isEmpowered(ItemStack stack) {

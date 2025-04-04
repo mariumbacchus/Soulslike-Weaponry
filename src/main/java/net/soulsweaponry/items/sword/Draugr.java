@@ -31,8 +31,8 @@ public class Draugr extends ModdedSword {
     }
 
     private void refreshDayTime(World world, ItemStack stack) {
-        if (stack.hasNbt() && !world.isClient) {
-            stack.getNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.isNight());
+        if (!world.isClient) {
+            stack.getOrCreateNbt().putBoolean(NIGHT, world.getDimension().hasSkyLight() && world.isNight());
         }
     }
 

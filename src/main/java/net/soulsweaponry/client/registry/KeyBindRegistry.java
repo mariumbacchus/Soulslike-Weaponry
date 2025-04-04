@@ -1,7 +1,6 @@
 package net.soulsweaponry.client.registry;
 
 import com.mrcrayfish.controllable.client.binding.ButtonBindings;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -12,6 +11,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
+import net.soulsweaponry.util.WeaponUtil;
 import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -102,7 +102,7 @@ public class KeyBindRegistry {
             boolean effect = effectShootMoonlight.isPressed();
             boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
             boolean controller = false;
-            if (FabricLoader.getInstance().isModLoaded("controllable")) {
+            if (WeaponUtil.isModLoaded("controllable")) {
                 controller = ButtonBindings.ATTACK.isButtonPressed();
             }
             if (effect || melee || controller) {

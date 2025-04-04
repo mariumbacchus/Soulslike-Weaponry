@@ -25,15 +25,13 @@ public class TranslucentWeapon extends ModdedSword {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains("Invisible")) {
-                stack.getNbt().putBoolean("Invisible", !stack.getNbt().getBoolean("Invisible"));
-            } else {
-                stack.getNbt().putBoolean("Invisible", true);
-            }
-            user.getItemCooldownManager().set(this, 20);
-            user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.75f);
+        if (stack.hasNbt() && stack.getNbt().contains("Invisible")) {
+            stack.getNbt().putBoolean("Invisible", !stack.getNbt().getBoolean("Invisible"));
+        } else {
+            stack.getOrCreateNbt().putBoolean("Invisible", true);
         }
+        user.getItemCooldownManager().set(this, 20);
+        user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.75f);
         return TypedActionResult.success(stack);
     }
 

@@ -507,7 +507,7 @@ public class TooltipUtil {
                 }
                 tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.5", maxStacks).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.6", MathHelper.floor(cooldown / 20f)).formatted(Formatting.GRAY));
-                if (!FabricLoader.getInstance().isModLoaded("bettercombat")) {
+                if (!WeaponUtil.isFightModLoaded()) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.7").formatted(Formatting.GRAY));
                 }
             }

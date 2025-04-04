@@ -2,7 +2,6 @@ package net.soulsweaponry.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +15,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public abstract class BladeDanceItem extends ModdedSword {
 
@@ -32,9 +32,12 @@ public abstract class BladeDanceItem extends ModdedSword {
         int amp = attacker.hasStatusEffect(EffectRegistry.BLADE_DANCE) ? attacker.getStatusEffect(EffectRegistry.BLADE_DANCE).getAmplifier() + 1 : 0;
         amp = Math.min(amp, this.getMaxStacks() - 1);
         attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, 160, amp));
-        if (!FabricLoader.getInstance().isModLoaded("bettercombat") && (amp + 1) == this.getMaxStacks() && stack.hasNbt()) {
-            int counter = stack.getNbt().contains("AOECounter") ? stack.getNbt().getInt("AOECounter") : 0;
-            stack.getNbt().putInt("AOECounter", counter + 1);
+        if (!WeaponUtil.isFightModLoaded() && (amp + 1) == this.getMaxStacks()) {
+            int counter = 0;
+            if (stack.hasNbt()) {
+                counter = stack.getNbt().contains("AOECounter") ? stack.getNbt().getInt("AOECounter") : 0;
+            }
+            stack.getOrCreateNbt().putInt("AOECounter", counter + 1);
             if (stack.getNbt().getInt("AOECounter") >= 3) {
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
@@ -70,9 +73,9 @@ public abstract class BladeDanceItem extends ModdedSword {
     }
 
     public static void updateBladeDanceItem(ItemStack stack, int effectAmplifier) {
-        if (stack.getItem() instanceof BladeDanceItem item && stack.hasNbt()) {
-            stack.getNbt().putFloat("BladeDanceBonusDamage", item.getBonusDamagePerStack() * effectAmplifier);
-            stack.getNbt().putFloat("BladeDanceBonusAttackSpeed", item.getBonusAttackSpeedPerStack() * effectAmplifier);
+        if (stack.getItem() instanceof BladeDanceItem item) {
+            stack.getOrCreateNbt().putFloat("BladeDanceBonusDamage", item.getBonusDamagePerStack() * effectAmplifier);
+            stack.getOrCreateNbt().putFloat("BladeDanceBonusAttackSpeed", item.getBonusAttackSpeedPerStack() * effectAmplifier);
         }
     }
 

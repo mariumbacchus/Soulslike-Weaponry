@@ -1,6 +1,5 @@
 package net.soulsweaponry.client.registry;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
@@ -14,6 +13,7 @@ import net.soulsweaponry.items.sword.Sting;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class PredicateRegistry {
     
@@ -135,7 +135,7 @@ public class PredicateRegistry {
     }
 
     protected static void registerOtherModIsLoaded(Item item, String id) {
-        ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> FabricLoader.getInstance().isModLoaded(id) ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
     }
 
     protected static void registerCharged(Item item) {

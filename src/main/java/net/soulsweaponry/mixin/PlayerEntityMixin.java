@@ -26,6 +26,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -140,7 +141,7 @@ public class PlayerEntityMixin {
     // Disable off-hand if ultra heavy weapons is held and config line is enabled
     @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
     public void interceptGetEquippedStackHead(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> info) {
-        if (FabricLoader.getInstance().isModLoaded("bettercombat")) {
+        if (WeaponUtil.isFightModLoaded()) {
             return;
         }
         PlayerEntity player = ((PlayerEntity) (Object)this);

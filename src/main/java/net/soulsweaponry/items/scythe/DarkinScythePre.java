@@ -77,12 +77,10 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     public void addAmount(ItemStack stack, int amount, SoulType soulType) {
-        if (stack.hasNbt()) {
-            if (stack.getNbt().contains(soulType.id)) {
-                stack.getNbt().putInt(soulType.id, stack.getNbt().getInt(soulType.id) + amount);
-            } else {
-                stack.getNbt().putInt(soulType.id, amount);
-            }
+        if (stack.hasNbt() && stack.getNbt().contains(soulType.id)) {
+            stack.getNbt().putInt(soulType.id, stack.getNbt().getInt(soulType.id) + amount);
+        } else {
+            stack.getOrCreateNbt().putInt(soulType.id, amount);
         }
     }
 

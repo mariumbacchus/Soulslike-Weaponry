@@ -115,9 +115,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     }
 
     private void updateRaining(World world, ItemStack stack) {
-        if (stack.hasNbt()) {
-            stack.getNbt().putBoolean(RAINING, world.isRaining());
-        }
+        stack.getOrCreateNbt().putBoolean(RAINING, world.isRaining());
     }
 
     private boolean getRaining(ItemStack stack) {

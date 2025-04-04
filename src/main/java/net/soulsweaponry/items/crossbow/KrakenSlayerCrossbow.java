@@ -38,12 +38,10 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
             bowStack.getNbt().putInt("firedShots", 0);
             return projectile;
         } else {
-            if (bowStack.hasNbt()) {
-                if (bowStack.getNbt().contains("firedShots")) {
-                    bowStack.getNbt().putInt("firedShots", bowStack.getNbt().getInt("firedShots") + 1);
-                } else {
-                    bowStack.getNbt().putInt("firedShots", 1);
-                }
+            if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots")) {
+                bowStack.getNbt().putInt("firedShots", bowStack.getNbt().getInt("firedShots") + 1);
+            } else {
+                bowStack.getOrCreateNbt().putInt("firedShots", 1);
             }
             originalArrow.setDamage(originalArrow.getDamage() + bonus);
         }
