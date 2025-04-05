@@ -12,6 +12,8 @@
 - Fixed bug where ShadowOrbs would collide with each-other
 - Removed custom hold animations for some weapons due to messing with Sinytra Connector and forge
 - Weapons saving to the item NBT generate a new NBT if it doesn't exist already
+- Dragon Staff Vigorous Fog ability heals tamed entities, including those not owned by the user based on config line ```dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others```
+  - Added config line ```dragon_staff_vigorous_fog_damage_and_heal``` to change heal and damage by the ability
 
 ## 1.2.1
 
