@@ -54,7 +54,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
             int i = this.getMaxUseTime(stack) - remainingUseTicks;
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                WeaponUtil.doConsumerOnLine(world, player.getYaw() + 90, player.getPos(), player.getY() - 2, 10 + 2 * WeaponUtil.getEnchantDamageBonus(stack), 1.25f,
+                WeaponUtil.doConsumerOnLine(world, player.getYaw() + 90, player.getPos(), 4, 10 + 2 * WeaponUtil.getEnchantDamageBonus(stack), 1.25f,
                         (Vec3d position, Integer warmup, Float yaw) -> this.spawnNightsEdge(world, player, stack, position, warmup, yaw));
                 this.applyItemCooldown(player, this.getScaledCooldown(stack));
             }

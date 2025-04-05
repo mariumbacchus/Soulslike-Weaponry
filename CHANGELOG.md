@@ -14,6 +14,8 @@
 - Weapons saving to the item NBT generate a new NBT if it doesn't exist already
 - Dragon Staff Vigorous Fog ability heals tamed entities, including those not owned by the user based on config line ```dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others```
   - Added config line ```dragon_staff_vigorous_fog_damage_and_heal``` to change heal and damage by the ability
+- Fixed bug where Holy Moonlight Greatsword and Night's Edge abilities would not spawn entities when standing on 1 block thick ground
+- Fixed bug where Night Prowler would be stuck in the sky in phase 2
 
 ## 1.2.1
 

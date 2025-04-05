@@ -50,7 +50,7 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
                     }
                 }
                 if (!world.isClient) {
-                    WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), user.getY() - 2, ruptures, 1.75f,
+                    WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), 4, ruptures, 1.75f,
                             (Vec3d position, Integer warmup, Float yaw) -> {
                                 HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
                                 pillar.setOwner(user);

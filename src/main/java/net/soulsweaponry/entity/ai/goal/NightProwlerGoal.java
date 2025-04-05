@@ -295,6 +295,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.setParticleState(0);
             this.bonusDmg = 0;
             this.flipCounter = 0;
+            if (this.boss.isPhaseTwo()) {
+                this.boss.setFlying(false);
+            }
         }
     }
 

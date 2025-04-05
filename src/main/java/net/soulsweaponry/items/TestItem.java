@@ -1,5 +1,9 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.EvokerEntity;
+import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -7,6 +11,10 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.NbtHelper;
 
@@ -24,19 +32,47 @@ public class TestItem extends SwordItem {
         return 99999999;
     }
 
+    private void conjureFangs(World world, LivingEntity user, double x, double z, double maxY, double y, float yaw, int warmup) {
+        BlockPos blockPos = BlockPos.ofFloored(x, y, z);
+        boolean bl = false;
+        double d = 0.0;
+
+        do {
+            BlockPos blockPos2 = blockPos.down();
+            BlockState blockState = world.getBlockState(blockPos2);
+            if (blockState.isSideSolidFullSquare(world, blockPos2, Direction.UP)) {
+                if (!world.isAir(blockPos)) {
+                    BlockState blockState2 = world.getBlockState(blockPos);
+                    VoxelShape voxelShape = blockState2.getCollisionShape(world, blockPos);
+                    if (!voxelShape.isEmpty()) {
+                        d = voxelShape.getMax(Direction.Axis.Y);
+                    }
+                }
+
+                bl = true;
+                break;
+            }
+
+            blockPos = blockPos.down();
+        } while (blockPos.getY() >= MathHelper.floor(maxY) - 1);
+
+        if (bl) {
+            world.spawnEntity(new EvokerFangsEntity(world, x, (double)blockPos.getY() + d, z, yaw, warmup, user));
+        }
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
+        double d = user.getY() - 5;
+        double e = user.getY() + 5;
+        float f = (float) Math.toRadians(user.getYaw() + 90);
+        for (int i = 0; i < 16; i++) {
+            double h = 1.25 * (double)(i + 1);
+            this.conjureFangs(world, user, user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double)MathHelper.sin(f) * h, d, e, f, i);
+        }
         if (world.isClient) {
-            UUID uuid = UUID.randomUUID();
-            NbtCompound compound = stack.getNbt();
-            NbtHelper.addUUIDToArr(compound, uuid, "test");
-            System.out.println(Arrays.toString(NbtHelper.getUUIDArr(compound, "test")));
-            if (NbtHelper.getUUIDArr(compound, "test").length > 3) {
-                System.out.println("Removing: " + NbtHelper.getUUIDArr(compound, "test")[0]);
-                NbtHelper.removeUUIDFromArr(compound, NbtHelper.getUUIDArr(compound, "test")[0], "test");
-                System.out.println("After removal: " + Arrays.toString(NbtHelper.getUUIDArr(compound, "test")));
-            }
+
             // This will make an X shape of two half circles where the user is facing (only rotates Y axis)
             /*
             for (int t = -90; t < 90; t++) {
