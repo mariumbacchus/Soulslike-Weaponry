@@ -2,6 +2,7 @@ package net.soulsweaponry.items.staff;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Tameable;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -40,10 +41,16 @@ public class DragonStaff extends ModdedSword {
             Vec3d particleSpawn = pov.multiply(1);
             Vec3d area = pov.multiply(10).add(user.getPos());
             Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
+            boolean healTamed = ConfigConstructor.dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others;
             for (Entity entity : world.getOtherEntities(user, new Box(user.getPos().add(0, 2, 0), new BlockPos(on).toCenterPos()))) {
-                if (entity instanceof LivingEntity) {
-                    entity.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), 2);
-                    ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, ConfigConstructor.dragon_staff_aura_strength));
+                if (entity instanceof LivingEntity living) {
+                    // Heal tamed entities with an owner, including those not owned by the user if config is true
+                    if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || healTamed)) {
+                        living.heal(ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
+                    } else {
+                        living.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
+                    }
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, ConfigConstructor.dragon_staff_aura_strength));
                 }
             }
             if (world.isClient) {
