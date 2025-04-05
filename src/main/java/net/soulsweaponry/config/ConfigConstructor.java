@@ -422,8 +422,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int dragon_staff_damage = 8;
     @Entry public static float dragon_staff_attack_speed = 1.2f;
     @Entry public static int dragon_staff_aura_strength = 1;
-    @Entry public static float dragon_staff_vigorous_fog_damage = 2;
-    @Entry public static boolean dragon_staff_vigorous_fog_damage_tamed_entities_not_owned = true;
+    @Entry public static float dragon_staff_vigorous_fog_damage_and_heal = 2;
+    @Entry public static boolean dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others = true;
     @Entry public static int dragon_staff_cooldown = 100;
     @Entry public static int dragon_staff_min_cooldown = 10;
     @Entry public static boolean dragon_staff_enchant_reduces_cooldown = true;

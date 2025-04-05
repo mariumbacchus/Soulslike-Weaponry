@@ -41,12 +41,14 @@ public class DragonStaff extends ModdedSword {
             Vec3d particleSpawn = pov.multiply(1);
             Vec3d area = pov.multiply(10).add(user.getPos());
             Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
-            boolean damageTamed = ConfigConstructor.dragon_staff_vigorous_fog_damage_tamed_entities_not_owned;
+            boolean healTamed = ConfigConstructor.dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others;
             for (Entity entity : world.getOtherEntities(user, new Box(user.getPos().add(0, 2, 0), new BlockPos(on).toCenterPos()))) {
                 if (entity instanceof LivingEntity living) {
-                    // Don't damage tamed entities with an owner, including those not owned by the user if config is false
-                    if (!(entity instanceof Tameable tameable && tameable.getOwner() != null && (tameable.getOwner().equals(user) || !damageTamed))) {
-                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage);
+                    // Heal tamed entities with an owner, including those not owned by the user if config is true
+                    if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || healTamed)) {
+                        living.heal(ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
+                    } else {
+                        living.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
                     }
                     living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, ConfigConstructor.dragon_staff_aura_strength));
                 }
