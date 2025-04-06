@@ -9,10 +9,12 @@ import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.boss.BossBar.Style;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -28,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
     
@@ -246,5 +249,21 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      */
     public String[] getWhitelistedProjectiles() {
         return new String[0];
+    }
+
+    /**
+     * @return Array of status effect identifiers that the boss is immune to
+     */
+    public abstract String[] getBlacklistedStatusEffects();
+
+    @Override
+    public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
+        String effectId = Objects.requireNonNull(Registries.STATUS_EFFECT.getId(effect.getEffectType())).toString();
+        for (String blacklisted : this.getBlacklistedStatusEffects()) {
+            if (blacklisted.equals(effectId)) {
+                return false;
+            }
+        }
+        return super.addStatusEffect(effect, source);
     }
 }

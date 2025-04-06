@@ -1,0 +1,86 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.4,
+      0.4,
+      1.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.75
+    ]
+  },
+  "hit_particle": "epicfight:hit_blade",
+  "hit_sound": "epicfight:entity.hit.blade",
+  "livingmotion_modifier": {
+    "two_hand": {
+      "fly": "epicfight:biped/living/hold_greatsword",
+      "creative_fly": "epicfight:biped/living/hold_greatsword",
+      "creative_idle": "epicfight:biped/living/hold_greatsword",
+      "fall": "epicfight:biped/living/fall",
+      "idle": "epicfight:biped/living/hold_greatsword",
+      "run": "epicfight:biped/living/run_greatsword",
+      "block": "epicfight:biped/living/hold_liechtenauer",
+      "float": "epicfight:biped/living/hold_greatsword",
+      "walk": "epicfight:biped/living/walk_greatsword",
+      "swim": "epicfight:biped/living/hold_greatsword",
+      "sit": "epicfight:biped/living/hold_greatsword"
+    },
+    "one_hand": {
+      "creative_fly": "epicfight:biped/living/hold_longsword",
+      "idle": "epicfight:biped/living/hold_longsword",
+      "run": "epicfight:biped/living/run_longsword",
+      "float": "epicfight:biped/living/hold_longsword",
+      "fly": "epicfight:biped/living/hold_longsword",
+      "creative_idle": "epicfight:biped/living/hold_longsword",
+      "fall": "epicfight:biped/living/hold_longsword",
+      "block": "epicfight:biped/living/hold_liechtenauer",
+      "walk": "epicfight:biped/living/walk_longsword",
+      "swim": "epicfight:biped/living/hold_longsword",
+      "kneel": "epicfight:biped/living/hold_longsword",
+      "sit": "epicfight:biped/living/hold_longsword"
+    }
+  },
+  "offhand_item_compatible_predicate": [],
+  "swing_sound": "epicfight:entity.weapon.whoosh",
+  "styles": {
+    "default": "one_hand",
+    "cases": [
+      {
+        "style": "two_hand",
+        "conditions": [
+          {
+            "predicate": "epicfight:skill_active",
+            "skill": "epicfight:liechtenauer"
+          }
+        ]
+      },
+      {
+        "style": "one_hand",
+        "conditions": []
+      }
+    ]
+  },
+  "combos": {
+    "two_hand": [
+      "epicfight:biped/combat/greatsword_auto1",
+      "epicfight:biped/combat/greatsword_auto2",
+      "epicfight:biped/combat/longsword_liechtenauer_auto3",
+      "epicfight:biped/combat/greatsword_airslash"
+    ],
+    "one_hand": [
+      "epicfight:biped/combat/longsword_auto1",
+      "epicfight:biped/combat/longsword_auto2",
+      "epicfight:biped/combat/longsword_auto3",
+      "epicfight:biped/combat/longsword_dash",
+      "epicfight:biped/combat/longsword_airslash"
+    ]
+  },
+  "category": "longsword",
+  "innate_skills": {
+    "two_hand": "epicfight:liechtenauer",
+    "one_hand": "epicfight:liechtenauer"
+  }
+}

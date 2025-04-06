@@ -1,0 +1,12 @@
+{
+    "attributes":
+    {
+        "common":
+        {
+            "armor_negation":14.0,
+            "impact":1.1,
+            "max_strikes":2
+        }
+    },
+    "type":"epicfight:sword"
+}

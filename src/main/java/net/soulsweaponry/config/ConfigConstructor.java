@@ -726,6 +726,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean decaying_king_is_fire_immune = true;
     @Entry public static boolean decaying_king_is_undead = true;
     @Entry public static String decaying_king_group_type = "UNDEAD";
+    @Entry public static String[] decaying_king_status_effect_blacklist = {};
 
     @Entry public static boolean returning_knight_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double returning_knight_health = 400D;
@@ -738,6 +739,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean returning_knight_is_fire_immune = true;
     @Entry public static boolean returning_knight_is_undead = true;
     @Entry public static String returning_knight_group_type = "UNDEAD";
+    @Entry public static String[] returning_knight_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 200D;
@@ -751,6 +753,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean old_champions_remains_is_fire_immune = true;
     @Entry public static boolean old_champions_remains_is_undead = true;
     @Entry public static String old_champions_remains_group_type = "UNDEAD";
+    @Entry public static String[] old_champions_remains_status_effect_blacklist = {"soulsweapons:bleed"};
     @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 100D;
     @Entry public static float frenzied_shade_damage_modifier = 1f;
     @Entry public static int frenzied_shade_cooldown = 10;
@@ -759,6 +762,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean frenzied_shade_is_fire_immune = true;
     @Entry public static boolean frenzied_shade_is_undead = true;
     @Entry public static String frenzied_shade_group_type = "UNDEAD";
+    @Entry public static String[] frenzied_shade_status_effect_blacklist = {};
 
     @Entry public static boolean chaos_monarch_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 400D;
@@ -770,6 +774,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean chaos_monarch_is_fire_immune = true;
     @Entry public static boolean chaos_monarch_is_undead = true;
     @Entry public static String chaos_monarch_group_type = "UNDEAD";
+    @Entry public static String[] chaos_monarch_status_effect_blacklist = {"soulsweapons:bleed", "minecraft:levitation", "minecraft:wither"};
 
     @Entry public static boolean fallen_icon_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double fallen_icon_health = 500D;
@@ -783,6 +788,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean fallen_icon_is_fire_immune = true;
     @Entry public static boolean fallen_icon_is_undead = false;
     @Entry public static String fallen_icon_group_type = "DEFAULT";
+    @Entry public static String[] fallen_icon_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
@@ -793,6 +799,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean day_stalker_is_fire_immune = true;
     @Entry public static boolean day_stalker_is_undead = false;
     @Entry public static String day_stalker_group_type = "DEFAULT";
+    @Entry public static String[] day_stalker_status_effect_blacklist = {};
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_2 = 1D;
     @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_1 = 1D;
@@ -811,6 +818,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean night_prowler_is_fire_immune = true;
     @Entry public static boolean night_prowler_is_undead = false;
     @Entry public static String night_prowler_group_type = "DEFAULT";
+    @Entry public static String[] night_prowler_status_effect_blacklist = {};
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_2 = 1D;
     @Entry(min=0) public static double night_prowler_special_cooldown_modifier_phase_1 = 1D;

@@ -302,6 +302,11 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.old_champions_remains_status_effect_blacklist;
+    }
+
+    @Override
     public boolean isFireImmune() {
         return ConfigConstructor.old_champions_remains_is_fire_immune;
     }

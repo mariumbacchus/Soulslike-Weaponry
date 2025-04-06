@@ -277,6 +277,11 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.returning_knight_status_effect_blacklist;
+    }
+
+    @Override
     public boolean disablesShield() {
         return ConfigConstructor.returning_knight_disables_shields;
     }

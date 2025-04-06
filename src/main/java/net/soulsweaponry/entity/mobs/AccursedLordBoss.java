@@ -236,6 +236,11 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.decaying_king_status_effect_blacklist;
+    }
+
+    @Override
     public boolean disablesShield() {
         return ConfigConstructor.decaying_king_disables_shields;
     }

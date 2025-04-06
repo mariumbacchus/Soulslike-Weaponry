@@ -16,6 +16,8 @@
   - Added config line ```dragon_staff_vigorous_fog_damage_and_heal``` to change heal and damage by the ability
 - Fixed bug where Holy Moonlight Greatsword and Night's Edge abilities would not spawn entities when standing on 1 block thick ground
 - Fixed bug where Night Prowler would be stuck in the sky in phase 2
+- Added config lines for each boss that contains a list of all status effects the boss is immune to (for example ```chaos_monarch_status_effect_blacklist```)
+- Made the fabric version of this mod compatible with Epic Fight mod
 
 ## 1.2.1
 

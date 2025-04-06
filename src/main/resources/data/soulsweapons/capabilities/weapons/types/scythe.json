@@ -1,0 +1,48 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.7,
+      0.6,
+      1.2
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  },
+  "hit_particle": "epicfight:hit_blade",
+  "hit_sound": "epicfight:entity.hit.blade",
+  "livingmotion_modifier": {
+    "two_hand": {
+      "idle": "epicfight:biped/living/hold_spear",
+      "run": "epicfight:biped/living/run_spear",
+      "block": "epicfight:biped/skill/steel_whirlwind_charging",
+      "walk": "epicfight:biped/living/walk_spear"
+    }
+  },
+  "swing_sound": "epicfight:entity.weapon.whoosh_rod",
+  "styles": {
+    "default": "two_hand",
+    "cases": [
+      {
+        "style": "two_hand",
+        "conditions": []
+      }
+    ]
+  },
+  "combos": {
+    "two_hand": [
+      "epicfight:biped/combat/spear_twohand_auto1",
+      "epicfight:biped/combat/spear_twohand_auto2",
+      "epicfight:biped/skill/rushing_tempo2",
+      "epicfight:biped/skill/rushing_tempo1"
+    ]
+  },
+  "category": "spear",
+  "innate_skills": {
+    "two_hand": "epicfight:sweeping_edge"
+  },
+  "usable_in_offhand": false
+}

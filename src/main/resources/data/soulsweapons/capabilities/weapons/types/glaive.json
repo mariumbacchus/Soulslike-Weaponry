@@ -1,0 +1,82 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.6,
+      0.6,
+      1.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  },
+  "hit_particle": "epicfight:hit_blade",
+  "hit_sound": "epicfight:entity.hit.blade",
+  "livingmotion_modifier": {
+    "two_hand": {
+      "aim": "epicfight:biped/combat/javelin_aim_mid",
+      "fall": "epicfight:biped/living/fall",
+      "run": "epicfight:biped/living/hold_spear",
+      "block": "epicfight:biped/living/shield",
+      "walk": "epicfight:biped/living/hold_spear",
+      "shot": "epicfight:biped/combat/javelin_throw_mid"
+    },
+    "one_hand": {
+      "fly": "epicfight:biped/living/fly",
+      "aim": "epicfight:biped/combat/javelin_aim_mid",
+      "fall": "epicfight:biped/living/fall",
+      "block": "epicfight:biped/living/shield",
+      "sneak": "epicfight:biped/living/sneak",
+      "float": "epicfight:biped/living/float",
+      "walk": "epicfight:biped/living/hold_spear",
+      "swim": "epicfight:biped/living/swim",
+      "shot": "epicfight:biped/combat/javelin_throw_mid"
+    }
+  },
+  "swing_sound": "epicfight:entity.weapon.whoosh",
+  "styles": {
+    "default": "two_hand",
+    "cases": [
+      {
+        "style": "one_hand",
+        "conditions": [
+          {
+            "predicate": "epicfight:offhand_item_category",
+            "category": "shield"
+          }
+        ]
+      },
+      {
+        "style": "two_hand",
+        "conditions": []
+      }
+    ]
+  },
+  "combos": {
+    "two_hand": [
+      "epicfight:biped/combat/spear_twohand_auto1",
+      "epicfight:biped/combat/spear_twohand_auto2",
+      "epicfight:biped/combat/trident_auto3",
+      "epicfight:biped/combat/sword_auto1",
+      "epicfight:biped/combat/sword_auto2",
+      "epicfight:biped/combat/dagger_dual_auto4",
+      "epicfight:biped/combat/sword_dash",
+      "epicfight:biped/combat/spear_twohand_airslash"
+    ],
+    "one_hand": [
+      "epicfight:biped/combat/longsword_auto1",
+      "epicfight:biped/combat/longsword_auto2",
+      "epicfight:biped/combat/longsword_auto3",
+      "epicfight:biped/combat/spear_twohand_airslash",
+      "epicfight:biped/combat/spear_dash",
+      "epicfight:biped/combat/spear_twohand_airslash"
+    ]
+  },
+  "category": "spear",
+  "innate_skills": {
+    "two_hand": "epicfight:blade_rush",
+    "one_hand": "epicfight:grasping_spire"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "collider": {
+    "number": 3,
+    "size": [
+      0.6,
+      0.6,
+      1.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  },
+  "hit_particle": "epicfight:hit_blunt",
+  "hit_sound": "epicfight:entity.hit.blade",
+  "livingmotion_modifier": {
+    "two_hand": {
+      "aim": "epicfight:biped/combat/javelin_throw_mid",
+      "idle": "epicfight:biped/living/hold_spear",
+      "run": "epicfight:biped/living/run_spear",
+      "block": "epicfight:biped/combat/javelin_aim_mid",
+      "walk": "epicfight:biped/living/walk_spear"
+    },
+    "one_hand": {
+      "aim": "epicfight:biped/combat/javelin_aim_mid",
+      "idle": "epicfight:biped/living/hold_dual",
+      "run": "epicfight:biped/living/run_spear",
+      "block": "epicfight:biped/combat/javelin_aim_mid",
+      "sneak": "epicfight:biped/living/sneak",
+      "float": "epicfight:biped/living/float",
+      "walk": "epicfight:biped/living/hold_dual",
+      "swim": "epicfight:biped/living/swim",
+      "shot": "epicfight:biped/combat/javelin_throw_mid"
+    }
+  },
+  "offhand_item_compatible_predicate": [
+    {
+      "predicate": "epicfight:offhand_item_category",
+      "category": "shield"
+    }
+  ],
+  "swing_sound": "epicfight:entity.weapon.whoosh",
+  "combos": {
+    "two_hand": [
+      "epicfight:biped/combat/spear_twohand_auto1",
+      "epicfight:biped/combat/spear_twohand_auto2",
+      "epicfight:biped/skill/sweeping_edge",
+      "epicfight:biped/combat/spear_dash",
+      "epicfight:biped/combat/spear_twohand_airslash"
+    ],
+    "one_hand": [
+      "epicfight:biped/combat/longsword_auto2",
+      "epicfight:biped/combat/longsword_auto3",
+      "epicfight:biped/combat/spear_onehand_airslash",
+      "epicfight:biped/combat/spear_dash",
+      "epicfight:biped/combat/spear_onehand_airslash"
+    ]
+  },
+  "styles": {
+    "default": "two_hand",
+    "cases": [
+      {
+        "style": "one_hand",
+        "conditions": [
+          {
+            "predicate": "epicfight:offhand_item_category",
+            "category": "shield"
+          }
+        ]
+      },
+      {
+        "style": "two_hand",
+        "conditions": []
+      }
+    ]
+  },
+  "category": "spear",
+  "innate_skills": {
+    "two_hand": "epicfight:grasping_spire",
+    "one_hand": "epicfight:grasping_spire"
+  }
+}
