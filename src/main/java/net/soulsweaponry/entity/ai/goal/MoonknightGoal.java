@@ -489,7 +489,7 @@ public class MoonknightGoal extends Goal {
         if (attackStatus == 1) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.KNIGHT_CHARGE_SWORD_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
         if (this.attackStatus == 26) {
             float yaw = (this.yaw == 0f ? this.boss.getHeadYaw() : this.yaw) + 90;
-            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), yaw, this.targetPos.toCenterPos(), this.targetPos.getY(), 14, 1.75f, (Vec3d position, Integer warmup, Float yawOutput) -> {
+            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), yaw, this.targetPos.toCenterPos(), 10, 14, 1.75f, (Vec3d position, Integer warmup, Float yawOutput) -> {
                 HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), this.boss.getWorld());
                 pillar.setOwner(this.boss);
                 pillar.setParticleAmountMod(1.5f);

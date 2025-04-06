@@ -1,5 +1,6 @@
 package net.soulsweaponry.util;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -81,17 +82,18 @@ public class WeaponUtil {
      * @param world world
      * @param yaw yaw of the user (often times needs to be plussed by 90)
      * @param startPos start position (for example the position of the user)
-     * @param maxY maxY level the positions can go to
+     * @param maxYOffset max y offset from the original y point the points can go through to find valid spot
      * @param amount amount of positions to generate/range outwards => amount of entities in the line
      * @param spacingModifier spacing modifier between each point, normally 1.75 or 1.25
      * @param consumer consumer accepting {@code Vec3d, Integer and Float}, where the vec3d is the position, integer is the delayed warmup and float is the yaw output for rotating the entity
      */
-    public static void doConsumerOnLine(World world, float yaw, Vec3d startPos, double maxY, int amount, float spacingModifier, TriConsumer<Vec3d, Integer, Float> consumer) {
-        double y = maxY + 1.0;
+    public static void doConsumerOnLine(World world, float yaw, Vec3d startPos, double maxYOffset, int amount, float spacingModifier, TriConsumer<Vec3d, Integer, Float> consumer) {
+        double minY = startPos.getY() - maxYOffset;
+        double maxY = startPos.getY() + maxYOffset;
         float f = (float) Math.toRadians(yaw);
         for (int i = 0; i < amount; i++) {
             double h = spacingModifier * (double)(i + 1);
-            doConsumerOnPoint(world, startPos.getX() + (double)MathHelper.cos(f) * h, startPos.getZ() + (double)MathHelper.sin(f) * h, maxY, y, -6 + i * 2, yaw, consumer);
+            doConsumerOnPoint(world, startPos.getX() + (double)MathHelper.cos(f) * h, startPos.getZ() + (double)MathHelper.sin(f) * h, minY, maxY, -6 + i * 2, yaw, consumer);
         }
     }
 
@@ -100,28 +102,34 @@ public class WeaponUtil {
      * @param world world
      * @param x x position
      * @param z z position
-     * @param maxY max height/offset of y
-     * @param y y position with offset
+     * @param minY min y with offset
+     * @param maxY max y with offset
      * @param warmup warmup/delay for the entity, meant for entities such as {@code HolyMoonlightPillar} that should explode after a delay
      * @param yaw yaw of the entity for rotating the entity in the consumer
      * @param consumer consumer accepting {@code Vec3d, Integer and Float}, where the vec3d is the position, integer is the delayed warmup and float is the yaw output for rotating the entity
      */
-    public static void doConsumerOnPoint(World world, double x, double z, double maxY, double y, int warmup, float yaw, TriConsumer<Vec3d, Integer, Float> consumer) {
-        BlockPos blockPos = new BlockPos((int) x, (int) y, (int) z);
-        boolean bl = false;
-        double d = 0.0;
+    public static void doConsumerOnPoint(World world, double x, double z, double minY, double maxY, int warmup, float yaw, TriConsumer<Vec3d, Integer, Float> consumer) {
+        BlockPos blockPos = BlockPos.ofFloored(x, maxY, z);
+        boolean valid = false;
+        double shapeOffset = 0.0;
         do {
-            VoxelShape voxelShape;
-            BlockPos blockPos2;
-            if (!world.getBlockState(blockPos2 = blockPos.down()).isSideSolidFullSquare(world, blockPos2, Direction.UP)) continue;
-            if (!world.isAir(blockPos) && !(voxelShape = world.getBlockState(blockPos).getCollisionShape(world, blockPos)).isEmpty()) {
-                d = voxelShape.getMax(Direction.Axis.Y);
+            BlockPos blockPos2 = blockPos.down();
+            BlockState blockState = world.getBlockState(blockPos2);
+            if (blockState.isSideSolidFullSquare(world, blockPos2, Direction.UP)) {
+                if (!world.isAir(blockPos)) {
+                    BlockState blockState2 = world.getBlockState(blockPos);
+                    VoxelShape voxelShape = blockState2.getCollisionShape(world, blockPos);
+                    if (!voxelShape.isEmpty()) {
+                        shapeOffset = voxelShape.getMax(Direction.Axis.Y);
+                    }
+                }
+                valid = true;
+                break;
             }
-            bl = true;
-            break;
-        } while ((blockPos = blockPos.down()).getY() >= MathHelper.floor(maxY) - 1);
-        if (bl) {
-            consumer.accept(new Vec3d(x, (double)blockPos.getY() + d, z), warmup, yaw);
+            blockPos = blockPos.down();
+        } while (blockPos.getY() >= MathHelper.floor(minY) - 1);
+        if (valid) {
+            consumer.accept(new Vec3d(x, (double)blockPos.getY() + shapeOffset, z), warmup, yaw);
         }
     }
 
