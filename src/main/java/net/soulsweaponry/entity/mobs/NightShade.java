@@ -357,6 +357,11 @@ public class NightShade extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.frenzied_shade_status_effect_blacklist;
+    }
+
+    @Override
     public boolean disablesShield() {
         return ConfigConstructor.frenzied_shade_disables_shields;
     }

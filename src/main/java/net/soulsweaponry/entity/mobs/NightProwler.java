@@ -732,4 +732,9 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public String[] getWhitelistedProjectiles() {
         return ConfigConstructor.night_prowler_projectile_immunity_whitelist;
     }
+
+    @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.night_prowler_status_effect_blacklist;
+    }
 }

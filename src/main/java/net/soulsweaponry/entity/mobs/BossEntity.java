@@ -8,6 +8,7 @@ import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.boss.BossBar.Style;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -19,6 +20,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -26,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
 
@@ -242,5 +245,21 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      */
     public String[] getWhitelistedProjectiles() {
         return new String[0];
+    }
+
+    /**
+     * @return Array of status effect identifiers that the boss is immune to
+     */
+    public abstract String[] getBlacklistedStatusEffects();
+
+    @Override
+    public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
+        String effectId = Objects.requireNonNull(ForgeRegistries.MOB_EFFECTS.getKey(effect.getEffectType())).toString();
+        for (String blacklisted : this.getBlacklistedStatusEffects()) {
+            if (blacklisted.equals(effectId)) {
+                return false;
+            }
+        }
+        return super.addStatusEffect(effect, source);
     }
 }

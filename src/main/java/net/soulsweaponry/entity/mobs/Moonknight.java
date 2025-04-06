@@ -239,6 +239,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.fallen_icon_status_effect_blacklist;
+    }
+
+    @Override
     public int getXp() {
         return ConfigConstructor.fallen_icon_xp;
     }

@@ -181,12 +181,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
                 }
             }
         }
-        if (this.hasStatusEffect(StatusEffects.LEVITATION)) {
-            this.removeStatusEffect(StatusEffects.LEVITATION);
-        }
-        if (this.hasStatusEffect(StatusEffects.WITHER)) {
-            this.removeStatusEffect(StatusEffects.WITHER);
-        }
         if (ConfigConstructor.chaos_monarch_wither_ground) {
             this.turnBlocks(this.getWorld(), this.getBlockPos());
         }
@@ -287,6 +281,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     @Override
     public String getGroupId() {
         return ConfigConstructor.chaos_monarch_group_type;
+    }
+
+    @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.chaos_monarch_status_effect_blacklist;
     }
 
     @Override

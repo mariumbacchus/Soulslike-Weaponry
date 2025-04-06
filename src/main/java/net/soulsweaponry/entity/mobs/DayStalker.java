@@ -229,6 +229,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public String[] getBlacklistedStatusEffects() {
+        return ConfigConstructor.day_stalker_status_effect_blacklist;
+    }
+
+    @Override
     public boolean disablesShield() {
         return ConfigConstructor.day_stalker_disables_shields;
     }
