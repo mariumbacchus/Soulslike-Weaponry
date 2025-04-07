@@ -18,6 +18,7 @@
 - Fixed bug where Night Prowler would be stuck in the sky in phase 2
 - Added config lines for each boss that contains a list of all status effects the boss is immune to (for example ```chaos_monarch_status_effect_blacklist```)
 - Made the fabric version of this mod compatible with Epic Fight mod
+- Made the mod compatible with Rat's Arsenal mod
 
 ## 1.2.1
 
