@@ -119,9 +119,9 @@ public class LivingEntityMixin {
     // Disable shields with ultra heavy if config line is enabled
     @Inject(method = "disablesShield", at = @At("HEAD"), cancellable = true)
     private void interceptDisablesShield(CallbackInfoReturnable<Boolean> info) {
-        if (ConfigConstructor.ultra_heavy_disables_shields) {
-            LivingEntity entity = ((LivingEntity)(Object)this);
-            info.setReturnValue(entity.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy());
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (ConfigConstructor.ultra_heavy_disables_shields && entity.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy()) {
+            info.setReturnValue(true);
             info.cancel();
         }
     }
