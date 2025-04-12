@@ -5,7 +5,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,14 +21,12 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (event.phase == TickEvent.Phase.END && client.options.attackKey.isPressed() && client.world != null && client.player != null) {
-            ClientForgeEvents.triggerMoonlightEvent(client.player);
+        if (event.phase == TickEvent.Phase.END) {
+            if (client.options.attackKey.isPressed() && client.world != null && client.player != null) {
+                ClientForgeEvents.triggerMoonlightEvent(client.player);
+            }
+            KeyBindRegistry.registerKeyInputs();
         }
-    }
-
-    @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
-        KeyBindRegistry.registerKeyInputs();
     }
 
     public static void triggerMoonlightEvent(ClientPlayerEntity player) {
