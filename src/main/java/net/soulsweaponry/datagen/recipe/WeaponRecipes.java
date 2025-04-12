@@ -26,7 +26,7 @@ public class WeaponRecipes extends RecipeProvider {
     public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
         // Regular weapons
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_SWORD.get())
-                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT.get())
                 .pattern(" # ")
                 .pattern(" # ")
@@ -35,7 +35,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .items(ItemRegistry.SOUL_INGOT.get()).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_GLAIVE.get())
-                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT.get())
                 .pattern(" #")
                 .pattern("##")
@@ -44,7 +44,7 @@ public class WeaponRecipes extends RecipeProvider {
                         .items(ItemRegistry.SOUL_INGOT.get()).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD.get())
-                .input('#', ItemRegistry.LOST_SOUL.get())
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT.get())
                 .pattern(" ##")
                 .pattern(" X ")
@@ -143,7 +143,7 @@ public class WeaponRecipes extends RecipeProvider {
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.NIGHTFALL.get())
                 .input('S', ModTags.Items.LORD_SOUL)
-                .input('X', ItemRegistry.LOST_SOUL.get())
+                .input('X', ModTags.Items.LOST_SOUL)
                 .input('Y', Items.IRON_BLOCK)
                 .input('#', ItemRegistry.SOUL_INGOT.get())
                 .pattern("YYY")

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "soulsweapons:lost_soul"
+      "tag": "forge:lost_soul"
     },
     "C": {
       "item": "minecraft:redstone_lamp"

@@ -6,7 +6,7 @@
       "item": "minecraft:iron_block"
     },
     "G": {
-      "item": "soulsweapons:lost_soul"
+      "tag": "forge:lost_soul"
     },
     "S": {
       "tag": "forge:wood_sticks"

@@ -9,7 +9,7 @@
       "tag": "soulsweapons:lord_soul"
     },
     "X": {
-      "item": "soulsweapons:lost_soul"
+      "tag": "forge:lost_soul"
     },
     "Y": {
       "item": "minecraft:iron_block"

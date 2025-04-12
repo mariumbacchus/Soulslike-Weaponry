@@ -28,6 +28,7 @@ import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.registry.*;
+import net.soulsweaponry.util.ModTags;
 
 public class AltarBlock extends Block implements IConfigDisable {
 
@@ -110,7 +111,7 @@ public class AltarBlock extends Block implements IConfigDisable {
     }
 
     private boolean spawnBoss(World world, BlockPos pos, PlayerEntity player, ItemStack itemStack) {
-        if (itemStack.isOf(ItemRegistry.LOST_SOUL.get())) {
+        if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
             entity.setSpawning(true);
             boolean bl =spawnEntity(world, pos, player, entity, ConfigConstructor.returning_knight_disable_respawn);

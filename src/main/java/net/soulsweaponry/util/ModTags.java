@@ -36,6 +36,7 @@ public class ModTags {
         public static final TagKey<Item> SILVER_INGOTS = createCommonIngotTag("silver");
         public static final TagKey<Item> IRON_INGOTS = createCommonIngotTag("iron");
         public static final TagKey<Item> SHIELDS = createCommonTag("shields");
+        public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, new Identifier(SoulsWeaponry.ModId, name));
