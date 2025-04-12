@@ -1,4 +1,4 @@
-// 1.20.1	2025-02-12T14:24:57.4222919	Marium's Soulslike Weaponry/Advancements
+// 1.20.1	2025-04-12T22:03:06.68272	Marium's Soulslike Weaponry/Advancements
 a3a56d2f71701cb2587a1e2aa7d6e24ceadfc92a data\soulsweapons\advancements\heap_of_iron.json
 6e3196061981c90f86c16f17ff08eac925b5f580 data\soulsweapons\advancements\root.json
 6a877e118ae29c73a88f828c5fc4ed17f814d858 data\soulsweapons\advancements\lords_on_stick.json
@@ -16,8 +16,8 @@ befc113f42f0841b0b63d36f1952bcf35736d072 data\soulsweapons\advancements\rageblad
 86d2c4e37b10d0851d08161ebbdc3fd8271bd8bb data\soulsweapons\advancements\dream_on.json
 84f3415dfbb502e4d7aae2a76417a7b71e15f4d3 data\soulsweapons\advancements\bloodthirsty.json
 732cde7ba7e845a7a26e2b9c299966c424e45e25 data\soulsweapons\advancements\infused_arkenplate.json
-9b142bb50233c34432389d7ba3ceaa9af1d765f9 data\soulsweapons\advancements\arkenplate.json
 d6747ee4d19bb01a20b655ba95205f82da4fde43 data\soulsweapons\advancements\kill_day_night_boss.json
+9b142bb50233c34432389d7ba3ceaa9af1d765f9 data\soulsweapons\advancements\arkenplate.json
 36ac7bd3b7432d85c9d6b3fc576e7e8111212645 data\soulsweapons\advancements\trickweapon.json
 38b493f55a50e14d0351692b318c04b561a33a7f data\soulsweapons\advancements\all_weapons.json
 d20c53af9905bc8917ee61371ef94589fc166eea data\soulsweapons\advancements\moonknight.json

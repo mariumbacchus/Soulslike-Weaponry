@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "soulsweapons:lost_soul"
+      "tag": "c:lost_soul"
     },
     "C": {
       "item": "minecraft:cracked_polished_blackstone_bricks"

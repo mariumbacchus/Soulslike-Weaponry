@@ -6,7 +6,7 @@
       "item": "minecraft:iron_ingot"
     },
     {
-      "item": "soulsweapons:lost_soul"
+      "tag": "c:lost_soul"
     },
     {
       "item": "minecraft:gunpowder"

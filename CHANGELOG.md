@@ -2,6 +2,9 @@
 
 ## 1.2.3
 - Fixed a bug preventing other weapons such as axes from disabling shields
+- Increased the durability of Forlorn Scythe to be on par with the other legendary weapons
+- Added compatibility with Terramity, Lost Souls from that mod will work with this mods interactions and recipes
+  - Added it to the c:lost_soul (fabric) / forge:lost_soul tags, so if any other mods have similar items, they can be added into that tag through a datapack
 
 ## 1.2.2
 - All custom bows/crossbows' arrows apply custom effects from tipped arrows (can be disabled in config for each weapon)

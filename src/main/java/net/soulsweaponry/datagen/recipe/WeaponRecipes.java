@@ -21,7 +21,7 @@ public class WeaponRecipes {
     public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
         // Regular weapons
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_SWORD)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" # ")
                 .pattern(" # ")
@@ -30,7 +30,7 @@ public class WeaponRecipes {
                         .items(ItemRegistry.SOUL_INGOT).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_GLAIVE)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" #")
                 .pattern("##")
@@ -39,7 +39,7 @@ public class WeaponRecipes {
                         .items(ItemRegistry.SOUL_INGOT).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" ##")
                 .pattern(" X ")
@@ -138,7 +138,7 @@ public class WeaponRecipes {
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.NIGHTFALL)
                 .input('S', ModTags.Items.LORD_SOUL)
-                .input('X', ItemRegistry.LOST_SOUL)
+                .input('X', ModTags.Items.LOST_SOUL)
                 .input('Y', Items.IRON_BLOCK)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("YYY")

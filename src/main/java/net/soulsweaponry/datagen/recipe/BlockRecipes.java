@@ -9,6 +9,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.ModTags;
 
 import java.util.function.Consumer;
 
@@ -47,22 +48,22 @@ public class BlockRecipes {
                         .items(Items.GOLDEN_CARROT).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.CRACKED_INFUSED_BLACKSTONE)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('C', Items.CRACKED_POLISHED_BLACKSTONE_BRICKS)
                 .pattern(" # ")
                 .pattern("#C#")
                 .pattern(" # ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.LOST_SOUL).build()))
+                        .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.INFUSED_BLACKSTONE)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('C', Items.POLISHED_BLACKSTONE_BRICKS)
                 .pattern(" # ")
                 .pattern("#C#")
                 .pattern(" # ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.LOST_SOUL).build()))
+                        .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.MOONSTONE_BLOCK)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -81,20 +82,20 @@ public class BlockRecipes {
                         .items(ItemRegistry.VERGLAS).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.SOULFIRE_STAIN)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .pattern("##")
                 .pattern("##")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.LOST_SOUL).build()))
+                        .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, BlockRegistry.SOUL_LAMP)
-                .input('#', ItemRegistry.LOST_SOUL)
+                .input('#', ModTags.Items.LOST_SOUL)
                 .input('C', Items.REDSTONE_LAMP)
                 .pattern(" # ")
                 .pattern("#C#")
                 .pattern(" # ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.LOST_SOUL).build()))
+                        .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(consumer);
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, BlockRegistry.CRIMSON_OBSIDIAN)

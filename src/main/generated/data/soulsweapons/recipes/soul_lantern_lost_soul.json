@@ -6,7 +6,7 @@
       "item": "minecraft:iron_nugget"
     },
     "X": {
-      "item": "soulsweapons:lost_soul"
+      "tag": "c:lost_soul"
     }
   },
   "pattern": [

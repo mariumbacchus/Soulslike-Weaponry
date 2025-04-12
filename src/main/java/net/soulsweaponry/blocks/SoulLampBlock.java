@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.ModTags;
 
 public class SoulLampBlock extends Block {
 
@@ -35,13 +36,13 @@ public class SoulLampBlock extends Block {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (state.get(LIT)) {
-            world.setBlockState(pos, (BlockState)state.with(LIT, false), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(LIT, false), Block.NOTIFY_LISTENERS);
             if (!player.getAbilities().creativeMode) {
                 player.dropItem(ItemRegistry.LOST_SOUL);
             }
             return ActionResult.SUCCESS;
-        } else if (itemStack.isOf(ItemRegistry.LOST_SOUL)) {
-            world.setBlockState(pos, (BlockState)state.with(LIT, true), Block.NOTIFY_LISTENERS);
+        } else if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
+            world.setBlockState(pos, state.with(LIT, true), Block.NOTIFY_LISTENERS);
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }

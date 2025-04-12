@@ -5,11 +5,13 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.ModTags;
 
 public enum ModToolMaterials implements ToolMaterial {
     
     IRON_BLOCK(1537, 8.0f, -1.0f, MiningLevels.IRON, 16, Ingredient.ofItems(Items.IRON_BLOCK)),
-    LOST_SOUL(328, 7.0f, -1.0f, MiningLevels.IRON, 20, Ingredient.ofItems(ItemRegistry.LOST_SOUL, ItemRegistry.SOUL_INGOT)),
+    LOST_SOUL(328, 7.0f, -1.0f, MiningLevels.IRON, 20, Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
+    LOST_SOUL_DURABLE(1537, 7.0f, -1.0f, MiningLevels.IRON, 14, Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
     MOONSTONE_OR_VERGLAS(1756, 10.0f, -1.0f, MiningLevels.DIAMOND, 10, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
     CRIMSON_INGOT(1984, 10.0f, -1.0f, MiningLevels.DIAMOND, 8, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT)),
     MOONSTONE_TOOL(1721, 8.5f, 3.0f, MiningLevels.NETHERITE, 12, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
