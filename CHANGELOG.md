@@ -7,6 +7,9 @@
 - Added info/hint to the Lost Soul that it can be used on the Old Moon Altar
 - Added info to the Essence of Eventide that it can be used on the Old Moon Altar to summon the Fallen Icon
 - Crucible Sword has reduced cooldown in the Nether
+- Old Champion's Remains now bounce off projectiles after 3 consecutive projectile hits
+  - Melee attacks reset the counter
+  - The amount of hits before growing immune can be changed with config line ```old_champions_remains_max_projectile_hits_before_immune```
 - Fabric only: Made it compatible with Epic Fight mod in case someone downloads the fabric version and uses Sinytra Connector with Epic Fight
 
 ## 1.2.3

@@ -748,6 +748,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static int old_champions_remains_hits_before_growing_resistant = 3;
+    @Entry public static int old_champions_remains_max_projectile_hits_before_immune = 3;
     @Entry public static int old_champions_remains_xp = 200;
     @Entry public static boolean old_champions_remains_disables_shields = true;
     @Entry public static boolean old_champions_remains_disables_shields_all_attacks = false;
