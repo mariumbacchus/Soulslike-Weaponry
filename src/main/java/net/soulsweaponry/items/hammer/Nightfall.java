@@ -35,6 +35,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -58,7 +59,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 this.applyItemCooldown(player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));

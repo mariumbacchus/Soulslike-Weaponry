@@ -49,6 +49,16 @@ public class WeaponUtil {
         return list;
     }
 
+    public static int getChargeTime(ItemStack stack, int remainingUseTicks) {
+        int i;
+        if (WeaponUtil.isModLoaded("epicfight")) {
+            i = Integer.MAX_VALUE - remainingUseTicks;
+        } else {
+            i = stack.getItem().getMaxUseTime(stack) - remainingUseTicks;
+        }
+        return i;
+    }
+
     /**
      * Use this method when doing something in circles, rippling outwards from the center
      * @param world world

@@ -365,6 +365,7 @@
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] 키를 눌러 정보를 확인하세요",
+    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.alt": "[§eALT§r] 키를 눌러 정보를 확인하세요",
     "tooltip.soulsweapons.control": "[§eCTRL§r] 키를 눌러 설명을 확인하세요",
     "tooltip.soulsweapons.disabled": "§4비활성화됨§r",

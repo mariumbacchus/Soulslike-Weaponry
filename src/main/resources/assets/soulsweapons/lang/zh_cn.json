@@ -365,6 +365,7 @@
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "按[§eshift§r]查看详情",
+    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.control": "Hold [§eCTRL§r] for Lore",
     "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "咒刃",

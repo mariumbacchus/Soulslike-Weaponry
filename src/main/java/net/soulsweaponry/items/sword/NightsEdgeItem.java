@@ -51,7 +51,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 WeaponUtil.doConsumerOnLine(world, player.getYaw() + 90, player.getPos(), 4, 10 + 2 * WeaponUtil.getEnchantDamageBonus(stack), 1.25f,

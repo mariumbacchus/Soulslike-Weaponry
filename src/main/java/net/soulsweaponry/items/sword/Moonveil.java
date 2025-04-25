@@ -24,7 +24,7 @@ public class Moonveil extends ChargeToUseItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this) && !world.isClient) {
-            int time = this.getMaxUseTime(stack) - remainingUseTicks;
+            int time = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (time >= 10) {
                 if (player.isSneaking()) {
                     MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, 15);

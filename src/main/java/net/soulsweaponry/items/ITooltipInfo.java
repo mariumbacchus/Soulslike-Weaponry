@@ -24,13 +24,27 @@ public interface ITooltipInfo {
      * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
      */
     default void appendTooltipAbilities(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (Screen.hasShiftDown()) {
+        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+        if (shouldShowInfo()) {
             for (TooltipAbilities ability : this.getTooltipAbilities()) {
                 TooltipUtil.addAbilityTooltip(ability, stack, tooltip);
             }
             tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
         } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            if (epicFight) {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.alt"));
+            } else {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            }
         }
+    }
+
+    /**
+     * @return whether the info button is being held when hovering an item, button is
+     * ALT if Epic Fight mod is installed, SHIFT otherwise.
+     */
+    static boolean shouldShowInfo() {
+        boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+        return !epicFight ? Screen.hasShiftDown() : Screen.hasAltDown();
     }
 }

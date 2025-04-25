@@ -25,6 +25,7 @@ import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 if (stack != user.getOffHandStack()) {
                     stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));

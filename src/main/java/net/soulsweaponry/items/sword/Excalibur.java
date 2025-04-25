@@ -20,6 +20,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Predicate;
 
@@ -33,7 +34,7 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this) && !world.isClient) {
-            int time = this.getMaxUseTime(stack) - remainingUseTicks;
+            int time = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (time >= 10) {
                 LivingEntity target;
                 Predicate<LivingEntity> nonTeammate = entity -> !entity.isTeammate(user);

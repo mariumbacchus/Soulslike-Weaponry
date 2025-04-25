@@ -63,7 +63,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
             float cooldownMod = 1f;
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());

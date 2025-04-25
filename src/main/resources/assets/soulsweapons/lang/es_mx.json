@@ -366,6 +366,7 @@
   "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
   "tooltip.soulsweapons.shift": "Mantén presionado [§eSHIFT§r] para ver la información",
+  "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
   "tooltip.soulsweapons.control": "Mantén presionado [§eCTRL§r] para ver información adicional",
   "tooltip.soulsweapons.disabled": "§4Deshabilitado§r",
   "tooltip.soulsweapons.magic_damage": "Hoja mágica",

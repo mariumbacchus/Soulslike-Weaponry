@@ -366,6 +366,7 @@
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] を押して詳細を表示します",
+    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.control": "[§eCTRL§r] を押して詳細を表示します",
     "tooltip.soulsweapons.disabled": "§4Disabled§r",
     "tooltip.soulsweapons.magic_damage": "スペルブレード",

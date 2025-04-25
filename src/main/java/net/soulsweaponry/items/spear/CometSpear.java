@@ -46,7 +46,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 if (stack == user.getOffHandStack()) {
