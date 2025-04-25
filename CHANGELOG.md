@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.4
+- Fixed a bug that removed original paper recipe
+- Added info to Demon Chunks that they can be used to summon the Decaying King when used on a Blackstone Pedestal
+- Added info to the Draugr that it can summon the Old Champion for a re-fight when used on an Old Moon Altar
+- Added info/hint to the Lost Soul that it can be used on the Old Moon Altar
+- Added info to the Essence of Eventide that it can be used on the Old Moon Altar to summon the Fallen Icon
+- Crucible Sword has reduced cooldown in the Nether
+
 ## 1.2.3
 - Fixed a bug preventing other weapons such as axes from disabling shields
 - Increased the durability of Forlorn Scythe to be on par with the other legendary weapons

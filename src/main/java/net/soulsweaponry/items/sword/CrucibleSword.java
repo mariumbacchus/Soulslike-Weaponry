@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionTypes;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -29,8 +30,11 @@ public class CrucibleSword extends ModdedSword {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof PlayerEntity player && !this.isDisabled(stack)) {
             if (!player.getItemCooldownManager().isCoolingDown(this)) {
-                this.applyItemCooldown(player, Math.max(ConfigConstructor.crucible_sword_empowered_min_cooldown,
-                        ConfigConstructor.crucible_sword_empowered_cooldown - this.getReduceCooldownEnchantLevel(stack) * 20));
+                World world = player.getWorld();
+                float cooldownMod = !world.isClient && world.getDimensionKey() == DimensionTypes.THE_NETHER ? ConfigConstructor.crucible_sword_empowered_cooldown_modifier_in_nether : 1f;
+                this.applyItemCooldown(player, (int) (Math.max(ConfigConstructor.crucible_sword_empowered_min_cooldown,
+                                        ConfigConstructor.crucible_sword_empowered_cooldown - this.getReduceCooldownEnchantLevel(stack) * 20)
+                                        * cooldownMod));
             }
         }
         return super.postHit(stack, target, attacker);

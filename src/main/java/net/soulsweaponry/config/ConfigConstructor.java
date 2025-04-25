@@ -327,6 +327,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int crucible_sword_empowered_damage = 30;
     @Entry public static int crucible_sword_empowered_cooldown = 300;
     @Entry public static int crucible_sword_empowered_min_cooldown = 100;
+    @Entry public static float crucible_sword_empowered_cooldown_modifier_in_nether = 0.4f;
     @Entry public static boolean crucible_sword_enchant_reduces_cooldown = true;
     @Entry public static String[] crucible_sword_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static int darkin_blade_damage = 11;

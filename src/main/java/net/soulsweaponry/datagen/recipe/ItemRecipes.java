@@ -213,7 +213,7 @@ public class ItemRecipes {
                 .input(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE).build()))
-                .offerTo(consumer);
+                .offerTo(consumer, "special_page_to_paper");
 
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK), ItemRegistry.CRIMSON_INGOT, 0.1f, 200, ItemRegistry.DEMON_HEART, consumer);
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(Items.SOUL_SAND), ItemRegistry.LOST_SOUL, 0.1f, 200, Items.SOUL_SAND, consumer);
