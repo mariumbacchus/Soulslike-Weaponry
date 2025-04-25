@@ -1,6 +1,6 @@
-// 1.20.1	2025-04-12T19:04:26.4098476	Recipes
-25e87e8594fc69565a831a24bfb552f58d3b0970 data/minecraft/advancements/recipes/misc/paper.json
-ceb5cd24cc8a9440bdaf790f3dfff8b485f9222c data/minecraft/recipes/paper.json
+// 1.20.1	2025-04-25T18:01:44.428619	Recipes
+6885a284e0edcbf08e2a904b8011987a41e51c4a data/minecraft/advancements/recipes/misc/special_page_to_paper.json
+ceb5cd24cc8a9440bdaf790f3dfff8b485f9222c data/minecraft/recipes/special_page_to_paper.json
 eb601510f081b282c372bc8cfb41cec678af1b63 data/soulsweapons/advancements/recipes/building_blocks/chungus_emerald_block.json
 5d9655b0d6bc46fbbb2235da72db13996367e438 data/soulsweapons/advancements/recipes/building_blocks/cracked_infused_blackstone.json
 a30180dd28a2fb005755e81bcc88694bb15ba3ed data/soulsweapons/advancements/recipes/building_blocks/infused_blackstone.json

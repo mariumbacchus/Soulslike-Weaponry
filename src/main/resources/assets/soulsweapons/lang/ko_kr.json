@@ -597,6 +597,7 @@
     "tooltip.soulsweapons.doom": "원시 지옥 에너지",
     "tooltip.soulsweapons.doom_description_1": "- 다음 공격에 막대한 피해를 입히며,",
     "tooltip.soulsweapons.doom_description_2": "이후 쿨다운 상태에 들어갑니다.",
+    "tooltip.soulsweapons.doom_description_3": "- Cooldown is reduced in the Nether",
 
     "tooltip.soulsweapons.transformation": "내면의 갈등",
     "tooltip.soulsweapons.transformation_description_1": "- 몬스터를 처치하면 그들의 영혼을 수확하며,",
@@ -839,6 +840,8 @@
 
     "tooltip.soulsweapons.essence_of_eventide.part_1": "강한 그리움을 느끼며, 마치 무엇인가로",
     "tooltip.soulsweapons.essence_of_eventide.part_2": "절실히 돌아가고 싶어하는 듯한 느낌이 듭니다.",
+    "tooltip.soulsweapons.essence_of_eventide.part_3": "Perhaps bringing it to the Old Moon Altar",
+    "tooltip.soulsweapons.essence_of_eventide.part_4": "may do something...",
 
     "tooltip.soulsweapons.shard_of_uncertainty.part_1": "특정한 받침대에 완벽하게 맞는 것 같습니다...",
 
@@ -853,6 +856,8 @@
     "tooltip.soulsweapons.lost_soul.part_1": "고대인들이 기저 세계로 여행한 후,",
     "tooltip.soulsweapons.lost_soul.part_2": "영혼 에너지의 발견은",
     "tooltip.soulsweapons.lost_soul.part_3": "오래 걸리지 않았습니다.",
+    "tooltip.soulsweapons.lost_soul.part_4": "There is an altar that seems to crave",
+    "tooltip.soulsweapons.lost_soul.part_5": "something akin to this power...",
 
     "tooltip.soulsweapons.chaos_crown_lore_1": "고대인들은 고대인들과 악마들 사이의",
     "tooltip.soulsweapons.chaos_crown_lore_2": "중재자로 학자를 선택했습니다.",
@@ -906,6 +911,10 @@
     "tooltip.soulsweapons.withered_chest.lore.enhanced.3": "심장은 다시 약하게 뛰기 시작합니다...",
 
     "tooltip.soulsweapons.chungus_emerald.part_1": "Use on Moderately Sized Chunguses to barter with them",
+
+    "tooltip.soulsweapons.demon_chunk.part_1": "Use on the Blackstone Pedestal to summon a long, lost king",
+
+    "tooltip.soulsweapons.draugr_info.part_1": "Use on the Old Moon Altar to fight the Old Champion once again",
 
     "tooltip.soulsweapons.blood_vial_recipe_page.part_1": "A torn page detailing how to create Blood Vials.",
     "tooltip.soulsweapons.blood_vial_recipe_page.part_2": "",

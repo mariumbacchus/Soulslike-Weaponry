@@ -37,7 +37,7 @@ public class ItemRegistry {
     public static final RegistryObject<LoreItem> LORD_SOUL_WHITE = registerItem("lord_soul_white", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
     public static final RegistryObject<LoreItem> LORD_SOUL_DAY_STALKER = registerItem("lord_soul_day_stalker", () ->new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 2));
     public static final RegistryObject<LoreItem> LORD_SOUL_NIGHT_PROWLER = registerItem("lord_soul_night_prowler",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
-    public static final RegistryObject<Item> LOST_SOUL = registerItem("lost_soul", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE), 3));
+    public static final RegistryObject<Item> LOST_SOUL = registerItem("lost_soul", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5));
     public static final RegistryObject<Item> MOONSTONE = registerItem("moonstone", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> CHUNGUS_EMERALD = registerItem("chungus_emerald", () -> new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true));
     public static final RegistryObject<Item> DEMON_HEART = registerItem("demon_heart", () -> new LoreItem(new Item.Settings().food(new FoodComponent.Builder()
@@ -46,13 +46,13 @@ public class ItemRegistry {
             .effect(() -> new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), 150, 0), 10)
             .effect(() -> new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()), 3));
     public static final RegistryObject<Item> MOLTEN_DEMON_HEART= registerItem("molten_demon_heart", () -> new Item(new Item.Settings()));
-    public static final RegistryObject<Item> DEMON_CHUNK = registerItem("demon_chunk",() -> new Item(new Item.Settings()));
+    public static final RegistryObject<Item> DEMON_CHUNK = registerItem("demon_chunk",() -> new LoreItem(new Item.Settings(), 1, true));
     public static final RegistryObject<Item> CRIMSON_INGOT = registerItem("crimson_ingot",() -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SOUL_INGOT = registerItem("soul_ingot", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SILVER_BULLET = registerGunItem("silver_bullet", () -> new Item(new Item.Settings().maxCount(20)));
     public static final RegistryObject<Item> BOSS_COMPASS = registerItem("boss_compass", () -> new BossCompass(new Item.Settings().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MOONSTONE_RING = registerItem("moonstone_ring", () -> new MoonstoneRing(new Item.Settings().rarity(Rarity.EPIC).maxDamage(25)));
-    public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = registerItem("shard_of_uncertainty", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 1));
+    public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = registerItem("shard_of_uncertainty", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 1, true));
     public static final RegistryObject<Item> VERGLAS = registerItem("verglas", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SKOFNUNG_STONE = registerItem("skofnung_stone", () -> new SkofnungStone(new Item.Settings().maxDamage(20)));
     public static final RegistryObject<Item> IRON_SKULL = registerItem("iron_skull", () -> new Item(new Item.Settings()));
@@ -66,7 +66,7 @@ public class ItemRegistry {
 
     public static final RegistryObject<LoreItem> WITHERED_DEMON_HEART = registerItem("withered_demon_heart", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4));
     public static final RegistryObject<LoreItem> ARKENSTONE = registerItem("arkenstone", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4));
-    public static final RegistryObject<LoreItem> ESSENCE_OF_EVENTIDE = registerItem("essence_of_eventide",() -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 2));
+    public static final RegistryObject<LoreItem> ESSENCE_OF_EVENTIDE = registerItem("essence_of_eventide",() -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true));
     public static final RegistryObject<LoreItem> ESSENCE_OF_LUMINESCENCE = registerItem("essence_of_luminescence", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 3));
     public static final RegistryObject<Item> CHAOS_CROWN = registerItem("chaos_crown", () -> new ChaosSet(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> CHAOS_HELMET = registerArmorItem("chaos_helmet", () -> new ChaosSet(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_chaos_helmet);

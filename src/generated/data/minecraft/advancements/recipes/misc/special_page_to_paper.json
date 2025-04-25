@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:paper"
+        "recipe": "minecraft:special_page_to_paper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:paper"
+      "minecraft:special_page_to_paper"
     ]
   },
   "sends_telemetry_event": false

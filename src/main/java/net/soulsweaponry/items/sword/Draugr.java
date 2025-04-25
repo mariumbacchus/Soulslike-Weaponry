@@ -10,6 +10,8 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
@@ -76,5 +78,12 @@ public class Draugr extends ModdedSword {
     @Override
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return new Text[] {
+                Text.translatable("tooltip.soulsweapons.draugr_info.part_1").formatted(Formatting.DARK_GRAY)
+        };
     }
 }
