@@ -89,7 +89,8 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.dataTracker.set(SPAWNING, bl);
     }
 
-    public boolean getSpawning() {
+    @Override
+    public boolean isSpawning() {
         return this.dataTracker.get(SPAWNING);
     }
 
@@ -257,6 +258,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         super.mobTick();
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTransitionTicks++;
+            this.tryToPlayBossMusic();
             if (this.phaseTransitionTicks >= 40) {
                 int maxHealTicks = this.phaseTransitionMaxTicks - 40;
                 float healPerTick = this.getMaxHealth() / maxHealTicks;
@@ -319,7 +321,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getSpawning()) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             this.summonParticles();
             if (this.spawnTicks % 10 == 0) {
@@ -506,7 +508,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     private PlayState mainAnimations(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
-        } else if (this.getSpawning()) {
+        } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn_phase_1"));
         } else if (this.isInitiatingPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("initiate_phase_2"));

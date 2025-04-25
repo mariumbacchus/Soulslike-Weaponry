@@ -81,7 +81,7 @@ public class ReturningKnightGoal extends Goal {
         specialCooldown--;
         LivingEntity target = this.boss.getTarget();
 
-        if (target != null && !this.boss.getSpawning()) {
+        if (target != null && !this.boss.isSpawning()) {
             this.boss.setAttacking(true);                
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 

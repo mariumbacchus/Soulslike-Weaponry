@@ -13,7 +13,6 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -136,7 +135,7 @@ public class NightShade extends BossEntity implements GeoEntity {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getSpawn()) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             if (spawnTicks >= 40) {
                 this.setAttackState(AttackStates.IDLE);
@@ -233,7 +232,8 @@ public class NightShade extends BossEntity implements GeoEntity {
         this.dataTracker.set(CHARGING, charging);
     }
 
-    public boolean getSpawn() {
+    @Override
+    public boolean isSpawning() {
         return this.getAttackState().equals(AttackStates.SPAWN);
     }
   

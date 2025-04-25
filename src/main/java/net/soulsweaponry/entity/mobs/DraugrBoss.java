@@ -186,6 +186,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         this.setState(States.SPAWN);
     }
 
+    @Override
     public boolean isSpawning() {
         return this.getState().equals(States.SPAWN);
     }

@@ -109,7 +109,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (this.isInitiatingPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
-        } else if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+        } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
@@ -397,7 +397,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 this.setInitiatePhaseTwo(false);
             }
         }
-        if (this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
                 this.setAttackAnimation(NightProwler.Attacks.IDLE);
@@ -425,6 +425,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 this.darknessRiseTicks = 0;
             }
         }
+    }
+
+    @Override
+    public boolean isSpawning() {
+        return this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN);
     }
 
     @Override

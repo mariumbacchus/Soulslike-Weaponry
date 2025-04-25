@@ -38,7 +38,7 @@ public class NightShadeGoal extends Goal {
 
     public boolean canStart() {
         LivingEntity target = this.boss.getTarget();
-        return target != null && target.isAlive() && this.boss.canTarget(target) && this.boss.getRandom().nextInt(7) == 0 && !this.boss.getSpawn();
+        return target != null && target.isAlive() && this.boss.canTarget(target) && this.boss.getRandom().nextInt(7) == 0 && !this.boss.isSpawning();
     }
 
     public boolean shouldContinue() {
@@ -95,7 +95,7 @@ public class NightShadeGoal extends Goal {
     }
 
     public void tick() {
-        if (this.boss.isDead() || this.boss.getAttackState().equals(NightShade.AttackStates.DUPLICATE) || this.boss.getSpawn()) {
+        if (this.boss.isDead() || this.boss.getAttackState().equals(NightShade.AttackStates.DUPLICATE) || this.boss.isSpawning()) {
             return;
         }
         attackCooldown--;

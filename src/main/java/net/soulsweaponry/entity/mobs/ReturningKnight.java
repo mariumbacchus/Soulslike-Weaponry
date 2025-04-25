@@ -18,7 +18,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -69,7 +68,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
-        } else if (this.getSpawning()) {
+        } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
         } else if (this.getUnbreakable()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
@@ -201,7 +200,8 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         this.dataTracker.set(SPAWN, bl);
     }
 
-    public boolean getSpawning() {
+    @Override
+    public boolean isSpawning() {
         return this.dataTracker.get(SPAWN);
     }
 
@@ -216,7 +216,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     public void tickMovement() {
         super.tickMovement();
 
-        if (this.getSpawning()) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             
             for(int i = 0; i < 50; ++i) {

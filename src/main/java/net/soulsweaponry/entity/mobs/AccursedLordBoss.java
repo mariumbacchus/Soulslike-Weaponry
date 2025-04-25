@@ -96,6 +96,11 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public boolean isSpawning() {
+        return this.getAttackAnimation().equals(AccursedLordAnimations.SPAWN);
+    }
+
+    @Override
     public SoundEvent getBossMusic() {
         return null;
     }
@@ -165,7 +170,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     public void tickMovement() {
         super.tickMovement();
 
-        if (this.getAttackAnimation().equals(AccursedLordAnimations.SPAWN)) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             
             for(int i = 0; i < 50; ++i) {
