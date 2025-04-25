@@ -7,6 +7,7 @@
 - Added info/hint to the Lost Soul that it can be used on the Old Moon Altar
 - Added info to the Essence of Eventide that it can be used on the Old Moon Altar to summon the Fallen Icon
 - Crucible Sword has reduced cooldown in the Nether
+- Fabric only: Made it compatible with Epic Fight mod in case someone downloads the fabric version and uses Sinytra Connector with Epic Fight
 
 ## 1.2.3
 - Fixed a bug preventing other weapons such as axes from disabling shields
