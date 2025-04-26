@@ -144,7 +144,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (this.isDead()) return PlayState.STOP;
         if (this.isInitiatingPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
-        } else if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
+        } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
@@ -391,7 +391,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 this.setInitiatePhaseTwo(false);
             }
         }
-        if (this.getAttackAnimation().equals(Attacks.SPAWN)) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
                 this.setAttackAnimation(Attacks.IDLE);
@@ -548,6 +548,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
                     ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
         }
         return super.damage(source, amount);
+    }
+
+    @Override
+    public boolean isSpawning() {
+        return this.getAttackAnimation().equals(Attacks.SPAWN);
     }
 
     @Override

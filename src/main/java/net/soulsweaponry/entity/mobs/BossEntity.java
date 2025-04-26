@@ -53,14 +53,30 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
-    @Override
-    public void tick() {
-        super.tick();
+    public void tryToPlayBossMusic() {
         if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
             this.getWorld().playSound(null, this.getBlockPos(), this.getBossMusic(), SoundCategory.MUSIC, 1f, 1f);
             this.playingMusic = true;
         }
     }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.isSpawning()) {
+            this.tryToPlayBossMusic();
+        }
+    }
+
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (this.getHealth() - amount > 0f) {
+            this.tryToPlayBossMusic();
+        }
+        return super.damage(source, amount);
+    }
+
+    public abstract boolean isSpawning();
 
     public abstract SoundEvent getBossMusic();
     public abstract boolean hasBossMusic();

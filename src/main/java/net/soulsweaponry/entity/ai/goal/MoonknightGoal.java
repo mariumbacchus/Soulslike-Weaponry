@@ -239,7 +239,7 @@ public class MoonknightGoal extends Goal {
         this.specialCooldown--;
         LivingEntity target = this.boss.getTarget();
         if (this.boss.isInitiatingPhaseTwo()) this.reset();
-        if (target != null && !this.boss.isDead() && !this.boss.getSpawning() && !this.boss.isInitiatingPhaseTwo()) {
+        if (target != null && !this.boss.isDead() && !this.boss.isSpawning() && !this.boss.isInitiatingPhaseTwo()) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);

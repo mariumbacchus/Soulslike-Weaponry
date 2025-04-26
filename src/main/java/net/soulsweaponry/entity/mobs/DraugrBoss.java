@@ -13,16 +13,20 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
+import net.soulsweaponry.entity.projectile.ReturningProjectile;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -44,6 +48,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     private boolean shouldDisableShield = false;
     private String weaponDamagedById = "none";
     private static final String LAST_WEAPON_DAMAGED_BY = "last_weapon_damaged_by";
+    private int projectileCount;
 
     public DraugrBoss(EntityType<? extends DraugrBoss> entityType, World world) {
         super(entityType, world, BossBar.Color.WHITE);
@@ -181,6 +186,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         this.setState(States.SPAWN);
     }
 
+    @Override
     public boolean isSpawning() {
         return this.getState().equals(States.SPAWN);
     }
@@ -241,6 +247,8 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
      * The attacker has to switch between weapons to fully utilize their damage. When starting to become
      * resistant, the damage sound changes from ENTITY_WITHER_SKELETON_HURT to ENTITY_ZOMBIE_ATTACK_IRON_DOOR.
      * {@link net.soulsweaponry.items.TrickWeapon} come especially in handy here.
+     * <p>
+     * Also reflect projectiles after 3 consecutive projectile hits if not hit with melee attacks.
      */
     @Override
     public boolean damage(DamageSource source, float amount) {
@@ -257,6 +265,31 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 amount = (float) (amount * Math.pow((1f / 1.07f), x));
             }
             this.weaponDamagedById = item;
+        }
+        if (source.getSource() instanceof ProjectileEntity projectile) {
+            if (this.projectileCount <= 0) {
+                if (!this.getWorld().isClient) {
+                    ParticleHandler.particleSphereList(this.getWorld(), 30, this.getX(), this.getBodyY(0.5f), this.getZ(), 0.3f, ParticleRegistry.NIGHTFALL_PARTICLE.get(), ParticleRegistry.BLUE_FLAME.get());
+                }
+                if (projectile instanceof ReturningProjectile) {
+                    return false;
+                }
+                this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_PHANTOM_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
+                if (source.getAttacker() instanceof LivingEntity attacker) {
+                    double speed = projectile.getVelocity().length();
+                    Vec3d newDir = this.getPos().subtract(attacker.getPos());
+                    projectile.setVelocity(
+                            newDir.x * speed,
+                            newDir.y * speed,
+                            newDir.z * speed
+                    );
+                }
+                return false;
+            } else {
+                this.projectileCount--;
+            }
+        } else {
+            this.projectileCount = ConfigConstructor.old_champions_remains_max_projectile_hits_before_immune;
         }
         return super.damage(source, amount);
     }

@@ -126,7 +126,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.getAttack() == Attack.SPAWN) {
+        if (this.isSpawning()) {
             this.spawnTicks++;
             DefaultParticleType[] dragonParticles = {ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH};
             DefaultParticleType[] portalParticles = {ParticleTypes.PORTAL};
@@ -163,6 +163,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
             return false;
         }
         return super.damage(source, amount);
+    }
+
+    @Override
+    public boolean isSpawning() {
+        return this.getAttack() == Attack.SPAWN;
     }
 
     @Override
