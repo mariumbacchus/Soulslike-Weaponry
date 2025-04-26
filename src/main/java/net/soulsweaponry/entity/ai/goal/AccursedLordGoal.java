@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -331,7 +330,7 @@ public class AccursedLordGoal extends Goal {
                             new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                     case WITHERBALLS ->
                             new ShadowOrb(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
-                                    new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY.get()});
+                                    StatusEffects.WITHER, EffectRegistry.DECAY.get());
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.getWorld().spawnEntity(projectile);

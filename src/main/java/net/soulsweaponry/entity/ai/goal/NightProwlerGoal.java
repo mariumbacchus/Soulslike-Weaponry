@@ -528,9 +528,14 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.playSound(SoundRegistry.NIGHT_SKULL_DIE.get(), 1f, 0.75f);
         }
         if (this.attackStatus == (phase2 ? 29 : 18)) {
-            WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), (float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()),
-                    this.boss.getPos(), Math.min(target.getY(), this.boss.getY()), 5, new Vec2f(1.5f, 1.75f),
-                    (Vec3d position, Integer warmup, Float yaw) -> this.spawnNightsEdge(position, warmup, yaw * 57.295776F));
+            float yawRad = (float) MathHelper.atan2(
+                    target.getZ() - this.boss.getZ(),
+                    target.getX() - this.boss.getX()
+            );
+            float yawDeg = (float) Math.toDegrees(yawRad);
+            double heightDiff = Math.abs(target.getY() - this.boss.getY());
+            double maxYOffset = heightDiff + 2.0;
+            WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), yawDeg, this.boss.getPos(), maxYOffset, 5, new Vec2f(1.5f, 1.75f), this::spawnNightsEdge);
         }
         this.checkAndReset(5, 0);
     }
@@ -555,7 +560,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         boolean phase2 = this.boss.isPhaseTwo();
         if (this.attackStatus == (phase2 ? 16 : 23)) {
             WeaponUtil.doConsumerOnLine(this.boss.getWorld(), (float) Math.toDegrees((float)MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX())),
-                    this.boss.getPos(), Math.min(target.getY(), this.boss.getY()), 20, 1.25f, this::spawnNightsEdge);
+                    this.boss.getPos(), 10, 20, 1.25f, this::spawnNightsEdge);
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, 0.7f);
         }
         if (phase2 && this.attackStatus == 43) {

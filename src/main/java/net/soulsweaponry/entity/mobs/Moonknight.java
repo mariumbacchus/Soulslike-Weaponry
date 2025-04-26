@@ -80,7 +80,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 20.0D);
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.fallen_icon_armor);
     }
 
     public void setSpawning(boolean bl) {

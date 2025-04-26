@@ -51,27 +51,30 @@ public class WeaponUtil {
     }
 
     /**
-     * Use this method when doing something in circles, rippling outwards from the center
-     * @param world world
-     * @param yaw yaw of the player (often times needs to be plussed by 90)
-     * @param start start position (for example the position of the user)
-     * @param maxY maxY level the positions can go to
-     * @param ripples amount of ripples outwards from start position
-     * @param radiusAndMod vec2f containing x for base radius and y for radius modifier, often times base = 1.5 and mod = 1.75
-     * @param consumer consumer accepting {@code Vec3d, Integer and Float}, where the vec3d is the position, integer is the delayed warmup and float is the yaw output for rotating the entity
+     * Spawn/run something in a series of concentric circles around the start point,
+     * rippling outwards. Ground‐detection is done using your doConsumerOnPoint logic.
+     * @param world        world
+     * @param yaw          players yaw in degrees
+     * @param startPos     center point
+     * @param maxYOffset   max vertical search offset, we look from startPos.y - maxYOffset to startPos.y + maxYOffset
+     * @param ripples      how many rings to spawn
+     * @param radiusAndMod vec2f: .x = base radius, .y = per‐ripples increment
+     * @param consumer     tri‐consumer taking (position, warmupDelay, spawnYaw (degrees))
      */
-    public static void doConsumerOnCircle(World world, float yaw, Vec3d start, double maxY, int ripples, Vec2f radiusAndMod, TriConsumer<Vec3d, Integer, Float> consumer) {
-        double y = maxY + 1.0;
-        float f = (float) Math.toRadians(yaw);
-        for (int waves = 0; waves < ripples; waves++) {
-            for (int i = 0; i < 360; i += MathHelper.floor((80f) / (waves + 1f))) {
-                float r = radiusAndMod.x + waves * radiusAndMod.y;
-                yaw = (float) (f + i * Math.PI / 180f);
-                double x0 = start.getX();
-                double z0 = start.getZ();
-                double x = x0 + r * Math.cos(i * Math.PI / 180);
-                double z = z0 + r * Math.sin(i * Math.PI / 180);
-                doConsumerOnPoint(world, x, z, maxY, y, 3 * (waves + 1), yaw, consumer);
+    public static void doConsumerOnCircle(World world, float yaw, Vec3d startPos, double maxYOffset, int ripples, Vec2f radiusAndMod, TriConsumer<Vec3d, Integer, Float> consumer) {
+        double minY = startPos.getY() - maxYOffset;
+        double maxY = startPos.getY() + maxYOffset;
+        float yawRad = (float) Math.toRadians(yaw);
+        for (int wave = 0; wave < ripples; wave++) {
+            double radius = radiusAndMod.x + wave * radiusAndMod.y;
+            int step = MathHelper.floor(80f / (wave + 1f));
+            for (int angleDeg = 0; angleDeg < 360; angleDeg += step) {
+                float totalRad = yawRad + (angleDeg * (float)Math.PI / 180f);
+                double x = startPos.getX() + radius * Math.cos(totalRad);
+                double z = startPos.getZ() + radius * Math.sin(totalRad);
+                int warmup = 3 * (wave + 1);
+                float spawnYaw = yaw + angleDeg;
+                doConsumerOnPoint(world, x, z, minY, maxY, warmup, spawnYaw, consumer);
             }
         }
     }

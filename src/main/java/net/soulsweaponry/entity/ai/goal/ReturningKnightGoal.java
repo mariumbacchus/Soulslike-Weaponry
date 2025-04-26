@@ -35,6 +35,7 @@ public class ReturningKnightGoal extends Goal {
     private boolean cordsRegistered;
     private int attackStatus;
     private int specialCooldown;
+    private int summonCooldown;
     int randomAttack = 3;
     private final int numberOfAttacks = 6; // 4 = 0 = obliterate, 5 = mace of spades
 
@@ -51,6 +52,10 @@ public class ReturningKnightGoal extends Goal {
 
     public void resetAttackCooldown(float cooldownModifier) {
         this.attackCooldown = (int) Math.floor(ConfigConstructor.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+    }
+
+    public void resetSummonCooldown(float cooldownModifier) {
+        this.summonCooldown = (int) Math.floor(ConfigConstructor.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
@@ -79,6 +84,7 @@ public class ReturningKnightGoal extends Goal {
         attackCooldown--;
         unbreakableTimer--;
         specialCooldown--;
+        summonCooldown--;
         LivingEntity target = this.boss.getTarget();
 
         if (target != null && !this.boss.isSpawning()) {
@@ -108,8 +114,8 @@ public class ReturningKnightGoal extends Goal {
                 this.unbreakableTimer = -5;
             }
 
-            //Children of the grave (Summoning)
-            if (this.attackCooldown < 0 && this.specialCooldown < 0 && this.randomAttack == 3) {
+            //Children of the grave (Summoning), only do if no healers are alive
+            if (this.attackCooldown < 0 && this.specialCooldown < 0 && this.summonCooldown < 0 && this.randomAttack == 3 && !this.boss.hasHealersAlive()) {
                 this.boss.setSummon(true);
             }
             if (this.boss.getSummon()) {
@@ -118,6 +124,10 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 30) { //58,4 ticks
                     int enemyNumber = this.boss.getRandom().nextInt(5 - 2) + 2;
                     int healerNumber = this.boss.getRandom().nextInt(3 - 1) + 1;
+                    if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F) {
+                        enemyNumber += healerNumber;
+                        healerNumber = 0;
+                    }
                     RandomSummonPos remnants = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), enemyNumber, 10, this.boss.getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, false));
                     RandomSummonPos healers = new RandomSummonPos(this.boss.getWorld(), this.boss.getRandom(), healerNumber, 10, this.boss.getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, true));
                     remnants.applySummonSpawns();
@@ -131,6 +141,7 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus >= 48) { //96,6 ticks
                     this.boss.setSummon(false);
                     this.resetAttackCooldown(1);
+                    this.resetSummonCooldown(1);
                     this.resetSpecialCooldown(1.5f);
                     this.attackStatus = 0;
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
@@ -205,8 +216,12 @@ public class ReturningKnightGoal extends Goal {
                         if (entity instanceof LivingEntity living) {
                             entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
-                            if (living.isUndead() && living.isDead() && this.isValidSpawn(living.getBlockPos())) {
+                            if (living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                                 this.summonAllies(living.getPos(), false);
+                                // Summon two if under 50% health
+                                if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F) {
+                                    this.summonAllies(living.getPos(), false);
+                                }
                             }
                         }
                     }
@@ -313,6 +328,7 @@ public class ReturningKnightGoal extends Goal {
         entity.setPosition(pos);
         this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
         this.boss.getWorld().spawnEntity(entity);
+        if (healer) this.boss.addHealer(entity.getUuid());
         if (!this.boss.getWorld().isClient) {
             ParticleHandler.particleOutburstMap(this.boss.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
         }

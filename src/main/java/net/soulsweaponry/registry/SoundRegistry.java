@@ -15,7 +15,6 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent> MOONLIGHT_BIG_EVENT = registerSound("moonlight_big");
     public static final RegistryObject<SoundEvent>  MOONLIGHT_SMALL_EVENT = registerSound("moonlight_small");
     public static final RegistryObject<SoundEvent>  BIG_CHUNGUS_EVENT = registerSound("big_chungus");
-    public static final RegistryObject<SoundEvent>  BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
     public static final RegistryObject<SoundEvent>  FART_EVENT = registerSound("fart");
     public static final RegistryObject<SoundEvent>  DEMON_IDLE_EVENT = registerSound("demon_idle");
     public static final RegistryObject<SoundEvent>  DEMON_WALK_EVENT = registerSound("demon_walk");
@@ -75,8 +74,17 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
     public static final RegistryObject<SoundEvent>  MOONVEIL_HORIZONTAL = registerSound("moonveil_horizontal");
     public static final RegistryObject<SoundEvent>  MOONVEIL_VERTICAL = registerSound("moonveil_vertical");
+
+    public static final RegistryObject<SoundEvent>  BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
+
     public static final RegistryObject<SoundEvent>  FALLEN_ICON_SONG = registerSound("fallen_icon_song");
     public static final RegistryObject<SoundEvent>  FALLEN_ICON_MONO = registerSound("fallen_icon_mono");
+
+    public static final RegistryObject<SoundEvent>  DRAUGR_BOSS_SONG = registerSound("draugr_boss_song");
+    public static final RegistryObject<SoundEvent>  DRAUGR_BOSS_SONG_MONO = registerSound("draugr_boss_song_mono");
+
+    public static final RegistryObject<SoundEvent>  FRENZIED_SHADE_SONG = registerSound("frenzied_shade_song");
+    public static final RegistryObject<SoundEvent>  FRENZIED_SHADE_SONG_MONO = registerSound("frenzied_shade_song_mono");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
         return SOUNDS.register(name, () -> SoundEvent.of(new Identifier(SoulsWeaponry.ModId, name)));

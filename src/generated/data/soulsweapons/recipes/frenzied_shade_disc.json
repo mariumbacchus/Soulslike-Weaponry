@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "soulsweapons:moonstone"
+    },
+    "X": {
+      "item": "soulsweapons:lost_soul"
+    }
+  },
+  "pattern": [
+    "#X#",
+    "X X",
+    "#X#"
+  ],
+  "result": {
+    "item": "soulsweapons:frenzied_shade_disc"
+  },
+  "show_notification": true
+}

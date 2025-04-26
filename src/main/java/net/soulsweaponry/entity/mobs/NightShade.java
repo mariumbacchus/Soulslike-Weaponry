@@ -60,6 +60,7 @@ public class NightShade extends BossEntity implements GeoEntity {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frenzied_shade_health)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.frenzied_shade_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }
@@ -119,12 +120,12 @@ public class NightShade extends BossEntity implements GeoEntity {
 
     @Override
     public SoundEvent getBossMusic() {
-        return null;
+        return SoundRegistry.FRENZIED_SHADE_SONG.get();
     }
 
     @Override
     public boolean hasBossMusic() {
-        return false;
+        return !this.isCopy;
     }
 
     @Override

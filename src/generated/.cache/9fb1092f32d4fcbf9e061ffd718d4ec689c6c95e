@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-25T18:01:44.428619	Recipes
+// 1.20.1	2025-04-26T22:23:07.7988826	Recipes
 6885a284e0edcbf08e2a904b8011987a41e51c4a data/minecraft/advancements/recipes/misc/special_page_to_paper.json
 ceb5cd24cc8a9440bdaf790f3dfff8b485f9222c data/minecraft/recipes/special_page_to_paper.json
 eb601510f081b282c372bc8cfb41cec678af1b63 data/soulsweapons/advancements/recipes/building_blocks/chungus_emerald_block.json
@@ -94,7 +94,9 @@ a663537067bd925263b96b73ed2fa7c394ec469e data/soulsweapons/advancements/recipes/
 f7cc73d0ce15998236b6d60c680e27db9f59b63d data/soulsweapons/advancements/recipes/misc/chungus_emerald.json
 7bb7c6d2a1addd0e9142b1533188cb8645fafad0 data/soulsweapons/advancements/recipes/misc/crimson_ingot.json
 d10c17c707e44059bb5f5d9a79dc687bb39e22bf data/soulsweapons/advancements/recipes/misc/demon_chunk.json
+639522410d81c5bc7c36b71dde4fc8c80ef72e56 data/soulsweapons/advancements/recipes/misc/draugr_boss_disc.json
 12df73bc53e6a71abefdbcc1c3648b17495972b2 data/soulsweapons/advancements/recipes/misc/fallen_icon_disc.json
+ea92b264d012751854611831893077ab149f3700 data/soulsweapons/advancements/recipes/misc/frenzied_shade_disc.json
 43cea8e60eabe87ff5b89305f3b21a6ae9bb4857 data/soulsweapons/advancements/recipes/misc/glass_vial.json
 83253c38ab2875db1118cf254fb466725e0e4cef data/soulsweapons/advancements/recipes/misc/hydrangea_dye.json
 da7ad680fe47dc5fc3e50a8b90c98839e47a2059 data/soulsweapons/advancements/recipes/misc/iron_skull.json
@@ -141,6 +143,7 @@ a2cf167f06cb4b24cd7213da64e34a8ab858b61d data/soulsweapons/recipes/darkin_blade.
 e020109cef4a931c7f769c75c45b1527132043a8 data/soulsweapons/recipes/dragonslayer_swordspear.json
 41b319439a64ff7f41230b60219d0a1ad3c3318a data/soulsweapons/recipes/dragon_staff.json
 f5d35cf955e661f47a5c1d221ccb924bb2452bf8 data/soulsweapons/recipes/draugr.json
+f59fea64c1b7517624ca4a46c816ab77e2e5fee5 data/soulsweapons/recipes/draugr_boss_disc.json
 1ae11059640a93cc15973e0cf337dc0825934339 data/soulsweapons/recipes/draupnir_spear.json
 b5b651c7e47554b0943f276395b65f57d654789f data/soulsweapons/recipes/empowered_dawnbreaker.json
 3412e50b8e2408d2a2a23dd606a7577cf0989de6 data/soulsweapons/recipes/enhanced_arkenplate.json
@@ -153,6 +156,7 @@ b3e982f188f89831d78b0e24671b781a9a3a815d data/soulsweapons/recipes/excalibur.jso
 7341faf36fde32867f9fbcab78dc729fbd6764fb data/soulsweapons/recipes/forlorn_helmet.json
 7e3de221c06183a48be9ee062f048662c3a07aaf data/soulsweapons/recipes/forlorn_leggings.json
 069cf1d4e2688da0a3eb989e6a2f57495eabe784 data/soulsweapons/recipes/forlorn_scythe.json
+15b80876e96fa0fdcf86ed048cd8340838004322 data/soulsweapons/recipes/frenzied_shade_disc.json
 4479ee28b2608aa6022493b6a79903f2322420dd data/soulsweapons/recipes/freyr_sword.json
 bca33647ab5ddc9f21737f34ac7e521c208230b4 data/soulsweapons/recipes/frostmourne.json
 c0b5b3f12f6c7bd3a02a1129ff691cafac55ba78 data/soulsweapons/recipes/galeforce.json

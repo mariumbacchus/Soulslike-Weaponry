@@ -139,7 +139,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 5.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.decaying_king_armor)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 

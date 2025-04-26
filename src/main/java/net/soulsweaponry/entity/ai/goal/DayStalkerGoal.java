@@ -45,7 +45,6 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private final int[] flamethrowerMeleeFrames = {18, 27, 41, 50, 58, 63};
     private float attackRotation;
     private double targetMaxY;
-    private double targetY;
     private boolean hasExploded;
     //private int flightTimer; Testing only
     private int changeFlightTargetTimer;
@@ -758,12 +757,10 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus <= 57) {
             this.targetMaxY = Math.min(target.getY(), this.boss.getY());
-            this.targetY = Math.max(target.getY(), this.boss.getY()) + 1.0;
             this.attackRotation = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()));
         }
-        if (this.attackStatus == 67 && this.attackRotation != 0 && this.targetY != 0 && this.targetMaxY != 0) {
-            double e = this.targetY;
-            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), this.attackRotation, this.boss.getPos(), this.targetMaxY, 20, 1.25f,
+        if (this.attackStatus == 67 && this.attackRotation != 0 && this.targetMaxY != 0) {
+            WeaponUtil.doConsumerOnLine(this.boss.getWorld(), this.attackRotation, this.boss.getPos(), 10, 20, 1.25f,
                     (Vec3d vec, Integer warmup, Float yaw) -> {
                         FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), this.boss.getWorld());
                         pillar.setDamage(this.getModifiedDamage(40f));
