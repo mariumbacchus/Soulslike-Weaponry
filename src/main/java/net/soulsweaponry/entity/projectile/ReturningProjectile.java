@@ -107,7 +107,7 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
                 this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
                 this.returnTimer++;
                 for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
-                    if (entity1 instanceof LivingEntity target && !target.isTeammate(owner)) {
+                    if (entity1 instanceof LivingEntity target && !target.isTeammate(owner) && !this.isOwner(entity1)) {
                         this.collide(owner, target, this.getDamage(target));
                     }
                 }

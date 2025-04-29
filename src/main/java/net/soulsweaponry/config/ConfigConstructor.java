@@ -729,7 +729,7 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static boolean returning_knight_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double returning_knight_health = 500D;
-    @Entry(min=1, max=1000000D) public static double returning_knight_armor = 18D;
+    @Entry(min=1, max=1000000D) public static double returning_knight_armor = 15D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
     @Entry(min=0) public static int returning_knight_summon_cooldown_ticks = 200;
