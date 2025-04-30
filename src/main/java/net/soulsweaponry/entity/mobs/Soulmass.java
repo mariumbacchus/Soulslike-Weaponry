@@ -19,14 +19,19 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -115,11 +120,11 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.soulmass_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 4.0D);
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.soulmass_armor);
     }
 
     public void setClap(boolean bl) {
@@ -218,12 +223,25 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
         }
     }
 
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+        if (stack.isIn(ModTags.Items.LOST_SOUL) && this.getHealth() < this.getMaxHealth()) {
+            this.heal(10f);
+            if (!player.getAbilities().creativeMode) {
+                stack.decrement(1);
+            }
+            this.playAmbientSound();
+            return ActionResult.SUCCESS;
+        }
+        return super.interactMob(player, hand);
+    }
+
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
         List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
         for (Entity nearbyEntity : nearbyEntities) {
-            if (nearbyEntity instanceof HostileEntity) {
-                LivingEntity closestTarget = (LivingEntity) nearbyEntity;
+            if (nearbyEntity instanceof HostileEntity closestTarget) {
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
                 closestTarget.damage(this.getWorld().getDamageSources().magic(), 16F);

@@ -129,7 +129,8 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 80D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.withered_demon_health)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.withered_demon_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)

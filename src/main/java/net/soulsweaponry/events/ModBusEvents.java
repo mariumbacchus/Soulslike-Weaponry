@@ -30,7 +30,7 @@ public class ModBusEvents {
         event.put(EntityRegistry.BIG_CHUNGUS.get(), BigChungus.createChungusAttributes().build());
         event.put(EntityRegistry.REMNANT.get(), Remnant.createRemnantAttributes().build());
         event.put(EntityRegistry.DARK_SORCERER.get(), DarkSorcerer.createSorcererAttributes().build());
-        event.put(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhost.createRemnantAttributes().build());
+        event.put(EntityRegistry.SOUL_REAPER_GHOST.get(), SoulReaperGhost.createGhostAttributes().build());
         event.put(EntityRegistry.FORLORN.get(), Forlorn.createForlornAttributes().build());
         event.put(EntityRegistry.EVIL_FORLORN.get(), EvilForlorn.createForlornAttributes().build());
         event.put(EntityRegistry.SOULMASS.get(), Soulmass.createSoulmassAttributes().build());

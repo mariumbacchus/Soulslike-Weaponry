@@ -642,6 +642,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int sword_of_freyr_damage = 7;
     @Entry public static float sword_of_freyr_attack_speed = 1.6f;
     @Entry public static boolean sword_of_freyr_friendly_fire = true;
+    @Entry public static double sword_of_freyr_health = 50D;
+    @Entry public static double sword_of_freyr_armor = 10D;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static int translucent_sword_damage = 6;
     @Entry public static float translucent_sword_attack_speed = 1.6f;
@@ -713,6 +715,39 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int hunter_pistol_posture_loss = 30;
     @Entry public static int hunter_pistol_cooldown = 50;
     @Entry public static int hunter_pistol_bullets_needed = 1;
+
+    @Entry public static double dark_sorcerer_health = 10D;
+    @Entry public static double dark_sorcerer_bonus_armor = 0D;
+
+    @Entry public static double evil_forlorn_health = 30D;
+    @Entry public static double evil_forlorn_bonus_armor = 0D;
+
+    @Entry public static double forlorn_health = 30D;
+    @Entry public static double forlorn_bonus_armor = 0D;
+
+    @Entry public static double frost_giant_health = 50D;
+    @Entry public static double frost_giant_armor = 8D;
+
+    @Entry public static double moderatly_sized_chungus_heath = 14D;
+    @Entry public static double moderatly_sized_chungus_armor = 0D;
+
+    @Entry public static double remnant_health = 20D;
+    @Entry public static double remnant_bonus_armor = 0D;
+
+    @Entry public static double rime_spectre_health = 10D;
+    @Entry public static double rime_spectre_armor = 0D;
+
+    @Entry public static double soulmass_health = 75D;
+    @Entry public static double soulmass_armor = 10D;
+
+    @Entry public static double familiar_ghost_health = 10D;
+    @Entry public static double familiar_ghost_armor = 0D;
+
+    @Entry public static double warmth_health = 20D;
+    @Entry public static double warmth_armor = 0D;
+
+    @Entry public static double withered_demon_health = 80D;
+    @Entry public static double withered_demon_armor = 2D;
 
     @Entry public static boolean decaying_king_disable_respawn = false;
     @Entry(min=1, max=1000000D) public static double decaying_king_health = 600D;
