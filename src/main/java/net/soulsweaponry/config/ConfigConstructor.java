@@ -645,6 +645,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int sword_of_freyr_damage = 7;
     @Entry public static float sword_of_freyr_attack_speed = 1.6f;
     @Entry public static boolean sword_of_freyr_friendly_fire = true;
+    @Entry public static double sword_of_freyr_health = 50D;
+    @Entry public static double sword_of_freyr_armor = 10D;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static int translucent_sword_damage = 6;
     @Entry public static float translucent_sword_attack_speed = 1.6f;
@@ -717,8 +719,42 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int hunter_pistol_cooldown = 50;
     @Entry public static int hunter_pistol_bullets_needed = 1;
 
+    @Entry public static double dark_sorcerer_health = 10D;
+    @Entry public static double dark_sorcerer_bonus_armor = 0D;
+
+    @Entry public static double evil_forlorn_health = 30D;
+    @Entry public static double evil_forlorn_bonus_armor = 0D;
+
+    @Entry public static double forlorn_health = 30D;
+    @Entry public static double forlorn_bonus_armor = 0D;
+
+    @Entry public static double frost_giant_health = 50D;
+    @Entry public static double frost_giant_armor = 8D;
+
+    @Entry public static double moderatly_sized_chungus_heath = 14D;
+    @Entry public static double moderatly_sized_chungus_armor = 0D;
+
+    @Entry public static double remnant_health = 20D;
+    @Entry public static double remnant_bonus_armor = 0D;
+
+    @Entry public static double rime_spectre_health = 10D;
+    @Entry public static double rime_spectre_armor = 0D;
+
+    @Entry public static double soulmass_health = 75D;
+    @Entry public static double soulmass_armor = 10D;
+
+    @Entry public static double familiar_ghost_health = 10D;
+    @Entry public static double familiar_ghost_armor = 0D;
+
+    @Entry public static double warmth_health = 20D;
+    @Entry public static double warmth_armor = 0D;
+
+    @Entry public static double withered_demon_health = 80D;
+    @Entry public static double withered_demon_armor = 2D;
+
     @Entry public static boolean decaying_king_disable_respawn = false;
-    @Entry(min=1, max=1000000D) public static double decaying_king_health = 500D;
+    @Entry(min=1, max=1000000D) public static double decaying_king_health = 600D;
+    @Entry(min=1, max=1000000D) public static double decaying_king_armor = 10D;
     @Entry(min=0) public static int decaying_king_attack_cooldown_ticks = 20;
     @Entry(min=0) public static int decaying_king_special_cooldown_ticks = 60;
     @Entry(min=0) public static float decaying_king_damage_modifier = 1f;
@@ -730,9 +766,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] decaying_king_status_effect_blacklist = {};
 
     @Entry public static boolean returning_knight_disable_respawn = false;
-    @Entry(min=1, max=1000000D) public static double returning_knight_health = 400D;
+    @Entry(min=1, max=1000000D) public static double returning_knight_health = 500D;
+    @Entry(min=1, max=1000000D) public static double returning_knight_armor = 15D;
     @Entry(min=0) public static int returning_knight_attack_cooldown_ticks = 40;
     @Entry(min=0) public static int returning_knight_special_cooldown_ticks = 80;
+    @Entry(min=0) public static int returning_knight_summon_cooldown_ticks = 200;
     @Entry(min=0) public static float returning_knight_damage_modifier = 1f;
     @Entry(min=0) public static int returning_knight_xp = 500;
     @Entry public static String[] returning_knight_projectile_immunity_whitelist = {};
@@ -743,7 +781,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] returning_knight_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
-    @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 200D;
+    @Entry(min=1, max=1000000D) public static double old_champions_remains_health = 300D;
+    @Entry(min=1, max=1000000D) public static double old_champions_remains_armor = 10D;
     @Entry(min=0) public static int old_champions_remains_attack_cooldown_ticks = 10;
     @Entry(min=0) public static int old_champions_remains_special_cooldown_ticks = 300;
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
@@ -756,7 +795,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean old_champions_remains_is_undead = true;
     @Entry public static String old_champions_remains_group_type = "UNDEAD";
     @Entry public static String[] old_champions_remains_status_effect_blacklist = {"soulsweapons:bleed"};
-    @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 100D;
+    @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 150D;
+    @Entry(min=1, max=1000000D) public static double frenzied_shade_armor = 2D;
     @Entry public static float frenzied_shade_damage_modifier = 1f;
     @Entry public static int frenzied_shade_cooldown = 10;
     @Entry public static int frenzied_shade_xp = 400;
@@ -767,7 +807,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] frenzied_shade_status_effect_blacklist = {};
 
     @Entry public static boolean chaos_monarch_disable_respawn = false;
-    @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 400D;
+    @Entry(min=1, max=1000000D) public static double chaos_monarch_health = 450D;
+    @Entry(min=1, max=1000000D) public static double chaos_monarch_armor = 4D;
     @Entry(min=0) public static int chaos_monarch_attack_cooldown_ticks = 20;
     @Entry(min=0) public static float chaos_monarch_damage_modifier = 1f;
     @Entry(min=0) public static int chaos_monarch_xp = 500;
@@ -779,7 +820,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] chaos_monarch_status_effect_blacklist = {"soulsweapons:bleed", "minecraft:levitation", "minecraft:wither"};
 
     @Entry public static boolean fallen_icon_disable_respawn = false;
-    @Entry(min=1, max=1000000D) public static double fallen_icon_health = 500D;
+    @Entry(min=1, max=1000000D) public static double fallen_icon_health = 550D;
+    @Entry(min=1, max=1000000D) public static double fallen_icon_armor = 20D;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_1 = 30;
     @Entry(min=0) public static int fallen_icon_attack_cooldown_ticks_phase_2 = 0;
     @Entry(min=0) public static int fallen_icon_special_cooldown_ticks = 50;
@@ -792,7 +834,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String fallen_icon_group_type = "DEFAULT";
     @Entry public static String[] fallen_icon_status_effect_blacklist = {"minecraft:poison"};
 
-    @Entry(min=1, max=1000000D) public static double day_stalker_health = 500D;
+    @Entry(min=1, max=1000000D) public static double day_stalker_health = 600D;
+    @Entry(min=1, max=1000000D) public static double day_stalker_armor = 15D;
     @Entry(min=0) public static float day_stalker_damage_modifier = 1f;
     @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_1 = 0.8f;
     @Entry(min=0) public static float day_stalker_empowered_projectile_damage_taken_modifier_phase_2 = 0.6f;
@@ -807,7 +850,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double day_stalker_special_cooldown_modifier_phase_2 = 1D;
     @Entry(min=0) public static int duo_fight_time_before_switch = 400;
-    @Entry(min=1, max=1000000D) public static double night_prowler_health = 400D;
+    @Entry(min=1, max=1000000D) public static double night_prowler_health = 500D;
+    @Entry(min=1, max=1000000D) public static double night_prowler_armor = 10D;
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
     @Entry(min=0) public static boolean night_prowler_eclipse_skulls_glow = false;

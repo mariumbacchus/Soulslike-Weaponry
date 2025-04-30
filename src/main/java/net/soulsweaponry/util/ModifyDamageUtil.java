@@ -61,7 +61,7 @@ public class ModifyDamageUtil {
             int amplifier = entity.getStatusEffect(EffectRegistry.BLIGHT).getAmplifier() + 1; // ln(0) does not end well!
             int armorValue = entity.getArmor();
             // Original value increases in % based on f(x) = (ln(x) * y) / 8, where x is the amplifier level, y is the armor of the target.
-            double increase = newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f);
+            float increase = (float) (newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f));
             newAmount += increase;
         }
         if (source.getSource() instanceof TrueDamageArrow projectile) {

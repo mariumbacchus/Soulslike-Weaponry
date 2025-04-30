@@ -11,7 +11,6 @@ public class SoundRegistry {
     public static SoundEvent MOONLIGHT_BIG_EVENT = registerSound("moonlight_big");
     public static SoundEvent MOONLIGHT_SMALL_EVENT = registerSound("moonlight_small");
     public static SoundEvent BIG_CHUNGUS_EVENT = registerSound("big_chungus");
-    public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
     public static SoundEvent FART_EVENT = registerSound("fart");
     public static SoundEvent DEMON_IDLE_EVENT = registerSound("demon_idle");
     public static SoundEvent DEMON_WALK_EVENT = registerSound("demon_walk");
@@ -71,8 +70,17 @@ public class SoundRegistry {
     public static SoundEvent TRINITY = registerSound("trinity");
     public static SoundEvent MOONVEIL_HORIZONTAL = registerSound("moonveil_horizontal");
     public static SoundEvent MOONVEIL_VERTICAL = registerSound("moonveil_vertical");
+
+    public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
+
     public static SoundEvent FALLEN_ICON_SONG = registerSound("fallen_icon_song");
     public static SoundEvent FALLEN_ICON_MONO = registerSound("fallen_icon_mono");
+
+    public static final SoundEvent DRAUGR_BOSS_SONG = registerSound("draugr_boss_song");
+    public static final SoundEvent DRAUGR_BOSS_SONG_MONO = registerSound("draugr_boss_song_mono");
+
+    public static final SoundEvent FRENZIED_SHADE_SONG = registerSound("frenzied_shade_song");
+    public static final SoundEvent FRENZIED_SHADE_SONG_MONO = registerSound("frenzied_shade_song_mono");
 
 	public static Identifier registerId(String name) {
 		return new Identifier(SoulsWeaponry.ModId + ":" + name);

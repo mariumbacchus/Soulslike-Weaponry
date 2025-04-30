@@ -174,7 +174,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setDeath();
-        if (this.getBossMusic() != null && this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getBossMusic() != null && this.hasBossMusic() && this.getWorld() instanceof ServerWorld serverWorld) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeIdentifier(this.getBossMusic().getId());
             PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);

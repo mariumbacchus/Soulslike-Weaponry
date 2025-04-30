@@ -105,7 +105,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 5.0D);
+        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.old_champions_remains_armor);
     }
 
     protected void initDataTracker() {
@@ -307,12 +307,12 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public SoundEvent getBossMusic() {
-        return null;
+        return SoundRegistry.DRAUGR_BOSS_SONG;
     }
 
     @Override
     public boolean hasBossMusic() {
-        return false;
+        return true;
     }
 
     @Override

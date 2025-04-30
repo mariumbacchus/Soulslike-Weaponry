@@ -2,14 +2,57 @@
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe
+- Fixed a bug preventing Day Stalker from using OVERHEAT attack
+- Fixed a bug preventing Night Prowler from using BLADES REACH and RIPPLE FANG attacks
+- Fixed a bug causing Excalibur's Sonic Boom ability to auto target armor stands
+
+
 - Added info to Demon Chunks that they can be used to summon the Decaying King when used on a Blackstone Pedestal
 - Added info to the Draugr that it can summon the Old Champion for a re-fight when used on an Old Moon Altar
 - Added info/hint to the Lost Soul that it can be used on the Old Moon Altar
 - Added info to the Essence of Eventide that it can be used on the Old Moon Altar to summon the Fallen Icon
+
+
 - Crucible Sword has reduced cooldown in the Nether
 - Old Champion's Remains now bounce off projectiles after 3 consecutive projectile hits
   - Melee attacks reset the counter
   - The amount of hits before growing immune can be changed with config line ```old_champions_remains_max_projectile_hits_before_immune```
+- Removed the darkness effect from Frenzied Shade's shadow orb attack
+- Copies of the Frenzied Shade now die when the main one does
+- Added boss music to Old Champion's Remains and Frenzied Shade and disc of the Champion's song
+- Returning Knight now only uses the summon attack if no healer is alive
+  - It will no longer summon healers under 50%, instead increasing the Remnant spawn amount
+  - Obliterate attack will summon two Remnants instead of one if under 50% health, and will spawn regardless if the target that died was undead or not
+  - Added config line for the summon attack cooldown
+- Added hurt sounds to Day Stalker and Night Prowler (phantom sounds for now)
+- Soulmasses can now be healed by using Lost Souls on it (items inside the common lost_soul tag)
+
+
+- Added config lines for entity health and armor for entities that didn't have it already and changed values of some, the config has to be deleted and re-generated for these changes to take effect
+  - Mobs/Entities:
+    - Dark Sorcerer: Health 10, Bonus Armor 0 (unchanged)
+    - Evil Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
+    - Familiar Ghost: Health 10, Armor 0 (unchanged)
+    - Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
+    - Frost Giant: Health 50, Armor 8 (unchanged)
+    - Moderately Sized Chungus: Health 14, Armor 0 (unchanged)
+    - Remnant: Health 10 -> 20, Bonus Armor 0 (unchanged)
+    - Rime Spectre: Health 10, Bonus Armor 0 (unchanged)
+    - Soulmass: Health 50 -> 75, Armor 4 -> 10 (unchanged)
+    - Sword of Freyr: Health 50 (unchanged), Armor 0 -> 10
+    - Sphere of Warmth: Health 20, Armor 0 (unchanged)
+    - Withered Demon: Health 80 (unchanged), Armor 0 -> 2
+  - Bosses:
+    - Decaying King: Health 500 -> 600, Armor 5 -> 10
+    - Returning Knight: Health 400 -> 500, Armor 8 -> 15
+    - Old Champion's Remains: Health 200 -> 300, Armor 5 -> 10
+    - Frenzied Shade: Health 100 -> 150, Armor 0 -> 2
+    - Monarch of Chaos: Health 400 -> 450, Armor 4 (unchanged)
+    - Fallen Icon: Health 500 -> 550, Armor 20 (unchanged)
+    - Day Stalker: Health 500 -> 600, Armor 10 -> 15
+    - Night Prowler: Health 400 -> 500, Armor 10 (unchanged)
+
+
 - Fabric only: Made it compatible with Epic Fight mod in case someone downloads the fabric version and uses Sinytra Connector with Epic Fight
 
 ## 1.2.3

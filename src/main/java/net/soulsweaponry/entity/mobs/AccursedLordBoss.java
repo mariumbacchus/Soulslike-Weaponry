@@ -135,13 +135,13 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 5.0D)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
+            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
+            .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+            .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.decaying_king_armor)
+            .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
     protected void initDataTracker() {

@@ -23,6 +23,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -175,11 +176,11 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createGiantAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frost_giant_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 14.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 3.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 8.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.frost_giant_armor)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0D);
     }
 
@@ -187,6 +188,14 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     public void tick() {
         super.tick();
         if (this.hasStatusEffect(EffectRegistry.FREEZING)) this.removeStatusEffect(EffectRegistry.FREEZING);
+    }
+
+    @Override
+    public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
+        if (effect.getEffectType().equals(EffectRegistry.FREEZING)) {
+            return false;
+        }
+        return super.addStatusEffect(effect, source);
     }
 
     @Override

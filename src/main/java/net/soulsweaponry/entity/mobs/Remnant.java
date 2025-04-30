@@ -26,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
@@ -65,7 +66,8 @@ public class Remnant extends TameableEntity {
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.remnant_health)
+        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.remnant_bonus_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

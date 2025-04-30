@@ -37,7 +37,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         this.effects = new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY};
     }
 
-    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ, StatusEffect[] effects) {
+    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ, StatusEffect... effects) {
         super(EntityRegistry.SHADOW_ORB, owner, velocityX, velocityY, velocityZ, world);
         this.effects = effects;
     }

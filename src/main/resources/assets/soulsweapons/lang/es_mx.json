@@ -84,6 +84,10 @@
   "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (Tema Principal Oficial)",
   "item.soulsweapons.fallen_icon_disc": "Disco de Música de The Fallen Icon",
   "item.soulsweapons.fallen_icon_disc.desc": "NoRestForWicked - The Fallen Icon",
+  "item.soulsweapons.draugr_boss_disc": "Champion's Music Disc",
+  "item.soulsweapons.draugr_boss_disc.desc": "NoRestForWicked - Gladius ad Gladium",
+  "item.soulsweapons.frenzied_shade_disc": "Shaded Music Disc",
+  "item.soulsweapons.frenzied_shade_disc.desc": "NoRestForWicked - Frenzied Shade",
 
   "item.soulsweapons.soul_ingot_helmet": "Yelmo de Lingote de Alma",
   "item.soulsweapons.soul_ingot_chestplate": "Pechera de Lingote de Alma",
@@ -361,7 +365,7 @@
   "subtitles.soulsweapons.darkness_rise": "La oscuridad se eleva",
   "subtitles.soulsweapons.trinity": "Explosión de Trinidad",
   "subtitles.soulsweapons.moonveil_horizontal": "Se desata una onda horizontal de luz lunar",
-  "subtitles.soulsweapons.moonveil_vertical": "Se desata una onda vertical de luz lunar", 
+  "subtitles.soulsweapons.moonveil_vertical": "Se desata una onda vertical de luz lunar",
   "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
   "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 

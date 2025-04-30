@@ -331,7 +331,7 @@ public class AccursedLordGoal extends Goal {
                             new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                     case WITHERBALLS ->
                             new ShadowOrb(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
-                                    new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY});
+                                    StatusEffects.WITHER, EffectRegistry.DECAY);
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.getWorld().spawnEntity(projectile);

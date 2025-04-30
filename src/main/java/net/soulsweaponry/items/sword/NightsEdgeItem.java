@@ -64,8 +64,11 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            WeaponUtil.doConsumerOnCircle(world, player.getYaw() + 90, player.getPos(), player.getY(), 3 + MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f), new Vec2f(1.5f, 1.75f),
-                    (Vec3d position, Integer warmup, Float yaw) -> this.spawnNightsEdge(world, player, stack, position, warmup, yaw * 57.295776F));
+            double verticalSearch = 3.0;
+            int ripples = 3 + MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack) / 2f);
+            Vec2f radii = new Vec2f(1.5f, 1.75f);
+            float ringYaw = player.getYaw() + 90f;
+            WeaponUtil.doConsumerOnCircle(world, ringYaw, player.getPos(), verticalSearch, ripples, radii, (position, warmup, yawDeg) -> this.spawnNightsEdge(world, player, stack, position, warmup, yawDeg));
             this.applyItemCooldown(player, this.getScaledCooldown(stack));
             stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }

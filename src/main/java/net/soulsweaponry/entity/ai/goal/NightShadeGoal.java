@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.ai.goal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleEffect;
@@ -17,7 +16,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -242,8 +240,7 @@ public class NightShadeGoal extends Goal {
         double g = target.getZ() - this.boss.getZ();
         if (attackStatus >= 6 && attackStatus <= 15) {
             this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-            ShadowOrb orb = new ShadowOrb(this.boss.getWorld(), this.boss, e, f, g,
-                    new StatusEffect[] {StatusEffects.DARKNESS, EffectRegistry.DECAY});
+            ShadowOrb orb = new ShadowOrb(this.boss.getWorld(), this.boss, e, f, g);
             orb.setPosition(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             orb.setVelocity(e, f, g, 2f, 1f);
             this.boss.getWorld().spawnEntity(orb);

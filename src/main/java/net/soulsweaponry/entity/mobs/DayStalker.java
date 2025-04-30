@@ -24,6 +24,7 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -200,6 +201,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PHANTOM_HURT;
+    }
+
+    @Override
     public int getTicksUntilDeath() {
         return this.isPhaseTwo() ? 140 : 80;
     }
@@ -297,7 +303,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 10.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.day_stalker_armor)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
     }
 

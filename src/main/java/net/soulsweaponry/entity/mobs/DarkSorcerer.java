@@ -25,6 +25,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 import java.util.EnumSet;
@@ -42,7 +43,8 @@ public class DarkSorcerer extends HostileEntity {
     public static DefaultAttributeContainer.Builder createSorcererAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, 10D)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.dark_sorcerer_health)
+        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.dark_sorcerer_bonus_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

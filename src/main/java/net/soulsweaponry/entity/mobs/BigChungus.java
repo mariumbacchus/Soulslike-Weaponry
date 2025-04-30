@@ -83,7 +83,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 14D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.moderatly_sized_chungus_heath)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.moderatly_sized_chungus_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

@@ -122,7 +122,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(BIG_CHUNGUS, BigChungus.createChungusAttributes());
         FabricDefaultAttributeRegistry.register(REMNANT, Remnant.createRemnantAttributes());
         FabricDefaultAttributeRegistry.register(DARK_SORCERER, DarkSorcerer.createSorcererAttributes());
-        FabricDefaultAttributeRegistry.register(SOUL_REAPER_GHOST, SoulReaperGhost.createRemnantAttributes());
+        FabricDefaultAttributeRegistry.register(SOUL_REAPER_GHOST, SoulReaperGhost.createGhostAttributes());
         FabricDefaultAttributeRegistry.register(FORLORN, Forlorn.createForlornAttributes());
         FabricDefaultAttributeRegistry.register(EVIL_FORLORN, EvilForlorn.createForlornAttributes());
         FabricDefaultAttributeRegistry.register(SOULMASS, Soulmass.createSoulmassAttributes());

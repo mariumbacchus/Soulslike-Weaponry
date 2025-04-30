@@ -78,6 +78,8 @@ public class ItemRegistry {
 
     public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
     public static final Item FALLEN_ICON_DISC = new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new FabricItemSettings().maxCount(1), 172);
+    public static final Item DRAUGR_BOSS_DISC = new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new FabricItemSettings().maxCount(1), 210);
+    //public static final Item FRENZIED_SHADE_DISC = new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new FabricItemSettings().maxCount(1), 62);
 
     public static void init() {
         registerItem(LORD_SOUL_RED, "lord_soul_red");
@@ -131,6 +133,8 @@ public class ItemRegistry {
 
         registerItem(CHUNGUS_DISC, "chungus_disc");
         registerItem(FALLEN_ICON_DISC, "fallen_icon_disc");
+        registerItem(DRAUGR_BOSS_DISC, "draugr_boss_disc");
+        //registerItem(FRENZIED_SHADE_DISC, "frenzied_shade_disc");
     }
 
     public static <I extends Item> I registerItem(I item, String name) {

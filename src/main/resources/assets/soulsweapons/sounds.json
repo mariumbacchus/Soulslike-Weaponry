@@ -395,5 +395,37 @@
                 "stream": true
             }
         ]
+    },
+    "draugr_boss_song": {
+        "sounds": [
+            {
+                "name": "soulsweapons:draugr_boss_song",
+                "stream": true
+            }
+        ]
+    },
+    "draugr_boss_song_mono": {
+        "sounds": [
+            {
+                "name": "soulsweapons:draugr_boss_song_mono",
+                "stream": true
+            }
+        ]
+    },
+    "frenzied_shade_song": {
+        "sounds": [
+            {
+                "name": "soulsweapons:frenzied_shade_song",
+                "stream": true
+            }
+        ]
+    },
+    "frenzied_shade_song_mono": {
+        "sounds": [
+            {
+                "name": "soulsweapons:frenzied_shade_song_mono",
+                "stream": true
+            }
+        ]
     }
 }

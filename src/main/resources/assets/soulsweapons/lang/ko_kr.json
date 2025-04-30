@@ -83,6 +83,10 @@
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (공식 메인 테마)",
     "item.soulsweapons.fallen_icon_disc": "Fallen Icon Music Disc",
     "item.soulsweapons.fallen_icon_disc.desc": "NoRestForWicked - The Fallen Icon",
+    "item.soulsweapons.draugr_boss_disc": "Champion's Music Disc",
+    "item.soulsweapons.draugr_boss_disc.desc": "NoRestForWicked - Gladius ad Gladium",
+    "item.soulsweapons.frenzied_shade_disc": "Shaded Music Disc",
+    "item.soulsweapons.frenzied_shade_disc.desc": "NoRestForWicked - Frenzied Shade",
 
     "item.soulsweapons.soul_ingot_helmet": "혼철 투구",
     "item.soulsweapons.soul_ingot_chestplate": "혼철 갑옷",
@@ -365,7 +369,6 @@
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] 키를 눌러 정보를 확인하세요",
-    "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
     "tooltip.soulsweapons.alt": "[§eALT§r] 키를 눌러 정보를 확인하세요",
     "tooltip.soulsweapons.control": "[§eCTRL§r] 키를 눌러 설명을 확인하세요",
     "tooltip.soulsweapons.disabled": "§4비활성화됨§r",
@@ -477,7 +480,7 @@
 
     "tooltip.soulsweapons.soul_trap": "영혼의 덫",
     "tooltip.soulsweapons.soul_trap_description": "- 몬스터를 처치하면 그들의 영혼을 수확합니다.",
-    
+
     "tooltip.soulsweapons.soul_trap_kills": "수확된 영혼: ",
     "tooltip.soulsweapons.soul_release": "영혼 방출",
     "tooltip.soulsweapons.soul_release_description_1": "- 수확한 영혼에 기반하여",
@@ -954,103 +957,103 @@
 
     "advancements.soulsweapons.root.title": "소울라이크 무기",
     "advancements.soulsweapons.root.description": "가장 가치 있는 자들을 위한 독특한 업적!",
-    
+
     "advancements.soulsweapons.end_of_reigns.title": "오, 고통이여",
     "advancements.soulsweapons.end_of_reigns.description": "부패한 왕의 고통을 끝내라",
-    
+
     "advancements.soulsweapons.moonstone.title": "주머니 속의 보름달",
     "advancements.soulsweapons.moonstone.description": "다이아몬드보다 더 반짝이는 월장석을 획득하라!",
-    
+
     "advancements.soulsweapons.bluemoon_tools.title": "어... 가짜?",
     "advancements.soulsweapons.bluemoon_tools.description": "최고의 보석으로 무기를 제작하라. 이제 필요한 것은 원초적인 힘뿐이다...",
-    
+
     "advancements.soulsweapons.moonlight_tools.title": "소프트웨어에서 직접",
     "advancements.soulsweapons.moonlight_tools.description": "무기를 극한까지 강화하라",
-    
+
     "advancements.soulsweapons.pure_moonlight.title": "진정한 상속자",
     "advancements.soulsweapons.pure_moonlight.description": "대검을 그 정점 이상으로 강화하라",
-    
+
     "advancements.soulsweapons.lord_soul.title": "힘에 잠기다",
     "advancements.soulsweapons.lord_soul.description": "그들의 존재의 잔재, 군주의 혼을 획득하라",
-    
+
     "advancements.soulsweapons.heap_of_iron.title": "형제여",
     "advancements.soulsweapons.heap_of_iron.description": "원초적인 철의 더미, 용살자를 획득하라",
-    
+
     "advancements.soulsweapons.demon_heart.title": "악마 사냥꾼",
     "advancements.soulsweapons.demon_heart.description": "악마의 심장을 획득하라",
-    
+
     "advancements.soulsweapons.bloodthirsty.title": "피로 물들다",
     "advancements.soulsweapons.bloodthirsty.description": "피의 갈증을 느끼며 피의 갈망자를 사용하라",
-    
+
     "advancements.soulsweapons.nightfall.title": "세 번째는 매력적이다!",
     "advancements.soulsweapons.nightfall.description": "나이트폴을 획득하고 자신의 언데드 군대를 지휘하라!",
-    
+
     "advancements.soulsweapons.lords_on_stick.title": "힘과 마법의 지팡이",
     "advancements.soulsweapons.lords_on_stick.description": "드래곤 지팡이와 혼돈의 대응물인 시든 와바잭을 획득하라",
-    
+
     "advancements.soulsweapons.rageblade.title": "여기 서서, 나는 깨닫는다...",
     "advancements.soulsweapons.rageblade.description": "귀니스의 분노의 검을 획득하고, 빛의 속도로 공격하라!",
-    
+
     "advancements.soulsweapons.dragonslayer_swordspear.title": "그의 이름이 뭐였지?",
     "advancements.soulsweapons.dragonslayer_swordspear.description": "용살자의 검창을 획득하라. 천상의 힘을 보라!",
-    
+
     "advancements.soulsweapons.whirligig_sawblade.title": "찢고 찢다... 다 끝날 때까지.",
     "advancements.soulsweapons.whirligig_sawblade.description": "회전톱날을 획득하라. 적들을 존재에서 찢어버려라!",
-    
+
     "advancements.soulsweapons.blunderbuss.title": "운명의 날",
     "advancements.soulsweapons.blunderbuss.description": "사냥꾼의 블런더버스를 제작하라. 폭발이 클수록 피해가 크다!",
-    
+
     "advancements.soulsweapons.hunter_pistol.title": "새로운 사냥꾼",
     "advancements.soulsweapons.hunter_pistol.description": "사냥꾼의 권총을 제작하라. 간단하지만 강력한 총기",
-    
+
     "advancements.soulsweapons.gatling_gun.title": "총알로 저녁을",
     "advancements.soulsweapons.gatling_gun.description": "개틀링 기관총을 제작하라. 모든 탄약을 즉시 소모하라",
-    
+
     "advancements.soulsweapons.cannon.title": "약간 오버인가?",
     "advancements.soulsweapons.cannon.description": "사냥꾼의 대포를 제작하라. 참새를 조준하고 파괴적인 폭발을 일으켜라!",
-    
+
     "advancements.soulsweapons.all_weapons.title": "작업의 달인",
     "advancements.soulsweapons.all_weapons.description": "이 모드의 모든 전설적인 무기를 획득하라",
-    
+
     "advancements.soulsweapons.draugr_boss.title": "불안한 잠",
     "advancements.soulsweapons.draugr_boss.description": "고대 챔피언과 그 유령을 물리쳐라",
-    
+
     "advancements.soulsweapons.uncertainty.title": "파괴적인 성향",
     "advancements.soulsweapons.uncertainty.description": "불확실성의 조각을 획득하라",
-    
+
     "advancements.soulsweapons.ender_of_world_ender.title": "세상의 끝을 끝내다",
     "advancements.soulsweapons.ender_of_world_ender.description": "혼돈의 군주를 물리쳐라",
-    
+
     "advancements.soulsweapons.returning_knight.title": "마지막 도착",
     "advancements.soulsweapons.returning_knight.description": "되돌아온 기사와의 전투에서 승리하라",
-    
+
     "advancements.soulsweapons.chaos_orb.title": "포함된 성운",
     "advancements.soulsweapons.chaos_orb.description": "혼돈의 구슬을 제작하라",
-    
+
     "advancements.soulsweapons.verglas.title": "거짓된 물",
     "advancements.soulsweapons.verglas.description": "버글라스를 획득하라. 차갑고 매끄러운 물질이 안에 특정한 액체를 가두고 있는 것 같다",
-    
+
     "advancements.soulsweapons.leviathan_axe.title": "주거나 받거나",
     "advancements.soulsweapons.leviathan_axe.description": "레비아탄 도끼를 획득하라",
-    
+
     "advancements.soulsweapons.dream_on.title": "꿈꾸다",
     "advancements.soulsweapons.dream_on.description": "50블록 이상 떨어지고, 계산된 낙하 상태 효과 덕분에 살아남아라.",
-    
+
     "advancements.soulsweapons.moonknight.title": "블루 스틸",
     "advancements.soulsweapons.moonknight.description": "황혼의 정수를 정당한 몸에 반환하고, 신과 같은 존재를 물리쳐라.",
-    
+
     "advancements.soulsweapons.trickweapon.title": "반전!",
     "advancements.soulsweapons.trickweapon.description": "처음으로 트릭 무기를 획득하라. 다른 무기로 변환할 수 있는 무기!",
-    
+
     "advancements.soulsweapons.transform_scythe.title": "승자가 모든 것을 가져간다",
     "advancements.soulsweapons.transform_scythe.description": "다킨의 낫을 충분히 강화하여 새로운 형태로 변형하라.",
-    
+
     "advancements.soulsweapons.kill_day_night_boss.title": "우주의 열사",
     "advancements.soulsweapons.kill_day_night_boss.description": "혼돈의 구슬을 사용하여 낮의 추적자와 밤의 잠복자를 소환하고, 그들의 영혼을 획득하라.",
-    
+
     "advancements.soulsweapons.arkenplate.title": "구원의 방패",
     "advancements.soulsweapons.arkenplate.description": "아르켄 판금을 제작하고, 다이아몬드보다 강해지라",
-    
+
     "advancements.soulsweapons.hallowheart.title": "또는 PvP 보스",
     "advancements.soulsweapons.hallowheart.description": "할로우하트를 제작하고, 시듦을 거부하라",
 

@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -37,7 +38,7 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
             int time = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (time >= 10) {
                 LivingEntity target;
-                Predicate<LivingEntity> nonTeammate = entity -> !entity.isTeammate(user);
+                Predicate<LivingEntity> nonTeammate = entity -> !entity.isTeammate(user) && !(entity instanceof ArmorStandEntity);
                 TargetPredicate targetPredicate = TargetPredicate.createNonAttackable()
                         .setBaseMaxDistance(ConfigConstructor.excalibur_sonic_boom_target_search_range)
                         .ignoreVisibility()

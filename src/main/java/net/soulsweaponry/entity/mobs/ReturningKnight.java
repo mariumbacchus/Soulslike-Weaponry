@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -42,7 +43,10 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public class ReturningKnight extends BossEntity implements GeoEntity {
 
@@ -50,6 +54,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private int spawnTicks;
     public int deathTicks;
     private int blockBreakingCooldown;
+    private final List<UUID> healers = new ArrayList<>();
     
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
@@ -109,7 +114,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, 8.0D);
+        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.returning_knight_armor);
     }
 
     @Override
@@ -213,6 +218,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return this.dataTracker.get(DEATH);
     }
 
+    @Override
     public void tickMovement() {
         super.tickMovement();
 
@@ -315,6 +321,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return ConfigConstructor.returning_knight_xp;
     }
 
+    @Override
     protected void mobTick() {
         super.mobTick();
         
@@ -350,6 +357,26 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 }
             }
         }
+    }
+
+    public boolean hasHealersAlive() {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            // Use iterator for safely removing of the uuids of entities that don't exist anymore
+            Iterator<UUID> iterator = this.healers.iterator();
+            while (iterator.hasNext()) {
+                UUID uuid = iterator.next();
+                Entity entity = serverWorld.getEntity(uuid);
+                if (entity == null || !entity.isAlive()) {
+                    iterator.remove();
+                }
+            }
+            return !this.healers.isEmpty();
+        }
+        return false;
+    }
+
+    public void addHealer(UUID uuid) {
+        this.healers.add(uuid);
     }
 
     @Override

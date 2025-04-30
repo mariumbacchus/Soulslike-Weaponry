@@ -270,9 +270,10 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return PathAwareEntity.createLivingAttributes()
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, (double) ConfigConstructor.sword_of_freyr_damage);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.sword_of_freyr_health)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.sword_of_freyr_armor)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, ConfigConstructor.sword_of_freyr_damage);
     }
 
     public double getFollowRange() {

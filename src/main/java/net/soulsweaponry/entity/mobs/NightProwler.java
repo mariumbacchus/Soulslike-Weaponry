@@ -296,6 +296,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PHANTOM_HURT;
+    }
+
+    @Override
     public int getTicksUntilDeath() {
         return this.isPhaseTwo() ? 140 : 80;
     }
@@ -337,7 +342,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 10D)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.night_prowler_armor)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
     }
 
