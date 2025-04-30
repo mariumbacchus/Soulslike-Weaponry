@@ -51,7 +51,7 @@ public class ItemRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE.get()).build()))
                 .offerTo(consumer);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FRENZIED_SHADE_DISC.get())
+        /*ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FRENZIED_SHADE_DISC.get())
                 .input('#', ItemRegistry.MOONSTONE.get())
                 .input('X', ItemRegistry.LOST_SOUL.get())
                 .pattern("#X#")
@@ -59,7 +59,7 @@ public class ItemRecipes extends RecipeProvider {
                 .pattern("#X#")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE.get()).build()))
-                .offerTo(consumer);
+                .offerTo(consumer);*/
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL.get())
                 .input('Y', ModTags.Items.LOST_SOUL)
                 .input('I', Items.BONE)

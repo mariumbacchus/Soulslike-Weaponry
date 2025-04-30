@@ -85,8 +85,8 @@ public class ItemRegistry {
 
     public static final RegistryObject<MusicDiscItem> CHUNGUS_DISC = registerItem("chungus_disc", () -> new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 2240));
     public static final RegistryObject<MusicDiscItem> FALLEN_ICON_DISC = registerItem("fallen_icon_disc", () -> new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new Item.Settings().maxCount(1), 3440));
-    public static final RegistryObject<MusicDiscItem> DRAUGR_BOSS_DISC = registerItem("draugr_boss_disc", () -> new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new Item.Settings().maxCount(1), 10060));
-    public static final RegistryObject<MusicDiscItem> FRENZIED_SHADE_DISC = registerItem("frenzied_shade_disc", () -> new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new Item.Settings().maxCount(1), 1240));
+    public static final RegistryObject<MusicDiscItem> DRAUGR_BOSS_DISC = registerItem("draugr_boss_disc", () -> new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new Item.Settings().maxCount(1), 4200));
+    //public static final RegistryObject<MusicDiscItem> FRENZIED_SHADE_DISC = registerItem("frenzied_shade_disc", () -> new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new Item.Settings().maxCount(1), 1240));
 
     public static final RegistryObject<Item> PURIFIED_BLOOD_BUCKET = ItemRegistry.registerItem("purified_blood_bucket", () -> new BucketItem(FluidRegistry.STILL_PURIFIED_BLOOD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
 

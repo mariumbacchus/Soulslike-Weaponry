@@ -15,6 +15,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -31,6 +32,7 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -38,7 +40,9 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class NightShade extends BossEntity implements GeoEntity {
+import java.util.UUID;
+
+public class NightShade extends BossEntity implements GeoEntity, Ownable {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
@@ -46,6 +50,7 @@ public class NightShade extends BossEntity implements GeoEntity {
     private boolean healthUpdated = false;
     private boolean hasDuplicated = false;
     private int duplicateTicks;
+    private UUID ownerUuid;
 
     protected static final TrackedData<Integer> ATTACK_STATE = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Boolean> CHARGING = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -84,6 +89,18 @@ public class NightShade extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(POS, new BlockPos(0,0,0));
     }
 
+    /**
+     * @return If the uuid is not null, then it is the original shade that spawned this copy.
+     * If null, it is the original shade and has no "owner"
+     */
+    @Override
+    public @Nullable Entity getOwner() {
+        if (this.getWorld() instanceof ServerWorld serverWorld && this.ownerUuid != null) {
+            return serverWorld.getEntity(this.ownerUuid);
+        }
+        return null;
+    }
+
     public enum AttackStates {
         IDLE, SPAWN, DEATH, BIG_SWIPES, GENERIC_CHARGE, AOE, DUPLICATE, THROW_MOONLIGHT, SHADOW_ORBS
     }
@@ -115,6 +132,10 @@ public class NightShade extends BossEntity implements GeoEntity {
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
+        }
+        if (this.getOwner() != null && !this.getOwner().isAlive()) {
+            this.setDeath();
+            this.setHealth(0f);
         }
     }
 
@@ -153,6 +174,7 @@ public class NightShade extends BossEntity implements GeoEntity {
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
                     NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.getWorld());
+                    copy.ownerUuid = this.getUuid();
                     copy.setCopy(true);
                     copy.setPos(this.getX(), this.getY(), this.getZ());
                     copy.setVelocity((float) i / 10f, (float) i / 10f, - (float) i / 10f);
@@ -161,6 +183,7 @@ public class NightShade extends BossEntity implements GeoEntity {
                     getWorld().spawnEntity(copy);
 
                     NightShade copy2 = new NightShade(EntityRegistry.NIGHT_SHADE.get(), this.getWorld());
+                    copy2.ownerUuid = this.getUuid();
                     copy2.setCopy(true);
                     copy2.setPos(this.getX(), this.getY(), this.getZ());
                     copy2.setVelocity(- (float) i / 10f, (float) i / 10f,  (float) i / 10f);
@@ -326,6 +349,9 @@ public class NightShade extends BossEntity implements GeoEntity {
         nbt.putBoolean("is_copy", this.isCopy);
         nbt.putBoolean("has_duplicated", this.hasDuplicated);
         nbt.putBoolean("has_health_updated", this.healthUpdated);
+        if (this.ownerUuid != null) {
+            nbt.putUuid("original_shade", ownerUuid);
+        }
     }
 
     @Override
@@ -338,6 +364,9 @@ public class NightShade extends BossEntity implements GeoEntity {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("has_duplicated")) {
             this.hasDuplicated = nbt.getBoolean("has_duplicated");
+        }
+        if (nbt.contains("original_shade")) {
+            this.ownerUuid = nbt.getUuid("original_shade");
         }
         if (nbt.contains("is_copy")) this.isCopy = nbt.getBoolean("is_copy");
         if (nbt.contains("has_health_updated")) this.healthUpdated = nbt.getBoolean("has_health_updated");
