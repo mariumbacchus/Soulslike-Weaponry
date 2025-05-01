@@ -30,6 +30,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -209,6 +210,14 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
             }
         }
         if (this.hasStatusEffect(EffectRegistry.FREEZING.get())) this.removeStatusEffect(EffectRegistry.FREEZING.get());
+    }
+
+    @Override
+    public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
+        if (effect.getEffectType().equals(EffectRegistry.FREEZING.get())) {
+            return false;
+        }
+        return super.addStatusEffect(effect, source);
     }
 
     @Override
