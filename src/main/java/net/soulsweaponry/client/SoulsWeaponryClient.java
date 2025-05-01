@@ -9,6 +9,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.client.hud.CustomBossBar;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.registry.*;
 import net.soulsweaponry.networking.PacketRegistry;
@@ -55,6 +56,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), FluidRegistry.STILL_PURIFIED_BLOOD, FluidRegistry.FLOWING_PURIFIED_BLOOD);
 
         HudRenderCallback.EVENT.register(new PostureHudOverlay());
+        CustomBossBar.init();
 
         EntityModelLayerModRegistry.initClient();
         EntityModelRegistry.initClient();
