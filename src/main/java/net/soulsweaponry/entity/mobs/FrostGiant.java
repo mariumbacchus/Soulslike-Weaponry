@@ -191,6 +191,14 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
+    public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
+        if (effect.getEffectType().equals(EffectRegistry.FREEZING.get())) {
+            return false;
+        }
+        return super.addStatusEffect(effect, source);
+    }
+
+    @Override
     public int getSoulAmount() {
         return 5;
     }
