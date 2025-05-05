@@ -1,25 +1,28 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.particles.ParticleHandler;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestItem extends SwordItem {
 
@@ -61,16 +64,121 @@ public class TestItem extends SwordItem {
         }
     }
 
+    private static final float ARC_LENGTH = 1.0f;
+    private static final float ARC_VARIATION = 1.5f;
+    private static final float INACCURACY = 0.75f;
+    private static final float MIN_SEGMENT_DIST = 3.0f;
+    private static final float BRANCH_CHANCE = 2f;
+    private static final int DENSITY = 8; // particles per block
+
+    private void spawnChainLightning(ServerWorld world, Vec3d start, Vec3d end) {
+        Random rand = world.random;
+        List<Vec3d> points = new ArrayList<>();
+        points.add(start);
+
+        // build the jagged polyline
+        Vec3d last = start;
+        while (last.squaredDistanceTo(end) > MIN_SEGMENT_DIST * MIN_SEGMENT_DIST) {
+            Vec3d dir = end.subtract(last).normalize();
+            dir = randomize(dir, INACCURACY, rand);
+
+            float len = MathHelper.nextFloat(rand, ARC_LENGTH * ARC_VARIATION, ARC_LENGTH);
+            Vec3d next = last.add(dir.multiply(len));
+
+            points.add(next);
+            last = next;
+        }
+        points.add(end);
+
+        // spawn along each segment ... plus little branches
+        for (int i = 0; i < points.size() - 1; i++) {
+            Vec3d p1 = points.get(i);
+            Vec3d p2 = points.get(i + 1);
+
+            // main segment
+            spawnParticlesOnLine(world, p1, p2);
+
+            // random side-branch?
+            if (rand.nextFloat() < BRANCH_CHANCE) {
+                Vec3d branchDir   = randomize(p2.subtract(p1).normalize(), INACCURACY * 2, rand);
+                float branchLen   = MathHelper.nextFloat(rand,
+                        ARC_LENGTH * ARC_VARIATION * 0.5f,
+                        ARC_LENGTH * 0.5f);
+                Vec3d branchEnd   = p1.add(branchDir.multiply(branchLen));
+                spawnParticlesOnLine(world, p1, branchEnd);
+            }
+        }
+    }
+
+    private Vec3d randomize(Vec3d vec, float deviation, Random rand) {
+        // add a small random vector then renormalize
+        Vec3d rnd = new Vec3d(
+                rand.nextDouble() * 2 - 1,
+                rand.nextDouble() * 2 - 1,
+                rand.nextDouble() * 2 - 1
+        ).multiply(deviation);
+        return vec.add(rnd).normalize();
+    }
+    //TODO move all calculations over to a client side packet, just send start and end pos to the packet and it does calculations on client
+    // dont do a buffer, distance calculations vary too much, it is fine to have everything in the packet
+    private void spawnParticlesOnLine(ServerWorld world, Vec3d a, Vec3d b) {
+        double dist = a.distanceTo(b);
+        int steps = MathHelper.ceil(dist * DENSITY);
+
+        for (int i = 0; i <= steps; i++) {
+            double t = (double)i / (double)steps;
+            double x = MathHelper.lerp(t, a.x, b.x);
+            double y = MathHelper.lerp(t, a.y, b.y);
+            double z = MathHelper.lerp(t, a.z, b.z);
+            // change PARTICLE_TYPE if you like
+            world.spawnParticles(
+                    ParticleTypes.ELECTRIC_SPARK,
+                    x, y, z,
+                    1,    // count
+                    0, 0, 0,  // no random offset
+                    0       // speed
+            );
+        }
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        double d = user.getY() - 5;
+
+        // only run on the server
+        if (!world.isClient() && world instanceof ServerWorld serverWorld) {
+            LivingEntity primary = user.getAttacking();
+            if (primary != null) {
+                // 1) main bolt: player eyes → primary target eyes
+                Vec3d fromPlayer = new Vec3d(user.getX(), user.getEyeY(), user.getZ());
+                Vec3d toPrimary  = new Vec3d(primary.getX(), primary.getEyeY(), primary.getZ());
+                ParticleHandler.chainLightning(serverWorld, fromPlayer, toPrimary);
+
+                // 2) damage & chain to each secondary living entity
+                for (Entity e : world.getOtherEntities(primary,
+                        primary.getBoundingBox().expand(5.0),
+                        ent -> ent instanceof LivingEntity && !ent.equals(user))) {
+                    LivingEntity secondary = (LivingEntity)e;
+                    secondary.damage(world.getDamageSources().lightningBolt(), 1.0f);
+
+                    Vec3d toSecondary = new Vec3d(
+                            secondary.getX(),
+                            secondary.getEyeY(),
+                            secondary.getZ()
+                    );
+                    ParticleHandler.chainLightning(serverWorld, toPrimary, toSecondary);
+                }
+            }
+            return TypedActionResult.success(stack);
+        }
+
+        /*double d = user.getY() - 5;
         double e = user.getY() + 5;
         float f = (float) Math.toRadians(user.getYaw() + 90);
         for (int i = 0; i < 16; i++) {
             double h = 1.25 * (double)(i + 1);
             this.conjureFangs(world, user, user.getX() + (double)MathHelper.cos(f) * h, user.getZ() + (double)MathHelper.sin(f) * h, d, e, f, i);
-        }
+        }*/
         if (world.isClient) {
 
             // This will make an X shape of two half circles where the user is facing (only rotates Y axis)

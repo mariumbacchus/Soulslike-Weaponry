@@ -22,6 +22,7 @@ public class VisceralEnchantment extends Enchantment {
         return 3;
     }
 
+    @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof GunItem;
     }

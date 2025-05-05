@@ -3,6 +3,7 @@ package net.soulsweaponry.particles;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.PacketIds;
+import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -74,6 +76,34 @@ public class ParticleHandler {
     public static void particleSphereList(World world, int amount, double x, double y, double z, List<ParticleEffect> particles, float sizeMod) {
         for (ParticleEffect particle : particles) {
             particleSphere(world, amount, x, y, z, particle, sizeMod);
+        }
+    }
+
+    /**
+     * Spawn chain lightning particles between the two vectors. This method transform the Vec3d into Vector3f before either
+     * spawning the particles directly or sending a packet if the world is server side.
+     * @param world world
+     * @param from starting point
+     * @param to end point
+     */
+    public static void chainLightning(World world, Vec3d from, Vec3d to) {
+        chainLightning(world, new Vector3f((float)from.x, (float)from.y, (float)from.z), new Vector3f((float)to.x, (float)to.y, (float)to.z));
+    }
+
+    /**
+     * Spawn chain lightning particles between the two vectors.
+     * @param world world
+     * @param from starting point
+     * @param to end point
+     */
+    public static void chainLightning(World world, Vector3f from, Vector3f to) {
+        if (world instanceof ClientWorld clientWorld) {
+            ChainLightningHandler.spawnChainLightning(clientWorld, from, to);
+        } else {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeVector3f(from);
+            buf.writeVector3f(to);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(from.x, from.y, from.z), PacketIds.CHAIN_LIGHTNING, buf);
         }
     }
 

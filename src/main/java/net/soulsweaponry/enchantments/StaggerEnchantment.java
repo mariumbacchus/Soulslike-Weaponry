@@ -42,6 +42,7 @@ public class StaggerEnchantment extends Enchantment {
         super.onTargetDamaged(user, target, level);
     }
 
+    @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof IUltraHeavy || super.isAcceptableItem(stack);
     }
