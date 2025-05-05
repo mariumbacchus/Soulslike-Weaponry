@@ -259,6 +259,8 @@
     "death.attack.beam": "%1$sは%2$sのコアビームによって消滅しました",
     "death.attack.dragon_mist": "%1$s は神聖なドラゴンの霧を吸い込むことができませんでした",
     "death.attack.dragon_mist.player": "%1$s は %2$s の凝縮されたドラゴンミストを吸い込むことができませんでした",
+    "death.attack.player_lightning": "%1$s was struck by lightning",
+    "death.attack.player_lightning.player": "%1$s was struck by %2$s's lightning",
 
     "effect.soulsweapons.hallowed_dragon_mist": "浄化されたミスト",
     "effect.soulsweapons.bloodthirsty": "血に飢える",
@@ -368,6 +370,11 @@
     "subtitles.soulsweapons.moonveil_vertical": "A vertical moonlight wave is unleashed",
     "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song_mono": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song_mono": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.shock": "Entities are being shocked",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] を押して詳細を表示します",
     "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
@@ -827,6 +834,14 @@
     "enchantment.soulsweapons.visceral.desc": "「体勢が崩れやすくなる」銀の弾丸が適用される。",
     "enchantment.soulsweapons.stagger": "よろめき",
     "enchantment.soulsweapons.stagger.desc": "ターゲットに「体勢崩し」をかける。最大損失時、ターゲットの体勢を崩す。",
+    "enchantment.soulsweapons.ethereal": "Ethereal Ammunition",
+    "enchantment.soulsweapons.ethereal.desc": "Silver Bullets can go through walls.",
+    "enchantment.soulsweapons.explosive_rounds": "Explosive Rounds",
+    "enchantment.soulsweapons.explosive_rounds.desc": "Silver Bullets explode when hitting an entity.",
+    "enchantment.soulsweapons.chain_lightning": "Chain Lightning",
+    "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with lightning.",
+    "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
+    "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 

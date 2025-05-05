@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.*;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -95,6 +92,7 @@ public class EntityRegistry {
     public static final EntityType<AbsorbedProjectilesOrb> ABSORBED_PROJECTILES_ORB_ENTITY = Registry.register(Registries.ENTITY_TYPE, new Identifier(ModId, "absorbed_projectiles_orb_entity"), FabricEntityTypeBuilder.<AbsorbedProjectilesOrb>create(SpawnGroup.MISC, AbsorbedProjectilesOrb::new).dimensions(EntityDimensions.fixed(1f, 1f)).fireImmune().trackRangeChunks(4).trackedUpdateRate(Integer.MAX_VALUE).build());
     public static final EntityType<SilverArrow> SILVER_ARROW = registerEntity("silver_arrow", FabricEntityTypeBuilder.<SilverArrow>create(SpawnGroup.MISC, SilverArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<FrozenLightning> FROZEN_LIGHTNING = registerEntity("frozen_lightning", FabricEntityTypeBuilder.<FrozenLightning>create(SpawnGroup.MISC, FrozenLightning::new).dimensions(EntityDimensions.fixed(2f, 5f)).trackRangeChunks(16).trackedUpdateRate(20).build());
+    public static final EntityType<TntEntity> CHUNGUS_HEAD = registerEntity("chungus_head", FabricEntityTypeBuilder.<TntEntity>create(SpawnGroup.MISC, TntEntity::new).dimensions(EntityDimensions.fixed(1f, 1f)).trackRangeChunks(16).trackedUpdateRate(20).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());

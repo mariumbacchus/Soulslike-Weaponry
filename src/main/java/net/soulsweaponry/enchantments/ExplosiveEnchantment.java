@@ -6,30 +6,25 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.soulsweaponry.items.gun.GunItem;
 
-public class MisfireCurseEnchantment extends Enchantment {
+public class ExplosiveEnchantment extends Enchantment {
 
-    public MisfireCurseEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
+    public ExplosiveEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.BOW, slotTypes);
     }
 
     @Override
     public int getMinPower(int level) {
-        return 25;
+        return level * 10;
     }
 
     @Override
     public int getMaxPower(int level) {
-        return 50;
+        return this.getMinPower(level) + 15;
     }
 
     @Override
-    public boolean isTreasure() {
-        return true;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return true;
+    public int getMaxLevel() {
+        return 3;
     }
 
     @Override

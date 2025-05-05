@@ -427,5 +427,13 @@
                 "stream": true
             }
         ]
+    },
+    "shock": {
+        "subtitle": "subtitles.soulsweapons.shock",
+        "sounds": [
+            "soulsweapons:shock_1",
+            "soulsweapons:shock_2",
+            "soulsweapons:shock_3"
+        ]
     }
 }

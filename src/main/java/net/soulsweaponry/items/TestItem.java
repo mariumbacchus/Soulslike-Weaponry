@@ -119,8 +119,7 @@ public class TestItem extends SwordItem {
         ).multiply(deviation);
         return vec.add(rnd).normalize();
     }
-    //TODO move all calculations over to a client side packet, just send start and end pos to the packet and it does calculations on client
-    // dont do a buffer, distance calculations vary too much, it is fine to have everything in the packet
+
     private void spawnParticlesOnLine(ServerWorld world, Vec3d a, Vec3d b) {
         double dist = a.distanceTo(b);
         int steps = MathHelper.ceil(dist * DENSITY);
@@ -130,14 +129,7 @@ public class TestItem extends SwordItem {
             double x = MathHelper.lerp(t, a.x, b.x);
             double y = MathHelper.lerp(t, a.y, b.y);
             double z = MathHelper.lerp(t, a.z, b.z);
-            // change PARTICLE_TYPE if you like
-            world.spawnParticles(
-                    ParticleTypes.ELECTRIC_SPARK,
-                    x, y, z,
-                    1,    // count
-                    0, 0, 0,  // no random offset
-                    0       // speed
-            );
+            world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, x, y, z, 1, 0, 0, 0, 0);
         }
     }
 

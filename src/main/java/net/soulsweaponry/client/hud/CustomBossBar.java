@@ -13,6 +13,7 @@ public record CustomBossBar(EntityType<?> entityType, Identifier emptyBar, Ident
     public static final List<CustomBossBar> CUSTOM_BOSS_BARS = new ArrayList<>();
 
     public static void init() {
-        CUSTOM_BOSS_BARS.add(new CustomBossBar(EntityRegistry.RETURNING_KNIGHT, new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/empty.png"), new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/full.png")));
+        // TODO this line is only for testing
+        //CUSTOM_BOSS_BARS.add(new CustomBossBar(EntityRegistry.RETURNING_KNIGHT, new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/empty.png"), new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/full.png")));
     }
 }

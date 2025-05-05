@@ -258,6 +258,8 @@
     "death.attack.beam": "%1$s가 %2$s의 코어 광선에 의해 소멸되었습니다.",
     "death.attack.dragon_mist": "%1$s가 농축된 용의 안개에서 질식했습니다.",
     "death.attack.dragon_mist.player": "%1$s가 %2$s의 농축된 용의 안개에서 질식했습니다.",
+    "death.attack.player_lightning": "%1$s was struck by lightning",
+    "death.attack.player_lightning.player": "%1$s was struck by %2$s's lightning",
 
     "effect.soulsweapons.hallowed_dragon_mist": "정화된 안개",
     "effect.soulsweapons.bloodthirsty": "피의 갈증",
@@ -367,6 +369,11 @@
     "subtitles.soulsweapons.moonveil_vertical": "A vertical moonlight wave is unleashed",
     "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song_mono": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song_mono": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.shock": "Entities are being shocked",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] 키를 눌러 정보를 확인하세요",
     "tooltip.soulsweapons.alt": "[§eALT§r] 키를 눌러 정보를 확인하세요",
@@ -941,6 +948,18 @@
 
     "enchantment.soulsweapons.stagger": "기절",
     "enchantment.soulsweapons.stagger.desc": "대상에게 '자세 손실'을 적용합니다. 최대 손실 시, 자세를 파괴합니다.",
+
+    "enchantment.soulsweapons.ethereal": "Ethereal Ammunition",
+    "enchantment.soulsweapons.ethereal.desc": "Silver Bullets can go through walls.",
+
+    "enchantment.soulsweapons.explosive_rounds": "Explosive Rounds",
+    "enchantment.soulsweapons.explosive_rounds.desc": "Silver Bullets explode when hitting an entity.",
+
+    "enchantment.soulsweapons.chain_lightning": "Chain Lightning",
+    "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with lightning.",
+
+    "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
+    "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry",
 

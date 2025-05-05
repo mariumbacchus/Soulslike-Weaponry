@@ -259,7 +259,8 @@
     "death.attack.beam": "%1$s был аннигилирован %2$s с помощью Ядро Сияния",
     "death.attack.dragon_mist": "%1$s был задушен %2$s с помощью Концентрированный Драконий Туман",
     "death.attack.dragon_mist.player": "%1$s не смог дышать в концентрированном Драконьем Тумане %2$s",
-
+    "death.attack.player_lightning": "%1$s was struck by lightning",
+    "death.attack.player_lightning.player": "%1$s was struck by %2$s's lightning",
 
     "effect.soulsweapons.hallowed_dragon_mist": "Очищенный Туман",
     "effect.soulsweapons.bloodthirsty": "Кровожадный",
@@ -369,6 +370,11 @@
     "subtitles.soulsweapons.moonveil_vertical": "A vertical moonlight wave is unleashed",
     "subtitles.soulsweapons.fallen_icon_song": "Fallen Icon Theme by Wicked starts playing",
     "subtitles.soulsweapons.fallen_icon_mono": "Fallen Icon Theme by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.draugr_boss_song_mono": "Gladius ad Gladium by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.frenzied_shade_song_mono": "The Frenzied Shade by Wicked starts playing",
+    "subtitles.soulsweapons.shock": "Entities are being shocked",
 
     "tooltip.soulsweapons.shift": "Удерживай [§eSHIFT§r] для получения информации",
     "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
@@ -828,6 +834,14 @@
     "enchantment.soulsweapons.visceral.desc": "Увеличивает шанс дезориентации у серебрянных пуль, наполовину заменяющих стрелы.",
     "enchantment.soulsweapons.stagger": "Ошеломление",
     "enchantment.soulsweapons.stagger.desc": "Добавляет возможность сильно замедлить цель на короткое время.",
+    "enchantment.soulsweapons.ethereal": "Ethereal Ammunition",
+    "enchantment.soulsweapons.ethereal.desc": "Silver Bullets can go through walls.",
+    "enchantment.soulsweapons.explosive_rounds": "Explosive Rounds",
+    "enchantment.soulsweapons.explosive_rounds.desc": "Silver Bullets explode when hitting an entity.",
+    "enchantment.soulsweapons.chain_lightning": "Chain Lightning",
+    "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with lightning.",
+    "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
+    "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry",
 

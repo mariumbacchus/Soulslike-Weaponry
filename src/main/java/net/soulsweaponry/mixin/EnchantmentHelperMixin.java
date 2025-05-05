@@ -14,6 +14,7 @@ import net.soulsweaponry.enchantments.FastHandsEnchantment;
 import net.soulsweaponry.enchantments.VisceralEnchantment;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.IUndeadBonus;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,8 +34,7 @@ public class EnchantmentHelperMixin {
     @Inject(at = @At("RETURN"), cancellable = true, method = "getPossibleEntries")
     private static void interceptEnchantEntries(int power, ItemStack stack, boolean isTreasure, CallbackInfoReturnable<List<EnchantmentLevelEntry>> info) {
         List<EnchantmentLevelEntry> enchantments = info.getReturnValue();
-        // Re-implement this if other enchants are made
-        enchantments.removeIf(enchantment -> enchantment.enchantment instanceof FastHandsEnchantment || enchantment.enchantment instanceof VisceralEnchantment);
+        enchantments.removeIf(enchantment -> EnchantRegistry.GUN_ENCHANTS.contains(enchantment.enchantment));
         boolean bl = stack.isOf(Items.BOOK);
         for (Enchantment enchantment : Registries.ENCHANTMENT) {
             if (enchantment.isTreasure() && !isTreasure || !enchantment.isAvailableForRandomSelection() || !enchantment.isAcceptableItem(stack) && !bl) continue;

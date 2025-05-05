@@ -118,7 +118,7 @@ public class GatlingGun extends GunItem {
 
     private void stop(LivingEntity user, ItemStack stack, World world) {
         world.playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-        if (user instanceof PlayerEntity player) {
+        if (user instanceof PlayerEntity player && !player.isCreative()) {
             player.getItemCooldownManager().set(this, this.getCooldown(stack));
             stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
         }

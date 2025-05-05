@@ -9,11 +9,11 @@ import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
@@ -55,16 +55,21 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
     }
 
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
+        if (EnchantmentHelper.getLevel(EnchantRegistry.MISFIRE_CURSE, gunStack) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
+            world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
+            shooter.setOnFireFor(3);
+        }
         float power = (this.getBulletDamage(gunStack) / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
         int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, gunStack);
+        int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
+        int explosivePower = EnchantmentHelper.getLevel(EnchantRegistry.EXPLOSIVE_ROUNDS, gunStack);
+        int chainLightningLevel = EnchantmentHelper.getLevel(EnchantRegistry.CHAIN_LIGHTNING, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
-        if (gunStack.isOf(GunRegistry.GATLING_GUN)) {
-            entity.setPos(shooter.getX(), shooter.getEyeY() - 0.2f, shooter.getZ());
-        } else {
-            entity.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
-        }
+        entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
+        entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
+        entity.setNoClip(ethereal > 0);
+        entity.setEthereal(ethereal > 0);
         entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
-        entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         entity.setPostureLoss(this.getPostureLoss(gunStack));
         entity.setDamage(power);
         if (punch > 0) {
@@ -72,6 +77,13 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
         }
         if (EnchantmentHelper.getLevel(Enchantments.FLAME, gunStack) > 0) {
             entity.setOnFireFor(8);
+        }
+        if (explosivePower > 0) {
+            entity.setExplosionPower(explosivePower);
+        }
+        if (chainLightningLevel > 0) {
+            entity.setChainLightningDamage(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_damage_per_level);
+            entity.setChainLightningRange(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_range_per_level);
         }
         return entity;
     }

@@ -30,6 +30,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_fast_hands = false;
     @Entry public static boolean disable_enchantment_posture_breaker = false;
     @Entry public static boolean disable_enchantment_stagger = false;
+    @Entry public static boolean disable_enchantment_ethereal_ammunition = false;
+    @Entry public static boolean disable_enchantment_explosive_rounds = false;
+    @Entry public static boolean disable_enchantment_chain_lightning = false;
+    @Entry public static boolean disable_enchantment_misfire_curse = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -301,6 +305,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] bluemoon_shortsword_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static int chungus_staff_damage = 9;
     @Entry public static float chungus_staff_attack_speed = 1.1f;
+    @Entry public static int chungus_staff_ticks_before_explosion = 15;
+    @Entry public static int chungus_staff_use_cooldown = 5;
+    @Entry public static int chungus_staff_ability_cooldown = 2400;
     @Entry public static boolean chungus_staff_enchant_reduces_cooldown = true;
     @Entry public static String[] chungus_staff_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static int comet_spear_damage = 8;
@@ -675,6 +682,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int max_posture_loss = 200;
     @Entry public static int stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
+    @Entry(min=0, max=1) public static float chain_lightning_enchant_damage_per_level = 8f;
+    @Entry(min=0, max=1) public static float chain_lightning_enchant_range_per_level = 2.25f;
+    @Entry(min=0, max=1) public static double misfire_curse_enchant_trigger_chance = 0.3;
 
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;

@@ -75,5 +75,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.ABSORBED_PROJECTILES_ORB_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SILVER_ARROW, SilverArrowRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.FROZEN_LIGHTNING, FrozenLightningRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.CHUNGUS_HEAD, ChungusHeadRenderer::new);
     }
 }
