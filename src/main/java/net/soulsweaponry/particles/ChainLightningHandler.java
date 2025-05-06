@@ -1,8 +1,8 @@
 package net.soulsweaponry.particles;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
 import org.joml.Vector3f;
 
@@ -19,7 +19,7 @@ public class ChainLightningHandler {
     private static final float BRANCH_CHANCE = 2f;
     private static final int DENSITY = 8; // particles per block
 
-    public static void spawnChainLightning(ClientWorld world, Vector3f start0, Vector3f end0) {
+    public static void spawnChainLightning(World world, Vector3f start0, Vector3f end0) {
         Random rand = world.random;
         // work on copies only
         Vector3f start = new Vector3f(start0);
@@ -77,7 +77,7 @@ public class ChainLightningHandler {
         }
     }
 
-    private static void spawnParticlesOnLine(ClientWorld world, Vector3f a, Vector3f b) {
+    private static void spawnParticlesOnLine(World world, Vector3f a, Vector3f b) {
         double dist = a.distance(b);
         int steps = MathHelper.ceil(dist * DENSITY);
         for (int i = 0; i <= steps; i++) {

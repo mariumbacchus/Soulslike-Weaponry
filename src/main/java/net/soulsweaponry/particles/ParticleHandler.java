@@ -3,7 +3,6 @@ package net.soulsweaponry.particles;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
@@ -97,8 +96,8 @@ public class ParticleHandler {
      * @param to end point
      */
     public static void chainLightning(World world, Vector3f from, Vector3f to) {
-        if (world instanceof ClientWorld clientWorld) {
-            ChainLightningHandler.spawnChainLightning(clientWorld, from, to);
+        if (world.isClient) {
+            ChainLightningHandler.spawnChainLightning(world, from, to);
         } else {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeVector3f(from);
