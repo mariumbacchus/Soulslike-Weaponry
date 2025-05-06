@@ -1,9 +1,9 @@
 package net.soulsweaponry.particles;
 
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
+import net.soulsweaponry.registry.ParticleRegistry;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class ChainLightningHandler {
             double x = MathHelper.lerp(t, a.x, b.x);
             double y = MathHelper.lerp(t, a.y, b.y);
             double z = MathHelper.lerp(t, a.z, b.z);
-            world.addParticle(ParticleTypes.ELECTRIC_SPARK, x, y, z,0, 0, 0);
+            world.addParticle(ParticleRegistry.SOUL_SPARK, x, y, z,0, 0, 0);
         }
     }
 }

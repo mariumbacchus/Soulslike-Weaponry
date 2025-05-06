@@ -7,13 +7,21 @@
 - Fixed a bug causing Excalibur's Sonic Boom ability to auto target armor stands
 
 
+- Crucible Sword has reduced cooldown in the Nether
+- Chungus Staff now can be used to shoot Charged Chungus heads (which are primed TNT) that go through walls and explode after 15 ticks. Pressing ability keybind gives the user Haste and Speed like the old use ability
+- Silver Bullets no longer have gravity, but ticks before respawning has been reduced from 200 to 100
+- Added the new Ethereal Ammunition gun enchantment, making Silver Bullets go through walls, but they last only 25 ticks
+- Added the new Explosive Rounds gun enchantment, making Silver Bullets explode on contact with entities
+- Added the new Chain Lightning gun enchantment, making Silver Bullets damage mobs near the main target hit with soul infused lightning
+- Added the new Curse of Misfire enchantment, adding a chance to cause an explosion on the user each Silver Bullet fired
+
+
 - Added info to Demon Chunks that they can be used to summon the Decaying King when used on a Blackstone Pedestal
 - Added info to the Draugr that it can summon the Old Champion for a re-fight when used on an Old Moon Altar
 - Added info/hint to the Lost Soul that it can be used on the Old Moon Altar
 - Added info to the Essence of Eventide that it can be used on the Old Moon Altar to summon the Fallen Icon
 
 
-- Crucible Sword has reduced cooldown in the Nether
 - Old Champion's Remains now bounce off projectiles after 3 consecutive projectile hits
   - Melee attacks reset the counter
   - The amount of hits before growing immune can be changed with config line ```old_champions_remains_max_projectile_hits_before_immune```

@@ -838,7 +838,7 @@
     "enchantment.soulsweapons.explosive_rounds": "Explosive Rounds",
     "enchantment.soulsweapons.explosive_rounds.desc": "Silver Bullets explode when hitting an entity.",
     "enchantment.soulsweapons.chain_lightning": "Chain Lightning",
-    "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with lightning.",
+    "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with soul infused lightning.",
     "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
     "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
 

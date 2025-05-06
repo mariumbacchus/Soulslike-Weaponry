@@ -2,6 +2,7 @@ package net.soulsweaponry.client.registry;
 
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.FlameParticle;
+import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 public class ParticleClientRegistry {
@@ -15,5 +16,6 @@ public class ParticleClientRegistry {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.SUN_PARTICLE, FlameParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.MOONVEIL_PARTICLE, FlameParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.BLUE_FLAME, FlameParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.SOUL_SPARK, SoulSparkFactory::new);
     }
 }
