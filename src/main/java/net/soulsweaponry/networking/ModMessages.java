@@ -46,6 +46,7 @@ public class ModMessages {
         net.messageBuilder(ShouldDamageRidingSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ShouldDamageRidingSyncS2C::new).encoder(ShouldDamageRidingSyncS2C::toBytes).consumerMainThread(ShouldDamageRidingSyncS2C::handle).add();
         net.messageBuilder(ReturningProjectileDataSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ReturningProjectileDataSyncS2C::new).encoder(ReturningProjectileDataSyncS2C::toBytes).consumerMainThread(ReturningProjectileDataSyncS2C::handle).add();
         net.messageBuilder(StopBossMusicS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(StopBossMusicS2C::new).encoder(StopBossMusicS2C::toBytes).consumerMainThread(StopBossMusicS2C::handle).add();
+        net.messageBuilder(ChainLightningS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ChainLightningS2C::new).encoder(ChainLightningS2C::toBytes).consumerMainThread(ChainLightningS2C::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

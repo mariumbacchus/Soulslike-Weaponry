@@ -2,6 +2,7 @@ package net.soulsweaponry.particles;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -13,9 +14,11 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.networking.packets.S2C.ChainLightningS2C;
 import net.soulsweaponry.networking.packets.S2C.FlashParticleS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleOutburstS2C;
 import net.soulsweaponry.networking.packets.S2C.ParticleSphereS2C;
+import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -73,6 +76,31 @@ public class ParticleHandler {
     public static void particleSphereList(World world, int amount, double x, double y, double z, List<ParticleEffect> particles, float sizeMod) {
         for (ParticleEffect particle : particles) {
             particleSphere(world, amount, x, y, z, particle, sizeMod);
+        }
+    }
+
+    /**
+     * Spawn chain lightning particles between the two vectors. This method transform the Vec3d into Vector3f before either
+     * spawning the particles directly or sending a packet if the world is server side.
+     * @param world world
+     * @param from starting point
+     * @param to end point
+     */
+    public static void chainLightning(World world, Vec3d from, Vec3d to) {
+        chainLightning(world, new Vector3f((float)from.x, (float)from.y, (float)from.z), new Vector3f((float)to.x, (float)to.y, (float)to.z));
+    }
+
+    /**
+     * Spawn chain lightning particles between the two vectors.
+     * @param world world
+     * @param from starting point
+     * @param to end point
+     */
+    public static void chainLightning(World world, Vector3f from, Vector3f to) {
+        if (world.isClient) {
+            ChainLightningHandler.spawnChainLightning((ClientWorld) world, from, to);
+        } else {
+            ModMessages.sendToAllPlayers(new ChainLightningS2C(from, to));
         }
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
+import net.soulsweaponry.client.model.entity.projectile.ChungusHeadModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 
 public class EntityModelLayerModRegistry {
@@ -21,6 +22,7 @@ public class EntityModelLayerModRegistry {
     public static final EntityModelLayer FORLORN_LAYER = createMain("forlorn");
     public static final EntityModelLayer REMNANT_LAYER = createMain("remnant");
     public static final EntityModelLayer SOUL_REAPER_GHOST_LAYER = createMain("soul_reaper_ghost");
+    public static final EntityModelLayer CHUNGUS_HEAD_LAYER = createMain("chungus_head");
 
     public static final EntityModelLayer DARK_SORCERER_INNER_ARMOR = createInnerArmor("dark_sorcerer");
     public static final EntityModelLayer FORLORN_INNER_ARMOR = createInnerArmor("forlorn");
@@ -35,6 +37,7 @@ public class EntityModelLayerModRegistry {
     public static void initClient(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
         event.registerLayerDefinition(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);
+        event.registerLayerDefinition(CHUNGUS_HEAD_LAYER, ChungusHeadModel::getTexturedModelData);
         registerBiped(event, DARK_SORCERER_LAYER);
         registerBiped(event, FORLORN_LAYER);
         registerBiped(event, REMNANT_LAYER);

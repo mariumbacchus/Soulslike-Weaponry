@@ -18,6 +18,7 @@ public class CustomDamageSource {
     public static RegistryKey<DamageType> SHADOW_ORB = createType("shadow_orb");
     public static RegistryKey<DamageType> BEAM = createType("beam");
     public static RegistryKey<DamageType> DRAGON_MIST = createType("dragon_mist");
+    public static RegistryKey<DamageType> PLAYER_LIGHTNING = createType("player_lightning");
 
     public static DamageSource create(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(key).get());

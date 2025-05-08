@@ -8,7 +8,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.client.hud.CustomBossBar;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
+import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.client.registry.*;
 import net.soulsweaponry.registry.ParticleRegistry;
 
@@ -21,6 +23,7 @@ public class ClientModBusEvents {
             BlockRenderLayers.register();
             PredicateRegistry.register();
             EntityModelRegistry.register();
+            CustomBossBar.init();
         });
     }
 
@@ -34,6 +37,7 @@ public class ClientModBusEvents {
         event.registerSpriteSet(ParticleRegistry.SUN_PARTICLE.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.MOONVEIL_PARTICLE.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.BLUE_FLAME.get(), FlameParticle.Factory::new);
+        event.registerSpriteSet(ParticleRegistry.SOUL_SPARK.get(), SoulSparkFactory::new);
     }
 
     @SubscribeEvent

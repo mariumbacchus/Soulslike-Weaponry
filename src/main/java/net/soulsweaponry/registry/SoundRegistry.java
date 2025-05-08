@@ -74,6 +74,7 @@ public class SoundRegistry {
     public static final RegistryObject<SoundEvent>  TRINITY = registerSound("trinity");
     public static final RegistryObject<SoundEvent>  MOONVEIL_HORIZONTAL = registerSound("moonveil_horizontal");
     public static final RegistryObject<SoundEvent>  MOONVEIL_VERTICAL = registerSound("moonveil_vertical");
+    public static final RegistryObject<SoundEvent>  SHOCK = registerSound("shock");
 
     public static final RegistryObject<SoundEvent>  BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
 

@@ -20,6 +20,7 @@ public class ParticleRegistry {
     public static final RegistryObject<DefaultParticleType> SUN_PARTICLE = PARTICLES.register("sun_particle", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> MOONVEIL_PARTICLE = PARTICLES.register("moonveil_particle", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> BLUE_FLAME = PARTICLES.register("blue_flame", () -> new DefaultParticleType(true));
+    public static final RegistryObject<DefaultParticleType> SOUL_SPARK = PARTICLES.register("soul_spark", () -> new DefaultParticleType(true));
 
     public static void register(IEventBus bus) {
         PARTICLES.register(bus);
