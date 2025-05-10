@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.5
+- Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
+
 ## 1.2.4
 - Fixed a bug that removed original paper recipe
 - Fixed a bug preventing Day Stalker from using OVERHEAT attack
