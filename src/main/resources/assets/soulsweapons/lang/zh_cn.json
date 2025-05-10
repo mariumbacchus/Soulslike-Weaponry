@@ -636,7 +636,7 @@
     "tooltip.soulsweapons.blight_description_3": "level over 10, applies §fDecay§r too.",
     "tooltip.soulsweapons.blight_description_4": "- §dBlight§r increases damage taken in percent",
     "tooltip.soulsweapons.blight_description_5": "based on the target's armor amount.",
-    "tooltip.soulsweapons.blight_description_6": "Bonus damage in % = (ln(amplifier) * armor / 8) * 10",
+    "tooltip.soulsweapons.blight_description_6": "Bonus damage in % = (ln(amplifier) * armor / 6) * 10",
     "tooltip.soulsweapons.fast_pull": "Swift Draw",
     "tooltip.soulsweapons.fast_pull_1": "- Pull speed is increased for this weapon.",
     "tooltip.soulsweapons.fast_pull_2": "- Pull speed is increased for this weapon by ",
@@ -841,6 +841,8 @@
     "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with soul infused lightning.",
     "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
     "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
+    "enchantment.soulsweapons.blight_carrier": "Blight Carrier",
+    "enchantment.soulsweapons.blight_carrier.desc": "Silver Bullets apply stacking Blight: more armor = more damage taken.",
 
     "itemGroup.soulsweapons.general": "类魂武器",
 

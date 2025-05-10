@@ -637,7 +637,7 @@
     "tooltip.soulsweapons.blight_description_3": "増加量が10を超えると§fDecay§rも適用される。",
     "tooltip.soulsweapons.blight_description_4": "- §dBlight§rは対象のアーマー量に応じた",
     "tooltip.soulsweapons.blight_description_5": "割合で受けるダメージを増加させる。",
-    "tooltip.soulsweapons.blight_description_6": "ボーナスダメージ (%) = (ln(増加量) * アーマー / 8) * 10",
+    "tooltip.soulsweapons.blight_description_6": "ボーナスダメージ (%) = (ln(増加量) * アーマー / 6) * 10",
     "tooltip.soulsweapons.fast_pull": "スウィフトドロー",
     "tooltip.soulsweapons.fast_pull_1": "- この武器の引くスピードが増加します。",
     "tooltip.soulsweapons.fast_pull_2": "- この武器の引くスピードは次のように増加します。 ",
@@ -842,6 +842,8 @@
     "enchantment.soulsweapons.chain_lightning.desc": "Silver Bullets damage nearby entities with soul infused lightning.",
     "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
     "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
+    "enchantment.soulsweapons.blight_carrier": "Blight Carrier",
+    "enchantment.soulsweapons.blight_carrier.desc": "Silver Bullets apply stacking Blight: more armor = more damage taken.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 
