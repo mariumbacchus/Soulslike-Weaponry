@@ -1,7 +1,13 @@
 # Changelog
 
-## 1.2.5
+## 1.2.5 - TODO test these things
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
+- Guns can no longer have bow enchants
+- Buffed Posture Loss applied by all guns
+  - Blunderbuss: Base 25 -> 30 (per bullet), Bonus per enchant level 2 -> 3
+  - Hunter Cannon: Base 60 -> 80, Bonus per enchant level 60 -> 50
+  - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
+  - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

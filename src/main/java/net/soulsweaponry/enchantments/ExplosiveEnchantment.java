@@ -9,7 +9,7 @@ import net.soulsweaponry.items.gun.GunItem;
 public class ExplosiveEnchantment extends Enchantment {
 
     public ExplosiveEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-        super(weight, EnchantmentTarget.BOW, slotTypes);
+        super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
     }
 
     @Override

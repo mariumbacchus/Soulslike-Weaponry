@@ -9,7 +9,7 @@ import net.soulsweaponry.items.gun.GunItem;
 public class ChainLightningEnchantment extends Enchantment {
 
     public ChainLightningEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-        super(weight, EnchantmentTarget.BOW, slotTypes);
+        super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
     }
 
     @Override

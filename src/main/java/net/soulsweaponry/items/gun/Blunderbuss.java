@@ -26,7 +26,7 @@ public class Blunderbuss extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.blunderbuss_posture_loss + lvl * 2;
+        return ConfigConstructor.blunderbuss_posture_loss + lvl * ConfigConstructor.blunderbuss_posture_loss_per_enchant_level;
     }
 
     @Override

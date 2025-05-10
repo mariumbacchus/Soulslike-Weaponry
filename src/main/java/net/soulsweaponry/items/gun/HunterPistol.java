@@ -14,7 +14,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
@@ -27,7 +26,7 @@ public class HunterPistol extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.hunter_pistol_posture_loss + lvl * 7;
+        return ConfigConstructor.hunter_pistol_posture_loss + lvl * ConfigConstructor.hunter_pistol_posture_loss_per_enchant_level;
     }
 
     @Override

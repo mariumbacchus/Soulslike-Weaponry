@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.Cannonball;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
-import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
@@ -31,7 +30,7 @@ public class HunterCannon extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.hunter_cannon_posture_loss * (lvl == 0 ? 1 : lvl);
+        return ConfigConstructor.hunter_cannon_posture_loss + lvl * ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level;
     }
 
     @Override

@@ -5,8 +5,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class GunItem extends BowItem implements IConfigDisable, ITooltipInfo {
+public abstract class GunItem extends RangedWeaponItem implements IConfigDisable, ITooltipInfo {
 
     public static final Predicate<ItemStack> SILVER_PROJECTILE = (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET);
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
@@ -59,6 +59,7 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
+        //TODO remove power, punch and flame stuff later since people may still have those enchants on them from earlier versions (removed now)
         float power = (this.getBulletDamage(gunStack) / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
         int punch = EnchantmentHelper.getLevel(Enchantments.PUNCH, gunStack);
         int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
@@ -118,5 +119,15 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
     @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
+    }
+
+    @Override
+    public int getRange() {
+        return 15;
+    }
+
+    @Override
+    public int getEnchantability() {
+        return 7;
     }
 }
