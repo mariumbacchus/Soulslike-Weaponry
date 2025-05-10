@@ -64,6 +64,7 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
         int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
         int explosivePower = EnchantmentHelper.getLevel(EnchantRegistry.EXPLOSIVE_ROUNDS, gunStack);
         int chainLightningLevel = EnchantmentHelper.getLevel(EnchantRegistry.CHAIN_LIGHTNING, gunStack);
+        int blightCarrierLevel = EnchantmentHelper.getLevel(EnchantRegistry.BLIGHT_CARRIER, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
@@ -84,6 +85,9 @@ public abstract class GunItem extends BowItem implements IConfigDisable, IToolti
         if (chainLightningLevel > 0) {
             entity.setChainLightningDamage(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_damage_per_level);
             entity.setChainLightningRange(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_range_per_level);
+        }
+        if (blightCarrierLevel > 0) {
+            entity.setBlightCarrier(blightCarrierLevel * ConfigConstructor.blight_carrier_enchant_blight_per_level);
         }
         return entity;
     }

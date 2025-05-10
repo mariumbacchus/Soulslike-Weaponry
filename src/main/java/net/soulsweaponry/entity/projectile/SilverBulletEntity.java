@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -30,6 +32,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private float explosionPower;
     private float chainLightningDamage;
     private float chainLightningRange;
+    private int blightCarrier;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -119,6 +122,14 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
                     ChainLightning.trigger(this.getWorld(), target, owner, false, this.getChainLightningDamage(), this.getChainLightningRange());
                 }
             }
+            if (this.getBlightCarrier() > 0) {
+                StatusEffectInstance instance = target.getStatusEffect(EffectRegistry.BLIGHT);
+                if (instance != null) {
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, ConfigConstructor.blight_carrier_enchant_blight_duration, instance.getAmplifier() + this.getBlightCarrier() - 1));
+                } else {
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, ConfigConstructor.blight_carrier_enchant_blight_duration, this.getBlightCarrier() - 1));
+                }
+            }
         }
         super.onEntityHit(entityHitResult);
         if (this.explosionPower > 0f && !this.getWorld().isClient) {
@@ -149,6 +160,40 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         return ItemRegistry.SILVER_BULLET.getDefaultStack();
     }
 
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("postureLoss")) {
+            this.setPostureLoss(nbt.getInt("postureLoss"));
+        }
+        if (nbt.contains("ethereal")) {
+            this.isEthereal = nbt.getBoolean("ethereal");
+        }
+        if (nbt.contains("explosionPower")) {
+            this.explosionPower = nbt.getFloat("explosionPower");
+        }
+        if (nbt.contains("chainLightningDamage")) {
+            this.chainLightningDamage = nbt.getFloat("chainLightningDamage");
+        }
+        if (nbt.contains("chainLightningRange")) {
+            this.chainLightningRange = nbt.getFloat("chainLightningRange");
+        }
+        if (nbt.contains("blightCarrier")) {
+            this.blightCarrier = nbt.getInt("blightCarrier");
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("postureLoss", this.getPostureLoss());
+        nbt.putBoolean("ethereal", this.isEthereal);
+        nbt.putFloat("explosionPower", this.explosionPower);
+        nbt.putFloat("chainLightningDamage", this.chainLightningDamage);
+        nbt.putFloat("chainLightningRange", this.chainLightningRange);
+        nbt.putInt("blightCarrier", this.blightCarrier);
+    }
+
     public void setPostureLoss(int postureLoss) {
         this.postureLoss = postureLoss;
     }
@@ -177,33 +222,11 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         return this.chainLightningRange;
     }
 
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("postureLoss")) {
-            this.setPostureLoss(nbt.getInt("postureLoss"));
-        }
-        if (nbt.contains("ethereal")) {
-            this.isEthereal = nbt.getBoolean("ethereal");
-        }
-        if (nbt.contains("explosionPower")) {
-            this.explosionPower = nbt.getFloat("explosionPower");
-        }
-        if (nbt.contains("chainLightningDamage")) {
-            this.chainLightningDamage = nbt.getFloat("chainLightningDamage");
-        }
-        if (nbt.contains("chainLightningRange")) {
-            this.chainLightningRange = nbt.getFloat("chainLightningRange");
-        }
+    public void setBlightCarrier(int blightCarrier) {
+        this.blightCarrier = blightCarrier;
     }
 
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putInt("postureLoss", this.getPostureLoss());
-        nbt.putBoolean("ethereal", this.isEthereal);
-        nbt.putFloat("explosionPower", this.explosionPower);
-        nbt.putFloat("chainLightningDamage", this.chainLightningDamage);
-        nbt.putFloat("chainLightningRange", this.chainLightningRange);
+    public int getBlightCarrier() {
+        return this.blightCarrier;
     }
 }

@@ -708,7 +708,7 @@
     "tooltip.soulsweapons.blight_description_3": "증폭기 레벨이 10을 초과하면 §f부패§r도 적용됩니다.",
     "tooltip.soulsweapons.blight_description_4": "- §d오염§r은 대상의 갑옷 양에 따라",
     "tooltip.soulsweapons.blight_description_5": "피해를 퍼센트로 증가시킵니다.",
-    "tooltip.soulsweapons.blight_description_6": "추가 피해량 % = (ln(증폭기) * 갑옷 / 8) * 10",
+    "tooltip.soulsweapons.blight_description_6": "추가 피해량 % = (ln(증폭기) * 갑옷 / 6) * 10",
 
     "tooltip.soulsweapons.fast_pull": "빠른 발사",
     "tooltip.soulsweapons.fast_pull_1": "- 이 무기의 당기는 속도가 증가합니다.",
@@ -960,6 +960,9 @@
 
     "enchantment.soulsweapons.misfire_curse": "Curse of Misfire",
     "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
+
+    "enchantment.soulsweapons.blight_carrier": "Blight Carrier",
+    "enchantment.soulsweapons.blight_carrier.desc": "Silver Bullets apply stacking Blight: more armor = more damage taken.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry",
 

@@ -23,6 +23,7 @@ public class EnchantRegistry {
     public static final Enchantment EXPLOSIVE_ROUNDS = new ExplosiveEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment CHAIN_LIGHTNING = new ChainLightningEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment MISFIRE_CURSE = new MisfireCurseEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment BLIGHT_CARRIER = new BlightCarrierEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
 
     public static void init() {
         if (!ConfigConstructor.disable_all_enchantments) {
@@ -33,6 +34,7 @@ public class EnchantRegistry {
             if (!ConfigConstructor.disable_enchantment_explosive_rounds) registerEnchantment(EXPLOSIVE_ROUNDS, "explosive_rounds", true);
             if (!ConfigConstructor.disable_enchantment_chain_lightning) registerEnchantment(CHAIN_LIGHTNING, "chain_lightning", true);
             if (!ConfigConstructor.disable_enchantment_misfire_curse) registerEnchantment(MISFIRE_CURSE, "misfire_curse", true);
+            if (!ConfigConstructor.disable_enchantment_blight_carrier) registerEnchantment(BLIGHT_CARRIER, "blight_carrier", true);
         }
     }
 

@@ -34,6 +34,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_explosive_rounds = false;
     @Entry public static boolean disable_enchantment_chain_lightning = false;
     @Entry public static boolean disable_enchantment_misfire_curse = false;
+    @Entry public static boolean disable_enchantment_blight_carrier = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -685,6 +686,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0, max=1) public static float chain_lightning_enchant_damage_per_level = 8f;
     @Entry(min=0, max=1) public static float chain_lightning_enchant_range_per_level = 2.25f;
     @Entry(min=0, max=1) public static double misfire_curse_enchant_trigger_chance = 0.3;
+    @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_duration = 160;
+    @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_per_level = 2;
 
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;
