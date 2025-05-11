@@ -7,6 +7,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -14,6 +15,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -33,6 +35,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private float chainLightningDamage;
     private float chainLightningRange;
     private int blightCarrier;
+    private int freezeAmplifier;
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -114,6 +117,10 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (entityHitResult.getEntity() instanceof LivingEntity target) {
             this.applyPostureLoss(target);
+            int posture = PostureData.getPosture(target);
+            if (posture >= ConfigConstructor.max_posture_loss) {
+                this.onPostureBreak(target);
+            }
             if (target.isUndead()) {
                 this.setDamage(this.getDamage() + (ConfigConstructor.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
             }
@@ -137,6 +144,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, World.ExplosionSourceType.MOB);
         }
         this.discard();
+    }
+
+    private void onPostureBreak(LivingEntity target) {
+        if (this.getFreezeAmplifier() > 0) {
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
+            target.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, SoundCategory.HOSTILE, 1f, 1f);
+        }
     }
 
     public int getMaxAge() {
@@ -181,6 +195,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (nbt.contains("blightCarrier")) {
             this.blightCarrier = nbt.getInt("blightCarrier");
         }
+        if (nbt.contains("freezeAmplifier")) {
+            this.freezeAmplifier = nbt.getInt("freezeAmplifier");
+        }
     }
 
     @Override
@@ -192,6 +209,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         nbt.putFloat("chainLightningDamage", this.chainLightningDamage);
         nbt.putFloat("chainLightningRange", this.chainLightningRange);
         nbt.putInt("blightCarrier", this.blightCarrier);
+        nbt.putInt("freezeAmplifier", this.freezeAmplifier);
     }
 
     public void setPostureLoss(int postureLoss) {
@@ -228,5 +246,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     public int getBlightCarrier() {
         return this.blightCarrier;
+    }
+
+    public void setFreezeAmplifier(int freezeAmplifier) {
+        this.freezeAmplifier = freezeAmplifier;
+    }
+
+    public int getFreezeAmplifier() {
+        return this.freezeAmplifier;
     }
 }

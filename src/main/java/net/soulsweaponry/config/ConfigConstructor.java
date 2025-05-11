@@ -35,6 +35,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_chain_lightning = false;
     @Entry public static boolean disable_enchantment_misfire_curse = false;
     @Entry public static boolean disable_enchantment_blight_carrier = false;
+    @Entry public static boolean disable_enchantment_frostsilver = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -688,6 +689,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0, max=1) public static double misfire_curse_enchant_trigger_chance = 0.3;
     @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_duration = 160;
     @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_per_level = 2;
+    @Entry(min=0, max=1) public static int frostsilver_enchant_permafrost_per_level = 4;
+    @Entry(min=0, max=1) public static int frostsilver_enchant_permafrost_duration = 100;
 
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;
@@ -724,7 +727,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_cannon_damage = 30f;
     @Entry public static float hunter_cannon_velocity = 3f;
     @Entry public static float hunter_cannon_divergence = 1f;
-    @Entry public static int hunter_cannon_posture_loss = 80;
+    @Entry public static int hunter_cannon_posture_loss = 120;
     @Entry public static int hunter_cannon_posture_loss_per_enchant_level = 50;
     @Entry public static int hunter_cannon_cooldown = 300;
     @Entry public static int hunter_cannon_bullets_needed = 10;

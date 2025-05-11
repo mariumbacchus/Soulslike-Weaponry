@@ -17,7 +17,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -26,6 +25,7 @@ import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -105,17 +105,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
-            float f = player.getYaw();
-            float g = player.getPitch();
-            float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float k = -MathHelper.sin(g * 0.017453292F);
-            float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float m = MathHelper.sqrt(h * h + k * k + l * l);
-            float n = 3.0F * ((1.0F + 1F) / 4.0F);
-            h *= n / m;
-            k *= n / m;
-            l *= n / m;
-            player.addVelocity(h, k, l);
+            WeaponUtil.launchTarget(player, 2f, false);
         }
     }
 

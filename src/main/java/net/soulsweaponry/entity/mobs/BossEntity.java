@@ -54,7 +54,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         }
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
-
+    //TODO stop music if players are far enough away & stop minecraft music if playing
     public void tryToPlayBossMusic() {
         if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
             this.getWorld().playSound(null, this.getBlockPos(), this.getBossMusic(), SoundCategory.MUSIC, 1f, 1f);

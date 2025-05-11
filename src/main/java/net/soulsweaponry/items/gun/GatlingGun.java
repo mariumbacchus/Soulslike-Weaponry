@@ -6,16 +6,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public class GatlingGun extends GunItem {
@@ -51,7 +49,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int bulletsNeeded() {
+    public int getBulletsNeeded() {
         return ConfigConstructor.gatling_gun_bullets_needed;
     }
 
@@ -64,31 +62,12 @@ public class GatlingGun extends GunItem {
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % 4 == 0) {
             if (user instanceof PlayerEntity playerEntity) {
-                boolean bl = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-                ItemStack itemStack = playerEntity.getProjectileType(stack);
-                if (!itemStack.isEmpty() || bl) {
-                    if (itemStack.isEmpty()) {
-                        itemStack = new ItemStack(ItemRegistry.SILVER_BULLET);
-                    }
-                    boolean bl2 = bl && itemStack.isOf(ItemRegistry.SILVER_BULLET);
-                    Vec3d pov = playerEntity.getRotationVector();
-                    Vec3d particleBox = pov.multiply(1).add(playerEntity.getPos());
-                    if (world.isClient) {
-                        for (int k = 0; k < 8 + EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack); k++) {
-                            world.addParticle(ParticleTypes.FLAME, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
-                            world.addParticle(ParticleTypes.SMOKE, true, particleBox.x, particleBox.y + 1.5F, particleBox.z, pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
-                        }
-                    }
-
+                ItemStack itemStack = this.canShoot(playerEntity, stack);
+                if (itemStack != null) {
                     PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
                     world.spawnEntity(entity);
+                    this.spawnShotParticles(world, playerEntity, 2 + EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack), 0.15f);
                     world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                    if (!bl2 && !playerEntity.getAbilities().creativeMode) {
-                        itemStack.decrement(this.bulletsNeeded());
-                        if (itemStack.isEmpty()) {
-                            playerEntity.getInventory().removeOne(itemStack);
-                        }
-                    }
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
                 }
             }
@@ -143,5 +122,10 @@ public class GatlingGun extends GunItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_gatling_gun;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BOW;
     }
 }

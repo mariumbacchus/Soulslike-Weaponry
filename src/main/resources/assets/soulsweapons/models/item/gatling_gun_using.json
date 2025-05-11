@@ -305,13 +305,13 @@
 			"scale": [1, 1, 1.6]
 		},
 		"firstperson_righthand": {
-			"rotation": [30, 20, 0],
-			"translation": [-3, 0.25, -12],
+			"rotation": [40, 8, 0],
+			"translation": [-4.75, 0.25, -12],
 			"scale": [0.9, 0.96, 1.22]
 		},
 		"firstperson_lefthand": {
-			"rotation": [29.57, -20.24, 6.21],
-			"translation": [8.25, -1.25, -7.5],
+			"rotation": [40, 8, 0],
+			"translation": [-6.75, 0.25, -14],
 			"scale": [0.9, 0.96, 1.22]
 		},
 		"ground": {

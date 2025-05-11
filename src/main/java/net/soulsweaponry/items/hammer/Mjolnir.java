@@ -102,17 +102,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     private void riptide(PlayerEntity player, World world, ItemStack stack) {
         float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
-        float f = player.getYaw();
-        float g = player.getPitch();
-        float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-        float k = -MathHelper.sin(g * 0.017453292F);
-        float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-        float m = MathHelper.sqrt(h * h + k * k + l * l);
-        float n = 3.0F * ((5.0F + sharpness) / 4.0F);
-        h *= n / m;
-        k *= n / m;
-        l *= n / m;
-        player.addVelocity(h, k, l);
+        WeaponUtil.launchTarget(player, 5f + sharpness, false);
         player.useRiptide(20);
         if (player.isOnGround()) {
             player.move(MovementType.SELF, new Vec3d(0.0, 1.1999999284744263, 0.0));

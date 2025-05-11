@@ -191,4 +191,30 @@ public class WeaponUtil {
     public enum LuckType {
         GOOD, NEUTRAL, BAD
     }
+
+    /**
+     * Helper method to launch a target the way it is facing, used mostly
+     * by items using Riptide effect such as Comet Spear or Mjölnir.
+     * Keep in mind that the world must be client side to apply movement!
+     * @param target target to launch
+     */
+    public static void launchTarget(LivingEntity target, float launchPower, boolean reverse) {
+        float f = target.getYaw();
+        float g = target.getPitch();
+        float rad = 0.017453292F; // pi / 180
+        float h = -MathHelper.sin(f * rad) * MathHelper.cos(g * rad);
+        float k = -MathHelper.sin(g * rad);
+        float l = MathHelper.cos(f * rad) * MathHelper.cos(g * rad);
+        float m = MathHelper.sqrt(h * h + k * k + l * l);
+        float n = 3.0F * (launchPower / 4.0F);
+        h *= n / m;
+        k *= n / m;
+        l *= n / m;
+        if (reverse) {
+            h = -h;
+            k = -k;
+            l = -l;
+        }
+        target.addVelocity(h, k, l);
+    }
 }

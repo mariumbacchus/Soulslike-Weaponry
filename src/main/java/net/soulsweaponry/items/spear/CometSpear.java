@@ -12,7 +12,6 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
@@ -50,18 +49,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 if (stack == user.getOffHandStack()) {
-                    float f = user.getYaw();
-                    float g = user.getPitch();
-                    float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                    float k = -MathHelper.sin(g * 0.017453292F);
-                    float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                    float m = MathHelper.sqrt(h * h + k * k + l * l);
-                    float n = 3.0F * ((5.0F + enchant) / 4.0F);
-                    h *= n / m;
-                    k *= n / m;
-                    l *= n / m;
-
-                    user.addVelocity(h, k, l);
+                    WeaponUtil.launchTarget(user, 5f + enchant, false);
                     playerEntity.useRiptide(20);
                     world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
                     if (playerEntity.isOnGround()) {

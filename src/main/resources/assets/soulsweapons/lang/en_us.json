@@ -846,6 +846,8 @@
     "enchantment.soulsweapons.misfire_curse.desc": "Each Silver Bullet has a chance to explode and damage the user when shot.",
     "enchantment.soulsweapons.blight_carrier": "Blight Carrier",
     "enchantment.soulsweapons.blight_carrier.desc": "Silver Bullets apply stacking Blight: more armor = more damage taken.",
+    "enchantment.soulsweapons.frostsilver": "Frostsilver",
+    "enchantment.soulsweapons.frostsilver.desc": "Silver Bullets apply strong Permafrost upon Posture Break.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 

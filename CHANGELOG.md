@@ -2,10 +2,16 @@
 
 ## 1.2.5 - TODO test these things
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
-- Guns can no longer have bow enchants
+- Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
+- Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
+  - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
+- Guns can no longer have bow enchants, and Punch & Flame no longer affects guns and Silver Bullets (Power & Infinity still work)
+- Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
+- Adjusted the position of the Gatling Gun when using in first person (now centered more)
+- Adjusted the particle spread of the guns
 - Buffed Posture Loss applied by all guns
   - Blunderbuss: Base 25 -> 30 (per bullet), Bonus per enchant level 2 -> 3
-  - Hunter Cannon: Base 60 -> 80, Bonus per enchant level 60 -> 50
+  - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50
   - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
   - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
 
