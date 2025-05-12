@@ -77,14 +77,14 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
         entity.setNoClip(ethereal > 0);
         entity.setEthereal(ethereal > 0);
-        entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
+        entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack) / 8, this.getBulletDivergence(gunStack));
         entity.setPostureLoss(this.getPostureLoss(gunStack));
         entity.setDamage(power);
         if (explosivePower > 0) {
             entity.setExplosionPower(explosivePower);
         }
         if (chainLightningLevel > 0) {
-            entity.setChainLightningDamage(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_damage_per_level);
+            entity.setChainLightningDamage(this.getBulletDamage(gunStack) * chainLightningLevel * ConfigConstructor.chain_lightning_enchant_damage_mod_per_level);
             entity.setChainLightningRange(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_range_per_level);
         }
         if (blightCarrierLevel > 0) {

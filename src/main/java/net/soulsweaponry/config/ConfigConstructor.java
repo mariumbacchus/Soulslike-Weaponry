@@ -684,7 +684,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static int max_posture_loss = 200;
     @Entry public static int stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
-    @Entry(min=0, max=1) public static float chain_lightning_enchant_damage_per_level = 8f;
+    @Entry(min=0, max=1) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
     @Entry(min=0, max=1) public static float chain_lightning_enchant_range_per_level = 2.25f;
     @Entry(min=0, max=1) public static double misfire_curse_enchant_trigger_chance = 0.3;
     @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_duration = 160;
