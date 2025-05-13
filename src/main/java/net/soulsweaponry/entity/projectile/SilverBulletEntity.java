@@ -2,6 +2,9 @@ package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
@@ -36,6 +39,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private float chainLightningRange;
     private int blightCarrier;
     private int freezeAmplifier;
+    private static final TrackedData<Boolean> ECHO_COPY = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -91,10 +95,6 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     @Override
     public boolean hasNoGravity() {
         return true;
-    }
-
-    public void setEthereal(boolean ethereal) {
-        this.isEthereal = ethereal;
     }
 
     @Override
@@ -198,6 +198,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (nbt.contains("freezeAmplifier")) {
             this.freezeAmplifier = nbt.getInt("freezeAmplifier");
         }
+        if (nbt.contains("echoCopy")) {
+            this.setEchoCopy(nbt.getBoolean("echoCopy"));
+        }
     }
 
     @Override
@@ -210,6 +213,21 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         nbt.putFloat("chainLightningRange", this.chainLightningRange);
         nbt.putInt("blightCarrier", this.blightCarrier);
         nbt.putInt("freezeAmplifier", this.freezeAmplifier);
+        nbt.putBoolean("echoCopy", this.isEchoCopy());
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        dataTracker.startTracking(ECHO_COPY, false);
+    }
+
+    public void setEthereal(boolean ethereal) {
+        this.isEthereal = ethereal;
+    }
+
+    public boolean isEthereal() {
+        return this.isEthereal;
     }
 
     public void setPostureLoss(int postureLoss) {
@@ -254,5 +272,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     public int getFreezeAmplifier() {
         return this.freezeAmplifier;
+    }
+
+    public void setEchoCopy(boolean bl) {
+        this.dataTracker.set(ECHO_COPY, bl);
+    }
+
+    public boolean isEchoCopy() {
+        return this.dataTracker.get(ECHO_COPY);
     }
 }

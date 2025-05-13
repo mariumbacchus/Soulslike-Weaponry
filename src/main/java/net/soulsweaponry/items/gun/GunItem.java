@@ -77,9 +77,10 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
         entity.setNoClip(ethereal > 0);
         entity.setEthereal(ethereal > 0);
-        entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack) / 8, this.getBulletDivergence(gunStack));
+        entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
         entity.setPostureLoss(this.getPostureLoss(gunStack));
         entity.setDamage(power);
+        //TODO add "Echo Copy" enchantment and functionality
         if (explosivePower > 0) {
             entity.setExplosionPower(explosivePower);
         }
