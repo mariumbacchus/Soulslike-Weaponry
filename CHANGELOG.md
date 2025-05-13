@@ -5,6 +5,7 @@
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
   - Bullets with this enchant are rendered with a cyan overlay
+- Added the new Tether gun enchantment, making Silver Bullets drag the target towards you if outside a certain range
 - Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
   - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
 - Guns can no longer have bow enchants, and Punch & Flame no longer affects guns and Silver Bullets (Power & Infinity still work)

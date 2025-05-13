@@ -26,6 +26,7 @@ public class EnchantRegistry {
     public static final Enchantment BLIGHT_CARRIER = new BlightCarrierEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment FROSTSILVER = new FrostsilverEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
     public static final Enchantment PHANTOM_TRACE = new PhantomTraceEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment TETHER = new TetherEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
 
     public static void init() {
         if (!ConfigConstructor.disable_all_enchantments) {
@@ -39,6 +40,7 @@ public class EnchantRegistry {
             if (!ConfigConstructor.disable_enchantment_blight_carrier) registerEnchantment(BLIGHT_CARRIER, "blight_carrier", true);
             if (!ConfigConstructor.disable_enchantment_frostsilver) registerEnchantment(FROSTSILVER, "frostsilver", true);
             if (!ConfigConstructor.disable_enchantment_phantom_trace) registerEnchantment(PHANTOM_TRACE, "phantom_trace", true);
+            if (!ConfigConstructor.disable_enchantment_tether) registerEnchantment(TETHER, "tether", true);
         }
     }
 

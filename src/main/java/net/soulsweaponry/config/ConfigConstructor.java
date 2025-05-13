@@ -37,6 +37,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_blight_carrier = false;
     @Entry public static boolean disable_enchantment_frostsilver = false;
     @Entry public static boolean disable_enchantment_phantom_trace = false;
+    @Entry public static boolean disable_enchantment_tether = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -710,6 +711,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static int stagger_enchant_max_level = 3;
     @Entry(min=0) public static int stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
+
+    @Entry(min=0) public static int tether_enchant_max_level = 2;
+    @Entry(min=0) public static float tether_enchant_drag_mod = 1f;
+    @Entry(min=0) public static float tether_enchant_min_activation_range_per_level = 3f;
 
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;

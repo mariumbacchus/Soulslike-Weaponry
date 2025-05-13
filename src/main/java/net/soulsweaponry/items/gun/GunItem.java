@@ -74,6 +74,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         int blightCarrierLevel = EnchantmentHelper.getLevel(EnchantRegistry.BLIGHT_CARRIER, gunStack);
         int freezeLevel = EnchantmentHelper.getLevel(EnchantRegistry.FROSTSILVER, gunStack);
         int phantomTraceLevel = EnchantmentHelper.getLevel(EnchantRegistry.PHANTOM_TRACE, gunStack);
+        int tetherLevel = EnchantmentHelper.getLevel(EnchantRegistry.TETHER, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
@@ -107,6 +108,9 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
                 copy.setDamage(this.getCalculatedDamage(this.getBulletDamage(gunStack) * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
                 world.spawnEntity(copy);
             }
+        }
+        if (tetherLevel > 0) {
+            entity.setTether(tetherLevel);
         }
         return entity;
     }

@@ -1,7 +1,9 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -41,6 +43,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private float chainLightningRange;
     private int blightCarrier;
     private int freezeAmplifier;
+    private int tether;
     private static final TrackedData<Boolean> ECHO_COPY = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ECHO_TIMER = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -165,6 +168,24 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             }
         }
         super.onEntityHit(entityHitResult);
+        if (this.getTether() > 0 && entityHitResult.getEntity() instanceof LivingEntity target) {
+            Entity shooter = this.getOwner();
+            if (shooter instanceof LivingEntity) {
+                double resistanceFactor = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
+                Vec3d toShooter = new Vec3d(shooter.getX() - target.getX(), 0.0, shooter.getZ() - target.getZ());
+                double distance = toShooter.length();
+                double minRange = 1 + this.getTether() * ConfigConstructor.tether_enchant_min_activation_range_per_level;
+                if (distance > minRange) {
+                    double pullStrength = this.getTether() * ConfigConstructor.tether_enchant_drag_mod * resistanceFactor;
+                    Vec3d pullVel = toShooter.normalize().multiply(pullStrength);
+                    double maxAllowedPull = distance - minRange;
+                    if (pullVel.length() > maxAllowedPull) {
+                        pullVel = pullVel.normalize().multiply(maxAllowedPull);
+                    }
+                    target.addVelocity(pullVel.x, 0.1, pullVel.z);
+                }
+            }
+        }
         if (this.explosionPower > 0f && !this.getWorld().isClient) {
             ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
             this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, World.ExplosionSourceType.MOB);
@@ -230,6 +251,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (nbt.contains("echoCopyTimer")) {
             this.setEchoCopyTimer(nbt.getInt("echoCopyTimer"));
         }
+        if (nbt.contains("tether")) {
+            this.tether = nbt.getInt("tether");
+        }
     }
 
     @Override
@@ -244,6 +268,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         nbt.putInt("freezeAmplifier", this.freezeAmplifier);
         nbt.putBoolean("echoCopy", this.isEchoCopy());
         nbt.putInt("echoCopyTimer", this.getEchoCopyTimer());
+        nbt.putInt("tether", this.tether);
     }
 
     @Override
@@ -327,5 +352,13 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     private int getEchoCopyTimer() {
         return this.dataTracker.get(ECHO_TIMER);
+    }
+
+    public void setTether(int tether) {
+        this.tether = tether;
+    }
+
+    public int getTether() {
+        return this.tether;
     }
 }

@@ -970,6 +970,9 @@
     "enchantment.soulsweapons.phantom_trace": "Phantom Trace",
     "enchantment.soulsweapons.phantom_trace.desc": "Guns shoot additional delayed copies of the original bullet.",
 
+    "enchantment.soulsweapons.tether": "Tether",
+    "enchantment.soulsweapons.tether.desc": "Silver Bullets drag the target toward you if outside a certain range.",
+
     "itemGroup.soulsweapons.general": "Soulslike Weaponry",
 
     "category.soulsweapons.main": "Marium's Soulslike Weaponry",
