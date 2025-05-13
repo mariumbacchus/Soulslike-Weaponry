@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
 
 public class ChainLightningEnchantment extends Enchantment {
@@ -24,7 +25,7 @@ public class ChainLightningEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return ConfigConstructor.chain_lightning_enchant_max_level;
     }
 
     @Override

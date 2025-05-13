@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
 
 public class BlightCarrierEnchantment extends Enchantment {
@@ -19,7 +20,7 @@ public class BlightCarrierEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 2;
+        return ConfigConstructor.blight_carrier_enchant_max_level;
     }
 
     @Override

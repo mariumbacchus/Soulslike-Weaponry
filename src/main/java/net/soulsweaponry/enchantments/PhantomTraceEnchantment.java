@@ -7,20 +7,25 @@ import net.minecraft.item.ItemStack;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
 
-public class VisceralEnchantment extends Enchantment {
+public class PhantomTraceEnchantment extends Enchantment {
 
-    public VisceralEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
+    public PhantomTraceEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
     }
 
     @Override
-    public int getMinPower(int level) {
-        return 10 + level * 10;
+    public int getMaxLevel() {
+        return ConfigConstructor.phantom_trace_enchant_max_level;
     }
 
     @Override
-    public int getMaxLevel() {
-        return ConfigConstructor.posture_breaker_enchant_max_level;
+    public int getMinPower(int level) {
+        return level * 25;
+    }
+
+    @Override
+    public int getMaxPower(int level) {
+        return this.getMinPower(level) + 50;
     }
 
     @Override

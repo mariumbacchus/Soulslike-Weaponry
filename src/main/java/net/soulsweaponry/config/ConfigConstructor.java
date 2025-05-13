@@ -36,6 +36,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_misfire_curse = false;
     @Entry public static boolean disable_enchantment_blight_carrier = false;
     @Entry public static boolean disable_enchantment_frostsilver = false;
+    @Entry public static boolean disable_enchantment_phantom_trace = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -682,15 +683,33 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean prioritize_off_hand_shield_over_weapon = false;
 
     @Entry public static int max_posture_loss = 200;
-    @Entry public static int stagger_enchant_posture_loss_applied_per_level = 5;
+
+    @Entry(min=0) public static int blight_carrier_enchant_max_level = 2;
+    @Entry(min=0) public static int blight_carrier_enchant_blight_duration = 160;
+    @Entry(min=0) public static int blight_carrier_enchant_blight_per_level = 2;
+
+    @Entry(min=0) public static int chain_lightning_enchant_max_level = 3;
+    @Entry(min=0) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
+    @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
+
+    @Entry(min=0) public static int explosive_rounds_enchant_max_level = 3;
+
+    @Entry(min=0) public static int fast_hands_enchant_max_level = 3;
+
+    @Entry(min=0) public static int frostsilver_enchant_max_level = 2;
+    @Entry(min=0) public static int frostsilver_enchant_permafrost_per_level = 4;
+    @Entry(min=0) public static int frostsilver_enchant_permafrost_duration = 100;
+
+    @Entry(min=0) public static double misfire_curse_enchant_trigger_chance = 0.3;
+
+    @Entry(min=0) public static int phantom_trace_enchant_max_level = 3;
+    @Entry(min=0) public static float phantom_trace_enchant_phantom_projectile_damage_mod = 0.5f;
+
+    @Entry(min=0) public static int posture_breaker_enchant_max_level = 3;
+
+    @Entry(min=0) public static int stagger_enchant_max_level = 3;
+    @Entry(min=0) public static int stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
-    @Entry(min=0, max=1) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
-    @Entry(min=0, max=1) public static float chain_lightning_enchant_range_per_level = 2.25f;
-    @Entry(min=0, max=1) public static double misfire_curse_enchant_trigger_chance = 0.3;
-    @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_duration = 160;
-    @Entry(min=0, max=1) public static int blight_carrier_enchant_blight_per_level = 2;
-    @Entry(min=0, max=1) public static int frostsilver_enchant_permafrost_per_level = 4;
-    @Entry(min=0, max=1) public static int frostsilver_enchant_permafrost_duration = 100;
 
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static int shield_parry_cooldown = 40;

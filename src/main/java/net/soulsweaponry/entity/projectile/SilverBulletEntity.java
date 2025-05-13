@@ -15,6 +15,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -24,6 +25,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -40,6 +42,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private int blightCarrier;
     private int freezeAmplifier;
     private static final TrackedData<Boolean> ECHO_COPY = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> ECHO_TIMER = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -55,6 +58,17 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     @Override
     public void tick() {
+        if (this.isEchoCopy()) {
+            this.reduceEchoCopyTimer();
+            if (this.getEchoCopyTimer() > 0) {
+                float spread = this.getWidth() * 0.1f;
+                if (this.getWorld().isClient) {
+                    this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX(), this.getBodyY(0.5f), this.getZ(),
+                            this.random.nextFloat() * spread - spread / 2f, this.random.nextFloat() * spread - spread / 2f, this.random.nextFloat() * spread - spread / 2f);
+                }
+                return;
+            }
+        }
         if (this.isNoClip()) {
             this.setPitch(0f);
             this.setYaw(0f);
@@ -84,12 +98,24 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             double f = vec3d.y;
             double g = vec3d.z;
             for (int i = 0; i < 2; ++i) {
-                this.getWorld().addParticle(ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D + 0.25f, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
+                this.getWorld().addParticle(this.isEchoCopy() ? ParticleRegistry.ECHO_SMOKE : ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D + 0.25f, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
             }
         }
         if (this.age > this.getMaxAge()) {
             this.discard();
         }
+    }
+
+    @Override
+    protected void onCollision(HitResult hitResult) {
+        HitResult.Type type = hitResult.getType();
+        if (this.isEchoCopy() && type == HitResult.Type.ENTITY) {
+            EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+            if (entityHitResult.getEntity() == this.getOwner()) {
+                return;
+            }
+        }
+        super.onCollision(hitResult);
     }
 
     @Override
@@ -154,7 +180,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     }
 
     public int getMaxAge() {
-        if (this.isEthereal) {
+        if (this.isEthereal && !this.isEchoCopy()) {
             return 25;
         }
         return 100;
@@ -201,6 +227,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (nbt.contains("echoCopy")) {
             this.setEchoCopy(nbt.getBoolean("echoCopy"));
         }
+        if (nbt.contains("echoCopyTimer")) {
+            this.setEchoCopyTimer(nbt.getInt("echoCopyTimer"));
+        }
     }
 
     @Override
@@ -214,18 +243,24 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         nbt.putInt("blightCarrier", this.blightCarrier);
         nbt.putInt("freezeAmplifier", this.freezeAmplifier);
         nbt.putBoolean("echoCopy", this.isEchoCopy());
+        nbt.putInt("echoCopyTimer", this.getEchoCopyTimer());
     }
 
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
         dataTracker.startTracking(ECHO_COPY, false);
+        dataTracker.startTracking(ECHO_TIMER, 0);
     }
 
     public void setEthereal(boolean ethereal) {
         this.isEthereal = ethereal;
     }
 
+    /**
+     * Remember that noClip is the server & client side version of whether the entity is ethereal or not,
+     * this variable is just a simple check.
+     */
     public boolean isEthereal() {
         return this.isEthereal;
     }
@@ -280,5 +315,17 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     public boolean isEchoCopy() {
         return this.dataTracker.get(ECHO_COPY);
+    }
+
+    public void setEchoCopyTimer(int amount) {
+        this.dataTracker.set(ECHO_TIMER, amount);
+    }
+
+    private void reduceEchoCopyTimer() {
+        this.setEchoCopyTimer(this.getEchoCopyTimer() - 1);
+    }
+
+    private int getEchoCopyTimer() {
+        return this.dataTracker.get(ECHO_TIMER);
     }
 }

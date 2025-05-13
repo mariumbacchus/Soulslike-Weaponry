@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public abstract class GunItem extends RangedWeaponItem implements IConfigDisable, ITooltipInfo {
@@ -66,12 +67,13 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
-        float power = (this.getBulletDamage(gunStack) / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
+        float power = this.getCalculatedDamage(this.getBulletDamage(gunStack), gunStack);
         int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
         int explosivePower = EnchantmentHelper.getLevel(EnchantRegistry.EXPLOSIVE_ROUNDS, gunStack);
         int chainLightningLevel = EnchantmentHelper.getLevel(EnchantRegistry.CHAIN_LIGHTNING, gunStack);
         int blightCarrierLevel = EnchantmentHelper.getLevel(EnchantRegistry.BLIGHT_CARRIER, gunStack);
         int freezeLevel = EnchantmentHelper.getLevel(EnchantRegistry.FROSTSILVER, gunStack);
+        int phantomTraceLevel = EnchantmentHelper.getLevel(EnchantRegistry.PHANTOM_TRACE, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
@@ -80,7 +82,6 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
         entity.setPostureLoss(this.getPostureLoss(gunStack));
         entity.setDamage(power);
-        //TODO add "Echo Copy" enchantment and functionality
         if (explosivePower > 0) {
             entity.setExplosionPower(explosivePower);
         }
@@ -93,6 +94,19 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         }
         if (freezeLevel > 0) {
             entity.setFreezeAmplifier(freezeLevel * ConfigConstructor.frostsilver_enchant_permafrost_per_level);
+        }
+        if (phantomTraceLevel > 0) {
+            for (int i = 1; i < phantomTraceLevel + 1; i++) {
+                SilverBulletEntity copy = this.getModdedProjectile(world, shooter, gunStack);
+                copy.copyFrom(entity);
+                copy.setNoClip(ethereal > 0);
+                copy.setEthereal(ethereal > 0);
+                copy.setUuid(UUID.randomUUID());
+                copy.setEchoCopy(true);
+                copy.setEchoCopyTimer(10 * i);
+                copy.setDamage(this.getCalculatedDamage(this.getBulletDamage(gunStack) * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
+                world.spawnEntity(copy);
+            }
         }
         return entity;
     }
@@ -181,6 +195,14 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         stack.damage(this.getStackDamageToApply(), user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
+    }
+
+    /**
+     * Calculates the damage so that the input damage equals the damage dealt, factoring velocity damage increase so that the config reflects correct sum.
+     * @return damage value the projectile needs to afflict the resultDamage parameter inputted
+     */
+    public float getCalculatedDamage(float resultDamage, ItemStack gunStack) {
+        return (resultDamage / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
     }
 
     public int getStackDamageToApply() {

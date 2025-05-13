@@ -848,6 +848,8 @@
     "enchantment.soulsweapons.blight_carrier.desc": "Silver Bullets apply stacking Blight: more armor = more damage taken.",
     "enchantment.soulsweapons.frostsilver": "Frostsilver",
     "enchantment.soulsweapons.frostsilver.desc": "Silver Bullets apply strong Permafrost upon Posture Break.",
+    "enchantment.soulsweapons.phantom_trace": "Phantom Trace",
+    "enchantment.soulsweapons.phantom_trace.desc": "Guns shoot additional delayed copies of the original bullet.",
 
     "itemGroup.soulsweapons.general": "Soulslike Weaponry Tab",
 

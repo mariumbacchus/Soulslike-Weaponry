@@ -18,6 +18,7 @@ public class ParticleRegistry {
     public static final DefaultParticleType MOONVEIL_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType BLUE_FLAME = FabricParticleTypes.simple();
     public static final DefaultParticleType SOUL_SPARK = FabricParticleTypes.simple();
+    public static final DefaultParticleType ECHO_SMOKE = FabricParticleTypes.simple();
 
     public static void init() {
         registerParticle(NIGHTFALL_PARTICLE, "nightfall_particle");
@@ -29,6 +30,7 @@ public class ParticleRegistry {
         registerParticle(MOONVEIL_PARTICLE, "moonveil_particle");
         registerParticle(BLUE_FLAME, "blue_flame");
         registerParticle(SOUL_SPARK, "soul_spark");
+        registerParticle(ECHO_SMOKE, "echo_smoke");
     }
 
     public static void registerParticle(DefaultParticleType particle, String name) {
