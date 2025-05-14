@@ -852,6 +852,8 @@
   "enchantment.soulsweapons.phantom_trace.desc": "Guns shoot additional delayed copies of the original bullet.",
   "enchantment.soulsweapons.tether": "Tether",
   "enchantment.soulsweapons.tether.desc": "Silver Bullets drag the target toward you if outside a certain range.",
+  "enchantment.soulsweapons.ricochet": "Ricochet",
+  "enchantment.soulsweapons.ricochet.desc": "Silver Bullets ricochet off of walls a random direction or towards closest mob.",
 
   "itemGroup.soulsweapons.general": "Marium's Soulslike Weaponry",
 

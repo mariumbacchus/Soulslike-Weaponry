@@ -6,6 +6,13 @@
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
   - Bullets with this enchant are rendered with a cyan overlay
 - Added the new Tether gun enchantment, making Silver Bullets drag the target towards you if outside a certain range
+- Added the new Ricochet gun enchantment, granting Silver Bullets the ability to bounce off of blocks with bounce amount based on enchant level
+  - On contact with a block, the bullets will bounce off and:
+    - have its speed reduced to max 1.5 speed
+    - first try to target the mob the owner last attacked
+    - if no mob was attacked recently, it will target the closest mob around it
+    - if no mob is close, it will bounce off a random direction
+- A gun cannot have both Ethereal & Ricochet enchant
 - Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
   - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
 - Guns can no longer have bow enchants, and Punch & Flame no longer affects guns and Silver Bullets (Power & Infinity still work)
@@ -15,7 +22,10 @@
 - Adjusted Chain Lightning enchantment to do damage scaling off of the damage to the projectile instead of a constant value
   - Due to this the config line ```chain_lightning_enchant_damage_per_level``` has been replaced with ```chain_lightning_enchant_damage_mod_per_level```
 - Bullets with Ethereal enchant are now rendered translucent
+- Bullets now spawn Soul Fire Flame particles upon de-spawn
 - Added config lines for the max enchant levels for all enchants (where it matters)
+- The max age of bullets has been reduced from 100 -> 60 (ticks) (ethereal makes it 25 like before)
+  - For cannonballs: 100 -> 60 (ticks) with Ethereal enchant, 300 -> 120 (ticks) otherwise
 - Buffed Posture Loss applied by all guns
   - Blunderbuss: Base 25 -> 30 (per bullet), Bonus per enchant level 2 -> 3
   - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50

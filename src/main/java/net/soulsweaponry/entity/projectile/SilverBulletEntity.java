@@ -8,6 +8,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -18,7 +19,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
@@ -33,6 +37,10 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Predicate;
+
 public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity, IPostureLossProjectile {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
@@ -44,8 +52,11 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     private int blightCarrier;
     private int freezeAmplifier;
     private int tether;
+    private int maxEchoDelay;
+    private int maxAge = 60;
     private static final TrackedData<Boolean> ECHO_COPY = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> ECHO_TIMER = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> RICOCHET_BOUNCES = DataTracker.registerData(SilverBulletEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
@@ -104,8 +115,18 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
                 this.getWorld().addParticle(this.isEchoCopy() ? ParticleRegistry.ECHO_SMOKE : ParticleTypes.SMOKE, this.getX() + e * (double)i / 4.0D, this.getY() + f * (double)i / 4.0D + 0.25f, this.getZ() + g * (double)i / 4.0D, -e*0.2, (-f + 0.2D)*0.2, -g*0.2);
             }
         }
-        if (this.age > this.getMaxAge()) {
+        if (this.age > this.getMaxAge() || this.inGroundTime >= 10) {
             this.discard();
+        }
+    }
+
+    @Override
+    public void onRemoved() {
+        super.onRemoved();
+        for (int i = 0; i < 4; i++) {
+            float spread = this.getWidth() * 0.3f;
+            this.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX(), this.getBodyY(0.5f), this.getZ(),
+                    this.random.nextFloat() * spread - spread / 2f, this.random.nextFloat() * spread - spread / 2f, this.random.nextFloat() * spread - spread / 2f);
         }
     }
 
@@ -138,8 +159,81 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
+        if (this.getRicochetBounces() > 0) {
+            this.setRicochetBounces(this.getRicochetBounces() - 1);
+            Predicate<LivingEntity> isPet = e ->
+                    this.getOwner() instanceof LivingEntity owner
+                            && e instanceof TameableEntity tame
+                            && tame.getOwner() != null
+                            && tame.getOwner().equals(owner);
+
+            LivingEntity newTarget = null;
+            if (this.getOwner() instanceof LivingEntity owner) {
+                LivingEntity target = owner.getAttacking();
+                if (target != null && target.isAlive() && !isPet.test(target)
+                        && canSee(target) && target != owner) {
+                    newTarget = target;
+                }
+            }
+            if (newTarget == null) {
+                double searchRadius = 8.0;
+                Box box = this.getBoundingBox().expand(searchRadius);
+                List<LivingEntity> candidates = this.getWorld().getEntitiesByClass(
+                        LivingEntity.class,
+                        box,
+                        e -> e.isAlive() && e != this.getOwner() && !isPet.test(e)
+                );
+                newTarget = candidates.stream()
+                        .filter(this::canSee)
+                        .min(Comparator.comparingDouble(e -> e.squaredDistanceTo(this)))
+                        .orElse(null);
+            }
+
+            Vec3d newDir;
+            if (newTarget != null) {
+                Vec3d from = this.getPos();
+                Vec3d to = newTarget.getPos().add(0, newTarget.getHeight() * 0.5, 0);
+                newDir = to.subtract(from).normalize();
+            } else {
+                Vec3i face = blockHitResult.getSide().getVector();
+                Vec3d normal = new Vec3d(face.getX(), face.getY(), face.getZ()).normalize();
+                Vec3d incoming = this.getVelocity().normalize();
+                Vec3d reflect = incoming.subtract(normal.multiply(2 * incoming.dotProduct(normal))).normalize();
+                // random jitter
+                double jitterStrength = 0.2;
+                Vec3d randVec = new Vec3d(
+                        this.random.nextGaussian(),
+                        this.random.nextGaussian(),
+                        this.random.nextGaussian()
+                ).normalize();
+                Vec3d perp = randVec.subtract(reflect.multiply(randVec.dotProduct(reflect))).normalize();
+                newDir = reflect.add(perp.multiply(jitterStrength)).normalize();
+            }
+            double oldSpeed = this.getVelocity().length();
+            double newSpeed = Math.max(oldSpeed - 1.5, 1.5);
+            Vec3d vel = newDir.multiply(newSpeed);
+            this.setVelocity(vel);
+            this.velocityDirty = true;
+            return;
+        }
         super.onBlockHit(blockHitResult);
         this.discard();
+    }
+
+    /**
+     * Returns true if there are no opaque blocks between the bullet and the entity's mid‐body.
+     */
+    private boolean canSee(LivingEntity e) {
+        Vec3d start = this.getPos();
+        Vec3d end = e.getPos().add(0, e.getHeight() * 0.5, 0);
+        BlockHitResult ray = this.getWorld().raycast(new RaycastContext(
+                start, end,
+                RaycastContext.ShapeType.COLLIDER,
+                RaycastContext.FluidHandling.NONE,
+                this
+        ));
+        // MISS means nothing blocked the path
+        return ray.getType() == HitResult.Type.MISS;
     }
 
     @Override
@@ -201,24 +295,11 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     }
 
     public int getMaxAge() {
-        if (this.isEthereal && !this.isEchoCopy()) {
-            return 25;
-        }
-        return 100;
+        return this.maxAge + this.getMaxEchoDelay();
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return factory;
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return ItemRegistry.SILVER_BULLET.getDefaultStack();
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 
     @Override
@@ -254,6 +335,15 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (nbt.contains("tether")) {
             this.tether = nbt.getInt("tether");
         }
+        if (nbt.contains("ricochetBounces")) {
+            this.setRicochetBounces(nbt.getInt("ricochetBounces"));
+        }
+        if (nbt.contains("maxEchoDelay")) {
+            this.setMaxEchoDelay(nbt.getInt("maxEchoDelay"));
+        }
+        if (nbt.contains("maxAge")) {
+            this.maxAge = nbt.getInt("maxAge");
+        }
     }
 
     @Override
@@ -269,6 +359,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         nbt.putBoolean("echoCopy", this.isEchoCopy());
         nbt.putInt("echoCopyTimer", this.getEchoCopyTimer());
         nbt.putInt("tether", this.tether);
+        nbt.putInt("ricochetBounces", this.getRicochetBounces());
+        nbt.putInt("maxEchoDelay", this.getMaxEchoDelay());
+        nbt.putInt("maxAge", this.maxAge);
     }
 
     @Override
@@ -276,6 +369,21 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         super.initDataTracker();
         dataTracker.startTracking(ECHO_COPY, false);
         dataTracker.startTracking(ECHO_TIMER, 0);
+        dataTracker.startTracking(RICOCHET_BOUNCES, 0);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return factory;
+    }
+
+    @Override
+    protected ItemStack asItemStack() {
+        return ItemRegistry.SILVER_BULLET.getDefaultStack();
     }
 
     public void setEthereal(boolean ethereal) {
@@ -360,5 +468,21 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     public int getTether() {
         return this.tether;
+    }
+
+    public void setRicochetBounces(int ricochetBounces) {
+        this.dataTracker.set(RICOCHET_BOUNCES, ricochetBounces);
+    }
+
+    public int getRicochetBounces() {
+        return this.dataTracker.get(RICOCHET_BOUNCES);
+    }
+
+    public int getMaxEchoDelay() {
+        return this.maxEchoDelay;
+    }
+
+    public void setMaxEchoDelay(int maxEchoDelay) {
+        this.maxEchoDelay = maxEchoDelay;
     }
 }

@@ -38,6 +38,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_enchantment_frostsilver = false;
     @Entry public static boolean disable_enchantment_phantom_trace = false;
     @Entry public static boolean disable_enchantment_tether = false;
+    @Entry public static boolean disable_enchantment_ricochet = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -707,6 +708,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float phantom_trace_enchant_phantom_projectile_damage_mod = 0.5f;
 
     @Entry(min=0) public static int posture_breaker_enchant_max_level = 3;
+
+    @Entry(min=0) public static int ricochet_enchant_max_level = 3;
+    @Entry(min=0) public static int ricochet_enchant_bounce_per_level = 1;
 
     @Entry(min=0) public static int stagger_enchant_max_level = 3;
     @Entry(min=0) public static int stagger_enchant_posture_loss_applied_per_level = 5;

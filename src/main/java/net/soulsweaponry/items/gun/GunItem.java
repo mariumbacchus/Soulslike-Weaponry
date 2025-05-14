@@ -75,11 +75,16 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         int freezeLevel = EnchantmentHelper.getLevel(EnchantRegistry.FROSTSILVER, gunStack);
         int phantomTraceLevel = EnchantmentHelper.getLevel(EnchantRegistry.PHANTOM_TRACE, gunStack);
         int tetherLevel = EnchantmentHelper.getLevel(EnchantRegistry.TETHER, gunStack);
+        int ricochetLevel = EnchantmentHelper.getLevel(EnchantRegistry.RICOCHET, gunStack);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
-        entity.setNoClip(ethereal > 0);
-        entity.setEthereal(ethereal > 0);
+        entity.setMaxAge(this.getProjectileMaxAge());
+        if (ethereal > 0) {
+            entity.setNoClip(true);
+            entity.setEthereal(true);
+            entity.setMaxAge(this.getProjectileMaxAgeEthereal());
+        }
         entity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, this.getBulletVelocity(gunStack), this.getBulletDivergence(gunStack));
         entity.setPostureLoss(this.getPostureLoss(gunStack));
         entity.setDamage(power);
@@ -96,6 +101,12 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         if (freezeLevel > 0) {
             entity.setFreezeAmplifier(freezeLevel * ConfigConstructor.frostsilver_enchant_permafrost_per_level);
         }
+        if (tetherLevel > 0 && ricochetLevel == 0) {
+            entity.setTether(tetherLevel);
+        }
+        if (ricochetLevel > 0) {
+            entity.setRicochetBounces(ricochetLevel * ConfigConstructor.ricochet_enchant_bounce_per_level);
+        }
         if (phantomTraceLevel > 0) {
             for (int i = 1; i < phantomTraceLevel + 1; i++) {
                 SilverBulletEntity copy = this.getModdedProjectile(world, shooter, gunStack);
@@ -105,12 +116,10 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
                 copy.setUuid(UUID.randomUUID());
                 copy.setEchoCopy(true);
                 copy.setEchoCopyTimer(10 * i);
+                copy.setMaxEchoDelay(10 * i);
                 copy.setDamage(this.getCalculatedDamage(this.getBulletDamage(gunStack) * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
                 world.spawnEntity(copy);
             }
-        }
-        if (tetherLevel > 0) {
-            entity.setTether(tetherLevel);
         }
         return entity;
     }
@@ -211,6 +220,14 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
 
     public int getStackDamageToApply() {
         return 1;
+    }
+
+    public int getProjectileMaxAge() {
+        return 60;
+    }
+
+    public int getProjectileMaxAgeEthereal() {
+        return 25;
     }
 
     @Override

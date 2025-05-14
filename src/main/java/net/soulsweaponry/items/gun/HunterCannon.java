@@ -82,6 +82,16 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
+    public int getProjectileMaxAge() {
+        return 120;
+    }
+
+    @Override
+    public int getProjectileMaxAgeEthereal() {
+        return 60;
+    }
+
+    @Override
     public SilverBulletEntity getModdedProjectile(World world, LivingEntity shooter, ItemStack gunStack) {
         return new Cannonball(world, shooter);
     }
