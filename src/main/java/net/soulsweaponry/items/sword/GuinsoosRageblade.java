@@ -14,7 +14,7 @@ import net.soulsweaponry.util.TooltipAbilities;
 public class GuinsoosRageblade extends ModdedSword {
 
     public GuinsoosRageblade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.rageblade_damage, ConfigConstructor.rageblade_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.rageblade_damage, ConfigConstructor.rageblade_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.FURY, TooltipAbilities.HASTE, TooltipAbilities.FLAME_ENRAGED);
     }
 

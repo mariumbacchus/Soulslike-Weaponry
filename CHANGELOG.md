@@ -1,6 +1,10 @@
 # Changelog
 
 ## 1.2.5
+### Important: All int values in the config has been changed to floats, a reset (delete and relaunch) is recommended
+If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
+
+
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
@@ -31,6 +35,9 @@
   - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50
   - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
   - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
+- Hallowheart makes the wearer completely immune to Wither effect at all times instead of just under 50% health
+- Arkenplate also gives Magic Resistance 2 under 50% health
+- Enhanced Arkenplates Mirror ability triggers at under 50% health instead of 33%
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

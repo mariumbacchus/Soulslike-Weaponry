@@ -37,7 +37,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     };
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
         this.addTooltipAbility(TooltipAbilities.RAGE, TooltipAbilities.DRAGONS_SCOURGE);
     }
 
@@ -77,8 +77,8 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     protected int getScaledCooldown(ItemStack stack) {
-        int base = ConfigConstructor.heap_of_raw_iron_cooldown;
-        return Math.max(ConfigConstructor.heap_of_raw_iron_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
+        float base = ConfigConstructor.heap_of_raw_iron_cooldown;
+        return (int) Math.max(ConfigConstructor.heap_of_raw_iron_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
     }
 
     @Override

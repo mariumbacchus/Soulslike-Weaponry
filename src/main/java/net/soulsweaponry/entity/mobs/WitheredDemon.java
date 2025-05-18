@@ -21,6 +21,8 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.armor.Hallowheart;
+import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -114,7 +116,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true, target -> {
             boolean bl = true;
             for (ItemStack stack : target.getArmorItems()) {
-                if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                if (stack.getItem() instanceof Hallowheart) {
                     bl = false;
                     break;
                 }
@@ -216,7 +218,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
             boolean bl = true;
             if (this.mob.getTarget() != null && this.mob.getAttacker() != this.mob.getTarget()) {
                 for (ItemStack stack : this.mob.getTarget().getArmorItems()) {
-                    if (stack.isOf(ItemRegistry.WITHERED_CHEST) || stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
+                    if (stack.getItem() instanceof Hallowheart) {
                         bl = false;
                         break;
                     }

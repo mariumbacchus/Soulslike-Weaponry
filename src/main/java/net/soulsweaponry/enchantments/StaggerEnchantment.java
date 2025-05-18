@@ -26,7 +26,7 @@ public class StaggerEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.stagger_enchant_max_level;
+        return (int) ConfigConstructor.stagger_enchant_max_level;
     }
 
     @Override

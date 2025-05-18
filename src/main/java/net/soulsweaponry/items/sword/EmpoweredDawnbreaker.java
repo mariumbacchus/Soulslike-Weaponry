@@ -40,7 +40,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.CHAOS_STORM, TooltipAbilities.VEIL_OF_FIRE);
     }
 
@@ -68,8 +68,8 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     protected int getScaledCooldown(ItemStack stack) {
-        int base = ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
-        return Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
+        int base = (int) ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
     }
 
     private void summonFlamePillars(World world, ItemStack stack, LivingEntity user) {

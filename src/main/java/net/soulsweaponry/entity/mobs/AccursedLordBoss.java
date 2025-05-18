@@ -92,7 +92,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.decaying_king_xp;
+        return (int) ConfigConstructor.decaying_king_xp;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
         this.addTooltipAbility( TooltipAbilities.SLOW_PULL, TooltipAbilities.MOONLIGHT_ARROW, TooltipAbilities.ARROW_STORM);
-        this.configure(new RangedConfig(ConfigConstructor.darkmoon_longbow_pull_time_ticks, ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity));
+        this.configure(new RangedConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks, ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage / 2.6f + power * 1.25f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
-            this.applyItemCooldown(player, Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
+            this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
                     ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - this.getReduceCooldownEnchantLevel(stack) * 30));
             stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }

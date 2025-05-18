@@ -20,7 +20,7 @@ public class VisceralEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.posture_breaker_enchant_max_level;
+        return (int) ConfigConstructor.posture_breaker_enchant_max_level;
     }
 
     @Override

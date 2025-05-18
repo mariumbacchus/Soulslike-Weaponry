@@ -318,7 +318,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.returning_knight_xp;
+        return (int) ConfigConstructor.returning_knight_xp;
     }
 
     @Override

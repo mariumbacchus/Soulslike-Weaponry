@@ -283,12 +283,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (timer == 0) {
                 partner.setFlying(!partner.isFlying());
                 this.boss.setFlying(!this.boss.isFlying());
-                this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
             } else if (partner.isFlying() == this.boss.isFlying()) {
                 boolean bl = this.boss.getRandom().nextBoolean();
                 this.boss.setFlying(bl);
                 partner.setFlying(!bl);
-                this.boss.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
             }
         }
     }

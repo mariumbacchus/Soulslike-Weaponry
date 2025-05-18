@@ -20,7 +20,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class MoonlightGreatsword extends ChargeToUseItem {
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        this(toolMaterial, ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
+        this(toolMaterial, (int) ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
     }
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {

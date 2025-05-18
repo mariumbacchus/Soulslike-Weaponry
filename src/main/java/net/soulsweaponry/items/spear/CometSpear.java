@@ -38,7 +38,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SKYFALL, TooltipAbilities.INFINITY, TooltipAbilities.CRIT);
     }
 
@@ -56,7 +56,7 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
                         playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.comet_spear_ability_damage));
+                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, (int) ConfigConstructor.comet_spear_ability_damage));
                     this.applyItemCooldown(playerEntity, this.getScaledCooldownSkyfall(stack));
                     stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 } else {
@@ -74,13 +74,13 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     }
 
     protected int getScaledCooldownSkyfall(ItemStack stack) {
-        int base = ConfigConstructor.comet_spear_skyfall_ability_cooldown;
-        return Math.max(ConfigConstructor.comet_spear_skyfall_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
+        int base = (int) ConfigConstructor.comet_spear_skyfall_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.comet_spear_skyfall_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
     }
 
     protected int getScaledCooldownThrow(ItemStack stack) {
-        int base = ConfigConstructor.comet_spear_throw_ability_cooldown;
-        return Math.max(ConfigConstructor.comet_spear_throw_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
+        int base = (int) ConfigConstructor.comet_spear_throw_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.comet_spear_throw_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
     }
 
     @Override

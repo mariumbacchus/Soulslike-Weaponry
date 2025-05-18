@@ -25,7 +25,7 @@ public class GatlingGun extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.gatling_gun_posture_loss + lvl * ConfigConstructor.gatling_gun_posture_loss_per_enchant_level;
+        return (int) (ConfigConstructor.gatling_gun_posture_loss + lvl * ConfigConstructor.gatling_gun_posture_loss_per_enchant_level);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class GatlingGun extends GunItem {
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30;
+        return (int) (ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30);
     }
 
     @Override
     public int getBulletsNeeded() {
-        return ConfigConstructor.gatling_gun_bullets_needed;
+        return (int) ConfigConstructor.gatling_gun_bullets_needed;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GatlingGun extends GunItem {
     @Override
     public int getMaxUseTime(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack);
-        return ConfigConstructor.gatling_gun_max_time * (lvl == 0 ? 1 : lvl);
+        return (int) (ConfigConstructor.gatling_gun_max_time * (lvl == 0 ? 1 : lvl));
     }
 
     @Override

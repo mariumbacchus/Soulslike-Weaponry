@@ -27,7 +27,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded, IUndeadBonus {
 
     public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.LUNAR_HERALD_NO_CHARGE, TooltipAbilities.CHARGE, TooltipAbilities.MOONFALL);
     }
 
@@ -37,9 +37,9 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
             int chargeTime = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (chargeTime >= 10) {
                 int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() : 0;
-                this.applyItemCooldown(player, Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
+                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
                 stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-                int ruptures = ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack);
+                int ruptures = (int) (ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int)user.getY(), (int)vecBlocksAway.z);
                 float power = ConfigConstructor.holy_moonlight_ability_damage;
@@ -92,12 +92,12 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
 
     @Override
     public int getMaxCharge() {
-        return ConfigConstructor.holy_moonlight_ability_charge_needed;
+        return (int) ConfigConstructor.holy_moonlight_ability_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        int base = ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
+        int base = (int) ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
         return base + WeaponUtil.getEnchantDamageBonus(stack) * 2;
     }
 

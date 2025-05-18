@@ -25,7 +25,7 @@ import java.util.List;
 public class WhirligigSawblade extends ChargeToUseItem {
 
     public WhirligigSawblade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SAWBLADE);
     }
 
@@ -36,7 +36,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10;
+        return (int) (ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     private int getCooldown(ItemStack stack) {
-        return Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
+        return (int) Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
     }
 
     @Override

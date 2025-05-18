@@ -28,7 +28,7 @@ public class Featherlight extends UltraHeavyWeapon {
     };
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
         this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
     }
 

@@ -33,7 +33,7 @@ public class Skofnung extends ModdedSword {
      * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
     public Skofnung(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.DISABLE_HEAL, TooltipAbilities.SHARPEN, TooltipAbilities.IS_SHARPENED);
     }
 
@@ -42,7 +42,7 @@ public class Skofnung extends ModdedSword {
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
-        int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
+        int duration = (int) (ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, duration, 0));
         if (isEmpowered(stack)) {
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 80, 0));

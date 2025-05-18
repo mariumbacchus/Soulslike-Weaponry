@@ -19,6 +19,10 @@ public interface ITooltipInfo {
     Text[] getAdditionalTooltips();
     void addTooltipAbility(TooltipAbilities... abilities);
 
+    default Text[] getLoreTooltips() {
+        return new Text[0];
+    }
+
     /**
      * Adds all tooltip abilities listed in {@link #getTooltipAbilities()} and {@link #getAdditionalTooltips()} to the
      * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
@@ -35,6 +39,13 @@ public interface ITooltipInfo {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.alt"));
             } else {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+            }
+        }
+        if (this.getLoreTooltips().length > 0) {
+            if (Screen.hasControlDown()) {
+                tooltip.addAll(Arrays.asList(this.getLoreTooltips()));
+            } else {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.control"));
             }
         }
     }

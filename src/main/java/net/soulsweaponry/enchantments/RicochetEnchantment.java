@@ -15,7 +15,7 @@ public class RicochetEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.ricochet_enchant_max_level;
+        return (int) ConfigConstructor.ricochet_enchant_max_level;
     }
 
     @Override

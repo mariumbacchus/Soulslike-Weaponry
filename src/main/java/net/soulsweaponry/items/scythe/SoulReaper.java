@@ -42,7 +42,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE);
     }
 
@@ -142,7 +142,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
 
     @Override
     public int getMaxSummons() {
-        return ConfigConstructor.soul_reaper_summoned_allies_cap;
+        return (int) ConfigConstructor.soul_reaper_summoned_allies_cap;
     }
 
     @Override

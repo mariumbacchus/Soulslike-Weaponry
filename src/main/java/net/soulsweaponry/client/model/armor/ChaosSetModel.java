@@ -1,24 +1,25 @@
 package net.soulsweaponry.client.model.armor;
 
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.armor.ChaosSet;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.model.GeoModel;
 
-public class ChaosSetModel extends GeoModel<ChaosSet> {
+public class ChaosSetModel<T extends Item & GeoItem> extends GeoModel<T> {
 
     @Override
-    public Identifier getAnimationResource(ChaosSet animatable) {
+    public Identifier getAnimationResource(T animatable) {
         return new Identifier(SoulsWeaponry.ModId, "animations/entity/chaos_monarch.animation.json");
     }
 
     @Override
-    public Identifier getModelResource(ChaosSet object) {
+    public Identifier getModelResource(T object) {
         return new Identifier(SoulsWeaponry.ModId, "geo/chaos_set.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(ChaosSet object) {
+    public Identifier getTextureResource(T object) {
         return new Identifier(SoulsWeaponry.ModId, "textures/armor/chaos_set_texture.png");
     }
     

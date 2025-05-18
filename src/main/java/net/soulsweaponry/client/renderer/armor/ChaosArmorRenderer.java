@@ -1,13 +1,14 @@
 package net.soulsweaponry.client.renderer.armor;
 
+import net.minecraft.item.Item;
 import net.soulsweaponry.client.model.armor.ChaosArmorModel;
-import net.soulsweaponry.items.armor.ChaosSet;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-public class ChaosArmorRenderer extends GeoArmorRenderer<ChaosSet> {
+public class ChaosArmorRenderer<T extends Item & GeoItem> extends GeoArmorRenderer<T> {
 
     public ChaosArmorRenderer() {
-        super(new ChaosArmorModel());
+        super(new ChaosArmorModel<>());
 
         /*this.headBone = "armorHead";
         this.bodyBone = "armorBody";

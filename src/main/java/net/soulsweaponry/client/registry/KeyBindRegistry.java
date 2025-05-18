@@ -110,7 +110,7 @@ public class KeyBindRegistry {
                     boolean accept = false;
                     if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
                         accept = true;
-                        client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, ConfigConstructor.moonlight_ring_projectile_cooldown);
+                        client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, (int) ConfigConstructor.moonlight_ring_projectile_cooldown);
                     } else if (melee || controller) {
                         for (Hand hand : Hand.values()) {
                             ItemStack stack = client.player.getStackInHand(hand);

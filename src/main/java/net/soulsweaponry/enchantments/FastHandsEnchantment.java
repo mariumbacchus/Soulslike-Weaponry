@@ -20,7 +20,7 @@ public class FastHandsEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.fast_hands_enchant_max_level;
+        return (int) ConfigConstructor.fast_hands_enchant_max_level;
     }
 
     @Override

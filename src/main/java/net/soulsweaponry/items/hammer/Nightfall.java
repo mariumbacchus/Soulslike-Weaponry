@@ -52,7 +52,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
         this.addTooltipAbility(TooltipAbilities.SUMMON_GHOST, TooltipAbilities.SHIELD, TooltipAbilities.OBLITERATE);
     }
 
@@ -94,13 +94,13 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     protected int getScaledCooldownSmash(ItemStack stack) {
-        int base = ConfigConstructor.nightfall_smash_cooldown;
-        return Math.max(ConfigConstructor.nightfall_smash_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 50);
+        float base = ConfigConstructor.nightfall_smash_cooldown;
+        return (int) Math.max(ConfigConstructor.nightfall_smash_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 50);
     }
 
     protected int getScaledCooldownShield(ItemStack stack) {
-        int base = ConfigConstructor.nightfall_shield_cooldown;
-        return Math.max(ConfigConstructor.nightfall_shield_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 100);
+        float base = ConfigConstructor.nightfall_shield_cooldown;
+        return (int) Math.max(ConfigConstructor.nightfall_shield_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 100);
     }
 
     @Override
@@ -173,7 +173,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.applyItemCooldown(player, this.getScaledCooldownShield(stack));
             stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, ConfigConstructor.nightfall_ability_shield_power));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, (int) ConfigConstructor.nightfall_ability_shield_power));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
             world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         }
@@ -242,7 +242,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     @Override
     public int getMaxSummons() {
-        return ConfigConstructor.nightfall_summoned_allies_cap;
+        return (int) ConfigConstructor.nightfall_summoned_allies_cap;
     }
 
     @Override

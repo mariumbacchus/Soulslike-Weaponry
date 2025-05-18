@@ -29,7 +29,7 @@ public class WitheredWabbajack extends ModdedSword {
     private static final List<LuckChosenObject<EntityType<?>>> PROJECTILES = new ArrayList<>();
 
     public WitheredWabbajack(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.withered_wabbajack_damage, ConfigConstructor.withered_wabbajack_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.withered_wabbajack_damage, ConfigConstructor.withered_wabbajack_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.WABBAJACK, TooltipAbilities.LUCK_BASED);
     }
 

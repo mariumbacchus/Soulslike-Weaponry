@@ -20,7 +20,7 @@ public class BlightCarrierEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.blight_carrier_enchant_max_level;
+        return (int) ConfigConstructor.blight_carrier_enchant_max_level;
     }
 
     @Override

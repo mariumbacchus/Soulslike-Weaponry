@@ -14,7 +14,7 @@ import net.soulsweaponry.networking.PacketIds;
 public class ParryData {
 
     public static final String PARRY_FRAMES_ID = "parry_frames";
-    public static int MAX_PARRY_FRAMES = ConfigConstructor.shield_parry_max_animation_frames;
+    public static int MAX_PARRY_FRAMES = (int) ConfigConstructor.shield_parry_max_animation_frames;
 
     public static int addParryFrames(IEntityDataSaver player, int amount) {
         NbtCompound nbt = player.getPersistentData();

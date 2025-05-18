@@ -96,16 +96,16 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
             entity.setChainLightningRange(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_range_per_level);
         }
         if (blightCarrierLevel > 0) {
-            entity.setBlightCarrier(blightCarrierLevel * ConfigConstructor.blight_carrier_enchant_blight_per_level);
+            entity.setBlightCarrier((int) (blightCarrierLevel * ConfigConstructor.blight_carrier_enchant_blight_per_level));
         }
         if (freezeLevel > 0) {
-            entity.setFreezeAmplifier(freezeLevel * ConfigConstructor.frostsilver_enchant_permafrost_per_level);
+            entity.setFreezeAmplifier((int) (freezeLevel * ConfigConstructor.frostsilver_enchant_permafrost_per_level));
         }
         if (tetherLevel > 0 && ricochetLevel == 0) {
             entity.setTether(tetherLevel);
         }
         if (ricochetLevel > 0) {
-            entity.setRicochetBounces(ricochetLevel * ConfigConstructor.ricochet_enchant_bounce_per_level);
+            entity.setRicochetBounces((int) (ricochetLevel * ConfigConstructor.ricochet_enchant_bounce_per_level));
         }
         if (phantomTraceLevel > 0) {
             for (int i = 1; i < phantomTraceLevel + 1; i++) {

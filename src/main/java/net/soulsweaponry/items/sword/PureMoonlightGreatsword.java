@@ -17,7 +17,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 

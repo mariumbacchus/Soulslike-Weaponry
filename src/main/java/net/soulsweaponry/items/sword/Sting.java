@@ -17,7 +17,7 @@ public class Sting extends ModdedSword {
     private static final String ACTIVE = "active_glowing";
 
     public Sting(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.LUMINATE, TooltipAbilities.SPIDERS_BANE);
     }
 

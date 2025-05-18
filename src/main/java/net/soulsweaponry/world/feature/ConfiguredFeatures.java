@@ -14,7 +14,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 
 import java.util.List;
@@ -23,6 +22,9 @@ import java.util.List;
  * Big thanks to KaupenJoe for showing how to do ore spawning through datagen.
  */
 public class ConfiguredFeatures {
+
+    public static final int MOONSTONE_ORE_VEIN_SIZE = 5;
+    public static final int VERGLAS_ORE_VEIN_SIZE = 3;
 
     public static final RegistryKey<ConfiguredFeature<?, ?>> MOONSTONE_ORE_KEY = registerKey("moonstone_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> VERGLAS_ORE_KEY = registerKey("verglas_ore");
@@ -43,8 +45,8 @@ public class ConfiguredFeatures {
                 OreFeatureConfig.createTarget(deepslateReplaceables, BlockRegistry.VERGLAS_ORE_DEEPSLATE.getDefaultState())
         );
 
-        register(context, MOONSTONE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldMoonstoneOres, ConfigConstructor.moonstone_ore_vein_size, 0.75f));
-        register(context, VERGLAS_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldVerglasOres, ConfigConstructor.verglas_ore_vein_size, 0.75f));
+        register(context, MOONSTONE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldMoonstoneOres, MOONSTONE_ORE_VEIN_SIZE, 0.75f));
+        register(context, VERGLAS_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldVerglasOres, VERGLAS_ORE_VEIN_SIZE, 0.75f));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

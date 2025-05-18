@@ -20,7 +20,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SKYWARD_STRIKES, TooltipAbilities.RIGHTEOUS);
     }
 

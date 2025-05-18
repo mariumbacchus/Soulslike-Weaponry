@@ -28,7 +28,7 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public Bloodthirster(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.bloodthirster_damage, ConfigConstructor.bloodthirster_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.bloodthirster_damage, ConfigConstructor.bloodthirster_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.LIFE_STEAL, TooltipAbilities.OVERHEAL);
     }
 
@@ -44,7 +44,7 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                this.applyItemCooldown(player, Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
+                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
                 if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);

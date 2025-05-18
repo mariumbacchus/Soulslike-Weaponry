@@ -1,6 +1,7 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +23,11 @@ public class ForlornArmor extends SetBonusArmor {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_forlorn_set;
+    }
+
+    @Override
+    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
+        return false;
     }
 
     @Override
@@ -69,5 +75,15 @@ public class ForlornArmor extends SetBonusArmor {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_armor;
+    }
+
+    @Override
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return new String[0];
     }
 }

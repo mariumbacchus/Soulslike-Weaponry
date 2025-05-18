@@ -255,9 +255,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             if (this.getBlightCarrier() > 0) {
                 StatusEffectInstance instance = target.getStatusEffect(EffectRegistry.BLIGHT);
                 if (instance != null) {
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, ConfigConstructor.blight_carrier_enchant_blight_duration, instance.getAmplifier() + this.getBlightCarrier() - 1));
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) ConfigConstructor.blight_carrier_enchant_blight_duration, instance.getAmplifier() + this.getBlightCarrier() - 1));
                 } else {
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, ConfigConstructor.blight_carrier_enchant_blight_duration, this.getBlightCarrier() - 1));
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) ConfigConstructor.blight_carrier_enchant_blight_duration, this.getBlightCarrier() - 1));
                 }
             }
         }
@@ -289,7 +289,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     private void onPostureBreak(LivingEntity target) {
         if (this.getFreezeAmplifier() > 0) {
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
             target.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, SoundCategory.HOSTILE, 1f, 1f);
         }
     }

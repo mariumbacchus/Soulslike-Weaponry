@@ -37,7 +37,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
         this.addTooltipAbility(TooltipAbilities.OMNIVAMP, TooltipAbilities.SWORD_SLAM);
     }
 
@@ -48,7 +48,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyItemCooldown(player, Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
+                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
                 if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);
@@ -70,9 +70,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
                 world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                 cooldownMod = 0.75f;
                 //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, ConfigConstructor.darkin_blade_ability_damage));
+                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, (int) ConfigConstructor.darkin_blade_ability_damage));
             } else {
-                this.detonateGroundEffect(user, ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
+                this.detonateGroundEffect(user, (int) ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
             }
             stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             this.applyItemCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
@@ -90,8 +90,8 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     protected int getScaledCooldown(ItemStack stack) {
-        int base = ConfigConstructor.darkin_blade_ability_cooldown;
-        return Math.max(ConfigConstructor.darkin_blade_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 15);
+        int base = (int) ConfigConstructor.darkin_blade_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.darkin_blade_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 15);
     }
 
     @Override

@@ -19,7 +19,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -31,11 +30,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
-import net.soulsweaponry.items.armor.ChaosSet;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.items.armor.ChaosRobes;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -168,7 +164,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.chaos_monarch_xp;
+        return (int) ConfigConstructor.chaos_monarch_xp;
     }
 
     @Override
@@ -203,7 +199,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
-        ChaosSet cape = (ChaosSet) ItemRegistry.CHAOS_ROBES;
+        ChaosRobes cape = (ChaosRobes) ArmorRegistry.CHAOS_ROBES;
         cape.turnBlocks(this, world, blockPos, 3);
     }
 

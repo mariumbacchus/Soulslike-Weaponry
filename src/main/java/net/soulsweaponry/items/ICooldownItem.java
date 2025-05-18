@@ -2,11 +2,13 @@ package net.soulsweaponry.items;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -81,4 +83,15 @@ public interface ICooldownItem {
 
     boolean canEnchantReduceCooldown(ItemStack stack);
     String[] getReduceCooldownEnchantIds(ItemStack stack);
+
+    default void notifyCooldown(LivingEntity user) {
+        if (!ConfigConstructor.inform_player_about_cooldown_effect) {
+            return;
+        }
+        if (user instanceof PlayerEntity player) {
+            player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"), true);
+        } else {
+            user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"));
+        }
+    }
 }

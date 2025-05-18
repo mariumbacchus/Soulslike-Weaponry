@@ -22,7 +22,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
-        this.configure(new RangedConfig(ConfigConstructor.simons_bowblade_pull_time_ticks, ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity));
+        this.configure(new RangedConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks, ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity));
     }
 
     @Override
@@ -65,6 +65,6 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
 
     @Override
     public int getPostureLoss() {
-        return ConfigConstructor.simons_bowblade_projectile_posture_loss;
+        return (int) ConfigConstructor.simons_bowblade_projectile_posture_loss;
     }
 }

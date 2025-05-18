@@ -32,10 +32,10 @@ import java.util.Map;
 
 public class DarkinScythePre extends SoulHarvestingItem {
 
-    public final int MAX_SOULS = ConfigConstructor.darkin_scythe_max_souls;
+    public final int MAX_SOULS = (int) ConfigConstructor.darkin_scythe_max_souls;
 
     public DarkinScythePre(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_scythe_damage, ConfigConstructor.darkin_scythe_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.darkin_scythe_damage, ConfigConstructor.darkin_scythe_attack_speed, settings);
         this.getTooltipAbilities().clear();
         this.addTooltipAbility(TooltipAbilities.TRANSFORMATION);
     }

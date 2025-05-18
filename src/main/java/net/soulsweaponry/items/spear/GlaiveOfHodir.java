@@ -22,7 +22,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class GlaiveOfHodir extends BladeDanceItem {
 
     public GlaiveOfHodir(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.glaive_of_hodir_damage, ConfigConstructor.glaive_of_hodir_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.glaive_of_hodir_damage, ConfigConstructor.glaive_of_hodir_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.GHOST_GLAIVE);
     }
 
@@ -39,7 +39,7 @@ public class GlaiveOfHodir extends BladeDanceItem {
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2f, 1.0F);
                 world.spawnEntity(entity);
                 world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
-                this.applyItemCooldown(playerEntity, Math.max(ConfigConstructor.glaive_of_hodir_projectile_min_cooldown, ConfigConstructor.glaive_of_hodir_projectile_cooldown - this.getReduceCooldownEnchantLevel(stack) * 12));
+                this.applyItemCooldown(playerEntity, (int) Math.max(ConfigConstructor.glaive_of_hodir_projectile_min_cooldown, ConfigConstructor.glaive_of_hodir_projectile_cooldown - this.getReduceCooldownEnchantLevel(stack) * 12));
             }
         }
     }
@@ -76,18 +76,18 @@ public class GlaiveOfHodir extends BladeDanceItem {
 
     @Override
     public int getMaxStacks() {
-        return ConfigConstructor.glaive_of_hodir_max_stacks;
+        return (int) ConfigConstructor.glaive_of_hodir_max_stacks;
     }
 
     @Override
     public void applyMaxStacksEffects(LivingEntity entity, ItemStack stack) {
-        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, ConfigConstructor.glaive_of_hodir_effects_duration, ConfigConstructor.glaive_of_hodir_resistance_amplifier - 1));
-        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, ConfigConstructor.glaive_of_hodir_effects_duration, ConfigConstructor.glaive_of_hodir_absorption_amplifier - 1));
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, (int) ConfigConstructor.glaive_of_hodir_effects_duration, (int) (ConfigConstructor.glaive_of_hodir_resistance_amplifier - 1)));
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, (int) ConfigConstructor.glaive_of_hodir_effects_duration, (int) (ConfigConstructor.glaive_of_hodir_absorption_amplifier - 1)));
     }
 
     @Override
     public int getMaxStacksCooldown() {
-        return ConfigConstructor.glaive_of_hodir_add_effects_cooldown;
+        return (int) ConfigConstructor.glaive_of_hodir_add_effects_cooldown;
     }
 
     @Override

@@ -355,7 +355,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.day_stalker_xp;
+        return (int) ConfigConstructor.day_stalker_xp;
     }
 
     @Override

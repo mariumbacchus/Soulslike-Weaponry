@@ -15,7 +15,7 @@ public class PhantomTraceEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.phantom_trace_enchant_max_level;
+        return (int) ConfigConstructor.phantom_trace_enchant_max_level;
     }
 
     @Override

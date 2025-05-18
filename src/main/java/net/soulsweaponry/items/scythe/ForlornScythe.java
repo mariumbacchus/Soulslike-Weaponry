@@ -33,7 +33,7 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE_WITHER);
     }
 

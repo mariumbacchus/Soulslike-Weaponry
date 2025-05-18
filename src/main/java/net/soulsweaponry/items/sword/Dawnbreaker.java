@@ -24,7 +24,7 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public Dawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
     }
 
     @Override

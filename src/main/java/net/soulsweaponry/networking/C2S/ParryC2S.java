@@ -23,7 +23,7 @@ public class ParryC2S {
                 ItemStack stack = player.getStackInHand(Hand.OFF_HAND);
                 if (ConfigConstructor.enable_shield_parry && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                     ParryData.setParryFrames((IEntityDataSaver) player, 1);
-                    player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : ConfigConstructor.shield_parry_cooldown);
+                    player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : (int) ConfigConstructor.shield_parry_cooldown);
                 }
             }
         });

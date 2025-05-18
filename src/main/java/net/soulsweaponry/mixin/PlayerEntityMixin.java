@@ -1,6 +1,5 @@
 package net.soulsweaponry.mixin;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
@@ -22,10 +21,7 @@ import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -91,7 +87,7 @@ public class PlayerEntityMixin {
             }
         }
         // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
+        if (player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
                 && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
             Vec3d playerPos = player.getPos();
             Vec3d projectilePos = projectile.getPos();
@@ -103,14 +99,14 @@ public class PlayerEntityMixin {
         }
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH) && !stack.isEmpty()
-                && (stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ItemRegistry.WITHERED_CHEST))) {
+                && (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ArmorRegistry.WITHERED_CHEST))) {
             double x = player.getX() - attacker.getX();
             double z = player.getZ() - attacker.getZ();
             attacker.damage(player.getDamageSources().wither(), 1f);
             attacker.takeKnockback(0.5f, x, z);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, ConfigConstructor.withered_chest_apply_wither_duration, ConfigConstructor.withered_chest_apply_wither_amplifier));
-            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_WITHERED_CHEST)) {
-                attacker.setOnFireFor(ConfigConstructor.withered_chest_apply_fire_seconds);
+            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, (int) ConfigConstructor.withered_chest_apply_wither_duration, (int) ConfigConstructor.withered_chest_apply_wither_amplifier));
+            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
+                attacker.setOnFireFor((int) ConfigConstructor.withered_chest_apply_fire_seconds);
             }
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {

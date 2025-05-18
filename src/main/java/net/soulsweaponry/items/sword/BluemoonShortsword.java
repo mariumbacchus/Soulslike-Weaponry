@@ -6,7 +6,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 
 public class BluemoonShortsword extends MoonlightShortsword {
     public BluemoonShortsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.bluemoon_shortsword_damage, ConfigConstructor.bluemoon_shortsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.bluemoon_shortsword_damage, ConfigConstructor.bluemoon_shortsword_attack_speed, settings);
     }
 
     @Override

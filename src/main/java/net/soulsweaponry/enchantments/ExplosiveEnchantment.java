@@ -25,7 +25,7 @@ public class ExplosiveEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.explosive_rounds_enchant_max_level;
+        return (int) ConfigConstructor.explosive_rounds_enchant_max_level;
     }
 
     @Override

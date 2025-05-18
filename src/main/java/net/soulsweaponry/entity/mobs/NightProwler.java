@@ -11,8 +11,6 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -24,7 +22,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -55,7 +52,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
-    public int darknessRiseTicks;
     private int[] aliveSummons = new int[0];
     public static final int ATTACKS_LENGTH = Attacks.values().length;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
@@ -68,7 +64,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
     private static final TrackedData<Boolean> CHASE_TARGET = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> WAIT_ANIMATION = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> SPAWN_PARTICLES_STATE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Boolean> DARKNESS_RISE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
         super(entityType, world, Color.PURPLE);
@@ -202,7 +197,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(CHASE_TARGET, true);
         this.dataTracker.startTracking(WAIT_ANIMATION, false);
         this.dataTracker.startTracking(SPAWN_PARTICLES_STATE, 0);
-        this.dataTracker.startTracking(DARKNESS_RISE, false);
     }
 
     @Override
@@ -251,7 +245,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
         nbt.putBoolean("is_flying", this.isFlying());
         nbt.putBoolean("chase_target", this.shouldChaseTarget());
         nbt.putIntArray("summons", this.getAliveSummonsList());
-        nbt.putInt("darknessTicks", this.getDarknessRiseTicks());
     }
 
     @Override
@@ -280,9 +273,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
         }
         if (nbt.contains("summons")) {
             this.setAliveSummons(nbt.getIntArray("summons"));
-        }
-        if (nbt.contains("darknessTicks")) {
-            this.setDarknessRiseTicks(nbt.getInt("darknessTicks"));
         }
     }
 
@@ -366,7 +356,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.night_prowler_xp;
+        return (int) ConfigConstructor.night_prowler_xp;
     }
 
     @Override
@@ -413,22 +403,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
             this.setWaitAnimation(false);
             this.setAttackAnimation(NightProwler.Attacks.IDLE);
             this.getNavigation().stop();
-        }
-        if (this.getDarknessRise()) {
-            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1));
-            this.darknessRiseTicks++;
-            float r = 4.5f;
-            Box box = new Box(this.getPos().add(r, 1, r), this.getPos().add(-r, -1, -r));
-            for (Entity entity : this.getWorld().getOtherEntities(this, box)) {
-                if (this.darknessRiseTicks % 4 == 0 && entity instanceof LivingEntity living) {
-                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 60, 0));
-                    living.damage(this.getWorld().getDamageSources().magic(), 1f);
-                }
-            }
-            if (this.getDarknessRiseTicks() >= (this.isPhaseTwo() ? 200 : 120)) {
-                this.setDarknessRise(false);
-                this.darknessRiseTicks = 0;
-            }
         }
     }
 
@@ -593,22 +567,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
         return this.dataTracker.get(SPAWN_PARTICLES_STATE);
     }
 
-    public void setDarknessRise(boolean bl) {
-        this.dataTracker.set(DARKNESS_RISE, bl);
-    }
-
-    public boolean getDarknessRise() {
-        return this.dataTracker.get(DARKNESS_RISE);
-    }
-
-    public void setDarknessRiseTicks(int ticks) {
-        this.darknessRiseTicks = ticks;
-    }
-
-    public int getDarknessRiseTicks() {
-        return this.darknessRiseTicks;
-    }
-
     /**
      * Mainly a client sided variable determining the tick count of the ECLIPSE portal and particles
      */
@@ -696,22 +654,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
                     }
                 }
                 default -> this.openPortalTicks = 0;
-            }
-            if (this.getDarknessRise()) {
-                int div = 30;
-                for (int i = 0; i < 12; i++) {
-                    float r = i / 2f;
-                    for (int theta = 0; theta < 360; theta++) {
-                        if (theta % 8 == 0) {
-                            double x0 = this.getX();
-                            double z0 = this.getZ();
-                            double x = x0 + r * Math.cos(theta * Math.PI / 180);
-                            double z = z0 + r * Math.sin(theta * Math.PI / 180);
-                            this.getWorld().addParticle(ParticleRegistry.DARK_STAR, x, this.getY() + 0.1f, z,
-                                    this.random.nextGaussian()/div, this.random.nextGaussian()/div, this.random.nextGaussian()/div);
-                        }
-                    }
-                }
             }
         }
     }

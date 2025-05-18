@@ -11,11 +11,18 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.List;
 
 public class PlacedFeatures {
+
+    public static final int VERGLAS_ORE_COUNT_PER_CHUNK = 50;
+    public static final int VERGLAS_ORE_MIN_HEIGHT = -80;
+    public static int VERGLAS_ORE_MAX_HEIGHT = 300;
+
+    public static final int MOONSTONE_ORE_COUNT_PER_CHUNK = 4;
+    public static final int MOONSTONE_ORE_MIN_HEIGHT = -80;
+    public static final int MOONSTONE_ORE_MAX_HEIGHT = 16;
 
     public static final RegistryKey<PlacedFeature> MOONSTONE_ORE_PLACED_KEY = registerKey("moonstone_ore_placed");
     public static final RegistryKey<PlacedFeature> VERGLAS_ORE_PLACED_KEY = registerKey("verglas_ore_placed");
@@ -24,16 +31,16 @@ public class PlacedFeatures {
         var featureLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         register(context, MOONSTONE_ORE_PLACED_KEY, featureLookup.getOrThrow(ConfiguredFeatures.MOONSTONE_ORE_KEY), OrePlacement.modifiersWithCount(
-                ConfigConstructor.moonstone_ore_count_per_chunk,
+                MOONSTONE_ORE_COUNT_PER_CHUNK,
                 HeightRangePlacementModifier.trapezoid(
-                        YOffset.fixed(ConfigConstructor.moonstone_ore_min_height),
-                        YOffset.fixed(ConfigConstructor.moonstone_ore_max_height)
+                        YOffset.fixed(MOONSTONE_ORE_MIN_HEIGHT),
+                        YOffset.fixed(MOONSTONE_ORE_MAX_HEIGHT)
                 )));
         register(context, VERGLAS_ORE_PLACED_KEY, featureLookup.getOrThrow(ConfiguredFeatures.VERGLAS_ORE_KEY), OrePlacement.modifiersWithCount(
-                ConfigConstructor.verglas_ore_count_per_chunk,
+                VERGLAS_ORE_COUNT_PER_CHUNK,
                 HeightRangePlacementModifier.trapezoid(
-                        YOffset.fixed(ConfigConstructor.verglas_ore_min_height),
-                        YOffset.fixed(ConfigConstructor.verglas_ore_max_height)
+                        YOffset.fixed(VERGLAS_ORE_MIN_HEIGHT),
+                        YOffset.fixed(VERGLAS_ORE_MAX_HEIGHT)
                 )));
     }
 

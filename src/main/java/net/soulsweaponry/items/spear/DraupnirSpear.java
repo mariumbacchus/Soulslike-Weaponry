@@ -48,7 +48,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     public static final String SPEARS_ID = "thrown_spears_id";
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.INFINITY, TooltipAbilities.DETONATE_SPEARS);
     }
 
@@ -87,18 +87,18 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     protected int getScaledCooldownThrow(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_throw_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
+        int base = (int) ConfigConstructor.draupnir_spear_throw_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
     }
 
     protected int getScaledCooldownSummon(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_summon_spears_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_summon_spears_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 20);
+        int base = (int) ConfigConstructor.draupnir_spear_summon_spears_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_summon_spears_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 20);
     }
 
     protected int getScaledCooldownExplode(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_detonate_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_detonate_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 7);
+        int base = (int) ConfigConstructor.draupnir_spear_detonate_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_detonate_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 7);
     }
 
     private PlayState predicate(AnimationState<?> event){

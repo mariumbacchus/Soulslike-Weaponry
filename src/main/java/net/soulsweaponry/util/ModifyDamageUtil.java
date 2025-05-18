@@ -19,8 +19,8 @@ import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public class ModifyDamageUtil {
@@ -37,7 +37,7 @@ public class ModifyDamageUtil {
         if (entity.getType().isIn(ModTags.Entities.DRAGONS) && source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().getItem() instanceof IDragonBonus dragonBonus) {
             newAmount += dragonBonus.getDragonBonus(player.getMainHandStack());
         }
-        if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET)) {
+        if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
             newAmount += amountAdded;

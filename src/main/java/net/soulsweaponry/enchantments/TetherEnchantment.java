@@ -25,7 +25,7 @@ public class TetherEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.tether_enchant_max_level;
+        return (int) ConfigConstructor.tether_enchant_max_level;
     }
 
     @Override

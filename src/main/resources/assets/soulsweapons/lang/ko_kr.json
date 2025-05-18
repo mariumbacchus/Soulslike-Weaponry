@@ -582,7 +582,7 @@
 
     "tooltip.soulsweapons.arkenplate": "내구성",
     "tooltip.soulsweapons.arkenplate_description_1": "- 사용자의 체력이 §c50%§r 이하일 때,",
-    "tooltip.soulsweapons.arkenplate_description_2": "영구적으로 §3저항 II§r을 얻습니다.",
+    "tooltip.soulsweapons.arkenplate_description_2": "§3Resistance II§r & §bMagic Resistance II§r.",
 
     "tooltip.soulsweapons.arkenplate.aftershock": "여진",
     "tooltip.soulsweapons.arkenplate.aftershock.1": "- 체력이 §c50%§r 이하일 때 피해를 받으면,",
@@ -740,7 +740,7 @@
     "tooltip.soulsweapons.gun_bullets_used": "필요한 총알: ",
 
     "tooltip.soulsweapons.withered_armor.unceasing": "끊임없는",
-    "tooltip.soulsweapons.withered_armor.unceasing.1": "- 체력이 §c50%§r 이하일 때 §f시듦§r에 대한 면역을 얻습니다.",
+    "tooltip.soulsweapons.withered_armor.unceasing.1": "- Become immune to the §fWither§r effect.",
     "tooltip.soulsweapons.withered_armor.unceasing.2": "- 능력 단축키를 사용하여 §5생명 흡수§r을 얻습니다.",
     "tooltip.soulsweapons.withered_armor.unceasing.3": "현재 대상에게 지속 피해 효과가 있으면",
     "tooltip.soulsweapons.withered_armor.unceasing.4": "지속적으로 회복합니다.",

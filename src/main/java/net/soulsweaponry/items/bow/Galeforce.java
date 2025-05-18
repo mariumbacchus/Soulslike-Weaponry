@@ -35,7 +35,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     public Galeforce(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.GALEFORCE);
-        this.configure(new RangedConfig(ConfigConstructor.galeforce_pull_time_ticks, ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_max_velocity));
+        this.configure(new RangedConfig((int) ConfigConstructor.galeforce_pull_time_ticks, ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_max_velocity));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     @Nullable
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
         return new ChargedArrow(world, shooter, false);
     }
 
@@ -54,7 +54,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             if (!player.isCreative()) {
-                int cooldown = Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
+                int cooldown = (int) Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0));
             }
             ItemStack arrowStack = player.getProjectileType(stack);
@@ -74,7 +74,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, @Nullable Vec3d currentTargetPos) {
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
         ChargedArrow chargedArrow = new ChargedArrow(world, player, true);
         if (chargedArrow.canHaveArrowEffects(arrowStack, stack)) {
             chargedArrow.initFromStack(arrowStack);

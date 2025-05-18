@@ -42,10 +42,10 @@ public class BloodVial extends Item {
     }
 
     public int getRegenDuration() {
-        return ConfigConstructor.blood_vial_regen_duration_ticks;
+        return (int) ConfigConstructor.blood_vial_regen_duration_ticks;
     }
 
     public int getRegenAmp() {
-        return ConfigConstructor.blood_vial_regen_amp;
+        return (int) ConfigConstructor.blood_vial_regen_amp;
     }
 }

@@ -22,7 +22,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
@@ -50,7 +49,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     public static final String RAINING = "raining";
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.RETURNING, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
@@ -63,15 +62,15 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
             if (player.isSneaking()) {
                 this.smashGround(stack, world, player);
                 this.lightningCall(player, world);
-                cooldown = ConfigConstructor.mjolnir_lightning_smash_cooldown;
+                cooldown = (int) ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
                 this.riptide(player, world, stack);
-                if (!world.isRaining()) cooldown = ConfigConstructor.mjolnir_riptide_cooldown;
+                if (!world.isRaining()) cooldown = (int) ConfigConstructor.mjolnir_riptide_cooldown;
             } else {
                 this.throwHammer(world, player, stack);
             }
             if (cooldown != 0) {
-                cooldown = Math.max(ConfigConstructor.mjolnir_ability_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 30);
+                cooldown = (int) Math.max(ConfigConstructor.mjolnir_ability_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 30);
             }
             this.applyItemCooldown(player, cooldown);
         }

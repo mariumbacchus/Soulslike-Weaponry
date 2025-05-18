@@ -250,7 +250,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.fallen_icon_xp;
+        return (int) ConfigConstructor.fallen_icon_xp;
     }
 
     @Override

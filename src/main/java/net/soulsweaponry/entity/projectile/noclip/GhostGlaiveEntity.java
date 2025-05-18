@@ -38,7 +38,7 @@ public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity
 
     @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        PostureData.addPosture((IEntityDataSaver) target, ConfigConstructor.glaive_of_hodir_projectile_posture_loss);
+        PostureData.addPosture((IEntityDataSaver) target, (int) ConfigConstructor.glaive_of_hodir_projectile_posture_loss);
     }
 
     @Override

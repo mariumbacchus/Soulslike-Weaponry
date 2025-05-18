@@ -122,7 +122,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 }
             }
             case DARKNESS_RISE -> {
-                if (this.isInMeleeRange(target) && !this.boss.getDarknessRise()) {
+                if (this.isInMeleeRange(target) && !this.boss.isFlying()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -223,7 +223,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 }
                 case DARKNESS_RISE -> {
                     this.attackLength = phase2 ? 70 : 40;
-                    this.darknessRise();
+                    this.darknessRise(target);
                 }
                 case ECLIPSE -> {
                     this.attackLength = 270;
@@ -302,7 +302,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return (damage + this.bonusDmg) * ConfigConstructor.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.getDarknessRise() ? 1.25f : 1);
+        return (damage + this.bonusDmg) * ConfigConstructor.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {
@@ -364,7 +364,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.boss.isFlying() && this.attackStatus == stopFlying && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
             this.boss.setFlying(false);
             partner.setFlying(true);
-            partner.flightTimer = ConfigConstructor.duo_fight_time_before_switch;
+            partner.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
             this.boss.setVelocity(0, -2f, 0);
         }
         if (!this.hasExploded && this.attackStatus >= min && this.attackStatus <= max && this.boss.isOnGround()) {
@@ -702,12 +702,34 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.checkAndReset(this.boss.isFlying() ? 40 : 5, 0);
     }
 
-    private void darknessRise() {
+    private void darknessRise(LivingEntity target) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 24) {
             this.boss.playSound(SoundRegistry.DARKNESS_RISE, 1f, 1f);// TODO this sounds sucks
-            this.boss.setDarknessRise(true);
+            this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 300, 0));
+            this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 300, 1));
+            float yawRad = (float) MathHelper.atan2(
+                    target.getZ() - this.boss.getZ(),
+                    target.getX() - this.boss.getX()
+            );
+            float yawDeg = (float) Math.toDegrees(yawRad);
+            double heightDiff = Math.abs(target.getY() - this.boss.getY());
+            double maxYOffset = heightDiff + 2.0;
+            WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), yawDeg, this.boss.getPos(), maxYOffset, this.boss.isPhaseTwo() ? 10 : 4, new Vec2f(1.5f, 1.75f), (pos, delay, yaw) -> {
+                BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.boss.getWorld());
+                entity.setOwner(this.boss);
+                entity.setRadius(2f);
+                entity.setDamage(this.getModifiedDamage(30f));
+                entity.setWarmup(delay + 15);
+                entity.setPosition(pos);
+                this.boss.getWorld().spawnEntity(entity);
+                if (this.boss.getWorld() instanceof ServerWorld serverWorld) {
+                    float spread = 0.01f;
+                    serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), 4,
+                            this.boss.getRandom().nextFloat() * spread - spread / 2f, this.boss.getRandom().nextFloat() * spread - spread / 2f, this.boss.getRandom().nextFloat() * spread - spread / 2f, 0);
+                }
+            });
         }
         this.checkAndReset(10, 0);
     }

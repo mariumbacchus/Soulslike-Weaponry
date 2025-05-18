@@ -1,5 +1,6 @@
 package net.soulsweaponry.items.armor;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +21,11 @@ public class SoulRobesArmor extends SetBonusArmor {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_soul_robes_set;
+    }
+
+    @Override
+    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
+        return false;
     }
 
     @Override
@@ -61,5 +67,15 @@ public class SoulRobesArmor extends SetBonusArmor {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_robes_armor;
+    }
+
+    @Override
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return new String[0];
     }
 }

@@ -356,7 +356,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.frenzied_shade_xp;
+        return (int) ConfigConstructor.frenzied_shade_xp;
     }
 
     @Override

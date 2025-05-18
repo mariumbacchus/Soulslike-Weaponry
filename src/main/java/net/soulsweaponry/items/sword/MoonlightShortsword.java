@@ -17,7 +17,7 @@ import net.soulsweaponry.util.TooltipAbilities;
 public class MoonlightShortsword extends ModdedSword {
 
     public MoonlightShortsword(ToolMaterial toolMaterial, Settings settings) {
-        this(toolMaterial, ConfigConstructor.moonlight_shortsword_damage, ConfigConstructor.moonlight_shortsword_attack_speed, settings);
+        this(toolMaterial, (int) ConfigConstructor.moonlight_shortsword_damage, ConfigConstructor.moonlight_shortsword_attack_speed, settings);
     }
 
     public MoonlightShortsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
@@ -52,11 +52,11 @@ public class MoonlightShortsword extends ModdedSword {
                     p_220045_0_.sendToolBreakStatus(hand);
                 }); */
                 if (itemStack.getItem() instanceof BluemoonShortsword bluemoon) {
-                    bluemoon.applyItemCooldownNoCheck(user, Math.max(ConfigConstructor.bluemoon_shortsword_projectile_min_cooldown, ConfigConstructor.bluemoon_shortsword_projectile_cooldown
+                    bluemoon.applyItemCooldownNoCheck(user, (int) Math.max(ConfigConstructor.bluemoon_shortsword_projectile_min_cooldown, ConfigConstructor.bluemoon_shortsword_projectile_cooldown
                             - bluemoon.getReduceCooldownEnchantLevel(itemStack) * 10));
                 }
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD, ConfigConstructor.moonlight_shortsword_projectile_cooldown);
+                user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD, (int) ConfigConstructor.moonlight_shortsword_projectile_cooldown);
                 user.swingHand(Hand.MAIN_HAND, true);
             }
         }

@@ -153,7 +153,7 @@ public class EntityRegistry {
 
         if (DatagenUtil.isDatagenRunning()) {
             registerBossDrops("accursed_lord_boss", ItemRegistry.LORD_SOUL_RED, WeaponRegistry.DARKIN_BLADE, ItemRegistry.WITHERED_DEMON_HEART);
-            registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK, ItemRegistry.LORD_SOUL_VOID, ItemRegistry.CHAOS_CROWN, ItemRegistry.CHAOS_ROBES, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ItemRegistry.BLOOD_VIAL_RECIPE_PAGE);
+            registerBossDrops("chaos_monarch", WeaponRegistry.WITHERED_WABBAJACK, ItemRegistry.LORD_SOUL_VOID, ArmorRegistry.CHAOS_CROWN, ArmorRegistry.CHAOS_ROBES, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, ItemRegistry.BLOOD_VIAL_RECIPE_PAGE);
             registerBossDrops("day_stalker", WeaponRegistry.DAWNBREAKER, ItemRegistry.LORD_SOUL_DAY_STALKER);
             registerBossDrops("draugr_boss", WeaponRegistry.DRAUGR);
             registerBossDrops("moonknight", WeaponRegistry.MOONLIGHT_GREATSWORD, ItemRegistry.LORD_SOUL_WHITE, ItemRegistry.ESSENCE_OF_LUMINESCENCE, ItemRegistry.MOONSTONE, ItemRegistry.MOONSTONE);

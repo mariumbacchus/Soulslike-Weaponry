@@ -296,7 +296,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (this.attackStatus >= maxTicks) {
             this.reset(2f, shieldUpWhenDone);
             if (effects.length > 0) {
-                this.specialCooldown = ConfigConstructor.old_champions_remains_special_cooldown_ticks;
+                this.specialCooldown = (int) ConfigConstructor.old_champions_remains_special_cooldown_ticks;
             }
         }
     }

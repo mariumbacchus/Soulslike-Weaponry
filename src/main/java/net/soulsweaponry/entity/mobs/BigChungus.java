@@ -102,7 +102,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
 
     public boolean checkForMonolith() {
         BlockPos entityPos = this.getBlockPos();
-        int radius = ConfigConstructor.chungus_monolith_radius;
+        int radius = (int) ConfigConstructor.chungus_monolith_radius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (x * x + z * z <= radius * radius) {

@@ -13,9 +13,9 @@ import net.soulsweaponry.entity.mobs.EvilForlorn;
 
 public class SpawnInit {
     
-    public static int spawnRateChungus = ConfigConstructor.moderatly_sized_chungus_spawnweight;
-    public static int spawnRateDemon = ConfigConstructor.withered_demon_spawnweight;
-    public static int spawnRateForlorn = ConfigConstructor.evil_forlorn_spawnweight;
+    public static int spawnRateChungus = (int) ConfigConstructor.moderatly_sized_chungus_spawnweight;
+    public static int spawnRateDemon = (int) ConfigConstructor.withered_demon_spawnweight;
+    public static int spawnRateForlorn = (int) ConfigConstructor.evil_forlorn_spawnweight;
 
     public static void init() {
 

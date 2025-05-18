@@ -25,7 +25,7 @@ public class ChainLightningEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.chain_lightning_enchant_max_level;
+        return (int) ConfigConstructor.chain_lightning_enchant_max_level;
     }
 
     @Override

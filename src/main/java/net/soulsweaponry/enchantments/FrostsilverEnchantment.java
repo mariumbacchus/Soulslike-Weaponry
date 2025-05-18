@@ -20,7 +20,7 @@ public class FrostsilverEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return ConfigConstructor.frostsilver_enchant_max_level;
+        return (int) ConfigConstructor.frostsilver_enchant_max_level;
     }
 
     @Override

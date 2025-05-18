@@ -22,7 +22,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
 
     public NightsEdgeItem(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.NIGHTS_EDGE, TooltipAbilities.BLIGHT);
     }
 
@@ -85,8 +85,8 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     }
 
     protected int getScaledCooldown(ItemStack stack) {
-        int base = ConfigConstructor.nights_edge_ability_cooldown;
-        return Math.max(ConfigConstructor.nights_edge_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 8);
+        float base = ConfigConstructor.nights_edge_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.nights_edge_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 8);
     }
 
     @Override

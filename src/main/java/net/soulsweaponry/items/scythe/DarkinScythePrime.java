@@ -13,7 +13,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class DarkinScythePrime extends UmbralTrespassItem {
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.darkin_scythe_prime_attack_speed, settings, ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
+        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings, (int) ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
         this.addTooltipAbility(TooltipAbilities.OMNIVAMP);
     }
 
@@ -24,7 +24,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
         }
         if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyItemCooldown(player, Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
+                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
                 float healing = ConfigConstructor.lifesteal_item_base_healing;
                 if (ConfigConstructor.lifesteal_item_heal_scales) {
                     healing += MathHelper.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
@@ -52,7 +52,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
 
     @Override
     public int getAbilityCooldown(ItemStack stack) {
-        return Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, ConfigConstructor.darkin_scythe_prime_ability_cooldown
+        return (int) Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, ConfigConstructor.darkin_scythe_prime_ability_cooldown
                 - this.getReduceCooldownEnchantLevel(stack) * 25);
     }
 

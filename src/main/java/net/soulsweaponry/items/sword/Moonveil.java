@@ -17,7 +17,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class Moonveil extends ChargeToUseItem {
 
     public Moonveil(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.moonveil_damage, ConfigConstructor.moonveil_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.moonveil_damage, ConfigConstructor.moonveil_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT);
     }
 
@@ -44,7 +44,7 @@ public class Moonveil extends ChargeToUseItem {
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL, SoundCategory.PLAYERS, 1f, 1f);
                 }
                 stack.damage(3, player, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
-                this.applyItemCooldown(player, ConfigConstructor.moonveil_ability_cooldown);
+                this.applyItemCooldown(player, (int) ConfigConstructor.moonveil_ability_cooldown);
             }
         }
     }

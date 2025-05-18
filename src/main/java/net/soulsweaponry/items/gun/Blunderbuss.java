@@ -20,7 +20,7 @@ public class Blunderbuss extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.blunderbuss_posture_loss + lvl * ConfigConstructor.blunderbuss_posture_loss_per_enchant_level;
+        return (int) (ConfigConstructor.blunderbuss_posture_loss + lvl * ConfigConstructor.blunderbuss_posture_loss_per_enchant_level);
     }
 
     @Override
@@ -40,12 +40,12 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return ConfigConstructor.blunderbuss_cooldown - this.getReducedCooldown(stack);
+        return (int) (ConfigConstructor.blunderbuss_cooldown - this.getReducedCooldown(stack));
     }
 
     @Override
     public int getBulletsNeeded() {
-        return ConfigConstructor.blunderbuss_bullets_needed;
+        return (int) ConfigConstructor.blunderbuss_bullets_needed;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Blunderbuss extends GunItem {
         }
         ItemStack itemStack = this.canShoot(user, stack);
         if (itemStack != null) {
-            int projectileCount = ConfigConstructor.blunderbuss_projectile_amount + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2;
+            int projectileCount = (int) (ConfigConstructor.blunderbuss_projectile_amount + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2f);
             for (int i = 0; i < projectileCount; i++) {
                 PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
                 world.spawnEntity(entity);

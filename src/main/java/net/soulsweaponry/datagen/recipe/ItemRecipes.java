@@ -10,6 +10,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
@@ -185,7 +186,7 @@ public class ItemRecipes {
                 .input(ItemRegistry.ESSENCE_OF_LUMINESCENCE)
                 .input(ItemRegistry.WITHERED_DEMON_HEART)
                 .input(ItemRegistry.ARKENSTONE)
-                .input(ItemRegistry.CHAOS_CROWN)
+                .input(ArmorRegistry.CHAOS_CROWN)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ESSENCE_OF_LUMINESCENCE).build()))
                 .offerTo(consumer);

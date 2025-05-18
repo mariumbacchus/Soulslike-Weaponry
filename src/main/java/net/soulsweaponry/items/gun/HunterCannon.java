@@ -24,7 +24,7 @@ public class HunterCannon extends GunItem {
     @Override
     public int getPostureLoss(ItemStack stack) {
         int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return ConfigConstructor.hunter_cannon_posture_loss + lvl * ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level;
+        return (int) (ConfigConstructor.hunter_cannon_posture_loss + lvl * ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level);
     }
 
     @Override
@@ -44,12 +44,12 @@ public class HunterCannon extends GunItem {
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50;
+        return (int) (ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50);
     }
 
     @Override
     public int getBulletsNeeded() {
-        return ConfigConstructor.hunter_cannon_bullets_needed;
+        return (int) ConfigConstructor.hunter_cannon_bullets_needed;
     }
 
     @Override
