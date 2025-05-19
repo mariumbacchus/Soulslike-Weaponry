@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.util.Identifier;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.ModTags;
 
@@ -48,6 +49,9 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.FROST_GIANT)
                 .add(EntityRegistry.RIME_SPECTRE);
         this.getOrCreateTagBuilder(ModTags.Entities.DRAGONS)
-                .add(EntityType.ENDER_DRAGON);
+                .add(EntityType.ENDER_DRAGON)
+                .addOptional(new Identifier("iceandfire", "ice_dragon"))
+                .addOptional(new Identifier("iceandfire", "fire_dragon"))
+                .addOptional(new Identifier("iceandfire", "lightning_dragon"));
     }
 }
