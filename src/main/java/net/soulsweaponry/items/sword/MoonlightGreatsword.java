@@ -43,7 +43,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
+                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.getProjectileVelocity(), 1.0F);
                 entity.setDamage(this.getProjectileDamage());
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
@@ -82,5 +82,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
 
     public float getProjectileDamage() {
         return ConfigConstructor.moonlight_greatsword_projectile_damage;
+    }
+
+    public float getProjectileVelocity() {
+        return ConfigConstructor.moonlight_greatsword_projectile_velocity;
     }
 }

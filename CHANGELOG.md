@@ -38,6 +38,10 @@ If you tried to change an int value to a float on a line that would not accept i
 - Hallowheart makes the wearer completely immune to Wither effect at all times instead of just under 50% health
 - Arkenplate also gives Magic Resistance 2 under 50% health
 - Enhanced Arkenplates Mirror ability triggers at under 50% health instead of 33%
+- Added Ice and Fire dragons to the tag Dragon's Scourge ability checks to apply bonus damage (Dragonslayer Swordspear and Heap of Raw Iron have this ability)
+- Added velocity config lines for moonlight projectiles
+- Added config lines for Lunar Herald amplifier and duration applied by the Lunar Ring (moonstone_ring)
+  - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

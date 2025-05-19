@@ -33,4 +33,9 @@ public class BluemoonShortsword extends MoonlightShortsword {
     public float getProjectileDamage() {
         return ConfigConstructor.bluemoon_shortsword_projectile_damage;
     }
+
+    @Override
+    public float getProjectileVelocity() {
+        return ConfigConstructor.bluemoon_shortsword_projectile_velocity;
+    }
 }

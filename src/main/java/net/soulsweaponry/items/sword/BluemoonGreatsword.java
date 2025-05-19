@@ -58,4 +58,9 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     public float getProjectileDamage() {
         return ConfigConstructor.bluemoon_greatsword_projectile_damage;
     }
+
+    @Override
+    public float getProjectileVelocity() {
+        return ConfigConstructor.bluemoon_greatsword_projectile_velocity;
+    }
 }
