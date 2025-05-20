@@ -17,7 +17,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -30,6 +29,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
+import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -370,12 +370,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
             }
         }
         if (this.isEmpowered()) {
-            if (this.isPhaseTwo()) {
-                if (this.getHealth() < this.getMaxHealth() && this.age % 10 == 0) {
-                    this.heal(1f);
-                }
-            }
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1, false, false));
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTwoTicks++;
@@ -558,6 +554,12 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && !this.isFlying()) {
             amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
                     ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
+            if (source.getAttacker() instanceof LivingEntity attacker && this.getHealth() < this.getMaxHealth() * ConfigConstructor.day_stalker_projectile_cause_air_combustion_below_percent_health) {
+                AirCombustion airCombustion = new AirCombustion(this.getWorld(), this, 35f * ConfigConstructor.day_stalker_damage_modifier, this.isPhaseTwo() ? 5f : 3f, 12);
+                airCombustion.setPos(attacker.getX(), attacker.getY(), attacker.getZ());
+                airCombustion.setEmpowered(this.isEmpowered());
+                this.getWorld().spawnEntity(airCombustion);
+            }
         }
         return super.damage(source, amount);
     }

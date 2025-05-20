@@ -27,6 +27,8 @@ If you tried to change an int value to a float on a line that would not accept i
   - Due to this the config line ```chain_lightning_enchant_damage_per_level``` has been replaced with ```chain_lightning_enchant_damage_mod_per_level```
 - Bullets with Ethereal enchant are now rendered translucent
 - Bullets now spawn Soul Fire Flame particles upon de-spawn
+- Explosive Rounds enchantment no longer breaks blocks around the target hit with the explosion
+  - Added config line to toggle this (when on, the explosion counts as a mob, so gamerule doMobGriefing can also be used to turn off)
 - Added config lines for the max enchant levels for all enchants (where it matters)
 - The max age of bullets has been reduced from 100 -> 60 (ticks) (ethereal makes it 25 like before)
   - For cannonballs: 100 -> 60 (ticks) with Ethereal enchant, 300 -> 120 (ticks) otherwise
@@ -38,10 +40,22 @@ If you tried to change an int value to a float on a line that would not accept i
 - Hallowheart makes the wearer completely immune to Wither effect at all times instead of just under 50% health
 - Arkenplate also gives Magic Resistance 2 under 50% health
 - Enhanced Arkenplates Mirror ability triggers at under 50% health instead of 33%
+- Soul Robes set gives Magic Resistance 3 instead of 2 (60% reduced magic damage)
+- Armor that grants effects no longer display potion particles
 - Added Ice and Fire dragons to the tag Dragon's Scourge ability checks to apply bonus damage (Dragonslayer Swordspear and Heap of Raw Iron have this ability)
 - Added velocity config lines for moonlight projectiles
 - Added config lines for Lunar Herald amplifier and duration applied by the Lunar Ring (moonstone_ring)
   - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
+- Changed Night Prowler's Darkness Rise attack to spawn delayed Blackflame Snake explosions instead of applying continuous Decay effect
+- Night Prowler will heal from projectiles at under 50% health instead of 16.7%
+- Changed Day Stalker attacks
+  - No longer heals when empowered, gains Speed II instead
+  - Sky High ability summon waves of Flame Pillars on landing
+  - Air Combustion attack has bigger radius
+  - Getting hit by a projectile under 50% health makes Day Stalker retaliate by spawning an Air Combustion on the attacker
+  - Buffed the range of Flames Edge attack
+  - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
+  - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

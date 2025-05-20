@@ -76,5 +76,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.SILVER_ARROW, SilverArrowRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.FROZEN_LIGHTNING, FrozenLightningRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHUNGUS_HEAD, ChungusHeadRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.AIR_COMBUSTION, EmptyEntityRenderer::new);
     }
 }

@@ -53,7 +53,7 @@ public class SoulIngotArmor extends SetBonusArmor {
     @Override
     protected StatusEffectInstance[] getFullSetEffects() {
         return new StatusEffectInstance[] {
-                new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 0)
+                new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 0, false, false)
         };
     }
 

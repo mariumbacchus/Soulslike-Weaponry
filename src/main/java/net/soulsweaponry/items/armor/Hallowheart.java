@@ -59,7 +59,7 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH, (int) ConfigConstructor.withered_chest_life_leach_duration, (int) ConfigConstructor.withered_chest_life_leach_amplifier));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH, (int) ConfigConstructor.withered_chest_life_leach_duration, (int) ConfigConstructor.withered_chest_life_leach_amplifier, false, false));
             player.getItemCooldownManager().set(stack.getItem(), (int) Math.max(ConfigConstructor.withered_chest_ability_min_cooldown,
                     ConfigConstructor.withered_chest_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 60));
             world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);

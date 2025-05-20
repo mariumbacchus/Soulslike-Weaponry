@@ -54,8 +54,8 @@ public class SoulRobesArmor extends SetBonusArmor {
     @Override
     protected StatusEffectInstance[] getFullSetEffects() {
         return new StatusEffectInstance[] {
-                new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0),
-                new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, 1)
+                new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0, false, false),
+                new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, 2, false, false)
         };
     }
 

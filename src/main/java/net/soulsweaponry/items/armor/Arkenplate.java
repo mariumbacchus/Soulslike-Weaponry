@@ -47,8 +47,8 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (entity instanceof PlayerEntity player && player.getHealth() <= player.getMaxHealth() / 2f && this.isSlotActive(player, EquipmentSlot.CHEST)) {
             ItemStack chest = player.getInventory().getArmorStack(2);
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1));
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, 1));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1, false, false));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, 1, false, false));
             if (!world.isClient && !player.getItemCooldownManager().isCoolingDown(chest.getItem()) && player.getAttacker() != null) {
                 this.shockwave(world, player);
             }

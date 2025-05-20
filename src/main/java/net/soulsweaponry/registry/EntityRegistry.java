@@ -93,6 +93,7 @@ public class EntityRegistry {
     public static final EntityType<SilverArrow> SILVER_ARROW = registerEntity("silver_arrow", FabricEntityTypeBuilder.<SilverArrow>create(SpawnGroup.MISC, SilverArrow::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(4).trackedUpdateRate(20).build());
     public static final EntityType<FrozenLightning> FROZEN_LIGHTNING = registerEntity("frozen_lightning", FabricEntityTypeBuilder.<FrozenLightning>create(SpawnGroup.MISC, FrozenLightning::new).dimensions(EntityDimensions.fixed(2f, 5f)).trackRangeChunks(16).trackedUpdateRate(20).build());
     public static final EntityType<TntEntity> CHUNGUS_HEAD = registerEntity("chungus_head", FabricEntityTypeBuilder.<TntEntity>create(SpawnGroup.MISC, TntEntity::new).dimensions(EntityDimensions.fixed(1f, 1f)).trackRangeChunks(16).trackedUpdateRate(20).build());
+    public static final EntityType<AirCombustion> AIR_COMBUSTION = registerEntity("air_combustion", FabricEntityTypeBuilder.<AirCombustion>create(SpawnGroup.MISC, AirCombustion::new).dimensions(EntityDimensions.changing(1f, 1f)).trackRangeChunks(16).trackedUpdateRate(20).build());
 
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new FabricItemSettings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new FabricItemSettings());

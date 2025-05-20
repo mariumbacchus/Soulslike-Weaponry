@@ -282,7 +282,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         }
         if (this.explosionPower > 0f && !this.getWorld().isClient) {
             ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, World.ExplosionSourceType.MOB);
+            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.NONE);
         }
         this.discard();
     }

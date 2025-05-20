@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -70,6 +71,11 @@ public abstract class NoClipEntity extends PersistentProjectileEntity {
     @Override
     protected boolean tryPickup(PlayerEntity player) {
         return false;
+    }
+
+    @Override
+    public PistonBehavior getPistonBehavior() {
+        return PistonBehavior.IGNORE;
     }
 
     @Override

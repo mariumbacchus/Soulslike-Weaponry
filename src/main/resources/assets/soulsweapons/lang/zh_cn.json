@@ -246,6 +246,7 @@
     "entity.soulsweapons.blackflame_explosion_entity": "Blackflame Explosion",
     "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
+    "entity.soulsweapons.air_combustion": "Air Combustion",
 
     "death.attack.bleed": "%1$s流血至死",
     "death.attack.bleed.player": "%1$s流血至死",

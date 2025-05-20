@@ -694,6 +694,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
 
     @Entry(min=0) public static float explosive_rounds_enchant_max_level = 3;
+    @Entry(min=0) public static boolean explosive_rounds_enchant_destroys_blocks = false;
 
     @Entry(min=0) public static float fast_hands_enchant_max_level = 3;
 
@@ -891,6 +892,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean day_stalker_is_fire_immune = true;
     @Entry public static boolean day_stalker_is_undead = false;
     @Entry public static String day_stalker_group_type = "DEFAULT";
+    @Entry(min=0, max=1) public static double day_stalker_projectile_cause_air_combustion_below_percent_health = 0.5;
     @Entry public static String[] day_stalker_status_effect_blacklist = {};
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_2 = 1D;
@@ -902,7 +904,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min=0) public static float night_prowler_eclipse_healing = 3f;
     @Entry(min=0) public static boolean night_prowler_eclipse_skulls_glow = false;
-    @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.1667f;
+    @Entry(min=0, max=1) public static double night_prowler_projectile_heal_below_percent_health = 0.5;
     @Entry public static String[] night_prowler_projectile_immunity_whitelist = {};
     @Entry(min=0) public static float night_prowler_projectile_heal_amount = 5f;
     @Entry(min=0) public static double night_prowler_teleport_chance = 0.3D;

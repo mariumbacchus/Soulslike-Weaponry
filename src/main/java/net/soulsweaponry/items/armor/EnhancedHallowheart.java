@@ -30,15 +30,15 @@ public class EnhancedHallowheart extends Hallowheart {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0, false, false));
             if (player.isOnFire() && player.age % 30 == 0) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0, false, false));
             }
             if (player.getHealth() < player.getMaxHealth() * ConfigConstructor.withered_chest_strength_trigger_percent_1) {
                 if (player.getHealth() < player.getMaxHealth() * ConfigConstructor.withered_chest_strength_trigger_percent_2) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 1));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 1, false, false));
                 } else {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0, false, false));
                 }
             }
         }

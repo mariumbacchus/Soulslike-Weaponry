@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +11,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.util.TooltipAbilities;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,11 +75,5 @@ public abstract class SetBonusArmor extends ModdedArmor implements ITooltipInfo 
         }
         tooltip.addAll(Arrays.asList(this.getCustomTooltips()));
         return tooltip.toArray(new Text[0]);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        this.appendTooltipAbilities(stack, world, tooltip, context);
     }
 }
