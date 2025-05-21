@@ -56,6 +56,10 @@ If you tried to change an int value to a float on a line that would not accept i
   - Buffed the range of Flames Edge attack
   - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
   - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
+- Added new Withered Wabbajack on entity hit effects:
+  - Chance to launch the target in the air with random launch power
+  - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
+  - Adjusted how the chances for the effects are calculated with weights
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

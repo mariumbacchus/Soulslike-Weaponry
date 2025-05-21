@@ -96,7 +96,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                             }
                         });
                     }
-                    case LAUNCH -> target.addVelocity(0, power * 0.1f, 0);
+                    case LAUNCH -> target.addVelocity(0, power * 0.05f, 0);
                     case CHUNGUS_TONIC -> target.addStatusEffect(new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 200, 0));
                     default -> { // RANDOM_DAMAGE
                         if (power > 50) {
@@ -314,9 +314,9 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     static {
         ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_EFFECT_TARGET, WeaponUtil.LuckType.NEUTRAL, 40));
         ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_EFFECT_USER, WeaponUtil.LuckType.NEUTRAL, 30));
-        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.DROP_ARMOR, WeaponUtil.LuckType.NEUTRAL, 10));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.DROP_ARMOR, WeaponUtil.LuckType.NEUTRAL, 5));
         ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_DAMAGE, WeaponUtil.LuckType.NEUTRAL, 40));
-        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.LAUNCH, WeaponUtil.LuckType.NEUTRAL, 20));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.LAUNCH, WeaponUtil.LuckType.NEUTRAL, 10));
         ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.CHUNGUS_TONIC, WeaponUtil.LuckType.NEUTRAL, 10));
     }
 

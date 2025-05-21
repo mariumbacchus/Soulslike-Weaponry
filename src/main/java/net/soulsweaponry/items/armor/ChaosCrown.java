@@ -27,10 +27,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -54,12 +51,16 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.HEAD)) {
-            if (!player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
-                player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).addPersistentModifier(LUCK_MODIFIER);
-            }
-            if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_HELMET)) {
-                this.flipEffects(player);
+        if (entity instanceof PlayerEntity player) {
+            if (this.isSlotActive(player, EquipmentSlot.HEAD)) {
+                if (!player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
+                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).addPersistentModifier(LUCK_MODIFIER);
+                }
+                if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_HELMET)) {
+                    this.flipEffects(player);
+                }
+            } else {
+                Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_LUCK)).removeModifier(LUCK_MODIFIER);
             }
         }
     }
