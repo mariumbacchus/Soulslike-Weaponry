@@ -23,6 +23,10 @@ public interface ITooltipInfo {
         return new Text[0];
     }
 
+    default boolean removeTooltipAbility(TooltipAbilities ability) {
+        return this.getTooltipAbilities().remove(ability);
+    }
+
     /**
      * Adds all tooltip abilities listed in {@link #getTooltipAbilities()} and {@link #getAdditionalTooltips()} to the
      * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.

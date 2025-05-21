@@ -61,12 +61,7 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    protected StatusEffectInstance[] getFullSetEffects() {
-        return new StatusEffectInstance[0];
-    }
-
-    @Override
-    protected Text[] getCustomTooltips() {
+    public Text[] getFullSetAbilities() {
         return new Text[] {
                 Text.translatable("tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal").formatted(Formatting.GRAY)
         };

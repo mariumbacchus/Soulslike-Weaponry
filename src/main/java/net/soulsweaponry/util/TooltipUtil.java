@@ -3,6 +3,7 @@ package net.soulsweaponry.util;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -12,6 +13,7 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
@@ -21,6 +23,7 @@ import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +40,15 @@ public class TooltipUtil {
 
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case SET_BONUS -> {
+                if (stack.getItem() instanceof SetBonusArmor armor) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
+                    for (StatusEffectInstance effect : armor.getFullSetEffects()) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
+                    }
+                    tooltip.addAll(Arrays.asList(armor.getFullSetAbilities()));
+                }
+            }
             case EXALT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt").formatted(Formatting.RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.1").formatted(Formatting.GRAY));

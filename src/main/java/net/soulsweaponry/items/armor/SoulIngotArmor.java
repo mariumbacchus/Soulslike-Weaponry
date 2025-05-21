@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
@@ -51,15 +50,10 @@ public class SoulIngotArmor extends SetBonusArmor {
     }
 
     @Override
-    protected StatusEffectInstance[] getFullSetEffects() {
+    public StatusEffectInstance[] getFullSetEffects() {
         return new StatusEffectInstance[] {
                 new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 0, false, false)
         };
-    }
-
-    @Override
-    protected Text[] getCustomTooltips() {
-        return new Text[0];
     }
 
     @Override
