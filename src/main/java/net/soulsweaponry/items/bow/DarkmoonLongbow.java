@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -64,7 +63,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
     }
 
     @Override

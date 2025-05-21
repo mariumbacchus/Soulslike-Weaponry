@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -26,5 +25,5 @@ public interface IKeybindAbility {
      * @param stack item stack
      * @param player client player
      */
-    void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player);
+    void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player);
 }

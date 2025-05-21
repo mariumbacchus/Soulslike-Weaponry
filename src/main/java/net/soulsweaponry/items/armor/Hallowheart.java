@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -77,7 +76,7 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {}
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
 
     public PlayState soulsAnimation(AnimationState<?> event) {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));

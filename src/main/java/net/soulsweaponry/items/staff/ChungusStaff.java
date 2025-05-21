@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.staff;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -102,7 +101,7 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
         if (this.isDisabled(stack) || player.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             return;
         }
