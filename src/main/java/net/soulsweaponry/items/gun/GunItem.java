@@ -43,7 +43,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     
     @Override
     public Predicate<ItemStack> getProjectiles() {
-        return (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET) && stack.getCount() >= this.getBulletsNeeded();
+        return (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET) && stack.getCount() >= this.getBulletsNeeded(stack);
     }
 
     public int getReducedCooldown(ItemStack stack) {
@@ -55,11 +55,16 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     public abstract float getBulletVelocity(ItemStack stack);
     public abstract float getBulletDivergence(ItemStack stack);
     public abstract int getCooldown(ItemStack stack);
-    public abstract int getBulletsNeeded();
+
     @Override
     public abstract boolean isFireproof();
+
     public int getMaxUseTime(ItemStack stack) {
         return 0;
+    }
+
+    public int getBulletsNeeded(ItemStack stack) {
+        return 1;
     }
 
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
@@ -126,15 +131,17 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
 
     @Nullable
     public ItemStack canShoot(PlayerEntity user, ItemStack stack) {
-        boolean bl = user.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        ItemStack bullet = this.getProjectileType(user);
+        boolean bl = user.getAbilities().creativeMode;
+        ItemStack bullet = this.getProjectileType(user, stack);
         if (!bullet.isEmpty() || bl) {
             if (bullet.isEmpty()) {
                 return new ItemStack(ItemRegistry.SILVER_BULLET);
             }
-            int toRemove = this.getBulletsNeeded();
+            int toRemove = bl ? 0 : this.getBulletsNeeded(stack);
             Item bulletItem = ItemRegistry.SILVER_BULLET;
-
+            if (EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0) {
+                return bullet;
+            }
             for (int slot = 0; slot < user.getInventory().size() && toRemove > 0; slot++) {
                 ItemStack slotStack = user.getInventory().getStack(slot);
                 if (slotStack.isOf(bulletItem)) {
@@ -148,8 +155,8 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         return null;
     }
 
-    public ItemStack getProjectileType(PlayerEntity player) {
-        int needed = this.getBulletsNeeded();
+    public ItemStack getProjectileType(PlayerEntity player, ItemStack stack) {
+        int needed = this.getBulletsNeeded(stack);
         Item bulletItem = ItemRegistry.SILVER_BULLET;
         Predicate<ItemStack> heldPred = this.getHeldProjectiles();
         ItemStack held = RangedWeaponItem.getHeldProjectile(player, heldPred);

@@ -48,8 +48,8 @@ public class HunterCannon extends GunItem {
     }
 
     @Override
-    public int getBulletsNeeded() {
-        return (int) ConfigConstructor.hunter_cannon_bullets_needed;
+    public int getBulletsNeeded(ItemStack stack) {
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? super.getBulletsNeeded(stack) : (int) ConfigConstructor.hunter_cannon_bullets_needed;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class HunterCannon extends GunItem {
 
     @Override
     public int getStackDamageToApply() {
-        return this.getBulletsNeeded();
+        return this.getBulletsNeeded(this.getDefaultStack());
     }
 
     @Override

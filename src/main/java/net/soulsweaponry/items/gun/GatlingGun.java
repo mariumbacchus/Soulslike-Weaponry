@@ -49,8 +49,8 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int getBulletsNeeded() {
-        return (int) ConfigConstructor.gatling_gun_bullets_needed;
+    public int getBulletsNeeded(ItemStack stack) {
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? super.getBulletsNeeded(stack) : (int) ConfigConstructor.gatling_gun_bullets_needed;
     }
 
     @Override

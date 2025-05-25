@@ -1,6 +1,7 @@
 package net.soulsweaponry.items.gun;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -43,8 +44,8 @@ public class HunterPistol extends GunItem {
     }
 
     @Override
-    public int getBulletsNeeded() {
-        return (int) ConfigConstructor.hunter_pistol_bullets_needed;
+    public int getBulletsNeeded(ItemStack stack) {
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? super.getBulletsNeeded(stack) : (int) ConfigConstructor.hunter_pistol_bullets_needed;
     }
 
     @Override
