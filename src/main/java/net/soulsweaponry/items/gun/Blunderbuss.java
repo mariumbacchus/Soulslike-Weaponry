@@ -69,7 +69,7 @@ public class Blunderbuss extends GunItem {
             }
             this.spawnShotParticles(world, user, 50, 0.2f);
             this.postShot(world, user, stack);
-            return TypedActionResult.success(stack, world.isClient());
+            return TypedActionResult.consume(stack);
         }
         return TypedActionResult.fail(stack);
     }

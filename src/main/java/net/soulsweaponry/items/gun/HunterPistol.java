@@ -66,7 +66,7 @@ public class HunterPistol extends GunItem {
             PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
             world.spawnEntity(entity);
             this.postShot(world, user, stack);
-            return TypedActionResult.success(stack, world.isClient());
+            return TypedActionResult.consume(stack);
         }
         return TypedActionResult.fail(stack);
     }

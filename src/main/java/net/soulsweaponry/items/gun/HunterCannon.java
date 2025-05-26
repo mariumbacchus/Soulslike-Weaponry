@@ -71,7 +71,7 @@ public class HunterCannon extends GunItem {
             world.spawnEntity(entity);
             WeaponUtil.launchTarget(user, 2f, true);
             this.postShot(world, user, stack);
-            return TypedActionResult.success(stack, world.isClient());
+            return TypedActionResult.consume(stack);
         }
         return TypedActionResult.fail(stack);
     }

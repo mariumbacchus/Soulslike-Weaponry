@@ -22,6 +22,7 @@ If you tried to change an int value to a float on a line that would not accept i
 - Guns can no longer have bow enchants, and Punch & Flame no longer affects guns and Silver Bullets (Power & Infinity still work)
 - Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
 - Infinity on guns makes them properly only need 1 bullet to fire and doesn't consume it either
+- Changed the use animation of guns
 - Adjusted the position of the Gatling Gun when using in first person (now centered more)
 - Adjusted the particle spread of the guns
 - Adjusted Chain Lightning enchantment to do damage scaling off of the damage to the projectile instead of a constant value
