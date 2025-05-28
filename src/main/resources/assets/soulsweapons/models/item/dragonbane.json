@@ -1,0 +1,119 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "soulsweapons:item/dragonbane",
+		"particle": "soulsweapons:item/dragonbane"
+	},
+	"elements": [
+		{
+			"name": "Blade",
+			"from": [7.5, 1, 7],
+			"to": [8.5, 23, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+			"faces": {
+				"north": {"uv": [9.5, 12, 10, 0], "texture": "#0"},
+				"east": {"uv": [9.5, 12, 8, 0], "texture": "#0"},
+				"south": {"uv": [11.5, 12, 12, 0], "texture": "#0"},
+				"west": {"uv": [10, 12, 11.5, 0], "texture": "#0"},
+				"up": {"uv": [6.5, 5, 6, 3.5], "texture": "#0"},
+				"down": {"uv": [7, 3.5, 6.5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Blade",
+			"from": [7.5, 23, 8],
+			"to": [8.5, 26, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+			"faces": {
+				"north": {"uv": [7, 7.5, 8, 10], "texture": "#0"},
+				"east": {"uv": [6, 5, 7, 7.5], "texture": "#0"},
+				"south": {"uv": [7, 5, 8, 7.5], "texture": "#0"},
+				"west": {"uv": [7, 7.5, 6, 10], "texture": "#0"},
+				"up": {"uv": [7, 4, 6.5, 3.5], "texture": "#0"},
+				"down": {"uv": [6.5, 6.5, 6, 7], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Handle",
+			"from": [7, -9, 7],
+			"to": [9, 0, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 1.5, 5], "texture": "#0"},
+				"east": {"uv": [3, 0, 4.5, 5], "texture": "#0"},
+				"south": {"uv": [4.5, 0, 6, 5], "texture": "#0"},
+				"west": {"uv": [1.5, 0, 3, 5], "texture": "#0"},
+				"up": {"uv": [6, 5, 5, 4], "texture": "#0"},
+				"down": {"uv": [7.5, 0, 6, 1.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Guard",
+			"from": [6.5, 0, 6],
+			"to": [9.5, 1, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8.25]},
+			"faces": {
+				"north": {"uv": [6, 3, 7.5, 3.5], "texture": "#0"},
+				"east": {"uv": [6, 2, 8, 2.5], "texture": "#0"},
+				"south": {"uv": [6, 2.5, 7.5, 3], "texture": "#0"},
+				"west": {"uv": [6, 1.5, 8, 2], "texture": "#0"},
+				"up": {"uv": [1.5, 7, 0, 5], "texture": "#0"},
+				"down": {"uv": [3, 5, 1.5, 7], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 8.25, 1.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 8.5, 1.5]
+		},
+		"firstperson_righthand": {
+			"translation": [3, 8.25, 0],
+			"scale": [0.9, 0.9, 0.9]
+		},
+		"firstperson_lefthand": {
+			"translation": [3, 8.25, 0],
+			"scale": [0.9, 0.9, 0.9]
+		},
+		"ground": {
+			"rotation": [45, 0, 0],
+			"translation": [0, 2.75, 0],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"gui": {
+			"rotation": [-90, -45, -90],
+			"scale": [0.7, 0.6, 0.6]
+		},
+		"head": {
+			"translation": [0, 0, -7.5]
+		},
+		"fixed": {
+			"rotation": [-90, 45, 90],
+			"scale": [0.6, 0.7, 0.7]
+		}
+	},
+	"groups": [
+		{
+			"name": "Katana",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "Blade",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				},
+				{
+					"name": "Handle",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [2, 3]
+				}
+			]
+		}
+	]
+}

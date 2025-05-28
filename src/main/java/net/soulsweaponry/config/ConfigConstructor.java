@@ -78,6 +78,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_excalibur = false;
     @Entry public static boolean disable_recipe_moonveil = false;
     @Entry public static boolean disable_recipe_simons_bowblade = false;
+    @Entry public static boolean disable_recipe_dragonbane = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -157,6 +158,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_moonveil = false;
     @Entry public static boolean disable_use_simons_bowblade = false;
     @Entry public static boolean disable_use_simons_blade = false;
+    @Entry public static boolean disable_use_dragonbane = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -219,6 +221,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_moonveil = true;
     @Entry public static boolean is_fireproof_simons_bowblade = false;
     @Entry public static boolean is_fireproof_simons_blade = false;
+    @Entry public static boolean is_fireproof_dragonbane = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -416,6 +419,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_damage_modifier = 0.2f;
     @Entry public static boolean heap_of_raw_iron_calculated_fall_should_heal = false;
     @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float dragonbane_damage = 9;
+    @Entry public static float dragonbane_attack_speed = 1.6f;
+    @Entry public static float dragonbane_dragons_scourge_bonus = 20f;
+    @Entry public static float dragonbane_chain_lightning_damage_per_level = 6f;
+    @Entry public static float dragonbane_chain_lightning_range_per_enchant_level = 2.25f;
+    @Entry public static boolean dragonbane_chain_lightning_enchant_can_boost = true;
+    @Entry public static String[] dragonbane_chain_lightning_boost_enchant = {"sweeping"};
     @Entry public static float dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
     @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;

@@ -7,6 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -15,6 +16,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.axe.LeviathanAxe;
@@ -34,8 +36,14 @@ public class ModifyDamageUtil {
      * @return new damage amount to be taken
      */
     public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
-        if (entity.getType().isIn(ModTags.Entities.DRAGONS) && source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().getItem() instanceof IDragonBonus dragonBonus) {
-            newAmount += dragonBonus.getDragonBonus(player.getMainHandStack());
+        if (source.getAttacker() instanceof PlayerEntity player) {
+            ItemStack heldStack = player.getMainHandStack();
+            Item item = heldStack.getItem();
+            if (entity.getType().isIn(ModTags.Entities.DRAGONS) && item instanceof IDragonBonus dragonBonus) {
+                if (!(item instanceof IConfigDisable configDisable && configDisable.isDisabled(heldStack))) {
+                    newAmount += dragonBonus.getDragonBonus(heldStack);
+                }
+            }
         }
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();

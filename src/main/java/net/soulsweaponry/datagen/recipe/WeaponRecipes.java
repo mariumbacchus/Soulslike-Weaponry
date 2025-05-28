@@ -413,6 +413,17 @@ public class WeaponRecipes {
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(Items.IRON_INGOT).build()))
                 .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAGONBANE)
+                .input('X', ModTags.Items.DRAGONBANE_MATERIAL)
+                .input('O', ModTags.Items.LORD_SOUL)
+                .input('/', ItemRegistry.SOUL_INGOT)
+                .input('S', Items.GOLD_INGOT)
+                .pattern(" XX")
+                .pattern("SO ")
+                .pattern("/  ")
+                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .offerTo(consumer);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, consumer);

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:netherite_ingot",
+    {
+      "id": "iceandfire:dragonbone",
+      "required": false
+    }
+  ]
+}

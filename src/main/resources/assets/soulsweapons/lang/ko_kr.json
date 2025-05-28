@@ -162,6 +162,7 @@
     "item.soulsweapons.moonveil": "Moonveil",
     "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
     "item.soulsweapons.simons_blade": "Simon's Blade",
+    "item.soulsweapons.dragonbane": "Dragonbane",
 
     "item.soulsweapons.big_chungus_spawn_egg": "중간 크기의 청거스 생성 알",
     "item.soulsweapons.withered_demon_spawn_egg": "시든 악마 생성 알",
@@ -816,6 +817,8 @@
     "tooltip.soulsweapons.dragons_bane": "Dragon's Scourge",
     "tooltip.soulsweapons.dragons_bane.1": "- Deal %s more damage against dragons",
     "tooltip.soulsweapons.dragons_bane.2": "Scales with Sweeping Edge level",
+    "tooltip.soulsweapons.chain_lightning": "Chain Lightning",
+    "tooltip.soulsweapons.chain_lightning.1": "- Damage mobs near the main target with soul infused lightning",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "희귀한 형태의 영혼으로, 멸종된 것으로 여겨집니다.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "어두우면서도 균형 잡힌 색조는",

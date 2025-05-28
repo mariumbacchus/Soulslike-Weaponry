@@ -157,6 +157,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "dragonbane": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:dragonbane"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dragonslayer_swordspear": {
       "conditions": {
         "items": [
@@ -722,6 +734,9 @@
     ],
     [
       "simons_blade"
+    ],
+    [
+      "dragonbane"
     ]
   ],
   "sends_telemetry_event": true

@@ -162,6 +162,7 @@
     "item.soulsweapons.moonveil": "Moonveil",
     "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
     "item.soulsweapons.simons_blade": "Simon's Blade",
+    "item.soulsweapons.dragonbane": "Dragonbane",
 
     "item.soulsweapons.big_chungus_spawn_egg": "中型蠢古斯兔刷怪蛋",
     "item.soulsweapons.withered_demon_spawn_egg": "凋零恶魔刷怪蛋",
@@ -728,6 +729,8 @@
     "tooltip.soulsweapons.dragons_bane": "Dragon's Scourge",
     "tooltip.soulsweapons.dragons_bane.1": "- Deal %s more damage against dragons",
     "tooltip.soulsweapons.dragons_bane.2": "Scales with Sweeping Edge level",
+    "tooltip.soulsweapons.chain_lightning": "Chain Lightning",
+    "tooltip.soulsweapons.chain_lightning.1": "- Damage mobs near the main target with soul infused lightning",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

@@ -163,6 +163,7 @@
     "item.soulsweapons.moonveil": "Moonveil",
     "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
     "item.soulsweapons.simons_blade": "Simon's Blade",
+    "item.soulsweapons.dragonbane": "Dragonbane",
 
     "item.soulsweapons.big_chungus_spawn_egg": "チャンガスのスポーンエッグ",
     "item.soulsweapons.withered_demon_spawn_egg": "枯れたデーモンのスポーンエッグ",
@@ -729,6 +730,8 @@
     "tooltip.soulsweapons.dragons_bane": "Dragon's Scourge",
     "tooltip.soulsweapons.dragons_bane.1": "- Deal %s more damage against dragons",
     "tooltip.soulsweapons.dragons_bane.2": "Scales with Sweeping Edge level",
+    "tooltip.soulsweapons.chain_lightning": "Chain Lightning",
+    "tooltip.soulsweapons.chain_lightning.1": "- Damage mobs near the main target with soul infused lightning",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "絶滅したと考えられている珍しい形の魂。",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "暗く、しかしバランスの取れた色は、",

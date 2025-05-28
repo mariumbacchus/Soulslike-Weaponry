@@ -163,6 +163,7 @@
   "item.soulsweapons.moonveil": "Moonveil",
   "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
   "item.soulsweapons.simons_blade": "Simon's Blade",
+  "item.soulsweapons.dragonbane": "Dragonbane",
 
   "item.soulsweapons.big_chungus_spawn_egg": "Generar Chungus de Tamaño Moderado",
   "item.soulsweapons.withered_demon_spawn_egg": "Generar Demonio Marchito",
@@ -731,6 +732,8 @@
   "tooltip.soulsweapons.dragons_bane": "Azote de Dragones",
   "tooltip.soulsweapons.dragons_bane.1": "- Inflige %s más daño contra dragones",
   "tooltip.soulsweapons.dragons_bane.2": "Escala con el nivel de Sweeping Edge",
+  "tooltip.soulsweapons.chain_lightning": "Chain Lightning",
+  "tooltip.soulsweapons.chain_lightning.1": "- Damage mobs near the main target with soul infused lightning",
 
   "tooltip.soulsweapons.lord_soul_purple.part_1": "Una forma rara de almas, que se cree extinta.",
   "tooltip.soulsweapons.lord_soul_purple.part_2": "Su color oscuro pero equilibrado sugiere",

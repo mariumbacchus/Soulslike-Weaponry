@@ -40,6 +40,10 @@ public class TooltipUtil {
 
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case CHAIN_LIGHTNING -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning").formatted(Formatting.AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning.1").formatted(Formatting.GRAY));
+            }
             case SET_BONUS -> {
                 if (stack.getItem() instanceof SetBonusArmor armor) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));

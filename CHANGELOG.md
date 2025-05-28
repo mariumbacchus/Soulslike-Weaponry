@@ -5,6 +5,7 @@
 If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
 
 
+- Added Dragonbane, a new katana from Skyrim having the Chain Lightning ability builtin and does 20 bonus damage to dragon entities, can be made with Netherite ingots or Dragon Bones from Ice & Fire (accepted material is inside soulsweapons:dragonbane_material item tag)
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
