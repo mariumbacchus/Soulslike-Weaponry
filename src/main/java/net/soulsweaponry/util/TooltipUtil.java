@@ -40,6 +40,25 @@ public class TooltipUtil {
 
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case ARMOR_BREAKER -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker.1").formatted(Formatting.GRAY));
+            }
+            case MOLTEN_EDGE -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge").formatted(Formatting.GOLD));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge.1").formatted(Formatting.GRAY));
+            }
+            case FLAMEBURST -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst").formatted(Formatting.RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.3").formatted(Formatting.GRAY));
+            }
+            case FIRETHORNS -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.2").formatted(Formatting.GRAY));
+            }
             case CHAIN_LIGHTNING -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning.1").formatted(Formatting.GRAY));

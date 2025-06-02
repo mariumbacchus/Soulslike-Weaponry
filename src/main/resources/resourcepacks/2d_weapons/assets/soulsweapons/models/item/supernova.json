@@ -1,0 +1,47 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+      "layer0": "soulsweapons:item/supernova"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, -90, 0],
+        "translation": [0.0, 5, 3.0],
+        "scale": [2.2, 2.2, 2.2]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, 90, 0],
+        "translation": [0.0, 5, 3.0],
+        "scale": [2.2, 2.2, 2.2]
+      },
+      "firstperson_righthand": {
+        "rotation": [0, -90, 0],
+        "translation": [3.0, 6, 0.0],
+        "scale": [1.5, 1.5, 1.5]
+      },
+      "firstperson_lefthand": {
+        "rotation": [0, 90, 0],
+        "translation": [3, 6, 0.0],
+        "scale": [1.5, 1.5, 1.5]
+      },
+      "head": {
+        "rotation": [ 45, 0, 0 ],
+        "translation": [ 0, 6, 0],
+        "scale":[ 1.8, 1.8, 1.8 ]
+      },
+      "ground": {
+        "rotation": [ 0, 0, 45 ],
+        "translation": [ 0, 3, 0],
+        "scale":[ 0.7, 0.7, 0.7 ]
+      },
+      "gui": {
+        "rotation": [0, 0, -45],
+        "translation": [0, -1, 0],
+        "scale": [1.2, 1.2, 1.2]
+      },
+      "fixed": {
+        "rotation": [ 0, 0, 45 ],
+        "scale": [ 1.2, 1.2, 1.2 ]
+      }
+    }
+}

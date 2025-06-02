@@ -24,6 +24,7 @@ import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.UntargetableFireball;
 import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
+import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -432,12 +433,10 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 BlockPos pos = new BlockPos(x, y, z);
                 for (BlockPos listPos : list) {
                     if (listPos != pos) {
-                        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, this.boss.getWorld());
+                        FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, radius, i * 2, this.boss.isPhaseTwo() ? DamagingWarmupEntityEvents.SPAWN_MOLTEN_METAL : DamagingWarmupEntityEvents.SPAWN_FIRE);
+                        pillar.setOtherAttributes(new DamagingWarmupEntityEvents.OtherAttributes(this.getModifiedDamage(6f), 3f));
                         pillar.setDamage(this.getModifiedDamage(48f));
                         pillar.setPos(x, y, z);
-                        pillar.setRadius(radius);
-                        pillar.setOwner(this.boss);
-                        pillar.setWarmup(i * 2);
                         this.boss.getWorld().spawnEntity(pillar);
                         i++;
                     }
@@ -912,13 +911,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     private void spawnFlamePillar(Vec3d vec, Integer warmup, Float yaw) {
-        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, this.boss.getWorld());
+        FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, 2.5f, warmup, DamagingWarmupEntityEvents.SPAWN_FIRE);
+        pillar.setYaw(yaw);
         pillar.setDamage(this.getModifiedDamage(40f));
         pillar.setPos(vec.getX(), vec.getY(), vec.getZ());
-        pillar.setRadius(2.5f);
         pillar.setParticleAmountMod(1.5f);
-        pillar.setOwner(this.boss);
-        pillar.setWarmup(warmup);
         this.boss.getWorld().spawnEntity(pillar);
         this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
     }

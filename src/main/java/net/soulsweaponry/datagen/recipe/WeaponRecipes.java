@@ -424,6 +424,18 @@ public class WeaponRecipes {
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(consumer);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SUPERNOVA)
+                .input('L', Items.MAGMA_BLOCK)
+                .input('N', Items.NETHERITE_INGOT)
+                .input('O', ModTags.Items.LORD_SOUL)
+                .input('B', Items.BLACKSTONE)
+                .input('S', Items.NETHERITE_SCRAP)
+                .pattern("LNL")
+                .pattern("SOS")
+                .pattern(" B ")
+                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .offerTo(consumer);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, consumer);

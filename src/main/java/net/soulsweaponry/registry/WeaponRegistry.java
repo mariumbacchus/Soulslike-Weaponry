@@ -14,6 +14,7 @@ import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
 import net.soulsweaponry.items.hammer.Mjolnir;
 import net.soulsweaponry.items.hammer.Nightfall;
+import net.soulsweaponry.items.hammer.Supernova;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.scythe.*;
 import net.soulsweaponry.items.spear.CometSpear;
@@ -82,6 +83,7 @@ public class WeaponRegistry {
     public static BowItem SIMONS_BOWBLADE = new SimonsBowblade(new FabricItemSettings().maxDamage(1354).rarity(Rarity.RARE), () -> Ingredient.ofItems(Items.IRON_BLOCK, ItemRegistry.SOUL_INGOT));
     public static TrickWeapon SIMONS_BLADE = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.simons_blade_damage,  ConfigConstructor.simons_blade_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.simons_blade_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_simons_blade, ConfigConstructor.disable_use_simons_blade);
     public static ToolItem DRAGONBANE = new Dragonbane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem SUPERNOVA = new Supernova(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
 
     public static void init() {
         ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword);
@@ -139,5 +141,6 @@ public class WeaponRegistry {
         ItemRegistry.registerLegendaryWeapon(SIMONS_BOWBLADE, "simons_bowblade", ConfigConstructor.disable_recipe_simons_bowblade);
         ItemRegistry.registerLegendaryItem(SIMONS_BLADE, "simons_blade"); // Switched to by Simon's Bowblade
         ItemRegistry.registerLegendaryWeapon(DRAGONBANE, "dragonbane", ConfigConstructor.disable_recipe_dragonbane);
+        ItemRegistry.registerLegendaryWeapon(SUPERNOVA, "supernova", ConfigConstructor.disable_recipe_supernova);
     }
 }

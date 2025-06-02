@@ -7,17 +7,21 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.DetonateGroundItem;
 import net.soulsweaponry.items.IUltraHeavy;
+import net.soulsweaponry.items.abilities.FireThorns;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -60,6 +64,15 @@ public class LivingEntityMixin {
             amp--;
             if (amp >= 0) {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, duration, amp));
+            }
+        }
+        // Do fire-thorns when wielding Supernova
+        if (source.getAttacker() instanceof LivingEntity attacker) {
+            for (Hand hand : Hand.values()) {
+                ItemStack stack = entity.getStackInHand(hand);
+                if (stack.isOf(WeaponRegistry.SUPERNOVA)) {
+                    FireThorns.trigger(entity, attacker);
+                }
             }
         }
     }

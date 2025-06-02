@@ -1,11 +1,14 @@
 # Changelog
 
-## 1.2.5
+## 1.3
 ### Important: All int values in the config has been changed to floats, a reset (delete and relaunch) is recommended
 If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
 
 
 - Added Dragonbane, a new katana from Skyrim having the Chain Lightning ability builtin and does 20 bonus damage to dragon entities, can be made with Netherite ingots or Dragon Bones from Ice & Fire (accepted material is inside soulsweapons:dragonbane_material item tag)
+- Added Supernova, a spiky mace that does bonus durability damage to armor, has a chance to inflict fire post hit and has passive firethorns effect while holding it
+  - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
+  - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
@@ -59,10 +62,12 @@ If you tried to change an int value to a float on a line that would not accept i
   - Buffed the range of Flames Edge attack
   - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
   - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
+  - Chaos Storm now spawns pools of Molten Metal if in phase two, damaging mobs in it and setting them on fire
 - Added new Withered Wabbajack on entity hit effects:
   - Chance to launch the target in the air with random launch power
   - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
   - Adjusted how the chances for the effects are calculated with weights
+- Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

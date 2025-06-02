@@ -79,6 +79,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_moonveil = false;
     @Entry public static boolean disable_recipe_simons_bowblade = false;
     @Entry public static boolean disable_recipe_dragonbane = false;
+    @Entry public static boolean disable_recipe_supernova = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -159,6 +160,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_simons_bowblade = false;
     @Entry public static boolean disable_use_simons_blade = false;
     @Entry public static boolean disable_use_dragonbane = false;
+    @Entry public static boolean disable_use_supernova = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -222,6 +224,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_simons_bowblade = false;
     @Entry public static boolean is_fireproof_simons_blade = false;
     @Entry public static boolean is_fireproof_dragonbane = true;
+    @Entry public static boolean is_fireproof_supernova = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -345,8 +348,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_blade_ability_damage = 12;
     @Entry public static float darkin_blade_ability_cooldown = 150;
     @Entry public static float darkin_blade_ability_min_cooldown = 40;
-    @Entry public static boolean darkin_blade_ability_reduces_cooldown = false;
-    @Entry public static String[] darkin_blade_ability_reduces_cooldown_ids = {"unbreaking"};
+    @Entry public static boolean darkin_blade_ability_enchant_reduces_cooldown = false;
+    @Entry public static String[] darkin_blade_ability_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static float darkin_blade_calculated_fall_base_radius = 3f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_radius_modifier = 1.75f;
     @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.04f;
@@ -663,6 +666,36 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float sting_damage = 6;
     @Entry public static float sting_attack_speed = 1.6f;
     @Entry public static float sting_bonus_arthropod_damage = 4f;
+    @Entry public static float supernova_damage = 11f;
+    @Entry public static float supernova_attack_speed = 1f;
+    @Entry(min=0f,max=1f) public static float supernova_firehit_chance = 0.5f;
+    @Entry public static float supernova_firehit_duration_seconds = 5f;
+    @Entry public static float supernova_firethorns_damage = 4f;
+    @Entry public static float supernova_firethorns_fire_seconds = 2f;
+    @Entry(min=0f,max=1f) public static float supernova_firethorns_chance = 0.4f;
+    @Entry public static float supernova_armor_breaker_bonus_stack_damage = 4f;
+    @Entry public static float supernova_flame_pillar_damage = 10f;
+    @Entry public static float supernova_ability_flame_pillar_amount = 5f;
+    @Entry public static float supernova_molten_metal_shield_damage = 100f;
+    @Entry public static float supernova_molten_metal_fire_seconds = 4f;
+    @Entry public static float supernova_molten_metal_max_age_ticks = 160f;
+    @Entry public static float supernova_molten_metal_damage = 6f;
+    @Entry public static float supernova_molten_metal_radius = 3f;
+    @Entry public static float supernova_ability_cooldown = 180;
+    @Entry public static float supernova_ability_min_cooldown = 40;
+    @Entry public static boolean supernova_ability_enchant_reduces_cooldown = false;
+    @Entry public static String[] supernova_ability_enchant_reduces_cooldown_ids = {"unbreaking"};
+    @Entry public static float supernova_calculated_fall_base_radius = 1f;
+    @Entry public static float supernova_calculated_fall_height_increase_radius_modifier = 1.25f;
+    @Entry public static float supernova_calculated_fall_target_launch_modifier = 0.03f;
+    @Entry public static float supernova_calculated_fall_target_max_launch_power = 1.25f;
+    @Entry public static float supernova_calculated_fall_max_radius = 100f;
+    @Entry public static float supernova_calculated_fall_max_damage = 100f;
+    @Entry public static float supernova_calculated_fall_height_increase_damage_modifier = 0.1f;
+    @Entry public static boolean supernova_calculated_fall_should_heal = false;
+    @Entry public static float supernova_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float supernova_calculated_fall_max_flame_pillar_ripples = 10f;
+    @Entry public static float supernova_calculated_fall_height_increase_ripples_modifier = 0.16f;
     @Entry public static float sword_of_freyr_damage = 7;
     @Entry public static float sword_of_freyr_attack_speed = 1.6f;
     @Entry public static boolean sword_of_freyr_friendly_fire = true;

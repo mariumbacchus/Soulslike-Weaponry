@@ -553,6 +553,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "supernova": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:supernova"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "whirligig_sawblade": {
       "conditions": {
         "items": [
@@ -737,6 +749,9 @@
     ],
     [
       "dragonbane"
+    ],
+    [
+      "supernova"
     ]
   ],
   "sends_telemetry_event": true

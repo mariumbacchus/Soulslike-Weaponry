@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class DetonateGroundItem extends ChargeToUseItem {
-
+    //TODO this can be an interface i think?
     public DetonateGroundItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
@@ -41,6 +41,9 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
         List<Entity> entities = world.getOtherEntities(user, box);
         for (Entity targets : entities) {
             if (targets instanceof LivingEntity livingEntity) {
+                if (!livingEntity.isAlive() || livingEntity.isTeammate(user)) {
+                    continue;
+                }
                 boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getLaunchModifier(), this.getMaxLaunchPower()), 0);
@@ -49,6 +52,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
                 }
             }
         }
+        this.onImpact(user, amplifier, fallDistance, world, stack);
         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         float pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
         if (!world.isClient) {
@@ -58,7 +62,7 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
             }
         }
     }
-
+    //TODO all these methods can be compacted into a single class maybe instead of having to implement everything one by one (readability)
     public abstract float getBaseExpansion();
 
     /**
@@ -106,6 +110,13 @@ public abstract class DetonateGroundItem extends ChargeToUseItem {
      * @return additional particles with vector divider to determine the direction of the particles
      */
     public abstract Map<ParticleEffect, Vec3d> getParticles();
+
+    /**
+     * Overwrite to add additional effects on impact in general, like spawning entities or something else around the user.
+     */
+    public void onImpact(LivingEntity user, int amplifier, float fallDistance, World world, ItemStack stack) {
+
+    }
 
     /**
      * Called in the fall damage mixin methods. {@link net.soulsweaponry.mixin.LivingEntityMixin#interceptFallDamage(float, float, DamageSource, CallbackInfoReturnable)}

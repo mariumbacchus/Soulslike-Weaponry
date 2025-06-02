@@ -163,6 +163,7 @@
     "item.soulsweapons.simons_bowblade": "Simon's Bowblade",
     "item.soulsweapons.simons_blade": "Simon's Blade",
     "item.soulsweapons.dragonbane": "Dragonbane",
+    "item.soulsweapons.supernova": "Supernova",
 
     "item.soulsweapons.big_chungus_spawn_egg": "中型蠢古斯兔刷怪蛋",
     "item.soulsweapons.withered_demon_spawn_egg": "凋零恶魔刷怪蛋",
@@ -248,6 +249,7 @@
     "entity.soulsweapons.absorbed_projectiles_orb_entity": "Orb of Absorbed Projectiles",
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
+    "entity.soulsweapons.molten_metal": "Molten Metal",
 
     "death.attack.bleed": "%1$s流血至死",
     "death.attack.bleed.player": "%1$s流血至死",
@@ -262,6 +264,8 @@
     "death.attack.dragon_mist.player": "%1$s couldn't breathe in %2$s's concentrated Dragon Mist",
     "death.attack.player_lightning": "%1$s was struck by lightning",
     "death.attack.player_lightning.player": "%1$s was struck by %2$s's lightning",
+    "death.attack.player_fire": "%1$s was burnt to a crisp",
+    "death.attack.player_fire.player": "%1$s was burnt to a crisp thanks too %2$s",
 
     "effect.soulsweapons.hallowed_dragon_mist": "净化龙息",
     "effect.soulsweapons.bloodthirsty": "渴血",
@@ -731,6 +735,17 @@
     "tooltip.soulsweapons.dragons_bane.2": "Scales with Sweeping Edge level",
     "tooltip.soulsweapons.chain_lightning": "Chain Lightning",
     "tooltip.soulsweapons.chain_lightning.1": "- Damage mobs near the main target with soul infused lightning",
+    "tooltip.soulsweapons.firethorns": "Firethorns",
+    "tooltip.soulsweapons.firethorns.1": "- Getting attacked while wielding the weapon has a chance",
+    "tooltip.soulsweapons.firethorns.2": "to damage the attacker and set it on fire",
+    "tooltip.soulsweapons.flameburst": "Flameburst",
+    "tooltip.soulsweapons.flameburst.1": "- Use to summon §6Flame Pillars§r in a path ahead, leaving",
+    "tooltip.soulsweapons.flameburst.2": "behind patches of §fMolten Metal§r, dealing fire damage",
+    "tooltip.soulsweapons.flameburst.3": "and disabling wielded shields of entities walking over it",
+    "tooltip.soulsweapons.molten_edge": "Molten Edge",
+    "tooltip.soulsweapons.molten_edge.1": "- Chance to set the target on fire post hit",
+    "tooltip.soulsweapons.armor_breaker": "Armor Breaker",
+    "tooltip.soulsweapons.armor_breaker.1": "- Deal bonus durability damage to the armor of the target",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

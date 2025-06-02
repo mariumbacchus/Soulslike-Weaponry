@@ -10,14 +10,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
 
     private boolean startedAttack;
     private int ticksLeft = 20;
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Float> RADIUS = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Integer> EVENT_ID = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private DamagingWarmupEntityEvents.OtherAttributes otherAttributes = new DamagingWarmupEntityEvents.OtherAttributes();
 
     public DamagingWarmupEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -85,18 +87,10 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     }
 
     /**
-     * Data-tracked boolean set to true at te same time as damaging effects are triggered.
+     * Data-tracked boolean set to true at the same time as damaging effects are triggered.
      */
     public boolean getEmerge() {
         return this.dataTracker.get(EMERGE);
-    }
-
-    public void setRadius(float radius) {
-        this.dataTracker.set(RADIUS, radius);
-    }
-
-    public float getRadius() {
-        return this.dataTracker.get(RADIUS);
     }
 
     public void setParticleAmountMod(float particleMod) {
@@ -107,25 +101,44 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
         return this.dataTracker.get(PARTICLE_MOD);
     }
 
+    /**
+     * Set the event id that can be used in the {@link DamagingWarmupEntityEvents#EVENTS} map to get the consumer/actual logic to the event.
+     */
+    public void setEventId(int eventId) {
+        this.dataTracker.set(EVENT_ID, eventId);
+    }
+
+    /**
+     * Get the event id that can be used in the {@link DamagingWarmupEntityEvents#EVENTS} map to get the consumer/actual logic to the event.
+     */
+    public int getEventId() {
+        return this.dataTracker.get(EVENT_ID);
+    }
+
+    /**
+     * Used in the {@link DamagingWarmupEntityEvents#EVENTS} {@link BiConsumer} to give additional values to the stuff the event does, like for example
+     * providing damage and radius values to the {@link MoltenMetal} entities spawned in the {@link DamagingWarmupEntityEvents#SPAWN_MOLTEN_METAL}
+     * event without relying on the original {@link DamagingWarmupEntity}
+     */
+    public void setOtherAttributes(DamagingWarmupEntityEvents.OtherAttributes otherAttributes) {
+        this.otherAttributes = otherAttributes;
+    }
+
+    /**
+     * Used in the {@link DamagingWarmupEntityEvents#EVENTS} {@link BiConsumer} to give additional values to the stuff the event does, like for example
+     * providing damage and radius values to the {@link MoltenMetal} entities spawned in the {@link DamagingWarmupEntityEvents#SPAWN_MOLTEN_METAL}
+     * event without relying on the original {@link DamagingWarmupEntity}
+     */
+    public DamagingWarmupEntityEvents.OtherAttributes getOtherAttributes() {
+        return otherAttributes;
+    }
+
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(EMERGE, false);
         this.dataTracker.startTracking(PARTICLE_MOD, 1f);
-        this.dataTracker.startTracking(RADIUS, 1.85f);
-    }
-
-    @Override
-    public EntityDimensions getDimensions(EntityPose pose) {
-        return EntityDimensions.changing(this.getRadius(), this.getRadius());
-    }
-
-    @Override
-    public void onTrackedDataSet(TrackedData<?> data) {
-        if (RADIUS.equals(data)) {
-            this.calculateDimensions();
-        }
-        super.onTrackedDataSet(data);
+        this.dataTracker.startTracking(EVENT_ID, -1);
     }
 
     /**
@@ -141,7 +154,12 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     /**
      * Called on server side at the same time as damaging effects are triggered.
      */
-    public abstract void onTrigger();
+    public void onTrigger() {
+        BiConsumer<DamagingWarmupEntity, DamagingWarmupEntityEvents.OtherAttributes> consumer = DamagingWarmupEntityEvents.EVENTS.get(this.getEventId());
+        if (consumer != null) {
+            consumer.accept(this, this.otherAttributes);
+        }
+    }
 
     /**
      * Override this if additional damage should be added based on the target, for example if it is undead.
@@ -160,18 +178,20 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Radius")) {
-            this.setRadius(nbt.getFloat("Radius"));
-        }
         if (nbt.contains("ParticleModifier")) {
             this.setParticleAmountMod(nbt.getFloat("ParticleModifier"));
         }
+        if (nbt.contains("EventId")) {
+            this.setEventId(nbt.getInt("EventId"));
+        }
+        this.otherAttributes = DamagingWarmupEntityEvents.OtherAttributes.getInstanceFromNbt(nbt);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putFloat("Radius", this.getRadius());
         nbt.putFloat("ParticleModifier", this.getParticleAmountMod());
+        nbt.putInt("EventId", this.getEventId());
+        this.otherAttributes.writeCustomDataToNbt(nbt);
     }
 }

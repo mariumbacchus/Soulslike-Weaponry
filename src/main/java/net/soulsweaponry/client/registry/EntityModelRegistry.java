@@ -77,5 +77,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.FROZEN_LIGHTNING, FrozenLightningRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHUNGUS_HEAD, ChungusHeadRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.AIR_COMBUSTION, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.MOLTEN_METAL, MoltenMetalRenderer::new);
     }
 }

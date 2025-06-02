@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -83,12 +84,9 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
                 BlockPos pos = new BlockPos(x, y, z);
                 for (BlockPos listPos : list) {
                     if (listPos != pos) {
-                        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR, world);
+                        FlamePillar pillar = new FlamePillar(world, user, 1.5f, i * 2, DamagingWarmupEntityEvents.SPAWN_FIRE);
                         pillar.setDamage(ConfigConstructor.empowered_dawnbreaker_ability_damage + WeaponUtil.getEnchantDamageBonus(stack) * 2);
                         pillar.setPos(x, y, z);
-                        pillar.setRadius(1.5f);
-                        pillar.setOwner(user);
-                        pillar.setWarmup(i * 2);
                         world.spawnEntity(pillar);
                         i++;
                     }
