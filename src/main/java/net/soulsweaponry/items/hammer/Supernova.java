@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -20,13 +19,38 @@ import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.util.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Supernova extends UltraHeavyWeapon {
+
+    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+            ConfigConstructor.supernova_calculated_fall_base_radius,
+            ConfigConstructor.supernova_calculated_fall_height_increase_radius_modifier,
+            ConfigConstructor.supernova_calculated_fall_target_launch_modifier,
+            ConfigConstructor.supernova_calculated_fall_target_max_launch_power,
+            ConfigConstructor.supernova_calculated_fall_max_radius,
+            ConfigConstructor.supernova_calculated_fall_max_damage,
+            ConfigConstructor.supernova_calculated_fall_height_increase_damage_modifier,
+            ConfigConstructor.supernova_calculated_fall_heal_from_damage_modifier,
+            Map.of(ParticleRegistry.SUN_PARTICLE, new Vec3d(1, 6, 1)),
+            (target, user, fallDistance) -> {},
+            (user, fallDistance, stack) -> {
+                int ripples = (int) Math.min(fallDistance * ConfigConstructor.supernova_calculated_fall_height_increase_ripples_modifier, ConfigConstructor.supernova_calculated_fall_max_flame_pillar_ripples);
+                WeaponUtil.doConsumerOnCircle(user.getWorld(), user.getYaw(), user.getPos(), 10, ripples, new Vec2f(1.5f, 1.75f), ((vec3d, warmup, yaw) -> {
+                    FlamePillar pillar = new FlamePillar(user.getWorld(), user, 2f, warmup - 6, DamagingWarmupEntityEvents.SPAWN_FIRE);
+                    pillar.setYaw(yaw);
+                    pillar.setDamage(ConfigConstructor.supernova_flame_pillar_damage);
+                    pillar.setPos(vec3d.getX(), vec3d.getY(), vec3d.getZ());
+                    pillar.setParticleAmountMod(1.5f);
+                    user.getWorld().spawnEntity(pillar);
+                    user.getWorld().playSound(null, BlockPos.ofFloored(vec3d), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                }));
+            }
+    );
 
     public Supernova(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.supernova_damage, ConfigConstructor.supernova_attack_speed, settings, true);
@@ -104,73 +128,7 @@ public class Supernova extends UltraHeavyWeapon {
     }
 
     @Override
-    public float getBaseExpansion() {
-        return ConfigConstructor.supernova_calculated_fall_base_radius;
-    }
-
-    @Override
-    public float getExpansionModifier() {
-        return ConfigConstructor.supernova_calculated_fall_height_increase_radius_modifier;
-    }
-
-    @Override
-    public float getLaunchModifier() {
-        return ConfigConstructor.supernova_calculated_fall_target_launch_modifier;
-    }
-
-    @Override
-    public float getMaxLaunchPower() {
-        return ConfigConstructor.supernova_calculated_fall_target_max_launch_power;
-    }
-
-    @Override
-    public float getMaxExpansion() {
-        return ConfigConstructor.supernova_calculated_fall_max_radius;
-    }
-
-    @Override
-    public float getMaxDetonationDamage() {
-        return ConfigConstructor.supernova_calculated_fall_max_damage;
-    }
-
-    @Override
-    public float getFallDamageIncreaseModifier() {
-        return ConfigConstructor.supernova_calculated_fall_height_increase_damage_modifier;
-    }
-
-    @Override
-    public boolean shouldHeal() {
-        return ConfigConstructor.supernova_calculated_fall_should_heal;
-    }
-
-    @Override
-    public float getHealFromDamageModifier() {
-        return ConfigConstructor.supernova_calculated_fall_heal_from_damage_modifier;
-    }
-
-    @Override
-    public void doCustomEffects(LivingEntity target, LivingEntity user) {
-
-    }
-
-    @Override
-    public void onImpact(LivingEntity user, int amplifier, float fallDistance, World world, ItemStack stack) {
-        int ripples = (int) Math.min(fallDistance * ConfigConstructor.supernova_calculated_fall_height_increase_ripples_modifier, ConfigConstructor.supernova_calculated_fall_max_flame_pillar_ripples);
-        WeaponUtil.doConsumerOnCircle(user.getWorld(), user.getYaw(), user.getPos(), 10, ripples, new Vec2f(1.5f, 1.75f), ((vec3d, warmup, yaw) -> {
-            FlamePillar pillar = new FlamePillar(user.getWorld(), user, 2f, warmup - 6, DamagingWarmupEntityEvents.SPAWN_FIRE);
-            pillar.setYaw(yaw);
-            pillar.setDamage(ConfigConstructor.supernova_flame_pillar_damage);
-            pillar.setPos(vec3d.getX(), vec3d.getY(), vec3d.getZ());
-            pillar.setParticleAmountMod(1.5f);
-            user.getWorld().spawnEntity(pillar);
-            user.getWorld().playSound(null, BlockPos.ofFloored(vec3d), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
-        }));
-    }
-
-    @Override
-    public Map<ParticleEffect, Vec3d> getParticles() {
-        Map<ParticleEffect, Vec3d> map = new HashMap<>();
-        map.put(ParticleRegistry.SUN_PARTICLE, new Vec3d(1, 6, 1));
-        return map;
+    public DetonateGroundAttributes getDetonationAttributes() {
+        return this.attributes;
     }
 }

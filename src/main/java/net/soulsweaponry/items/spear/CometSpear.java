@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -17,8 +16,10 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
-import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -27,15 +28,27 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class CometSpear extends DetonateGroundItem implements GeoItem {
+public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGround {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
+    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+            ConfigConstructor.comet_spear_calculated_fall_base_radius,
+            ConfigConstructor.comet_spear_calculated_fall_height_increase_radius_modifier,
+            ConfigConstructor.comet_spear_calculated_fall_target_launch_modifier,
+            ConfigConstructor.comet_spear_calculated_fall_target_max_launch_power,
+            ConfigConstructor.comet_spear_calculated_fall_max_radius,
+            ConfigConstructor.comet_spear_calculated_fall_max_damage,
+            ConfigConstructor.comet_spear_calculated_fall_height_increase_damage_modifier,
+            ConfigConstructor.comet_spear_calculated_fall_heal_from_damage_modifier,
+            Map.of(ParticleTypes.FLAME, new Vec3d(1, 6, 1)),
+            (target, user, fallDistance) -> {},
+            (user, fallDistance, stack) -> {}
+    );
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
@@ -124,62 +137,12 @@ public class CometSpear extends DetonateGroundItem implements GeoItem {
     }
 
     @Override
-    public float getBaseExpansion() {
-        return ConfigConstructor.comet_spear_calculated_fall_base_radius;
-    }
-
-    @Override
-    public float getExpansionModifier() {
-        return ConfigConstructor.comet_spear_calculated_fall_height_increase_radius_modifier;
-    }
-
-    @Override
-    public float getLaunchModifier() {
-        return ConfigConstructor.comet_spear_calculated_fall_target_launch_modifier;
-    }
-
-    @Override
-    public float getMaxLaunchPower() {
-        return ConfigConstructor.comet_spear_calculated_fall_target_max_launch_power;
-    }
-
-    @Override
-    public float getMaxExpansion() {
-        return ConfigConstructor.comet_spear_calculated_fall_max_radius;
-    }
-
-    @Override
-    public float getMaxDetonationDamage() {
-        return ConfigConstructor.comet_spear_calculated_fall_max_damage;
-    }
-
-    @Override
-    public float getFallDamageIncreaseModifier() {
-        return ConfigConstructor.comet_spear_calculated_fall_height_increase_damage_modifier;
-    }
-
-    @Override
-    public boolean shouldHeal() {
-        return ConfigConstructor.comet_spear_calculated_fall_should_heal;
-    }
-
-    @Override
-    public float getHealFromDamageModifier() {
-        return ConfigConstructor.comet_spear_calculated_fall_heal_from_damage_modifier;
-    }
-
-    @Override
-    public void doCustomEffects(LivingEntity target, LivingEntity user) {}
-
-    @Override
-    public Map<ParticleEffect, Vec3d> getParticles() {
-        Map<ParticleEffect, Vec3d> map = new HashMap<>();
-        map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
-        return map;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_comet_spear;
+    }
+
+    @Override
+    public DetonateGroundAttributes getDetonationAttributes() {
+        return this.attributes;
     }
 }

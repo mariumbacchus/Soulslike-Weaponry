@@ -14,7 +14,7 @@ import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
-import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.items.abilities.FireThorns;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -90,7 +90,7 @@ public class LivingEntityMixin {
         //Another interceptFallDamage is made for players in PlayerEntityMixin since it won't trigger if they are in creative
         //from this, but in survival it would trigger twice. This check is therefore needed to prevent the double call.
         LivingEntity entity = ((LivingEntity)(Object)this);
-        if (!(entity instanceof PlayerEntity) && DetonateGroundItem.triggerCalculateFall(entity, fallDistance, source)) {
+        if (!(entity instanceof PlayerEntity) && IDetonateGround.triggerCalculateFall(entity, fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }

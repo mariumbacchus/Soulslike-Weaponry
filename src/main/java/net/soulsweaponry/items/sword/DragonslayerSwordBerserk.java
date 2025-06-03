@@ -7,7 +7,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -22,11 +21,11 @@ import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.util.DetonateGroundAttributes;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility, IDragonBonus {
@@ -34,6 +33,23 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
             new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
     };
+    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_base_radius,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_radius_modifier,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_target_max_launch_power,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_max_radius,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_max_damage,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_damage_modifier,
+            ConfigConstructor.heap_of_raw_iron_calculated_fall_heal_from_damage_modifier,
+            Map.of(ParticleTypes.FLAME, new Vec3d(1, 6, 1), ParticleRegistry.DARK_STAR, new Vec3d(1, 6, 1)),
+            (target, user, fallDistance) -> {
+                for (StatusEffectInstance effect : CALCULATED_FALL_EFFECTS) {
+                    target.addStatusEffect(effect);
+                }
+            },
+            (user, fallDistance, stack) -> {}
+    );
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
@@ -86,66 +102,6 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public float getBaseExpansion() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_base_radius;
-    }
-
-    @Override
-    public float getExpansionModifier() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_radius_modifier;
-    }
-
-    @Override
-    public float getLaunchModifier() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier;
-    }
-
-    @Override
-    public float getMaxLaunchPower() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_target_max_launch_power;
-    }
-
-    @Override
-    public float getMaxExpansion() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_radius;
-    }
-
-    @Override
-    public float getMaxDetonationDamage() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_max_damage;
-    }
-
-    @Override
-    public float getFallDamageIncreaseModifier() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_damage_modifier;
-    }
-
-    @Override
-    public boolean shouldHeal() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_should_heal;
-    }
-
-    @Override
-    public float getHealFromDamageModifier() {
-        return ConfigConstructor.heap_of_raw_iron_calculated_fall_heal_from_damage_modifier;
-    }
-
-    @Override
-    public void doCustomEffects(LivingEntity target, LivingEntity user) {
-        for (StatusEffectInstance effect : CALCULATED_FALL_EFFECTS) {
-            target.addStatusEffect(effect);
-        }
-    }
-
-    @Override
-    public Map<ParticleEffect, Vec3d> getParticles() {
-        Map<ParticleEffect, Vec3d> map = new HashMap<>();
-        map.put(ParticleRegistry.DARK_STAR, new Vec3d(1, 6, 1));
-        map.put(ParticleTypes.FLAME, new Vec3d(1, 6, 1));
-        return map;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_heap_of_raw_iron;
     }
@@ -153,5 +109,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public float getBaseDragonBonus(ItemStack stack) {
         return ConfigConstructor.heap_of_raw_iron_dragons_scourge_bonus;
+    }
+
+    @Override
+    public DetonateGroundAttributes getDetonationAttributes() {
+        return this.attributes;
     }
 }

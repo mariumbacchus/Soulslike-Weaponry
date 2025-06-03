@@ -68,6 +68,7 @@ If you tried to change an int value to a float on a line that would not accept i
   - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
   - Adjusted how the chances for the effects are calculated with weights
 - Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
+- Kirkhammer now applies Slowness 2 and Posture Loss on targets hit in the Calculated Fall explosion
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

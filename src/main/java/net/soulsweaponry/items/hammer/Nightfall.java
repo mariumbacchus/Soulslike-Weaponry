@@ -10,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -31,10 +30,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,6 +45,19 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
+    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+            ConfigConstructor.nightfall_calculated_fall_base_radius,
+            ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier,
+            ConfigConstructor.nightfall_calculated_fall_target_launch_modifier,
+            ConfigConstructor.nightfall_calculated_fall_target_max_launch_power,
+            ConfigConstructor.nightfall_calculated_fall_max_radius,
+            ConfigConstructor.nightfall_calculated_fall_max_damage,
+            ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier,
+            ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier,
+            Map.of(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1)),
+            (target, user, fallDistance) -> this.spawnRemnant(target, user),
+            (user, fallDistance, stack) -> {}
+    );
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
@@ -183,63 +192,6 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public float getBaseExpansion() {
-        return ConfigConstructor.nightfall_calculated_fall_base_radius;
-    }
-
-    @Override
-    public float getExpansionModifier() {
-        return ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier;
-    }
-
-    @Override
-    public float getLaunchModifier() {
-        return ConfigConstructor.nightfall_calculated_fall_target_launch_modifier;
-    }
-
-    @Override
-    public float getMaxLaunchPower() {
-        return ConfigConstructor.nightfall_calculated_fall_target_max_launch_power;
-    }
-
-    @Override
-    public float getMaxExpansion() {
-        return ConfigConstructor.nightfall_calculated_fall_max_radius;
-    }
-
-    @Override
-    public float getMaxDetonationDamage() {
-        return ConfigConstructor.nightfall_calculated_fall_max_damage;
-    }
-
-    @Override
-    public float getFallDamageIncreaseModifier() {
-        return ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier;
-    }
-
-    @Override
-    public boolean shouldHeal() {
-        return ConfigConstructor.nightfall_calculated_fall_should_heal;
-    }
-
-    @Override
-    public float getHealFromDamageModifier() {
-        return ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier;
-    }
-
-    @Override
-    public void doCustomEffects(LivingEntity target, LivingEntity user) {
-        this.spawnRemnant(target, user);
-    }
-
-    @Override
-    public Map<ParticleEffect, Vec3d> getParticles() {
-        Map<ParticleEffect, Vec3d> map = new HashMap<>();
-        map.put(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1));
-        return map;
-    }
-
-    @Override
     public int getMaxSummons() {
         return (int) ConfigConstructor.nightfall_summoned_allies_cap;
     }
@@ -257,5 +209,10 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_nightfall;
+    }
+
+    @Override
+    public DetonateGroundAttributes getDetonationAttributes() {
+        return attributes;
     }
 }

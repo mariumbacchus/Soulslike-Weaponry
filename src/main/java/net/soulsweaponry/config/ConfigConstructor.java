@@ -333,8 +333,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_calculated_fall_height_increase_damage_modifier = 0.2f;
     @Entry public static float comet_spear_calculated_fall_target_launch_modifier = 0.0125f;
     @Entry public static float comet_spear_calculated_fall_target_max_launch_power = 1.1f;
-    @Entry public static boolean comet_spear_calculated_fall_should_heal = false;
-    @Entry public static float comet_spear_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float comet_spear_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float crucible_sword_normal_damage = 9;
     @Entry public static float crucible_sword_attack_speed = 1.6f;
     @Entry public static float crucible_sword_empowered_damage = 30;
@@ -357,7 +356,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_blade_calculated_fall_max_radius = 100f;
     @Entry public static float darkin_blade_calculated_fall_max_damage = 100f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_damage_modifier = 0.2f;
-    @Entry public static boolean darkin_blade_calculated_fall_should_heal = true;
     @Entry public static float darkin_blade_calculated_fall_heal_from_damage_modifier = 0.1f;
     @Entry public static float darkin_scythe_damage = 9;
     @Entry public static float darkin_scythe_attack_speed = 1f;
@@ -420,8 +418,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float heap_of_raw_iron_calculated_fall_max_radius = 100f;
     @Entry public static float heap_of_raw_iron_calculated_fall_max_damage = 100f;
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_damage_modifier = 0.2f;
-    @Entry public static boolean heap_of_raw_iron_calculated_fall_should_heal = false;
-    @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float dragonbane_damage = 9;
     @Entry public static float dragonbane_attack_speed = 1.6f;
     @Entry public static float dragonbane_dragons_scourge_bonus = 20f;
@@ -496,8 +493,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float featherlight_calculated_fall_max_radius = 100f;
     @Entry public static float featherlight_calculated_fall_max_damage = 100f;
     @Entry public static float featherlight_calculated_fall_height_increase_damage_modifier = 0.2f;
-    @Entry public static boolean featherlight_calculated_fall_should_heal = false;
-    @Entry public static float featherlight_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float featherlight_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float frostmourne_damage = 11;
     @Entry public static float frostmourne_attack_speed = 1.6f;
     @Entry public static float frostmourne_summoned_allies_cap = 50;
@@ -548,6 +544,16 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_sword_charge_added_post_hit = 1;
     @Entry public static float kirkhammer_damage = 9;
     @Entry public static float kirkhammer_attack_speed = 1f;
+    @Entry public static float kirkhammer_calculated_fall_base_radius = 2.5f;
+    @Entry public static float kirkhammer_calculated_fall_height_increase_radius_modifier = 1.4f;
+    @Entry public static float kirkhammer_calculated_fall_target_launch_modifier = 0.035f;
+    @Entry public static float kirkhammer_calculated_fall_target_max_launch_power = 1f;
+    @Entry public static float kirkhammer_calculated_fall_max_radius = 100f;
+    @Entry public static float kirkhammer_calculated_fall_max_damage = 100f;
+    @Entry public static float kirkhammer_calculated_fall_height_increase_damage_modifier = 0.15f;
+    @Entry public static float kirkhammer_calculated_fall_heal_from_damage_modifier = 0f;
+    @Entry public static float kirkhammer_calculated_fall_base_posture_loss = 25f;
+    @Entry public static float kirkhammer_calculated_fall_height_increase_posture_loss_modifier = 3.5f;
     @Entry public static float kirkhammer_silver_sword_damage = 6;
     @Entry public static float kirkhammer_silver_sword_attack_speed = 1.6f;
     @Entry public static float kirkhammer_silver_sword_righteous_undead_bonus_damage = 2f;
@@ -627,8 +633,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float nightfall_calculated_fall_max_radius = 100f;
     @Entry public static float nightfall_calculated_fall_max_damage = 100f;
     @Entry public static float nightfall_calculated_fall_height_increase_damage_modifier = 0.2f;
-    @Entry public static boolean nightfall_calculated_fall_should_heal = false;
-    @Entry public static float nightfall_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float nightfall_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float nights_edge_weapon_damage = 10;
     @Entry public static float nights_edge_weapon_attack_speed = 1.2f;
     @Entry public static float nights_edge_ability_cooldown = 120;
@@ -692,8 +697,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float supernova_calculated_fall_max_radius = 100f;
     @Entry public static float supernova_calculated_fall_max_damage = 100f;
     @Entry public static float supernova_calculated_fall_height_increase_damage_modifier = 0.1f;
-    @Entry public static boolean supernova_calculated_fall_should_heal = false;
-    @Entry public static float supernova_calculated_fall_heal_from_damage_modifier = 0.1f;
+    @Entry public static float supernova_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float supernova_calculated_fall_max_flame_pillar_ripples = 10f;
     @Entry public static float supernova_calculated_fall_height_increase_ripples_modifier = 0.16f;
     @Entry public static float sword_of_freyr_damage = 7;

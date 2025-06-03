@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;
@@ -36,7 +36,7 @@ public class PlayerEntityMixin {
 
     @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
     public void interceptFallDamage(float fallDistance, float damageMultiplier, DamageSource source, CallbackInfoReturnable<Boolean> info) {
-        if (DetonateGroundItem.triggerCalculateFall(((PlayerEntity)(Object)this), fallDistance, source)) {
+        if (IDetonateGround.triggerCalculateFall(((PlayerEntity)(Object)this), fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }

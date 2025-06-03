@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.util.TooltipAbilities;
 
-public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUltraHeavy {
+public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltraHeavy, IDetonateGround {
 
     private final boolean isHeavy;
 

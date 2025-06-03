@@ -12,6 +12,7 @@ import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
+import net.soulsweaponry.items.hammer.Kirkhammmer;
 import net.soulsweaponry.items.hammer.Mjolnir;
 import net.soulsweaponry.items.hammer.Nightfall;
 import net.soulsweaponry.items.hammer.Supernova;
@@ -34,7 +35,7 @@ public class WeaponRegistry {
     public static ToolItem MOONLIGHT_GREATSWORD = new MoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem PURE_MOONLIGHT_GREATSWORD = new PureMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem BLOODTHIRSTER = new Bloodthirster(ModToolMaterials.CRIMSON_INGOT, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static DetonateGroundItem DARKIN_BLADE = new DarkinBlade(ModToolMaterials.CRIMSON_INGOT, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem DARKIN_BLADE = new DarkinBlade(ModToolMaterials.CRIMSON_INGOT, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem DRAGON_STAFF = new DragonStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem WITHERED_WABBAJACK = new WitheredWabbajack(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem WHIRLIGIG_SAWBLADE = new WhirligigSawblade(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
@@ -42,7 +43,7 @@ public class WeaponRegistry {
     public static ToolItem GUINSOOS_RAGEBLADE = new GuinsoosRageblade(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem GUTS_SWORD = new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static DetonateGroundItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static BowItem GALEFORCE = new Galeforce(new FabricItemSettings().maxDamage(1300).rarity(Rarity.EPIC), () -> Ingredient.ofItems(ItemRegistry.VERGLAS, ItemRegistry.MOONSTONE));
     public static ToolItem TRANSLUCENT_SWORD = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_sword_damage, ConfigConstructor.translucent_sword_attack_speed, new FabricItemSettings().rarity(Rarity.RARE));
@@ -62,7 +63,7 @@ public class WeaponRegistry {
     public static ToolItem DARKIN_SCYTHE_PRE = new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static TrickWeapon KIRKHAMMER = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), true, 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
+    public static TrickWeapon KIRKHAMMER = new Kirkhammmer(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.RARE));
     public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.kirkhammer_silver_sword_damage, ConfigConstructor.kirkhammer_silver_sword_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.kirkhammer_silver_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_silver_sword, ConfigConstructor.disable_use_silver_sword);
     public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.ludwigs_holy_greatsword_damage,  ConfigConstructor.ludwigs_holy_greatsword_attack_speed, new FabricItemSettings().rarity(Rarity.RARE), false, ConfigConstructor.ludwigs_holy_greatsword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_ludwigs_holy_blade, ConfigConstructor.disable_use_ludwigs_holy_greatsword);
     public static ToolItem DRAUPNIR_SPEAR = new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
