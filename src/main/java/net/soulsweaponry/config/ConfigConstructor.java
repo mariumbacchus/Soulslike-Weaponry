@@ -80,6 +80,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_simons_bowblade = false;
     @Entry public static boolean disable_recipe_dragonbane = false;
     @Entry public static boolean disable_recipe_supernova = false;
+    @Entry public static boolean disable_recipe_mehrunes_razor = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -161,6 +162,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_simons_blade = false;
     @Entry public static boolean disable_use_dragonbane = false;
     @Entry public static boolean disable_use_supernova = false;
+    @Entry public static boolean disable_use_mehrunes_razor = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -225,6 +227,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_simons_blade = false;
     @Entry public static boolean is_fireproof_dragonbane = true;
     @Entry public static boolean is_fireproof_supernova = true;
+    @Entry public static boolean is_fireproof_mehrunes_razor = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -480,6 +483,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float excalibur_sonic_boom_min_cooldown = 40;
     @Entry public static float excalibur_sonic_boom_max_range = 40f;
     @Entry public static float excalibur_sonic_boom_target_search_range = 16f;
+    @Entry public static float excalibur_lightbringer_effects_duration = 300f;
+    @Entry public static float excalibur_lightbringer_effects_amplifier = 0f;
     @Entry public static boolean excalibur_enchant_reduces_ability_cooldown = true;
     @Entry public static String[] excalibur_enchant_reduces_ability_cooldown_ids = {"damage"};
     @Entry public static float forlorn_scythe_damage = 11;
@@ -581,6 +586,17 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float master_sword_attack_speed = 1.6f;
     @Entry public static float master_sword_righteous_undead_bonus_damage = 2f;
     @Entry public static float master_sword_projectile_damage = 11.0f;
+    @Entry public static float mehrunes_razor_damage = 6f;
+    @Entry public static float mehrunes_razor_attack_speed = 2f;
+    @Entry public static float mehrunes_razor_missing_health_modifier = 0.75f;
+    @Entry public static float mehrunes_razor_missing_health_modifier_against_players = 0.5f;
+    @Entry public static float mehrunes_razor_missing_health_max_bonus_damage = 30f;
+    @Entry public static float mehrunes_razor_missing_health_trigger_cap = 50f;
+    @Entry public static float mehrunes_razor_kill_trigger_cap = 50f;
+    @Entry(min=0, max=1) public static float mehrunes_razor_missing_health_chance_under_health_cap = 0.50f;
+    @Entry(min=0, max=1) public static float mehrunes_razor_missing_health_chance_over_health_cap = 0.15f;
+    @Entry(min=0, max=1) public static float mehrunes_razor_kill_chance_under_health_cap = 0.0198f;
+    @Entry(min=0, max=1) public static float mehrunes_razor_kill_chance_over_health_cap = 0.005f;
     @Entry public static float mjolnir_damage = 9;
     @Entry public static float mjolnir_attack_speed = 1.2f;
     @Entry public static float mjolnir_rain_bonus_damage = 2;

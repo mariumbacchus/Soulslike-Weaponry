@@ -1,11 +1,15 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -27,9 +31,30 @@ import java.util.function.Predicate;
 
 public class Excalibur extends ChargeToUseItem implements ILifeGuard {
 
+    private static final StatusEffect[] EFFECTS = {
+            StatusEffects.DARKNESS, StatusEffects.BLINDNESS
+    };
+
     public Excalibur(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.excalibur_damage, ConfigConstructor.excalibur_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SONIC_BOOM, TooltipAbilities.LIFE_GUARD);
+        this.addTooltipAbility(TooltipAbilities.SONIC_BOOM, TooltipAbilities.LIFE_GUARD, TooltipAbilities.LIGHTBRINGER);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (entity instanceof LivingEntity living && living.age % 20 == 0 && (living.getMainHandStack().getItem() instanceof Excalibur || living.getOffHandStack().getItem() instanceof Excalibur)) {
+            for (StatusEffect effect : EFFECTS) {
+                if (living.hasStatusEffect(effect)) {
+                    int duration = (int) ConfigConstructor.excalibur_lightbringer_effects_duration;
+                    int amp = (int) ConfigConstructor.excalibur_lightbringer_effects_amplifier;
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, duration, amp));
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, duration, amp));
+                    living.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, duration, amp));
+                    living.removeStatusEffect(effect);
+                }
+            }
+        }
     }
 
     @Override

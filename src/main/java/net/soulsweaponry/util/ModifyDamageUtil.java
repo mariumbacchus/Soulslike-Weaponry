@@ -20,10 +20,14 @@ import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.sword.MehrunesRazor;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModifyDamageUtil {
 
@@ -36,12 +40,33 @@ public class ModifyDamageUtil {
      * @return new damage amount to be taken
      */
     public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
-        if (source.getAttacker() instanceof PlayerEntity player) {
-            ItemStack heldStack = player.getMainHandStack();
-            Item item = heldStack.getItem();
-            if (entity.getType().isIn(ModTags.Entities.DRAGONS) && item instanceof IDragonBonus dragonBonus) {
-                if (!(item instanceof IConfigDisable configDisable && configDisable.isDisabled(heldStack))) {
+        if (source.getAttacker() instanceof LivingEntity attacker) {
+            List<ItemStack> stacks = new ArrayList<>();
+            stacks.add(attacker.getMainHandStack());
+            if (WeaponUtil.isFightModLoaded()) {
+                stacks.add(attacker.getOffHandStack());
+            }
+            for (ItemStack heldStack : stacks) {
+                Item item = heldStack.getItem();
+                // Bonus damage to dragons
+                if (entity.getType().isIn(ModTags.Entities.DRAGONS) &&
+                        item instanceof IDragonBonus dragonBonus &&
+                        !(item instanceof IConfigDisable configDisable && configDisable.isDisabled(heldStack))) {
+
                     newAmount += dragonBonus.getDragonBonus(heldStack);
+                }
+                // Mehrunes’ Razor missing health bonus
+                if (item instanceof MehrunesRazor) {
+                    float ratio = entity.getMaxHealth() >= ConfigConstructor.mehrunes_razor_missing_health_trigger_cap ? ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap : ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap;
+                    if (attacker.getRandom().nextDouble() <= ratio) {
+                        double missing = entity.getMaxHealth() - entity.getHealth();
+                        float bonus = (float) Math.min(
+                                missing * ConfigConstructor.mehrunes_razor_missing_health_modifier
+                                * (entity instanceof PlayerEntity ? ConfigConstructor.mehrunes_razor_missing_health_modifier_against_players : 1f),
+                                ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage
+                        );
+                        newAmount += bonus;
+                    }
                 }
             }
         }

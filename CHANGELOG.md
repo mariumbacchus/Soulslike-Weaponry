@@ -9,6 +9,7 @@ If you tried to change an int value to a float on a line that would not accept i
 - Added Supernova, a spiky mace that does bonus durability damage to armor, has a chance to inflict fire post hit and has passive firethorns effect while holding it
   - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
   - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
+- Added Mehrunes' Razor, a new dagger that has a chance to deal bonus damage equal to the missing health of the target, with an additional very small chance to instantly kill the target
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
@@ -69,6 +70,7 @@ If you tried to change an int value to a float on a line that would not accept i
   - Adjusted how the chances for the effects are calculated with weights
 - Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
 - Kirkhammer now applies Slowness 2 and Posture Loss on targets hit in the Calculated Fall explosion
+- Excalibur has a new ability called Lightbringer, making the wielder immune to Darkness and Blindness, while instead gaining Speed, Strength and Night Vision when applied with those effects
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

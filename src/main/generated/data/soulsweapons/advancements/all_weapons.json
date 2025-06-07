@@ -385,6 +385,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mehrunes_razor": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:mehrunes_razor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mjolnir": {
       "conditions": {
         "items": [
@@ -752,6 +764,9 @@
     ],
     [
       "supernova"
+    ],
+    [
+      "mehrunes_razor"
     ]
   ],
   "sends_telemetry_event": true
