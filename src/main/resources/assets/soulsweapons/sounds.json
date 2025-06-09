@@ -435,5 +435,32 @@
             "soulsweapons:shock_2",
             "soulsweapons:shock_3"
         ]
+    },
+    "stormveil_trigger": {
+        "subtitle": "subtitles.soulsweapons.stormveil_trigger",
+        "sounds": [
+            "soulsweapons:stormveil/trigger/stormveil_0",
+            "soulsweapons:stormveil/trigger/stormveil_1",
+            "soulsweapons:stormveil/trigger/stormveil_2",
+            "soulsweapons:stormveil/trigger/stormveil_3",
+            "soulsweapons:stormveil/trigger/stormveil_4"
+        ]
+    },
+    "stormveil_ambient": {
+        "subtitle": "subtitles.soulsweapons.stormveil_ambient",
+        "sounds": [
+            "soulsweapons:stormveil/ambient/ambient_0",
+            "soulsweapons:stormveil/ambient/ambient_1",
+            "soulsweapons:stormveil/ambient/ambient_2"
+        ]
+    },
+    "stormveil_thorns": {
+        "subtitle": "subtitles.soulsweapons.stormveil_thorns",
+        "sounds": [
+            "soulsweapons:stormveil/thorns/stormveil_thorns_0",
+            "soulsweapons:stormveil/thorns/stormveil_thorns_1",
+            "soulsweapons:stormveil/thorns/stormveil_thorns_2",
+            "soulsweapons:stormveil/thorns/stormveil_thorns_3"
+        ]
     }
 }

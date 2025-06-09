@@ -81,6 +81,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_dragonbane = false;
     @Entry public static boolean disable_recipe_supernova = false;
     @Entry public static boolean disable_recipe_mehrunes_razor = false;
+    @Entry public static boolean disable_recipe_tonitrus = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -163,6 +164,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_dragonbane = false;
     @Entry public static boolean disable_use_supernova = false;
     @Entry public static boolean disable_use_mehrunes_razor = false;
+    @Entry public static boolean disable_use_tonitrus = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -228,6 +230,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_dragonbane = true;
     @Entry public static boolean is_fireproof_supernova = true;
     @Entry public static boolean is_fireproof_mehrunes_razor = true;
+    @Entry public static boolean is_fireproof_tonitrus = false;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -722,6 +725,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static double sword_of_freyr_health = 50D;
     @Entry public static double sword_of_freyr_armor = 10D;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
+    @Entry public static float tonitrus_damage = 6;
+    @Entry public static float tonitrus_attack_speed = 1.4f;
+    @Entry public static float tonitrus_stormveil_effect_lightning_damage_heal = 2f;
+    @Entry public static float tonitrus_stormveil_effect_duration = 400f;
+    @Entry public static float tonitrus_stormveil_effect_base_amp = 0f;
+    @Entry public static float tonitrus_stormveil_effect_amp_per_sharpness_enchant_ceiled = 0.8f;
+    @Entry public static float tonitrus_stormveil_chain_lightning_damage_per_amp = 3f;
+    @Entry public static float tonitrus_stormveil_chain_lightning_range_per_amp = 2f;
+    @Entry(min=0f,max=1f) public static float tonitrus_stormveil_effect_thorns_chance = 0.5f;
+    @Entry public static float tonitrus_stormveil_effect_thorns_base_damage = 2f;
+    @Entry public static float tonitrus_stormveil_effect_thorns_damage_per_amp_level = 3f;
+    @Entry public static float tonitrus_ability_cooldown = 80;
+    @Entry public static float tonitrus_ability_max_cooldown = 10;
+    @Entry public static boolean tonitrus_ability_enchant_reduces_cooldown = false;
+    @Entry public static String[] tonitrus_ability_enchant_reduces_cooldown_ids = {};
     @Entry public static float translucent_sword_damage = 6;
     @Entry public static float translucent_sword_attack_speed = 1.6f;
     @Entry public static float translucent_glaive_damage = 7;

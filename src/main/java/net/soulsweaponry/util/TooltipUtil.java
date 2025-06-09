@@ -38,8 +38,15 @@ public class TooltipUtil {
         }
     }
 
+    // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case STORMVEIL -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil").formatted(Formatting.AQUA));
+                for (int i = 1; i <= 8; i++) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil." + i).formatted(Formatting.GRAY));
+                }
+            }
             case LIGHTBRINGER -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer").formatted(Formatting.GOLD));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.1").formatted(Formatting.GRAY));

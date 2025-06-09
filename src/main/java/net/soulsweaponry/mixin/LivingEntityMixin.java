@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -17,6 +18,7 @@ import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.items.abilities.FireThorns;
+import net.soulsweaponry.items.abilities.StormveilThorns;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -53,8 +55,18 @@ public class LivingEntityMixin {
         return originalAmount;
     }
 
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void interceptDamageHead(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (source.isIn(DamageTypeTags.IS_LIGHTNING) && entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+            entity.heal(ConfigConstructor.tonitrus_stormveil_effect_lightning_damage_heal + entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
+            info.setReturnValue(false);
+            info.cancel();
+        }
+    }
+
     @Inject(method = "damage", at = @At("TAIL"))
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         // Remove stacks of Blade Dance when taking damage
         if (info.getReturnValue() && entity.hasStatusEffect(EffectRegistry.BLADE_DANCE)) {
@@ -66,13 +78,17 @@ public class LivingEntityMixin {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, duration, amp));
             }
         }
-        // Do fire-thorns when wielding Supernova
         if (source.getAttacker() instanceof LivingEntity attacker) {
+            // Do fire-thorns when wielding Supernova
             for (Hand hand : Hand.values()) {
                 ItemStack stack = entity.getStackInHand(hand);
                 if (stack.isOf(WeaponRegistry.SUPERNOVA)) {
                     FireThorns.trigger(entity, attacker);
                 }
+            }
+            // Do lightning-thorns when having Stormveil effect
+            if (entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+                StormveilThorns.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
             }
         }
     }

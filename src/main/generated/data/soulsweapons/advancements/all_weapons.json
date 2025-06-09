@@ -577,6 +577,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "tonitrus": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:tonitrus"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "whirligig_sawblade": {
       "conditions": {
         "items": [
@@ -767,6 +779,9 @@
     ],
     [
       "mehrunes_razor"
+    ],
+    [
+      "tonitrus"
     ]
   ],
   "sends_telemetry_event": true

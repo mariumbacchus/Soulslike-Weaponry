@@ -10,6 +10,8 @@ If you tried to change an int value to a float on a line that would not accept i
   - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
   - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
 - Added Mehrunes' Razor, a new dagger that has a chance to deal bonus damage equal to the missing health of the target, with an additional very small chance to instantly kill the target
+- Added Tonitrus, a mace from Bloodborne which you can use to give yourself Stormveil, making you apply Chain Lightning post hit and immune to Lightning damage, using it again with the effect makes you summon a lightning strike on the target post hit, then removing the Stormveil effect
+- Added the Stormveil effect, making the wearer immune to Lightning damage and has a chance to inflict thorns lightning damage on targets hitting the wearer
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has

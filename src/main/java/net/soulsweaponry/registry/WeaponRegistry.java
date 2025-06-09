@@ -12,10 +12,7 @@ import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
-import net.soulsweaponry.items.hammer.Kirkhammmer;
-import net.soulsweaponry.items.hammer.Mjolnir;
-import net.soulsweaponry.items.hammer.Nightfall;
-import net.soulsweaponry.items.hammer.Supernova;
+import net.soulsweaponry.items.hammer.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.scythe.*;
 import net.soulsweaponry.items.spear.CometSpear;
@@ -86,6 +83,7 @@ public class WeaponRegistry {
     public static ToolItem DRAGONBANE = new Dragonbane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem SUPERNOVA = new Supernova(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem MEHRUNES_RAZOR = new MehrunesRazor(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem TONITRUS = new Tonitrus(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.RARE));
 
     public static void init() {
         ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword);
@@ -145,5 +143,6 @@ public class WeaponRegistry {
         ItemRegistry.registerLegendaryWeapon(DRAGONBANE, "dragonbane", ConfigConstructor.disable_recipe_dragonbane);
         ItemRegistry.registerLegendaryWeapon(SUPERNOVA, "supernova", ConfigConstructor.disable_recipe_supernova);
         ItemRegistry.registerLegendaryWeapon(MEHRUNES_RAZOR, "mehrunes_razor", ConfigConstructor.disable_recipe_mehrunes_razor);
+        ItemRegistry.registerLegendaryWeapon(TONITRUS, "tonitrus", ConfigConstructor.disable_recipe_tonitrus);
     }
 }

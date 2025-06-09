@@ -166,6 +166,7 @@
     "item.soulsweapons.dragonbane": "Dragonbane",
     "item.soulsweapons.supernova": "Supernova",
     "item.soulsweapons.mehrunes_razor": "Mehrunes' Razor",
+    "item.soulsweapons.tonitrus": "Tonitrus",
 
     "item.soulsweapons.big_chungus_spawn_egg": "チャンガスのスポーンエッグ",
     "item.soulsweapons.withered_demon_spawn_egg": "枯れたデーモンのスポーンエッグ",
@@ -290,6 +291,7 @@
     "effect.soulsweapons.chungus_tonic_effect": "Chungus Tonic",
     "effect.soulsweapons.frost_moon": "Frost Moon",
     "effect.soulsweapons.blade_dance": "Blade Dance",
+    "effect.soulsweapons.stormveil": "Stormveil",
 
     "item.minecraft.potion.effect.warding": "魔法防御のポーション",
     "item.minecraft.splash_potion.effect.warding": "魔法防御のスプラッシュポーション",
@@ -382,6 +384,9 @@
     "subtitles.soulsweapons.frenzied_shade_song": "The Frenzied Shade by Wicked starts playing",
     "subtitles.soulsweapons.frenzied_shade_song_mono": "The Frenzied Shade by Wicked starts playing",
     "subtitles.soulsweapons.shock": "Entities are being shocked",
+    "subtitles.soulsweapons.stormveil_trigger": "Entity gains Stormveil effect",
+    "subtitles.soulsweapons.stormveil_ambient": "Stormveil sparks",
+    "subtitles.soulsweapons.stormveil_thorns": "Stormveil electrocutes attacker",
 
     "tooltip.soulsweapons.shift": "[§eSHIFT§r] を押して詳細を表示します",
     "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",
@@ -760,6 +765,15 @@
     "tooltip.soulsweapons.lightbringer.3": "§bSpeed, Night Vision & Strength§r",
     "tooltip.soulsweapons.lightbringer.4": "Crawl out of the darkness, let the light guide you.",
     "tooltip.soulsweapons.lightbringer.5": "In memory of Axel Herman.",
+    "tooltip.soulsweapons.stormveil": "Stormveil",
+    "tooltip.soulsweapons.stormveil.1": "- Use to give yourself the §bStormveil§r effect,",
+    "tooltip.soulsweapons.stormveil.2": "making you immune to §fLightning§r damage",
+    "tooltip.soulsweapons.stormveil.3": "- While having §bStormveil§r with this weapon,",
+    "tooltip.soulsweapons.stormveil.4": "post hit trigger §3Chain Lightning§r from the",
+    "tooltip.soulsweapons.stormveil.5": "main target",
+    "tooltip.soulsweapons.stormveil.6": "- With §bStormveil§r, use again to make your",
+    "tooltip.soulsweapons.stormveil.7": "next attack trigger a §fLightning Strike§r on",
+    "tooltip.soulsweapons.stormveil.8": "the target, removing §bStormveil§r off yourself",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "絶滅したと考えられている珍しい形の魂。",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "暗く、しかしバランスの取れた色は、",

@@ -71,6 +71,9 @@ public class SoundRegistry {
     public static SoundEvent MOONVEIL_HORIZONTAL = registerSound("moonveil_horizontal");
     public static SoundEvent MOONVEIL_VERTICAL = registerSound("moonveil_vertical");
     public static SoundEvent SHOCK = registerSound("shock");
+    public static SoundEvent STORMVEIL_AMBIENT = registerSound("stormveil_ambient");
+    public static SoundEvent STORMVEIL_TRIGGER = registerSound("stormveil_trigger");
+    public static SoundEvent STORMVEIL_THORNS = registerSound("stormveil_thorns");
 
     public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
 
