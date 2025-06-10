@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.items.sword.Sting;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -100,6 +101,13 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(WeaponRegistry.MASTER_SWORD, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.isOf(WeaponRegistry.MASTER_SWORD) && livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth()) {
                 return 1.0f;
+            }
+            return 0.0f;
+        });
+
+        ModelPredicateProviderRegistry.register(WeaponRegistry.TONITRUS, new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+            if (livingEntity != null && livingEntity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+                return 1f;
             }
             return 0.0f;
         });
