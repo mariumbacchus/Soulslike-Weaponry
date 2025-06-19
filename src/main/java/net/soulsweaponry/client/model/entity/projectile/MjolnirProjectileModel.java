@@ -9,7 +9,7 @@ public class MjolnirProjectileModel extends GeoModel<MjolnirProjectile> {
 
     @Override
     public Identifier getAnimationResource(MjolnirProjectile animatable) {
-        return new Identifier(SoulsWeaponry.ModId, null);
+        return new Identifier(SoulsWeaponry.ModId, "animations/mjolnir.animation.json");
     }
 
     @Override
@@ -20,8 +20,6 @@ public class MjolnirProjectileModel extends GeoModel<MjolnirProjectile> {
 
     @Override
     public Identifier getTextureResource(MjolnirProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/mjolnir_texture.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/entity/mjolnir.png");
     }
-    
-    
 }

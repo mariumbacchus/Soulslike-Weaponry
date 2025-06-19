@@ -76,6 +76,10 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "fresh_animations_compat"), modContainer, Text.literal("Fresh Animations Compat."), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Fresh Animations Compat. resourcepack!");
         });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "enhanced_gow"), modContainer, Text.literal("Szombie's 3D GOW Weapons"), ResourcePackActivationType.DEFAULT_ENABLED);
+            LOGGER.info("Successfully registered built-in Szombie's Enhanced 3D GOW Weapons resourcepack!");
+        });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.RARE)), "test_item");

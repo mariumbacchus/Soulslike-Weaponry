@@ -20,6 +20,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 
 public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity {
 
@@ -70,16 +71,22 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         }
     }
 
-    // Old implementation of spinning
-    /*private PlayState predicate(AnimationState<?> state) {
-        if (this.dealtDamage) return PlayState.STOP;
-        state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
+    private PlayState predicate(AnimationState<?> state) {
+        try {
+            if (!this.inGround || this.isNoClip()) {
+                state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
+            } else {
+                state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+            }
+        } catch (Exception e) {
+            return PlayState.STOP;
+        }
         return PlayState.CONTINUE;
-    }*/
+    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        //controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
