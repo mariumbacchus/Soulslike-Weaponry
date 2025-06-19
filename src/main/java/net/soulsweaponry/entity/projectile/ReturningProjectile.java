@@ -236,4 +236,8 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     protected float getDragInWater() {
         return 0.99f;
     }
+
+    public boolean inGround() {
+        return this.inGround;
+    }
 }

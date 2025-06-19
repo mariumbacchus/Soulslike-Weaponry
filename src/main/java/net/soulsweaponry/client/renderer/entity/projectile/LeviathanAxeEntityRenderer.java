@@ -1,6 +1,8 @@
 package net.soulsweaponry.client.renderer.entity.projectile;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.client.model.entity.projectile.LeviathanAxeEntityModel;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
 
@@ -8,5 +10,15 @@ public class LeviathanAxeEntityRenderer extends GeoProjectileRenderer<LeviathanA
 
     public LeviathanAxeEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new LeviathanAxeEntityModel());
+    }
+
+    @Override
+    protected void applyRotations(LeviathanAxeEntity entity, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
+        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
+        boolean noClip = entity.isNoClip();
+        if (!entity.inGround() || noClip) {
+            float totalTicks = entity.age + partialTick;
+            matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(totalTicks * 60 * (noClip ? 1 : -1)));
+        }
     }
 }
