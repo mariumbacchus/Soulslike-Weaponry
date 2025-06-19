@@ -18,6 +18,7 @@ public class PacketIds {
     public static final Identifier SYNC_UMBRAL_DAMAGE_COOLDOWN = new Identifier(SoulsWeaponry.ModId, "umbral_trespass_damage_cooldown_sync");
     public static final Identifier STOP_BOSS_MUSIC = new Identifier(SoulsWeaponry.ModId, "stop_boss_music");
     public static final Identifier CHAIN_LIGHTNING = new Identifier(SoulsWeaponry.ModId, "chain_lightning");
+    public static final Identifier BLEED_SYNC = new Identifier(SoulsWeaponry.ModId, "bleed_data_sync");
 
     // Client to Server
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");

@@ -5,11 +5,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.PostureData;
+import net.soulsweaponry.entitydata.BleedData;
 
-public class PostureHudOverlay extends EffectHudOverlay {
+public class BleedHudOverlay extends EffectHudOverlay {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture_bars.png");
+    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
 
     @Override
     public Identifier getTexture() {
@@ -18,14 +18,14 @@ public class PostureHudOverlay extends EffectHudOverlay {
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int posture = PostureData.getPosture(player);
-        float posturePerPixel = ConfigConstructor.max_posture_loss / (float) 182;
-        return MathHelper.floor((float) posture / posturePerPixel);
+        int bleed = BleedData.getBleed(player);
+        float bleedPerPixel = ConfigConstructor.max_bleed / (float) 182;
+        return MathHelper.floor((float) bleed / bleedPerPixel);
     }
 
     @Override
     public boolean shouldShow(ClientPlayerEntity player) {
-        int posture = PostureData.getPosture(player);
-        return posture > 0;
+        int bleed = BleedData.getBleed(player);
+        return bleed > 0;
     }
 }

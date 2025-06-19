@@ -15,6 +15,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.BleedData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -50,7 +52,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
                     if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(1F, 0, 0);
-                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
+                        BleedData.addBleed((IEntityDataSaver) target, (int) ConfigConstructor.whirligig_sawblade_bleed_added);
+                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, (int) ConfigConstructor.whirligig_sawblade_bleed_effect_duration, (int) ConfigConstructor.whirligig_sawblade_bleed_effect_amp));
                     }
                     world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getY() + 1F, target.getZ(), target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5);
                 }

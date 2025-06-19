@@ -73,6 +73,11 @@ If you tried to change an int value to a float on a line that would not accept i
 - Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
 - Kirkhammer now applies Slowness 2 and Posture Loss on targets hit in the Calculated Fall explosion
 - Excalibur has a new ability called Lightbringer, making the wielder immune to Darkness and Blindness, while instead gaining Speed, Strength and Night Vision when applied with those effects
+- Posture Loss is reduced at a slower rate, being each 8th tick instead of 4th
+- Reworked Bleed effect, it now works as a buildup, dealing damage as soon as the bar is filled up (just like in the Souls series)
+- Skofnung when empowered now applies 60 bleed value with the bleed effect
+- Whirligig Sawblade applies 25 bleed each tick
+- Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

@@ -684,6 +684,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float skofnung_bonus_damage = 2;
     @Entry public static float skofnung_disable_heal_duration = 100;
     @Entry public static float skofnung_stone_additional_empowered_strikes = 8;
+    @Entry public static float skofnung_empowered_bleed_effect_duration = 200;
+    @Entry public static float skofnung_empowered_bleed_effect_amp = 0;
+    @Entry public static float skofnung_empowered_bleed_post_hit = 60;
     @Entry public static float soul_reaper_damage = 11;
     @Entry public static float soul_reaper_attack_speed = 1f;
     @Entry public static float soul_reaper_summoned_allies_cap = 50;
@@ -749,6 +752,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float whirligig_sawblade_damage = 8;
     @Entry public static float whirligig_sawblade_attack_speed = 1.6f;
     @Entry public static float whirligig_sawblade_ability_damage = 5.0f;
+    @Entry public static float whirligig_sawblade_bleed_added = 25;
+    @Entry public static float whirligig_sawblade_bleed_effect_duration = 160;
+    @Entry public static float whirligig_sawblade_bleed_effect_amp = 0;
     @Entry public static float whirligig_sawblade_cooldown = 100;
     @Entry public static float whirligig_sawblade_min_cooldown = 10;
     @Entry public static boolean whirligig_sawblade_enchant_reduces_cooldown = true;
@@ -765,6 +771,15 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean prioritize_off_hand_shield_over_weapon = false;
 
     @Entry public static float max_posture_loss = 200;
+    @Entry public static float posture_loss_reduction_amount = 1;
+    @Entry public static float posture_loss_reduction_interval = 8;
+
+    @Entry public static float max_bleed = 200;
+    @Entry public static float bleed_reduction_amount = 1;
+    @Entry public static float bleed_reduction_interval = 10;
+    @Entry public static float bleed_damage = 6f;
+    @Entry public static float bleed_effect_increase_per_amp = 6;
+    @Entry public static float bleed_effect_base_increase = 4;
 
     @Entry(min=0) public static float blight_carrier_enchant_max_level = 2;
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
@@ -917,6 +932,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float old_champions_remains_damage_modifier = 1f;
     @Entry public static float old_champions_remains_hits_before_growing_resistant = 3;
     @Entry public static float old_champions_remains_max_projectile_hits_before_immune = 3;
+    @Entry public static float old_champions_remains_bleed_applied = 100;
     @Entry public static float old_champions_remains_xp = 200;
     @Entry public static boolean old_champions_remains_disables_shields = true;
     @Entry public static boolean old_champions_remains_disables_shields_all_attacks = false;
