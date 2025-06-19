@@ -79,6 +79,7 @@ If you tried to change an int value to a float on a line that would not accept i
 - Whirligig Sawblade applies 25 bleed each tick
 - Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
 - Leviathan Axe has a smoother spin animation
+- Added Szombie's models of Leviathan Axe & Mjölnir as a built-in resourcepack for those weapons
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe
