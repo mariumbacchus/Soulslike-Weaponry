@@ -23,6 +23,7 @@
   ],
   "client": [
     "BipedEntityModelMixin",
+    "BossBarHudAccessor",
     "BossBarHudMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",

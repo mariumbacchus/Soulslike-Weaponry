@@ -80,6 +80,8 @@ If you tried to change an int value to a float on a line that would not accept i
 - Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
 - Leviathan Axe has a smoother spin animation
 - Added Szombie's models of Leviathan Axe & Mjölnir as a built-in resourcepack for those weapons
+- Hitting an entity now displays the targets posture loss as its own bar
+- Added a client config where you can disable HUD elements, such as the target posture loss bar, or the players bleed/posture loss bars
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

@@ -16,6 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ChungusTonicWhitelist;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
 import net.soulsweaponry.items.TestItem;
@@ -40,6 +41,7 @@ public class SoulsWeaponry implements ModInitializer {
         long start = System.currentTimeMillis();
         MidnightConfig.init(ModId, ConfigConstructor.class);
         MidnightConfig.init("soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
+        MidnightConfig.init(ModId + "_client", ClientConfig.class);
         LOGGER.info("Config initialized!");
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");

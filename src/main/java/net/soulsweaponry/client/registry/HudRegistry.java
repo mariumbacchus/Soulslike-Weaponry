@@ -1,10 +1,7 @@
 package net.soulsweaponry.client.registry;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.soulsweaponry.client.hud.BleedHudOverlay;
-import net.soulsweaponry.client.hud.CustomBossBar;
-import net.soulsweaponry.client.hud.EffectHudOverlay;
-import net.soulsweaponry.client.hud.PostureHudOverlay;
+import net.soulsweaponry.client.hud.*;
 
 public class HudRegistry {
 
@@ -14,6 +11,7 @@ public class HudRegistry {
         registerEffectOverlay(new PostureHudOverlay());
         registerEffectOverlay(new BleedHudOverlay());
         CustomBossBar.init();
+        HudRenderCallback.EVENT.register(new TargetPostureHudOverlay());
     }
 
     public static void registerEffectOverlay(EffectHudOverlay overlay) {

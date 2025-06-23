@@ -4,6 +4,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
 
@@ -26,6 +27,6 @@ public class PostureHudOverlay extends EffectHudOverlay {
     @Override
     public boolean shouldShow(ClientPlayerEntity player) {
         int posture = PostureData.getPosture(player);
-        return posture > 0;
+        return posture > 0 && !ClientConfig.disable_player_posture_hud;
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 
@@ -26,6 +27,6 @@ public class BleedHudOverlay extends EffectHudOverlay {
     @Override
     public boolean shouldShow(ClientPlayerEntity player) {
         int bleed = BleedData.getBleed(player);
-        return bleed > 0;
+        return bleed > 0 && !ClientConfig.disable_player_bleed_hud;
     }
 }
