@@ -47,7 +47,7 @@ public class Skofnung extends ModdedSword {
         int duration = (int) (ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, duration, 0));
         if (isEmpowered(stack)) {
-            BleedData.addBleed((IEntityDataSaver) target, (int) ConfigConstructor.skofnung_empowered_bleed_post_hit);
+            BleedData.addBleed(target, (int) ConfigConstructor.skofnung_empowered_bleed_post_hit);
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, (int) ConfigConstructor.skofnung_empowered_bleed_effect_duration, (int) ConfigConstructor.skofnung_empowered_bleed_effect_amp));
             if (attacker instanceof PlayerEntity player) {
                 if (!player.getItemCooldownManager().isCoolingDown(this)) {

@@ -24,6 +24,7 @@ public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltra
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
             this.gainStrength(attacker);
+            this.applyPostureLoss(target);
         }
         return super.postHit(stack, target, attacker);
     }

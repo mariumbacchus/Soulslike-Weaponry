@@ -1,0 +1,6 @@
+{
+  "base_posture_unit": 200,
+  "posture_loss_buildup_resistance": -130,
+  "bleed_buildup_resistance": 300,
+  "bleed_damage_resistance": 300
+}

@@ -6,13 +6,21 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.networking.PacketIds;
 
 public class PostureData {
 
     public static final String POSTURE_ID = "posture";
 
-    public static int addPosture(IEntityDataSaver entity, int amount) {
+    public static void addPosture(LivingEntity entity, int amount) {
+        if (!EntityPosture.isPostureDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
+            int newAmount = EntityPosture.getPostureLoss(entity, amount);
+            addPosture((IEntityDataSaver) entity, newAmount);
+        }
+    }
+
+    private static void addPosture(IEntityDataSaver entity, int amount) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(POSTURE_ID)) {
             nbt.putInt(POSTURE_ID, 0);
@@ -27,7 +35,6 @@ public class PostureData {
         if (entity instanceof ServerPlayerEntity) {
             syncData(posture, (ServerPlayerEntity) entity);
         }
-        return posture;
     }
 
     public static int getPosture(LivingEntity entity) {
@@ -38,17 +45,16 @@ public class PostureData {
         return target.getPersistentData().getInt(POSTURE_ID);
     }
 
-    public static int reducePosture(IEntityDataSaver entity, int amount) {
-        return addPosture(entity, -amount);
+    public static void reducePosture(LivingEntity entity, int amount) {
+        addPosture(entity, -amount);
     }
 
-    public static int setPosture(IEntityDataSaver entity, int amount) {
+    public static void setPosture(IEntityDataSaver entity, int amount) {
         NbtCompound nbt = entity.getPersistentData();
         nbt.putInt(POSTURE_ID, amount);
         if (entity instanceof ServerPlayerEntity) {
             syncData(amount, (ServerPlayerEntity) entity);
         }
-        return amount;
     }
 
     public static void syncData(int data, ServerPlayerEntity entity) {

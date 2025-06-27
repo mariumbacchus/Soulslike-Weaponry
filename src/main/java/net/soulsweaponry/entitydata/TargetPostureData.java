@@ -6,9 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.networking.PacketIds;
-
-import java.util.Map;
 
 /**
  * Get the posture values and the name of the target the entity is attacking, in other words
@@ -17,6 +16,7 @@ import java.util.Map;
 public class TargetPostureData {
 
     public static final String POSTURE_ID = "target_posture";
+    public static final String MAX_POSTURE_ID = "target_max_posture";
     public static final String NAME_ID = "target_name";
 
     /**
@@ -44,10 +44,14 @@ public class TargetPostureData {
     }
 
     /**
-     * Returns a map of the target name and posture value saved on the main entity
+     * Gets the max target posture of the target saved on the main entity (player)
      */
-    public static Map<String, Integer> getTargetValues(LivingEntity mainEntity) {
-        return Map.of(getTargetName(mainEntity), getTargetPosture(mainEntity));
+    public static int getTargetsMaxPosture(LivingEntity mainEntity) {
+        IEntityDataSaver target = (IEntityDataSaver)mainEntity;
+        if (!target.getPersistentData().contains(MAX_POSTURE_ID)) {
+            target.getPersistentData().putInt(MAX_POSTURE_ID, 200);
+        }
+        return target.getPersistentData().getInt(MAX_POSTURE_ID);
     }
 
     /**
@@ -57,10 +61,12 @@ public class TargetPostureData {
         NbtCompound nbt = mainEntity.getPersistentData();
         int amount = PostureData.getPosture(target);
         String name = target.getName().getString();
+        int max = EntityPosture.getMaxPostureLoss(target);
         nbt.putInt(POSTURE_ID, amount);
         nbt.putString(NAME_ID, name);
+        nbt.putInt(MAX_POSTURE_ID, max);
         if (mainEntity instanceof ServerPlayerEntity) {
-            syncData(amount, name, (ServerPlayerEntity) mainEntity);
+            syncData(amount, name, max, (ServerPlayerEntity) mainEntity);
         }
     }
 
@@ -68,15 +74,17 @@ public class TargetPostureData {
         NbtCompound nbt = mainEntity.getPersistentData();
         nbt.putInt(POSTURE_ID, 0);
         nbt.putString(NAME_ID, "");
+        nbt.putInt(MAX_POSTURE_ID, 200);
         if (mainEntity instanceof ServerPlayerEntity) {
-            syncData(0, "", (ServerPlayerEntity) mainEntity);
+            syncData(0, "", 200, (ServerPlayerEntity) mainEntity);
         }
     }
 
-    public static void syncData(int data, String name, ServerPlayerEntity entity) {
+    public static void syncData(int data, String name, int maxPosture, ServerPlayerEntity entity) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(data);
         buf.writeString(name);
+        buf.writeInt(maxPosture);
         ServerPlayNetworking.send(entity, PacketIds.TARGET_POSTURE_SYNC, buf);
     }
 }

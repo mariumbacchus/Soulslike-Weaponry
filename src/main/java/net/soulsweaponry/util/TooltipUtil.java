@@ -15,12 +15,14 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
+import net.soulsweaponry.items.katana.IBleed;
 import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
 import net.soulsweaponry.items.spear.GlaiveOfHodir;
 import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.Arrays;
@@ -41,6 +43,25 @@ public class TooltipUtil {
     // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case SCENT_OF_BLOOD -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.2").formatted(Formatting.GRAY));
+            }
+            case BLOODLUST -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.3").formatted(Formatting.GRAY));
+                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
+            case BLEED -> {
+                int amount = stack.getItem() instanceof IBleed bleed ? bleed.getBleedAmount() : 0;
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed").formatted(Formatting.RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.1", amount).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.3").formatted(Formatting.GRAY));
+            }
             case STORMVEIL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil").formatted(Formatting.AQUA));
                 for (int i = 1; i <= 8; i++) {
@@ -212,14 +233,19 @@ public class TooltipUtil {
                 for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));
             }
             case HEAVY -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_4", String.format("%.1f", ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant)).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
-                if (ConfigConstructor.ultra_heavy_disables_shields) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_6").formatted(Formatting.GRAY));
+                if (stack.getItem() instanceof IUltraHeavy heavy) {
+                    int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
+                    postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
+                    postureLoss *= EnchantmentHelper.getLevel(EnchantRegistry.STAGGER, stack);
+                    postureLoss += heavy.getPostureLoss();
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_4", postureLoss).formatted(Formatting.GRAY));
+                    if (ConfigConstructor.ultra_heavy_disables_shields) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
+                    }
                 }
             }
             case LIFE_STEAL -> {

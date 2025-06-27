@@ -82,6 +82,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_supernova = false;
     @Entry public static boolean disable_recipe_mehrunes_razor = false;
     @Entry public static boolean disable_recipe_tonitrus = false;
+    @Entry public static boolean disable_recipe_bloodlust = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -165,6 +166,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_supernova = false;
     @Entry public static boolean disable_use_mehrunes_razor = false;
     @Entry public static boolean disable_use_tonitrus = false;
+    @Entry public static boolean disable_use_bloodlust = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -231,6 +233,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_supernova = true;
     @Entry public static boolean is_fireproof_mehrunes_razor = true;
     @Entry public static boolean is_fireproof_tonitrus = false;
+    @Entry public static boolean is_fireproof_bloodlust = false;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -292,6 +295,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float withered_chest_life_leach_duration = 400;
     @Entry public static float withered_chest_life_leach_amplifier = 0;
 
+    @Entry public static float bloodlust_damage = 7;
+    @Entry public static float bloodlust_attack_speed = 1.6f;
+    @Entry public static float bloodlust_bleed_post_hit = 40;
+    @Entry public static float bloodlust_ability_self_damage = 4f;
+    @Entry public static float bloodlust_ability_self_bleed = 100;
+    @Entry public static float bloodlust_ability_strength_amp = 1;
+    @Entry public static float bloodlust_ability_bloodthirsty_amp = 0;
+    @Entry public static float bloodlust_bloodloss_in_vicinity_gives_strength_amp = 0;
     @Entry public static float bloodthirster_damage = 8;
     @Entry public static float bloodthirster_attack_speed = 1.6f;
     @Entry public static boolean bloodthirster_overshields = true;
@@ -350,6 +361,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] crucible_sword_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static float darkin_blade_damage = 11;
     @Entry public static float darkin_blade_attack_speed = 1f;
+    @Entry public static float darkin_blade_posture_loss = 30;
     @Entry public static float darkin_blade_ability_damage = 12;
     @Entry public static float darkin_blade_ability_cooldown = 150;
     @Entry public static float darkin_blade_ability_min_cooldown = 40;
@@ -412,6 +424,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] empowered_dawnbreaker_ability_enchant_reduces_cooldown_ids = {"fire_aspect"};
     @Entry public static float heap_of_raw_iron_damage = 10;
     @Entry public static float heap_of_raw_iron_attack_speed = 1f;
+    @Entry public static float heap_of_raw_iron_posture_loss = 30;
     @Entry public static float heap_of_raw_iron_dragons_scourge_bonus = 3f;
     @Entry public static float heap_of_raw_iron_cooldown = 200;
     @Entry public static float heap_of_raw_iron_min_cooldown = 40;
@@ -494,6 +507,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float forlorn_scythe_attack_speed = 1f;
     @Entry public static float featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
+    @Entry public static float featherlight_posture_loss = 20;
     @Entry public static float featherlight_calculated_fall_base_radius = 2.5f;
     @Entry public static float featherlight_calculated_fall_height_increase_radius_modifier = 1.6f;
     @Entry public static float featherlight_calculated_fall_target_launch_modifier = 0.025f;
@@ -552,6 +566,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_sword_charge_added_post_hit = 1;
     @Entry public static float kirkhammer_damage = 9;
     @Entry public static float kirkhammer_attack_speed = 1f;
+    @Entry public static float kirkhammer_posture_loss = 40;
     @Entry public static float kirkhammer_calculated_fall_base_radius = 2.5f;
     @Entry public static float kirkhammer_calculated_fall_height_increase_radius_modifier = 1.4f;
     @Entry public static float kirkhammer_calculated_fall_target_launch_modifier = 0.035f;
@@ -633,8 +648,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float moonveil_wave_damage = 8f;
     @Entry public static float moonveil_vertical_damage = 12f;
     @Entry public static float moonveil_ability_cooldown = 30;
+    @Entry public static float moonveil_bleed_post_hit = 25;
     @Entry public static float nightfall_damage = 11;
     @Entry public static float nightfall_attack_speed = 1f;
+    @Entry public static float nightfall_posture_loss = 40;
     @Entry public static float nightfall_ability_damage = 18.0f;
     @Entry public static float nightfall_ability_shield_power = 2;
     @Entry public static float nightfall_shield_cooldown = 500;
@@ -695,6 +712,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float sting_bonus_arthropod_damage = 4f;
     @Entry public static float supernova_damage = 11f;
     @Entry public static float supernova_attack_speed = 1f;
+    @Entry public static float supernova_posture_loss = 35;
     @Entry(min=0f,max=1f) public static float supernova_firehit_chance = 0.5f;
     @Entry public static float supernova_firehit_duration_seconds = 5f;
     @Entry public static float supernova_firethorns_damage = 4f;
@@ -767,19 +785,30 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean ultra_heavy_haste_when_strength = true;
     @Entry public static boolean ultra_heavy_disable_offhand_when_held = false;
     @Entry public static boolean ultra_heavy_disables_shields = true;
-    @Entry public static float ultra_heavy_posture_loss_modifier_when_stagger_enchant = 2f;
+    @Entry public static float ultra_heavy_posture_loss_modifier_when_stagger_enchant = 0.9f;
     @Entry public static boolean prioritize_off_hand_shield_over_weapon = false;
 
-    @Entry public static float max_posture_loss = 200;
+    @Entry public static boolean disable_posture_mechanic_for_all_mobs = false;
+    @Entry public static float base_posture_unit = 120;
+    @Entry public static float base_posture_buildup_resistance_unless_overridden = 0f;
     @Entry public static float posture_loss_reduction_amount = 1;
     @Entry public static float posture_loss_reduction_interval = 8;
 
+    @Entry public static float posture_break_damage_per_amp = 6f;
+    @Entry public static float posture_break_player_damage_per_amp = 2f;
+    @Entry(min=0, max=1) public static float posture_break_percent_health_damage = 0.05f;
+
+    @Entry public static boolean disable_bleed_mechanic_for_all_mobs = false;
     @Entry public static float max_bleed = 200;
+    @Entry public static float base_bleed_buildup_resistance_unless_overridden = 0f;
+    @Entry public static float base_bleed_damage_resistance_unless_overridden = 0f;
     @Entry public static float bleed_reduction_amount = 1;
     @Entry public static float bleed_reduction_interval = 10;
-    @Entry public static float bleed_damage = 6f;
+    @Entry public static float bleed_base_damage = 6f;
+    @Entry(min=0, max=1) public static float bleed_percent_health_damage = 0.1f;
     @Entry public static float bleed_effect_increase_per_amp = 6;
     @Entry public static float bleed_effect_base_increase = 4;
+    @Entry public static float bleed_post_hit_bloodthirsty_effect_increase_mod = 0.75f;
 
     @Entry(min=0) public static float blight_carrier_enchant_max_level = 2;
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;

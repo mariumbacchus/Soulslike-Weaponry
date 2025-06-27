@@ -1,19 +1,23 @@
 # Changelog
 
 ## 1.3
-### Important: All int values in the config has been changed to floats, a reset (delete and relaunch) is recommended
-If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
+### Important: All config files have been moved to "soulsweapons" folder inside config folder
+- The original config is now inside config/soulsweapons/soulsweapons.json together with the other files like _client.json and _chungus_tonic_whitelist.json
 
-
+### New additions
 - Added Dragonbane, a new katana from Skyrim having the Chain Lightning ability builtin and does 20 bonus damage to dragon entities, can be made with Netherite ingots or Dragon Bones from Ice & Fire (accepted material is inside soulsweapons:dragonbane_material item tag)
 - Added Supernova, a spiky mace that does bonus durability damage to armor, has a chance to inflict fire post hit and has passive firethorns effect while holding it
   - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
   - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
 - Added Mehrunes' Razor, a new dagger that has a chance to deal bonus damage equal to the missing health of the target, with an additional very small chance to instantly kill the target
-- Added Tonitrus, a mace from Bloodborne which you can use to give yourself Stormveil, making you apply Chain Lightning post hit and immune to Lightning damage, using it again with the effect makes you summon a lightning strike on the target post hit, then removing the Stormveil effect
+- Added Tonitrus, a mace from Bloodborne which you can use to give yourself the new Stormveil effect, making you apply Chain Lightning post hit and immune to Lightning damage, using it again with the effect makes you summon a lightning strike on the target post hit, then removing the Stormveil effect
 - Added the Stormveil effect, making the wearer immune to Lightning damage and has a chance to inflict thorns lightning damage on targets hitting the wearer
+- Added Bloodlust, a katana from Dark Souls 3 applying large amounts of bleed buildup and can be used to damage yourself, but also give you Strength 2 and Bloodthirsty effects, targets suffering Blood Loss around you while having this weapon in hand also gives you Strength
+  - Bleed buildup is a part of the reworked bleed system, more on that later in the log
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
+  - Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
+    - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
   - Bullets with this enchant are rendered with a cyan overlay
 - Added the new Tether gun enchantment, making Silver Bullets drag the target towards you if outside a certain range
@@ -23,11 +27,11 @@ If you tried to change an int value to a float on a line that would not accept i
     - first try to target the mob the owner last attacked
     - if no mob was attacked recently, it will target the closest mob around it
     - if no mob is close, it will bounce off a random direction
-- A gun cannot have both Ethereal & Ricochet enchant
-- Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
-  - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
+  - A gun cannot have both Ethereal & Ricochet enchant
+
+### Item changes
+#### Guns:
 - Guns can no longer have bow enchants, and Punch & Flame no longer affects guns and Silver Bullets (Power & Infinity still work)
-- Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
 - Infinity on guns makes them properly only need 1 bullet to fire and doesn't consume it either
 - Changed the use animation of guns
 - Adjusted the position of the Gatling Gun when using in first person (now centered more)
@@ -46,26 +50,16 @@ If you tried to change an int value to a float on a line that would not accept i
   - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50
   - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
   - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
+
+#### Armor:
 - Hallowheart makes the wearer completely immune to Wither effect at all times instead of just under 50% health
 - Arkenplate also gives Magic Resistance 2 under 50% health
 - Enhanced Arkenplates Mirror ability triggers at under 50% health instead of 33%
 - Soul Robes set gives Magic Resistance 4 instead of 2 (80% reduced magic damage)
 - Armor that grants effects no longer display potion particles
+
+#### Weapons:
 - Added Ice and Fire dragons to the tag Dragon's Scourge ability checks to apply bonus damage (Dragonslayer Swordspear and Heap of Raw Iron have this ability)
-- Added velocity config lines for moonlight projectiles
-- Added config lines for Lunar Herald amplifier and duration applied by the Lunar Ring (moonstone_ring)
-  - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
-- Changed Night Prowler's Darkness Rise attack to spawn delayed Blackflame Snake explosions instead of applying continuous Decay effect
-- Night Prowler will heal from projectiles at under 50% health instead of 16.7%
-- Changed Day Stalker attacks
-  - No longer heals when empowered, gains Speed II instead
-  - Sky High ability summon waves of Flame Pillars on landing
-  - Air Combustion attack has bigger radius
-  - Getting hit by a projectile under 50% health makes Day Stalker retaliate by spawning an Air Combustion on the attacker
-  - Buffed the range of Flames Edge attack
-  - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
-  - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
-  - Chaos Storm now spawns pools of Molten Metal if in phase two, damaging mobs in it and setting them on fire
 - Added new Withered Wabbajack on entity hit effects:
   - Chance to launch the target in the air with random launch power
   - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
@@ -73,15 +67,82 @@ If you tried to change an int value to a float on a line that would not accept i
 - Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
 - Kirkhammer now applies Slowness 2 and Posture Loss on targets hit in the Calculated Fall explosion
 - Excalibur has a new ability called Lightbringer, making the wielder immune to Darkness and Blindness, while instead gaining Speed, Strength and Night Vision when applied with those effects
-- Posture Loss is reduced at a slower rate, being each 8th tick instead of 4th
-- Reworked Bleed effect, it now works as a buildup, dealing damage as soon as the bar is filled up (just like in the Souls series)
-- Skofnung when empowered now applies 60 bleed value with the bleed effect
-- Whirligig Sawblade applies 25 bleed each tick
-- Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
 - Leviathan Axe has a smoother spin animation
 - Added Szombie's models of Leviathan Axe & Mjölnir as a built-in resourcepack for those weapons
-- Hitting an entity now displays the targets posture loss as its own bar
-- Added a client config where you can disable HUD elements, such as the target posture loss bar, or the players bleed/posture loss bars
+- Heap of Raw Iron only gives Bloodthirsty effect with max amplifier 3, and the ticks before damage is capped at each 20th tick instead of being lower and lower the higher amplifier is
+  - Bloodthirsty effect now increases bleed applied by the items: bleed = amplifier * originalBleed * 0.75
+- Ultra Heavy weapons now apply Posture Loss on their own without the need for Stagger enchant
+  - Posture Loss bonus modifier for those weapons when having Stagger enchant has been reduced from 2 to 0.9 due to this
+  - Kirkhammer applies 40
+  - Darkin Blade applies 30
+  - Heap of Raw Iron applies 30
+  - Featherlight applies 20
+  - Nightfall applies 40
+  - Supernova applies 35
+
+### Bosses
+- Changed Night Prowler's Darkness Rise attack to spawn delayed Blackflame Snake explosions instead of applying continuous Decay effect
+- Night Prowler will heal from projectiles at under 50% health instead of 16.7%
+- Changed Day Stalker attacks
+    - No longer heals when empowered, gains Speed II instead
+    - Sky High ability summon waves of Flame Pillars on landing
+    - Air Combustion attack has bigger radius
+    - Getting hit by a projectile under 50% health makes Day Stalker retaliate by spawning an Air Combustion on the attacker
+    - Buffed the range of Flames Edge attack
+    - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
+    - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
+    - Chaos Storm now spawns pools of Molten Metal if in phase two, damaging mobs in it and setting them on fire
+
+### Bugfixes
+- Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
+
+### Reworked Mechanics
+- Reworked Posture Loss mechanic
+    - Instead of max posture loss being flat 200 per entity, it now scales off of the size of the entity with a base posture unit the entity has
+    - Entities have a posture loss resistance, reducing the amount of posture loss applied, or increase it if the value is negative
+    - The base posture unit is universal in the config, but you can override this by making an "entitystats" datapack json file
+    - Entity stats files contain values such as bleed & posture loss buildup resistance, max posture loss, base posture loss unit for that entity and so on
+    - The files representing the entities must be named after the entity and must be placed inside the folder "entitystats" inside the namespace the mob is from
+    - Example: for the entity returning_knight, it needs to be inside data/soulsweapons/entitystats/returning_knight.json, while for the zombie it would be in data/minecraft/entitystats/zombie.json
+    - Additionally, Posture Loss is reduced at a slower rate, being each 8th tick instead of 4th
+    - Hitting an entity now displays the targets posture loss as its own bar
+    - Added a client config where you can disable HUD elements, such as the target posture loss bar, or the players bleed/posture loss bars
+    - Some bosses are more easily posture broken, while others are harder to break
+    - As listed above, the guns have their posture loss applied buffed
+    - Posture Break now deals 5% of the targets max health as bonus damage
+      - Added config lines for Posture Break damage
+      - Base value was reduced to 2 against players and 6 against other mobs
+- Reworked Bleed effect
+    - It now works as a buildup, dealing damage as soon as the bar is filled up (just like in the Souls series), max bleed is still 200
+      - Max bleed can be universally changed in config, but can also be changed for just one entity in the entitystats file with the line max_bleed
+    - Skofnung when empowered now applies 60 bleed value with the bleed effect
+    - Whirligig Sawblade applies 25 bleed each tick
+    - Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
+    - Bleed buildup resistance reduces the buildup and is universally at 0, but can be changed for each entity by making an entity stats file mentioned above
+    - Moonveil applies 25 bleed post hit
+    - The damage is universally 6 + 10% max hp of the target, but this amount also varies depending on the mob's bleed damage resistance
+    - Some bosses in the mod are weaker to bleed, while others are stronger against it
+- Bosses and some mobs are now weaker/stronger against bleed and posture loss
+  - Decaying King: Higher posture loss resistance; Very high bleed buildup resistance, but very low bleed damage resistance
+  - Returning Knight: Weak to posture loss; Extremely high bleed resistance (both buildup and damage)
+  - Old Champion's Remains: Very weak to posture loss; Extremely high bleed resistance
+  - Frenzied Shade: Weak to posture loss; Immune to bleed
+  - Fallen Icon: Weak to posture loss; Immune to bleed
+  - Monarch of Chaos: Slightly resistant to posture loss; Immune to bleed
+  - Day Stalker: Very high resistance against posture loss; Weak to bleed
+  - Night Prowler: Highly resistant to posture loss; Slightly stronger against bleed
+  - Withered Demon: Mildly resistant to posture loss; Very weak to bleed
+
+
+### Config changes
+- Added velocity config lines for moonlight projectiles
+- Added config lines for Lunar Herald amplifier and duration applied by the Lunar Ring (moonstone_ring)
+  - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
+- All int values in the config have been changed to floats
+  - If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
+
+
+
 
 ## 1.2.4
 - Fixed a bug that removed original paper recipe

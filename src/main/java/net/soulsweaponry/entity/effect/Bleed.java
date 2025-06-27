@@ -3,11 +3,8 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.registry.tag.EntityTypeTags;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.util.ModTags;
 
 public class Bleed extends StatusEffect {
 
@@ -26,8 +23,6 @@ public class Bleed extends StatusEffect {
 
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        if (!entity.getType().isIn(EntityTypeTags.SKELETONS) && !entity.getType().isIn(ModTags.Entities.SKELETONS)) {
-            BleedData.addBleed((IEntityDataSaver) entity, (int) (ConfigConstructor.bleed_effect_base_increase + (amplifier + 1) * ConfigConstructor.bleed_effect_increase_per_amp));
-        }
+        BleedData.addBleed(entity, (int) (ConfigConstructor.bleed_effect_base_increase + (amplifier + 1) * ConfigConstructor.bleed_effect_increase_per_amp));
     }
 }

@@ -16,7 +16,6 @@ import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entitydata.BleedData;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -219,7 +218,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }
                     if (applyBleed) {
-                        BleedData.addBleed((IEntityDataSaver) target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
+                        BleedData.addBleed(target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 200, 0));
                     }
                     if (knockback > 0) {
@@ -328,7 +327,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         if (attackStatus == 13 && this.isInMeleeRange(target)) {
             if (this.applyDamage(target, 16f)) {
-                BleedData.addBleed((IEntityDataSaver) target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
+                BleedData.addBleed(target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                 this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.getWorld().isClient) {

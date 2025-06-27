@@ -10,7 +10,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IUltraHeavy;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.PostureData;
 
 public class StaggerEnchantment extends Enchantment {
@@ -37,7 +36,8 @@ public class StaggerEnchantment extends Enchantment {
                 postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
             }
             postureLoss *= level;
-            PostureData.addPosture((IEntityDataSaver) living, postureLoss);
+            // TODO make posture & bleed resistance attributes i can apply to armor and change calculations in EntityPosture & Bleed to include those values
+            PostureData.addPosture(living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
     }

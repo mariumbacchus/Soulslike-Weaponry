@@ -131,4 +131,9 @@ public class Supernova extends UltraHeavyWeapon {
     public DetonateGroundAttributes getDetonationAttributes() {
         return this.attributes;
     }
+
+    @Override
+    public int getPostureLoss() {
+        return (int) ConfigConstructor.supernova_posture_loss;
+    }
 }

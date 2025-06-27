@@ -4,8 +4,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
 
 public class PostureHudOverlay extends EffectHudOverlay {
@@ -20,7 +20,7 @@ public class PostureHudOverlay extends EffectHudOverlay {
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
         int posture = PostureData.getPosture(player);
-        float posturePerPixel = ConfigConstructor.max_posture_loss / (float) 182;
+        float posturePerPixel = EntityPosture.getMaxPostureLoss(player) / (float) 182;
         return MathHelper.floor((float) posture / posturePerPixel);
     }
 

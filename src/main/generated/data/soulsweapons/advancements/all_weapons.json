@@ -1,6 +1,18 @@
 {
   "parent": "soulsweapons:all_moonlight_weapons",
   "criteria": {
+    "bloodlust": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:bloodlust"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "bloodthirster": {
       "conditions": {
         "items": [
@@ -782,6 +794,9 @@
     ],
     [
       "tonitrus"
+    ],
+    [
+      "bloodlust"
     ]
   ],
   "sends_telemetry_event": true

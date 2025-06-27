@@ -66,7 +66,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
         if (!user.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
             this.applyItemCooldown(user, this.getScaledCooldown(stack));
-            int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack));
+            int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack) / 2f);
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 200, power));
             user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 0));
             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .75f, 1f);
@@ -114,5 +114,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public DetonateGroundAttributes getDetonationAttributes() {
         return this.attributes;
+    }
+
+    @Override
+    public int getPostureLoss() {
+        return (int) ConfigConstructor.heap_of_raw_iron_posture_loss;
     }
 }

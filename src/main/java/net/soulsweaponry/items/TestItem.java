@@ -1,7 +1,6 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,10 +18,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.api.entitystats.EntityStatsUtil;
+import net.soulsweaponry.api.entitystats.EntityPosture;
+import net.soulsweaponry.api.entitystats.EntityStats;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TestItem extends SwordItem {
 
@@ -136,9 +138,25 @@ public class TestItem extends SwordItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-
+        EntityPosture.getMaxPostureLoss(user);
+        Optional<EntityStats> maybeStats = EntityStatsUtil.getStats(user);
+        if (maybeStats.isPresent()) {
+            EntityStats stats = maybeStats.get();
+            float maxPosture = stats.max_posture_loss;
+            float maxBleed = stats.max_bleed;
+            float base = stats.base_posture_unit;
+            float bleedRes = stats.bleed_buildup_resistance;
+            float bleedDamageRes = stats.bleed_damage_resistance;
+            float postRes = stats.posture_loss_buildup_resistance;
+            System.out.println("maxPosture " + maxPosture);
+            System.out.println("maxBleed " + maxBleed);
+            System.out.println("base posture unit " + base);
+            System.out.println("bleed buildup Res" + bleedRes);
+            System.out.println("posture buildup res " + postRes);
+            System.out.println("bleedDamageRes " + bleedDamageRes);
+        }
         // only run on the server
-        if (!world.isClient() && world instanceof ServerWorld serverWorld) {
+        /*if (!world.isClient() && world instanceof ServerWorld serverWorld) {
             LivingEntity primary = user.getAttacking();
             if (primary != null) {
                 // 1) main bolt: player eyes → primary target eyes
@@ -162,7 +180,7 @@ public class TestItem extends SwordItem {
                 }
             }
             return TypedActionResult.success(stack);
-        }
+        }*/
 
         /*double d = user.getY() - 5;
         double e = user.getY() + 5;

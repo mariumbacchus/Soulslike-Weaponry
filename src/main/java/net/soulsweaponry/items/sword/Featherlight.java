@@ -81,4 +81,9 @@ public class Featherlight extends UltraHeavyWeapon {
     public DetonateGroundAttributes getDetonationAttributes() {
         return attributes;
     }
+
+    @Override
+    public int getPostureLoss() {
+        return (int) ConfigConstructor.featherlight_posture_loss;
+    }
 }

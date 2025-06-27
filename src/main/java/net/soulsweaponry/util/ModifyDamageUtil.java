@@ -82,9 +82,10 @@ public class ModifyDamageUtil {
         }
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
-            float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
+            float baseAdded = entity instanceof PlayerEntity ? ConfigConstructor.posture_break_player_damage_per_amp : ConfigConstructor.posture_break_damage_per_amp;
             float totalAdded = baseAdded * (amplifier + 1);
             newAmount += totalAdded;
+            newAmount += ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
             entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
             if (entity.hasStatusEffect(StatusEffects.SLOWNESS)) entity.removeStatusEffect(StatusEffects.SLOWNESS);

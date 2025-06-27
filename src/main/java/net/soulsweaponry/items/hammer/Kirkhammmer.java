@@ -5,7 +5,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.TrickWeapon;
@@ -29,13 +28,13 @@ public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
             (target, user, fallDistance) -> {
                 int posture = (int) (ConfigConstructor.kirkhammer_calculated_fall_base_posture_loss + ConfigConstructor.kirkhammer_calculated_fall_height_increase_posture_loss_modifier * fallDistance);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1));
-                PostureData.addPosture((IEntityDataSaver) target, posture);
+                PostureData.addPosture(target, posture);
             },
             (user, fallDistance, stack) -> {}
     );
 
     public Kirkhammmer(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
+        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, (int) ConfigConstructor.kirkhammer_posture_loss, 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
     }
 
     @Override

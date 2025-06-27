@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.sword;
+package net.soulsweaponry.items.katana;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

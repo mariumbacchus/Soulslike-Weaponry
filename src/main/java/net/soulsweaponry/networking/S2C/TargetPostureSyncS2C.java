@@ -13,6 +13,7 @@ public class TargetPostureSyncS2C {
         if (client.player != null) {
             ((IEntityDataSaver)client.player).getPersistentData().putInt(TargetPostureData.POSTURE_ID, buf.readInt());
             ((IEntityDataSaver)client.player).getPersistentData().putString(TargetPostureData.NAME_ID, buf.readString());
+            ((IEntityDataSaver)client.player).getPersistentData().putInt(TargetPostureData.MAX_POSTURE_ID, buf.readInt());
         }
     }
 }

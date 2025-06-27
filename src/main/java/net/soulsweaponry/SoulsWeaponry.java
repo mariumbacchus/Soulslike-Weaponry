@@ -14,6 +14,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ChungusTonicWhitelist;
 import net.soulsweaponry.config.ClientConfig;
@@ -33,18 +34,20 @@ import java.util.ArrayList;
 public class SoulsWeaponry implements ModInitializer {
 
     public static final String ModId = "soulsweapons";
+    public static final String CONFIG_FOLDER = "soulsweapons/";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
     public static final ArrayList<Item> ITEM_GROUP_LIST = new ArrayList<>();
 
     @Override
     public void onInitialize() {
         long start = System.currentTimeMillis();
-        MidnightConfig.init(ModId, ConfigConstructor.class);
-        MidnightConfig.init("soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
-        MidnightConfig.init(ModId + "_client", ClientConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId, ConfigConstructor.class);
+        MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
         LOGGER.info("Config initialized!");
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");
+        AttributeRegistry.init();
         BlockRegistry.init();
         ItemRegistry.init();
         FluidRegistry.init();
@@ -96,6 +99,7 @@ public class SoulsWeaponry implements ModInitializer {
                         })).build());
 
         ServerLifecycleEvents.SERVER_STARTING.register(TrickWeaponUtil::loadMappings);
+        EntityStatsUtil.register();
 
         long end = System.currentTimeMillis();
         LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");

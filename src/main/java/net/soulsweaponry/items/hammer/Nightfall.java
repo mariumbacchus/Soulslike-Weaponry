@@ -215,4 +215,9 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     public DetonateGroundAttributes getDetonationAttributes() {
         return attributes;
     }
+
+    @Override
+    public int getPostureLoss() {
+        return (int) ConfigConstructor.nightfall_posture_loss;
+    }
 }

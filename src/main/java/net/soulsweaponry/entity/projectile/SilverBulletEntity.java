@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
@@ -241,7 +242,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
         if (entityHitResult.getEntity() instanceof LivingEntity target) {
             this.applyPostureLoss(target);
             int posture = PostureData.getPosture(target);
-            if (posture >= ConfigConstructor.max_posture_loss) {
+            if (!EntityPosture.isPostureDisabled(target) && posture >= EntityPosture.getMaxPostureLoss(target)) {
                 this.onPostureBreak(target);
             }
             if (target.isUndead()) {

@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.sword;
+package net.soulsweaponry.items.katana;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,11 +14,19 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class Moonveil extends ChargeToUseItem {
+public class Moonveil extends ChargeToUseItem implements IBleed {
 
     public Moonveil(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.moonveil_damage, ConfigConstructor.moonveil_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT);
+        this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT, TooltipAbilities.BLEED);
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (!this.isDisabled(stack)) {
+            this.applyBleed(attacker, target);
+        }
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -67,5 +75,10 @@ public class Moonveil extends ChargeToUseItem {
     @Override
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
+    }
+
+    @Override
+    public int getBleedAmount() {
+        return (int) ConfigConstructor.moonveil_bleed_post_hit;
     }
 }

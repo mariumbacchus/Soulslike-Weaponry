@@ -153,4 +153,9 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     public DetonateGroundAttributes getDetonationAttributes() {
         return this.attributes;
     }
+
+    @Override
+    public int getPostureLoss() {
+        return (int) ConfigConstructor.darkin_blade_posture_loss;
+    }
 }

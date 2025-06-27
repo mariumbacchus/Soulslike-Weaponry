@@ -12,7 +12,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.TargetPostureData;
 import net.soulsweaponry.mixin.BossBarHudAccessor;
 
@@ -32,7 +31,7 @@ public class TargetPostureHudOverlay implements HudRenderCallback {
             int barX = width / 2 - 91;
             if (client.player != null && !client.player.isDead()) {
                 int posture = TargetPostureData.getTargetPosture(client.player);
-                float posturePerPixel = ConfigConstructor.max_posture_loss / (float) 182;
+                float posturePerPixel = TargetPostureData.getTargetsMaxPosture(client.player) / (float) 182;
                 int pixelOffset = MathHelper.floor((float) posture / posturePerPixel);
                 if (posture > 0) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);

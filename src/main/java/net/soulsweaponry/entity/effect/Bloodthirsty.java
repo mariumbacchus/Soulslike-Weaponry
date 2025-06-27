@@ -12,12 +12,7 @@ public class Bloodthirsty extends StatusEffect {
 
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        int k = 40 >> amplifier;
-        if (k > 0) {
-            return duration % k == 0;
-        } else {
-            return true;
-        }
+        return duration % Math.max(40 - amplifier * 10, 20) == 0;
     }
 
     @Override
