@@ -20,6 +20,7 @@ public class PacketIds {
     public static final Identifier CHAIN_LIGHTNING = new Identifier(SoulsWeaponry.ModId, "chain_lightning");
     public static final Identifier BLEED_SYNC = new Identifier(SoulsWeaponry.ModId, "bleed_data_sync");
     public static final Identifier TARGET_POSTURE_SYNC = new Identifier(SoulsWeaponry.ModId, "target_posture_data_sync");
+    public static final Identifier MAX_POSTURE_SYNC = new Identifier(SoulsWeaponry.ModId, "max_posture_data_sync");
 
     // Client to Server
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");

@@ -2,7 +2,10 @@ package net.soulsweaponry.api.entitystats;
 
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.PostureData;
+import net.soulsweaponry.registry.AttributeRegistry;
 
 import java.util.Optional;
 
@@ -18,7 +21,8 @@ public class EntityPosture {
      * If the {@code max_posture_loss} value inside the file {@code == 0} (automatically 0 if not specified in file),
      * then the max loss will be calculated based on the {@code base_posture_unit and hitbox_volume} instead. For
      * context, volume of the player is around 0.648. {@code base_posture_unit} is defined in config as the base
-     * for all entities, but having other values in json file will override the config.
+     * for all entities, but having other values in json file will override the config. Entities with the
+     * {@code BASE_POSTURE_INCREASE} attribute also increases the base value, in turn increasing the max posture.
      * </p>
      * <p>
      * If the {@code max_posture_loss} value inside the file {@code < 0}, then that entity will not take posture
@@ -26,6 +30,9 @@ public class EntityPosture {
      * </p>
      */
     public static int getMaxPostureLoss(LivingEntity entity) {
+        if (entity instanceof PlayerEntity player && entity.getWorld().isClient) {
+            return PostureData.getMaxPosture(player);
+        }
         Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
         int base = BASE_POSTURE;
         if (op.isPresent()) {
@@ -37,9 +44,16 @@ public class EntityPosture {
                 base = Math.round(stats.base_posture_unit);
             }
         }
+        var inst = entity.getAttributeInstance(AttributeRegistry.BASE_POSTURE_INCREASE);
+        double bonus = inst != null ? inst.getValue() : 0f;
+        base += (int) bonus;
         EntityDimensions dimensions = entity.getDimensions(entity.getPose());
         float volume = dimensions.height * dimensions.width * dimensions.width;
-        return (int) (base * (1 + Math.log1p(volume) / 3.5));
+        int value = (int) (base * (1 + Math.log1p(volume) / 3.5));
+        if (entity instanceof PlayerEntity player) {
+            PostureData.updateMaxPosture(player, value);
+        }
+        return value;
     }
 
     /**
@@ -65,15 +79,14 @@ public class EntityPosture {
     }
 
     /**
-     * Returns the Posture Loss Resistance the entity has through datapack (TODO armor too?)
+     * Returns the Posture Loss Buildup Resistance the entity has through datapack and its attribute (armor and stuff)
      */
     public static float getPostureResistance(LivingEntity entity) {
-        Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        if (op.isPresent()) {
-            EntityStats stats = op.get();
-            return stats.posture_loss_buildup_resistance;
-        } else {
-            return ConfigConstructor.base_posture_buildup_resistance_unless_overridden;
-        }
+        float base = EntityStatsUtil.getStats(entity)
+                .map(s -> s.posture_loss_buildup_resistance)
+                .orElse(ConfigConstructor.base_posture_buildup_resistance_unless_overridden);
+        var inst = entity.getAttributeInstance(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE);
+        float bonus = inst != null ? (float) inst.getValue() : 0f;
+        return base + bonus;
     }
 }

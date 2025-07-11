@@ -182,4 +182,24 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.chaos_set_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.chaos_set_bleed_damage_resistances;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.chaos_set_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.chaos_set_base_posture_increase;
+    }
 }

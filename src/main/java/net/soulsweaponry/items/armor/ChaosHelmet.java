@@ -51,4 +51,24 @@ public class ChaosHelmet extends ChaosCrown {
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY),
         };
     }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.chaos_armor_base_posture_increase;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+    }
 }

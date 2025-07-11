@@ -36,8 +36,7 @@ public class StaggerEnchantment extends Enchantment {
                 postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
             }
             postureLoss *= level;
-            // TODO make posture & bleed resistance attributes i can apply to armor and change calculations in EntityPosture & Bleed to include those values
-            PostureData.addPosture(living, postureLoss);
+            PostureData.addPostureLoss(living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
     }

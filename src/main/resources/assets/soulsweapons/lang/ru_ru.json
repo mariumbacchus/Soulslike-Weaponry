@@ -393,6 +393,7 @@
     "subtitles.soulsweapons.stormveil_trigger": "Entity gains Stormveil effect",
     "subtitles.soulsweapons.stormveil_ambient": "Stormveil sparks",
     "subtitles.soulsweapons.stormveil_thorns": "Stormveil electrocutes attacker",
+    "subtitles.soulsweapons.blood_loss": "Entity suffers blood loss",
 
     "tooltip.soulsweapons.shift": "Удерживай [§eSHIFT§r] для получения информации",
     "tooltip.soulsweapons.alt": "Hold [§eALT§r] for Info",

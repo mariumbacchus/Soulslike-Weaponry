@@ -74,6 +74,7 @@ public class SoundRegistry {
     public static SoundEvent STORMVEIL_AMBIENT = registerSound("stormveil_ambient");
     public static SoundEvent STORMVEIL_TRIGGER = registerSound("stormveil_trigger");
     public static SoundEvent STORMVEIL_THORNS = registerSound("stormveil_thorns");
+    public static SoundEvent BLOOD_LOSS = registerSound("blood_loss");
 
     public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
 

@@ -5,7 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
@@ -14,8 +17,10 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WeaponUtil {
     
@@ -216,5 +221,47 @@ public class WeaponUtil {
             l = -l;
         }
         target.addVelocity(h, k, l);
+    }
+
+    /**
+     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float amount) {
+        // Don't display attributes with 0
+        if (amount == 0) {
+            return null;
+        }
+        // e.g. "soulsweapons:bleed_buildup:HEAD"
+        String seed = String.format("soulsweapons:%s:%s",
+                attr.getTranslationKey(), slot.getName().toUpperCase());
+        UUID uuid = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8));
+        return new EntityAttributeModifier(
+                uuid,
+                attr.getTranslationKey() + " " + slot.getName(),
+                amount,
+                EntityAttributeModifier.Operation.ADDITION
+        );
+    }
+
+    /**
+     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * This takes in an array of doubles that is used to map the values to the armor equipment slot (head to feet).
+     * No values beyond the 4th (3) index will be used.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float[] perSlotValues) {
+        // Minecraft has feet at index 0 so just follow that pattern
+        int idx = switch (slot) {
+            case HEAD -> 3;
+            case CHEST -> 2;
+            case LEGS -> 1;
+            case FEET -> 0;
+            default -> throw new IllegalArgumentException("Unexpected slot " + slot);
+        };
+        double amount = perSlotValues[idx];
+        return makeAttribute(attr, slot, (float) amount);
     }
 }

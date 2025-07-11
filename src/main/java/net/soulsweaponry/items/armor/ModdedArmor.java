@@ -1,8 +1,12 @@
 package net.soulsweaponry.items.armor;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -12,7 +16,9 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.ICooldownItem;
 import net.soulsweaponry.items.ITooltipInfo;
+import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -63,4 +69,80 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, I
     public abstract boolean isFireproof();
 
     public abstract boolean isSlotActive(PlayerEntity player, EquipmentSlot slot);
+
+    @Override
+    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+        Multimap<EntityAttribute, EntityAttributeModifier> vanilla = super.getAttributeModifiers(slot);
+        if (slot == this.type.getEquipmentSlot()) {
+            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+            builder.putAll(vanilla);
+
+            float[] bleedBuildup = this.getBleedBuildupResistances();
+            if (bleedBuildup != null) {
+                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, slot, bleedBuildup);
+                if (attr != null) {
+                    builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, attr);
+                }
+            }
+
+            float[] bleedDamage = this.getBleedDamageResistances();
+            if (bleedDamage != null) {
+                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, slot, bleedDamage);
+                if (attr != null) {
+                    builder.put(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, attr);
+                }
+            }
+
+            float[] postureBuildup = this.getPostureBuildupResistances();
+            if (postureBuildup != null) {
+                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, slot, postureBuildup);
+                if (attr != null) {
+                    builder.put(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, attr);
+                }
+            }
+
+            float[] basePostureIncrease = this.getBasePostureIncrease();
+            if (basePostureIncrease != null) {
+                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE, slot, basePostureIncrease);
+                if (attr != null) {
+                    builder.put(AttributeRegistry.BASE_POSTURE_INCREASE, attr);
+                }
+            }
+            return builder.build();
+        }
+        return vanilla;
+    }
+
+    /**
+     * Gets the bleed buildup resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
+     * <p>Override this to give the custom armor different values.</p>
+     */
+    public float[] getBleedBuildupResistances() {
+        return null;
+    }
+
+    /**
+     * Gets the bleed damage resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
+     * <p>Override this to give the custom armor different values.</p>
+     */
+    public float[] getBleedDamageResistances() {
+        return null;
+    }
+
+    /**
+     * Gets the bleed damage resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
+     * <p>Override this to give the custom armor different values.</p>
+     */
+    public float[] getPostureBuildupResistances() {
+        return null;
+    }
+
+    /**
+     * Gets the base posture increase for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
+     * It is used to increase the max posture of the entity with the attribute.
+     * <p>Override this to give the custom armor different values.</p>
+     */
+    public float[] getBasePostureIncrease() {
+        return null;
+    }
 }

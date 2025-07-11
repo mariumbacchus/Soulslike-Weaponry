@@ -141,4 +141,24 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
         return PlayState.CONTINUE;
     }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.chaos_armor_base_posture_increase;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+    }
 }

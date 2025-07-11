@@ -462,5 +462,13 @@
             "soulsweapons:stormveil/thorns/stormveil_thorns_2",
             "soulsweapons:stormveil/thorns/stormveil_thorns_3"
         ]
+    },
+    "blood_loss": {
+        "subtitle": "subtitles.soulsweapons.blood_loss",
+        "sounds": [
+            "soulsweapons:bleed/blood_loss_0",
+            "soulsweapons:bleed/blood_loss_1",
+            "soulsweapons:bleed/blood_loss_2"
+        ]
     }
 }

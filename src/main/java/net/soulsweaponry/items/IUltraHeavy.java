@@ -26,7 +26,7 @@ public interface IUltraHeavy {
      */
     default void applyPostureLoss(LivingEntity target) {
         if (this.isHeavy()) {
-            PostureData.addPosture(target, this.getPostureLoss());
+            PostureData.addPostureLoss(target, this.getPostureLoss());
         }
     }
 }

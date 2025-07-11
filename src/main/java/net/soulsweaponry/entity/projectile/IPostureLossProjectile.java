@@ -17,7 +17,7 @@ public interface IPostureLossProjectile {
             if (target instanceof PlayerEntity) {
                 posture = MathHelper.floor((float) posture * ConfigConstructor.silver_bullet_posture_loss_on_player_modifier);
             }
-            PostureData.addPosture(target, posture);
+            PostureData.addPostureLoss(target, posture);
         }
     }
 }

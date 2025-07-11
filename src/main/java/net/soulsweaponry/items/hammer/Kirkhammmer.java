@@ -28,7 +28,7 @@ public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
             (target, user, fallDistance) -> {
                 int posture = (int) (ConfigConstructor.kirkhammer_calculated_fall_base_posture_loss + ConfigConstructor.kirkhammer_calculated_fall_height_increase_posture_loss_modifier * fallDistance);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1));
-                PostureData.addPosture(target, posture);
+                PostureData.addPostureLoss(target, posture);
             },
             (user, fallDistance, stack) -> {}
     );

@@ -262,11 +262,40 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean can_bosses_break_blocks = true;
 
     @Entry public static float[] chaos_armor_armor_points = {4, 7, 10, 5};
+    @Entry public static float[] chaos_armor_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] chaos_armor_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] chaos_armor_bleed_buildup_resistances = {40, 70, 100, 60};
+    @Entry public static float[] chaos_armor_bleed_damage_resistances = {30, 50, 60, 40};
+
     @Entry public static float[] chaos_set_armor_points = {2, 3, 4, 1};
+    @Entry public static float[] chaos_set_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] chaos_set_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] chaos_set_bleed_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] chaos_set_bleed_damage_resistances = {0, 0, 0, 0};
+
     @Entry public static float[] soul_ingot_armor_points = {3, 5, 7, 3};
+    @Entry public static float[] soul_ingot_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] soul_ingot_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] soul_ingot_bleed_buildup_resistances = {2.5f, 7.5f, 10, 5};
+    @Entry public static float[] soul_ingot_bleed_damage_resistances = {2, 4, 6, 3};
+
     @Entry public static float[] soul_robes_armor_points = {2, 3, 4, 3};
+    @Entry public static float[] soul_robes_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] soul_robes_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] soul_robes_bleed_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] soul_robes_bleed_damage_resistances = {0, 0, 0, 0};
+
     @Entry public static float[] forlorn_armor_armor_points = {3, 6, 8, 3};
+    @Entry public static float[] forlorn_armor_base_posture_increase = {10, 20, 35, 15};
+    @Entry public static float[] forlorn_armor_posture_buildup_resistances = {20, 40, 50, 30};
+    @Entry public static float[] forlorn_armor_bleed_buildup_resistances = {35, 50, 75, 40};
+    @Entry public static float[] forlorn_armor_bleed_damage_resistances = {10, 30, 40, 20};
+
     @Entry public static float[] withered_armor_armor_points = {4, 7, 10, 5};
+    @Entry public static float[] withered_armor_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] withered_armor_posture_buildup_resistances = {10, 20, 25, 15};
+    @Entry public static float[] withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
+    @Entry public static float[] withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
 
     @Entry public static boolean chaos_cape_wither_ground = true;
     @Entry public static float chaos_crown_luck_given = 1;

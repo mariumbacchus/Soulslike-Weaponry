@@ -1,12 +1,8 @@
 package net.soulsweaponry.items.armor;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
@@ -15,10 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-
-import java.util.UUID;
 
 public class ForlornArmor extends SetBonusArmor {
 
@@ -89,23 +82,22 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> vanilla = super.getAttributeModifiers(slot);
-        if (slot == this.type.getEquipmentSlot()) {
-            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.putAll(vanilla);
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.forlorn_armor_bleed_buildup_resistances;
+    }
 
-            UUID uuid = UUID.fromString("42703875-5257-402d-ae5e-f650be2fcb72"); // // 765a5b93-ad48-4057-96ce-44d9102fcb08 backup
-            EntityAttributeModifier bleedMod = new EntityAttributeModifier(
-                    uuid,
-                    "Armor bleed buildup resistance",
-                    200,                // e.g. 0.2 for +20%
-                    EntityAttributeModifier.Operation.ADDITION
-            );
-            builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, bleedMod);
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.forlorn_armor_bleed_damage_resistances;
+    }
 
-            return builder.build();
-        }
-        return vanilla;//TODO go over this and give other armor this too
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.forlorn_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.forlorn_armor_base_posture_increase;
     }
 }

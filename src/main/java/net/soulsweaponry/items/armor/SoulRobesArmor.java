@@ -72,4 +72,24 @@ public class SoulRobesArmor extends SetBonusArmor {
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return new String[0];
     }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.soul_robes_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.soul_robes_bleed_damage_resistances;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.soul_robes_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.soul_robes_base_posture_increase;
+    }
 }

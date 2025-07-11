@@ -14,6 +14,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.registry.AttributeRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ModTags;
@@ -34,6 +35,7 @@ public class EntityBleed {
     public static void triggerBloodLoss(LivingEntity entity) {
         entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), getBleedDamage(entity,
                 ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
+        entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.BLOOD_LOSS, entity.getSoundCategory(), 1f, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.getDefaultState()),
                     entity.getParticleX(0.5), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(0.5), 30, 0, 0, 0, 0);
@@ -78,28 +80,18 @@ public class EntityBleed {
         var inst = entity.getAttributeInstance(AttributeRegistry.BLEED_BUILDUP_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
-        /*float amount;
-        Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        if (op.isPresent()) {
-            EntityStats stats = op.get();
-            amount = stats.bleed_buildup_resistance;
-        } else {
-            amount = ConfigConstructor.base_bleed_buildup_resistance_unless_overridden;
-        }
-        return (float) (amount + entity.getAttributeValue(AttributeRegistry.BLEED_BUILDUP_RESISTANCE));*///TODO gotta test this by giving armor some custom attribute values
     }
 
     /**
-     * Returns the Bleed Damage Resistance the entity has through datapack (TODO armor too?)
+     * Returns the Bleed Damage Resistance the entity has through datapack and its attribute (armor and stuff)
      */
     public static float getBleedDamageResistance(LivingEntity entity) {
-        Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        if (op.isPresent()) {
-            EntityStats stats = op.get();
-            return stats.bleed_damage_resistance;
-        } else {
-            return ConfigConstructor.base_bleed_damage_resistance_unless_overridden;
-        }
+        float base = EntityStatsUtil.getStats(entity)
+                .map(s -> s.bleed_damage_resistance)
+                .orElse(ConfigConstructor.base_bleed_damage_resistance_unless_overridden);
+        var inst = entity.getAttributeInstance(AttributeRegistry.BLEED_DAMAGE_RESISTANCE);
+        float bonus = inst != null ? (float) inst.getValue() : 0f;
+        return base + bonus;
     }
 
     /**

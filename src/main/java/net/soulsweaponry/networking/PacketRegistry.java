@@ -35,5 +35,6 @@ public class PacketRegistry {
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.CHAIN_LIGHTNING, ChainLightningS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.BLEED_SYNC, BleedSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.TARGET_POSTURE_SYNC, TargetPostureSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.MAX_POSTURE_SYNC, MaxPostureSyncS2C::receive);
     }
 }

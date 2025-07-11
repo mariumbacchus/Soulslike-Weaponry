@@ -57,6 +57,24 @@
 - Enhanced Arkenplates Mirror ability triggers at under 50% health instead of 33%
 - Soul Robes set gives Magic Resistance 4 instead of 2 (80% reduced magic damage)
 - Armor that grants effects no longer display potion particles
+- Some armor sets give posture and bleed resistances (more on what that entails in the "Reworked Mechanics" section)
+  - Arkenplate & Enhanced Arkenplate: 
+    - Bleed buildup resistance: 100
+    - Bleed damage resistance: 60
+  - Chaos Helmet: 
+    - Bleed buildup resistance: 60
+    - Bleed damage resistance: 40
+  - Forlorn Armor (full set): 
+    - Posture loss buildup resistance: 140
+    - Base posture increase: 80
+    - Bleed buildup resistance: 200
+    - Bleed damage resistance: 100
+  - Soul Ingot Armor (full set): 
+    - Bleed buildup resistance: 25
+    - Bleed damage resistance: 15
+  - Hallowheart & Enhanced Hallowheart: 
+    - Posture loss buildup resistance: 25
+    - Bleed buildup resistance: 40
 
 #### Weapons:
 - Added Ice and Fire dragons to the tag Dragon's Scourge ability checks to apply bonus damage (Dragonslayer Swordspear and Heap of Raw Iron have this ability)
@@ -101,6 +119,7 @@
     - Instead of max posture loss being flat 200 per entity, it now scales off of the size of the entity with a base posture unit the entity has
     - Entities have a posture loss resistance, reducing the amount of posture loss applied, or increase it if the value is negative
     - The base posture unit is universal in the config, but you can override this by making an "entitystats" datapack json file
+    - The higher the base posture unit, the higher the max posture for the entity is, the base posture unit attribute gotten from some armor items also increase this
     - Entity stats files contain values such as bleed & posture loss buildup resistance, max posture loss, base posture loss unit for that entity and so on
     - The files representing the entities must be named after the entity and must be placed inside the folder "entitystats" inside the namespace the mob is from
     - Example: for the entity returning_knight, it needs to be inside data/soulsweapons/entitystats/returning_knight.json, while for the zombie it would be in data/minecraft/entitystats/zombie.json
@@ -109,6 +128,7 @@
     - Added a client config where you can disable HUD elements, such as the target posture loss bar, or the players bleed/posture loss bars
     - Some bosses are more easily posture broken, while others are harder to break
     - As listed above, the guns have their posture loss applied buffed
+    - Some armor sets give posture resistances (can be changed in config)
     - Posture Break now deals 5% of the targets max health as bonus damage
       - Added config lines for Posture Break damage
       - Base value was reduced to 2 against players and 6 against other mobs
@@ -122,6 +142,7 @@
     - Moonveil applies 25 bleed post hit
     - The damage is universally 6 + 10% max hp of the target, but this amount also varies depending on the mob's bleed damage resistance
     - Some bosses in the mod are weaker to bleed, while others are stronger against it
+    - Some armor sets give bleed damage and buildup resistances (can be changed in config)
 - Bosses and some mobs are now weaker/stronger against bleed and posture loss
   - Decaying King: Higher posture loss resistance; Very high bleed buildup resistance, but very low bleed damage resistance
   - Returning Knight: Weak to posture loss; Extremely high bleed resistance (both buildup and damage)

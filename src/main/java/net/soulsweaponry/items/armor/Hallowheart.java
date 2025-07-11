@@ -140,4 +140,24 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.withered_armor_base_posture_increase;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.withered_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.withered_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.withered_armor_bleed_damage_resistances;
+    }
 }
