@@ -161,7 +161,15 @@
   - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
 - All int values in the config have been changed to floats
   - If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
+- Added options to always see the item tooltip in the client config
 
+### Keybind changes
+- Switched a few keybinds, I still encourage to switch these to a button that fits better for you
+  - Parry: RIGHT ALT -> R
+  - Return Freyr Sword: R -> Z
+  - Stationary Freyr Sword: Z -> RIGHT ALT
+- Added keybinds for showing item tooltip info and lore, these are unbound by default and when unbound will by default use SHIFT and CONTROL to display like usual
+  - NOTE: Binding them to keys WILL override other keybinds so for example setting either to TAB will override the "show player list" function
 
 
 

@@ -188,15 +188,13 @@ public class TooltipUtil {
                     if (Screen.hasShiftDown()) {
                         Text text = TrickWeaponUtil.getMappedItemName(stack);
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                                .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                         if (text != null) {
-                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
                                     .append(text).formatted(Formatting.WHITE));
                         }
-                    } else if (!(item instanceof ITooltipInfo || (item instanceof LoreItem lore && lore.isInfo()))) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
+                    } else if (!(item instanceof ITooltipInfo)) {
+                        ITooltipInfo.addShowInfoText(tooltip);
                     }
                 }
             }
@@ -395,15 +393,12 @@ public class TooltipUtil {
             case SUMMON_WEAPON -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_2", ITooltipInfo.formatKeybindText(KeyBindRegistry.returnFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_4").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_5").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_4", ITooltipInfo.formatKeybindText(KeyBindRegistry.stationaryFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_1").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_2").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_3").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_4").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_5").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
             }
             case GALEFORCE -> {
                 addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
@@ -551,11 +546,9 @@ public class TooltipUtil {
             }
             case PARRY -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.parry.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_4").formatted(Formatting.DARK_GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_5").formatted(Formatting.DARK_GRAY));
             }
             case SKYWARD_STRIKES -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.skyward_strikes").formatted(Formatting.AQUA));

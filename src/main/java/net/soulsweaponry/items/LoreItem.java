@@ -1,53 +1,66 @@
 package net.soulsweaponry.items;
 
-import java.util.List;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 
-public class LoreItem extends Item {
+public class LoreItem extends ModdedItem {
 
     private final int linesOfLore;
     private final boolean isInfo;
+    private final boolean fireproof;
 
     public LoreItem(Settings settings, int linesOfLore) {
-        super(settings);
-        this.linesOfLore = linesOfLore;
-        this.isInfo = false;
+        this(settings, linesOfLore, false);
     }
 
-    public LoreItem(Settings settings, int linesOfLore, boolean isInfo) {
+    public LoreItem(Settings settings, int linesOfLore, boolean fireproof) {
+        this(settings, linesOfLore, false, fireproof);
+    }
+
+    public LoreItem(Settings settings, int linesOfLore, boolean isInfo, boolean fireproof) {
         super(settings);
         this.linesOfLore = linesOfLore;
         this.isInfo = isInfo;
-    }
-    
-    @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        boolean bl = this.isInfo ? Screen.hasShiftDown() : Screen.hasControlDown();
-        if (bl) {
-            for (int i = 1; i < linesOfLore + 1; i++) {
-                tooltip.add(Text.translatable("tooltip.soulsweapons." + this.getIdName(stack) + ".part_" + i).formatted(Formatting.DARK_GRAY));
-            }
-        } else {
-            tooltip.add(Text.translatable("tooltip.soulsweapons." + (this.isInfo ? "shift" : "control")));
-        }
+        this.fireproof = fireproof;
     }
 
-    private String getIdName(ItemStack stack) {
-        Identifier id = Registries.ITEM.getId(stack.getItem());
+    private String getIdName() {
+        Identifier id = Registries.ITEM.getId(this);
         return id.getPath();
     }
 
     public boolean isInfo() {
         return isInfo;
+    }
+
+    public Text[] getInfo() {
+        Text[] tooltips = new Text[linesOfLore];
+        for (int i = 1; i <= linesOfLore; i++) {
+            tooltips[i - 1] = Text.translatable("tooltip.soulsweapons." + getIdName() + ".part_" + i).formatted(Formatting.DARK_GRAY);
+        }
+        return tooltips;
+    }
+
+    @Override
+    public Text[] getAdditionalTooltips() {
+        return this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
+    }
+
+    @Override
+    public Text[] getLoreTooltips() {
+        return !this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return this.fireproof;
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return false;
     }
 }

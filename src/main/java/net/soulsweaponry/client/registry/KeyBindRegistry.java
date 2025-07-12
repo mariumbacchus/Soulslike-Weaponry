@@ -25,24 +25,28 @@ import net.soulsweaponry.networking.PacketIds;
 
 public class KeyBindRegistry {
 
-    private static KeyBinding returnFreyrSword;
-    private static KeyBinding stationaryFreyrSword;
-    private static KeyBinding collectSummons;
+    public static KeyBinding returnFreyrSword;
+    public static KeyBinding stationaryFreyrSword;
+    public static KeyBinding collectSummons;
     public static KeyBinding switchWeapon;
     public static KeyBinding keybindAbility;
-    private static KeyBinding parry;
+    public static KeyBinding parry;
     public static KeyBinding effectShootMoonlight;
     public static KeyBinding returnThrownWeapon;
+    public static KeyBinding showItemTooltip;
+    public static KeyBinding showItemLore;
 
     public static void initClient() {
-        returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
-        stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_Z);
+        returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_Z);
+        stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_RIGHT_ALT);
         collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
         switchWeapon = registerKeyboard("switch_weapon", GLFW.GLFW_KEY_B);
         keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
-        parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
+        parry = registerKeyboard("parry", GLFW.GLFW_KEY_R);
         effectShootMoonlight = registerKeyboard("effect_shoot_moonlight", GLFW.GLFW_KEY_H);
         returnThrownWeapon = registerKeyboard("return_thrown_weapon", GLFW.GLFW_KEY_N);
+        showItemTooltip = registerKeyboard("show_tooltip", GLFW.GLFW_KEY_UNKNOWN);
+        showItemLore = registerKeyboard("show_lore", GLFW.GLFW_KEY_UNKNOWN);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {

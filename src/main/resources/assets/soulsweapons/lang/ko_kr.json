@@ -394,9 +394,8 @@
     "subtitles.soulsweapons.stormveil_thorns": "Stormveil electrocutes attacker",
     "subtitles.soulsweapons.blood_loss": "Entity suffers blood loss",
 
-    "tooltip.soulsweapons.shift": "[§eSHIFT§r] 키를 눌러 정보를 확인하세요",
-    "tooltip.soulsweapons.alt": "[§eALT§r] 키를 눌러 정보를 확인하세요",
-    "tooltip.soulsweapons.control": "[§eCTRL§r] 키를 눌러 설명을 확인하세요",
+    "tooltip.soulsweapons.show_item_info": "Hold [%s] for Info",
+    "tooltip.soulsweapons.show_item_lore": "Hold [%s] for Lore",
     "tooltip.soulsweapons.disabled": "§4비활성화됨§r",
 
     "tooltip.soulsweapons.magic_damage": "주문검",
@@ -582,17 +581,14 @@
     "tooltip.soulsweapons.mjolnir_throw_description_2": "하늘이 맑을 때 그들에게 번개를 소환합니다.",
 
     "tooltip.soulsweapons.freyr_sword": "빛의 칼",
-    "tooltip.soulsweapons.freyr_sword_description_1": "- §b프레이르의 검§r을 소환하여",
-    "tooltip.soulsweapons.freyr_sword_description_2": "당신의 편에서 싸우게 합니다.",
-    "tooltip.soulsweapons.freyr_sword_description_3": "키를 누르거나 검을 우클릭하여 아이템을 자신에게 되돌립니다.",
-    "tooltip.soulsweapons.freyr_sword_description_4": "다른 단축키를 눌러 정지 상태와 추적 상태를",
-    "tooltip.soulsweapons.freyr_sword_description_5": "전환할 수 있습니다.",
+    "tooltip.soulsweapons.freyr_sword_description_1": "- Use to summon the §bSword of Freyr§r to fight",
+    "tooltip.soulsweapons.freyr_sword_description_2": "by your side. Press %s or right click the",
+    "tooltip.soulsweapons.freyr_sword_description_3": "sword to return the item to yourself. Press",
+    "tooltip.soulsweapons.freyr_sword_description_4": "%s to switch between stationary & following.",
 
-    "tooltip.soulsweapons.freyr_sword_note_1": "기본적으로 되돌리기 단축키는 R이고, 정지 상태 단축키는 Z입니다.",
-    "tooltip.soulsweapons.freyr_sword_note_2": "키 바인딩은 언제든지 컨트롤에서 수정할 수 있습니다.",
-    "tooltip.soulsweapons.freyr_sword_note_3": "한 번에 하나의 프레이르의 검 개체만 존재할 수 있습니다.",
-    "tooltip.soulsweapons.freyr_sword_note_4": "게임을 종료하면 검이 그 위치에 영구적으로 남아 있으며,",
-    "tooltip.soulsweapons.freyr_sword_note_5": "누군가 다시 주워서 연결할 때까지 그대로 유지됩니다.",
+    "tooltip.soulsweapons.freyr_sword_note_1": "Only one Freyr Sword entity may excist at a time.",
+    "tooltip.soulsweapons.freyr_sword_note_2": "Quitting the game will permanently place it on that",
+    "tooltip.soulsweapons.freyr_sword_note_3": "spot until someone picks it up and bounds to it again.",
 
     "tooltip.soulsweapons.grand_skyfall": "웅장한 하늘의 낙하",
     "tooltip.soulsweapons.grand_skyfall_description_1": "- 보조 손에 사용하여",
@@ -653,9 +649,8 @@
     "tooltip.soulsweapons.umbral_trespass_description_6": "또한, 대상과 일정 거리 이내에 있어야 합니다.",
 
     "tooltip.soulsweapons.trick_weapon": "트릭 무기",
-    "tooltip.soulsweapons.trick_weapon_description_1": "- 주 손에 있을 때 단축키를 눌러 무기를 변형합니다.",
-    "tooltip.soulsweapons.trick_weapon_description_2": "단축키: ",
-    "tooltip.soulsweapons.trick_weapon_description_3": "변형될 무기: ",
+    "tooltip.soulsweapons.trick_weapon_description_1": "- Press %s to transform the weapon if in main hand.",
+    "tooltip.soulsweapons.trick_weapon_description_2": "Weapon to transform to: ",
 
     "tooltip.soulsweapons.heavy_weapon": "초중량",
     "tooltip.soulsweapons.heavy_weapon_description_1": "- §4힘§r 효과를 보유하고 있을 때 타격 후 §6성급함§r을 얻습니다.",
@@ -696,11 +691,9 @@
     "tooltip.soulsweapons.lunar_herald_no_charge_2": "능력의 쿨다운이 줄어듭니다.",
 
     "tooltip.soulsweapons.parry": "막기",
-    "tooltip.soulsweapons.parry_description_1": "이 무기가 보조 손에 있을 때,",
-    "tooltip.soulsweapons.parry_description_2": "단축키를 눌러 당신을 공격하려는",
-    "tooltip.soulsweapons.parry_description_3": "상대의 공격을 막아 §c자세 붕괴§r을 시도합니다.",
-    "tooltip.soulsweapons.parry_description_4": "기본적으로 방어 단축키는 RIGHT_ALT이며,",
-    "tooltip.soulsweapons.parry_description_5": "컨트롤에서 변경할 수 있습니다.",
+    "tooltip.soulsweapons.parry_description_1": "While this is in off-hand, press %s",
+    "tooltip.soulsweapons.parry_description_2": "to attempt a parry to §cPosture Break§r an",
+    "tooltip.soulsweapons.parry_description_3": "opponent that tries to damage you.",
 
     "tooltip.soulsweapons.skyward_strikes": "하늘을 향한 일격",
     "tooltip.soulsweapons.skyward_strikes_description_1": "- 체력이 가득할 때, 사용하여",
@@ -1047,10 +1040,12 @@
     "key.soulsweapons.freyr_sword_stationary": "프레이르 검 고정 또는 방어",
     "key.soulsweapons.collect_summons_soul_reaper": "소환물을 아이템으로 수집",
     "key.soulsweapons.switch_weapon": "트릭 무기 변환",
-    "key.soulsweapons.keybind_ability": "무기의 특수 능력 사용",
+    "key.soulsweapons.keybind_ability": "Use item's special ability",
     "key.soulsweapons.parry": "방패로 방어",
     "key.soulsweapons.effect_shoot_moonlight": "달의 전령이 달빛 발사",
     "key.soulsweapons.return_thrown_weapon": "던진 '영혼 결속' 무기 호출",
+    "key.soulsweapons.show_tooltip": "Show Item Tooltip",
+    "key.soulsweapons.show_lore": "Show Item Lore",
 
     "advancements.soulsweapons.root.title": "소울라이크 무기",
     "advancements.soulsweapons.root.description": "가장 가치 있는 자들을 위한 독특한 업적!",

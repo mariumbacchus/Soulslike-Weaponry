@@ -27,6 +27,7 @@
     "BossBarHudMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
+    "KeyBindingAccessor",
     "ShieldItemMixin"
   ],
   "injectors": {
