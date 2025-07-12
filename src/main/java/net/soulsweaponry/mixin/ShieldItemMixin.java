@@ -1,6 +1,5 @@
 package net.soulsweaponry.mixin;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
@@ -24,7 +23,7 @@ public class ShieldItemMixin {
     @Inject(method = "appendTooltip", at = @At("TAIL"))
     protected void interceptTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo info) {
         if (ConfigConstructor.enable_shield_parry) {
-            if (Screen.hasShiftDown()) {
+            if (ITooltipInfo.shouldShowInfo()) {
                 TooltipUtil.addAbilityTooltip(TooltipAbilities.PARRY, stack, tooltip);
             } else {
                 ITooltipInfo.addShowInfoText(tooltip);

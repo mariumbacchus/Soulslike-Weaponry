@@ -60,7 +60,7 @@ public interface ITooltipInfo {
     }
 
     /**
-     * @return whether the info button is being held when hovering an item, button is ALT if Epic Fight mod
+     * @return Whether the info button is being held when hovering an item, button is ALT if Epic Fight mod
      * is installed or SHIFT otherwise by default, can be changed in controls settings.
      */
     static boolean shouldShowInfo() {
@@ -68,7 +68,8 @@ public interface ITooltipInfo {
             return true;
         }
         if (KeyBindRegistry.showItemTooltip.isUnbound()) {
-            return Screen.hasShiftDown();
+            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+            return epicFight ? Screen.hasAltDown() : Screen.hasShiftDown();
         }
         return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemTooltip).getBoundKey().getCode());
     }
@@ -83,9 +84,10 @@ public interface ITooltipInfo {
         return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemLore).getBoundKey().getCode());
     }
 
-    static Text getShowTooltipKeyText() {
+    static Text getShowInfoKeyText() {
         if (KeyBindRegistry.showItemTooltip.isUnbound()) {
-            return Text.translatable("key.keyboard.left.shift");
+            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+            return epicFight ? Text.translatable("key.keyboard.left.alt") : Text.translatable("key.keyboard.left.shift");
         }
         return KeyBindRegistry.showItemTooltip.getBoundKeyLocalizedText();
     }
@@ -104,7 +106,7 @@ public interface ITooltipInfo {
     }
 
     static void addShowInfoText(List<Text> tooltip) {
-        MutableText keyText = formatKeybindText(getShowTooltipKeyText());
+        MutableText keyText = formatKeybindText(getShowInfoKeyText());
         tooltip.add(Text.translatable("tooltip.soulsweapons.show_item_info", keyText));
     }
 

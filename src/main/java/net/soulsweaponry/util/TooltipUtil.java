@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -185,7 +184,7 @@ public class TooltipUtil {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {
                     Item item = stack.getItem();
-                    if (Screen.hasShiftDown()) {
+                    if (ITooltipInfo.shouldShowInfo()) {
                         Text text = TrickWeaponUtil.getMappedItemName(stack);
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
