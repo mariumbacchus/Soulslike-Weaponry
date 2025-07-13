@@ -113,6 +113,7 @@
 
 ### Bugfixes
 - Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
+- Fixed a bug causing Posture Break to apply debuffs upon being cleared that don't ever wear off
 
 ### Reworked Mechanics
 - Reworked Posture Loss mechanic
