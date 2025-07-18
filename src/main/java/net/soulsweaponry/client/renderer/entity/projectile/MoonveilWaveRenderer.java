@@ -25,12 +25,14 @@ public class MoonveilWaveRenderer extends GeoProjectileRenderer<MoonveilWave> {
     @Override
     protected void applyRotations(MoonveilWave animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
         super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
-        matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(animatable.getModelRotation()));
+        matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(animatable.getModelRotationX()));
     }
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, MoonveilWave animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
-        poseStack.scale(3f, 1.5f, 3f);
+        float width = Math.max(animatable.getBoundingBoxWidth() - 0.35f * animatable.getBoundingBoxWidth(), 1f);
+        float height = 1.5f;
+        poseStack.scale(width, height, width);
         poseStack.translate(0, animatable.getModelTranslationY(), 0);
         super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }

@@ -6,9 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,22 +27,19 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
-public class DraupnirSpearEntity extends PersistentProjectileEntity implements GeoEntity {
+public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoEntity {
 
-    private static final TrackedData<Boolean> ENCHANTED;
-    private final ItemStack stack;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.DRAUPNIR_SPEAR);
+        this.setItemStack(new ItemStack(WeaponRegistry.DRAUPNIR_SPEAR));
     }
 
     public DraupnirSpearEntity(World world, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.DRAUPNIR_SPEAR_TYPE, owner, world);
-        this.stack = stack.copy();
-        this.dataTracker.set(ENCHANTED, stack.hasGlint());
+        this.setItemStack(stack.copy());
     }
 
     public void detonate() {
@@ -71,7 +65,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
             return;
         }
         if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup());
+            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup());
         }
 
         Entity entity2 = this.getOwner();
@@ -97,11 +91,6 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ENCHANTED, false);
-    }
-
     public void tick() {
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
@@ -110,11 +99,6 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return this.stack;
     }
 
     @Nullable
@@ -127,6 +111,7 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
         return false;
     }
 
+    @Override
     protected SoundEvent getHitSound() {
         return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
     }
@@ -146,12 +131,9 @@ public class DraupnirSpearEntity extends PersistentProjectileEntity implements G
         return factory;
     }
 
+    @Override
     protected float getDragInWater() {
         return 0.99F;
-    }
-
-    static {
-        ENCHANTED = DataTracker.registerData(DraupnirSpearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     @Override

@@ -11,7 +11,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
@@ -24,20 +23,19 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
-public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
+public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
     
-    private static final TrackedData<Boolean> ENCHANTED;
-    private ItemStack spearStack;
+    private static final TrackedData<Boolean> ENCHANTED = DataTracker.registerData(DragonslayerSwordspearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private boolean dealtDamage;
 
     public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world) {
         super(entityType, world);
-        this.spearStack = new ItemStack(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR);
+        this.setItemStack(new ItemStack(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR));
     }
 
     public DragonslayerSwordspearEntity(World world, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, owner, world);
-        this.spearStack = stack.copy();
+        this.setItemStack(stack.copy());
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
 
@@ -47,58 +45,19 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
         this.dataTracker.startTracking(ENCHANTED, false);
     }
 
+    @Override
     public void tick() {
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
-
         if (this.age > 60) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();
-
-        //Returning funksjon was changed to Infinity to make Mjolnir more unique
-        /* Entity entity = this.getOwner();
-        if (this.dealtDamage || this.isNoClip() && entity != null) {
-            if (!this.isOwnerAlive()) {
-                if (!this.world.isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
-                    this.dropStack(this.asItemStack(), 0.1F);
-                }
-
-                //this.discard();
-            } else if (entity != null) {
-                this.setNoClip(true);
-                Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
-                this.setPos(this.getX(), this.getY() + vec3d.y*0.015D*3D, this.getZ());
-                if (this.world.isClient) {
-                    this.lastRenderY = this.getY();
-                }
-
-                double d = 0.05D * 3D;
-                this.setVelocity(this.getVelocity().multiply(0.95D).add(vec3d.normalize().multiply(d)));
-                if (this.returnTimer == 0) {
-                    this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
-                }
-                ++this.returnTimer;
-            }
-        } */
-    }
-
-    /* private boolean isOwnerAlive() {
-        Entity entity = this.getOwner();
-        if (entity != null && entity.isAlive()) {
-           return !(entity instanceof ServerPlayerEntity) || !entity.isSpectator();
-        } else {
-           return false;
-        }
-    } */
-
-    protected ItemStack asItemStack() {
-        return this.spearStack.copy();
     }
 
     public boolean isEnchanted() {
-        return (Boolean)this.dataTracker.get(ENCHANTED);
+        return this.dataTracker.get(ENCHANTED);
     }
 
     @Nullable
@@ -111,7 +70,7 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
         float f = ConfigConstructor.dragonslayer_swordspear_projectile_damage;
         if (this.getOwner() == null || entity == null) return;
         if (entity instanceof LivingEntity) {
-            f += EnchantmentHelper.getAttackDamage(this.spearStack, ((LivingEntity) entity).getGroup());
+            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
         }
         Entity entity2 = this.getOwner();
         DamageSource damageSource = this.getWorld().getDamageSources().lightningBolt();
@@ -148,16 +107,14 @@ public class DragonslayerSwordspearEntity extends PersistentProjectileEntity {
         this.playSound(soundEvent, g, 1.0F);
     }
 
+    @Override
     protected SoundEvent getHitSound() {
         return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
     }
 
+    @Override
     protected float getDragInWater() {
         return 0.99F;
-    }
-
-    static {
-        ENCHANTED = DataTracker.registerData(DragonslayerSwordspearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
     
     @Override

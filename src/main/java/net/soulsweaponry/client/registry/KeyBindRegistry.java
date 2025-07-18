@@ -1,6 +1,7 @@
 package net.soulsweaponry.client.registry;
 
 import com.mrcrayfish.controllable.client.binding.ButtonBindings;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -36,6 +37,9 @@ public class KeyBindRegistry {
     public static KeyBinding showItemTooltip;
     public static KeyBinding showItemLore;
 
+    public static KeyBinding killNearbyEntities;
+    public static KeyBinding giveResistance;
+
     public static void initClient() {
         returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_Z);
         stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_RIGHT_ALT);
@@ -47,6 +51,21 @@ public class KeyBindRegistry {
         returnThrownWeapon = registerKeyboard("return_thrown_weapon", GLFW.GLFW_KEY_N);
         showItemTooltip = registerKeyboard("show_tooltip", GLFW.GLFW_KEY_UNKNOWN);
         showItemLore = registerKeyboard("show_lore", GLFW.GLFW_KEY_UNKNOWN);
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            killNearbyEntities = registerKeyboard("kill_nearby_entities", GLFW.GLFW_KEY_K);
+            giveResistance = registerKeyboard("give_or_clear_resistance", GLFW.GLFW_KEY_J);
+            ClientTickEvents.END_CLIENT_TICK.register(client -> {
+                while (killNearbyEntities.wasPressed()) {
+                    ClientPlayNetworking.send(PacketIds.KILL_NEARBY_ENTITIES, PacketByteBufs.empty());
+                }
+            });
+            ClientTickEvents.END_CLIENT_TICK.register(client -> {
+                while (giveResistance.wasPressed()) {
+                    ClientPlayNetworking.send(PacketIds.GIVE_RESISTANCE, PacketByteBufs.empty());
+                }
+            });
+        }
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {

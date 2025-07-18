@@ -49,7 +49,7 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.DARK_MOON_PROJECTILE, world, user, stack);
                 entity.setAppliedStatusEffect(EffectRegistry.FREEZING);
                 entity.setEffectAmplifier(amp);
-                entity.setAppliedEffectTicks(duration);
+                entity.setAppliedEffectDuration(duration);
                 entity.setAgeAndPoints(30, 150, 4);
                 entity.setAreaParticleCount(8);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);

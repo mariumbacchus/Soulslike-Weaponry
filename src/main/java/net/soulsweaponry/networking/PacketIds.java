@@ -33,4 +33,7 @@ public class PacketIds {
     public static final Identifier RETURN_THROWN_WEAPON = new Identifier(SoulsWeaponry.ModId, "try_return_thrown_weapons");
     public static final Identifier SUMMONS_UUIDS = new Identifier(SoulsWeaponry.ModId, "summons_uuids");
     public static final Identifier PARRY = new Identifier(SoulsWeaponry.ModId, "parry_keybind");
+    // Packet ids used for debugging in dev environment only
+    public static final Identifier KILL_NEARBY_ENTITIES = new Identifier(SoulsWeaponry.ModId, "kill_nearby_entities");
+    public static final Identifier GIVE_RESISTANCE = new Identifier(SoulsWeaponry.ModId, "give_or_clear_resistance");
 }

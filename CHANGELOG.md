@@ -110,6 +110,14 @@
     - Flames Reach summons a Flame Pillar on the slam part of the attack if in phase two
     - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
     - Chaos Storm now spawns pools of Molten Metal if in phase two, damaging mobs in it and setting them on fire
+- Changed Fallen Icon 2nd phase attacks
+  - Thrust attack now has 3 other follow-up attacks: A ground slam, a sword swipe and a blinding light ground slam with his fist, spawning projectiles only with Hard difficulty on (unlike the real Blinding Light attack which always does this in phase 2)
+  - Increased the trigger range for Blinding Light attack and expanded the hitbox slightly
+  - Sword of Light now shoots wider projectiles that go through entities and walls, with the last slam & big projectile being replaced with the old Moonfall attack, summoning pillars of light along a path
+  - Moonfall now summons 7 lines of light pillars every 45th degrees (except at 180 degrees) instead of just 1 ahead of the boss
+  - Moonveil attack now starts with the Fallen Icon leaping towards its main target, then the AOE explosion triggers as he pierces the ground with his sword, with an additional delayed AOE coming after a short while like before
+  - Core Beam has bigger range to trigger, higher explosion power and no longer destroys blocks
+  - Heavy Swing attack summons a wider projectile that also goes through walls and entities
 
 ### Bugfixes
 - Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well

@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -21,9 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public abstract class ReturningProjectile extends PersistentProjectileEntity {
+public abstract class ReturningProjectile extends ModPersistentProjectile {
 
-    public ItemStack stack;
     public boolean dealtDamage;
     private boolean shouldReturn;
     private int returnTimer;
@@ -38,7 +36,7 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
         super(type, owner, world);
         this.ignoreCameraFrustum = true;
-        this.stack = stack.copy();
+        this.setItemStack(stack.copy());
     }
 
     public abstract float getDamage(Entity target);
@@ -90,7 +88,7 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
             this.setShouldReturn(true);
         }
         Entity owner = this.getOwner();
-        double returnSpeed = this.getReturnSpeed(this.stack);
+        double returnSpeed = this.getReturnSpeed(this.asItemStack());
         if (this.shouldReturn() && (this.dealtDamage || this.isNoClip()) && owner != null) {
             this.setNoClip(true);
             Vec3d vec3d = owner.getEyePos().subtract(this.getPos());
@@ -206,9 +204,6 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
-            this.stack = ItemStack.fromNbt(nbt.getCompound("Stack"));
-        }
         if (nbt.contains(SHOULD_RETURN)) {
             this.shouldReturn = nbt.getBoolean(SHOULD_RETURN);
         }
@@ -221,15 +216,9 @@ public abstract class ReturningProjectile extends PersistentProjectileEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("Stack", this.stack.writeNbt(new NbtCompound()));
         nbt.putBoolean(DEALT_DAMAGE, this.dealtDamage);
         nbt.putBoolean(SHOULD_RETURN, this.shouldReturn);
         nbt.putInt("ReturnTimer", this.returnTimer);
-    }
-
-    @Override
-    public ItemStack asItemStack() {
-        return this.stack;
     }
 
     @Override

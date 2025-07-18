@@ -35,12 +35,18 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
         super(EntityRegistry.MOLTEN_METAL, world);
         this.setBoundingBoxWidth(width);
         this.setBoundingBoxHeight(height);
+        this.setDespawnParticle(ParticleTypes.LAVA);
+        this.setDespawnParticleCount(50);
+        this.setAreaParticle(ParticleTypes.LAVA);
     }
 
     public MoltenMetal(World world, float width) {
         super(EntityRegistry.MOLTEN_METAL, world);
         this.setBoundingBoxWidth(width);
         this.setBoundingBoxHeight(0.3f + world.random.nextBetween(-20, 20) * 0.01f);
+        this.setDespawnParticle(ParticleTypes.LAVA);
+        this.setDespawnParticleCount(50);
+        this.setAreaParticle(ParticleTypes.LAVA);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
                 double d = this.getParticleX(0.5f);
                 double e = this.getY();
                 double f = this.getParticleZ(0.5f);
-                this.getWorld().addParticle(ParticleTypes.LAVA, d, e, f, 0.0, 0.0, 0.0);
+                this.getWorld().addParticle(this.getAreaParticle(), d, e, f, 0.0, 0.0, 0.0);
             }
         }
         List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
@@ -90,16 +96,17 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
     }
 
     private void discardParticles() {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < this.getDespawnParticleCount(); i++) {
             double d = this.getParticleX(0.5f);
             double e = this.getY();
             double f = this.getParticleZ(0.5f);
-            this.getWorld().addParticle(ParticleTypes.LAVA, d, e, f, 0.0, 0.0, 0.0);
+            this.getWorld().addParticle(this.getDespawnParticle(), d, e, f, 0.0, 0.0, 0.0);
         }
         this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH, this.getSoundCategory(), 1f, 0.75f, false);
     }
 
-    private int getMaxAge() {
+    @Override
+    public int getMaxAge() {
         return (int) ConfigConstructor.supernova_molten_metal_max_age_ticks;
     }
 

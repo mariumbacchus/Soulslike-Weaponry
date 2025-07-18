@@ -31,7 +31,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
 
     public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.MJOLNIR);
+        this.setItemStack(new ItemStack(WeaponRegistry.MJOLNIR));
     }
 
     public MjolnirProjectile(World world, LivingEntity owner, ItemStack stack) {

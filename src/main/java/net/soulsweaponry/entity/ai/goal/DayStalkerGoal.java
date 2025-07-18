@@ -485,19 +485,19 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         } else {
             MoonlightProjectile projectile = this.getMoonlightProjectile(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE, damage, rotationDegrees, 30, 150, 5, 60);
-            projectile.setExplosionExpansion(0.5f);
+            projectile.setDespawnParticleExpansion(0.5f);
             this.shootProjectile(target, projectile, SoundEvents.ENTITY_BLAZE_SHOOT);
         }
     }
 
     private MoonlightProjectile getMoonlightProjectile(EntityType<? extends MoonlightProjectile> type, float damage, int rotationDegrees, int maxAge, int explosionParticleCount, int trailParticleCount, int fireTicksApplied) {
         MoonlightProjectile projectile = new MoonlightProjectile(type, this.boss.getWorld(), this.boss);
-        if (this.boss.isEmpowered()) projectile.setAppliedEffectTicks(fireTicksApplied);
+        if (this.boss.isEmpowered()) projectile.setAppliedEffectDuration(fireTicksApplied);
         projectile.setAgeAndPoints(maxAge, explosionParticleCount, trailParticleCount);
         projectile.setDamage(this.getModifiedDamage(damage));
         projectile.setModelRotation(rotationDegrees);
-        projectile.setExplosionParticleType(ParticleTypes.FLAME);
-        projectile.setTrailParticleType(ParticleTypes.WAX_ON);
+        projectile.setDespawnParticle(ParticleTypes.FLAME);
+        projectile.setTrailParticle(ParticleTypes.WAX_ON);
         return projectile;
     }
 

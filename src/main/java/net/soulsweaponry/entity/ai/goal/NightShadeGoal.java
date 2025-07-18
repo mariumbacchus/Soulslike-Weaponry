@@ -222,7 +222,7 @@ public class NightShadeGoal extends Goal {
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 1.5f, 1f);
             projectile.setDamage(this.getModifiedDamage(25f));
-            projectile.setExplosionExpansion(0.5f);
+            projectile.setDespawnParticleExpansion(0.5f);
             projectile.setAgeAndPoints(30, 150, 10);
             this.boss.getWorld().spawnEntity(projectile);
         }

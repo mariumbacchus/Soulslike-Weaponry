@@ -2,6 +2,7 @@ package net.soulsweaponry.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.soulsweaponry.networking.C2S.*;
 import net.soulsweaponry.networking.S2C.*;
 
@@ -17,6 +18,11 @@ public class PacketRegistry {
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParryC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.DAMAGING_BOX, DamagingBoxC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.RETURN_THROWN_WEAPON, ReturnThrownWeaponC2S::receive);
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            ServerPlayNetworking.registerGlobalReceiver(PacketIds.KILL_NEARBY_ENTITIES, KillNearbyEntitiesC2S::receive);
+            ServerPlayNetworking.registerGlobalReceiver(PacketIds.GIVE_RESISTANCE, GiveResistanceC2S::receive);
+        }
     }
 
     public static void registerS2CPackets() {

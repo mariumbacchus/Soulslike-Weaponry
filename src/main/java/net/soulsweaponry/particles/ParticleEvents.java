@@ -62,6 +62,7 @@ public class ParticleEvents {
     public static final HashMap<ParticleEffect, Vec3d> ICE_SMASH_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> BLACKFLAME_SNAKE_PARTICLE_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> FLAME_RUPTURE_MAP = Maps.newHashMap();
+    public static final HashMap<ParticleEffect, Vec3d> CORE_BEAM_EXPLOSION_MAP = Maps.newHashMap();
 
     public static final List<ParticleEffect> DARK_EXPLOSION_LIST = List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.SMOKE, ParticleTypes.POOF);
 
@@ -131,6 +132,10 @@ public class ParticleEvents {
         FLAME_RUPTURE_MAP.put(ParticleTypes.FLAME, new Vec3d(4, 0.5f, 4));
         FLAME_RUPTURE_MAP.put(ParticleTypes.WAX_ON, new Vec3d(0.1f, 0.01f, 0.1f));
         FLAME_RUPTURE_MAP.put(ParticleTypes.SMALL_FLAME, new Vec3d(4, 0.5f, 4));
+
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleRegistry.DAZZLING_PARTICLE, new Vec3d(1, 1, 1));
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleRegistry.NIGHTFALL_PARTICLE, new Vec3d(1, 1, 1));
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleTypes.CLOUD, new Vec3d(1.25, 1.25, 1.25));
     }
 
     public static void mjolnirLeviathanAxeCollision(World world, double x, double y, double z) {
