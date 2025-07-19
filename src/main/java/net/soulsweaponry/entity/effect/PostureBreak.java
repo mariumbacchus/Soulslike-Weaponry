@@ -15,16 +15,6 @@ public class PostureBreak extends StatusEffect {
     }
 
     @Override
-    public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        int k = 10 >> amplifier;
-         if (k > 0) {
-            return duration % k == 0;
-         } else {
-            return true;
-         }
-    }
-
-    @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         super.onApplied(entity, attributes, amplifier);
         int duration = entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) ? entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getDuration() : 60;

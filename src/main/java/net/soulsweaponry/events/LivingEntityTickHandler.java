@@ -19,7 +19,7 @@ public class LivingEntityTickHandler implements LivingEntityTickCallback {
     public ActionResult tick(LivingEntity entity) {
         int posture = PostureData.getPosture(entity);
         int bleed = BleedData.getBleed(entity);
-        if (!EntityPosture.isPostureDisabled(entity) && posture >= EntityPosture.getMaxPostureLoss(entity)) {
+        if (!EntityPosture.isPostureDisabled(entity) && posture >= EntityPosture.getMaxPostureLoss(entity) && EntityPosture.getMaxPostureLoss(entity) != 0) {
             if (!entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
                 entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.PLAYERS, .5f, 1f);
             }
