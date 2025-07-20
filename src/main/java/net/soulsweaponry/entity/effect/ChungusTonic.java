@@ -9,16 +9,13 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.soulsweaponry.config.ChungusTonicWhitelist;
 import net.soulsweaponry.entitydata.DespawnTimerData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ChungusTonic extends StatusEffect {
 
@@ -28,11 +25,7 @@ public class ChungusTonic extends StatusEffect {
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        Set<String> whitelistString = Set.of(ChungusTonicWhitelist.chungus_tonic_whitelist);
-        List<EntityType<?>> whitelist = whitelistString.stream().map((str) -> {
-            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
-            return Registries.ENTITY_TYPE.get(entityId);
-        }).collect(Collectors.toList());
+        List<EntityType<?>> whitelist = WeaponUtil.getEntityListOffArray(ChungusTonicWhitelist.chungus_tonic_whitelist);
         if (!(entity instanceof PlayerEntity) && DespawnTimerData.getDespawnTicks(entity) == 0 && !entity.getWorld().isClient) {
             EntityType<?> type = whitelist.get(entity.getRandom().nextInt(whitelist.size()));
             Entity randomEntity = type.create(entity.getWorld());

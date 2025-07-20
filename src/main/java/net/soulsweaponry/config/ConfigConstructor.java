@@ -644,6 +644,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0, max=1) public static float mehrunes_razor_missing_health_chance_over_health_cap = 0.15f;
     @Entry(min=0, max=1) public static float mehrunes_razor_kill_chance_under_health_cap = 0.0198f;
     @Entry(min=0, max=1) public static float mehrunes_razor_kill_chance_over_health_cap = 0.005f;
+    @Entry public static String[] mehrunes_razor_no_instakill_entity_blacklist = {
+            "minecraft:chicken",
+    };
     @Entry public static float mjolnir_damage = 9;
     @Entry public static float mjolnir_attack_speed = 1.2f;
     @Entry public static float mjolnir_rain_bonus_damage = 2;

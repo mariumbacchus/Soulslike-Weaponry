@@ -5,12 +5,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
@@ -20,7 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class WeaponUtil {
     
@@ -263,5 +268,18 @@ public class WeaponUtil {
         };
         double amount = perSlotValues[idx];
         return makeAttribute(attr, slot, (float) amount);
+    }
+
+    /**
+     * Returns a list of all the entity types within an array of identifiers as strings, i.e. "minecraft:chicken".
+     * Defaults to minecraft:entity if only the entity name/id was written, so if only "chicken" was
+     * mentioned, it would return "minecraft:chicken".
+     */
+    public static List<EntityType<?>> getEntityListOffArray(String[] array) {
+        Set<String> stringSet = Set.of(array);
+        return stringSet.stream().map((str) -> {
+            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
+            return Registries.ENTITY_TYPE.get(entityId);
+        }).collect(Collectors.toList());
     }
 }
