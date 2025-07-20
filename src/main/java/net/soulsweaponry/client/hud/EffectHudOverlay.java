@@ -29,7 +29,7 @@ public abstract class EffectHudOverlay implements HudRenderCallback {
                 if (this.shouldShow(client.player)) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
+                    // TODO the bars still overflow one frame
                     drawContext.drawTexture(this.getTexture(), barX - 25, barY - 10, 0, 0, 25, 25, 207 ,25); // Icon
                     drawContext.drawTexture(this.getTexture(), barX, barY, 25, 10, BAR_WIDTH, BAR_HEIGHT, 207, 25); // Empty
                     drawContext.drawTexture(this.getTexture(), barX, barY, 25, 15, pixelOffset, BAR_HEIGHT, 207, 25); // Filled

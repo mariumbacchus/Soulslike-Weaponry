@@ -21,6 +21,7 @@ public interface IUltraHeavy {
         }
     }
 
+    //TODO spamming attack still applies 100% of the posture loss, consider using attackCooldownProgress from the player
     /**
      * Should be called in post hit method to apply Posture Loss on the target.
      */
