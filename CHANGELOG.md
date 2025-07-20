@@ -10,6 +10,7 @@
   - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
   - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
 - Added Mehrunes' Razor, a new dagger that has a chance to deal bonus damage equal to the missing health of the target, with an additional very small chance to instantly kill the target
+  - There is a blacklist of entities in the config that will make the razor unable to instakill those entities
 - Added Tonitrus, a mace from Bloodborne which you can use to give yourself the new Stormveil effect, making you apply Chain Lightning post hit and immune to Lightning damage, using it again with the effect makes you summon a lightning strike on the target post hit, then removing the Stormveil effect
 - Added the Stormveil effect, making the wearer immune to Lightning damage and has a chance to inflict thorns lightning damage on targets hitting the wearer
 - Added Bloodlust, a katana from Dark Souls 3 applying large amounts of bleed buildup and can be used to damage yourself, but also give you Strength 2 and Bloodthirsty effects, targets suffering Blood Loss around you while having this weapon in hand also gives you Strength
