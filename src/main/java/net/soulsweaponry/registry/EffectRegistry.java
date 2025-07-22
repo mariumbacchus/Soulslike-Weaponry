@@ -59,8 +59,7 @@ public class EffectRegistry {
         BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING);
 
         BrewingRecipeRegistry.registerItemRecipe(Items.POTION, ItemRegistry.CHUNGUS_EMERALD, ItemRegistry.CHUNGUS_TONIC_POTION);
-        BrewingRecipeRegistry.registerItemRecipe(ItemRegistry.CHUNGUS_TONIC_POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
-        BrewingRecipeRegistry.registerItemRecipe(ItemRegistry.CHUNGUS_TONIC_SPLASH, Items.DRAGON_BREATH, ItemRegistry.CHUNGUS_TONIC_LINGERING);
+        BrewingRecipeRegistry.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
     }
 
     public static <I extends StatusEffect> I registerEffect(I effect, String name) {

@@ -7,7 +7,6 @@ import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
@@ -57,7 +56,7 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
         tnt.setFuse((int) ConfigConstructor.chungus_staff_ticks_before_explosion);
         tnt.setNoGravity(true);
         world.spawnEntity(tnt);
-        user.getItemCooldownManager().set((Item) this, (int) ConfigConstructor.chungus_staff_use_cooldown);
+        user.getItemCooldownManager().set(this, (int) ConfigConstructor.chungus_staff_use_cooldown);
         stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
         return TypedActionResult.success(stack);
     }
@@ -106,5 +105,15 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
             return;
         }
         player.playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 1.0F);
+    }
+
+    @Override
+    public boolean hasRecipeRemainder() {
+        return true;
+    }
+
+    @Override
+    public ItemStack getRecipeRemainder(ItemStack stack) {
+        return stack.copy();
     }
 }

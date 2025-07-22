@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+- Fixed a bug preventing Chungus Potions from being crafted
+  - Recipes for the Splash and Lingering has been changed due to this
+
 ## 1.3
 ### Important: All config files have been moved to "soulsweapons" folder inside config folder
 - The original config is now inside config/soulsweapons/soulsweapons.json together with the other files like _client.json and _chungus_tonic_whitelist.json
