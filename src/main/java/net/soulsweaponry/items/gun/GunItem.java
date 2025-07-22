@@ -67,6 +67,10 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         return 1;
     }
 
+    public int getBulletsNeededWithInfinity(ItemStack stack) {
+        return 1;
+    }
+
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
         if (EnchantmentHelper.getLevel(EnchantRegistry.MISFIRE_CURSE, gunStack) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
@@ -131,7 +135,8 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
 
     @Nullable
     public ItemStack canShoot(PlayerEntity user, ItemStack stack) {
-        boolean bl = user.getAbilities().creativeMode;
+        boolean infinity = EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
+        boolean bl = user.getAbilities().creativeMode || (infinity && this.getBulletsNeededWithInfinity(stack) <= 0);
         ItemStack bullet = this.getProjectileType(user, stack);
         if (!bullet.isEmpty() || bl) {
             if (bullet.isEmpty()) {
@@ -139,7 +144,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
             }
             int toRemove = bl ? 0 : this.getBulletsNeeded(stack);
             Item bulletItem = ItemRegistry.SILVER_BULLET;
-            if (EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0) {
+            if (infinity) {
                 return bullet;
             }
             for (int slot = 0; slot < user.getInventory().size() && toRemove > 0; slot++) {

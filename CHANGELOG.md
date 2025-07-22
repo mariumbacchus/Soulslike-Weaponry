@@ -3,6 +3,8 @@
 ## 1.3.1
 - Fixed a bug preventing Chungus Potions from being crafted
   - Recipes for the Splash and Lingering has been changed due to this
+- Added config lines for how many bullets are needed in the inventory for guns with infinity to shoot
+
 
 ## 1.3
 ### Important: All config files have been moved to "soulsweapons" folder inside config folder

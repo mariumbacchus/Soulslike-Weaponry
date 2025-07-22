@@ -45,7 +45,12 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? super.getBulletsNeeded(stack) : (int) ConfigConstructor.blunderbuss_bullets_needed;
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.blunderbuss_bullets_needed;
+    }
+
+    @Override
+    public int getBulletsNeededWithInfinity(ItemStack stack) {
+        return (int) ConfigConstructor.blunderbuss_bullets_needed_with_infinity;
     }
 
     @Override

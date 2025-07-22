@@ -29,7 +29,7 @@ public class ItemRegistry {
     public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
     public static final Item LOST_SOUL = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 5);
     public static final Item MOONSTONE = new Item(new FabricItemSettings());
-    public static final Item CHUNGUS_EMERALD = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 1, true);
+    public static final Item CHUNGUS_EMERALD = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 1, true, false);
     public static final Item DEMON_HEART = new LoreItem(new FabricItemSettings().food(new FoodComponent.Builder()
             .hunger(4).saturationModifier(6f).meat().alwaysEdible()
             .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
@@ -47,7 +47,7 @@ public class ItemRegistry {
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new FabricItemSettings().maxDamage(20));
     public static final Item IRON_SKULL = new Item(new FabricItemSettings());
 
-    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 12, true);
+    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 12, true, true);
 
     public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new FabricItemSettings());
     public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new FabricItemSettings());

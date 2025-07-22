@@ -901,6 +901,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float blunderbuss_posture_loss_per_enchant_level = 3;
     @Entry public static float blunderbuss_cooldown = 80;
     @Entry public static float blunderbuss_bullets_needed = 2;
+    @Entry public static float blunderbuss_bullets_needed_with_infinity = 2;
     @Entry public static float gatling_gun_damage = 3;
     @Entry public static float gatling_gun_velocity = 3f;
     @Entry public static float gatling_gun_divergence = 3f;
@@ -909,6 +910,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float gatling_gun_max_time = 100;
     @Entry public static float gatling_gun_cooldown = 120;
     @Entry public static float gatling_gun_bullets_needed = 1;
+    @Entry public static float gatling_gun_bullets_needed_with_infinity = 1;
     @Entry public static float hunter_cannon_damage = 30f;
     @Entry public static float hunter_cannon_velocity = 3f;
     @Entry public static float hunter_cannon_divergence = 1f;
@@ -916,6 +918,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_cannon_posture_loss_per_enchant_level = 50;
     @Entry public static float hunter_cannon_cooldown = 300;
     @Entry public static float hunter_cannon_bullets_needed = 10;
+    @Entry public static float hunter_cannon_bullets_needed_with_infinity = 10;
     @Entry public static float hunter_pistol_damage = 6f;
     @Entry public static float hunter_pistol_velocity = 3f;
     @Entry public static float hunter_pistol_divergence = 1f;
@@ -923,6 +926,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_pistol_posture_loss_per_enchant_level = 10;
     @Entry public static float hunter_pistol_cooldown = 50;
     @Entry public static float hunter_pistol_bullets_needed = 1;
+    @Entry public static float hunter_pistol_bullets_needed_with_infinity = 1;
 
     @Entry public static double dark_sorcerer_health = 10D;
     @Entry public static double dark_sorcerer_bonus_armor = 0D;
