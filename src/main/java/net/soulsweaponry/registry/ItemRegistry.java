@@ -63,8 +63,8 @@ public class ItemRegistry {
     public static final Item BLOOD_VIAL = new BloodVial(new FabricItemSettings().maxCount(20));
 
     public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
-    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
-    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
+    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
+    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
 
     public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
     public static final Item FALLEN_ICON_DISC = new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new FabricItemSettings().maxCount(1), 172);

@@ -311,6 +311,11 @@
   "item.minecraft.lingering_potion.effect.tainted_ambrosia": "§cAmbrosía Contaminada Persistente§r",
   "item.minecraft.tipped_arrow.effect.tainted_ambrosia": "§cFlecha de Ambrosía Contaminada§r",
 
+  "item.minecraft.potion.effect.chungus_tonic": "§4Tampered Chungus Tonic§r",
+  "item.minecraft.splash_potion.effect.chungus_tonic": "§4Splash Tampered Chungus Tonic§r",
+  "item.minecraft.lingering_potion.effect.chungus_tonic": "§4Lingering Tampered Chungus Tonic§r",
+  "item.minecraft.tipped_arrow.effect.chungus_tonic": "§4Arrow of Tampered Chungus Tonic§r",
+
   "item.soulsweapons.chungus_tonic_potion": "§3Tónico de Chungus§r",
   "item.soulsweapons.chungus_tonic_splash": "§3Tónico de Chungus Arrojadizo§r",
   "item.soulsweapons.chungus_tonic_lingering": "§3Tónico de Chungus Persistente§r",

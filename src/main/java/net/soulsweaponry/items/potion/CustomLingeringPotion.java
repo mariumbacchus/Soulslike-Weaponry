@@ -12,8 +12,8 @@ import java.util.List;
 
 public class CustomLingeringPotion extends CustomSplashPotion {
 
-    public CustomLingeringPotion(Settings settings, Potion potion) {
-        super(settings, potion);
+    public CustomLingeringPotion(Settings settings, Potion potion, int splashParticleColor) {
+        super(settings, potion, splashParticleColor);
     }
 
     @Override

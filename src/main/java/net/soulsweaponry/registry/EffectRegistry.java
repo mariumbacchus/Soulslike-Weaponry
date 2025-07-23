@@ -45,12 +45,14 @@ public class EffectRegistry {
     public static final Potion STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
     public static final Potion LONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000)), "long_warding");
     public static final Potion TAINTED_AMBROSIA = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0)), "tainted_ambrosia");
-
-    public static final Potion CHUNGUS_TONIC_POTION = new Potion(
-            new StatusEffectInstance(StatusEffects.HASTE, 1000, 2),
-            new StatusEffectInstance(StatusEffects.SATURATION, 400, 1),
-            new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 1000, 0)
-    );
+    public static final Potion CHUNGUS_TONIC_POTION = registerPotion(
+            new Potion(
+                        new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 1000, 0),
+                        new StatusEffectInstance(StatusEffects.HASTE, 1000, 2),
+                        new StatusEffectInstance(StatusEffects.SATURATION, 400, 1)
+                ),
+            "chungus_tonic"
+        );
 
     public static void init() {
         BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.asItem(), WARDING);

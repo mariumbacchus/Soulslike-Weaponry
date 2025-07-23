@@ -15,17 +15,28 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CustomSplashPotion extends CustomPotionItem {
 
-    public CustomSplashPotion(Settings settings, Potion potion) {
+    private final int splashParticleColor;
+
+    /**
+     * @param settings item settings
+     * @param potion potion
+     * @param splashParticleColor If it equals -1 => random color, otherwise just the input
+     */
+    public CustomSplashPotion(Settings settings, Potion potion, int splashParticleColor) {
         super(settings, potion);
+        this.splashParticleColor = splashParticleColor;
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        itemStack.getOrCreateNbt().putInt("CustomPotionColor", this.splashParticleColor == -1 ? randomVibrantRGBA() : this.splashParticleColor);
         if (!this.canUse(itemStack)) {
             return TypedActionResult.fail(itemStack);
         }
@@ -55,5 +66,13 @@ public class CustomSplashPotion extends CustomPotionItem {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         PotionUtil.buildTooltip(stack, tooltip, 0.86f);
+    }
+
+    public static int randomVibrantRGBA() {
+        float h = ThreadLocalRandom.current().nextFloat();
+        float s = 0.65f + ThreadLocalRandom.current().nextFloat() * 0.35f; // 0.65–1.0
+        float v = 0.75f + ThreadLocalRandom.current().nextFloat() * 0.25f; // 0.75–1.0
+        int rgb = Color.HSBtoRGB(h, s, v); // to hex
+        return 0xFF000000 | rgb; // full alpha
     }
 }

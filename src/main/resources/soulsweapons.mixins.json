@@ -19,7 +19,8 @@
     "PotionEntityMixin",
     "PotionUtilMixin",
     "RecipeManagerMixin",
-    "WitherEntityMixin"
+    "WitherEntityMixin",
+    "create.PotionFluidHandlerMixin"
   ],
   "client": [
     "BipedEntityModelMixin",

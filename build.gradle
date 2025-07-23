@@ -81,6 +81,7 @@ dependencies {
 
 	// Compile time only
 	modCompileOnly 'curse.maven:controllable-851657:4592466'
+	modCompileOnly 'maven.modrinth:create-fabric:0.5.1-j-build.1631+mc1.20.1'
 }
 
 loom {
