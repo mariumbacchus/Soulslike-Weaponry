@@ -34,6 +34,6 @@ public class CustomDamageSource {
     }
 
     public static RegistryKey<DamageType> createType(String name) {
-        return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(SoulsWeaponry.ModId, name));
+        return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(SoulsWeaponry.ModId, name));
     }
 }

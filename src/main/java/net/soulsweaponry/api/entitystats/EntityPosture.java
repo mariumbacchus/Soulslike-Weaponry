@@ -48,7 +48,7 @@ public class EntityPosture {
         double bonus = inst != null ? inst.getValue() : 0f;
         base += (int) bonus;
         EntityDimensions dimensions = entity.getDimensions(entity.getPose());
-        float volume = dimensions.height * dimensions.width * dimensions.width;
+        float volume = dimensions.height() * dimensions.width() * dimensions.width();
         int value = (int) (base * (1 + Math.log1p(volume) / 3.5));
         if (entity instanceof PlayerEntity player) {
             PostureData.updateMaxPosture(player, value);

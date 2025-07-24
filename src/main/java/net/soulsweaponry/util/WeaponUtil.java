@@ -17,6 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.soulsweaponry.SoulsWeaponry;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,12 +60,12 @@ public class WeaponUtil {
         return list;
     }
 
-    public static int getChargeTime(ItemStack stack, int remainingUseTicks) {
+    public static int getChargeTime(ItemStack stack, LivingEntity user, int remainingUseTicks) {
         int i;
         if (WeaponUtil.isModLoaded("epicfight")) {
             i = Integer.MAX_VALUE - remainingUseTicks;
         } else {
-            i = stack.getItem().getMaxUseTime(stack) - remainingUseTicks;
+            i = stack.getItem().getMaxUseTime(stack, user) - remainingUseTicks;
         }
         return i;
     }
@@ -239,15 +240,9 @@ public class WeaponUtil {
             return null;
         }
         // e.g. "soulsweapons:bleed_buildup:HEAD"
-        String seed = String.format("soulsweapons:%s:%s",
-                attr.getTranslationKey(), slot.getName().toUpperCase());
-        UUID uuid = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8));
-        return new EntityAttributeModifier(
-                uuid,
-                attr.getTranslationKey() + " " + slot.getName(),
-                amount,
-                EntityAttributeModifier.Operation.ADDITION
-        );
+        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s:%s",
+                attr.getTranslationKey(), slot.getName().toUpperCase()));
+        return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
     }
 
     /**
@@ -278,7 +273,7 @@ public class WeaponUtil {
     public static List<EntityType<?>> getEntityListOffArray(String[] array) {
         Set<String> stringSet = Set.of(array);
         return stringSet.stream().map((str) -> {
-            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
+            Identifier entityId = Identifier.of(str.contains(":") ? str : "minecraft:" + str);
             return Registries.ENTITY_TYPE.get(entityId);
         }).collect(Collectors.toList());
     }

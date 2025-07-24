@@ -55,7 +55,7 @@ public class TrickWeaponUtil {
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             Map<Identifier, Identifier> newMappings = new HashMap<>();
             // Get all resources with the same path
-            List<Resource> resources = manager.getAllResources(new Identifier(SoulsWeaponry.ModId, "trickweapons/item_mappings.json"));
+            List<Resource> resources = manager.getAllResources(Identifier.of(SoulsWeaponry.ModId, "trickweapons/item_mappings.json"));
             boolean shouldReplace = false;
             for (Resource resource : resources) {
                 try (var stream = resource.getInputStream(); InputStreamReader reader = new InputStreamReader(stream)) {

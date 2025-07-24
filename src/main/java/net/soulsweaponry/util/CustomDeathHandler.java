@@ -62,18 +62,18 @@ public class CustomDeathHandler {
     }
 
     private static void renderLight_1(VertexConsumer vertices, Matrix4f matrix, int alpha, int[] rgbColors) {
-        vertices.vertex(matrix, 0.0f, 0.0f, 0.0f).color(rgbColors[0], rgbColors[1], rgbColors[2], alpha).next();
+        vertices.vertex(matrix, 0.0f, 0.0f, 0.0f).color(rgbColors[0], rgbColors[1], rgbColors[2], alpha);
     }
 
     private static void renderLight_2(VertexConsumer vertices, Matrix4f matrix, float y, float x, int[] rgbColors) {
-        vertices.vertex(matrix, -HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, -HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 
     private static void renderLight_3(VertexConsumer vertices, Matrix4f matrix, float y, float x, int[] rgbColors) {
-        vertices.vertex(matrix, HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 
     private static void renderLight_4(VertexConsumer vertices, Matrix4f matrix, float y, float z, int[] rgbColors) {
-        vertices.vertex(matrix, 0.0f, y, 1.0f * z).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, 0.0f, y, z).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 }

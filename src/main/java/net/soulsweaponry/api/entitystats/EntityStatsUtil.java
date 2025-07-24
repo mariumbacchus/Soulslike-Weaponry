@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
 public class EntityStatsUtil implements IdentifiableResourceReloadListener {
 
     private static final String FOLDER = "entitystats";
-    private static final Identifier ID = new Identifier(SoulsWeaponry.ModId, "entity_attributes");
+    private static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "entity_attributes");
     private static final Gson GSON = new Gson();
     private static final Map<Identifier, EntityStats> statsMap = new HashMap<>();
 
@@ -58,7 +58,7 @@ public class EntityStatsUtil implements IdentifiableResourceReloadListener {
                 String path = resId.getPath(); // i.e "entitystats/returning_knight.json"
                 String fileName = path.substring(FOLDER.length() + 1);
                 String entityName = fileName.substring(0, fileName.length() - 5);
-                Identifier entityId = new Identifier(resId.getNamespace(), entityName);
+                Identifier entityId = Identifier.of(resId.getNamespace(), entityName);
                 try (var stream = manager.getResource(resId).get().getInputStream(); var reader = new InputStreamReader(stream)) {
                     EntityStats stats = GSON.fromJson(JsonParser.parseReader(reader), EntityStats.class);
                     newStats.put(entityId, stats);

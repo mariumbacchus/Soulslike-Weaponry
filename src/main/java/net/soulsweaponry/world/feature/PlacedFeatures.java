@@ -45,7 +45,7 @@ public class PlacedFeatures {
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {
-        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier(SoulsWeaponry.ModId, name));
+        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, Identifier.of(SoulsWeaponry.ModId, name));
     }
 
     private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key, RegistryEntry<ConfiguredFeature<?, ?>> config, List<PlacementModifier> modifiers) {
