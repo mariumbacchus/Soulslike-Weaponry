@@ -1,7 +1,7 @@
 package net.soulsweaponry.registry;
 
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -9,16 +9,16 @@ import net.soulsweaponry.SoulsWeaponry;
 
 public class ParticleRegistry {
     
-    public static final DefaultParticleType NIGHTFALL_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType DAZZLING_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType PURPLE_FLAME = FabricParticleTypes.simple();
-    public static final DefaultParticleType DARK_STAR = FabricParticleTypes.simple();
-    public static final DefaultParticleType BLACK_FLAME = FabricParticleTypes.simple();
-    public static final DefaultParticleType SUN_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType MOONVEIL_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType BLUE_FLAME = FabricParticleTypes.simple();
-    public static final DefaultParticleType SOUL_SPARK = FabricParticleTypes.simple();
-    public static final DefaultParticleType ECHO_SMOKE = FabricParticleTypes.simple();
+    public static final SimpleParticleType NIGHTFALL_PARTICLE = FabricParticleTypes.simple();
+    public static final SimpleParticleType DAZZLING_PARTICLE = FabricParticleTypes.simple();
+    public static final SimpleParticleType PURPLE_FLAME = FabricParticleTypes.simple();
+    public static final SimpleParticleType DARK_STAR = FabricParticleTypes.simple();
+    public static final SimpleParticleType BLACK_FLAME = FabricParticleTypes.simple();
+    public static final SimpleParticleType SUN_PARTICLE = FabricParticleTypes.simple();
+    public static final SimpleParticleType MOONVEIL_PARTICLE = FabricParticleTypes.simple();
+    public static final SimpleParticleType BLUE_FLAME = FabricParticleTypes.simple();
+    public static final SimpleParticleType SOUL_SPARK = FabricParticleTypes.simple();
+    public static final SimpleParticleType ECHO_SMOKE = FabricParticleTypes.simple();
 
     public static void init() {
         registerParticle(NIGHTFALL_PARTICLE, "nightfall_particle");
@@ -33,7 +33,7 @@ public class ParticleRegistry {
         registerParticle(ECHO_SMOKE, "echo_smoke");
     }
 
-    public static void registerParticle(DefaultParticleType particle, String name) {
-		Registry.register(Registries.PARTICLE_TYPE, new Identifier(SoulsWeaponry.ModId, name), particle);
+    public static void registerParticle(SimpleParticleType particle, String name) {
+		Registry.register(Registries.PARTICLE_TYPE, Identifier.of(SoulsWeaponry.ModId, name), particle);
 	}
 }
