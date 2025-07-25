@@ -1,6 +1,10 @@
 package net.soulsweaponry.items.armor;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -20,62 +25,68 @@ import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ChaosCrown extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    private static final UUID LUCK_MODIFIER_UUID = UUID.fromString("ea8c740d-dd7c-4e5e-80aa-41bf5a250f5a");
-    private static final EntityAttributeModifier LUCK_MODIFIER = new EntityAttributeModifier(
-            LUCK_MODIFIER_UUID, "Helmet Luck Bonus", ConfigConstructor.chaos_crown_luck_given, EntityAttributeModifier.Operation.ADDITION);
+
     /**
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
-    private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
+    private static final HashMap<RegistryEntry<StatusEffect>, RegistryEntry<StatusEffect>> FLIPPABLE_EFFECTS = new HashMap<>();
 
-    public ChaosCrown(ArmorMaterial material, Type type, Settings settings) {
+    public ChaosCrown(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.EMPEROR, TooltipAbilities.EFFECT_REVERSAL);
     }
 
+    private final Supplier<AttributeModifiersComponent> chaosModifiers = Suppliers.memoize(() -> {
+        AttributeModifiersComponent vanilla = super.getAttributeModifiers();
+        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanilla);
+        EquipmentSlot eqSlot = this.type.getEquipmentSlot();
+        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(eqSlot);
+        EntityAttributeModifier luckMod = WeaponUtil.makeAttribute(EntityAttributes.GENERIC_LUCK, eqSlot, ConfigConstructor.chaos_crown_luck_given);
+        builder.add(EntityAttributes.GENERIC_LUCK, luckMod, slot);
+        return builder.build();
+    });//TODO test
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player) {
-            if (this.isSlotActive(player, EquipmentSlot.HEAD)) {
-                if (!player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).hasModifier(LUCK_MODIFIER)) {
-                    player.getAttributeInstance(EntityAttributes.GENERIC_LUCK).addPersistentModifier(LUCK_MODIFIER);
-                }
-                if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_HELMET)) {
-                    this.flipEffects(player);
-                }
-            } else {
-                Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_LUCK)).removeModifier(LUCK_MODIFIER);
+        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.HEAD)) {
+            if (!player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_CROWN) && !player.getItemCooldownManager().isCoolingDown(ArmorRegistry.CHAOS_HELMET)) {
+                this.flipEffects(player);
             }
         }
     }
 
+    @Override
+    public AttributeModifiersComponent getAttributeModifiers() {
+        return this.chaosModifiers.get();
+    }
+
     private void flipEffects(PlayerEntity player) {
         List<StatusEffectInstance> statusEffectsCopy = new ArrayList<>(player.getStatusEffects());
-        List<StatusEffect> effectsToRemove = new ArrayList<>();
+        List<RegistryEntry<StatusEffect>> effectsToRemove = new ArrayList<>();
         boolean triggered = false;
         for (StatusEffectInstance instance : statusEffectsCopy) {
-            StatusEffect effect = instance.getEffectType();
-            if (effect.getCategory() == StatusEffectCategory.HARMFUL) {
+            RegistryEntry<StatusEffect> effect = instance.getEffectType();
+            if (effect.value().getCategory() == StatusEffectCategory.HARMFUL) {
                 int duration = (int) (instance.getDuration() / 3f);
                 int amplifier = (int) (instance.getAmplifier() / 2f);
-                StatusEffect newEffect = StatusEffects.REGENERATION;
-                for (StatusEffect harmful : FLIPPABLE_EFFECTS.keySet()) {
+                RegistryEntry<StatusEffect> newEffect = StatusEffects.REGENERATION;
+                for (RegistryEntry<StatusEffect> harmful : FLIPPABLE_EFFECTS.keySet()) {
                     if (effect.equals(harmful)) {
                         newEffect = FLIPPABLE_EFFECTS.get(harmful);
                         break;
@@ -86,7 +97,7 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
                 player.addStatusEffect(new StatusEffectInstance(newEffect, duration, amplifier));
             }
         }
-        for (StatusEffect effectToRemove : effectsToRemove) {
+        for (RegistryEntry<StatusEffect> effectToRemove : effectsToRemove) {
             player.removeStatusEffect(effectToRemove);
         }
         if (triggered && !player.isCreative()) {
@@ -118,7 +129,7 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_crown;
+        return ConfigConstructor.is_fireproof_chaos_crown;//TODO move
     }
 
     @Override
@@ -143,25 +154,18 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new ChaosSetRenderer<ChaosCrown>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

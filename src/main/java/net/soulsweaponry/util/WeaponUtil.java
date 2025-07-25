@@ -2,6 +2,7 @@ package net.soulsweaponry.util;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -11,8 +12,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
@@ -232,14 +235,14 @@ public class WeaponUtil {
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
-    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float amount) {
+    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float amount) {
         // Don't display attributes with 0
         if (amount == 0) {
             return null;
         }
         // e.g. "soulsweapons:bleed_buildup:HEAD"
         Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s:%s",
-                attr.getTranslationKey(), slot.getName().toUpperCase()));
+                attr.value().getTranslationKey(), slot.getName().toUpperCase()));
         return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
     }
 
@@ -250,7 +253,7 @@ public class WeaponUtil {
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
-    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float[] perSlotValues) {
+    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float[] perSlotValues) {
         // Minecraft has feet at index 0 so just follow that pattern
         int idx = switch (slot) {
             case HEAD -> 3;
@@ -274,5 +277,18 @@ public class WeaponUtil {
             Identifier entityId = Identifier.of(str.contains(":") ? str : "minecraft:" + str);
             return Registries.ENTITY_TYPE.get(entityId);
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Create a new builder with all the attributes from the previous component {@code toCopyFrom}.
+     * Should usually take in {@code super.getAttributeModifiers()} from {@link ArmorItem#getAttributeModifiers}
+     * when it comes to armor items.
+     */
+    public static AttributeModifiersComponent.Builder createAndCopyAttributes(AttributeModifiersComponent toCopyFrom) {
+        AttributeModifiersComponent.Builder builder = AttributeModifiersComponent.builder();
+        for (AttributeModifiersComponent.Entry e : toCopyFrom.modifiers()) {
+            builder.add(e.attribute(), e.modifier(), e.slot());
+        }
+        return builder;
     }
 }

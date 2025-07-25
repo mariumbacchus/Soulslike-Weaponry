@@ -88,7 +88,7 @@ public class SoundRegistry {
     public static final SoundEvent FRENZIED_SHADE_SONG_MONO = registerSound("frenzied_shade_song_mono");
 
 	public static Identifier registerId(String name) {
-		return new Identifier(SoulsWeaponry.ModId + ":" + name);
+		return Identifier.of(SoulsWeaponry.ModId, name);
 	}
 
     public static SoundEvent registerSound(String id) {

@@ -5,18 +5,20 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import software.bernie.geckolib.animatable.client.RenderProvider;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.function.Consumer;
 
 public class ChaosHelmet extends ChaosCrown {
 
-    public ChaosHelmet(ArmorMaterial material, Type type, Settings settings) {
+    public ChaosHelmet(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
     }
 
@@ -26,17 +28,15 @@ public class ChaosHelmet extends ChaosCrown {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new ChaosArmorRenderer<ChaosHelmet>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });

@@ -12,34 +12,42 @@ import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
 
 public class EffectRegistry {
 
-    public static final StatusEffect HALLOWED_DRAGON_MIST = registerEffect(new HallowedDragonMist(), "hallowed_dragon_mist");
-    public static final StatusEffect BLOODTHIRSTY = registerEffect(new Bloodthirsty(), "bloodthirsty");
-    public static final StatusEffect POSTURE_BREAK = registerEffect(new PostureBreak(), "posture_break");
-    public static final StatusEffect LIFE_LEACH = registerEffect(new LifeLeach(), "life_leach");
-    public static final StatusEffect RETRIBUTION = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xc76700), "retribution");
-    public static final StatusEffect FEAR = registerEffect(new Fear(), "fear");
-    public static final StatusEffect DECAY = registerEffect(new Decay(), "decay");
-    public static final StatusEffect MAGIC_RESISTANCE = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff), "magic_resistance");
-    public static final StatusEffect MOON_HERALD = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x03e8fc), "moon_herald");
-    public static final StatusEffect FREEZING = registerEffect(new Freezing(), "freezing");
-    public static final StatusEffect DISABLE_HEAL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d), "disable_heal");
-    public static final StatusEffect BLEED = registerEffect(new Bleed(), "bleed");
-    public static final StatusEffect CALCULATED_FALL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff), "calculated_fall");
-    public static final StatusEffect VEIL_OF_FIRE = registerEffect(new VeilOfFire(), "veil_of_fire");
-    public static final StatusEffect BLIGHT = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c), "blight");
-    public static final StatusEffect SHADOW_STEP = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78), "shadow_step").addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "48403ce1-d9b3-4757-b1ef-9fbacff0ed37", 0.30000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-    public static final StatusEffect COOLDOWN = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x525252), "cooldown");
-    public static final StatusEffect GHOSTLY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191), "ghostly");
-    public static final StatusEffect CHUNGUS_TONIC_EFFECT = registerEffect(new ChungusTonic(), "chungus_tonic_effect");
-    public static final StatusEffect FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
-    public static final StatusEffect BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
-    public static final StatusEffect STORMVEIL = registerEffect(new Stormveil(), "stormveil");
+    public static final RegistryEntry<StatusEffect> HALLOWED_DRAGON_MIST = registerEffect(new HallowedDragonMist(), "hallowed_dragon_mist");
+    public static final RegistryEntry<StatusEffect> BLOODTHIRSTY = registerEffect(new Bloodthirsty(), "bloodthirsty");
+    public static final RegistryEntry<StatusEffect> POSTURE_BREAK = registerEffect(new PostureBreak(), "posture_break");
+    public static final RegistryEntry<StatusEffect> LIFE_LEACH = registerEffect(new LifeLeach(), "life_leach");
+    public static final RegistryEntry<StatusEffect> RETRIBUTION = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xc76700), "retribution");
+    public static final RegistryEntry<StatusEffect> FEAR = registerEffect(new Fear(), "fear");
+    public static final RegistryEntry<StatusEffect> DECAY = registerEffect(new Decay(), "decay");
+    public static final RegistryEntry<StatusEffect> MAGIC_RESISTANCE = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff), "magic_resistance");
+    public static final RegistryEntry<StatusEffect> MOON_HERALD = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x03e8fc), "moon_herald");
+    public static final RegistryEntry<StatusEffect> FREEZING = registerEffect(new Freezing(), "freezing");
+    public static final RegistryEntry<StatusEffect> DISABLE_HEAL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d), "disable_heal");
+    public static final RegistryEntry<StatusEffect> BLEED = registerEffect(new Bleed(), "bleed");
+    public static final RegistryEntry<StatusEffect> CALCULATED_FALL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff), "calculated_fall");
+    public static final RegistryEntry<StatusEffect> VEIL_OF_FIRE = registerEffect(new VeilOfFire(), "veil_of_fire");
+    public static final RegistryEntry<StatusEffect> BLIGHT = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c), "blight");
+    public static final RegistryEntry<StatusEffect> SHADOW_STEP = registerEffect(
+            new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_MOVEMENT_SPEED,
+                            Identifier.of(SoulsWeaponry.ModId, "effect.shadow_step"), 0.30000000298023224,
+                            EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    ), "shadow_step"
+    );
+    public static final RegistryEntry<StatusEffect> COOLDOWN = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x525252), "cooldown");
+    public static final RegistryEntry<StatusEffect> GHOSTLY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191), "ghostly");
+    public static final RegistryEntry<StatusEffect> CHUNGUS_TONIC_EFFECT = registerEffect(new ChungusTonic(), "chungus_tonic_effect");
+    public static final RegistryEntry<StatusEffect> FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
+    public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
+    public static final RegistryEntry<StatusEffect> STORMVEIL = registerEffect(new Stormveil(), "stormveil");
 
     public static final Potion WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final Potion STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
@@ -64,8 +72,8 @@ public class EffectRegistry {
         BrewingRecipeRegistry.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
     }
 
-    public static <I extends StatusEffect> I registerEffect(I effect, String name) {
-		return Registry.register(Registries.STATUS_EFFECT, new Identifier(SoulsWeaponry.ModId, name), effect);
+    public static RegistryEntry<StatusEffect> registerEffect(StatusEffect effect, String name) {
+		return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(SoulsWeaponry.ModId, name), effect);
 	}
 
     private static Potion registerPotion(Potion potion, String name) {

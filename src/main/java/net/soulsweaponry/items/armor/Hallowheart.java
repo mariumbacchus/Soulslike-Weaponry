@@ -10,6 +10,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -21,26 +22,21 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-    public Hallowheart(ArmorMaterial material, Type type, Settings settings) {
+    public Hallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.UNCEASING, TooltipAbilities.INFECTIOUS);
     }
@@ -86,7 +82,7 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_hallowheart;
-    }
+    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
@@ -110,25 +106,18 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new WitheredArmorRenderer<Hallowheart>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

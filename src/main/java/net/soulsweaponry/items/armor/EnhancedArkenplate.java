@@ -6,22 +6,24 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.function.Consumer;
 
 public class EnhancedArkenplate extends Arkenplate {
 
-    public EnhancedArkenplate(ArmorMaterial material, Type type, Settings settings) {
+    public EnhancedArkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.MIRROR);
     }
@@ -43,17 +45,15 @@ public class EnhancedArkenplate extends Arkenplate {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new EChaosArmorRenderer<EnhancedArkenplate>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });

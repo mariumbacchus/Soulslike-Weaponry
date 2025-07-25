@@ -6,13 +6,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.TooltipAbilities;
 
 public abstract class SetBonusArmor extends ModdedArmor {
 
-    public SetBonusArmor(ArmorMaterial material, Type slot, Settings settings) {
+    public SetBonusArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
         this.addTooltipAbility(TooltipAbilities.SET_BONUS);
     }

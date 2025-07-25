@@ -8,15 +8,16 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 
 public class AttributeRegistry {
 
-    public static EntityAttribute POSTURE_BUILDUP_RESISTANCE;
-    public static EntityAttribute BASE_POSTURE_INCREASE;
-    public static EntityAttribute BLEED_BUILDUP_RESISTANCE;
-    public static EntityAttribute BLEED_DAMAGE_RESISTANCE;
+    public static RegistryEntry<EntityAttribute> POSTURE_BUILDUP_RESISTANCE;
+    public static RegistryEntry<EntityAttribute> BASE_POSTURE_INCREASE;
+    public static RegistryEntry<EntityAttribute> BLEED_BUILDUP_RESISTANCE;
+    public static RegistryEntry<EntityAttribute> BLEED_DAMAGE_RESISTANCE;
 
     public static void init() {
         POSTURE_BUILDUP_RESISTANCE = register("posture_buildup_resistance", 0.0, -10000.0, 10000.0);
@@ -33,12 +34,12 @@ public class AttributeRegistry {
         FabricDefaultAttributeRegistry.register(EntityType.PLAYER, playerAttrs);
     }
 
-    public static EntityAttribute register(String id, double fallback, double min, double max) {
+    public static RegistryEntry<EntityAttribute> register(String id, double fallback, double min, double max) {
         return register(id, createClampedAttribute(id, fallback, min, max));
     }
 
-    public static EntityAttribute register(String id, EntityAttribute attribute) {
-        return Registry.register(Registries.ATTRIBUTE, new Identifier(SoulsWeaponry.ModId, id), attribute);
+    public static RegistryEntry<EntityAttribute> register(String id, EntityAttribute attribute) {
+        return Registry.registerReference(Registries.ATTRIBUTE, Identifier.of(SoulsWeaponry.ModId, id), attribute);
     }
 
     public static ClampedEntityAttribute createClampedAttribute(String attributeName, double fallback, double min, double max) {

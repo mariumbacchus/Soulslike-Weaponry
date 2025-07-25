@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -15,14 +16,14 @@ import net.soulsweaponry.util.IAnimatedDeath;
 
 public class ForlornArmor extends SetBonusArmor {
 
-    public ForlornArmor(ArmorMaterial material, Type slot, Settings settings) {
+    public ForlornArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_forlorn_set;
-    }
+    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {

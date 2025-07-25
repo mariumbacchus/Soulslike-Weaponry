@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
@@ -21,23 +22,21 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class Arkenplate extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-    public Arkenplate(ArmorMaterial material, Type type, Settings settings) {
+    public Arkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.UNBREAKABLE, TooltipAbilities.AFTERSHOCK);
     }
@@ -59,7 +58,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
         float i = ConfigConstructor.arkenplate_shockwave_knockback;
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (stack == null) return;
-        i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);
+        i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);//TODO enchants????
         ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
@@ -72,7 +71,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
                 target.takeKnockback(i * 0.5f, x, z);
             }
         }
-        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
         if (!player.isCreative()) {
             player.getItemCooldownManager().set(stack.getItem(), (int) Math.max(ConfigConstructor.arkenplate_shockwave_min_cooldown, ConfigConstructor.arkenplate_shockwave_cooldown
                     - this.getReduceCooldownEnchantLevel(stack) * 20));
@@ -82,7 +81,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_arkenplate;
-    }
+    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
@@ -106,25 +105,18 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new ChaosArmorRenderer<Arkenplate>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

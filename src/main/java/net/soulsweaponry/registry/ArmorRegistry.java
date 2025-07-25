@@ -1,35 +1,33 @@
 package net.soulsweaponry.registry;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.*;
-import net.soulsweaponry.items.material.ModArmorMaterials;
 
 public class ArmorRegistry {
 
-    public static final Item CHAOS_CROWN = new ChaosCrown(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item CHAOS_HELMET = new ChaosHelmet(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item ARKENPLATE = new Arkenplate(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item WITHERED_CHEST = new Hallowheart(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(ModArmorMaterials.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item CHAOS_ROBES = new ChaosRobes(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static final Item CHAOS_CROWN = new ChaosCrown(MaterialRegistry.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(37)));
+    public static final Item CHAOS_HELMET = new ChaosHelmet(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(55)));
+    public static final Item ARKENPLATE = new Arkenplate(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(55)));
+    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
+    public static final Item WITHERED_CHEST = new Hallowheart(MaterialRegistry.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(55)));
+    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(MaterialRegistry.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
+    public static final Item CHAOS_ROBES = new ChaosRobes(MaterialRegistry.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(37)));
 
-    public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.HELMET, new FabricItemSettings());
-    public static final Item SOUL_INGOT_CHESTPLATE = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
-    public static final Item SOUL_INGOT_LEGGINGS = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
-    public static final Item SOUL_INGOT_BOOTS = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.BOOTS, new FabricItemSettings());
-    public static final Item SOUL_ROBES_HELMET = new SoulRobesArmor(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.HELMET, new FabricItemSettings());
-    public static final Item SOUL_ROBES_CHESTPLATE = new SoulRobesArmor(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
-    public static final Item SOUL_ROBES_LEGGINGS = new SoulRobesArmor(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
-    public static final Item SOUL_ROBES_BOOTS = new SoulRobesArmor(ModArmorMaterials.SOUL_ROBES, ArmorItem.Type.BOOTS, new FabricItemSettings());
-    public static final Item FORLORN_HELMET = new ForlornArmor(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.HELMET, new FabricItemSettings());
-    public static final Item FORLORN_CHESTPLATE = new ForlornArmor(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings());
-    public static final Item FORLORN_LEGGINGS = new ForlornArmor(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.LEGGINGS, new FabricItemSettings());
-    public static final Item FORLORN_BOOTS = new ForlornArmor(ModArmorMaterials.FORLORN_ARMOR, ArmorItem.Type.BOOTS, new FabricItemSettings());
+    public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(34)));
+    public static final Item SOUL_INGOT_CHESTPLATE = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new Item.Settings().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(34)));
+    public static final Item SOUL_INGOT_LEGGINGS = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.LEGGINGS, new Item.Settings().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(34)));
+    public static final Item SOUL_INGOT_BOOTS = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.BOOTS, new Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(34)));
+    public static final Item SOUL_ROBES_HELMET = new SoulRobesArmor(MaterialRegistry.SOUL_ROBES, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(16)));
+    public static final Item SOUL_ROBES_CHESTPLATE = new SoulRobesArmor(MaterialRegistry.SOUL_ROBES, ArmorItem.Type.CHESTPLATE, new Item.Settings().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(16)));
+    public static final Item SOUL_ROBES_LEGGINGS = new SoulRobesArmor(MaterialRegistry.SOUL_ROBES, ArmorItem.Type.LEGGINGS, new Item.Settings().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(16)));
+    public static final Item SOUL_ROBES_BOOTS = new SoulRobesArmor(MaterialRegistry.SOUL_ROBES, ArmorItem.Type.BOOTS, new Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(16)));
+    public static final Item FORLORN_HELMET = new ForlornArmor(MaterialRegistry.FORLORN_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(30)));
+    public static final Item FORLORN_CHESTPLATE = new ForlornArmor(MaterialRegistry.FORLORN_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(30)));
+    public static final Item FORLORN_LEGGINGS = new ForlornArmor(MaterialRegistry.FORLORN_ARMOR, ArmorItem.Type.LEGGINGS, new Item.Settings().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(30)));
+    public static final Item FORLORN_BOOTS = new ForlornArmor(MaterialRegistry.FORLORN_ARMOR, ArmorItem.Type.BOOTS, new Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(30)));
 
     public static void init() {
         ItemRegistry.registerItem(CHAOS_CROWN, "chaos_crown");

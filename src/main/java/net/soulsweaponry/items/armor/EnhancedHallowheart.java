@@ -7,21 +7,18 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animation.*;
 
 public class EnhancedHallowheart extends Hallowheart {
 
-    public EnhancedHallowheart(ArmorMaterial material, Type type, Settings settings) {
+    public EnhancedHallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.UNBURNABLE, TooltipAbilities.EXALT);
     }

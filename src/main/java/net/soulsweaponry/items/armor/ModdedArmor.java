@@ -1,16 +1,18 @@
 package net.soulsweaponry.items.armor;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import net.minecraft.client.item.TooltipContext;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.IConfigDisable;
@@ -19,7 +21,6 @@ import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,17 +30,63 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, I
 
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
-    public ModdedArmor(ArmorMaterial material, Type type, Settings settings) {
+    public ModdedArmor(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
     }
 
+    private final Supplier<AttributeModifiersComponent> attributeModifiers = Suppliers.memoize(() -> { //TODO test this
+        AttributeModifiersComponent vanilla = super.getAttributeModifiers();
+        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanilla);
+        EquipmentSlot eqSlot = this.type.getEquipmentSlot();
+        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(eqSlot);
+
+        // Custom ones
+        float[] bleedArr = this.getBleedBuildupResistances();
+        if (bleedArr != null) {
+            EntityAttributeModifier bleedMod = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, eqSlot, bleedArr);
+            if (bleedMod != null) {
+                builder.add(
+                        AttributeRegistry.BLEED_BUILDUP_RESISTANCE,
+                        bleedMod,
+                        slot
+                );
+            }
+        }
+
+        float[] bleedDamage = this.getBleedDamageResistances();
+        if (bleedDamage != null) {
+            EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, eqSlot, bleedDamage);
+            if (attr != null) {
+                builder.add(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, attr, slot);
+            }
+        }
+
+        float[] postureBuildup = this.getPostureBuildupResistances();
+        if (postureBuildup != null) {
+            EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, eqSlot, postureBuildup);
+            if (attr != null) {
+                builder.add(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, attr, slot);
+            }
+        }
+
+        float[] basePostureIncrease = this.getBasePostureIncrease();
+        if (basePostureIncrease != null) {
+            EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE, eqSlot, basePostureIncrease);
+            if (attr != null) {
+                builder.add(AttributeRegistry.BASE_POSTURE_INCREASE, attr, slot);
+            }
+        }
+
+        return builder.build();
+    });
+
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, world, tooltip, context);
-        super.appendTooltip(stack, world, tooltip, context);
+        this.appendTooltipAbilities(stack, context, tooltip, type);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     @Override
@@ -65,52 +112,13 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, I
         return new Text[0];
     }
 
-    @Override
-    public abstract boolean isFireproof();
+    //public abstract boolean isFireproof(); TODO was removed, i guess i gotta manually put in .isfireproof() in the creation of the item now
 
     public abstract boolean isSlotActive(PlayerEntity player, EquipmentSlot slot);
 
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> vanilla = super.getAttributeModifiers(slot);
-        if (slot == this.type.getEquipmentSlot()) {
-            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.putAll(vanilla);
-
-            float[] bleedBuildup = this.getBleedBuildupResistances();
-            if (bleedBuildup != null) {
-                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, slot, bleedBuildup);
-                if (attr != null) {
-                    builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, attr);
-                }
-            }
-
-            float[] bleedDamage = this.getBleedDamageResistances();
-            if (bleedDamage != null) {
-                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, slot, bleedDamage);
-                if (attr != null) {
-                    builder.put(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, attr);
-                }
-            }
-
-            float[] postureBuildup = this.getPostureBuildupResistances();
-            if (postureBuildup != null) {
-                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, slot, postureBuildup);
-                if (attr != null) {
-                    builder.put(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, attr);
-                }
-            }
-
-            float[] basePostureIncrease = this.getBasePostureIncrease();
-            if (basePostureIncrease != null) {
-                EntityAttributeModifier attr = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE, slot, basePostureIncrease);
-                if (attr != null) {
-                    builder.put(AttributeRegistry.BASE_POSTURE_INCREASE, attr);
-                }
-            }
-            return builder.build();
-        }
-        return vanilla;
+    public AttributeModifiersComponent getAttributeModifiers() {
+        return this.attributeModifiers.get();
     }
 
     /**

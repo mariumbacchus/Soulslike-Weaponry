@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,33 +25,31 @@ import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ChaosRobes extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
     private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
     private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
 
-    public ChaosRobes(ArmorMaterial material, Type type, Settings settings) {
+    public ChaosRobes(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
         this.addTooltipAbility(TooltipAbilities.CORRUPT_GROUND);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT);
 
-        this.turnableGrass.put(Blocks.GRASS, BlockRegistry.WITHERED_GRASS);
+        this.turnableGrass.put(Blocks.SHORT_GRASS, BlockRegistry.WITHERED_GRASS);
         this.turnableGrass.put(Blocks.FERN, BlockRegistry.WITHERED_FERN);
         this.turnableGrass.put(Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH);
 
@@ -128,7 +127,7 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_chaos_robes;
-    }
+    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
@@ -152,25 +151,18 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
                 if (this.renderer == null) {
                     this.renderer = new ChaosSetRenderer<ChaosRobes>();
                 }
-                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
-
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

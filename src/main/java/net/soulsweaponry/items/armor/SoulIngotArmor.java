@@ -7,19 +7,20 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 public class SoulIngotArmor extends SetBonusArmor {
 
-    public SoulIngotArmor(ArmorMaterial material, Type slot, Settings settings) {
+    public SoulIngotArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_soul_ingot_set;
-    }
+    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {

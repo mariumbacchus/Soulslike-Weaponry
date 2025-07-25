@@ -2,20 +2,19 @@ package net.soulsweaponry.items;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +38,7 @@ public interface ITooltipInfo {
      * Adds all tooltip abilities listed in {@link #getTooltipAbilities()} and {@link #getAdditionalTooltips()} to the
      * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
      */
-    default void appendTooltipAbilities(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    default void appendTooltipAbilities(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.getAdditionalTooltips().length > 0 || (this.getTooltipAbilities() != null && !this.getTooltipAbilities().isEmpty())) {
             if (shouldShowInfo()) {
                 for (TooltipAbilities ability : this.getTooltipAbilities()) {
