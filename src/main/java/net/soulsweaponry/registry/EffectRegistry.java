@@ -1,5 +1,6 @@
 package net.soulsweaponry.registry;
 
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
@@ -9,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
-import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -49,11 +49,11 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
     public static final RegistryEntry<StatusEffect> STORMVEIL = registerEffect(new Stormveil(), "stormveil");
 
-    public static final Potion WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
-    public static final Potion STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
-    public static final Potion LONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000)), "long_warding");
-    public static final Potion TAINTED_AMBROSIA = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0)), "tainted_ambrosia");
-    public static final Potion CHUNGUS_TONIC_POTION = registerPotion(
+    public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
+    public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
+    public static final RegistryEntry<Potion> LONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000)), "long_warding");
+    public static final RegistryEntry<Potion> TAINTED_AMBROSIA = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0)), "tainted_ambrosia");
+    public static final RegistryEntry<Potion> CHUNGUS_TONIC_POTION = registerPotion(
             new Potion(
                         new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 1000, 0),
                         new StatusEffectInstance(StatusEffects.HASTE, 1000, 2),
@@ -63,21 +63,22 @@ public class EffectRegistry {
         );
 
     public static void init() {
-        BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.asItem(), WARDING);
-        BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), TAINTED_AMBROSIA);
-        BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.GLOWSTONE_DUST, STRONG_WARDING);
-        BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING);
-
-        BrewingRecipeRegistry.registerItemRecipe(Items.POTION, ItemRegistry.CHUNGUS_EMERALD, ItemRegistry.CHUNGUS_TONIC_POTION);
-        BrewingRecipeRegistry.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
+        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
+            builder.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.asItem(), WARDING);
+            builder.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), TAINTED_AMBROSIA);
+            builder.registerPotionRecipe(WARDING, Items.GLOWSTONE_DUST, STRONG_WARDING);
+            builder.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING);
+            builder.registerItemRecipe(Items.POTION, ItemRegistry.CHUNGUS_EMERALD, ItemRegistry.CHUNGUS_TONIC_POTION);
+            builder.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
+        });
     }
 
     public static RegistryEntry<StatusEffect> registerEffect(StatusEffect effect, String name) {
 		return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(SoulsWeaponry.ModId, name), effect);
 	}
 
-    private static Potion registerPotion(Potion potion, String name) {
-        return Registry.register(Registries.POTION, name, potion);
+    private static RegistryEntry<Potion> registerPotion(Potion potion, String name) {
+        return Registry.registerReference(Registries.POTION, Identifier.of(SoulsWeaponry.ModId, name), potion);
     }
 
     static class DefaultStatusEffect extends StatusEffect {
