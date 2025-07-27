@@ -31,11 +31,13 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
+        this.setAllowArrowSticking(false);
     }
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
         super(type, owner, world);
         this.ignoreCameraFrustum = true;
+        this.setAllowArrowSticking(false);
         this.setItemStack(stack.copy());
     }
 

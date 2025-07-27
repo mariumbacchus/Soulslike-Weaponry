@@ -2,7 +2,6 @@ package net.soulsweaponry;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -27,7 +26,6 @@ import net.soulsweaponry.registry.*;
 import net.soulsweaponry.world.gen.WorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.bernie.geckolib.GeckoLib;
 
 import java.util.ArrayList;
 
@@ -45,16 +43,13 @@ public class SoulsWeaponry implements ModInitializer {
         MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
         LOGGER.info("Config initialized!");
-        GeckoLib.initialize();
-        LOGGER.info("Successfully initialized Geckolib!");
+        //TODO i guess they removed geckolib.initialize, we'll see if things break in the future or not
         AttributeRegistry.init();
         BlockRegistry.init();
-        ComponentRegistry.init();
         ItemRegistry.init();
         FluidRegistry.init();
         FluidRegistry.registerCauldronBehavior();
         EffectRegistry.init();
-        EnchantRegistry.init();
         EntityRegistry.init();
         EventRegistry.init();
         ParticleRegistry.init();
@@ -67,31 +62,31 @@ public class SoulsWeaponry implements ModInitializer {
         PacketRegistry.registerC2SPackets();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in 2D model resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_2d"), modContainer, Text.literal("Legacy 2D Models"), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "legacy_2d"), modContainer, Text.literal("Legacy 2D Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Legacy 2D Models resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "legacy_3d"), modContainer, Text.literal("Legacy 3D Models"), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "legacy_3d"), modContainer, Text.literal("Legacy 3D Models"), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Legacy 3D Models resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "fresh_animations_compat"), modContainer, Text.literal("Fresh Animations Compat."), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "fresh_animations_compat"), modContainer, Text.literal("Fresh Animations Compat."), ResourcePackActivationType.NORMAL);
             LOGGER.info("Successfully registered built-in Fresh Animations Compat. resourcepack!");
         });
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "enhanced_gow"), modContainer, Text.literal("Szombie's 3D GOW Weapons"), ResourcePackActivationType.DEFAULT_ENABLED);
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "enhanced_gow"), modContainer, Text.literal("Szombie's 3D GOW Weapons"), ResourcePackActivationType.DEFAULT_ENABLED);
             LOGGER.info("Successfully registered built-in Szombie's Enhanced 3D GOW Weapons resourcepack!");
         });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.RARE)), "test_item");
+            ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
         }
 
-        Registry.register(Registries.ITEM_GROUP, new Identifier(ModId, "general"),
+        Registry.register(Registries.ITEM_GROUP, Identifier.of(ModId, "general"),
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))
                         .icon(() -> new ItemStack(ItemRegistry.MOONSTONE)).entries(((displayContext, entries) -> {
                             for (Item item : ITEM_GROUP_LIST) {

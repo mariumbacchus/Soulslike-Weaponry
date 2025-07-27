@@ -15,6 +15,7 @@
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "ModelInvoker",
+    "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
     "PotionEntityMixin",
     "PotionUtilMixin",

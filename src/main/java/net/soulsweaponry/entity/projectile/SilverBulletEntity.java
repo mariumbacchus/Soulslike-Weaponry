@@ -34,17 +34,17 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity, IPostureLossProjectile {
+public class SilverBulletEntity extends ModPersistentProjectile implements GeoEntity, IPostureLossProjectile {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int postureLoss;
     private boolean isEthereal;
     private float explosionPower;
@@ -61,14 +61,17 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
+        this.setAllowArrowSticking(false);//TODO see if this works
     }
 
-    public SilverBulletEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, owner, world, stack);
+    public SilverBulletEntity(World world, LivingEntity owner, ItemStack bullet) {
+        super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, owner, world, bullet, null);
+        this.setAllowArrowSticking(false);
     }
 
-    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner, ItemStack stack) {
-        super(entityType, owner, world, stack);
+    public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner, ItemStack bullet) {
+        super(entityType, owner, world, bullet, null);
+        this.setAllowArrowSticking(false);
     }
 
     @Override
@@ -245,7 +248,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             if (!EntityPosture.isPostureDisabled(target) && posture >= EntityPosture.getMaxPostureLoss(target)) {
                 this.onPostureBreak(target);
             }
-            if (target.isUndead()) {
+            if (target.hasInvertedHealingAndHarm()) {
                 this.setDamage(this.getDamage() + (ConfigConstructor.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
             }
             if (this.getOwner() instanceof LivingEntity owner) {
@@ -366,11 +369,11 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        dataTracker.startTracking(ECHO_COPY, false);
-        dataTracker.startTracking(ECHO_TIMER, 0);
-        dataTracker.startTracking(RICOCHET_BOUNCES, 0);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ECHO_COPY, false);
+        builder.add(ECHO_TIMER, 0);
+        builder.add(RICOCHET_BOUNCES, 0);
     }
 
     @Override
@@ -383,7 +386,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
     }
 
     @Override
-    protected ItemStack asItemStack() {
+    protected ItemStack getDefaultItemStack() {
         return ItemRegistry.SILVER_BULLET.getDefaultStack();
     }
 

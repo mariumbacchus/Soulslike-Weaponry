@@ -26,13 +26,14 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 
-public class NightSkull extends NonArrowProjectile implements GeoEntity {
+public class NightSkull extends ModPersistentProjectile implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public NightSkull(EntityType<? extends NightSkull> entityType, World world) {
         super(entityType, world);
         this.setDamage(10D);
+        this.setAllowArrowSticking(false);
     }
 
     @Override

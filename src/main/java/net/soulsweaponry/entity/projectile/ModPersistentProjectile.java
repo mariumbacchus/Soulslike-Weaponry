@@ -1,9 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
-import net.minecraft.command.argument.ParticleEffectArgumentType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
@@ -15,63 +12,65 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryOps;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
  * Parent class containing common variables & fields that may be used by the child, such as
- * particles, stack, bounding box size, max age, etc.
+ * particles, bounding box size, max age, etc.
  */
 public abstract class ModPersistentProjectile extends PersistentProjectileEntity {
 
     // NB: Variables that are used client side (i.e. particle types, particle count, etc.) NEED to be data tracked! maxAge is used server side only so that's fine
     private static final Logger LOGGER = LogUtils.getLogger();
-    private ItemStack stack;
     private int maxAge;
+    private boolean allowArrowSticking;
     private static final TrackedData<Float> WIDTH = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> HEIGHT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Integer> DESPAWN_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> TRAIL_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> AREA_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Byte> TRAIL_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.BYTE);
+    private static final TrackedData<Byte> AREA_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Float> DESPAWN_PARTICLE_EXPANSION = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<ParticleEffect> DESPAWN_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> AREA_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
 
-    public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
-        super(type, owner, world);
-        this.setBoundingBoxWidth(type.getDimensions().width);
-        this.setBoundingBoxHeight(type.getDimensions().height);
-    }
-
     public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.setBoundingBoxWidth(entityType.getDimensions().width);
-        this.setBoundingBoxHeight(entityType.getDimensions().height);
+        this.setBoundingBoxWidth(entityType.getDimensions().width());
+        this.setBoundingBoxHeight(entityType.getDimensions().height());
     }
 
-    public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
-        super(type, x, y, z, world);
-        this.setBoundingBoxWidth(type.getDimensions().width);
-        this.setBoundingBoxHeight(type.getDimensions().height);
+    public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack projectileStack, @Nullable ItemStack weapon) {
+        super(type, owner, world, projectileStack, weapon);
+        this.setBoundingBoxWidth(type.getDimensions().width());
+        this.setBoundingBoxHeight(type.getDimensions().height());
+    }
+
+    public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world, ItemStack projectileStack, @Nullable ItemStack weapon) {
+        super(type, x, y, z, world, projectileStack, weapon);
+        this.setBoundingBoxWidth(type.getDimensions().width());
+        this.setBoundingBoxHeight(type.getDimensions().height());
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(WIDTH, 1.85f);
-        this.dataTracker.startTracking(HEIGHT, 1.85f);
-        this.dataTracker.startTracking(DESPAWN_PARTICLE_COUNT, 75);
-        this.dataTracker.startTracking(TRAIL_PARTICLE_COUNT, 4);
-        this.dataTracker.startTracking(AREA_PARTICLE_COUNT, 0);
-        this.dataTracker.startTracking(DESPAWN_PARTICLE_EXPANSION, 0.125f);
-        this.dataTracker.startTracking(DESPAWN_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME);
-        this.dataTracker.startTracking(TRAIL_PARTICLE, ParticleTypes.GLOW);
-        this.dataTracker.startTracking(AREA_PARTICLE, ParticleRegistry.NIGHTFALL_PARTICLE);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(WIDTH, 1.85f);
+        builder.add(HEIGHT, 1.85f);
+        builder.add(DESPAWN_PARTICLE_COUNT, 75);
+        builder.add(TRAIL_PARTICLE_COUNT, (byte) 4);
+        builder.add(AREA_PARTICLE_COUNT, (byte) 0);
+        builder.add(DESPAWN_PARTICLE_EXPANSION, 0.125f);
+        builder.add(DESPAWN_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME);
+        builder.add(TRAIL_PARTICLE, ParticleTypes.GLOW);
+        builder.add(AREA_PARTICLE, ParticleRegistry.NIGHTFALL_PARTICLE);
     }
 
     @Override
@@ -99,9 +98,6 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
-            this.stack = ItemStack.fromNbt(nbt.getCompound("Stack"));
-        }
         if (nbt.contains("BoundingBoxWidth")) {
             this.setBoundingBoxWidth(nbt.getFloat("BoundingBoxWidth"));
         }
@@ -111,32 +107,31 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         if (nbt.contains("MaxAge")) {
             this.maxAge = nbt.getInt("MaxAge");
         }
-        if (nbt.contains("AreaParticle", 8)) {
-            try {
-                this.setAreaParticle(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("AreaParticle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
-            } catch (CommandSyntaxException var5) {
-                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("AreaParticle"), var5);
-            }
+
+        RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+        if (nbt.contains("AreaParticle", NbtElement.COMPOUND_TYPE)) {
+            ParticleTypes.TYPE_CODEC
+                    .parse(registryOps, nbt.get("AreaParticle"))
+                    .resultOrPartial(string -> LOGGER.warn("Failed to parse soulsweapons projectile AreaParticle options: '{}'", string))
+                    .ifPresent(this::setAreaParticle);
         }
-        if (nbt.contains("TrailParticle", 8)) {
-            try {
-                this.setTrailParticle(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("TrailParticle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
-            } catch (CommandSyntaxException var5) {
-                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("TrailParticle"), var5);
-            }
+        if (nbt.contains("TrailParticle", NbtElement.COMPOUND_TYPE)) {
+            ParticleTypes.TYPE_CODEC
+                    .parse(registryOps, nbt.get("TrailParticle"))
+                    .resultOrPartial(string -> LOGGER.warn("Failed to parse soulsweapons projectile TrailParticle options: '{}'", string))
+                    .ifPresent(this::setTrailParticle);
         }
-        if (nbt.contains("DespawnParticle", 8)) {
-            try {
-                this.setDespawnParticle(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("DespawnParticle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
-            } catch (CommandSyntaxException var5) {
-                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("DespawnParticle"), var5);
-            }
+        if (nbt.contains("DespawnParticle", NbtElement.COMPOUND_TYPE)) {
+            ParticleTypes.TYPE_CODEC
+                    .parse(registryOps, nbt.get("DespawnParticle"))
+                    .resultOrPartial(string -> LOGGER.warn("Failed to parse soulsweapons projectile DespawnParticle options: '{}'", string))
+                    .ifPresent(this::setDespawnParticle);
         }
         if (nbt.contains("AreaParticleCount")) {
-            this.setAreaParticleCount(nbt.getInt("AreaParticleCount"));
+            this.setAreaParticleCount(nbt.getByte("AreaParticleCount"));
         }
         if (nbt.contains("TrailParticleCount")) {
-            this.setTrailParticleCount(nbt.getInt("TrailParticleCount"));
+            this.setTrailParticleCount(nbt.getByte("TrailParticleCount"));
         }
         if (nbt.contains("DespawnParticleCount")) {
             this.setDespawnParticleCount(nbt.getInt("DespawnParticleCount"));
@@ -149,28 +144,17 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        if (this.stack != null) {
-            nbt.put("Stack", this.stack.writeNbt(new NbtCompound()));
-        }
         nbt.putFloat("BoundingBoxWidth", this.getBoundingBoxWidth());
         nbt.putFloat("BoundingBoxHeight", this.getBoundingBoxHeight());
         nbt.putInt("MaxAge", this.maxAge);
-        nbt.putString("AreaParticle", this.getAreaParticle().asString());
-        nbt.putString("TrailParticle", this.getTrailParticle().asString());
-        nbt.putString("DespawnParticle", this.getDespawnParticle().asString());
-        nbt.putInt("AreaParticleCount", this.getAreaParticleCount());
-        nbt.putInt("TrailParticleCount", this.getTrailParticleCount());
+        RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+        nbt.put("AreaParticle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getAreaParticle()).getOrThrow());
+        nbt.put("TrailParticle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getTrailParticle()).getOrThrow());
+        nbt.put("DespawnParticle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getDespawnParticle()).getOrThrow());
+        nbt.putByte("AreaParticleCount", this.getAreaParticleCount());
+        nbt.putByte("TrailParticleCount", this.getTrailParticleCount());
         nbt.putInt("DespawnParticleCount", this.getDespawnParticleCount());
         nbt.putFloat("DespawnParticleExpansion", this.getDespawnParticleExpansion());
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return this.stack;
-    }
-
-    public void setItemStack(ItemStack stackShotFrom) {
-        this.stack = stackShotFrom;
     }
 
     public void setRadius(float radius) {
@@ -206,11 +190,14 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         this.maxAge = maxAge;
     }
 
-    public int getAreaParticleCount() {
+    public byte getAreaParticleCount() {
         return this.dataTracker.get(AREA_PARTICLE_COUNT);
     }
 
-    public void setAreaParticleCount(int areaParticleCount) {
+    /**
+     * @param areaParticleCount max 127 particles
+     */
+    public void setAreaParticleCount(byte areaParticleCount) {
         this.dataTracker.set(AREA_PARTICLE_COUNT, areaParticleCount);
     }
 
@@ -228,11 +215,14 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         this.dataTracker.set(AREA_PARTICLE, areaParticle);
     }
 
-    public int getTrailParticleCount() {
+    public byte getTrailParticleCount() {
         return this.dataTracker.get(TRAIL_PARTICLE_COUNT);
     }
 
-    public void setTrailParticleCount(int trailParticleCount) {
+    /**
+     * @param trailParticleCount max 127 particles
+     */
+    public void setTrailParticleCount(byte trailParticleCount) {
         this.dataTracker.set(TRAIL_PARTICLE_COUNT, trailParticleCount);
     }
 
@@ -284,5 +274,16 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
      */
     public void setDespawnParticleExpansion(float despawnParticleExpansion) {
         this.dataTracker.set(DESPAWN_PARTICLE_EXPANSION, despawnParticleExpansion);
+    }
+
+    /**
+     * @return Whether arrows should be visually stuck to the player when this projectile lands
+     */
+    public boolean shouldAllowArrowSticking() {
+        return this.allowArrowSticking;
+    }
+
+    public void setAllowArrowSticking(boolean allowArrowSticking) {
+        this.allowArrowSticking = allowArrowSticking;
     }
 }

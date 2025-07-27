@@ -1,6 +1,7 @@
 package net.soulsweaponry.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
@@ -39,6 +40,7 @@ public class ModTags {
         public static final TagKey<Item> IRON_INGOTS = createCommonTag("iron_ingots");
         public static final TagKey<Item> SHIELDS = createCommonTag("shields");
         public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
+        public static final TagKey<Item> GUN_ENCHANTABLE = createTag("enchantable/gun");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, Identifier.of(SoulsWeaponry.ModId, name));
@@ -74,6 +76,14 @@ public class ModTags {
 
         private static TagKey<StatusEffect> createCommonTag(String id) {
             return TagKey.of(RegistryKeys.STATUS_EFFECT, Identifier.of("c", id));
+        }
+    }
+
+    public static class Enchantments {
+        public static final TagKey<Enchantment> BULLET_COLLISION_EXCLUSIVE_SET = createTag("exclusive_set/bullet_collision");
+
+        private static TagKey<Enchantment> createTag(String id) {
+            return TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, id));
         }
     }
 }

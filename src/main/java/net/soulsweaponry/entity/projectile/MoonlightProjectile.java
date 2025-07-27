@@ -30,7 +30,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.Objects;
 
-public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity {
+public class MoonlightProjectile extends ModPersistentProjectile implements GeoEntity {
 
     private static final TrackedData<Integer> MODEL_ROTATION = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> EFFECT_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
@@ -41,16 +41,19 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
         this.quickInit();
+        this.setAllowArrowSticking(false);
     }
     
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner, ItemStack stack) {
         super(type, owner, world, stack);
         this.quickInit();
+        this.setAllowArrowSticking(false);
     }
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
         super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack());
         this.quickInit();
+        this.setAllowArrowSticking(false);
     }
 
     private void quickInit() {

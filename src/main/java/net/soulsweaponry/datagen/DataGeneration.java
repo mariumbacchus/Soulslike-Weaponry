@@ -5,9 +5,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
+import net.soulsweaponry.datagen.enchantment.EnchantmentProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
+import net.soulsweaponry.datagen.tags.EnchantmentTagsProvider;
 import net.soulsweaponry.datagen.tags.EntityTagsProvider;
+import net.soulsweaponry.datagen.tags.ItemTagsProvider;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
 import net.soulsweaponry.world.feature.ConfiguredFeatures;
 import net.soulsweaponry.world.feature.PlacedFeatures;
@@ -23,10 +26,13 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
         //fabricDataGenerator.createPack().addProvider(ModelProvider::new);
+        pack.addProvider(EnchantmentProvider::new);
         pack.addProvider(BossLootTableProvider::new);
         pack.addProvider(WeaponRecipeProvider::new);
         pack.addProvider(ModWorldGenerator::new);
+        pack.addProvider(EnchantmentTagsProvider::new);
         pack.addProvider(EntityTagsProvider::new);
+        pack.addProvider(ItemTagsProvider::new);
         pack.addProvider(AdvancementsProvider::new);
     }
 
