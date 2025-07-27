@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -57,8 +58,10 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
-        int sharpness = MathHelper.floor(EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
-        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, sharpness));
+        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
+            int sharpness = MathHelper.floor(EnchantmentHelper.getDamage(serverWorld, stack, target, attacker.getDamageSources().mobAttack(attacker), 0));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, sharpness));
+        }
         return super.postHit(stack, target, attacker);
     }
 
@@ -71,7 +74,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
                 stack.damage(3, playerEntity, LivingEntity.getSlotForHand(user.getActiveHand()));
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
                 entity.saveOnPlayer(playerEntity);
-                float speed = (float)EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/5;
+                float speed = (float)WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) / 5;
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
@@ -83,11 +86,13 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
         }
     }
 
+    @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.SPEAR;
     }
 
-    public int getMaxUseTime(ItemStack stack) {
+    @Override
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 72000;
     }
 

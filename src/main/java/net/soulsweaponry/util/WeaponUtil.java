@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +14,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
@@ -26,20 +28,41 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class WeaponUtil {
-    
-    public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
 
     /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
     public static int getEnchantDamageBonus(ItemStack stack) {
-        for (Enchantment ench : DAMAGE_ENCHANTS) {
-            if (EnchantmentHelper.getLevel(ench, stack) > 0) {
-                return EnchantmentHelper.getLevel(ench, stack);
+        return getHighestEnchantInTag(stack, EnchantmentTags.DAMAGE_EXCLUSIVE_SET);
+    }
+
+    /**
+     * Get the highest level out of the enchants the stack has that are within the given tag.
+     * For example: searching for enchants within {@code EnchantmentTags.DAMAGE_EXCLUSIVE_SET}
+     * will return the highest level of sharpness, smite or whatever damage enchant the item
+     * has.
+     */
+    public static int getHighestEnchantInTag(ItemStack stack, TagKey<Enchantment> tag) {
+        return EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries().stream()
+                .filter(e -> e.getKey().isIn(tag))
+                .mapToInt(Map.Entry::getValue)
+                .max()
+                .orElse(0);
+    }
+
+    /**
+     * TODO test
+     * Gets the level of a specific enchant based on the RegistryKey for simplicity
+     */
+    public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
+        for (Map.Entry<RegistryEntry<Enchantment>, Integer> e : EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries()) {
+            if (e.getKey().getKey().filter(key -> key.equals(enchantKey)).isPresent()) {
+                return e.getValue();
             }
         }
         return 0;
