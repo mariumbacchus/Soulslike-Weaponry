@@ -7,12 +7,10 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.soulsweaponry.util.CustomDamageSource;
 
-public class HallowedDragonMist extends StatusEffect{
+public class HallowedDragonMist extends StatusEffect {
+
     public HallowedDragonMist() {
-        super(
-            StatusEffectCategory.NEUTRAL,
-            0xa915d6
-        );
+        super(StatusEffectCategory.NEUTRAL, 0xa915d6);
     }
 
     @Override
@@ -26,7 +24,7 @@ public class HallowedDragonMist extends StatusEffect{
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity || (entity instanceof Tameable tamed && tamed.getOwner() instanceof PlayerEntity)) {
             if (entity.getHealth() < entity.getMaxHealth()) {
                 entity.heal(amplifier + 1);
@@ -34,5 +32,6 @@ public class HallowedDragonMist extends StatusEffect{
         } else {
             entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.DRAGON_MIST), 2.0F + (float) amplifier);
         }
+        return true;
     }
 }

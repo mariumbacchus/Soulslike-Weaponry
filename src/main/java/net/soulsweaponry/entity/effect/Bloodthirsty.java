@@ -16,7 +16,8 @@ public class Bloodthirsty extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         entity.damage(entity.getWorld().getDamageSources().wither(), 1f);
+        return true;
     }
 }

@@ -23,7 +23,7 @@ public class Fear extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (!(entity instanceof BossEntity) && entity instanceof MobEntity target) {
             if (target.getTarget() != null) {
                 target.setTarget(null);
@@ -31,6 +31,8 @@ public class Fear extends StatusEffect {
             double x = target.getX() + target.getRandom().nextBetween(-25, 25);
             double z = target.getZ() + target.getRandom().nextBetween(-25, 25);
             target.getNavigation().startMovingTo(x, target.getY(), z, 1.1f);
-        }      
+            return true;
+        }
+        return false;
     }
 }

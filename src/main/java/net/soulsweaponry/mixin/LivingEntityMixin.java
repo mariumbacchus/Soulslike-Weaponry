@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -68,16 +67,6 @@ public class LivingEntityMixin {
     @Inject(method = "damage", at = @At("TAIL"))
     public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
-        // Remove stacks of Blade Dance when taking damage
-        if (info.getReturnValue() && entity.hasStatusEffect(EffectRegistry.BLADE_DANCE)) {
-            int amp = entity.getStatusEffect(EffectRegistry.BLADE_DANCE).getAmplifier();
-            int duration = entity.getStatusEffect(EffectRegistry.BLADE_DANCE).getDuration();
-            entity.removeStatusEffect(EffectRegistry.BLADE_DANCE);
-            amp--;
-            if (amp >= 0) {
-                entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, duration, amp));
-            }
-        }
         if (source.getAttacker() instanceof LivingEntity attacker) {
             // Do fire-thorns when wielding Supernova
             for (Hand hand : Hand.values()) {

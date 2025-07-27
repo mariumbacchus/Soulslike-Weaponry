@@ -22,10 +22,11 @@ public class Freezing extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         int ticks = entity.getFrozenTicks();
-        if (entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) return;
-        if (entity.hasStatusEffect(EffectRegistry.FROST_MOON)) return;
+        if (entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entity.hasStatusEffect(EffectRegistry.FROST_MOON)) {
+            return false;
+        }
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
         if (!entity.getWorld().isClient) {
@@ -41,5 +42,6 @@ public class Freezing extends StatusEffect {
                 LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), amplifier);
             }
         }
+        return true;
     }
 }

@@ -22,12 +22,13 @@ public class Stormveil extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (entity.getWorld().isClient) {
             for (int i = 0; i < 40; i++) {
                 entity.getWorld().addParticle(ParticleRegistry.SOUL_SPARK, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }
         }
         entity.playSound(SoundRegistry.STORMVEIL_AMBIENT, 1f, 1f);
+        return true;
     }
 }

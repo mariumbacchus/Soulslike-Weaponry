@@ -22,7 +22,8 @@ public class Bleed extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         BleedData.addBleed(entity, (int) (ConfigConstructor.bleed_effect_base_increase + (amplifier + 1) * ConfigConstructor.bleed_effect_increase_per_amp));
+        return true;
     }
 }

@@ -11,9 +11,10 @@ public class FrostMoon extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         entity.setInPowderSnow(false);
         entity.setFrozenTicks(0);
+        return true;
     }
 
     @Override

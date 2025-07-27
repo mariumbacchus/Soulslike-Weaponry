@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.ModTags;
 
@@ -25,7 +25,7 @@ public class LifeLeach extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         LivingEntity target = entity.getAttacking();
         if (entity.getWorld().isClient) {
             for (int i = 0; i < 30; i++) {
@@ -34,12 +34,13 @@ public class LifeLeach extends StatusEffect {
         }
         if (target != null) {
             for (StatusEffectInstance instance : target.getStatusEffects()) {
-                StatusEffect effect = instance.getEffectType();
-                if (Registries.STATUS_EFFECT.getEntry(effect).isIn(ModTags.Effects.DAMAGE_OVER_TIME)) {
+                RegistryEntry<StatusEffect> effect = instance.getEffectType();
+                if (effect.isIn(ModTags.Effects.DAMAGE_OVER_TIME)) {
                     entity.heal(1);
                     break;
                 }
             }
         }
+        return true;
     }
 }

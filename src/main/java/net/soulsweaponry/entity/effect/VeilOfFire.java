@@ -25,7 +25,7 @@ public class VeilOfFire extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         for (LivingEntity target : entity.getWorld().getNonSpectatingEntities(LivingEntity.class, entity.getBoundingBox().expand(1.5D))) {
             target.damage(entity.getDamageSources().inFire(), 2f + amplifier);
             target.setOnFireFor(2 + amplifier);
@@ -44,5 +44,6 @@ public class VeilOfFire extends StatusEffect {
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 60, 0));
             entity.setOnFireFor(3);
         }
+        return true;
     }
 }
