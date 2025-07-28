@@ -2,6 +2,7 @@ package net.soulsweaponry.datagen.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -38,5 +39,9 @@ public class EnchantmentTagsProvider extends FabricTagProvider.EnchantmentTagPro
         this.getOrCreateTagBuilder(ModTags.Enchantments.BULLET_COLLISION_EXCLUSIVE_SET)
                 .add(EnchantRegistry.ETHEREAL)
                 .add(EnchantRegistry.RICOCHET);
+
+        this.getOrCreateTagBuilder(ModTags.Enchantments.APPLY_FIRE)
+                .add(Enchantments.FLAME)
+                .add(Enchantments.FIRE_ASPECT);
     }
 }

@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.projectile.arrow;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -32,7 +31,7 @@ public class SilverArrow extends ModArrow implements IPostureLossProjectile {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (entityHitResult.getEntity() instanceof LivingEntity target) {
             this.applyPostureLoss(target);
-            if (target.isUndead()) {
+            if (target.hasInvertedHealingAndHarm()) {
                 this.setDamage(this.getDamage() + (this.getBonusUndeadDamage() / this.getVelocity().length()));
             }
         }
@@ -76,7 +75,7 @@ public class SilverArrow extends ModArrow implements IPostureLossProjectile {
     }
 
     @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+    public boolean canHaveArrowEffects() {
         return ConfigConstructor.simons_bowblade_projectile_can_apply_arrow_effects;
     }
 }

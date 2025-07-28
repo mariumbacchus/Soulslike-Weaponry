@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -14,15 +13,17 @@ import net.soulsweaponry.items.IPostureLossItem;
 import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
 public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureLossItem {
 
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
+        super(settings, new RangedConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
+                ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity),
+                repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
-        this.configure(new RangedConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks, ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity));
     }
 
     @Override
@@ -43,7 +44,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         SilverArrow arrow = new SilverArrow(shooter, world);
-        arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, bowStack));
+        arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));
         arrow.setPostureLoss(this.getPostureLoss());
         return arrow;
     }

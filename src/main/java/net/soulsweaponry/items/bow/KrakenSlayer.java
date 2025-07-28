@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -13,15 +12,17 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
 public class KrakenSlayer extends ModdedBow {
 
     public KrakenSlayer(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
+        super(settings, new RangedConfig((int) ConfigConstructor.kraken_slayer_pull_time_ticks,
+                ConfigConstructor.kraken_slayer_damage, ConfigConstructor.kraken_slayer_max_velocity),
+                repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
-        this.configure(new RangedConfig((int) ConfigConstructor.kraken_slayer_pull_time_ticks, ConfigConstructor.kraken_slayer_damage, ConfigConstructor.kraken_slayer_max_velocity));
     }
 
     @Override
@@ -33,7 +34,7 @@ public class KrakenSlayer extends ModdedBow {
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots") && bowStack.getNbt().getInt("firedShots") >= 2) {
             TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
-            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, bowStack));
+            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + WeaponUtil.getLevel(bowStack, Enchantments.POWER));
             bowStack.getNbt().putInt("firedShots", 0);
             return projectile;
         } else {

@@ -18,9 +18,10 @@ import java.util.function.Supplier;
 public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     public KrakenSlayerCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
+        super(settings, new RangedConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
+                ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_max_velocity),
+                repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
-        this.configure(new RangedConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks, ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_max_velocity));
     }
 
     @Override

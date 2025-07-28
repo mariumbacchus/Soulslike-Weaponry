@@ -2,7 +2,6 @@ package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,18 +16,21 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
 import net.soulsweaponry.entity.projectile.noclip.ArrowStormEntity;
 import net.soulsweaponry.items.ModdedBow;
+import net.soulsweaponry.mixin.PersistentProjectileEntityInvoker;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
 public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
+        super(settings, new RangedConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks,
+                        ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity),
+                repairIngredientSupplier);
         this.addTooltipAbility( TooltipAbilities.SLOW_PULL, TooltipAbilities.MOONLIGHT_ARROW, TooltipAbilities.ARROW_STORM);
-        this.configure(new RangedConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks, ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity));
     }
 
     @Override
@@ -39,7 +41,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         MoonlightArrow projectile = new MoonlightArrow(world, shooter);
-        projectile.setPierceLevel((byte) 4);
+        ((PersistentProjectileEntityInvoker)projectile).invokeSetPierceLevel((byte) 4);
         projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
         return projectile;
     }
@@ -52,13 +54,13 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setPos(player.getX(), player.getY() + 4.5F, player.getZ());
             entity.setVelocity(player, 0, player.getYaw(), 0.0F, 1f, 1.0F);
             entity.setOwner(player);
-            double power = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+            double power = WeaponUtil.getLevel(stack, Enchantments.POWER);
             entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage / 2.6f + power * 1.25f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
             this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
                     ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - this.getReduceCooldownEnchantLevel(stack) * 30));
-            stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
+            stack.damage(3, player, LivingEntity.getSlotForHand(player.getActiveHand()));
         }
     }
 

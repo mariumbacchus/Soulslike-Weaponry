@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -73,7 +72,7 @@ public class ChargedArrow extends ModArrow {
     }
 
     @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+    public boolean canHaveArrowEffects() {
         return ConfigConstructor.galeforce_can_apply_arrow_effects;
     }
 }

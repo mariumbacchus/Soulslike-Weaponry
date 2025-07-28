@@ -81,6 +81,7 @@ public class ModTags {
 
     public static class Enchantments {
         public static final TagKey<Enchantment> BULLET_COLLISION_EXCLUSIVE_SET = createTag("exclusive_set/bullet_collision");
+        public static final TagKey<Enchantment> APPLY_FIRE = createTag("apply_fire");
 
         private static TagKey<Enchantment> createTag(String id) {
             return TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, id));

@@ -66,7 +66,7 @@ public class TrueDamageArrow extends ModArrow {
     }
 
     @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+    public boolean canHaveArrowEffects() {
         return ConfigConstructor.kraken_slayer_can_apply_arrow_effects;
     }
 }

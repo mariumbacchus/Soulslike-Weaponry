@@ -1,16 +1,16 @@
 package net.soulsweaponry.items;
 
 import net.fabric_extras.ranged_weapon.api.CustomCrossbow;
-import net.minecraft.client.item.TooltipContext;
+import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.util.TooltipAbilities;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +22,8 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
 
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
-    public ModdedCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
+    public ModdedCrossbow(Settings settings, RangedConfig rangedConfig, Supplier<Ingredient> repairIngredientSupplier) {
+        super(settings, rangedConfig, repairIngredientSupplier);
     }
 
     @Override
@@ -41,12 +41,12 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, world, tooltip, context);
-        super.appendTooltip(stack, world, tooltip, context);
+        this.appendTooltipAbilities(stack, context, tooltip, type);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     @Override
@@ -65,5 +65,5 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
     }
 
     @Override
-    public abstract boolean isFireproof();
+    public abstract boolean isFireproof();//TODO move
 }
