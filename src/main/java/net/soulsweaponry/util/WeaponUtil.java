@@ -254,23 +254,31 @@ public class WeaponUtil {
     }
 
     /**
-     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and equipment slot.
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
     public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float amount) {
+        return makeAttribute(attr, slot.getName().toUpperCase(), amount);
+    }
+
+    /**
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and custom name.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, String name, float amount) {
         // Don't display attributes with 0
         if (amount == 0) {
             return null;
         }
-        // e.g. "soulsweapons:bleed_buildup:HEAD"
-        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s:%s",
-                attr.value().getTranslationKey(), slot.getName().toUpperCase()));
+        // e.g. "soulsweapons:bleed_buildup:chungus"
+        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s:%s", attr.value().getTranslationKey(), name));
         return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
     }
 
     /**
-     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and equipment slot.
      * This takes in an array of doubles that is used to map the values to the armor equipment slot (head to feet).
      * No values beyond the 4th (3) index will be used.
      * Add an Operation parameter to replace ADDITION later if you feel like it.

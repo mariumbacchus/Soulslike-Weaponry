@@ -1,14 +1,9 @@
 package net.soulsweaponry.items.hammer;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableMultimap.Builder;
-import com.google.common.collect.Multimap;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +25,6 @@ import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IGeckolibItem;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -41,15 +35,35 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityAttributeModifier RAIN_DAMAGE = WeaponUtil.makeAttribute(
+            EntityAttributes.GENERIC_ATTACK_DAMAGE, "rain_damage_bonus", ConfigConstructor.mjolnir_rain_bonus_damage);
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.RETURNING, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (selected && !this.isDisabled(stack) && entity instanceof PlayerEntity player && entity.age % 40 == 0) {
+            var inst = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            if (inst != null) {
+                boolean raining = world.isRaining();
+                if (raining) {
+                    if (!inst.hasModifier(RAIN_DAMAGE.id())) {
+                        //TODO test and see if damage is correct (may be +1 over or -1 under whats written in config)
+                        inst.addTemporaryModifier(RAIN_DAMAGE);
+                    }
+                } else {
+                    inst.removeModifier(RAIN_DAMAGE);
+                }
+            }
+        }
     }
 
     @Override
@@ -150,37 +164,6 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
                 entity.setOwner(player);
                 world.spawnEntity(entity);
             }
-        }
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity.age % 40 == 0) {
-            this.refreshRaining(world, stack);
-        }
-    }
-
-    private void refreshRaining(World world, ItemStack stack) {
-        stack.set(ComponentRegistry.RAINING, world.isRaining());
-    }
-
-    private boolean isRaining(ItemStack stack) {
-        Boolean raining = stack.get(ComponentRegistry.RAINING);
-        return Objects.requireNonNullElse(raining, false);
-    }
-
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND) {
-            Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.isRaining(stack) && !this.isDisabled(stack) ? ConfigConstructor.mjolnir_rain_bonus_damage - 1 + ConfigConstructor.mjolnir_damage : ConfigConstructor.mjolnir_damage - 1, EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - ConfigConstructor.mjolnir_rain_total_attack_speed), EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
-        } else {
-            return super.getAttributeModifiers(slot);
         }
     }
 

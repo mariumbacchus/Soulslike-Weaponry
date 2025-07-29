@@ -14,7 +14,6 @@ public class ComponentRegistry {
 
     public static final ComponentType<Integer> KILLS = register("kills", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> FIRED_SHOTS = register("firedShots", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    public static final ComponentType<Boolean> RAINING = register("raining", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),
