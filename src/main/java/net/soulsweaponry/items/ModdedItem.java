@@ -1,12 +1,10 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import net.soulsweaponry.util.TooltipAbilities;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,12 +19,12 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, world, tooltip, context);
-        super.appendTooltip(stack, world, tooltip, context);
+        this.appendTooltipAbilities(stack, context, tooltip, type);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     @Override
@@ -45,5 +43,5 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     }
 
     @Override
-    public abstract boolean isFireproof();
+    public abstract boolean isFireproof();//TODO move
 }

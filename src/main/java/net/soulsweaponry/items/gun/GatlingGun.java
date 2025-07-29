@@ -1,7 +1,5 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -15,6 +13,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class GatlingGun extends GunItem {
 
@@ -24,7 +23,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public int getPostureLoss(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.VISCERAL);
         return (int) (ConfigConstructor.gatling_gun_posture_loss + lvl * ConfigConstructor.gatling_gun_posture_loss_per_enchant_level);
     }
 
@@ -45,12 +44,12 @@ public class GatlingGun extends GunItem {
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return (int) (ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 30);
+        return (int) (ConfigConstructor.gatling_gun_cooldown - 3 * this.getReducedCooldown(stack) + (this.hasInfinity(stack) ? 1 : 0) * 30);
     }
 
     @Override
     public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.gatling_gun_bullets_needed;
+        return this.hasInfinity(stack) ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.gatling_gun_bullets_needed;
     }
 
     @Override
@@ -71,7 +70,7 @@ public class GatlingGun extends GunItem {
                 if (itemStack != null) {
                     PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
                     world.spawnEntity(entity);
-                    this.spawnShotParticles(world, playerEntity, 2 + EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack), 0.15f);
+                    this.spawnShotParticles(world, playerEntity, 2 + WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS), 0.15f);
                     world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
                 }
@@ -90,7 +89,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack);
+        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS);
         return (int) (ConfigConstructor.gatling_gun_max_time * (lvl == 0 ? 1 : lvl));
     }
 
@@ -103,7 +102,7 @@ public class GatlingGun extends GunItem {
         world.playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (user instanceof PlayerEntity player && !player.isCreative()) {
             player.getItemCooldownManager().set(this, this.getCooldown(stack));
-            stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+            stack.damage(5, player, LivingEntity.getSlotForHand(user.getActiveHand()));
         }
     }
 

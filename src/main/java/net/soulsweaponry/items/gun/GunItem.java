@@ -1,7 +1,10 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.tooltip.TooltipType;
+import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.WeaponUtil;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,7 +50,11 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     }
 
     public int getReducedCooldown(ItemStack stack) {
-        return EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack) * 8;
+        return WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS) * 8;
+    }
+
+    public boolean hasInfinity(ItemStack stack) {
+        return EnchantmentHelper.hasAnyEnchantmentsIn(stack, ModTags.Enchantments.PREVENTS_AMMO_CONSUME);
     }
 
     public abstract int getPostureLoss(ItemStack stack);
@@ -57,7 +64,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     public abstract int getCooldown(ItemStack stack);
 
     @Override
-    public abstract boolean isFireproof();
+    public abstract boolean isFireproof();//TODO move
 
     public int getMaxUseTime(ItemStack stack) {
         return 0;
@@ -71,20 +78,21 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         return 1;
     }
 
+    // TODO instead of all of these get enchant level calls, replace with the new enchant system that applies to silver bullets
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
-        if (EnchantmentHelper.getLevel(EnchantRegistry.MISFIRE_CURSE, gunStack) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
+        if (WeaponUtil.getLevel(gunStack, EnchantRegistry.MISFIRE_CURSE) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
         float power = this.getCalculatedDamage(this.getBulletDamage(gunStack), gunStack);
-        int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
-        int explosivePower = EnchantmentHelper.getLevel(EnchantRegistry.EXPLOSIVE_ROUNDS, gunStack);
-        int chainLightningLevel = EnchantmentHelper.getLevel(EnchantRegistry.CHAIN_LIGHTNING, gunStack);
-        int blightCarrierLevel = EnchantmentHelper.getLevel(EnchantRegistry.BLIGHT_CARRIER, gunStack);
-        int freezeLevel = EnchantmentHelper.getLevel(EnchantRegistry.FROSTSILVER, gunStack);
-        int phantomTraceLevel = EnchantmentHelper.getLevel(EnchantRegistry.PHANTOM_TRACE, gunStack);
-        int tetherLevel = EnchantmentHelper.getLevel(EnchantRegistry.TETHER, gunStack);
-        int ricochetLevel = EnchantmentHelper.getLevel(EnchantRegistry.RICOCHET, gunStack);
+        int ethereal = WeaponUtil.getLevel(gunStack, EnchantRegistry.ETHEREAL);
+        int explosivePower = WeaponUtil.getLevel(gunStack, EnchantRegistry.EXPLOSIVE_ROUNDS);
+        int chainLightningLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.CHAIN_LIGHTNING);
+        int blightCarrierLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.BLIGHT_CARRIER);
+        int freezeLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.FROSTSILVER);
+        int phantomTraceLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.PHANTOM_TRACE);
+        int tetherLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.TETHER);
+        int ricochetLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.RICOCHET);
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
@@ -133,9 +141,14 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         return entity;
     }
 
+    @Override
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+        projectile.setVelocity(shooter, shooter.getPitch(), shooter.getYaw() + yaw, 0.0F, speed, divergence);
+    }
+
     @Nullable
     public ItemStack canShoot(PlayerEntity user, ItemStack stack) {
-        boolean infinity = EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
+        boolean infinity = this.hasInfinity(stack);
         boolean bl = user.getAbilities().creativeMode || (infinity && this.getBulletsNeededWithInfinity(stack) <= 0);
         ItemStack bullet = this.getProjectileType(user, stack);
         if (!bullet.isEmpty() || bl) {
@@ -216,8 +229,8 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     }
 
     public void postShot(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f,1f);
-        stack.damage(this.getStackDamageToApply(), user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+        world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f,1f);
+        stack.damage(this.getStackDamageToApply(), user, LivingEntity.getSlotForHand(user.getActiveHand()));
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
     }
@@ -227,7 +240,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
      * @return damage value the projectile needs to afflict the resultDamage parameter inputted
      */
     public float getCalculatedDamage(float resultDamage, ItemStack gunStack) {
-        return (resultDamage / this.getBulletVelocity(gunStack)) + EnchantmentHelper.getLevel(Enchantments.POWER, gunStack) / 2f;
+        return (resultDamage / this.getBulletVelocity(gunStack)) + WeaponUtil.getLevel(gunStack, Enchantments.POWER) / 2f;
     }
 
     public int getStackDamageToApply() {
@@ -243,12 +256,12 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, world, tooltip, context);
-        super.appendTooltip(stack, world, tooltip, context);
+        this.appendTooltipAbilities(stack, context, tooltip, type);
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     @Override

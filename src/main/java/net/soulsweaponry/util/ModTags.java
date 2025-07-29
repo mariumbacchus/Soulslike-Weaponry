@@ -16,6 +16,27 @@ public class ModTags {
 
     public static class Blocks {
 
+        public static final TagKey<Block> NEEDS_IRON_BLOCK_TOOL = createTag("needs_iron_block_tool");
+        public static final TagKey<Block> INCORRECT_FOR_IRON_BLOCK_TOOL = createTag("incorrect_for_iron_block_tool");
+
+        public static final TagKey<Block> NEEDS_LOST_SOUL_TOOL = createTag("needs_lost_soul_tool");
+        public static final TagKey<Block> INCORRECT_FOR_LOST_SOUL_TOOL = createTag("incorrect_for_lost_soul_tool");
+
+        public static final TagKey<Block> NEEDS_LOST_SOUL_DURABLE_TOOL = createTag("needs_lost_soul_durable_tool");
+        public static final TagKey<Block> INCORRECT_FOR_LOST_SOUL_DURABLE_TOOL = createTag("incorrect_for_lost_soul_durable_tool");
+
+        public static final TagKey<Block> NEEDS_MOONSTONE_OR_VERGLAS_TOOL = createTag("needs_moonstone_or_verglas_tool");
+        public static final TagKey<Block> INCORRECT_FOR_MOONSTONE_OR_VERGLAS_TOOL = createTag("incorrect_for_moonstone_or_verglas_tool");
+
+        public static final TagKey<Block> NEEDS_CRIMSON_INGOT_TOOL = createTag("needs_crimson_ingot_tool");
+        public static final TagKey<Block> INCORRECT_CRIMSON_INGOT_TOOL = createTag("incorrect_crimson_ingot_tool");
+
+        public static final TagKey<Block> NEEDS_MOONSTONE_TOOL = createTag("needs_moonstone_tool");
+        public static final TagKey<Block> INCORRECT_FOR_MOONSTONE_TOOL = createTag("incorrect_for_moonstone_tool");
+
+        public static final TagKey<Block> NEEDS_ECHO_SHARD_TOOL = createTag("needs_echo_shard_tool");
+        public static final TagKey<Block> INCORRECT_FOR_ECHO_SHARD_TOOL = createTag("incorrect_for_echo_shard_tool");
+
         private static TagKey<Block> createTag(String name) {
             return TagKey.of(RegistryKeys.BLOCK, Identifier.of(SoulsWeaponry.ModId, name));
         }
@@ -82,6 +103,7 @@ public class ModTags {
     public static class Enchantments {
         public static final TagKey<Enchantment> BULLET_COLLISION_EXCLUSIVE_SET = createTag("exclusive_set/bullet_collision");
         public static final TagKey<Enchantment> APPLY_FIRE = createTag("apply_fire");
+        public static final TagKey<Enchantment> PREVENTS_AMMO_CONSUME = createTag("prevents_ammo_consume");
 
         private static TagKey<Enchantment> createTag(String id) {
             return TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, id));

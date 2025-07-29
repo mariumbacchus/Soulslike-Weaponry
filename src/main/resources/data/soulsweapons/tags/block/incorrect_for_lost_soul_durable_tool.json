@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#minecraft:incorrect_for_iron_tool"
+  ],
+  "remove": [
+    "#soulsweapons:needs_lost_soul_durable_tool"
+  ]
+}

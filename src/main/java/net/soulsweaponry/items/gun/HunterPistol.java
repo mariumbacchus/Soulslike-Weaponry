@@ -1,7 +1,5 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -10,6 +8,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EnchantRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class HunterPistol extends GunItem {
 
@@ -19,7 +18,7 @@ public class HunterPistol extends GunItem {
 
     @Override
     public int getPostureLoss(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.VISCERAL);
         return (int) (ConfigConstructor.hunter_pistol_posture_loss + lvl * ConfigConstructor.hunter_pistol_posture_loss_per_enchant_level);
     }
 
@@ -45,7 +44,7 @@ public class HunterPistol extends GunItem {
 
     @Override
     public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.hunter_pistol_bullets_needed;
+        return this.hasInfinity(stack) ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.hunter_pistol_bullets_needed;
     }
 
     @Override

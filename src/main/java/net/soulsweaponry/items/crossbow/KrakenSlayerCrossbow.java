@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.crossbow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -9,9 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.ModdedCrossbow;
+import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
@@ -31,22 +31,10 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        float bonus =  EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, bowStack) / 4f;
-        if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots") && bowStack.getNbt().getInt("firedShots") >= 2) {
-            TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
-            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage);
-            projectile.setDamage(originalArrow.getDamage() + bonus);
-            bowStack.getNbt().putInt("firedShots", 0);
-            return projectile;
-        } else {
-            if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots")) {
-                bowStack.getNbt().putInt("firedShots", bowStack.getNbt().getInt("firedShots") + 1);
-            } else {
-                bowStack.getOrCreateNbt().putInt("firedShots", 1);
-            }
-            originalArrow.setDamage(originalArrow.getDamage() + bonus);
-        }
-        return null;
+        float bonus =  WeaponUtil.getLevel(bowStack, Enchantments.QUICK_CHARGE) / 4f;
+        PersistentProjectileEntity newProjectile = KrakenSlayer.getKrakenSlayerProjectile(world, bowStack, shooter, originalArrow.getDamage() + bonus, ConfigConstructor.kraken_slayer_bonus_true_damage);
+        originalArrow.setDamage(originalArrow.getDamage() + bonus);
+        return newProjectile;
     }
 
     @Override

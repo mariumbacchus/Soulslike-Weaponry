@@ -3,7 +3,6 @@ package net.soulsweaponry.items.hammer;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -19,6 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
@@ -29,24 +29,23 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.IGeckolibItem;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Objects;
 
-public class Mjolnir extends ChargeToUseItem implements GeoItem {
+public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    public static final String RAINING = "raining";
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
@@ -55,13 +54,15 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+        int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
         if (user instanceof PlayerEntity player && i >= 10) {
             int cooldown = 0;
-            stack.damage(3, player, p -> p.sendToolBreakStatus(user.getActiveHand()));
+            stack.damage(3, player, LivingEntity.getSlotForHand(user.getActiveHand()));
             if (player.isSneaking()) {
-                this.smashGround(stack, world, player);
-                this.lightningCall(player, world);
+                if (world instanceof ServerWorld serverWorld) {
+                    this.smashGround(stack, serverWorld, player);
+                    this.lightningCall(player, world);
+                }
                 cooldown = (int) ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
                 this.riptide(player, world, stack);
@@ -93,7 +94,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, 2.5f + speed, 1.0f);
         projectile.pickupType = PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(projectile);
-        world.playSoundFromEntity(null, projectile, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0f, 1.0f);
+        world.playSoundFromEntity(null, projectile, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0f, 1.0f);
         if (!player.getAbilities().creativeMode) {
             player.getInventory().removeOne(stack);
         }
@@ -102,20 +103,21 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     private void riptide(PlayerEntity player, World world, ItemStack stack) {
         float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
         WeaponUtil.launchTarget(player, 5f + sharpness, false);
-        player.useRiptide(20);
+        player.useRiptide(20, 15f, stack);
         if (player.isOnGround()) {
             player.move(MovementType.SELF, new Vec3d(0.0, 1.1999999284744263, 0.0));
         }
-        world.playSoundFromEntity(null, player, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
+        world.playSoundFromEntity(null, player, SoundEvents.ITEM_TRIDENT_RIPTIDE_3.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
     }
 
-    private void smashGround(ItemStack stack, World world, PlayerEntity player) {
+    private void smashGround(ItemStack stack, ServerWorld world, PlayerEntity player) {
         Box box = player.getBoundingBox().expand(3);
         List<Entity> entities = world.getOtherEntities(player, box);
         float power = ConfigConstructor.mjolnir_smash_damage;
         for (Entity entity : entities) {
-            if (entity instanceof LivingEntity) {
-                entity.damage(world.getDamageSources().mobAttack(player), power + 2*EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+            if (entity instanceof LivingEntity living) {
+                entity.damage(world.getDamageSources().mobAttack(player),
+                        power + 2 * EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
                 entity.addVelocity(0, .25f, 0);
             }
         }
@@ -154,19 +156,18 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        this.refreshRaining(world, stack);
+        if (entity.age % 40 == 0) {
+            this.refreshRaining(world, stack);
+        }
     }
 
     private void refreshRaining(World world, ItemStack stack) {
-        stack.getOrCreateNbt().putBoolean(RAINING, world.isRaining());
+        stack.set(ComponentRegistry.RAINING, world.isRaining());
     }
 
     private boolean isRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING)) {
-            return stack.getNbt().getBoolean(RAINING);
-        } else {
-            return false;
-        }
+        Boolean raining = stack.get(ComponentRegistry.RAINING);
+        return Objects.requireNonNullElse(raining, false);
     }
 
     @Override
@@ -197,24 +198,12 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final MjolnirItemRenderer renderer = new MjolnirItemRenderer();
-
-            @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
-                return this.renderer;
-            }
-        });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_mjolnir;
+    }
+
+    @Override
+    public GeoItemRenderer<?> getGeckolibRenderer() {
+        return new MjolnirItemRenderer();
     }
 }

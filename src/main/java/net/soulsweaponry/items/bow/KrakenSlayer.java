@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.ModdedBow;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -32,17 +33,23 @@ public class KrakenSlayer extends ModdedBow {
 
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots") && bowStack.getNbt().getInt("firedShots") >= 2) {
-            TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
-            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + WeaponUtil.getLevel(bowStack, Enchantments.POWER));
-            bowStack.getNbt().putInt("firedShots", 0);
-            return projectile;
-        } else {
-            if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots")) {
-                bowStack.getNbt().putInt("firedShots", bowStack.getNbt().getInt("firedShots") + 1);
+        return getKrakenSlayerProjectile(world, bowStack, shooter, originalArrow.getDamage(), ConfigConstructor.kraken_slayer_bonus_true_damage + WeaponUtil.getLevel(bowStack, Enchantments.POWER));
+    }
+
+    public static PersistentProjectileEntity getKrakenSlayerProjectile(World world, ItemStack bowStack, LivingEntity shooter, double damage, float trueDamage) {
+        Integer firedShots = bowStack.get(ComponentRegistry.FIRED_SHOTS);
+        if (firedShots != null) {
+            if (firedShots >= 2) {
+                TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
+                projectile.setTrueDamage(trueDamage);
+                projectile.setDamage(damage);
+                bowStack.set(ComponentRegistry.FIRED_SHOTS, 0);
+                return projectile;
             } else {
-                bowStack.getOrCreateNbt().putInt("firedShots", 1);
+                bowStack.set(ComponentRegistry.FIRED_SHOTS, firedShots + 1);
             }
+        } else {
+            bowStack.set(ComponentRegistry.FIRED_SHOTS, 1);
         }
         return null;
     }

@@ -43,5 +43,8 @@ public class EnchantmentTagsProvider extends FabricTagProvider.EnchantmentTagPro
         this.getOrCreateTagBuilder(ModTags.Enchantments.APPLY_FIRE)
                 .add(Enchantments.FLAME)
                 .add(Enchantments.FIRE_ASPECT);
+
+        this.getOrCreateTagBuilder(ModTags.Enchantments.PREVENTS_AMMO_CONSUME)
+                .add(Enchantments.INFINITY);
     }
 }

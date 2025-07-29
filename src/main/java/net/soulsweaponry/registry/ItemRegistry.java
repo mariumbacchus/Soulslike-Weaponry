@@ -1,6 +1,5 @@
 package net.soulsweaponry.registry;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
@@ -12,6 +11,7 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
+import net.soulsweaponry.datagen.tags.ItemTagsProvider;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.potion.*;
@@ -19,57 +19,61 @@ import net.soulsweaponry.util.RecipeHandler;
 
 public class ItemRegistry {
     // Integer is lines of lore, boolean after is whether the LoreItem is fireproof or not (false by default)
-    public static final LoreItem LORD_SOUL_RED = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 4, true);
-    public static final LoreItem LORD_SOUL_DARK = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 2, true);
-    public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new FabricItemSettings().rarity(Rarity.EPIC), 3, true);
-    public static final Item LOST_SOUL = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 5);
-    public static final Item MOONSTONE = new Item(new FabricItemSettings());
-    public static final Item CHUNGUS_EMERALD = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 1, true, false);
-    public static final Item DEMON_HEART = new LoreItem(new FabricItemSettings().food(new FoodComponent.Builder()
+    public static final LoreItem LORD_SOUL_RED = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 4, true);
+    public static final LoreItem LORD_SOUL_DARK = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 2, true);
+    public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final Item LOST_SOUL = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5);
+    public static final Item MOONSTONE = new Item(new Item.Settings());
+    public static final Item CHUNGUS_EMERALD = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true, false);
+    public static final Item DEMON_HEART = new LoreItem(new Item.Settings().food(new FoodComponent.Builder()
             .hunger(4).saturationModifier(6f).meat().alwaysEdible()
             .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
             .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
             .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()), 3);
-    public static final Item MOLTEN_DEMON_HEART= new Item(new FabricItemSettings());
-    public static final Item DEMON_CHUNK = new LoreItem(new FabricItemSettings(), 1, true);
-    public static final Item CRIMSON_INGOT = new Item(new FabricItemSettings());
-    public static final Item SOUL_INGOT = new Item(new FabricItemSettings());
-    public static final Item SILVER_BULLET = new Item(new FabricItemSettings().maxCount(20));
-    public static final Item BOSS_COMPASS = new BossCompass(new FabricItemSettings().rarity(Rarity.RARE));
-    public static final Item MOONSTONE_RING = new MoonstoneRing(new FabricItemSettings().rarity(Rarity.EPIC).maxDamage(25));
-    public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 1, true, true);
-    public static final Item VERGLAS = new Item(new FabricItemSettings());
-    public static final Item SKOFNUNG_STONE = new SkofnungStone(new FabricItemSettings().maxDamage(20));
-    public static final Item IRON_SKULL = new Item(new FabricItemSettings());
+    public static final Item MOLTEN_DEMON_HEART= new Item(new Item.Settings());
+    public static final Item DEMON_CHUNK = new LoreItem(new Item.Settings(), 1, true);
+    public static final Item CRIMSON_INGOT = new Item(new Item.Settings());
+    public static final Item SOUL_INGOT = new Item(new Item.Settings());
+    public static final Item SILVER_BULLET = new Item(new Item.Settings().maxCount(20));
+    public static final Item BOSS_COMPASS = new BossCompass(new Item.Settings().rarity(Rarity.RARE));
+    public static final Item MOONSTONE_RING = new MoonstoneRing(new Item.Settings().rarity(Rarity.EPIC).maxDamage(25));
+    public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 1, true, true);
+    public static final Item VERGLAS = new Item(new Item.Settings());
+    public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20));
+    public static final Item IRON_SKULL = new Item(new Item.Settings());
 
-    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new FabricItemSettings().rarity(Rarity.UNCOMMON), 12, true, true);
+    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 12, true, true);
 
-    public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new FabricItemSettings());
-    public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new FabricItemSettings());
-    public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f, new FabricItemSettings());
-    public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new FabricItemSettings());
+    public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
+            .attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f)));
+    public static final Item MOONSTONE_PICKAXE = new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
+            .attributeModifiers(PickaxeItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f)));
+    public static final Item MOONSTONE_AXE = new AxeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
+            .attributeModifiers(AxeItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 5.0f, -3.0f)));
+    public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
+            .attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f)));
 
-    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 4, true);
-    public static final LoreItem ARKENSTONE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 4, true);
-    public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 4, true, true);
-    public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new FabricItemSettings().rarity(Rarity.RARE), 3, true);
-    public static final Item CHAOS_ORB = new ChaosOrb(new FabricItemSettings().rarity(Rarity.EPIC).fireproof());
-    public static final Item GLASS_VIAL = new Item(new FabricItemSettings());
-    public static final Item BLOOD_VIAL = new BloodVial(new FabricItemSettings().maxCount(20));
+    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
+    public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
+    public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true, true);
+    public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 3, true);
+    public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof());
+    public static final Item GLASS_VIAL = new Item(new Item.Settings());
+    public static final Item BLOOD_VIAL = new BloodVial(new Item.Settings().maxCount(20));
 
     public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
     public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
     public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
 
-    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new FabricItemSettings().maxCount(1), 112);
-    public static final Item FALLEN_ICON_DISC = new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new FabricItemSettings().maxCount(1), 172);
-    public static final Item DRAUGR_BOSS_DISC = new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new FabricItemSettings().maxCount(1), 210);
-    //public static final Item FRENZIED_SHADE_DISC = new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new FabricItemSettings().maxCount(1), 62);
+    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 112);
+    public static final Item FALLEN_ICON_DISC = new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new Item.Settings().maxCount(1), 172);
+    public static final Item DRAUGR_BOSS_DISC = new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new Item.Settings().maxCount(1), 210);
+    //public static final Item FRENZIED_SHADE_DISC = new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new Item.Settings().maxCount(1), 62);
 
     public static void init() {
         registerItem(LORD_SOUL_RED, "lord_soul_red");
@@ -122,7 +126,19 @@ public class ItemRegistry {
 
     public static <I extends Item> I registerItem(I item, String name) {
         SoulsWeaponry.ITEM_GROUP_LIST.add(item);
-		return Registry.register(Registries.ITEM, new Identifier(SoulsWeaponry.ModId, name), item);
+        if (DatagenUtil.isDatagenRunning()) {
+            // Looks bad but works (hopefully lol)
+            if (item instanceof SwordItem) {
+                ItemTagsProvider.SWORDS.add(item);
+            } else if (item instanceof AxeItem) {
+                ItemTagsProvider.AXES.add(item);
+            } else if (item instanceof BowItem) {
+                ItemTagsProvider.BOWS.add(item);
+            } else if (item instanceof CrossbowItem) {
+                ItemTagsProvider.CROSSBOWS.add(item);
+            }
+        }
+		return Registry.register(Registries.ITEM, Identifier.of(SoulsWeaponry.ModId, name), item);
 	}
 
     /**
@@ -130,13 +146,13 @@ public class ItemRegistry {
      */
     public static <I extends Item> I registerLegendaryItem(I item, String name) {
         if (DatagenUtil.isDatagenRunning()) {
-            AdvancementsProvider.ALL_WEAPONS.add(item);
+            AdvancementsProvider.ALL_WEAPONS.add(item);//TODO check size of this with print in & out of datagen
         }
         return registerItem(item, name);
     }
 
     public static <I extends Item> I registerItemRemovableRecipe(I item, String name, boolean removeRecipe) {
-        RecipeHandler.RECIPE_IDS.put(new Identifier(SoulsWeaponry.ModId, name), removeRecipe);
+        RecipeHandler.RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, name), removeRecipe);
         return registerItem(item, name);
     }
 

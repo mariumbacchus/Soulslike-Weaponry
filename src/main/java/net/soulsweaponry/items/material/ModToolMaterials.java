@@ -1,46 +1,51 @@
 package net.soulsweaponry.items.material;
 
-import net.fabricmc.yarn.constants.MiningLevels;
+import com.google.common.base.Suppliers;
+import net.minecraft.block.Block;
 import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
 
+import java.util.function.Supplier;
+
 public enum ModToolMaterials implements ToolMaterial {
     
-    IRON_BLOCK(1537, 8.0f, -1.0f, MiningLevels.IRON, 16, Ingredient.ofItems(Items.IRON_BLOCK)),
-    LOST_SOUL(328, 7.0f, -1.0f, MiningLevels.IRON, 20, Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
-    LOST_SOUL_DURABLE(1537, 7.0f, -1.0f, MiningLevels.IRON, 14, Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
-    MOONSTONE_OR_VERGLAS(1756, 10.0f, -1.0f, MiningLevels.DIAMOND, 10, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
-    CRIMSON_INGOT(1984, 10.0f, -1.0f, MiningLevels.DIAMOND, 8, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT)),
-    MOONSTONE_TOOL(1721, 8.5f, 3.0f, MiningLevels.NETHERITE, 12, Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
-    ECHO_SHARD(2548, 10.0f, -1.0f, MiningLevels.DIAMOND, 10, Ingredient.ofItems(Items.ECHO_SHARD));
+    IRON_BLOCK(ModTags.Blocks.INCORRECT_FOR_IRON_BLOCK_TOOL, 1537, 8.0f, -1.0f, 16, () -> Ingredient.ofItems(Items.IRON_BLOCK)),
+    LOST_SOUL(ModTags.Blocks.INCORRECT_FOR_LOST_SOUL_TOOL, 328, 7.0f, -1.0f, 20, () -> Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
+    LOST_SOUL_DURABLE(ModTags.Blocks.INCORRECT_FOR_LOST_SOUL_DURABLE_TOOL, 1537, 7.0f, -1.0f, 14, () -> Ingredient.fromTag(ModTags.Items.LOST_SOUL_REPAIR)),
+    MOONSTONE_OR_VERGLAS(ModTags.Blocks.INCORRECT_FOR_MOONSTONE_OR_VERGLAS_TOOL, 1756, 10.0f, -1.0f, 10, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
+    CRIMSON_INGOT(ModTags.Blocks.INCORRECT_CRIMSON_INGOT_TOOL, 1984, 10.0f, -1.0f, 8, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT)),
+    MOONSTONE_TOOL(ModTags.Blocks.INCORRECT_FOR_MOONSTONE_TOOL, 1721, 8.5f, 3.0f, 12, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, ItemRegistry.VERGLAS)),
+    ECHO_SHARD(ModTags.Blocks.INCORRECT_FOR_ECHO_SHARD_TOOL, 2548, 10.0f, -1.0f, 10, () -> Ingredient.ofItems(Items.ECHO_SHARD));
 
-    private final int durability;
-    private final float miningSpeedMultiplier;
+    private final TagKey<Block> inverseTag;
+    private final int itemDurability;
+    private final float miningSpeed;
     private final float attackDamage;
-    private final int miningLevel;
     private final int enchantability;
-    private final Ingredient repairIngredient;
+    private final Supplier<Ingredient> repairIngredient;
 
-    ModToolMaterials(int durability, float miningSpeedMultiplier, float attackDamage, int miningLevel, int enchantability, Ingredient repairIngredient) {
-        this.durability = durability;
-        this.miningSpeedMultiplier = miningSpeedMultiplier;
+    ModToolMaterials(final TagKey<Block> inverseTag, final int itemDurability, final float miningSpeed,
+                     final float attackDamage, final int enchantability, final Supplier<Ingredient> repairIngredient) {
+        this.inverseTag = inverseTag;
+        this.itemDurability = itemDurability;
+        this.miningSpeed = miningSpeed;
         this.attackDamage = attackDamage;
-        this.miningLevel = miningLevel;
         this.enchantability = enchantability;
-        this.repairIngredient = repairIngredient;
+        this.repairIngredient = Suppliers.memoize(repairIngredient::get);
     }
 
     @Override
     public int getDurability() {
-        return this.durability;
+        return this.itemDurability;
     }
 
     @Override
     public float getMiningSpeedMultiplier() {
-        return this.miningSpeedMultiplier;
+        return this.miningSpeed;
     }
 
     @Override
@@ -49,8 +54,8 @@ public enum ModToolMaterials implements ToolMaterial {
     }
 
     @Override
-    public int getMiningLevel() {
-        return this.miningLevel;
+    public TagKey<Block> getInverseTag() {
+        return this.inverseTag;
     }
 
     @Override
@@ -60,6 +65,6 @@ public enum ModToolMaterials implements ToolMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return this.repairIngredient;
+        return this.repairIngredient.get();
     }
 }

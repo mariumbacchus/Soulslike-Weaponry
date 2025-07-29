@@ -8,6 +8,7 @@ import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.enchantment.EnchantmentProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
+import net.soulsweaponry.datagen.tags.BlockTagsProvider;
 import net.soulsweaponry.datagen.tags.EnchantmentTagsProvider;
 import net.soulsweaponry.datagen.tags.EntityTagsProvider;
 import net.soulsweaponry.datagen.tags.ItemTagsProvider;
@@ -28,6 +29,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         //fabricDataGenerator.createPack().addProvider(ModelProvider::new);
         pack.addProvider(EnchantmentProvider::new);
         pack.addProvider(BossLootTableProvider::new);
+        pack.addProvider(BlockTagsProvider::new);
         pack.addProvider(WeaponRecipeProvider::new);
         pack.addProvider(ModWorldGenerator::new);
         pack.addProvider(EnchantmentTagsProvider::new);

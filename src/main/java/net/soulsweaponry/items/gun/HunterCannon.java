@@ -1,7 +1,5 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -23,7 +21,7 @@ public class HunterCannon extends GunItem {
 
     @Override
     public int getPostureLoss(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.VISCERAL);
         return (int) (ConfigConstructor.hunter_cannon_posture_loss + lvl * ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level);
     }
 
@@ -44,12 +42,12 @@ public class HunterCannon extends GunItem {
 
     @Override
     public int getCooldown(ItemStack stack) {
-        return (int) (ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50);
+        return (int) (ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + (this.hasInfinity(stack) ? 1 : 0) * 50);
     }
 
     @Override
     public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.hunter_cannon_bullets_needed;
+        return this.hasInfinity(stack) ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.hunter_cannon_bullets_needed;
     }
 
     @Override

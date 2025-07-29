@@ -1,15 +1,18 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EnchantRegistry;
+import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 public class Blunderbuss extends GunItem {
 
@@ -18,8 +21,13 @@ public class Blunderbuss extends GunItem {
     }
 
     @Override
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+
+    }
+
+    @Override
     public int getPostureLoss(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
+        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.VISCERAL);
         return (int) (ConfigConstructor.blunderbuss_posture_loss + lvl * ConfigConstructor.blunderbuss_posture_loss_per_enchant_level);
     }
 
@@ -45,7 +53,7 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.blunderbuss_bullets_needed;
+        return this.hasInfinity(stack) ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.blunderbuss_bullets_needed;
     }
 
     @Override
@@ -67,7 +75,7 @@ public class Blunderbuss extends GunItem {
         }
         ItemStack itemStack = this.canShoot(user, stack);
         if (itemStack != null) {
-            int projectileCount = (int) (ConfigConstructor.blunderbuss_projectile_amount + EnchantmentHelper.getLevel(Enchantments.POWER, stack) / 2f);
+            int projectileCount = (int) (ConfigConstructor.blunderbuss_projectile_amount + WeaponUtil.getLevel(stack, Enchantments.POWER) / 2f);
             for (int i = 0; i < projectileCount; i++) {
                 PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
                 world.spawnEntity(entity);

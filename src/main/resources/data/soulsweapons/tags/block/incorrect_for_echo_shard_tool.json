@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#minecraft:incorrect_for_diamond_tool"
+  ],
+  "remove": [
+    "#soulsweapons:needs_echo_shard_tool"
+  ]
+}

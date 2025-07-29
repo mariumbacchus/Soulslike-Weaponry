@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#minecraft:incorrect_for_netherite_tool"
+  ],
+  "remove": [
+    "#soulsweapons:needs_moonstone_tool"
+  ]
+}
