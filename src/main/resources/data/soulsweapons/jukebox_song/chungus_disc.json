@@ -1,0 +1,8 @@
+{
+  "comparator_output": 7,
+  "description": {
+    "translate": "item.soulsweapons.chungus_disc.desc"
+  },
+  "length_in_seconds": 112,
+  "sound_event": "soulsweapons:big_chungus_song"
+}

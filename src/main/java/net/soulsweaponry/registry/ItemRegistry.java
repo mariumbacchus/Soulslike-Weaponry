@@ -1,5 +1,6 @@
 package net.soulsweaponry.registry;
 
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
@@ -18,6 +19,13 @@ import net.soulsweaponry.items.potion.*;
 import net.soulsweaponry.util.RecipeHandler;
 
 public class ItemRegistry {
+
+    public static final FoodComponent DEMON_HEART_EDIBLE = new FoodComponent.Builder()
+            .nutrition(4).saturationModifier(6f).alwaysEdible()
+            .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
+            .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
+            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build();
+
     // Integer is lines of lore, boolean after is whether the LoreItem is fireproof or not (false by default)
     public static final LoreItem LORD_SOUL_RED = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 4, true);
     public static final LoreItem LORD_SOUL_DARK = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
@@ -30,11 +38,7 @@ public class ItemRegistry {
     public static final Item LOST_SOUL = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5);
     public static final Item MOONSTONE = new Item(new Item.Settings());
     public static final Item CHUNGUS_EMERALD = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true, false);
-    public static final Item DEMON_HEART = new LoreItem(new Item.Settings().food(new FoodComponent.Builder()
-            .hunger(4).saturationModifier(6f).meat().alwaysEdible()
-            .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
-            .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
-            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()), 3);
+    public static final Item DEMON_HEART = new LoreItem(new Item.Settings().food(DEMON_HEART_EDIBLE), 3);
     public static final Item MOLTEN_DEMON_HEART= new Item(new Item.Settings());
     public static final Item DEMON_CHUNK = new LoreItem(new Item.Settings(), 1, true);
     public static final Item CRIMSON_INGOT = new Item(new Item.Settings());
@@ -66,14 +70,14 @@ public class ItemRegistry {
     public static final Item GLASS_VIAL = new Item(new Item.Settings());
     public static final Item BLOOD_VIAL = new BloodVial(new Item.Settings().maxCount(20));
 
-    public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION);
-    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
-    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION, -1);
+    public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value());
+    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value(), -1);
+    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value(), -1);
 
-    public static final Item CHUNGUS_DISC = new MusicDiscItem(7, SoundRegistry.BIG_CHUNGUS_SONG_EVENT, new Item.Settings().maxCount(1), 112);
-    public static final Item FALLEN_ICON_DISC = new MusicDiscItem(8, SoundRegistry.FALLEN_ICON_MONO, new Item.Settings().maxCount(1), 172);
-    public static final Item DRAUGR_BOSS_DISC = new MusicDiscItem(9, SoundRegistry.DRAUGR_BOSS_SONG_MONO, new Item.Settings().maxCount(1), 210);
-    //public static final Item FRENZIED_SHADE_DISC = new MusicDiscItem(10, SoundRegistry.FRENZIED_SHADE_SONG_MONO, new Item.Settings().maxCount(1), 62);
+    public static final Item CHUNGUS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.BIG_CHUNGUS_SONG_EVENT_KEY).maxCount(1));
+    public static final Item FALLEN_ICON_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.FALLEN_ICON_MONO_KEY).maxCount(1));
+    public static final Item DRAUGR_BOSS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.DRAUGR_BOSS_SONG_MONO_KEY).maxCount(1));
+    //public static final Item FRENZIED_SHADE_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.FRENZIED_SHADE_SONG_MONO_KEY).maxCount(1));
 
     public static void init() {
         registerItem(LORD_SOUL_RED, "lord_soul_red");

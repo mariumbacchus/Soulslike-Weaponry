@@ -1,0 +1,8 @@
+{
+  "comparator_output": 8,
+  "description": {
+    "translate": "item.soulsweapons.fallen_icon_disc.desc"
+  },
+  "length_in_seconds": 172,
+  "sound_event": "soulsweapons:fallen_icon_mono"
+}

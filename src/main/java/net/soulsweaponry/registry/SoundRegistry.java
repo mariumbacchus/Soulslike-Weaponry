@@ -1,7 +1,10 @@
 package net.soulsweaponry.registry;
 
+import net.minecraft.block.jukebox.JukeboxSong;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
@@ -77,22 +80,30 @@ public class SoundRegistry {
     public static SoundEvent BLOOD_LOSS = registerSound("blood_loss");
 
     public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
+    public static RegistryKey<JukeboxSong> BIG_CHUNGUS_SONG_EVENT_KEY = registerJukeboxSong("big_chungus_song");
 
     public static SoundEvent FALLEN_ICON_SONG = registerSound("fallen_icon_song");
     public static SoundEvent FALLEN_ICON_MONO = registerSound("fallen_icon_mono");
+    public static RegistryKey<JukeboxSong> FALLEN_ICON_MONO_KEY = registerJukeboxSong("fallen_icon_mono");
 
     public static final SoundEvent DRAUGR_BOSS_SONG = registerSound("draugr_boss_song");
     public static final SoundEvent DRAUGR_BOSS_SONG_MONO = registerSound("draugr_boss_song_mono");
+    public static RegistryKey<JukeboxSong> DRAUGR_BOSS_SONG_MONO_KEY = registerJukeboxSong("draugr_boss_song_mono");
 
     public static final SoundEvent FRENZIED_SHADE_SONG = registerSound("frenzied_shade_song");
     public static final SoundEvent FRENZIED_SHADE_SONG_MONO = registerSound("frenzied_shade_song_mono");
+    public static RegistryKey<JukeboxSong> FRENZIED_SHADE_SONG_MONO_KEY = registerJukeboxSong("frenzied_shade_song_mono");
 
-	public static Identifier registerId(String name) {
+	public static Identifier getId(String name) {
 		return Identifier.of(SoulsWeaponry.ModId, name);
 	}
 
     public static SoundEvent registerSound(String id) {
-        Identifier identifier = registerId(id);
+        Identifier identifier = getId(id);
         return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
+    }
+
+    public static RegistryKey<JukeboxSong> registerJukeboxSong(String id) {
+        return RegistryKey.of(RegistryKeys.JUKEBOX_SONG, getId(id));
     }
 }
