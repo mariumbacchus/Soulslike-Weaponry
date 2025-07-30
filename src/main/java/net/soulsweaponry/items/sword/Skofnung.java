@@ -1,13 +1,7 @@
 package net.soulsweaponry.items.sword;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableMultimap.Builder;
-import com.google.common.collect.Multimap;
-import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,12 +11,14 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.SkofnungStone;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.Optional;
 
 public class Skofnung extends ModdedSword {
 
@@ -62,25 +58,20 @@ public class Skofnung extends ModdedSword {
     }
 
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND && isEmpowered(stack)) {
-            Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.skofnung_damage + (ConfigConstructor.skofnung_bonus_damage - 1), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
-        }
-        return super.getAttributeModifiers(stack, slot);
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (this.isDisabled(stack)) return;
+        float bonus = isEmpowered(stack) ? ConfigConstructor.skofnung_bonus_damage : 0;
+        WeaponUtil.modifyStackAttributes(stack, this.getAttackDamage() + bonus, this.getAttackSpeed());
     }
 
     public static boolean isEmpowered(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().contains(EMPOWERED) && stack.getNbt().getInt(EMPOWERED) > 0 && !ConfigConstructor.disable_use_skofnung;
+        return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) > 0 && !ConfigConstructor.disable_use_skofnung;
     }
 
     public static Integer empAttacksLeft(ItemStack stack) {
         if (isEmpowered(stack)) {
-            return stack.getNbt().getInt(EMPOWERED);
+            return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0);
         } else {
             return 0;
         }
@@ -88,8 +79,8 @@ public class Skofnung extends ModdedSword {
 
     private void reduceEmpowered(ItemStack stack, World world, LivingEntity attacker) {
         if (isEmpowered(stack)) {
-            stack.getNbt().putInt(EMPOWERED, stack.getNbt().getInt(EMPOWERED) - 1);
-            if (stack.getNbt().getInt(EMPOWERED) <= 0) {
+            stack.set(ComponentRegistry.AMOUNT_USED, Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(1) - 1);
+            if (Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) <= 0) {
                 world.playSound(null, attacker.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, .75f, 1f);
             }
         }

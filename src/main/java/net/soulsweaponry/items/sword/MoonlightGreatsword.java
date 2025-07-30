@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.IChargeNeeded;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -36,9 +36,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
 
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
                 entity.setAgeAndPoints(30, 150, 4);
@@ -49,7 +49,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 if (this instanceof BluemoonGreatsword) {
                     if (!playerEntity.isCreative()) {
-                        stack.getOrCreateNbt().putInt(IChargeNeeded.CHARGE, 0);
+                        stack.set(ComponentRegistry.CHARGE, 0);
                     }
                 }
             }

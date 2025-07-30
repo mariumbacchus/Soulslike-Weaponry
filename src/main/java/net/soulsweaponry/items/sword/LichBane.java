@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -9,6 +8,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.mixin.LivingEntityInvoker;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class LichBane extends ModdedSword {
 
@@ -25,12 +25,12 @@ public class LichBane extends ModdedSword {
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
             ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
         }
-        target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+        target.setOnFireFor(4 + 3 * WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT));
         return super.postHit(stack, target, attacker);
     }
 
     public float getBonusMagicDamage(ItemStack stack) {
-        return ConfigConstructor.lich_bane_bonus_magic_damage + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
+        return ConfigConstructor.lich_bane_bonus_magic_damage + WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT);
     }
 
     @Override

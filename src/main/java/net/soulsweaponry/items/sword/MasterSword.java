@@ -27,9 +27,9 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(1, playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
                 entity.setAgeAndPoints(30, 150, 4);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);

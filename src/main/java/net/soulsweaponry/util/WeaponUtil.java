@@ -2,6 +2,8 @@ package net.soulsweaponry.util;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,10 +13,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
@@ -31,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static net.minecraft.item.Item.BASE_ATTACK_DAMAGE_MODIFIER_ID;
+import static net.minecraft.item.Item.BASE_ATTACK_SPEED_MODIFIER_ID;
 
 public class WeaponUtil {
 
@@ -66,6 +74,41 @@ public class WeaponUtil {
             }
         }
         return 0;
+    }
+
+    //TODO idk if this is needed
+    public static Enchantment getEnchantmentById(World world, String enchantId) {
+        Registry<Enchantment> enchantRegistry = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
+        Identifier id = Identifier.of(enchantId);
+        return enchantRegistry.get(id);
+    }
+
+    /**
+     * Override the {@code DataComponentTypes.ATTRIBUTE_MODIFIERS} component that holds damage
+     * and attack speed on the item. Call this in a tick method to update dynamically.
+     * @param stack item stack
+     * @param damage damage
+     * @param attackSpeed attack speed, this is not pre-calculated so you need to enter {@code - (4f - 1.6f)}
+     *                    if you want 1.6 in attack speed
+     */
+    public static void modifyStackAttributes(ItemStack stack, float damage, float attackSpeed) {
+        //TODO damage might need to be -1 to give correct output instead of just 0
+        stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                .add(
+                        EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                        new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, damage, EntityAttributeModifier.Operation.ADD_VALUE),
+                        AttributeModifierSlot.MAINHAND
+                )
+                .add(
+                        EntityAttributes.GENERIC_ATTACK_SPEED, // TODO see if it is necessary to do this calculation or not
+                        new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
+                        AttributeModifierSlot.MAINHAND
+                )
+                .build());
+    }
+
+    public static EquipmentSlot getActiveHandSlot(PlayerEntity player) {
+        return LivingEntity.getSlotForHand(player.getActiveHand());
     }
 
     public static boolean isModLoaded(String modId) {

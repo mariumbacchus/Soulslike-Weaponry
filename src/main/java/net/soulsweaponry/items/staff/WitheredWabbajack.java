@@ -62,7 +62,7 @@ public class WitheredWabbajack extends ModdedSword {
                     projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 }
                 world.spawnEntity(entity);
-                itemStack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
+                itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
             }
             for (LuckChosenObject<EntityType<?>> luckChosenEntity : PROJECTILES) {
                 luckChosenEntity.setLuckFactor(10);

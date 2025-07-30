@@ -41,17 +41,17 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(1, playerEntity, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 int duration = (int) ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_duration;
                 int amp = (int) (ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack));
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.DARK_MOON_PROJECTILE, world, user, stack);
-                entity.setAppliedStatusEffect(EffectRegistry.FREEZING);
+                entity.setAppliedStatusEffect(EffectRegistry.FREEZING.value());
                 entity.setEffectAmplifier(amp);
                 entity.setAppliedEffectDuration(duration);
                 entity.setAgeAndPoints(30, 150, 4);
-                entity.setAreaParticleCount(8);
+                entity.setAreaParticleCount((byte) 8);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setDamage(ConfigConstructor.dark_moon_greatsword_projectile_damage);
                 world.spawnEntity(entity);
@@ -93,7 +93,7 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
         if (this.isDisabled(stack) || (player.hasStatusEffect(EffectRegistry.COOLDOWN) && !player.isCreative())) {
             return;
         }
-        stack.damage(1, player, (p) -> p.sendToolBreakStatus(player.getActiveHand()));
+        stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         int duration = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_base_duration;
         int amp = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_base_amplifier;
         int cooldown = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_cooldown;

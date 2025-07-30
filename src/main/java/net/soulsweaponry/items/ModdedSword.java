@@ -1,5 +1,7 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
@@ -15,14 +17,27 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
 
     protected final float attackSpeed;
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    private final float attackDamage;
 
     public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, settings.attributeModifiers(SwordItem.createAttributeModifiers(toolMaterial, attackDamage, - (4f - ingameAttackSpeed))));
         this.attackSpeed = - (4f - ingameAttackSpeed);
+        this.attackDamage = attackDamage;
     }
 
     public float getAttackSpeed() {
         return attackSpeed;
+    }
+
+    public float getAttackDamage() {
+        return attackDamage;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return super.getBonusAttackDamage(target, baseAttackDamage, damageSource);
+        //TODO holy shit this is revolutionary i think i dont need the EnchantmentHelper.getBonusDamage mixin anymore if this works
+        // TODO add to the correct weapons (i.e Sting vs spiders)
     }
 
     @Override

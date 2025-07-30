@@ -24,9 +24,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 
 import java.util.Objects;
 
@@ -221,7 +220,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     public StatusEffect getAppliedEffect() {
-        return Registries.STATUS_EFFECT.get(new Identifier(this.getAppliedEffectId()));
+        return Registries.STATUS_EFFECT.get(Identifier.of(this.getAppliedEffectId()));
     }
 
     public int getEffectAmplifier() {

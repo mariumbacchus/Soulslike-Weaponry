@@ -230,7 +230,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
 
     public void postShot(World world, PlayerEntity user, ItemStack stack) {
         world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f,1f);
-        stack.damage(this.getStackDamageToApply(), user, LivingEntity.getSlotForHand(user.getActiveHand()));
+        stack.damage(this.getStackDamageToApply(), user, WeaponUtil.getActiveHandSlot(user));
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(stack));
     }

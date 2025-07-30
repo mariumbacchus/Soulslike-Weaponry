@@ -89,7 +89,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
         if (EnchantmentHelper.hasAnyEnchantmentsIn(stack, ModTags.Enchantments.APPLY_FIRE)) {
             chargedArrow.setOnFireFor(8);
         }
-        stack.damage(1, player, LivingEntity.getSlotForHand(player.getActiveHand()));
+        stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         chargedArrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(chargedArrow);
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + 0.5F);

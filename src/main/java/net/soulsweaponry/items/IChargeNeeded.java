@@ -1,7 +1,10 @@
 package net.soulsweaponry.items;
 
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.Optional;
 
 public interface IChargeNeeded {
 
@@ -12,20 +15,18 @@ public interface IChargeNeeded {
     boolean acceptsMoonHeraldEffect(ItemStack stack);
 
     default int getCharge(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(CHARGE)) {
-            return stack.getNbt().getInt(CHARGE);
-        }
-        return 0;
+        return Optional.ofNullable(stack.get(ComponentRegistry.CHARGE)).orElse(0);
     }
 
     default void addCharge(ItemStack stack, int amount) {
-        if (stack.hasNbt() && stack.getNbt().contains(CHARGE)) {
+        Integer charge = stack.get(ComponentRegistry.CHARGE);
+        if (charge != null) {
             int currentCharge = this.getCharge(stack);
             int newCharge = currentCharge + amount + WeaponUtil.getEnchantDamageBonus(stack);
             int maxCharge = this.getMaxCharge();
-            stack.getNbt().putInt(CHARGE, Math.min(newCharge, maxCharge));
+            stack.set(ComponentRegistry.CHARGE, Math.min(newCharge, maxCharge));
         } else {
-            stack.getOrCreateNbt().putInt(CHARGE, 0);
+            stack.set(ComponentRegistry.CHARGE, 0);
         }
     }
 

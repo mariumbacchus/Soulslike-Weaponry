@@ -44,7 +44,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
     }
 
@@ -71,7 +71,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
         if (user instanceof PlayerEntity playerEntity) {
             int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(3, playerEntity, LivingEntity.getSlotForHand(user.getActiveHand()));
+                stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
                 entity.saveOnPlayer(playerEntity);
                 float speed = (float)WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) / 5;

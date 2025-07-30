@@ -64,7 +64,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity user) {
         if (!user.getItemCooldownManager().isCoolingDown(this)) {
-            stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+            stack.damage(1, user, WeaponUtil.getActiveHandSlot(user));
             this.applyItemCooldown(user, this.getScaledCooldown(stack));
             int power = MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack) / 2f);
             user.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 200, power));

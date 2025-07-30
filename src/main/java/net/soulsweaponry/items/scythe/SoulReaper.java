@@ -26,20 +26,17 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAllies {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
@@ -53,9 +50,9 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
             this.notifyDisabled(player);
             return TypedActionResult.fail(stack);
         }
-        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-            int power = this.getSouls(stack);
-            if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
+        int power = this.getSouls(stack);
+        if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
+        if (power != 0) {
             if (power >= 3 && !world.isClient && this.canSummonEntity((ServerWorld) world, player, this.getSummonsListId())) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
@@ -83,7 +80,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
                     if (!player.isCreative()) this.addAmount(stack, -30);
                 }
 
-                stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
+                stack.damage(3, player, LivingEntity.getSlotForHand(hand));
                 return TypedActionResult.success(stack, true);
             }
         }
@@ -124,20 +121,18 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final SoulReaperRenderer renderer = new SoulReaperRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private SoulReaperRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new SoulReaperRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

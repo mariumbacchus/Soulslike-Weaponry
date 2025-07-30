@@ -1,13 +1,7 @@
 package net.soulsweaponry.items.scythe;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,7 +16,6 @@ import net.soulsweaponry.util.WeaponUtil;
 
 public class ShadowAssassinScythe extends UmbralTrespassItem {
 
-    private static final String HAS_EFFECT = "has_shadow_step";
     public static final int TICKS_FOR_BONUS = (int) ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, Settings settings) {
@@ -49,28 +42,10 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        stack.getOrCreateNbt().putBoolean(HAS_EFFECT, entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP));
-    }
-
-    private boolean canGetBonus(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(HAS_EFFECT) && !this.isDisabled(stack)) {
-            return stack.getNbt().getBoolean(HAS_EFFECT);
-        }
-        return false;
-    }
-
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND) {
-            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.canGetBonus(stack) ? this.getAttackDamage() + ConfigConstructor.shadow_assassin_scythe_shadow_step_bonus_damage : this.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
-        } else {
-            return super.getAttributeModifiers(slot);
-        }
+        if (this.isDisabled(stack)) return;
+        boolean canGetBonus = entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP);
+        float bonus = canGetBonus ? this.getAttackDamage() + ConfigConstructor.shadow_assassin_scythe_shadow_step_bonus_damage : this.getAttackDamage();
+        WeaponUtil.modifyStackAttributes(stack, bonus, this.getAttackSpeed());
     }
 
     @Override

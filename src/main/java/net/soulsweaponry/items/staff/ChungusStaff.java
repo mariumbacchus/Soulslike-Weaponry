@@ -21,6 +21,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class ChungusStaff extends ModdedSword implements IKeybindAbility {
 
@@ -57,7 +58,7 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
         tnt.setNoGravity(true);
         world.spawnEntity(tnt);
         user.getItemCooldownManager().set(this, (int) ConfigConstructor.chungus_staff_use_cooldown);
-        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+        stack.damage(3, user, WeaponUtil.getActiveHandSlot(user));
         return TypedActionResult.success(stack);
     }
 
@@ -94,7 +95,7 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 1200, 2));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 1200, 2));
         if (!player.isCreative()) {
-            stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
+            stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
             this.applyEffectCooldown(player, (int) (ConfigConstructor.chungus_staff_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 160));
         }
     }

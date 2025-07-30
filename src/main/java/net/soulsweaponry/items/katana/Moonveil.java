@@ -33,12 +33,12 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this) && !world.isClient) {
-            int time = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int time = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (time >= 10) {
                 if (player.isSneaking()) {
                     MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, 15);
                     entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
-                    entity.setAreaParticleCount(10);
+                    entity.setAreaParticleCount((byte) 10);
                     entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
                     entity.setPos(player.getX(), player.getEyeY() - 1f, player.getZ());
                     entity.setDespawnParticleCount(40);
@@ -51,7 +51,7 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
                 } else {
                     MoonveilWave entity = new MoonveilWave(world, user, 6);
                     entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
-                    entity.setAreaParticleCount(15);
+                    entity.setAreaParticleCount((byte) 15);
                     entity.setDespawnParticleCount(40);
                     entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
                     entity.setPos(player.getX(), player.getEyeY() - 0.3f, player.getZ());
@@ -60,7 +60,7 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
                     world.spawnEntity(entity);
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL, SoundCategory.PLAYERS, 1f, 1f);
                 }
-                stack.damage(3, player, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 this.applyItemCooldown(player, (int) ConfigConstructor.moonveil_ability_cooldown);
             }
         }

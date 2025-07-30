@@ -57,6 +57,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
                 if (raining) {
                     if (!inst.hasModifier(RAIN_DAMAGE.id())) {
                         //TODO test and see if damage is correct (may be +1 over or -1 under whats written in config)
+                        // TODO maybe the DarkinScythePre implementation is better for dynamic changing on the item
                         inst.addTemporaryModifier(RAIN_DAMAGE);
                     }
                 } else {
@@ -71,7 +72,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
         int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
         if (user instanceof PlayerEntity player && i >= 10) {
             int cooldown = 0;
-            stack.damage(3, player, LivingEntity.getSlotForHand(user.getActiveHand()));
+            stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
             if (player.isSneaking()) {
                 if (world instanceof ServerWorld serverWorld) {
                     this.smashGround(stack, serverWorld, player);

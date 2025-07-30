@@ -1,18 +1,18 @@
 package net.soulsweaponry.items;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public abstract class SoulHarvestingItem extends ModdedSword {
+import java.util.Optional;
 
-    public static final String KILLS = "kills";
+public abstract class SoulHarvestingItem extends ModdedSword {
 
     public SoulHarvestingItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
@@ -56,18 +56,11 @@ public abstract class SoulHarvestingItem extends ModdedSword {
     }
 
     public void addAmount(ItemStack stack, int amount) {
-        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-            stack.getNbt().putInt(KILLS, stack.getNbt().getInt(KILLS) + amount);
-        } else {
-            stack.getOrCreateNbt().putInt(KILLS, amount);
-        }
+        amount += Optional.ofNullable(stack.get(ComponentRegistry.KILLS)).orElse(0);
+        stack.set(ComponentRegistry.KILLS, amount);
     }
 
     public int getSouls(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-            return stack.getNbt().getInt(KILLS);
-        } else {
-            return 0;
-        }
+        return Optional.ofNullable(stack.get(ComponentRegistry.KILLS)).orElse(0);
     }
 }

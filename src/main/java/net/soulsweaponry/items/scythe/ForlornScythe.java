@@ -3,6 +3,7 @@ package net.soulsweaponry.items.scythe;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
@@ -14,23 +15,21 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
-    private static final String CRITICAL = "3rd_shot";
-    private static final String PREV_UUID = "prev_projectile_uuid";
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
@@ -47,7 +46,8 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
-        if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
+        Integer kills = stack.get(ComponentRegistry.KILLS);
+        if (kills != null) {
             int power = this.getSouls(stack);
             if (power > 0 || user.isCreative()) {
                 WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
@@ -55,16 +55,16 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
                 entity.setOwner(user);
                 if (this.isCritical(stack)) {
                     entity.setCharged(true);
-                    stack.getNbt().putInt(CRITICAL, 1);
+                    stack.set(ComponentRegistry.AMOUNT_USED, 1);
                 } else {
-                    stack.getNbt().putInt(CRITICAL, stack.getNbt().getInt(CRITICAL) + 1);
+                    stack.set(ComponentRegistry.AMOUNT_USED, 1 + Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0));
                 }
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
                 world.spawnEntity(entity);
                 this.setPrevUuid(stack, entity);
                 if (!user.isCreative()) this.addAmount(stack, -1);
                 user.getItemCooldownManager().set(this, 10);
-                stack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
+                stack.damage(1, user, LivingEntity.getSlotForHand(hand));
                 return TypedActionResult.success(stack, world.isClient());
             }
         }
@@ -77,9 +77,9 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
      * checked in the world whether it exists or not, then removed accordingly.
      */
     private void detonatePrevEntity(ServerWorld world, ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(PREV_UUID)) {
-            UUID uuid = stack.getNbt().getUuid(PREV_UUID);
-            Entity entity = world.getEntity(uuid);
+        UUID prev = stack.get(ComponentRegistry.SAVED_UUID);
+        if (prev != null) {
+            Entity entity = world.getEntity(prev);
             if (entity instanceof WitherSkullEntity skull) {
                 world.createExplosion(skull, skull.getX(), skull.getY(), skull.getZ(), skull.isCharged() ? 2f : 1f, false, World.ExplosionSourceType.MOB);
                 skull.discard();
@@ -88,16 +88,14 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     }
 
     private void setPrevUuid(ItemStack stack, Entity entityToSet) {
-        stack.getOrCreateNbt().putUuid(PREV_UUID, entityToSet.getUuid());
+        stack.set(ComponentRegistry.SAVED_UUID, entityToSet.getUuid());
     }
 
     private boolean isCritical(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(CRITICAL)) {
-            return stack.getNbt().getInt(CRITICAL) >= 3;
-        } else {
-            stack.getOrCreateNbt().putInt(CRITICAL, 1);
-        }
-        return false;
+        return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElseGet(() -> {
+            stack.set(ComponentRegistry.AMOUNT_USED, 1);
+            return 1;
+        }) >= 3;
     }
 
     @Override
@@ -114,20 +112,18 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final ForlornScytheRenderer renderer = new ForlornScytheRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private ForlornScytheRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new ForlornScytheRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

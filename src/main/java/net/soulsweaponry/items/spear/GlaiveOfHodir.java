@@ -30,15 +30,15 @@ public class GlaiveOfHodir extends BladeDanceItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 GhostGlaiveEntity entity = new GhostGlaiveEntity(world, playerEntity, 10);
                 entity.setDamage(ConfigConstructor.glaive_of_hodir_projectile_damage + WeaponUtil.getEnchantDamageBonus(stack));
                 entity.setPos(playerEntity.getX(), playerEntity.getEyeY() - 0.3f, playerEntity.getZ());
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2f, 1.0F);
                 world.spawnEntity(entity);
-                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
+                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1f, .5f);
                 this.applyItemCooldown(playerEntity, (int) Math.max(ConfigConstructor.glaive_of_hodir_projectile_min_cooldown, ConfigConstructor.glaive_of_hodir_projectile_cooldown - this.getReduceCooldownEnchantLevel(stack) * 12));
             }
         }
@@ -96,7 +96,7 @@ public class GlaiveOfHodir extends BladeDanceItem {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 72000;
     }
 

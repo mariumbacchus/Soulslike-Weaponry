@@ -23,19 +23,17 @@ import net.soulsweaponry.util.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGround {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
             ConfigConstructor.comet_spear_calculated_fall_base_radius,
             ConfigConstructor.comet_spear_calculated_fall_height_increase_radius_modifier,
@@ -58,29 +56,29 @@ public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGro
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
                 if (stack == user.getOffHandStack()) {
                     WeaponUtil.launchTarget(user, 5f + enchant, false);
-                    playerEntity.useRiptide(20);
-                    world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    playerEntity.useRiptide(20, 15f, stack);
+                    world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
                     if (playerEntity.isOnGround()) {
                         playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
                     }
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, (int) ConfigConstructor.comet_spear_ability_damage));
                     this.applyItemCooldown(playerEntity, this.getScaledCooldownSkyfall(stack));
-                    stack.damage(4, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                    stack.damage(4, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 } else {
-                    stack.damage(2, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                    stack.damage(2, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                     this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(stack));
 
                     CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
-                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
             }
         }
@@ -115,20 +113,18 @@ public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGro
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final CometSpearItemRenderer renderer = new CometSpearItemRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private CometSpearItemRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new CometSpearItemRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override

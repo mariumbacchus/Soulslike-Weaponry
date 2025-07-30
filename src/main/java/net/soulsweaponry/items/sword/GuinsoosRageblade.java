@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -10,6 +9,7 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class GuinsoosRageblade extends ModdedSword {
 
@@ -26,7 +26,7 @@ public class GuinsoosRageblade extends ModdedSword {
         if (attacker.isOnFire()) {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 2));
         }
-        int speed = EnchantmentHelper.getLevel(Enchantments.SWEEPING, stack);
+        int speed = WeaponUtil.getLevel(stack, Enchantments.SWEEPING_EDGE);
         if (attacker.hasStatusEffect(StatusEffects.HASTE)) {
             StatusEffectInstance effect = attacker.getStatusEffect(StatusEffects.HASTE);
             int amplifier = effect.getAmplifier();

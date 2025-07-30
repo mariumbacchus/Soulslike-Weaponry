@@ -7,14 +7,15 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+
+import java.util.Optional;
 
 /**
  * TODO for another time: Make it light up if it is active like how Dynamic Lights or shaders do it
  */
 public class Sting extends ModdedSword {
-
-    private static final String ACTIVE = "active_glowing";
 
     public Sting(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
@@ -37,15 +38,11 @@ public class Sting extends ModdedSword {
     }
 
     private void setActive(ItemStack stack, boolean bl) {
-        stack.getOrCreateNbt().putBoolean(ACTIVE, bl);
+        stack.set(ComponentRegistry.EMPOWERED, bl);
     }
 
     public boolean isActive(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(ACTIVE)) {
-            return stack.getNbt().getBoolean(ACTIVE);
-        } else {
-            return false;
-        }
+        return Optional.ofNullable(stack.get(ComponentRegistry.EMPOWERED)).orElse(false);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             world.spawnEntity(entity);
             this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
                     ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - this.getReduceCooldownEnchantLevel(stack) * 30));
-            stack.damage(3, player, LivingEntity.getSlotForHand(player.getActiveHand()));
+            stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
         }
     }
 

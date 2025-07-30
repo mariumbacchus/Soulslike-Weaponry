@@ -50,9 +50,9 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
-                stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
                 WeaponUtil.doConsumerOnLine(world, player.getYaw() + 90, player.getPos(), 4, 10 + 2 * WeaponUtil.getEnchantDamageBonus(stack), 1.25f,
                         (Vec3d position, Integer warmup, Float yaw) -> this.spawnNightsEdge(world, player, stack, position, warmup, yaw));
                 this.applyItemCooldown(player, this.getScaledCooldown(stack));
@@ -69,7 +69,7 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
             float ringYaw = player.getYaw() + 90f;
             WeaponUtil.doConsumerOnCircle(world, ringYaw, player.getPos(), verticalSearch, ripples, radii, (position, warmup, yawDeg) -> this.spawnNightsEdge(world, player, stack, position, warmup, yawDeg));
             this.applyItemCooldown(player, this.getScaledCooldown(stack));
-            stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
+            stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         }
     }
 

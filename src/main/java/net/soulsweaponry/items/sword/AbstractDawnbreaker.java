@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -18,8 +17,9 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
@@ -38,8 +38,9 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements Geo
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
-        target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        if (target.isUndead() || ConfigConstructor.dawnbreaker_affect_all_entities) {
+        int fireAspect = WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT);
+        target.setOnFireFor(4 + 3 * fireAspect);
+        if (target.hasInvertedHealingAndHarm() || ConfigConstructor.dawnbreaker_affect_all_entities) {
             if (target.isDead()) {
                 if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
                     double chance = ConfigConstructor.dawnbreaker_ability_percent_chance_addition + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
@@ -53,7 +54,7 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements Geo
                 int amplifier = target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier();
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, amplifier + 1));
             } else {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack)));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, fireAspect));
             }
         }
         return super.postHit(stack, target, attacker);
@@ -77,10 +78,11 @@ public abstract class AbstractDawnbreaker extends ChargeToUseItem implements Geo
         boolean bl = ConfigConstructor.dawnbreaker_affect_all_entities;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity targetHit) {
-                if (targetHit.isUndead() || bl) {
+                if (targetHit.hasInvertedHealingAndHarm() || bl) {
+                    int fireAspect = WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT);
                     if (!targetHit.equals(attacker)) {
-                        targetHit.setOnFireFor(4 + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-                        targetHit.damage(attacker.getWorld().getDamageSources().explosion(null, attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
+                        targetHit.setOnFireFor(4 + fireAspect);
+                        targetHit.damage(attacker.getWorld().getDamageSources().explosion(null, attacker), ConfigConstructor.dawnbreaker_ability_damage + 5 * fireAspect);
                         targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, 80, 0));
                     }
                 }

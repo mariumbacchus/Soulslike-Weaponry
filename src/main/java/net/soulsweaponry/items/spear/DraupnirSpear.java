@@ -24,27 +24,25 @@ import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    public static final String SPEARS_ID = "thrown_spears_id";
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
@@ -54,16 +52,16 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity && !playerEntity.getItemCooldownManager().isCoolingDown(this)) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
                 DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
                 world.spawnEntity(entity);
-                world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
                 this.saveSpearData(stack, entity);
                 this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(stack));
-                stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
             }
         }
     }
@@ -116,20 +114,18 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final DraupnirSpearItemRenderer renderer = new DraupnirSpearItemRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private DraupnirSpearItemRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new DraupnirSpearItemRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override
@@ -138,15 +134,9 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
-        if (stack.getOrCreateNbt() != null) {
-            List<Integer> ids = new ArrayList<>();
-            if (stack.getNbt().contains(SPEARS_ID)) {
-                int[] arr = stack.getNbt().getIntArray(SPEARS_ID);
-                ids = WeaponUtil.arrayToList(arr);
-            }
-            ids.add(entity.getId());
-            stack.getNbt().putIntArray(SPEARS_ID, ids);
-        }
+        List<Integer> ids = Optional.ofNullable(stack.get(ComponentRegistry.INT_LIST)).orElse(new ArrayList<>());
+        ids.add(entity.getId());
+        stack.set(ComponentRegistry.INT_LIST, ids);
     }
 
     @Override
@@ -180,23 +170,23 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
                 List<Entity> entities = world.getOtherEntities(player, box);
                 float power = ConfigConstructor.draupnir_spear_projectile_damage;
                 for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity) {
-                        entity.damage(world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
+                    if (entity instanceof LivingEntity living) {
+                        entity.damage(world.getDamageSources().mobAttack(player), power + EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
                         entity.addVelocity(0, .1f, 0);
                     }
                 }
                 ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
-                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
                 this.applyItemCooldown(player, this.getScaledCooldownExplode(stack));
-                if (stack.hasNbt() && stack.getNbt().contains(DraupnirSpear.SPEARS_ID)) {
-                    int[] ids = stack.getNbt().getIntArray(DraupnirSpear.SPEARS_ID);
+                List<Integer> ids = stack.get(ComponentRegistry.INT_LIST);
+                if (ids != null) {
                     for (int id : ids) {
                         Entity entity = world.getEntityById(id);
                         if (entity instanceof DraupnirSpearEntity spear) {
                             spear.detonate();
                         }
                     }
-                    stack.getNbt().putIntArray(DraupnirSpear.SPEARS_ID, new int[0]);
+                    stack.set(ComponentRegistry.INT_LIST, List.of());
                 }
             }
         }

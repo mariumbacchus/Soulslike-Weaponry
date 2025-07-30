@@ -37,19 +37,19 @@ public class KrakenSlayer extends ModdedBow {
     }
 
     public static PersistentProjectileEntity getKrakenSlayerProjectile(World world, ItemStack bowStack, LivingEntity shooter, double damage, float trueDamage) {
-        Integer firedShots = bowStack.get(ComponentRegistry.FIRED_SHOTS);
+        Integer firedShots = bowStack.get(ComponentRegistry.AMOUNT_USED);
         if (firedShots != null) {
             if (firedShots >= 2) {
                 TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
                 projectile.setTrueDamage(trueDamage);
                 projectile.setDamage(damage);
-                bowStack.set(ComponentRegistry.FIRED_SHOTS, 0);
+                bowStack.set(ComponentRegistry.AMOUNT_USED, 0);
                 return projectile;
             } else {
-                bowStack.set(ComponentRegistry.FIRED_SHOTS, firedShots + 1);
+                bowStack.set(ComponentRegistry.AMOUNT_USED, firedShots + 1);
             }
         } else {
-            bowStack.set(ComponentRegistry.FIRED_SHOTS, 1);
+            bowStack.set(ComponentRegistry.AMOUNT_USED, 1);
         }
         return null;
     }

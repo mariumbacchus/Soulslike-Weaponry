@@ -102,7 +102,7 @@ public class GatlingGun extends GunItem {
         world.playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
         if (user instanceof PlayerEntity player && !player.isCreative()) {
             player.getItemCooldownManager().set(this, this.getCooldown(stack));
-            stack.damage(5, player, LivingEntity.getSlotForHand(user.getActiveHand()));
+            stack.damage(5, player, WeaponUtil.getActiveHandSlot(player));
         }
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.UseAction;
@@ -16,7 +17,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -48,8 +48,9 @@ public class WhirligigSawblade extends ChargeToUseItem {
         List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
         if (remainingUseTicks > 0) {
             for (Entity nearbyEntity : nearbyEntities) {
-                if (nearbyEntity instanceof LivingEntity target) {
-                    if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
+                if (nearbyEntity instanceof LivingEntity target && world instanceof ServerWorld serverWorld) {
+                    if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage
+                            + EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().mobAttack(user), 0))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(1F, 0, 0);
                         BleedData.addBleed(target, (int) ConfigConstructor.whirligig_sawblade_bleed_added);
@@ -87,8 +88,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
     private void stop(LivingEntity user, ItemStack stack) {
         if (user instanceof PlayerEntity player) {
             this.applyItemCooldown(player, this.getCooldown(stack));
+            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
         }
-        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
 
     private int getCooldown(ItemStack stack) {

@@ -22,21 +22,22 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindAbility {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
     public Bloodlust(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.bloodlust_damage, ConfigConstructor.bloodlust_attack_speed, settings);
@@ -90,20 +91,18 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final BloodlustRenderer renderer = new BloodlustRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private BloodlustRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new BloodlustRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override
@@ -123,7 +122,7 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         player.damage(CustomDamageSource.create(world, CustomDamageSource.BLEED), ConfigConstructor.bloodlust_ability_self_damage);
         BleedData.addBleed(player, (int) ConfigConstructor.bloodlust_ability_self_bleed);
-        stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
+        stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 300, (int) ConfigConstructor.bloodlust_ability_bloodthirsty_amp));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 400, (int) ConfigConstructor.bloodlust_ability_strength_amp));
         //world.playSound(null, player.getBlockPos(), SoundEvents.HURT, SoundCategory.PLAYERS, .75f, 1f);//TODO other sound, bleed soundalike?

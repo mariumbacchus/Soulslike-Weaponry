@@ -62,7 +62,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
             entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
             entity.setOwner(user);
             if (entity instanceof RimeSpectre) entity.addVelocity(0, 0.1f, 0);
-            entity.setTamed(true);
+            entity.setTamed(true, false);
             world.spawnEntity(entity);
             this.saveSummonUuid(user, entity.getUuid());
             this.addAmount(stack, -5);

@@ -1,21 +1,19 @@
 package net.soulsweaponry.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.world.World;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.Optional;
 
 public abstract class BladeDanceItem extends ModdedSword {
 
@@ -33,12 +31,9 @@ public abstract class BladeDanceItem extends ModdedSword {
         amp = Math.min(amp, this.getMaxStacks() - 1);
         attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, 160, amp));
         if (!WeaponUtil.isFightModLoaded() && (amp + 1) == this.getMaxStacks()) {
-            int counter = 0;
-            if (stack.hasNbt()) {
-                counter = stack.getNbt().contains("AOECounter") ? stack.getNbt().getInt("AOECounter") : 0;
-            }
-            stack.getOrCreateNbt().putInt("AOECounter", counter + 1);
-            if (stack.getNbt().getInt("AOECounter") >= 3) {
+            int counter = Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0);
+            stack.set(ComponentRegistry.AMOUNT_USED, counter + 1);
+            if (Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) >= 3) {
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
                         living.damage(attacker.getDamageSources().mobAttack(attacker), this.getTotalDamage(stack));
@@ -52,30 +47,23 @@ public abstract class BladeDanceItem extends ModdedSword {
                     double z = z0 + r * Math.sin(i * Math.PI / 180);
                     ParticleHandler.singleParticle(attacker.getWorld(), ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 0, 0, 0);
                 }
-                stack.getNbt().putInt("AOECounter", 0);
+                stack.set(ComponentRegistry.AMOUNT_USED, 0);
             }
         }
         return super.postHit(stack, target, attacker);
     }
 
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND) {
-            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", this.getTotalDamage(stack), EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", this.getTotalAttackSpeed(stack), EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
-        } else {
-            return super.getAttributeModifiers(slot);
-        }
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (this.isDisabled(stack)) return;
+        WeaponUtil.modifyStackAttributes(stack, this.getTotalDamage(stack), this.getTotalAttackSpeed(stack));
     }
 
     public static void updateBladeDanceItem(ItemStack stack, int effectAmplifier) {
         if (stack.getItem() instanceof BladeDanceItem item) {
-            stack.getOrCreateNbt().putFloat("BladeDanceBonusDamage", item.getBonusDamagePerStack() * effectAmplifier);
-            stack.getOrCreateNbt().putFloat("BladeDanceBonusAttackSpeed", item.getBonusAttackSpeedPerStack() * effectAmplifier);
+            stack.set(ComponentRegistry.BLADE_DANCE_BONUS_DAMAGE, item.getBonusDamagePerStack() * effectAmplifier);
+            stack.set(ComponentRegistry.BLADE_DANCE_BONUS_ATTACK_SPEED, item.getBonusAttackSpeedPerStack() * effectAmplifier);
         }
     }
 
@@ -87,17 +75,13 @@ public abstract class BladeDanceItem extends ModdedSword {
 
     public float getTotalDamage(ItemStack stack) {
         float damage = this.getAttackDamage();
-        if (stack.hasNbt() && stack.getNbt().contains("BladeDanceBonusDamage")) {
-            damage += stack.getNbt().getFloat("BladeDanceBonusDamage");
-        }
+        damage += Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_BONUS_DAMAGE)).orElse(0f);
         return damage;
     }
 
     public float getTotalAttackSpeed(ItemStack stack) {
         float attackSpeed = this.getAttackSpeed();
-        if (stack.hasNbt() && stack.getNbt().contains("BladeDanceBonusAttackSpeed")) {
-            attackSpeed += stack.getNbt().getFloat("BladeDanceBonusAttackSpeed");
-        }
+        attackSpeed += Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_BONUS_ATTACK_SPEED)).orElse(0f);
         return attackSpeed;
     }
 }

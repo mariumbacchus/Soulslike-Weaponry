@@ -80,8 +80,8 @@ public class DragonStaff extends ModdedSword {
     private void stop(LivingEntity user, ItemStack stack) {
         if (user instanceof PlayerEntity player) {
             this.applyItemCooldown(player, this.getCooldown(stack));
+            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
         }
-        stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class DragonStaff extends ModdedSword {
                 fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
                 fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 world.spawnEntity(fireball);
-                itemStack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
+                itemStack.damage(1, user, WeaponUtil.getActiveHandSlot(user));
             }
             return TypedActionResult.success(itemStack, world.isClient());
         } else {
@@ -118,7 +118,7 @@ public class DragonStaff extends ModdedSword {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return (int) (ConfigConstructor.dragon_staff_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 20);
     }
 

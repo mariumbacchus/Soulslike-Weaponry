@@ -1,12 +1,6 @@
 package net.soulsweaponry.items.spear;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableMultimap.Builder;
-import com.google.common.collect.Multimap;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.TameableEntity;
@@ -31,8 +25,6 @@ import java.util.List;
 
 public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBonus {
 
-    private static final String RAINING = "raining_id";
-
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL, TooltipAbilities.INFINITY, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.STORM_STOMP, TooltipAbilities.WEATHERBORN, TooltipAbilities.DRAGONS_SCOURGE);
@@ -41,18 +33,18 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
                 if (stack != user.getOffHandStack()) {
-                    stack.damage(1, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                    stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                     DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
                     entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
                     entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                     world.spawnEntity(entity);
-                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
                     this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(world, stack));
                 } else {
-                    stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+                    stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 5));
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0));
                     Box chunkBox = new Box(user.getX() - 10, user.getY() - 5, user.getZ() - 10, user.getX() + 10, user.getY() + 5, user.getZ() + 10);
@@ -78,7 +70,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
                                     ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                                 }
                             }
-                            world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                            world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
                     this.applyItemCooldown(playerEntity, this.getScaledCooldownAbility(world, stack));
@@ -111,33 +103,13 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!this.isDisabled(stack)) {
-            this.updateRaining(world, stack);
-        }
-    }
-
-    private void updateRaining(World world, ItemStack stack) {
-        stack.getOrCreateNbt().putBoolean(RAINING, world.isRaining());
-    }
-
-    private boolean getRaining(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains(RAINING) && !this.isDisabled(stack)) {
-            return stack.getNbt().getBoolean(RAINING);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-        if (slot == EquipmentSlot.MAINHAND && this.getRaining(stack)) {
-            Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", ConfigConstructor.dragonslayer_swordspear_damage + ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage - 1, EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", - (4f - ConfigConstructor.dragonslayer_swordspear_rain_total_attack_speed), EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
-        } else {
-            return super.getAttributeModifiers(slot);
+            float damage = this.getAttackDamage();
+            float attackSpeed = this.getAttackSpeed();
+            if (world.isRaining()) {
+                damage += ConfigConstructor.dragonslayer_swordspear_damage + ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage - 1;
+                attackSpeed = - (4f - ConfigConstructor.dragonslayer_swordspear_rain_total_attack_speed);
+            }
+            WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
         }
     }
 

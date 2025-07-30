@@ -20,20 +20,17 @@ import net.soulsweaponry.util.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.RenderProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
             ConfigConstructor.darkin_blade_calculated_fall_base_radius,
             ConfigConstructor.darkin_blade_calculated_fall_height_increase_radius_modifier,
@@ -75,7 +72,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player) {
             float cooldownMod = 1f;
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
             if (i >= 10) {
                 Vec3d rotation = player.getRotationVector().multiply(1f);
                 player.addVelocity(rotation.getX(), 1, rotation.getZ());
@@ -86,7 +83,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             } else {
                 this.detonateGroundEffect(user, (int) ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
             }
-            stack.damage(3, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
+            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
             this.applyItemCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
         }
     }
@@ -121,27 +118,24 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         data.add(new AnimationController<>(this, "controller", 20, this::predicate));
     }
 
-
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private final DarkinBladeRenderer renderer = new DarkinBladeRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private DarkinBladeRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new DarkinBladeRenderer();
+
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return this.renderProvider;
     }
 
     @Override
