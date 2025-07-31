@@ -128,11 +128,6 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
         });
     }
 
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_draupnir_spear;
-    }
-
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
         List<Integer> ids = Optional.ofNullable(stack.get(ComponentRegistry.INT_LIST)).orElse(new ArrayList<>());
         ids.add(entity.getId());

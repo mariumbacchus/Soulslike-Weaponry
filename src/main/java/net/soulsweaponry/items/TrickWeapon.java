@@ -9,15 +9,13 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
 
     private final float undeadBonus;
     private final boolean isHeavy;
-    private final boolean isFireproof;
     private final boolean isDisabled;
     private final int postureLoss;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, boolean isHeavy, int postureLoss, float undeadBonus, boolean isFireproof, boolean isDisabled) {
+    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, boolean isHeavy, int postureLoss, float undeadBonus, boolean isDisabled) {
         super(toolMaterial, damage, attackSpeed, settings);
         this.undeadBonus = undeadBonus;
         this.isHeavy = isHeavy;
-        this.isFireproof = isFireproof;
         this.isDisabled = isDisabled;
         this.postureLoss = postureLoss;
         if (this.isHeavy()) {
@@ -28,8 +26,8 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
         }
     }
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, float undeadBonus, boolean isFireproof, boolean isDisabled) {
-        this(toolMaterial, damage, attackSpeed, settings, false, 0, undeadBonus, isFireproof, isDisabled);
+    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, float undeadBonus, boolean isDisabled) {
+        this(toolMaterial, damage, attackSpeed, settings, false, 0, undeadBonus, isDisabled);
     }
 
     @Override
@@ -54,11 +52,6 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
     @Override
     public boolean isDisabled(ItemStack stack) {
         return this.isDisabled;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return this.isFireproof;
     }
 
     @Override

@@ -108,11 +108,6 @@ public class Tonitrus extends ModdedSword implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_tonitrus;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_tonitrus;
     }

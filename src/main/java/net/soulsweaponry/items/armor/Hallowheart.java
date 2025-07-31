@@ -80,11 +80,6 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_hallowheart;
-    }//TODO move
-
-    @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof Hallowheart;

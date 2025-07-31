@@ -112,8 +112,6 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, I
         return new Text[0];
     }
 
-    //public abstract boolean isFireproof(); TODO was removed, i guess i gotta manually put in .isfireproof() in the creation of the item now
-
     public abstract boolean isSlotActive(PlayerEntity player, EquipmentSlot slot);
 
     @Override

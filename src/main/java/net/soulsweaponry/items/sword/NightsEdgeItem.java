@@ -26,11 +26,6 @@ public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_nights_edge;
-    }
-
-    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);

@@ -2,10 +2,12 @@ package net.soulsweaponry;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -13,6 +15,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Unit;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ChungusTonicWhitelist;
@@ -20,7 +23,6 @@ import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
 import net.soulsweaponry.items.TestItem;
-import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.world.gen.WorldGen;
@@ -83,8 +85,14 @@ public class SoulsWeaponry implements ModInitializer {
         });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
+            ItemRegistry.registerItem(new TestItem(new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
         }
+
+        // TODO test this
+        DefaultItemComponentEvents.MODIFY.register(context -> context.modify(
+                ItemRegistry.FIREPROOF_ITEMS::contains,
+                (builder, item) -> builder.add(DataComponentTypes.FIRE_RESISTANT, Unit.INSTANCE)
+        ));
 
         Registry.register(Registries.ITEM_GROUP, Identifier.of(ModId, "general"),
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))

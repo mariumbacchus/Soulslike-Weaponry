@@ -116,11 +116,6 @@ public class Excalibur extends ChargeToUseItem implements ILifeGuard {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_excalibur;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_excalibur;
     }

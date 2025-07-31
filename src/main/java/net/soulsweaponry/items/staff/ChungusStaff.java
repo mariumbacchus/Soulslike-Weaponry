@@ -63,11 +63,6 @@ public class ChungusStaff extends ModdedSword implements IKeybindAbility {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chungus_staff;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_chungus_staff;
     }

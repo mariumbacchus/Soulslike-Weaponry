@@ -63,11 +63,6 @@ public class SkofnungStone extends ModdedItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return false;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_skofnung_stone;
     }

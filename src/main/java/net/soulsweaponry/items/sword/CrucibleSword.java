@@ -46,11 +46,6 @@ public class CrucibleSword extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_crucible_sword;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_crucible_sword;
     }

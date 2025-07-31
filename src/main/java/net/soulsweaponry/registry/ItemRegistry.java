@@ -18,7 +18,12 @@ import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.potion.*;
 import net.soulsweaponry.util.RecipeHandler;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ItemRegistry {
+
+    public static final Set<Item> FIREPROOF_ITEMS = new HashSet<>();
 
     public static final FoodComponent DEMON_HEART_EDIBLE = new FoodComponent.Builder()
             .nutrition(4).saturationModifier(6f).alwaysEdible()
@@ -37,7 +42,7 @@ public class ItemRegistry {
     public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
     public static final Item LOST_SOUL = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5);
     public static final Item MOONSTONE = new Item(new Item.Settings());
-    public static final Item CHUNGUS_EMERALD = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true, false);
+    public static final Item CHUNGUS_EMERALD = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true);
     public static final Item DEMON_HEART = new LoreItem(new Item.Settings().food(DEMON_HEART_EDIBLE), 3);
     public static final Item MOLTEN_DEMON_HEART= new Item(new Item.Settings());
     public static final Item DEMON_CHUNK = new LoreItem(new Item.Settings(), 1, true);
@@ -46,12 +51,12 @@ public class ItemRegistry {
     public static final Item SILVER_BULLET = new Item(new Item.Settings().maxCount(20));
     public static final Item BOSS_COMPASS = new BossCompass(new Item.Settings().rarity(Rarity.RARE));
     public static final Item MOONSTONE_RING = new MoonstoneRing(new Item.Settings().rarity(Rarity.EPIC).maxDamage(25));
-    public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 1, true, true);
+    public static final Item SHARD_OF_UNCERTAINTY = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 1, true);
     public static final Item VERGLAS = new Item(new Item.Settings());
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20));
     public static final Item IRON_SKULL = new Item(new Item.Settings());
 
-    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 12, true, true);
+    public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON).fireproof(), 12, true);
 
     public static final Item MOONSTONE_SHOVEL = new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
             .attributeModifiers(ShovelItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f)));
@@ -64,7 +69,7 @@ public class ItemRegistry {
 
     public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
     public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
-    public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true, true);
+    public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true);
     public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 3, true);
     public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof());
     public static final Item GLASS_VIAL = new Item(new Item.Settings());
@@ -96,9 +101,9 @@ public class ItemRegistry {
         registerItem(DEMON_CHUNK, "demon_chunk");
         registerItem(CRIMSON_INGOT, "crimson_ingot");
         registerItem(SOUL_INGOT, "soul_ingot");
-        registerGunItem(SILVER_BULLET, "silver_bullet");
+        registerGunItem(SILVER_BULLET, "silver_bullet", false);
         registerItem(BOSS_COMPASS, "boss_compass");
-        registerItem(MOONSTONE_RING, "moonstone_ring");
+        registerItem(MOONSTONE_RING, "moonstone_ring", ConfigConstructor.is_fireproof_moonlight_ring);
         registerItem(SHARD_OF_UNCERTAINTY, "shard_of_uncertainty");
         registerItem(VERGLAS, "verglas");
         registerItem(SKOFNUNG_STONE, "skofnung_stone");
@@ -145,54 +150,65 @@ public class ItemRegistry {
 		return Registry.register(Registries.ITEM, Identifier.of(SoulsWeaponry.ModId, name), item);
 	}
 
+    public static <I extends Item> I registerItem(I item, String name, boolean fireproof) {
+        registerFireproof(item, fireproof);
+        return registerItem(item, name);
+    }
+
     /**
      * Register an item that should be included in the all_weapons advancement
      */
-    public static <I extends Item> I registerLegendaryItem(I item, String name) {
+    public static <I extends Item> I registerLegendaryItem(I item, String name, boolean fireproof) {
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_WEAPONS.add(item);//TODO check size of this with print in & out of datagen
         }
-        return registerItem(item, name);
+        return registerItem(item, name, fireproof);
     }
 
-    public static <I extends Item> I registerItemRemovableRecipe(I item, String name, boolean removeRecipe) {
+    public static <I extends Item> I registerItemRemovableRecipe(I item, String name, boolean removeRecipe, boolean fireproof) {
         RecipeHandler.RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, name), removeRecipe);
-        return registerItem(item, name);
+        return registerItem(item, name, fireproof);
     }
 
-    public static <I extends Item> I registerArmorItem(I item, String name, boolean removeRecipe) {
+    public static <I extends Item> I registerArmorItem(I item, String name, boolean removeRecipe, boolean fireproof) {
         if (ConfigConstructor.disable_armor_recipes) {
-            return registerItemRemovableRecipe(item, name, true);
+            return registerItemRemovableRecipe(item, name, true, fireproof);
         } else {
-            return registerItemRemovableRecipe(item, name, removeRecipe);
+            return registerItemRemovableRecipe(item, name, removeRecipe, fireproof);
         }
     }
 
     /**
      * Register a weapon that has a recipe that can be disabled
      */
-    public static <I extends Item> I registerWeaponItem(I item, String name, boolean removeRecipe) {
+    public static <I extends Item> I registerWeaponItem(I item, String name, boolean removeRecipe, boolean fireproof) {
         if (ConfigConstructor.disable_weapon_recipes) {
-            return registerItemRemovableRecipe(item, name, true);
+            return registerItemRemovableRecipe(item, name, true, fireproof);
         } else {
-            return registerItemRemovableRecipe(item, name, removeRecipe);
+            return registerItemRemovableRecipe(item, name, removeRecipe, fireproof);
         }
     }
 
     /**
      * Register a weapon/item that should be included in the all_weapons advancement and has a recipe that can be disabled
      */
-    public static <I extends Item> I registerLegendaryWeapon(I item, String name, boolean removeRecipe) {
+    public static <I extends Item> I registerLegendaryWeapon(I item, String name, boolean removeRecipe, boolean fireproof) {
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_WEAPONS.add(item);
         }
-        return registerWeaponItem(item, name, removeRecipe);
+        return registerWeaponItem(item, name, removeRecipe, fireproof);
     }
 
-    public static <I extends Item> I registerGunItem(I item, String name) {
+    public static <I extends Item> I registerGunItem(I item, String name, boolean fireproof) {
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_GUNS.add(item);
         }
-        return registerItemRemovableRecipe(item, name, ConfigConstructor.disable_gun_recipes);
+        return registerItemRemovableRecipe(item, name, ConfigConstructor.disable_gun_recipes, fireproof);
+    }
+
+    public static void registerFireproof(Item item, boolean fireproof) {
+        if (fireproof) {
+            FIREPROOF_ITEMS.add(item);
+        }
     }
 }

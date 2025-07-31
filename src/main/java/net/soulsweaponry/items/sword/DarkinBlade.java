@@ -103,11 +103,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
         return (int) Math.max(ConfigConstructor.darkin_blade_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 15);
     }
 
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_darkin_blade;
-    }
-
     private PlayState predicate(AnimationState<?> event){
         event.getController().setAnimation(RawAnimation.begin().then("heartbeat", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;

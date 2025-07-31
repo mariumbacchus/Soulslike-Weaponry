@@ -49,11 +49,6 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_featherlight;
-    }
-
-    @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
     }
 

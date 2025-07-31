@@ -19,11 +19,6 @@ public class SoulRobesArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_soul_robes_set;
-    }//TODO move
-
-    @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         return false;
     }

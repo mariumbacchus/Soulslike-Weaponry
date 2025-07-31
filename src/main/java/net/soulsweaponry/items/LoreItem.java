@@ -10,21 +10,15 @@ public class LoreItem extends ModdedItem {
 
     private final int linesOfLore;
     private final boolean isInfo;
-    private final boolean fireproof;
 
     public LoreItem(Settings settings, int linesOfLore) {
         this(settings, linesOfLore, false);
     }
 
-    public LoreItem(Settings settings, int linesOfLore, boolean fireproof) {
-        this(settings, linesOfLore, false, fireproof);
-    }
-
-    public LoreItem(Settings settings, int linesOfLore, boolean isInfo, boolean fireproof) {
+    public LoreItem(Settings settings, int linesOfLore, boolean isInfo) {
         super(settings);
         this.linesOfLore = linesOfLore;
         this.isInfo = isInfo;
-        this.fireproof = fireproof;
     }
 
     private String getIdName() {
@@ -52,11 +46,6 @@ public class LoreItem extends ModdedItem {
     @Override
     public Text[] getLoreTooltips() {
         return !this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return this.fireproof;
     }
 
     @Override

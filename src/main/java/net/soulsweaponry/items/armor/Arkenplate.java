@@ -22,6 +22,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -58,7 +59,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
         float i = ConfigConstructor.arkenplate_shockwave_knockback;
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (stack == null) return;
-        i += EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack);//TODO enchants????
+        i += WeaponUtil.getLevel(stack, Enchantments.UNBREAKING);
         ParticleHandler.singleParticle(world, ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getBodyY(0.5D), player.getZ(), 0, 0, 0);
         for (Entity entity : world.getOtherEntities(player, player.getBoundingBox().expand(5D))) {
             if (entity instanceof LivingEntity target && !target.isTeammate(player)) {
@@ -77,11 +78,6 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
                     - this.getReduceCooldownEnchantLevel(stack) * 20));
         }
     }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_arkenplate;
-    }//TODO move
 
     @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {

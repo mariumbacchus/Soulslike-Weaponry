@@ -23,11 +23,6 @@ public class ChaosHelmet extends ChaosCrown {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_helmet;
-    }
-
-    @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;

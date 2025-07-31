@@ -59,11 +59,6 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_master_sword;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_master_sword;
     }

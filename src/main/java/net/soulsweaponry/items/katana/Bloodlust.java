@@ -66,11 +66,6 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_bloodlust;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_bloodlust;
     }

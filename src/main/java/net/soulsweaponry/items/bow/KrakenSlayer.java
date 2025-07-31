@@ -27,11 +27,6 @@ public class KrakenSlayer extends ModdedBow {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_kraken_slayer_bow;
-    }
-
-    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         return getKrakenSlayerProjectile(world, bowStack, shooter, originalArrow.getDamage(), ConfigConstructor.kraken_slayer_bonus_true_damage + WeaponUtil.getLevel(bowStack, Enchantments.POWER));
     }

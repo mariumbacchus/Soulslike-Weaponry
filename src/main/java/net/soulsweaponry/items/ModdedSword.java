@@ -7,6 +7,8 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;
@@ -63,7 +65,4 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         this.appendTooltipAbilities(stack, context, tooltip, type);
         super.appendTooltip(stack, context, tooltip, type);
     }
-
-    @Override
-    public abstract boolean isFireproof();//TODO move
 }

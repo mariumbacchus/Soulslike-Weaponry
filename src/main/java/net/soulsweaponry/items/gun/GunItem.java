@@ -63,9 +63,6 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     public abstract float getBulletDivergence(ItemStack stack);
     public abstract int getCooldown(ItemStack stack);
 
-    @Override
-    public abstract boolean isFireproof();//TODO move
-
     public int getMaxUseTime(ItemStack stack) {
         return 0;
     }

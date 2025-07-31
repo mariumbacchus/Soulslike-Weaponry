@@ -99,11 +99,6 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_forlorn_scythe;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override

@@ -128,11 +128,6 @@ public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGro
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_comet_spear;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_comet_spear;
     }

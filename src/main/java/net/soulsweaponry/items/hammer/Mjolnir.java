@@ -169,11 +169,6 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_mjolnir;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override

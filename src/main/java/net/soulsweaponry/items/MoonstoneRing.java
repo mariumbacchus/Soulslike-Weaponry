@@ -1,6 +1,5 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -42,10 +41,5 @@ public class MoonstoneRing extends ModdedItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_moonstone_ring;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_moonlight_ring;
     }
 }

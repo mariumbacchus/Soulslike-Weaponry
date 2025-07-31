@@ -27,11 +27,6 @@ public class Dragonbane extends ModdedSword implements IDragonBonus {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dragonbane;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragonbane;
     }

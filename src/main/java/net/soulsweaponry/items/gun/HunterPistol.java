@@ -53,11 +53,6 @@ public class HunterPistol extends GunItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_hunter_pistol;
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);

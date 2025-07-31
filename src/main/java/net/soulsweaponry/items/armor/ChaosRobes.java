@@ -125,11 +125,6 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_robes;
-    }//TODO move
-
-    @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof ChaosRobes;

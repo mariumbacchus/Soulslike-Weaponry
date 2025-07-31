@@ -37,7 +37,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return (int) (ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10);
     }
 
@@ -94,11 +94,6 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     private int getCooldown(ItemStack stack) {
         return (int) Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_whirligig_sawblade;
     }
 
     @Override

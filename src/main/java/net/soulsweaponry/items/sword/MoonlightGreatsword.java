@@ -75,11 +75,6 @@ public class MoonlightGreatsword extends ChargeToUseItem {
         };
     }
 
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_moonlight_greatsword;
-    }
-
     public float getProjectileDamage() {
         return ConfigConstructor.moonlight_greatsword_projectile_damage;
     }

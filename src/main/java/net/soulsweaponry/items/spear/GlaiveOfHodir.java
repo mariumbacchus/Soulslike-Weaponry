@@ -45,11 +45,6 @@ public class GlaiveOfHodir extends BladeDanceItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_glaive_of_hodir;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_glaive_of_hodir;
     }

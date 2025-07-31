@@ -49,11 +49,6 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_shadow_assassin_scythe;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_shadow_assassin_scythe;
     }

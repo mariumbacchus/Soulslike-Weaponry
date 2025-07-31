@@ -156,11 +156,6 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_soul_reaper;
-    }
-
-    @Override
     public boolean canEnchantReduceCooldown(ItemStack stack) {
         return false;
     }

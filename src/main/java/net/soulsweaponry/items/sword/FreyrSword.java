@@ -65,11 +65,6 @@ public class FreyrSword extends ModdedSword implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_sword_of_freyr;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override

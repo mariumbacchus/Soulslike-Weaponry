@@ -82,11 +82,6 @@ public class Bloodthirster extends ModdedSword implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_bloodthirster;
-    }
-
-    @Override
     public boolean canEnchantReduceCooldown(ItemStack stack) {
         return ConfigConstructor.lifesteal_item_enchant_reduces_cooldown;
     }

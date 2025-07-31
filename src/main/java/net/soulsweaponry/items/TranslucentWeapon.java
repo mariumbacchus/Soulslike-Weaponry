@@ -52,9 +52,4 @@ public class TranslucentWeapon extends ModdedSword {
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_translucent_weapons;
-    }
 }

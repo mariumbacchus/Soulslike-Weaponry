@@ -43,11 +43,6 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dawnbreaker;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }

@@ -144,9 +144,4 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_empowered_dawnbreaker;
     }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_empowered_dawnbreaker;
-    }
 }

@@ -41,7 +41,4 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
-
-    @Override
-    public abstract boolean isFireproof();//TODO move
 }

@@ -67,11 +67,6 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_moonveil;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_moonveil;
     }

@@ -127,11 +127,6 @@ public class DragonStaff extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dragon_staff;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragon_staff;
     }

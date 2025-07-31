@@ -116,11 +116,6 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_holy_moonlight_greatsword;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_holy_moonlight_greatsword;
     }

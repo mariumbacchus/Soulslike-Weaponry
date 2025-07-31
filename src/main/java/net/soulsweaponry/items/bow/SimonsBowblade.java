@@ -50,11 +50,6 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_simons_bowblade;
-    }
-
-    @Override
     public boolean isRighteous() {
         return true;
     }

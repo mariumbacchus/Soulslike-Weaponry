@@ -69,11 +69,6 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dark_moon_greatsword;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dark_moon_greatsword;
     }

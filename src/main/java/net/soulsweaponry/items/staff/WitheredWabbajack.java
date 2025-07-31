@@ -134,9 +134,4 @@ public class WitheredWabbajack extends ModdedSword {
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
     }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_withered_wabbajack;
-    }
 }

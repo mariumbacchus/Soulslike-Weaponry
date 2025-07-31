@@ -106,11 +106,6 @@ public class DarkinScythePre extends SoulHarvestingItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_darkin_scythe;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_scythe;
     }

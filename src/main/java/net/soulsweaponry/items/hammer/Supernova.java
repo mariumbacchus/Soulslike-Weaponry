@@ -107,11 +107,6 @@ public class Supernova extends UltraHeavyWeapon {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_supernova;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_supernova;
     }

@@ -167,11 +167,6 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_nightfall;
-    }
-
-    @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.getItemCooldownManager().isCoolingDown(this)) {
             this.applyItemCooldown(player, this.getScaledCooldownShield(stack));

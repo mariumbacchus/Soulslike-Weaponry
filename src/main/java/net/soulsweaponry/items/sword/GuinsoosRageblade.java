@@ -42,11 +42,6 @@ public class GuinsoosRageblade extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_rageblade;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_rageblade;
     }

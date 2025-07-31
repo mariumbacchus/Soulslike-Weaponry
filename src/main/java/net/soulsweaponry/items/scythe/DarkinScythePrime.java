@@ -36,11 +36,6 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_darkin_scythe_prime;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_scythe_prime;
     }

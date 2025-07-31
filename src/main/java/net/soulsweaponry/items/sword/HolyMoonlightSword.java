@@ -15,7 +15,7 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,
-                ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_holy_moonlight_sword, ConfigConstructor.disable_use_holy_moonlight_sword);
+                ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage, ConfigConstructor.disable_use_holy_moonlight_sword);
         this.addTooltipAbility(TooltipAbilities.CHARGE, TooltipAbilities.CHARGE_BONUS_DAMAGE);
     }
 

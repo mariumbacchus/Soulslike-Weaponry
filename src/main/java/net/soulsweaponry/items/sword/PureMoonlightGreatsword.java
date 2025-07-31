@@ -52,11 +52,6 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_pure_moonlight_greatsword;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_pure_moonlight_greatsword;
     }

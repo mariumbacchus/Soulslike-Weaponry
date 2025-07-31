@@ -34,11 +34,6 @@ public class LichBane extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_lich_bane;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_lich_bane;
     }

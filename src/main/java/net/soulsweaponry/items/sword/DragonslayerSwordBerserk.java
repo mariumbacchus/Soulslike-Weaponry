@@ -57,11 +57,6 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_heap_of_raw_iron;
-    }
-
-    @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity user) {
         if (!user.getItemCooldownManager().isCoolingDown(this)) {
             stack.damage(1, user, WeaponUtil.getActiveHandSlot(user));

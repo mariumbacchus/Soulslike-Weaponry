@@ -114,11 +114,6 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dragonslayer_swordspear;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragonslayer_swordspear;
     }

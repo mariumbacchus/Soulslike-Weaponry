@@ -85,11 +85,6 @@ public class Skofnung extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_skofnung;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_skofnung;
     }

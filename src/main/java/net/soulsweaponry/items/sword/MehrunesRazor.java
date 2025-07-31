@@ -33,11 +33,6 @@ public class MehrunesRazor extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_mehrunes_razor;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_mehrunes_razor;
     }

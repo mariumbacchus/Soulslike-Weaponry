@@ -71,11 +71,6 @@ public class MoonlightShortsword extends ModdedSword {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_moonlight_shortsword;
-    }
-
-    @Override
     public boolean canEnchantReduceCooldown(ItemStack stack) {
         return false;
     }

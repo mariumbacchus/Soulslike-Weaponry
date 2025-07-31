@@ -34,7 +34,7 @@ public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
     );
 
     public Kirkhammmer(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, (int) ConfigConstructor.kirkhammer_posture_loss, 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
+        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, (int) ConfigConstructor.kirkhammer_posture_loss, 0f, ConfigConstructor.disable_use_kirkhammer);
     }
 
     @Override

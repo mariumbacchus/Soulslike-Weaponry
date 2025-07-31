@@ -128,11 +128,6 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_leviathan_axe;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
