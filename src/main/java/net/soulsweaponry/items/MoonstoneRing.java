@@ -2,6 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class MoonstoneRing extends ModdedItem {
 
@@ -29,8 +31,8 @@ public class MoonstoneRing extends ModdedItem {
             return TypedActionResult.fail(stack);
         }
         if (!user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
-            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, (int) ConfigConstructor.moonstone_ring_lunar_herald_duration, (int) (ConfigConstructor.moonstone_ring_lunar_herald_base_amplifier + EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack))));
-            stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
+            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, (int) ConfigConstructor.moonstone_ring_lunar_herald_duration, (int) (ConfigConstructor.moonstone_ring_lunar_herald_base_amplifier + WeaponUtil.getLevel(stack, Enchantments.UNBREAKING))));
+            stack.damage(1, user, LivingEntity.getSlotForHand(hand));
             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
             return TypedActionResult.success(stack, world.isClient());
         }

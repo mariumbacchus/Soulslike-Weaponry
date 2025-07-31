@@ -8,7 +8,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+
+import java.util.Optional;
 
 public class TranslucentWeapon extends ModdedSword {
 
@@ -25,10 +28,11 @@ public class TranslucentWeapon extends ModdedSword {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (stack.hasNbt() && stack.getNbt().contains("Invisible")) {
-            stack.getNbt().putBoolean("Invisible", !stack.getNbt().getBoolean("Invisible"));
+        Boolean invisible = stack.get(ComponentRegistry.INVISIBLE);
+        if (invisible != null) {
+            stack.set(ComponentRegistry.INVISIBLE, !invisible);
         } else {
-            stack.getOrCreateNbt().putBoolean("Invisible", true);
+            stack.set(ComponentRegistry.INVISIBLE, true);
         }
         user.getItemCooldownManager().set(this, 20);
         user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.75f);
@@ -36,7 +40,7 @@ public class TranslucentWeapon extends ModdedSword {
     }
 
     public static boolean isInvisible(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().contains("Invisible") && stack.getNbt().getBoolean("Invisible");
+        return Optional.ofNullable(stack.get(ComponentRegistry.INVISIBLE)).orElse(false);
     }
 
     @Override

@@ -66,6 +66,7 @@ public class WeaponUtil {
     /**
      * TODO test
      * Gets the level of a specific enchant based on the RegistryKey for simplicity
+     * TODO alternatively, look at what has been done in ICooldownItem to get level of the enchant, maybe replace this with that
      */
     public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
         for (Map.Entry<RegistryEntry<Enchantment>, Integer> e : EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries()) {

@@ -22,8 +22,6 @@ import java.util.Optional;
 
 public class Skofnung extends ModdedSword {
 
-    public static final String EMPOWERED = "empowered_attacks_left";
-
     /**
      * The Skofnung sword will add a status effect that disables all healing on the target for a period of time.
      * This effect can be removed, however, by using the Skofnung Stone. Additionally, when the stone is used while 

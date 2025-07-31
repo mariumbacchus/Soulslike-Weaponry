@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -39,12 +40,14 @@ public abstract class UmbralTrespassItem extends ModdedSword {
             this.notifyCooldown(user);
             return TypedActionResult.fail(stack);
         }
-        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < 200D && !world.isClient) {
+        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < 200D && world instanceof ServerWorld serverWorld) {
             LivingEntity target = user.getAttacking();
             if (user.startRiding(target, true)) {
                 if (!UmbralTrespassData.shouldDamageRiding(user)) {
                     UmbralTrespassData.setShouldDamageRiding(user, true);
-                    UmbralTrespassData.setOtherStats(user, this.getAbilityDamage() + EnchantmentHelper.getAttackDamage(stack, target.getGroup()), this.getAbilityCooldown(stack), this.shouldAbilityHeal());
+                    UmbralTrespassData.setOtherStats(user, this.getAbilityDamage()
+                            + EnchantmentHelper.getDamage(serverWorld, stack, target, user.getDamageSources().playerAttack(user), 0),
+                            this.getAbilityCooldown(stack), this.shouldAbilityHeal());
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, this.ticksBeforeDismount, 0));
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, this.ticksBeforeDismount, 0));
                 }

@@ -1,13 +1,16 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO reduce cooldown with the new upgrade system instead when implemented (add twinkling titanite to weapons to boost damage and stuff)
 public interface ICooldownItem {
 
     default void applyItemCooldown(PlayerEntity player, int cooldown) {
@@ -72,10 +76,16 @@ public interface ICooldownItem {
         if (enchantId.equals("damage")) {
             return WeaponUtil.getEnchantDamageBonus(stack);
         } else {
-            Identifier id = new Identifier(enchantId);
-            Enchantment enchantment = Registries.ENCHANTMENT.get(id);
-            if (enchantment != null) {
-                return EnchantmentHelper.getLevel(enchantment, stack);
+            //TODO test
+            //NOTE: Config values have just the enchant name so it will struggle to find enchants from other mods I think
+            Identifier id = Identifier.of(enchantId);
+            RegistryKey<Registry<Enchantment>> enchantmentRegistryKey = RegistryKeys.ENCHANTMENT;
+            RegistryKey<Enchantment> key = RegistryKey.of(enchantmentRegistryKey, id);
+            ItemEnchantmentsComponent enchComp = stack.getEnchantments();
+            for (RegistryEntry<Enchantment> entry : enchComp.getEnchantments()) {
+                if (entry.equals(key)) {
+                    return enchComp.getLevel(entry);
+                }
             }
         }
         return 0;

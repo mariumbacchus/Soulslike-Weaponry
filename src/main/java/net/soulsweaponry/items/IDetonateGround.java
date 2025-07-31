@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -38,7 +39,8 @@ public interface IDetonateGround {
                 if (!livingEntity.isAlive() || livingEntity.isTeammate(user)) {
                     continue;
                 }
-                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup()));
+                float bonus = world instanceof ServerWorld serverWorld ? EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0) : 0;
+                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + bonus);
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getDetonationAttributes().launchMod(), this.getDetonationAttributes().maxLaunchPower()), 0);
                     float healMod = this.getDetonationAttributes().healMod();
@@ -48,7 +50,7 @@ public interface IDetonateGround {
             }
         }
         this.getDetonationAttributes().onTrigger().accept(user, fallDistance, stack);
-        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
         float pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
         if (!world.isClient) {
             ParticleHandler.particleOutburstMap(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), ParticleEvents.BASE_GRAND_SKYFALL_MAP, pDistance);
