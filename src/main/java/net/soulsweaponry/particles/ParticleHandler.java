@@ -1,22 +1,16 @@
 package net.soulsweaponry.particles;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.*;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -99,10 +93,8 @@ public class ParticleHandler {
         if (world.isClient) {
             ChainLightningHandler.spawnChainLightning(world, from, to);
         } else {
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeVector3f(from);
-            buf.writeVector3f(to);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(from.x, from.y, from.z), PacketIds.CHAIN_LIGHTNING, buf);
+            ChainLightningS2C pkt = new ChainLightningS2C(from, to);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(from.x(), from.y(), from.z()), pkt);
         }
     }
 
@@ -122,51 +114,8 @@ public class ParticleHandler {
         if (world.isClient) {
             world.addParticle(particle, x, y, z, velX, velY, velZ);
         } else {
-            ItemStack stack = new ItemStack(Items.AIR);
-            if (particle instanceof ItemStackParticleEffect par) {
-                stack = par.getItemStack();
-                particle = ParticleTypes.FLAME; //Placeholder since the packet replaces this particle with an ItemStackParticle
-            }
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
-            buf.writeItemStack(stack);
-            buf.writeDouble(x);
-            buf.writeDouble(y);
-            buf.writeDouble(z);
-            buf.writeDouble(velX);
-            buf.writeDouble(velY);
-            buf.writeDouble(velZ);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SINGLE_PARTICLE, buf);
-        }
-    }
-
-    /**
-     * Old implementation that uses a list every call and doesn't save to cache, may therefore be more taxing on the hardware than the other method.
-     */
-    public static void particleOutburstList(World world, int amount, double x, double y, double z, ParticleEffect particle, Vec3d velDivider, float sizeMod) {
-        if (world.isClient) {
-            List<Vec3d> list = getParticleOutburstCords(amount, velDivider, sizeMod);
-            for (Vec3d vec : list) {
-                world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
-            }
-        } else {
-            ItemStack stack = new ItemStack(Items.AIR);
-            if (particle instanceof ItemStackParticleEffect par) {
-                stack = par.getItemStack();
-                particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
-            }
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
-            buf.writeInt(amount);
-            buf.writeItemStack(stack);
-            buf.writeDouble(x);
-            buf.writeDouble(y);
-            buf.writeDouble(z);
-            buf.writeDouble(velDivider.getX());
-            buf.writeDouble(velDivider.getY());
-            buf.writeDouble(velDivider.getZ());
-            buf.writeFloat(sizeMod);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.OUTBURST_PARTICLES, buf);
+            SingleParticleS2C pkt = new SingleParticleS2C(particle, x, y, z, velX, velY, velZ);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), pkt);
         }
     }
 
@@ -174,29 +123,16 @@ public class ParticleHandler {
         // Generate a cache key based on the particle settings
         String cacheKey = generateCacheKey(amount, velDivider, sizeMod);
         // Get particle velocities from cache or generate if not available
-        Vec3d[] particleVelocities = PARTICLE_OUTBURST_CACHE.computeIfAbsent(cacheKey, key -> getParticleOutburstCordsArray(amount, velDivider, sizeMod));
+        Vec3d[] particleVelocities = PARTICLE_OUTBURST_CACHE.computeIfAbsent(cacheKey, key ->
+                getParticleOutburstCordsArray(amount, velDivider, sizeMod));
         if (world.isClient) {
             for (Vec3d vec : particleVelocities) {
                 world.addParticle(particle, x, y, z, vec.x, vec.y, vec.z);
             }
         } else {
-            ItemStack stack = new ItemStack(Items.AIR);
-            if (particle instanceof ItemStackParticleEffect par) {
-                stack = par.getItemStack();
-                particle = ParticleTypes.FLAME;
-            }
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
-            buf.writeInt(amount);
-            buf.writeItemStack(stack);
-            buf.writeDouble(x);
-            buf.writeDouble(y);
-            buf.writeDouble(z);
-            buf.writeDouble(velDivider.getX());
-            buf.writeDouble(velDivider.getY());
-            buf.writeDouble(velDivider.getZ());
-            buf.writeFloat(sizeMod);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.OUTBURST_PARTICLES, buf);
+            ParticleOutburstS2C pkt = new ParticleOutburstS2C(particle, x, y, z, amount,
+                    velDivider.x, velDivider.y, velDivider.z, sizeMod);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), pkt);
         }
     }
 
@@ -207,38 +143,22 @@ public class ParticleHandler {
                 world.addParticle(particle, x, y, z, vec.getX(), vec.getY(), vec.getZ());
             }
         } else {
-            ItemStack stack = new ItemStack(Items.AIR);
-            if (particle instanceof ItemStackParticleEffect par) {
-                stack = par.getItemStack();
-                particle = ParticleTypes.FLAME; //Placeholder since the packet can't figure out what to do with ParticleTypes.ITEM types
-            }
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeIdentifier(Registries.PARTICLE_TYPE.getId(particle.getType()));
-            buf.writeInt(amount);
-            buf.writeItemStack(stack);
-            buf.writeDouble(x);
-            buf.writeDouble(y);
-            buf.writeDouble(z);
-            buf.writeFloat(sizeMod);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.SPHERE_PARTICLES, buf);
+            ParticleSphereS2C pkt = new ParticleSphereS2C(particle, x, y, z, amount, sizeMod);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), pkt);
         }
     }
 
-    public static void flashParticle(World world, double x, double y, double z, RGB rgb, float expansion) {
+    public static void flashParticle(World world, double x, double y, double z, int color, float expansion) {
         if (world.isClient) {
+            float red = ((color >> 16) & 0xFF) / 255f;
+            float green = ((color >> 8) & 0xFF) / 255f;
+            float blue = ( color & 0xFF) / 255f;
             Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, x, y, z, 0, 0, 0);
             flash.setBoundingBox(new Box(BlockPos.ofFloored(x, y, z)).expand(expansion));
-            flash.setColor(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
+            flash.setColor(red, green, blue);
         } else {
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeDouble(x);
-            buf.writeDouble(y);
-            buf.writeDouble(z);
-            buf.writeFloat(rgb.getRed());
-            buf.writeFloat(rgb.getGreen());
-            buf.writeFloat(rgb.getBlue());
-            buf.writeFloat(expansion);
-            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), PacketIds.FLASH_PARTICLE, buf);
+            FlashParticleS2C pkt = new FlashParticleS2C(x, y, z, color, expansion);
+            PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), pkt);
         }
     }
 
@@ -301,30 +221,5 @@ public class ParticleHandler {
             list.add(vec);
         }
         return list;
-    }
-
-    /**
-     * Converts basic rgb values to acceptable floats for minecraft
-     */
-    public static class RGB {
-        float r, g, b;
-
-        public RGB(float red, float green, float blue) {
-            this.r = red / 255f;
-            this.g = green / 255f;
-            this.b = blue / 255f;
-        }
-
-        public float getRed() {
-            return this.r;
-        }
-
-        public float getGreen() {
-            return this.g;
-        }
-
-        public float getBlue() {
-            return this.b;
-        }
     }
 }

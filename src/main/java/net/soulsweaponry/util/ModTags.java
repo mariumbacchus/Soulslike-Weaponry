@@ -13,7 +13,7 @@ import net.soulsweaponry.SoulsWeaponry;
 
 @SuppressWarnings("unused")
 public class ModTags {
-
+    //TODO add translations for tags (read https://fabricmc.net/2024/05/31/121.html for more info)
     public static class Blocks {
 
         public static final TagKey<Block> NEEDS_IRON_BLOCK_TOOL = createTag("needs_iron_block_tool");

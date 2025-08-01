@@ -1,23 +1,39 @@
 package net.soulsweaponry.networking.S2C;
 
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.particles.ChainLightningHandler;
 import org.joml.Vector3f;
 
-public class ChainLightningS2C {
+public record ChainLightningS2C(Vector3f from, Vector3f to) implements CustomPayload {
 
-    public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        Vector3f from = buf.readVector3f();
-        Vector3f to = buf.readVector3f();
-        client.execute(() -> handle(client, from, to));
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "chain_lightning");
+    public static final CustomPayload.Id<ChainLightningS2C> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, ChainLightningS2C> CODEC =
+            PacketCodec.tuple(
+                    PacketCodecs.VECTOR3F.cast(),
+                    ChainLightningS2C::from,
+                    PacketCodecs.VECTOR3F.cast(),
+                    ChainLightningS2C::to,
+                    ChainLightningS2C::new
+            );
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return TYPE;
     }
 
-    private static void handle(MinecraftClient client, Vector3f from, Vector3f to) {
-        if (client.world != null) {
-            ChainLightningHandler.spawnChainLightning(client.world, from, to);
+    public static void receive(ChainLightningS2C packet, ClientPlayNetworking.Context ctx) {
+        MinecraftClient client = ctx.client();
+        if (client.world == null) {
+            return;
         }
+        client.execute(() -> ChainLightningHandler.spawnChainLightning(client.world, packet.from(), packet.to()));
     }
 }

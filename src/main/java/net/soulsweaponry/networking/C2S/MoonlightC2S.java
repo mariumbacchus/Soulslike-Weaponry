@@ -1,22 +1,38 @@
 package net.soulsweaponry.networking.C2S;
 
-import com.google.common.collect.Iterables;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.network.PacketByteBuf;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.sword.MoonlightShortsword;
 
-public class MoonlightC2S {
+public record MoonlightC2S() implements CustomPayload {
 
-    public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        server.execute(() -> {
-            ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
-            if (serverWorld != null) {
-                MoonlightShortsword.summonSmallProjectile(serverWorld, player);
-            }
-        });
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "moonlight");
+    public static final CustomPayload.Id<MoonlightC2S> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, MoonlightC2S> CODEC =
+            PacketCodec.of(
+                    (pkt, buf) -> { },
+                    buf -> new MoonlightC2S()
+            );
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return TYPE;
+    }
+
+    public static void receive(MoonlightC2S pkt, ServerPlayNetworking.Context ctx) {
+        MinecraftServer server = ctx.server();
+        if (server == null) {
+            return;
+        }
+        ServerPlayerEntity player = ctx.player();
+        ServerWorld serverWorld = player.getServerWorld();
+        server.execute(() -> MoonlightShortsword.summonSmallProjectile(serverWorld, player));
     }
 }

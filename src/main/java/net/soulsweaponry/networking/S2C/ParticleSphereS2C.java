@@ -1,55 +1,64 @@
 package net.soulsweaponry.networking.S2C;
 
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.List;
 
-public class ParticleSphereS2C {
+public record ParticleSphereS2C(ParticleEffect effect, double x, double y, double z,
+                               int amount, float sizeMod) implements CustomPayload {
 
-    public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        Identifier particleId = buf.readIdentifier();
-        ParticleType<?> particle = Registries.PARTICLE_TYPE.get(particleId);
-        int amount = buf.readInt();
-        ItemStack item = buf.readItemStack();
-        double x = buf.readDouble();
-        double y = buf.readDouble();
-        double z = buf.readDouble();
-        float sizeMod = buf.readFloat();
-        client.execute(() -> handle(client.world, buf, particle, amount, item, x, y, z, sizeMod));
-    }
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "sphere_particles");
+    public static final CustomPayload.Id<ParticleSphereS2C> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, ParticleSphereS2C> CODEC =
+            PacketCodec.of(
+                    (pkt, buf) -> {
+                        PacketCodecs.registryCodec(ParticleTypes.TYPE_CODEC)
+                                .encode(buf, pkt.effect());
+                        buf.writeDouble(pkt.x());
+                        buf.writeDouble(pkt.y());
+                        buf.writeDouble(pkt.z());
+                        buf.writeInt(pkt.amount());
+                        buf.writeFloat(pkt.sizeMod());
+                    },
+                    buf -> {
+                        ParticleEffect effect = PacketCodecs
+                                .registryCodec(ParticleTypes.TYPE_CODEC)
+                                .decode(buf);
+                        double x = buf.readDouble();
+                        double y = buf.readDouble();
+                        double z = buf.readDouble();
+                        int amount = buf.readInt();
+                        float sizeMod = buf.readFloat();
+                        return new ParticleSphereS2C(effect, x, y, z, amount, sizeMod);
+                    }
+            );
 
-    private static ItemStackParticleEffect getItemParticleEffect(ItemStack item) {
-        return new ItemStackParticleEffect(ParticleTypes.ITEM, item);
-    }
+    @Override
+    public Id<? extends CustomPayload> getId() { return TYPE; }
 
-    private static <T extends ParticleEffect> T readParticle(ParticleType<T> particle, PacketByteBuf buf) {
-        return particle.getParametersFactory().read(particle, buf);
-    }
-
-    private static void handle(ClientWorld world, PacketByteBuf buf, ParticleType<?> particle, int amount, ItemStack item, double x, double y, double z, float sizeMod) {
-        ParticleEffect particleEffect;
-        if (!item.isOf(Items.AIR)) {
-            particleEffect = getItemParticleEffect(item);
-        } else {
-            particleEffect = readParticle(particle, buf);
+    public static void receive(ParticleSphereS2C pkt, ClientPlayNetworking.Context ctx) {
+        MinecraftClient client = ctx.client();
+        if (client.world == null) {
+            return;
         }
-        List<Vec3d> list = ParticleHandler.getSphereParticleCords(amount, sizeMod);
-        for (Vec3d vec : list) {
-            world.addParticle(particleEffect, x, y, z, vec.getX(), vec.getY(), vec.getZ());
-        }
+        client.execute(() -> {
+            ClientWorld world = client.world;
+            List<Vec3d> list = ParticleHandler.getSphereParticleCords(pkt.amount(), pkt.sizeMod());
+            for (Vec3d vec : list) {
+                world.addParticle(pkt.effect(), pkt.x(), pkt.y(), pkt.z(), vec.getX(), vec.getY(), vec.getZ());
+            }
+        });
     }
 }

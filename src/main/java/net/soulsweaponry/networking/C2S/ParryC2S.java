@@ -1,30 +1,46 @@
 package net.soulsweaponry.networking.C2S;
 
-import com.google.common.collect.Iterables;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.util.ModTags;
 
-public class ParryC2S {
+public record ParryC2S() implements CustomPayload {
 
-    public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "parry_keybind");
+    public static final CustomPayload.Id<ParryC2S> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, ParryC2S> CODEC =
+            PacketCodec.of(
+                    (pkt, buf) -> { },
+                    buf -> new ParryC2S()
+            );
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return TYPE;
+    }
+
+    public static void receive(ParryC2S pkt, ServerPlayNetworking.Context ctx) {
+        MinecraftServer server = ctx.server();
+        if (server == null) {
+            return;
+        }
+        ServerPlayerEntity player = ctx.player();
         server.execute(() -> {
-            ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
-            if (serverWorld != null) {
-                ItemStack stack = player.getStackInHand(Hand.OFF_HAND);
-                if (ConfigConstructor.enable_shield_parry && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                    ParryData.setParryFrames((IEntityDataSaver) player, 1);
-                    player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : (int) ConfigConstructor.shield_parry_cooldown);
-                }
+            ItemStack stack = player.getStackInHand(Hand.OFF_HAND);
+            if (ConfigConstructor.enable_shield_parry && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+                ParryData.setParryFrames((IEntityDataSaver) player, 1);
+                player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : (int) ConfigConstructor.shield_parry_cooldown);
             }
         });
     }

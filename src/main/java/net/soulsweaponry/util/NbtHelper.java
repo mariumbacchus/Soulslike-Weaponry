@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.UUID;
@@ -34,17 +33,6 @@ public class NbtHelper {
      * @return the UUID array
      */
     public static UUID[] getUUIDArr(NbtCompound tag, String arrayId) {
-        return deserializeUUIDArray(tag.getCompound(arrayId));
-    }
-
-    public static void saveUUIDArrToStack(ItemStack stack, UUID[] uuids, String arrayId) {
-        NbtCompound tag = stack.getOrCreateNbt();
-        tag.put(arrayId, serializeUUIDArray(uuids));
-        stack.setNbt(tag);
-    }
-
-    public static UUID[] getUUIDArrFromStack(ItemStack stack, String arrayId) {
-        NbtCompound tag = stack.getOrCreateNbt();
         return deserializeUUIDArray(tag.getCompound(arrayId));
     }
 

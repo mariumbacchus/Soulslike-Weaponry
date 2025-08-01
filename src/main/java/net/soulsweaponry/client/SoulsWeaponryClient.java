@@ -55,7 +55,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         EntityModelLayerModRegistry.initClient();
         EntityModelRegistry.initClient();
         PredicateRegistry.initClient();
-        PacketRegistry.registerS2CPackets();
+        PacketRegistry.registerS2CReceivers();
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
         HudRegistry.init();

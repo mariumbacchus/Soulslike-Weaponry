@@ -1,27 +1,42 @@
 package net.soulsweaponry.networking.C2S;
 
-import com.google.common.collect.Iterables;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.entity.Entity;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
 
-public class GiveResistanceC2S {
+public record GiveResistanceC2S() implements CustomPayload {
 
-    public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "give_or_clear_resistance");
+    public static final CustomPayload.Id<GiveResistanceC2S> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, GiveResistanceC2S> CODEC =
+            PacketCodec.of(
+                    (pkt, buf) -> { },
+                    buf -> new GiveResistanceC2S()
+            );
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return TYPE;
+    }
+
+    public static void receive(GiveResistanceC2S pkt, ServerPlayNetworking.Context ctx) {
+        MinecraftServer server = ctx.server();
+        if (server == null) {
+            return;
+        }
+        ServerPlayerEntity player = ctx.player();
         server.execute(() -> {
-            ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
-            if (serverWorld != null) {
-                if (player.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                    player.removeStatusEffect(StatusEffects.RESISTANCE);
-                } else {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 400000, 30, false, true));
-                }
+            if (player.hasStatusEffect(StatusEffects.RESISTANCE)) {
+                player.removeStatusEffect(StatusEffects.RESISTANCE);
+            } else {
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 400000, 30, false, true));
             }
         });
     }

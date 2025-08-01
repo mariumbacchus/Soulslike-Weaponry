@@ -61,7 +61,8 @@ public class SoulsWeaponry implements ModInitializer {
         GunRegistry.init();
         WorldGen.generateCustomWorldGen();
         LOGGER.info("Successfully registered SoulsWeapons content!");
-        PacketRegistry.registerC2SPackets();
+        PacketRegistry.registerPackets();
+        PacketRegistry.registerC2SReceivers();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);

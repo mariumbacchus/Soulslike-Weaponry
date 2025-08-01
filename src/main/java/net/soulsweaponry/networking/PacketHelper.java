@@ -1,15 +1,14 @@
 package net.soulsweaponry.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.soulsweaponry.networking.C2S.DamagingBoxC2S;
 
 import java.util.UUID;
 
@@ -28,18 +27,16 @@ public class PacketHelper {
      * @param sound Sound to be played
      * @param attackerUUID UUID of the attacker to apply proper damage source
      */
-    public static void damagingBox(BlockPos boxPos, double expansion, float damage, float knockbackStrength, SoundEvent sound, UUID attackerUUID) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(boxPos);
-        buf.writeDouble(expansion);
-        buf.writeFloat(damage);
-        buf.writeFloat(knockbackStrength);
-        buf.writeFloat(0);
-        buf.writeFloat(0);
-        buf.writeIdentifier(sound.getId());
-        buf.writeBlockPos(boxPos);
-        buf.writeUuid(attackerUUID);
-        ClientPlayNetworking.send(PacketIds.DAMAGING_BOX, buf);
+    public static void damagingBox(BlockPos boxPos,
+                                   double expansion,
+                                   float damage,
+                                   float knockbackStrength,
+                                   SoundEvent sound,
+                                   UUID attackerUUID) {
+        damagingBox(boxPos, expansion, damage, knockbackStrength,
+                0f, 0f,
+                sound, boxPos,
+                attackerUUID);
     }
 
     /**
@@ -56,18 +53,17 @@ public class PacketHelper {
      * @param soundPos Where the sound is played from
      * @param attackerUUID UUID of the attacker to apply proper damage source
      */
-    public static void damagingBox(BlockPos boxPos, double expansion, float damage, float knockbackStrength, SoundEvent sound, BlockPos soundPos, UUID attackerUUID) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(boxPos);
-        buf.writeDouble(expansion);
-        buf.writeFloat(damage);
-        buf.writeFloat(knockbackStrength);
-        buf.writeFloat(0);
-        buf.writeFloat(0);
-        buf.writeIdentifier(sound.getId());
-        buf.writeBlockPos(soundPos);
-        buf.writeUuid(attackerUUID);
-        ClientPlayNetworking.send(PacketIds.DAMAGING_BOX, buf);
+    public static void damagingBox(BlockPos boxPos,
+                                   double expansion,
+                                   float damage,
+                                   float knockbackStrength,
+                                   SoundEvent sound,
+                                   BlockPos soundPos,
+                                   UUID attackerUUID) {
+        damagingBox(boxPos, expansion, damage, knockbackStrength,
+                0f, 0f,
+                sound, soundPos,
+                attackerUUID);
     }
 
     /**
@@ -83,24 +79,28 @@ public class PacketHelper {
      * @param soundPos Where the sound is played from
      * @param attackerUUID UUID of the attacker to apply proper damage source
      */
-    public static void damagingBox(BlockPos boxPos, double expansion, float damage, float knockbackStrength,
-                                   float knockbackX, float knockbackZ, SoundEvent sound, BlockPos soundPos, UUID attackerUUID) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(boxPos);
-        buf.writeDouble(expansion);
-        buf.writeFloat(damage);
-        buf.writeFloat(knockbackStrength);
-        buf.writeFloat(knockbackX);
-        buf.writeFloat(knockbackZ);
-        buf.writeIdentifier(sound.getId());
-        buf.writeBlockPos(soundPos);
-        buf.writeUuid(attackerUUID);
-        ClientPlayNetworking.send(PacketIds.DAMAGING_BOX, buf);
+    public static void damagingBox(BlockPos boxPos,
+                                   double expansion,
+                                   float damage,
+                                   float knockbackStrength,
+                                   float knockbackX,
+                                   float knockbackZ,
+                                   SoundEvent sound,
+                                   BlockPos soundPos,
+                                   UUID attackerUUID) {
+        var pkt = new DamagingBoxC2S(
+                boxPos, expansion,
+                damage, knockbackStrength,
+                knockbackX, knockbackZ,
+                sound.getId(), soundPos,
+                attackerUUID
+        );
+        ClientPlayNetworking.send(pkt);
     }
 
-    public static void sendToAllPlayersS2C(ServerWorld world, BlockPos pos, Identifier packetId, PacketByteBuf buf) {
+    public static <T extends CustomPayload> void sendToAllPlayersS2C(ServerWorld world, BlockPos pos, T packet) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
-            ServerPlayNetworking.send(player, packetId, buf);
+            ServerPlayNetworking.send(player, packet);
         }
     }
 }
