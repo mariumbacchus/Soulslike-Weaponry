@@ -14,11 +14,11 @@ public class VerticalSunlightProjectileModel extends GeoModel<MoonlightProjectil
 
     @Override
     public Identifier getModelResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/vertical_moonlight_projectile.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/vertical_moonlight_projectile.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/sunlight_projectile_big.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/sunlight_projectile_big.png");
     }
 }

@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class ChaosMonarchModel extends DefaultedEntityGeoModel<ChaosMonarch> {
 
     public ChaosMonarchModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "chaos_monarch"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "chaos_monarch"), true);
     }
 }

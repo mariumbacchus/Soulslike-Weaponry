@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class NightProwlerModel extends DefaultedEntityGeoModel<NightProwler> {
 
     public NightProwlerModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "night_prowler"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "night_prowler"), true);
     }
 }

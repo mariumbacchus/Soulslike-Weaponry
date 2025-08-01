@@ -14,12 +14,12 @@ public class ShadowOrbModel extends GeoModel<ShadowOrb> {
 
     @Override
     public Identifier getModelResource(ShadowOrb object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(ShadowOrb object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/shadow_orb.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/shadow_orb.png");
     }
     
 }

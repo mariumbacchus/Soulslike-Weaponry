@@ -10,16 +10,16 @@ public class WitheredArmorModel<T extends Item & GeoItem> extends GeoModel<T> {
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/withered_armor.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/withered_armor.animation.json");
     }
 
     @Override
     public Identifier getModelResource(T object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/withered_armor.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/withered_armor.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(T object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/armor/withered_armor.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/armor/withered_armor.png");
     }
 }

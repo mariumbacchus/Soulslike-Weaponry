@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class DayStalkerModel extends DefaultedEntityGeoModel<DayStalker> {
 
     public DayStalkerModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "day_stalker"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "day_stalker"), true);
     }
 }

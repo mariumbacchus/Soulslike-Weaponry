@@ -51,10 +51,9 @@ public class DragonslayerSwordspearModel extends EntityModel<DragonslayerSwordsp
     }
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green,
-			float blue, float alpha) {
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
                 ImmutableList.of(this.base).forEach((modelRenderer) -> {
-                    modelRenderer.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+                    modelRenderer.render(matrices, vertices, light, overlay, color);
                 });
 	}
 
@@ -62,6 +61,4 @@ public class DragonslayerSwordspearModel extends EntityModel<DragonslayerSwordsp
     public void setAngles(DragonslayerSwordspearEntity entity, float limbAngle, float limbDistance,
             float animationProgress, float headYaw, float headPitch) {
     }
-
-    
 }

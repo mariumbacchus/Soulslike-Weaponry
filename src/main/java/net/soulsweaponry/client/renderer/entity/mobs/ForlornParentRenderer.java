@@ -16,6 +16,6 @@ public class ForlornParentRenderer<T extends Forlorn, M extends ForlornModel<T>>
     }
 
     public Identifier getTexture(T entity) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/forlorn_inner.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/forlorn_inner.png");
     }
 }

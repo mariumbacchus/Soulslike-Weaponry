@@ -14,12 +14,12 @@ public class ForlornScytheModel extends GeoModel<ForlornScythe> {
 
     @Override
     public Identifier getModelResource(ForlornScythe object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/forlorn_scythe.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/forlorn_scythe.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(ForlornScythe object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/forlorn_scythe.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/forlorn_scythe.png");
     }
     
 }

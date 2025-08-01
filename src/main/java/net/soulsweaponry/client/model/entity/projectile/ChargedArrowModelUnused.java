@@ -42,10 +42,9 @@ public class ChargedArrowModelUnused extends EntityModel<ChargedArrow>{
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green,
-            float blue, float alpha) {
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
         ImmutableList.of(this.base).forEach((modelRenderer) -> {
-            modelRenderer.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+            modelRenderer.render(matrices, vertices, light, overlay, color);
         });
     }
 }

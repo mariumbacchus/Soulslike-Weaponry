@@ -10,7 +10,7 @@ import net.soulsweaponry.entitydata.BleedData;
 
 public class BleedHudOverlay extends EffectHudOverlay {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
 
     @Override
     public Identifier getTexture() {

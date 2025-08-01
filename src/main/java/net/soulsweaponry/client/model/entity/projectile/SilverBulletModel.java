@@ -14,12 +14,12 @@ public class SilverBulletModel extends GeoModel<SilverBulletEntity> {
 
     @Override
     public Identifier getModelResource(SilverBulletEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/silver_bullet.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/silver_bullet.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(SilverBulletEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/silver_bullet_texture.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/silver_bullet_texture.png");
     }
     
 }

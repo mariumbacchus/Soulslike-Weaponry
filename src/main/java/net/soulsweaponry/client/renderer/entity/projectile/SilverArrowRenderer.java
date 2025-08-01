@@ -11,7 +11,7 @@ import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
 @Environment(EnvType.CLIENT)
 public class SilverArrowRenderer extends ProjectileEntityRenderer<SilverArrow> {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/silver_arrow.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/silver_arrow.png");
 
     public SilverArrowRenderer(Context context) {
         super(context);

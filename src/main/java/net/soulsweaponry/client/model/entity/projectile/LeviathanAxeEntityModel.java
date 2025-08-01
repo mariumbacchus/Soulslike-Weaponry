@@ -9,17 +9,17 @@ public class LeviathanAxeEntityModel extends GeoModel<LeviathanAxeEntity> {
 
     @Override
     public Identifier getAnimationResource(LeviathanAxeEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/leviathan_axe.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/leviathan_axe.animation.json");
     }
 
     @Override
     public Identifier getModelResource(LeviathanAxeEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/leviathan_axe.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/leviathan_axe.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(LeviathanAxeEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/leviathan_axe.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/leviathan_axe.png");
     }
     
 }

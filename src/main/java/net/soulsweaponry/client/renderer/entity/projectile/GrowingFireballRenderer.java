@@ -24,7 +24,7 @@ public class GrowingFireballRenderer extends GeoEntityRenderer<GrowingFireball> 
     public void render(GrowingFireball entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
         if (entity != null) {
             poseStack.scale(entity.getRadius(), entity.getRadius(), entity.getRadius());
-        }
+        }//TODO replace with other renderer
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 }

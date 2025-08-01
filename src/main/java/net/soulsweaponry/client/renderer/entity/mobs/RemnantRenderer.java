@@ -17,7 +17,7 @@ public class RemnantRenderer extends GhostParentRenderer<Remnant, RemnantModel<R
     }
 
     public Identifier getTexture(Remnant remnant) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/remnant_merged.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/remnant_merged.png");
     }
 
     @Nullable

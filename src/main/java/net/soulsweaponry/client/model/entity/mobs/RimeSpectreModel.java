@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class RimeSpectreModel extends DefaultedEntityGeoModel<RimeSpectre> {
 
     public RimeSpectreModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "rime_spectre"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "rime_spectre"), true);
     }
 }

@@ -9,16 +9,16 @@ public class ChaosOrbModel extends GeoModel<ChaosOrbEntity> {
 
     @Override
     public Identifier getAnimationResource(ChaosOrbEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/chaos_orb.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/entity/chaos_orb.animation.json");
     }
 
     @Override
     public Identifier getModelResource(ChaosOrbEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/chaos_orb.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/entity/chaos_orb.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(ChaosOrbEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_0.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/chaos_orb_0.png");
     }
 }

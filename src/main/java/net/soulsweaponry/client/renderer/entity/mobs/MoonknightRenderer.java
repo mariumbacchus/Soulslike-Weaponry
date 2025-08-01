@@ -13,6 +13,7 @@ import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -24,7 +25,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     int[] rgbColorThree = {106, 73, 156};
     int[] rgbColorFour = {176, 253, 252};
     double[] translation = {0, 4, 0};
-    public static final Identifier CRYSTAL_BEAM_TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
+    public static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
     private int currentTick = -1;
     private static final int FULLBRIGHT_LIGHT = 0xF000F0;
@@ -48,7 +49,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+        //TODO find other method
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
             entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
@@ -97,19 +98,19 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
             float u = (float)i / 8F;
             vb.vertex(matrices.peek().getPositionMatrix(), prevX*radiusScale, prevY*radiusScale, 0)
                     .color(r, g, b, a).texture(prevU, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
-                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+                    .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), prevX, prevY, vecLen)
                     .color(r, g, b, a).texture(prevU, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
-                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+                    .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), cx, cy, vecLen)
                     .color(r, g, b, a).texture(u, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
-                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+                    .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), cx*radiusScale, cy*radiusScale, 0)
                     .color(r, g, b, a).texture(u, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
-                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+                    .normal(matrices.peek(), 0, -1, 0);
 
             prevX = cx; prevY = cy; prevU = u;
         }
@@ -117,7 +118,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     }
 
     @Override
-    public void renderFinal(MatrixStack poseStack, Moonknight animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderFinal(MatrixStack poseStack, Moonknight animatable, BakedGeoModel model, @Nullable VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int color) {
         if (animatable.isPhaseTwo() && !animatable.isDead() && (animatable.isSwordCharging())) {
             if (this.currentTick < 0 || this.currentTick != animatable.age) {
                 this.currentTick = animatable.age;
@@ -148,6 +149,6 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
                 );
             }
         }
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, color);
     }
 }

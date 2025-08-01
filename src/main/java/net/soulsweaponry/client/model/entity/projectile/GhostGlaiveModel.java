@@ -14,12 +14,12 @@ public class GhostGlaiveModel extends GeoModel<GhostGlaiveEntity> {
 
     @Override
     public Identifier getModelResource(GhostGlaiveEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/ghost_glaive.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/ghost_glaive.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(GhostGlaiveEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/ghost_glaive.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/ghost_glaive.png");
     }
     
 }

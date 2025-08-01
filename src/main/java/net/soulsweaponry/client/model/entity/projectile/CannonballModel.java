@@ -14,12 +14,12 @@ public class CannonballModel extends GeoModel<Cannonball> {
 
     @Override
     public Identifier getModelResource(Cannonball object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/cannonball.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(Cannonball object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/cannonball_texture.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/cannonball_texture.png");
     }
     
 }

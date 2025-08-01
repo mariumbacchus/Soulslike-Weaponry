@@ -14,11 +14,11 @@ public class MoonveilWaveModel extends GeoModel<MoonveilWave> {
 
     @Override
     public Identifier getModelResource(MoonveilWave object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/moonlight_projectile_big.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/moonlight_projectile_big.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(MoonveilWave object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/" + object.getTextureId() + ".png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/" + object.getTextureId() + ".png");
     }
 }

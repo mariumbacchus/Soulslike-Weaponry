@@ -36,7 +36,7 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
     public void render(NightProwler entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+        //TODO find other method
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
             entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
@@ -120,10 +120,10 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
 
                 // Submit the vertices for this quad.
                 // The order is chosen so that the vertices wind correctly.
-                vertexConsumer.vertex(matrix, innerX1, 0, innerZ1).next();
-                vertexConsumer.vertex(matrix, outerX1, 0, outerZ1).next();
-                vertexConsumer.vertex(matrix, outerX2, 0, outerZ2).next();
-                vertexConsumer.vertex(matrix, innerX2, 0, innerZ2).next();
+                vertexConsumer.vertex(matrix, innerX1, 0, innerZ1);
+                vertexConsumer.vertex(matrix, outerX1, 0, outerZ1);
+                vertexConsumer.vertex(matrix, outerX2, 0, outerZ2);
+                vertexConsumer.vertex(matrix, innerX2, 0, innerZ2);
             }
         }
     }

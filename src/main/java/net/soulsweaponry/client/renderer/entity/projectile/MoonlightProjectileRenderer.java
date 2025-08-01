@@ -6,7 +6,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
-import net.soulsweaponry.client.model.entity.projectile.MoonlightProjectileModel;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import software.bernie.geckolib.model.GeoModel;
 
@@ -17,8 +16,8 @@ public class MoonlightProjectileRenderer extends GeoProjectileRenderer<Moonlight
     }
 
     @Override
-    protected void applyRotations(MoonlightProjectile animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
-        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
+    protected void applyRotations(MoonlightProjectile animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick, float nativeScale) {
+        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick, nativeScale);
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(animatable.getModelRotation()));
     }
 

@@ -15,6 +15,6 @@ public class ForlornRenderer extends ForlornParentRenderer<Forlorn, ForlornModel
     }
     
     public Identifier getTexture(Forlorn remnant) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer.png");
     }
 }

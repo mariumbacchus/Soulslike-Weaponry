@@ -30,7 +30,7 @@ public class ChaosMonarchRenderer extends GeoEntityRenderer<ChaosMonarch> {
     public void render(ChaosMonarch entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+        //TODO find other method
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
             entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }

@@ -5,8 +5,8 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
-import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.util.Color;
 
 public abstract class BulletRenderer<T extends SilverBulletEntity> extends GeoProjectileRenderer<T> {
 

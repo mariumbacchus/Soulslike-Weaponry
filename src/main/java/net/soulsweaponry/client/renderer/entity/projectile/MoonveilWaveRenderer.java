@@ -23,8 +23,8 @@ public class MoonveilWaveRenderer extends GeoProjectileRenderer<MoonveilWave> {
     }
 
     @Override
-    protected void applyRotations(MoonveilWave animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
-        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
+    protected void applyRotations(MoonveilWave animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick, float nativeScale) {
+        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick, nativeScale);
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(animatable.getModelRotationX()));
     }
 

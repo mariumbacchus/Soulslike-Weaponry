@@ -10,7 +10,7 @@ import net.soulsweaponry.entitydata.PostureData;
 
 public class PostureHudOverlay extends EffectHudOverlay {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture_bars.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/gui/posture_bars.png");
 
     @Override
     public Identifier getTexture() {

@@ -8,6 +8,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.BossBarHud;
 import net.minecraft.client.gui.hud.ClientBossBar;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
@@ -20,10 +21,10 @@ import java.util.UUID;
 
 public class TargetPostureHudOverlay implements HudRenderCallback {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture_bars_target.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/gui/posture_bars_target.png");
 
     @Override
-    public void onHudRender(DrawContext drawContext, float v) {
+    public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client != null && !ClientConfig.disable_target_posture_hud) {
             int width = client.getWindow().getScaledWidth();

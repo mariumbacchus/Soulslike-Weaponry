@@ -10,17 +10,17 @@ public class ChaosSetModel<T extends Item & GeoItem> extends GeoModel<T> {
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/chaos_monarch.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/entity/chaos_monarch.animation.json");
     }
 
     @Override
     public Identifier getModelResource(T object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/chaos_set.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/chaos_set.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(T object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/armor/chaos_set_texture.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/armor/chaos_set_texture.png");
     }
     
 }

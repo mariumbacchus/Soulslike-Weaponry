@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class DraugrBossModel extends DefaultedEntityGeoModel<DraugrBoss> {
 
     public DraugrBossModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "draugr_boss"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "draugr_boss"), true);
     }
 }

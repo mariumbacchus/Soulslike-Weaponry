@@ -11,7 +11,7 @@ import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 
 public class NightsEdgeOldRenderer extends EntityRenderer<NightsEdge> {
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/nights_edge_noised.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/nights_edge_noised.png");
     private final NightsEdgeOldModel model;
 
     public NightsEdgeOldRenderer(EntityRendererFactory.Context context) {

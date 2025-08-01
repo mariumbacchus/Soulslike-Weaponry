@@ -10,13 +10,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
-import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
 import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 
 public class DragonslayerSwordspearRenderer extends EntityRenderer<DragonslayerSwordspearEntity> {
-    public static final Identifier TEXTURE = new Identifier("soulsweapons","textures/entity/dragonslayer_swordspear.png");
+    public static final Identifier TEXTURE = Identifier.of("soulsweapons","textures/entity/dragonslayer_swordspear.png");
     private final DragonslayerSwordspearModel model;
 
     public DragonslayerSwordspearRenderer(EntityRendererFactory.Context context) {
@@ -29,7 +28,7 @@ public class DragonslayerSwordspearRenderer extends EntityRenderer<DragonslayerS
         matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.lerp(g, entity.prevYaw, entity.getYaw()) - 90.0F));
         matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.lerp(g, entity.prevPitch, entity.getPitch()) + 90.0F));
         VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, this.model.getLayer(this.getTexture(entity)), false, entity.isEnchanted());
-        this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
         matrixStack.pop();
         super.render(entity, f, g, matrixStack, vertexConsumerProvider, i);
     }

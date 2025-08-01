@@ -126,7 +126,7 @@ public class KeyBindRegistry {
             boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
             boolean controller = false;
             if (WeaponUtil.isModLoaded("controllable")) {
-                controller = ButtonBindings.ATTACK.isButtonPressed();
+                controller = ButtonBindings.ATTACK.isButtonDown();
             }
             if (effect || melee || controller) {
                 if (client.player != null) {

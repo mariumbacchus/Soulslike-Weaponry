@@ -9,17 +9,17 @@ public class BloodlustModel extends GeoModel<Bloodlust> {
 
     @Override
     public Identifier getAnimationResource(Bloodlust animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/bloodlust.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/bloodlust.animation.json");
     }
 
     @Override
     public Identifier getModelResource(Bloodlust object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/bloodlust.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/bloodlust.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(Bloodlust object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/bloodlust.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/bloodlust.png");
     }
     
 }

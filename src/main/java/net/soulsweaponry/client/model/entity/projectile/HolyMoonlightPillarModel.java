@@ -9,16 +9,16 @@ public class HolyMoonlightPillarModel extends GeoModel<HolyMoonlightPillar> {
 
     @Override
     public Identifier getAnimationResource(HolyMoonlightPillar animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/holy_moonlight_pillar.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/entity/holy_moonlight_pillar.animation.json");
     }
 
     @Override
     public Identifier getModelResource(HolyMoonlightPillar object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/holy_moonlight_pillar.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/entity/holy_moonlight_pillar.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(HolyMoonlightPillar object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/holy_moonlight_pillar.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/holy_moonlight_pillar.png");
     }
 }

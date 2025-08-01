@@ -16,11 +16,11 @@ import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 @Environment(EnvType.CLIENT)
 public class ChungusHeadRenderer extends EntityRenderer<TntEntity> {
 
-    private static final Identifier TEXTURE = new Identifier(
+    private static final Identifier TEXTURE = Identifier.of(
             SoulsWeaponry.ModId,
             "textures/entity/chungus/big_chungus.png"
     );
-    private static final Identifier RED_EYES = new Identifier(
+    private static final Identifier RED_EYES = Identifier.of(
             SoulsWeaponry.ModId,
             "textures/entity/chungus/red_eyes_overlay.png"
     );
@@ -42,13 +42,13 @@ public class ChungusHeadRenderer extends EntityRenderer<TntEntity> {
         this.model.render(
                 matrices, base, light,
                 OverlayTexture.DEFAULT_UV,
-                1F, 1F, 1F, 1F
+                0xFFFFFFFF
         );
         VertexConsumer eyes = vcp.getBuffer(RenderLayer.getEyes(RED_EYES));
         this.model.render(
                 matrices, eyes, 0xF000F0,
                 OverlayTexture.DEFAULT_UV,
-                1F, 1F, 1F, 1F
+                0xFFFFFFFF
         );
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vcp, light);

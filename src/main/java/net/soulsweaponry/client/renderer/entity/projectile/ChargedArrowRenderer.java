@@ -12,7 +12,7 @@ import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 @Environment(EnvType.CLIENT)
 public class ChargedArrowRenderer extends ProjectileEntityRenderer<ChargedArrow> {
 
-    private static final Identifier TEXTURE = new Identifier("soulsweapons", "textures/entity/charged_arrow.png");
+    private static final Identifier TEXTURE = Identifier.of("soulsweapons", "textures/entity/charged_arrow.png");
 
     public ChargedArrowRenderer(Context context) {
         super(context);

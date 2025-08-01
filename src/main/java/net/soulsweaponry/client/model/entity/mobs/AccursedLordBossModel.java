@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class AccursedLordBossModel extends DefaultedEntityGeoModel<AccursedLordBoss> {
 
     public AccursedLordBossModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "accursed_lord"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "accursed_lord"), true);
     }
     // This creates a new GeoModel with the following asset paths:
     // Animation Json: assets/mymod/animations/entity/monster/my_entity.animation.json

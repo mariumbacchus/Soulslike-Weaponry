@@ -10,17 +10,17 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class TonitrusModel extends GeoModel<Tonitrus> {
 
-    private static final Identifier BASE  = new Identifier(SoulsWeaponry.ModId, "textures/item/tonitrus.png");
-    private static final Identifier GLOW  = new Identifier(SoulsWeaponry.ModId, "textures/item/tonitrus_ani.png");
+    private static final Identifier BASE  = Identifier.of(SoulsWeaponry.ModId, "textures/item/tonitrus.png");
+    private static final Identifier GLOW  = Identifier.of(SoulsWeaponry.ModId, "textures/item/tonitrus_ani.png");
 
     @Override
     public Identifier getAnimationResource(Tonitrus animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/tonitrus.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/tonitrus.animation.json");
     }
 
     @Override
     public Identifier getModelResource(Tonitrus object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/tonitrus.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/tonitrus.geo.json");
     }
 
     @Override

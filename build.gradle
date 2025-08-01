@@ -73,8 +73,8 @@ dependencies {
 	//modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
 
 	// Compile time only
-	//modCompileOnly 'curse.maven:controllable-851657:4592466'
-	//modCompileOnly 'maven.modrinth:create-fabric:0.5.1-j-build.1631+mc1.20.1'
+	modCompileOnly 'curse.maven:controllable-317269:6277376'
+	//modCompileOnly 'maven.modrinth:create-fabric:0.5.1-j-build.1631+mc1.20.1' NB: fabric 1.21.1 version not out yet as of typing this
 }
 
 loom {

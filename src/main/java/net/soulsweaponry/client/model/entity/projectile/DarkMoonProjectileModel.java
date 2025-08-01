@@ -14,12 +14,12 @@ public class DarkMoonProjectileModel extends GeoModel<MoonlightProjectile> {
 
     @Override
     public Identifier getModelResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/moonlight_projectile_big.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/moonlight_projectile_big.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_moon_projectile.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/dark_moon_projectile.png");
     }
 
 }

@@ -9,18 +9,18 @@ public class FreyrSwordEntityModel extends GeoModel<FreyrSwordEntity> {
 
     @Override
     public Identifier getAnimationResource(FreyrSwordEntity animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "animations/entity/freyr_sword.animation.json");
+        return Identifier.of(SoulsWeaponry.ModId, "animations/entity/freyr_sword.animation.json");
     }
 
     @Override
     public Identifier getModelResource(FreyrSwordEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/freyr_sword.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/entity/freyr_sword.geo.json");
 
     }
 
     @Override
     public Identifier getTextureResource(FreyrSwordEntity object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/freyr_sword.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/freyr_sword.png");
     }
     
 }

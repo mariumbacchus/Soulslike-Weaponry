@@ -14,12 +14,12 @@ public class NightfallModel extends GeoModel<Nightfall> {
 
     @Override
     public Identifier getModelResource(Nightfall object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/nightfall.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/nightfall.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(Nightfall object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/nightfall.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/nightfall.png");
     }
     
 }

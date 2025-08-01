@@ -14,12 +14,12 @@ public class SunlightProjectileSmallModel extends GeoModel<MoonlightProjectile> 
 
     @Override
     public Identifier getModelResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/moonlight_projectile.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/moonlight_projectile.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(MoonlightProjectile object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/sunlight_projectile_small.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/sunlight_projectile_small.png");
     }
     
 }

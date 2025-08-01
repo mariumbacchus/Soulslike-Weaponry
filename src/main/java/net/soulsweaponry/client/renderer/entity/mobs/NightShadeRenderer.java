@@ -32,7 +32,7 @@ public class NightShadeRenderer extends GeoEntityRenderer<NightShade> {
     public void render(NightShade entity, float entityYaw, float partialTicks, MatrixStack stack,
             VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+        //TODO find other method
         if (!entity.isCopy()) {
             CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
                     entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);

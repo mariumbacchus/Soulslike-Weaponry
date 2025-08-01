@@ -2,8 +2,6 @@ package net.soulsweaponry.client.hud;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.ArrayList;
 import java.util.List;

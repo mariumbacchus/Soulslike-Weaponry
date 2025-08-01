@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class SoulmassModel extends DefaultedEntityGeoModel<Soulmass> {
 
     public SoulmassModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "soulmass"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "soulmass"), true);
     }
 }

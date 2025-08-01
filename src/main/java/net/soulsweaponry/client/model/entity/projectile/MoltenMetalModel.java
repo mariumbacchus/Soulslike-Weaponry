@@ -9,12 +9,12 @@ public class MoltenMetalModel extends GeoModel<MoltenMetal> {
 
     @Override
     public Identifier getModelResource(MoltenMetal moltenMetal) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/entity/molten_metal.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/entity/molten_metal.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(MoltenMetal moltenMetal) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/molten_metal.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/molten_metal.png");
     }
 
     @Override

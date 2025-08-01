@@ -14,12 +14,12 @@ public class FreyrSwordItemModel extends GeoModel<FreyrSword> {
 
     @Override
     public Identifier getModelResource(FreyrSword object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/freyr_sword_item.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/freyr_sword_item.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(FreyrSword object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/freyr_sword.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/freyr_sword.png");
     }
     
 }

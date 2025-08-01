@@ -62,8 +62,8 @@ public class SoulsWeaponryClient implements ClientModInitializer {
 
         FluidRenderHandlerRegistry.INSTANCE.register(FluidRegistry.STILL_PURIFIED_BLOOD, FluidRegistry.FLOWING_PURIFIED_BLOOD,
                 new SimpleFluidRenderHandler(
-                        new Identifier(SoulsWeaponry.ModId, "block/purified_blood_still"),
-                        new Identifier(SoulsWeaponry.ModId, "block/purified_blood_flow")
+                        Identifier.of(SoulsWeaponry.ModId, "block/purified_blood_still"),
+                        Identifier.of(SoulsWeaponry.ModId, "block/purified_blood_flow")
                 ));
     }
 }

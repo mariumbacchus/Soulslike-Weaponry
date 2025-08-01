@@ -16,6 +16,6 @@ public class DarkSorcererRenderer extends DarkSorcererParentRenderer<DarkSorcere
 
     @Override
     public Identifier getTexture(DarkSorcerer remnant) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer_merged.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/dark_sorcerer_merged.png");
     }
 }

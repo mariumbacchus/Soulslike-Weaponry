@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
 public abstract class EffectHudOverlay implements HudRenderCallback {
@@ -15,7 +16,7 @@ public abstract class EffectHudOverlay implements HudRenderCallback {
     public static final int BAR_HEIGHT = 5;
 
     @Override
-    public void onHudRender(DrawContext drawContext, float v) {
+    public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client != null) {
             int width = client.getWindow().getScaledWidth();

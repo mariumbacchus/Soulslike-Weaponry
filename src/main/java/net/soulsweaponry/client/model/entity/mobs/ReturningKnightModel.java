@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class ReturningKnightModel extends DefaultedEntityGeoModel<ReturningKnight> {
 
     public ReturningKnightModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "returning_knight"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "returning_knight"), true);
     }
 }

@@ -9,18 +9,18 @@ public class CometSpearItemModel extends GeoModel<CometSpear> {
     @Override
     public Identifier getModelResource(CometSpear object)
     {
-        return new Identifier(SoulsWeaponry.ModId, "geo/comet_spear.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/comet_spear.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(CometSpear object)
     {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/comet_spear.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/comet_spear.png");
     }
 
     @Override
     public Identifier getAnimationResource(CometSpear object)
     {
-        return new Identifier(SoulsWeaponry.ModId, null);
+        return Identifier.of(SoulsWeaponry.ModId, null);
     }
 }

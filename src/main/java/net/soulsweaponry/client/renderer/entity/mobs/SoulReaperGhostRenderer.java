@@ -10,7 +10,7 @@ import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulReaperGhostRenderer extends SoulReaperGhostParentRenderer<SoulReaperGhost, SoulReaperGhostModel<SoulReaperGhost>> {
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/soul_reaper_ghost.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/soul_reaper_ghost.png");
 
     public SoulReaperGhostRenderer(Context context) {
         super(context, new SoulReaperGhostModel<>(context.getPart(EntityModelLayerModRegistry.SOUL_REAPER_GHOST_LAYER)),

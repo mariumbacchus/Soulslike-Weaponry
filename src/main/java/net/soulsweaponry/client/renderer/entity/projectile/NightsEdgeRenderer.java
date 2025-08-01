@@ -16,7 +16,7 @@ public class NightsEdgeRenderer extends GeoEntityRenderer<NightsEdge> {
 
     @Override
     public void render(NightsEdge entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
-        poseStack.scale(3f, 3f, 3f);
+        poseStack.scale(3f, 3f, 3f);//TODO find other render method
         poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90.0f - entity.getYaw()));
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

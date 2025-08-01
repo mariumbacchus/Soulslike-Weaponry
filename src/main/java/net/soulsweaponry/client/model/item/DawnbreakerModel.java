@@ -14,12 +14,12 @@ public class DawnbreakerModel extends GeoModel<Dawnbreaker> {
 
     @Override
     public Identifier getModelResource(Dawnbreaker object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/dawnbreaker.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/dawnbreaker.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(Dawnbreaker object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/dawnbreaker_texture.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/dawnbreaker_texture.png");
     }
     
 }

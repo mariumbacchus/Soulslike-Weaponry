@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class WitheredDemonModel extends DefaultedEntityGeoModel<WitheredDemon> {
 
     public WitheredDemonModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "withered_demon"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "withered_demon"), true);
     }
 }

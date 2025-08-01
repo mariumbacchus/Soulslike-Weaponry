@@ -16,9 +16,9 @@ public class GeoProjectileRenderer<T extends PersistentProjectileEntity & GeoEnt
     }
 
     @Override
-    protected void applyRotations(T animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick) {
-        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick);
-        if (animatable instanceof PersistentProjectileEntity) {
+    protected void applyRotations(T animatable, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick, float nativeScale) {
+        super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick, nativeScale);
+        if (animatable != null) {
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.lerp(rotationYaw, animatable.prevYaw, animatable.getYaw()) + 90.0F));
             matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.lerp(rotationYaw, animatable.prevPitch, animatable.getPitch())));
             float s = (float)animatable.shake - rotationYaw;

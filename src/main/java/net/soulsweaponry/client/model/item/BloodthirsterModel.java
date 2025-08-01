@@ -14,11 +14,11 @@ public class BloodthirsterModel extends GeoModel<Bloodthirster> {
 
     @Override
     public Identifier getModelResource(Bloodthirster object) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/bloodthirster.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/bloodthirster.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(Bloodthirster object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/bloodthirster_textures.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/bloodthirster_textures.png");
     }
 }

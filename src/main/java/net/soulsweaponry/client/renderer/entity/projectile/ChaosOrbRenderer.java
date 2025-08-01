@@ -27,10 +27,10 @@ public class ChaosOrbRenderer extends GeoEntityRenderer<ChaosOrbEntity> {
     static class ChaosOrbColorLayer extends GeoRenderLayer<ChaosOrbEntity> {
 
         private static final Identifier[] LAYERS = {
-                new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_1.png"),
-                new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_2.png"),
-                new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_3.png"),
-                new Identifier(SoulsWeaponry.ModId, "textures/entity/chaos_orb_4.png"),
+                Identifier.of(SoulsWeaponry.ModId, "textures/entity/chaos_orb_1.png"),
+                Identifier.of(SoulsWeaponry.ModId, "textures/entity/chaos_orb_2.png"),
+                Identifier.of(SoulsWeaponry.ModId, "textures/entity/chaos_orb_3.png"),
+                Identifier.of(SoulsWeaponry.ModId, "textures/entity/chaos_orb_4.png"),
         };
         private RenderLayer previousLayer;
 
@@ -53,7 +53,7 @@ public class ChaosOrbRenderer extends GeoEntityRenderer<ChaosOrbEntity> {
             this.previousLayer = orbLayer;
             getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, orbLayer,
                     bufferSource.getBuffer(orbLayer), partialTick, packedLight, OverlayTexture.DEFAULT_UV,
-                    1, 1, 1, 1);
+                    0xFFFFFFFF);
         }
     }
 }

@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class NightShadeModel extends DefaultedEntityGeoModel<NightShade> {
 
     public NightShadeModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "night_shade"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "night_shade"), true);
     }
 }

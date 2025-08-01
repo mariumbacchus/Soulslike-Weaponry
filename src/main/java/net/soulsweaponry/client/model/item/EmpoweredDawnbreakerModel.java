@@ -9,12 +9,12 @@ public class EmpoweredDawnbreakerModel extends GeoModel<EmpoweredDawnbreaker> {
 
     @Override
     public Identifier getModelResource(EmpoweredDawnbreaker animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "geo/empowered_dawnbreaker.geo.json");
+        return Identifier.of(SoulsWeaponry.ModId, "geo/empowered_dawnbreaker.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(EmpoweredDawnbreaker animatable) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/empowered_dawnbreaker.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/item/empowered_dawnbreaker.png");
     }
 
     @Override

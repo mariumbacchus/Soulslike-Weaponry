@@ -72,7 +72,7 @@ public class EntityModelLayerModRegistry {
     }
 
     private static EntityModelLayer create(String id, String layer) {
-        return new EntityModelLayer(new Identifier(SoulsWeaponry.ModId, id), layer);
+        return new EntityModelLayer(Identifier.of(SoulsWeaponry.ModId, id), layer);
     }
 
     private static void registerBiped(EntityModelLayer layer) {

@@ -25,13 +25,13 @@ public class BigChungusRenderer extends MobEntityRenderer<BigChungus, BigChungus
     @Override
     public Identifier getTexture(BigChungus entity) {
         String id = entity.getState().equals(BigChungus.ChungusStates.NORMAL) ? "" : String.valueOf(entity.getState()).toLowerCase() + "_";
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/chungus/" + id + "big_chungus.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/chungus/" + id + "big_chungus.png");
     }
 
     @Environment(EnvType.CLIENT)
     public static class RedEyesOverlay extends EyesFeatureRenderer<BigChungus, BigChungusModel<BigChungus>> {
 
-        private static final Identifier RED_EYES_TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/chungus/red_eyes_overlay.png");
+        private static final Identifier RED_EYES_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/chungus/red_eyes_overlay.png");
 
         public RedEyesOverlay(BigChungusRenderer renderer) {
             super(renderer);

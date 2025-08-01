@@ -8,6 +8,6 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class FrostGiantModel extends DefaultedEntityGeoModel<FrostGiant> {
 
     public FrostGiantModel() {
-        super(new Identifier(SoulsWeaponry.ModId, "frost_giant"), true);
+        super(Identifier.of(SoulsWeaponry.ModId, "frost_giant"), true);
     }
 }

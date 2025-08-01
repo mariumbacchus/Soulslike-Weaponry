@@ -10,7 +10,7 @@ import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 @Environment(EnvType.CLIENT)
 public class KrakenSlayerProjectileRenderer extends ProjectileEntityRenderer<TrueDamageArrow> {
 
-    private static final Identifier TEXTURE = new Identifier("soulsweapons", "textures/entity/kraken_slayer_projectile.png");
+    private static final Identifier TEXTURE = Identifier.of("soulsweapons", "textures/entity/kraken_slayer_projectile.png");
 
     public KrakenSlayerProjectileRenderer(Context context) {
         super(context);

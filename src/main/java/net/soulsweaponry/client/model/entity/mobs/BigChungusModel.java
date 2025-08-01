@@ -14,7 +14,6 @@ import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.mob.HostileEntity;
 
 @Environment(EnvType.CLIENT)
 public class BigChungusModel<T extends MobEntity> extends SinglePartEntityModel<T> {
@@ -45,11 +44,10 @@ public class BigChungusModel<T extends MobEntity> extends SinglePartEntityModel<
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green,
-            float blue, float alpha) {
-                ImmutableList.of(this.root).forEach((modelRenderer) -> {
-                    modelRenderer.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-                });
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
+        ImmutableList.of(this.root).forEach((modelRenderer) -> {
+            modelRenderer.render(matrices, vertices, light, overlay, color);
+        });
     }
 
     @Override
