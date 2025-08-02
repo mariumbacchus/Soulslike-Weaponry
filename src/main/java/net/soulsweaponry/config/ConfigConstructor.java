@@ -970,8 +970,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float decaying_king_xp = 500;
     @Entry public static boolean decaying_king_disables_shields = true;
     @Entry public static boolean decaying_king_is_fire_immune = true;
-    @Entry public static boolean decaying_king_is_undead = true;
-    @Entry public static String decaying_king_group_type = "UNDEAD";
+    @Entry public static boolean decaying_king_has_inverted_heal_and_harm = true;
     @Entry public static String[] decaying_king_status_effect_blacklist = {};
 
     @Entry public static boolean returning_knight_disable_respawn = false;
@@ -1025,8 +1024,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean chaos_monarch_wither_ground = true;
     @Entry public static boolean chaos_monarch_disables_shields = true;
     @Entry public static boolean chaos_monarch_is_fire_immune = true;
-    @Entry public static boolean chaos_monarch_is_undead = true;
-    @Entry public static String chaos_monarch_group_type = "UNDEAD";
+    @Entry public static boolean chaos_monarch_has_inverted_heal_and_harm = true;
     @Entry public static String[] chaos_monarch_status_effect_blacklist = {"soulsweapons:bleed", "minecraft:levitation", "minecraft:wither"};
 
     @Entry public static boolean fallen_icon_disable_respawn = false;

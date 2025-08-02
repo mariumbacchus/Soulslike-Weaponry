@@ -1,5 +1,10 @@
 # Changelog
 
+# 1.3.1 - 1.21.1 Release
+- Entity groups have been changed to be tags, therefore config lines such as ```decaying_king_group_type = "UNDEAD"``` have been removed.
+  - If you want to make a boss a different group, make a tag for that group and add the boss to it
+  - The same goes for if you want to remove a boss from a tag, simply add a "remove" list like how there exists one for "values"
+
 ## 1.3.1
 - Fixed a bug preventing Chungus Potions from being crafted
   - Recipes for the Splash and Lingering has been changed due to this

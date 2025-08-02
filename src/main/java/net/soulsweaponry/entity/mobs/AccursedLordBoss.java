@@ -17,7 +17,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -33,20 +32,20 @@ import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
@@ -59,6 +58,11 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     @Override
     public boolean isFireImmune() {
         return ConfigConstructor.decaying_king_is_fire_immune;
+    }
+
+    @Override
+    public boolean hasInvertedHealingAndHarm() {
+        return ConfigConstructor.decaying_king_has_inverted_heal_and_harm;
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
@@ -144,9 +148,10 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
             .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ATTACKS, 9);
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ATTACKS, 9);
     }
 
     /**
@@ -228,16 +233,6 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     public void setDeath() {
         this.setAttackAnimation(AccursedLordAnimations.DEATH);
         this.removePlacedLava();
-    }
-
-    @Override
-    public boolean isUndead() {
-        return ConfigConstructor.decaying_king_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.decaying_king_group_type;
     }
 
     @Override

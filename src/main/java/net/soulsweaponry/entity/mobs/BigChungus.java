@@ -29,6 +29,8 @@ import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -58,17 +60,18 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     private final SimpleInventory inventory = new SimpleInventory(1);
     private int maxTradeCount = 16;
     private float turnChance = 1f / this.maxTradeCount;
+    public static final RegistryKey<LootTable> CHUNGUS_TRADES = RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(SoulsWeaponry.ModId, "gameplay/chungus_bartering"));
 
     public BigChungus(EntityType<? extends BigChungus> entityType, World world) {
         super(entityType, world);
         this.experiencePoints = 50;
-        this.setTamed(false);
+        this.setTamed(false, false);
     }
 
     protected void initGoals() {
         this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(2, new MeleeAttackGoal(this, 2.0D, false));
-        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
+        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F));
         this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
@@ -254,11 +257,11 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(STATE, 0);
-        this.dataTracker.startTracking(TRADE_TICKS, 0);
-        this.dataTracker.startTracking(AGGRESSIVE, false);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(STATE, 0);
+        builder.add(TRADE_TICKS, 0);
+        builder.add(AGGRESSIVE, false);
     }
 
     @Override
@@ -279,7 +282,12 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
         if (nbt.contains("aggressive")) {
             this.setAggressive(nbt.getBoolean("aggressive"));
         }
-        this.readInventory(nbt);
+        this.readInventory(nbt, this.getRegistryManager());
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -290,7 +298,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
         nbt.putInt("tradeCounter", this.maxTradeCount);
         nbt.putFloat("turnChance", this.turnChance);
         nbt.putBoolean("aggressive", this.isAggressive());
-        this.writeInventory(nbt);
+        this.writeInventory(nbt, this.getRegistryManager());
     }
 
     protected ItemStack addItem(ItemStack stack) {
@@ -298,8 +306,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
-        super.dropEquipment(source, lootingMultiplier, allowDrops);
+    protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
+        super.dropEquipment(world, source, causedByPlayer);
         this.inventory.clearToList().forEach(this::dropStack);
     }
 
@@ -319,7 +327,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             return ActionResult.SUCCESS;
         }
         if (stack.isOf(WeaponRegistry.CHUNGUS_STAFF) && !((IConfigDisable)stack.getItem()).isDisabled(stack) && !this.isAggressive() && !this.isTamed()) {
-            this.setTamed(true);
+            this.setTamed(true, false);
             this.setOwner(player);
             this.setTarget(null);
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
@@ -339,11 +347,15 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     private ItemStack getBarterItem() {
-        LootTable lootTable = this.getWorld().getServer().getLootManager().getLootTable(new Identifier(SoulsWeaponry.ModId, "gameplay/chungus_bartering"));
+        var server = this.getWorld().getServer();
+        if (server == null) {
+            return Items.DIRT.getDefaultStack();
+        }
+        LootTable lootTable = server.getReloadableRegistries().getLootTable(CHUNGUS_TRADES);
         List<ItemStack> list = lootTable.generateLoot(
                 new LootContextParameterSet.Builder((ServerWorld)this.getWorld()).add(LootContextParameters.THIS_ENTITY, this).build(LootContextTypes.BARTER)
         );
-        return list.isEmpty() ? Items.DIRT.getDefaultStack() : list.get(0);
+        return list.isEmpty() ? Items.DIRT.getDefaultStack() : list.getFirst();
     }
 
     @Override
@@ -370,11 +382,6 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             }
         }
         return super.isTeammate(other);
-    }
-
-    @Override
-    public EntityView method_48926() {
-        return super.getWorld();
     }
 
     public static boolean canSpawnInDark(EntityType<? extends MobEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {

@@ -92,5 +92,8 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY)
                 .add(EntityRegistry.MOLTEN_METAL)
                 .add(EntityRegistry.CHUNGUS_HEAD);
+        this.getOrCreateTagBuilder(EntityTypeTags.UNDEAD)
+                .add(EntityRegistry.CHAOS_MONARCH)
+                .add(EntityRegistry.ACCURSED_LORD_BOSS);
     }
 }

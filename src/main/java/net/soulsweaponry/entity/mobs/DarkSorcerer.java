@@ -17,6 +17,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -58,10 +59,11 @@ public class DarkSorcerer extends HostileEntity {
                 && this.getWorld().getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
     }
 
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(BEAMING, Boolean.FALSE);
-        this.dataTracker.startTracking(BEAM_CORDS, new BlockPos(0, 0, 0));
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(BEAMING, false);
+        builder.add(BEAM_CORDS, BlockPos.ORIGIN);
     }
 
     public void setBeaming(boolean bl) {
@@ -188,8 +190,8 @@ public class DarkSorcerer extends HostileEntity {
             float body = this.bodyYaw * 0.017453292F + MathHelper.cos((float)this.age * 0.6662F) * 0.25F;
             float cosBody = MathHelper.cos(body);
             float sinBody = MathHelper.sin(body);
-            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
-            this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, 78, 252, 223), this.getX() + (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() + (double)sinBody * 0.5D, newX, newY, newZ);
+            this.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, 75, 32, 128), this.getX() - (double)cosBody * 0.5D, this.getY() + 1.8D, this.getZ() - (double)sinBody * 0.5D, newX, newY, newZ);
         }
         super.tickMovement();
     }
@@ -202,7 +204,7 @@ public class DarkSorcerer extends HostileEntity {
     }
 
     @Override
-    public boolean isUndead() {
+    public boolean hasInvertedHealingAndHarm() {
         return true;
     }
 }

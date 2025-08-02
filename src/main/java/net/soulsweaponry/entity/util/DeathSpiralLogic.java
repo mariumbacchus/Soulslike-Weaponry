@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeathSpiralLogic {
+
     private final Vec3d pos;
     private final float radius;
     private int age;
@@ -25,13 +26,13 @@ public class DeathSpiralLogic {
         this.age++;
         if (world.isClient) {
             for (List<Vec3d> list : spirals) {
-                if (list.size() != 0) {
+                if (!list.isEmpty()) {
                     ParticleEffect type = this.switchParticle ? ParticleRegistry.DAZZLING_PARTICLE : ParticleRegistry.DARK_STAR;
-                    Vec3d vec = new Vec3d(list.get(0).getX(), list.get(0).getY(), list.get(0).getZ()).add(origin);
+                    Vec3d vec = new Vec3d(list.getFirst().getX(), list.getFirst().getY(), list.getFirst().getZ()).add(origin);
                     world.addParticle(type, vec.getX(), vec.getY(), vec.getZ(),
                             0, 0, 0);
                     this.switchParticle = !switchParticle;
-                    list.remove(0);
+                    list.removeFirst();
                 }
             }
         }

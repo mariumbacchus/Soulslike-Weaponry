@@ -1,8 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -13,7 +11,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -24,7 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
@@ -175,9 +172,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         super.onDeath(source);
         this.setDeath();
         if (this.getBossMusic() != null && this.hasBossMusic() && this.getWorld() instanceof ServerWorld serverWorld) {
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeIdentifier(this.getBossMusic().getId());
-            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);
+            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().getId()));
         }
     }
 
@@ -217,27 +212,10 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public abstract boolean isFireImmune();
 
     @Override
-    public abstract boolean isUndead();
-
-    @Override
-    public EntityGroup getGroup() {
-        String id = this.getGroupId();
-        if (id == null) {
-            return EntityGroup.DEFAULT;
-        }
-        return switch (id.toUpperCase()) {
-            case "UNDEAD" -> EntityGroup.UNDEAD;
-            case "ARTHROPOD" -> EntityGroup.ARTHROPOD;
-            case "ILLAGER" -> EntityGroup.ILLAGER;
-            case "AQUATIC" -> EntityGroup.AQUATIC;
-            default -> EntityGroup.DEFAULT;
-        };
-    }
+    public abstract boolean hasInvertedHealingAndHarm();
 
     @Override
     public abstract boolean disablesShield();
-
-    public abstract String getGroupId();
 
     /**
      * Should be called during damage method for bosses that are projectile immune to check whether the entity
@@ -274,7 +252,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     @Override
     public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
-        String effectId = Objects.requireNonNull(Registries.STATUS_EFFECT.getId(effect.getEffectType())).toString();
+        String effectId = Objects.requireNonNull(Registries.STATUS_EFFECT.getId(effect.getEffectType().value())).toString();
         for (String blacklisted : this.getBlacklistedStatusEffects()) {
             if (blacklisted.equals(effectId)) {
                 return false;
