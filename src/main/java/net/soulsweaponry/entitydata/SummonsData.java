@@ -1,12 +1,10 @@
 package net.soulsweaponry.entitydata;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.SummonUUIDsSyncS2C;
 import net.soulsweaponry.util.NbtHelper;
 
 import java.util.UUID;
@@ -36,12 +34,6 @@ public class SummonsData {
     }
 
     public static void syncUUIDArr(UUID[] uuids, String listId, ServerPlayerEntity player) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(uuids.length);
-        buf.writeString(listId);
-        for (UUID uuid : uuids) {
-            buf.writeUuid(uuid);
-        }
-        ServerPlayNetworking.send(player, PacketIds.SUMMONS_UUIDS, buf);
+        ServerPlayNetworking.send(player, new SummonUUIDsSyncS2C(listId, uuids));
     }
 }

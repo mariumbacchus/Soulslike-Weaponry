@@ -1,12 +1,10 @@
 package net.soulsweaponry.entitydata;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.ReturningProjectileDataSyncS2C;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -34,8 +32,6 @@ public class ReturningProjectileData {
     }
 
     public static void syncData(UUID uuid, ServerPlayerEntity entity) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(uuid);
-        ServerPlayNetworking.send(entity, PacketIds.SYNC_RETURNING_PROJECTILE_DATA, buf);
+        ServerPlayNetworking.send(entity, new ReturningProjectileDataSyncS2C(uuid));
     }
 }

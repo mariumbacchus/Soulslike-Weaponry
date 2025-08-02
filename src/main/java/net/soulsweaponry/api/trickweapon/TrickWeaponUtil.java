@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.registry.ComponentRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
@@ -22,32 +23,6 @@ import java.util.Map;
 public class TrickWeaponUtil {
 
     public static Map<Identifier, Identifier> itemMappings = new HashMap<>();
-    public static final String MAPPED_TRICK_WEAPON = "mapped_trick_weapon";
-
-    // Default method without "replace" value handling
-    /*public static void loadMappings(ResourceManager manager) {
-        try {
-            Gson gson = new Gson();
-            var resource = manager.getResource(new Identifier(SoulsWeaponry.ModId, "trickweapons/item_mappings.json"));
-            if (resource.isPresent()) {
-                var stream = resource.get().getInputStream();
-                Type type = new TypeToken<Map<String, String>>() {}.getType();
-                Map<String, String> rawMappings = gson.fromJson(new InputStreamReader(stream), type);
-                itemMappings.clear();
-                for (Map.Entry<String, String> entry : rawMappings.entrySet()) {
-                    Identifier key = Identifier.tryParse(entry.getKey());
-                    Identifier value = Identifier.tryParse(entry.getValue());
-                    if (key != null && value != null) {
-                        itemMappings.put(key, value);
-                    } else {
-                        SoulsWeaponry.LOGGER.warn("Invalid identifier in item mappings: {}", entry);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            SoulsWeaponry.LOGGER.error("Failed to load trick weapon item mappings.", e);
-        }
-    }*/
 
     public static void loadMappings(ResourceManager manager) {
         try {
@@ -105,8 +80,9 @@ public class TrickWeaponUtil {
 
     @Nullable
     public static Item getMappedItem(ItemStack heldStack) {
-        if (heldStack.hasNbt() && heldStack.getNbt().contains(MAPPED_TRICK_WEAPON)) {
-            return Registries.ITEM.get(Identifier.tryParse(heldStack.getNbt().getString(MAPPED_TRICK_WEAPON)));
+        String mapped = heldStack.get(ComponentRegistry.MAPPED_TRICK_WEAPON);
+        if (mapped != null) {
+            return Registries.ITEM.get(Identifier.tryParse(mapped));
         } else {
             return getMappedItem(heldStack.getItem());
         }
@@ -129,10 +105,8 @@ public class TrickWeaponUtil {
         }
         ItemStack stack = item.getDefaultStack();
         stack.setCount(heldStack.getCount());
-        if (heldStack.hasNbt()) {
-            stack.setNbt(heldStack.getNbt().copy());
-        }
-        stack.getOrCreateNbt().putString(TrickWeaponUtil.MAPPED_TRICK_WEAPON, Registries.ITEM.getId(heldStack.getItem()).toString());
+        stack.applyComponentsFrom(heldStack.getComponents());
+        stack.set(ComponentRegistry.MAPPED_TRICK_WEAPON, Registries.ITEM.getId(heldStack.getItem()).toString());
         return stack;
     }
 }

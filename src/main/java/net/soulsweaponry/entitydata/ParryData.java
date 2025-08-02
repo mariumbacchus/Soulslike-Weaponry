@@ -1,15 +1,13 @@
 package net.soulsweaponry.entitydata;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.ParrySyncS2C;
 
 public class ParryData {
 
@@ -57,8 +55,6 @@ public class ParryData {
     }
 
     public static void syncFrames(int frames, ServerPlayerEntity player) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(frames);
-        ServerPlayNetworking.send(player, PacketIds.PARRY_SYNC, buf);
+        ServerPlayNetworking.send(player, new ParrySyncS2C(frames));
     }
 }

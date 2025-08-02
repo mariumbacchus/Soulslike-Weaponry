@@ -1,13 +1,11 @@
 package net.soulsweaponry.entitydata;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.TargetPostureSyncS2C;
 
 /**
  * Get the posture values and the name of the target the entity is attacking, in other words
@@ -81,10 +79,6 @@ public class TargetPostureData {
     }
 
     public static void syncData(int data, String name, int maxPosture, ServerPlayerEntity entity) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(data);
-        buf.writeString(name);
-        buf.writeInt(maxPosture);
-        ServerPlayNetworking.send(entity, PacketIds.TARGET_POSTURE_SYNC, buf);
+        ServerPlayNetworking.send(entity, new TargetPostureSyncS2C(data, name, maxPosture));
     }
 }
