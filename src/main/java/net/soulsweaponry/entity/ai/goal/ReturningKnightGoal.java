@@ -286,7 +286,7 @@ public class ReturningKnightGoal extends Goal {
                         if (entity instanceof LivingEntity) {
                             entity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
                             entity.setVelocity(entity.getVelocity().x, 1.5f, entity.getVelocity().z);
-                            this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                            this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
                             if (!this.boss.getWorld().isClient) {
                                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, entity.getX(), entity.getY(), entity.getZ(), ParticleEvents.GROUND_RUPTURE_MAP, 1f);
                             }

@@ -920,8 +920,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
     }
 
-    protected double getSquaredMaxAttackDistance(LivingEntity target) {//TODO check if this was the previous impl.
-        float reach = this.mob.getWidth() * 2.0F;
+    //TODO move this into parent class when it is made
+    protected double getSquaredMaxAttackDistance(LivingEntity target) {
+        float reach = this.boss.getWidth() * 2.0F;
         return reach * reach + target.getWidth();
     }
 }

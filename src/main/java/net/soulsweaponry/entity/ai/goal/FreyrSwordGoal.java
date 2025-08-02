@@ -5,6 +5,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
@@ -13,6 +14,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.EnumSet;
 
@@ -82,8 +84,8 @@ public class FreyrSwordGoal extends Goal {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
                 if (target.damage(CustomDamageSource.create(this.entity.getWorld(), CustomDamageSource.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
                     int fire;
-                    if ((fire = EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, this.entity.asItemStack())) > 0) {
-                        target.setOnFireFor(fire * 4);
+                    if ((fire = WeaponUtil.getLevel(this.entity.asItemStack(), Enchantments.FIRE_ASPECT)) > 0) {
+                        target.setOnFireFor(fire * 4);//TODO implement a way to automatically apply enchant effects instead of hardcoding like this
                     }
                     if (!world.isClient) {
                         ParticleHandler.singleParticle(this.entity.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
@@ -97,6 +99,7 @@ public class FreyrSwordGoal extends Goal {
     }
 
     public float getAttackDamage(LivingEntity target) {
-        return target != null ? (ConfigConstructor.sword_of_freyr_damage + EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup())) : ConfigConstructor.sword_of_freyr_damage;
+        return target != null && this.entity.getWorld() instanceof ServerWorld serverWorld ? (ConfigConstructor.sword_of_freyr_damage +
+                EnchantmentHelper.getDamage(serverWorld, this.entity.asItemStack(), target, this.entity.getDamageSources().mobAttack(this.entity), 0)) : ConfigConstructor.sword_of_freyr_damage;
     }
 }

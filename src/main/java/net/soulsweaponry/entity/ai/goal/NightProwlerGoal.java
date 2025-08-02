@@ -12,7 +12,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -322,11 +325,17 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
+    protected void attack(LivingEntity target) {}
 
     protected boolean isInMeleeRange(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
+    }
+
+    //TODO move this into parent class when it is made
+    protected double getSquaredMaxAttackDistance(LivingEntity target) {
+        float reach = this.boss.getWidth() * 2.0F;
+        return reach * reach + target.getWidth();
     }
 
     /**
@@ -376,8 +385,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.setTargetPos(pos);
             this.boss.setParticleState(1);
             Vec3d target = Vec3d.ofCenter(pos);
-            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(142, 107, 1), 10f);
-            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(72, 0, 140), 2f);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), 0x33ffc5, 10f);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), 0x48008c, 2f);
             ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
             this.boss.playSound(SoundRegistry.TRINITY, 1f, 1f);
             if (this.boss.isPhaseTwo()) {
@@ -405,7 +414,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
     }
 
-    public void aoe(Box box, float damage, float knockback, boolean knockbackAway, StatusEffect[] effects) {
+    public void aoe(Box box, float damage, float knockback, boolean knockbackAway, List<RegistryEntry<StatusEffect>> effects) {
         for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
             if (entity instanceof LivingEntity target) {
                 if (this.damageTarget(target, damage) && knockback > 0) {
@@ -413,7 +422,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                     double z = target.getZ() - this.boss.getZ();
                     int mod = knockbackAway ? 1 : -1;
                     target.takeKnockback(knockback, -x * mod, -z * mod);
-                    for (StatusEffect effect : effects) {
+                    for (RegistryEntry<StatusEffect> effect : effects) {
                         target.addStatusEffect(new StatusEffectInstance(effect, 60, 0));
                     }
                 }
@@ -422,7 +431,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     public void aoe(Box box, float damage, float knockback, boolean knockbackAway) {
-        this.aoe(box, damage, knockback, knockbackAway, new StatusEffect[0]);
+        this.aoe(box, damage, knockback, knockbackAway, List.of());
     }
 
     private void reapingSlash(LivingEntity target) {
@@ -465,7 +474,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 Remnant entity;
                 if (phase2) {
                     entity = new Forlorn(EntityRegistry.FORLORN, this.boss.getWorld());
-                    HashMap<Enchantment, Integer> map = new HashMap<>();
+                    HashMap<RegistryKey<Enchantment>, Integer> map = new HashMap<>();
                     map.put(Enchantments.PROTECTION, 2);
                     map.put(Enchantments.VANISHING_CURSE, 1);
                     Forlorn.initEquip(entity, map);
@@ -892,8 +901,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus == 42) {
             this.aoe(this.boss.getBoundingBox().expand(3D), 35f, 2f, true);
             ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
-            this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
-            this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 0.7f);
+            this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1f, 1f);
+            this.boss.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1f, 0.7f);
         }
         this.checkAndReset(10, 0);
     }
@@ -907,7 +916,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus == (phase2 ? 18 : 23)) {
             Vec3d out = this.boss.getRotationVector().multiply(5.5D, 0, 5.5D).add(this.boss.getPos().getX(), target.getY(), this.boss.getPos().getZ());
             Box box = new Box(BlockPos.ofFloored(out)).expand(3D);
-            this.aoe(box, 10f, 1f, false, phase2 ? new StatusEffect[]{StatusEffects.BLINDNESS} : new StatusEffect[0]);
+            this.aoe(box, 10f, 1f, false, phase2 ? List.of(StatusEffects.BLINDNESS) : List.of());
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE, 1f, 0.75f);
             if (phase2) {
                 if (this.boss.teleportAway()) {
@@ -951,6 +960,11 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             if (this.logic.isFinished() || this.age > 200) {
                 this.discard();
             }
+        }
+
+        @Override
+        protected ItemStack getDefaultItemStack() {
+            return null;
         }
     }
 }

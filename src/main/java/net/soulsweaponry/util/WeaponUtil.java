@@ -16,10 +16,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
@@ -82,6 +79,14 @@ public class WeaponUtil {
         Registry<Enchantment> enchantRegistry = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
         Identifier id = Identifier.of(enchantId);
         return enchantRegistry.get(id);
+    }
+
+    public static void applyEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantKey, int level) {
+        var lookup = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
+        lookup.getEntry(enchantKey).ifPresentOrElse(
+                entry -> stack.addEnchantment(lookup.getEntry(entry.value()), level),
+                () -> SoulsWeaponry.LOGGER.warn("Enchantment {} not found when trying to apply to {}", enchantKey, stack)
+        );
     }
 
     /**

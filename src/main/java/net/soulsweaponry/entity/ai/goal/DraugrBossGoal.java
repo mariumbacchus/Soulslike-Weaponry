@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +24,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 
 import static net.soulsweaponry.entity.mobs.DraugrBoss.States;
@@ -75,6 +77,12 @@ public class DraugrBossGoal extends MeleeAttackGoal {
 
     protected boolean isTargetRanged(LivingEntity target) {
         return target.getHandItems().iterator().next().getItem() instanceof RangedWeaponItem;
+    }
+
+    //TODO move this into parent class when it is made
+    protected double getSquaredMaxAttackDistance(LivingEntity target) {
+        float reach = this.boss.getWidth() * 2.0F;
+        return reach * reach + target.getWidth();
     }
 
     protected boolean isTargetHealing(LivingEntity target) {
@@ -192,11 +200,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                 }
                 case BACKSTEP -> this.backstep(target);
                 case HEAVY -> this.heavyBlow(target);
-                case GROUND_SLAM -> this.aoe(30, 14, 8f, 3f, new StatusEffect[]{}, 4D, false);
+                case GROUND_SLAM -> this.aoe(30, 14, 8f, 3f, List.of(), 4D, false);
                 case PARRY -> this.parry(target);
                 case BATTLE_CRY -> {
-                    StatusEffect[] effects = {StatusEffects.SLOWNESS, StatusEffects.WEAKNESS};
-                    this.aoe(50, 30, 0, 0, effects, 10D, true);
+                    this.aoe(50, 30, 0, 0, List.of(StatusEffects.SLOWNESS, StatusEffects.WEAKNESS), 10D, true);
                 }
                 case LEAP -> this.leapAttack(target, 18f, false);
                 case RUN_THRUST -> this.runThrust(target);
@@ -272,10 +279,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void aoe(int maxTicks, int frame, float damage, float knockback, StatusEffect[] effects, double boxSize, boolean shieldUpWhenDone) {
+    private void aoe(int maxTicks, int frame, float damage, float knockback, List<RegistryEntry<StatusEffect>> effects, double boxSize, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
-        if (effects.length > 0 && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        if (!effects.isEmpty() && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         if (attackStatus == frame) {
             if (damage > 0) {
                 if (!this.boss.getWorld().isClient) {
@@ -285,7 +292,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             }
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(boxSize))) {
                 if (entity instanceof LivingEntity living) {
-                    for (StatusEffect effect : effects) {
+                    for (RegistryEntry<StatusEffect> effect : effects) {
                         living.addStatusEffect(new StatusEffectInstance(effect, 200, 0));
                     }
                     if (damage > 0) {
@@ -299,7 +306,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= maxTicks) {
             this.reset(2f, shieldUpWhenDone);
-            if (effects.length > 0) {
+            if (!effects.isEmpty()) {
                 this.specialCooldown = (int) ConfigConstructor.old_champions_remains_special_cooldown_ticks;
             }
         }
@@ -370,5 +377,5 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
+    protected void attack(LivingEntity target) {}
 }

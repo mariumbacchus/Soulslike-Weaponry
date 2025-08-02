@@ -9,10 +9,12 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +46,7 @@ public class Forlorn extends Remnant {
         return 10;
     }
 
-    public static void initEquip(LivingEntity entity, Map<Enchantment, Integer> enchants) {
+    public static void initEquip(LivingEntity entity, Map<RegistryKey<Enchantment>, Integer> enchants) {
         HashMap<EquipmentSlot, ItemStack> equip = new HashMap<>();
         if (entity.getRandom().nextBoolean()) {
             equip.put(EquipmentSlot.MAINHAND, new ItemStack(WeaponRegistry.FORLORN_SCYTHE));
@@ -57,10 +59,8 @@ public class Forlorn extends Remnant {
         equip.put(EquipmentSlot.FEET, new ItemStack(ArmorRegistry.FORLORN_BOOTS));
         for (EquipmentSlot slot : equip.keySet()) {
             ItemStack item = equip.get(slot);
-            for (Enchantment enchant : enchants.keySet()) {
-                if (enchant.isAcceptableItem(item)) {
-                    item.addEnchantment(enchant, enchants.get(enchant));
-                }
+            for (RegistryKey<Enchantment> enchant : enchants.keySet()) {
+                WeaponUtil.applyEnchantment(entity.getWorld(), item, enchant, enchants.get(enchant));
             }
             entity.equipStack(slot, item);
         }
