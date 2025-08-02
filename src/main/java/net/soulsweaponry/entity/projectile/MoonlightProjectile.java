@@ -25,7 +25,7 @@ import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     private static final TrackedData<Integer> EFFECT_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> EFFECT_AMPLIFIER = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> APPLIED_EFFECT_ID = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.STRING);
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);

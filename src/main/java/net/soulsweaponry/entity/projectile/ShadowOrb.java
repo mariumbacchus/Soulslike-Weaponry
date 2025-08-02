@@ -3,13 +3,14 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -23,22 +24,24 @@ import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
 
 public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private final StatusEffect[] effects;
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final List<RegistryEntry<StatusEffect>> effects;
     
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
-        this.effects = new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY};
+        this.effects = List.of(StatusEffects.WITHER, EffectRegistry.DECAY);
     }
 
-    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ, StatusEffect... effects) {
-        super(EntityRegistry.SHADOW_ORB, owner, velocityX, velocityY, velocityZ, world);
+    public ShadowOrb(World world, LivingEntity owner, Vec3d velocity, List<RegistryEntry<StatusEffect>> effects) {
+        super(EntityRegistry.SHADOW_ORB, owner, velocity, world);
         this.effects = effects;
     }
 
@@ -47,7 +50,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
             target.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
-            for (StatusEffect effect : this.effects) {
+            for (RegistryEntry<StatusEffect> effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }
         }
@@ -61,7 +64,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         double d = this.getX() + vec3d.x;
         double e = this.getY() + vec3d.y;
         double f = this.getZ() + vec3d.z;
-        this.getWorld().addParticle(ParticleTypes.ENTITY_EFFECT, d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
+        this.getWorld().addParticle(EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, 0, 0, 0), d + random.nextDouble() - .5D, e + random.nextDouble() - .5D, f + random.nextDouble() - .5D, 0.0, 0.0, 0.0);
     }
 
     @Override
@@ -90,11 +93,6 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     @Override
     public boolean canHit() {
-        return false;
-    }
-
-    @Override
-    public boolean damage(DamageSource source, float amount) {
         return false;
     }
 

@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -16,6 +15,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
@@ -197,7 +197,7 @@ public class AccursedLordGoal extends Goal {
             if (!this.boss.getWorld().isClient) {
                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 200, this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.DARKIN_BLADE_SLAM_MAP, 1f);
             }
-            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
             this.lavaRadius++;
         }
         if (this.attackStatus >= 25) {
@@ -248,7 +248,7 @@ public class AccursedLordGoal extends Goal {
         this.attackStatus++;
         if (this.attackStatus >= 16 && this.attackStatus <= 18) {
             if (this.attackStatus == 17) {
-                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 5f, 1f);
             }
             Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
             List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
@@ -305,7 +305,7 @@ public class AccursedLordGoal extends Goal {
                     entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }
-            this.boss.getWorld().playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+            this.boss.getWorld().playSound(null, this.attackPos, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.attackStatus >= 20) {
             this.resetAttackCooldown(.5f);
@@ -325,13 +325,13 @@ public class AccursedLordGoal extends Goal {
             double h = Math.sqrt(Math.sqrt(distanceToEntity)) * 0.5D;
             this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2f, 1f);
             for(int i = 0; i < fireSprayCount; ++i) {
-                new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                new SmallFireballEntity(this.boss.getWorld(), this.boss, new Vec3d(e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h));
                 ProjectileEntity projectile = switch (entity) {
                     case FIREBALLS ->
-                            new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
+                            new SmallFireballEntity(this.boss.getWorld(), this.boss, new Vec3d(e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h));
                     case WITHERBALLS ->
-                            new ShadowOrb(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
-                                    StatusEffects.WITHER, EffectRegistry.DECAY);
+                            new ShadowOrb(this.boss.getWorld(), this.boss, new Vec3d(e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h),
+                                    List.of(StatusEffects.WITHER, EffectRegistry.DECAY));
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.getWorld().spawnEntity(projectile);

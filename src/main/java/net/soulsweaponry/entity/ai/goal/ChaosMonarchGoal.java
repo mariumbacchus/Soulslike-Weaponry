@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundCategory;
@@ -227,11 +228,11 @@ public class ChaosMonarchGoal extends Goal {
             }
             case 3 -> {
                 if (this.attackStatus % 2 == 0 && this.attackStatus > 18) {
-                    FireballEntity fireball = new FireballEntity(this.boss.getWorld(), this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
+                    FireballEntity fireball = new FireballEntity(this.boss.getWorld(), this.boss, new Vec3d(e, f, g), this.boss.getRandom().nextInt(3) + 1);
                     fireball.setPosition(this.getBossPos());
                     this.boss.getWorld().spawnEntity(fireball);
                 } else if (this.attackStatus < 16) {
-                    SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f, g);
+                    SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), new Vec3d(e, f, g));
                     this.boss.getWorld().spawnEntity(fireball);
                 }
             }
@@ -257,12 +258,12 @@ public class ChaosMonarchGoal extends Goal {
 
     private void randomProjectiles() {
         ProjectileEntity[] projectiles = {
-            new ArrowEntity(this.boss.getWorld(), this.boss),
+            new ArrowEntity(this.boss.getWorld(), this.boss, Items.ARROW.getDefaultStack(), null),
             new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.getWorld()),
             new FireballEntity(EntityType.FIREBALL, this.boss.getWorld()),
             new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.getWorld()),
             new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.getWorld()),
-            new SpectralArrowEntity(this.boss.getWorld(), this.boss),
+            new SpectralArrowEntity(this.boss.getWorld(), this.boss, Items.SPECTRAL_ARROW.getDefaultStack(), null),
             new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.getWorld()),
             new EggEntity(EntityType.EGG, this.boss.getWorld()),
             new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld()),
@@ -284,7 +285,7 @@ public class ChaosMonarchGoal extends Goal {
             int random = this.boss.getRandom().nextInt(projectiles.length);
             ProjectileEntity entity = projectiles[random];
             if (entity instanceof FireballEntity) {
-                entity = new FireballEntity(this.boss.getWorld(), this.boss, e, f, g, this.boss.getRandom().nextInt(3) + 1);
+                entity = new FireballEntity(this.boss.getWorld(), this.boss, new Vec3d(e, f, g), this.boss.getRandom().nextInt(3) + 1);
             }
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             if (entity instanceof PersistentProjectileEntity) {
@@ -343,7 +344,7 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     private void explode() {
-        this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 5f, 1f);
+        this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 5f, 1f);
         Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
         List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
         for (Entity nearbyEntity : nearbyEntities) {

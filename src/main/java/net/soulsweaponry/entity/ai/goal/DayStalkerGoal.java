@@ -585,7 +585,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
      * @param damage Damage to be done to all entities in the box
      */
     private void aoeMelee(LivingEntity target, double distanceToTarget, double expansion, float damage) {
-        double maxDistance = this.getSquaredMaxAttackDistance(target);
+        double maxDistance = this.boss.squaredDistanceTo(target);
         BlockPos pos;
         if (this.isInMeleeRange(target)) {
             pos = target.getBlockPos();
@@ -649,7 +649,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             double y = target.getEyeY() - this.boss.getBodyY(1f);
             double z = target.getZ() - this.boss.getZ();
             Vec3d vec3d = this.boss.getRotationVec(1.0f);
-            SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getY(), this.boss.getZ(), x, y, z);
+            SmallFireballEntity fireball = new SmallFireballEntity(this.boss.getWorld(), this.boss.getX(), this.boss.getY(), this.boss.getZ(), new Vec3d(x, y, z));
             fireball.setPosition(this.boss.getX() + vec3d.x * this.boss.getRandom().nextInt(6) * (this.boss.getRandom().nextBoolean() ? -1 : 1),
                     this.boss.getBodyY(0.5) + this.boss.getRandom().nextInt(4) - 1,
                     this.boss.getZ() + vec3d.z * this.boss.getRandom().nextInt(6) * (this.boss.getRandom().nextBoolean() ? -1 : 1));
@@ -820,7 +820,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                     }
                 }
                 WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), this.boss.getYaw(), this.boss.getPos(), 10, 10, new Vec2f(1.5f, 1.75f), ((vec3d, warmup, yaw) -> this.spawnFlamePillar(vec3d, warmup - 6, yaw)));
-                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
+                this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
                 float pDistance = this.fallDistance >= 10 ? this.fallDistance/10 : 1;
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.particleOutburstMap(this.boss.getWorld(), MathHelper.floor(200 * pDistance), this.boss.getX(), this.boss.getY(), this.boss.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, pDistance);
@@ -869,7 +869,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (!this.boss.getWorld().isClient) {
                 ParticleHandler.particleOutburstMap(this.boss.getWorld(), 150, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.DARKIN_BLADE_SLAM_MAP, 1f);
             }
-            this.playSound(blockPos, SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
+            this.playSound(blockPos, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1f, 1f);
             if (this.boss.isPhaseTwo()) {
                 this.spawnFlamePillar(pos, -6, this.boss.getYaw());
             }
@@ -903,7 +903,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {}
+    protected void attack(LivingEntity target) {}
 
     protected boolean isInMeleeRange(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
@@ -917,6 +917,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         pillar.setPos(vec.getX(), vec.getY(), vec.getZ());
         pillar.setParticleAmountMod(1.5f);
         this.boss.getWorld().spawnEntity(pillar);
-        this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+        this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
+    }
+
+    protected double getSquaredMaxAttackDistance(LivingEntity target) {//TODO check if this was the previous impl.
+        float reach = this.mob.getWidth() * 2.0F;
+        return reach * reach + target.getWidth();
     }
 }
