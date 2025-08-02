@@ -1,6 +1,7 @@
 package net.soulsweaponry.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -11,6 +12,8 @@ import net.soulsweaponry.registry.ItemRegistry;
 
 @Mixin(EnderDragonEntity.class)
 public class EnderDragonEntityMixin {
+
+    @Unique
     boolean canDropSoul = true;
     
     @Inject(at = @At("TAIL"), method = "updatePostDeath()V")

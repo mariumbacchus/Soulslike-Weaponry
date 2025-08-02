@@ -2,7 +2,9 @@ package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -47,6 +49,11 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
         arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));
         arrow.setPostureLoss(this.getPostureLoss());
         return arrow;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
     }
 
     @Override

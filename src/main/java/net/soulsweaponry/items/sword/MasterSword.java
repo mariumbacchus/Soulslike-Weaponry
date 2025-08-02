@@ -1,6 +1,8 @@
 package net.soulsweaponry.items.sword;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -38,6 +40,11 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
     }
 
     @Override

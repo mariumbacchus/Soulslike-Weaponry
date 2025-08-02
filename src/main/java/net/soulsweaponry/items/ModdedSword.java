@@ -1,14 +1,10 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;
@@ -33,13 +29,6 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
 
     public float getAttackDamage() {
         return attackDamage;
-    }
-
-    @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return super.getBonusAttackDamage(target, baseAttackDamage, damageSource);
-        //TODO holy shit this is revolutionary i think i dont need the EnchantmentHelper.getBonusDamage mixin anymore if this works
-        // TODO add to the correct weapons (i.e Sting vs spiders)
     }
 
     @Override

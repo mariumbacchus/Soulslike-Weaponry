@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/lingering_potion",
+  "overrides": [
+    {
+      "predicate": {
+        "potion": "soulsweapons:chungus_tonic"
+      },
+      "model": "soulsweapons:item/chungus_tonic_lingering"
+    }
+  ]
+}

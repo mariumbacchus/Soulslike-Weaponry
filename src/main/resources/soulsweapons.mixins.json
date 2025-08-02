@@ -6,7 +6,6 @@
   "mixins": [
     "ArrowItemMixin",
     "DamageSourcesMixin",
-    "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
     "EntityMixin",
@@ -19,11 +18,8 @@
     "PersistentProjectileEntityInvoker",
     "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
-    "PotionEntityMixin",
-    "PotionUtilMixin",
     "RecipeManagerMixin",
-    "WitherEntityMixin",
-    "create.PotionFluidHandlerMixin"
+    "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",

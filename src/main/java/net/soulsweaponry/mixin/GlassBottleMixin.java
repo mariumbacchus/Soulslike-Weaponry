@@ -1,13 +1,13 @@
 package net.soulsweaponry.mixin;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.GlassBottleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -45,7 +45,7 @@ public class GlassBottleMixin {
             world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
             world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-            info.setReturnValue(TypedActionResult.success(this.fill(itemStack, user, PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.HEALING)), world.isClient()));
+            info.setReturnValue(TypedActionResult.success(this.fill(itemStack, user, PotionContentsComponent.createStack(Items.POTION, Potions.HEALING)), world.isClient()));
             info.cancel();
         }
     }

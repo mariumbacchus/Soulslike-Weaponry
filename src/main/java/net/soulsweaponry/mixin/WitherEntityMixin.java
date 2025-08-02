@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,7 +15,7 @@ import net.soulsweaponry.registry.ItemRegistry;
 public class WitherEntityMixin {
     
     @Inject(at = @At("TAIL"), method = "dropEquipment")
-    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops, CallbackInfo info) {
+    protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
         WitherEntity wither = ((WitherEntity)(Object)this);
         ItemEntity[] drops = {wither.dropItem(ItemRegistry.LORD_SOUL_VOID), wither.dropItem(ItemRegistry.SHARD_OF_UNCERTAINTY)};
         for (ItemEntity entity : drops) {

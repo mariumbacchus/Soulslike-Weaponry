@@ -1,9 +1,11 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
@@ -20,6 +22,14 @@ public class Sting extends ModdedSword {
     public Sting(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.sting_damage, ConfigConstructor.sting_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.LUMINATE, TooltipAbilities.SPIDERS_BANE);
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        if (!this.isDisabled(null) && target.getType().isIn(EntityTypeTags.ARTHROPOD)) {
+            return ConfigConstructor.sting_bonus_arthropod_damage;
+        }
+        return super.getBonusAttackDamage(target, baseAttackDamage, damageSource);
     }
 
     @Override

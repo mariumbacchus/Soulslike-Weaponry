@@ -60,7 +60,7 @@ public class EffectRegistry {
                         new StatusEffectInstance(StatusEffects.SATURATION, 400, 1)
                 ),
             "chungus_tonic"
-        );
+        );//TODO test to see if the custom "potion.json" models that are meant to override the vanilla potion model work with chungus tonic only or not, maybe a predicate to be registered is needed or the file must be in minecraft folder instead of soulsweapons/models/items
 
     public static void init() {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {

@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
@@ -21,14 +20,14 @@ import net.soulsweaponry.items.spear.GlaiveOfHodir;
 import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
-
-import static net.soulsweaponry.items.SoulHarvestingItem.KILLS;
 
 public class TooltipUtil {
 
@@ -39,6 +38,7 @@ public class TooltipUtil {
         }
     }
 
+    // TODO man i love technical debt its so fun yippie
     // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
@@ -110,7 +110,7 @@ public class TooltipUtil {
                 if (stack.getItem() instanceof SetBonusArmor armor) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
                     for (StatusEffectInstance effect : armor.getFullSetEffects()) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().value().getName()).formatted(Formatting.GRAY));
                     }
                     tooltip.addAll(Arrays.asList(armor.getFullSetAbilities()));
                 }
@@ -219,7 +219,7 @@ public class TooltipUtil {
             }
             case RIGHTEOUS -> {
                 if (stack.getItem() instanceof IUndeadBonus undeadBonus) {
-                    int amount = MathHelper.floor(EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack) + undeadBonus.getUndeadBonus(stack));
+                    int amount = MathHelper.floor(WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT) + undeadBonus.getUndeadBonus(stack));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(amount))));
@@ -233,7 +233,7 @@ public class TooltipUtil {
                 if (stack.getItem() instanceof IUltraHeavy heavy) {
                     int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
                     postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
-                    postureLoss *= EnchantmentHelper.getLevel(EnchantRegistry.STAGGER, stack);
+                    postureLoss *= WeaponUtil.getLevel(stack, EnchantRegistry.STAGGER);
                     postureLoss += heavy.getPostureLoss();
                     tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
@@ -351,7 +351,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears").formatted(Formatting.RED));
                 for (int i = 1; i <= 5; i++) {
                     if (i == 3) tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).append(Text.literal(String.valueOf(
-                                    ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) / 2.5f)))
+                                    ConfigConstructor.draupnir_spear_detonate_power + ((float) WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) / 2.5f)))
                             .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
                     else tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
@@ -365,10 +365,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.featherlight_description_2").formatted(Formatting.GRAY));
             }
             case SOUL_TRAP -> {
-                String kills = "0";
-                if (stack.hasNbt() && stack.getNbt().contains(KILLS)) {
-                    kills = String.valueOf(stack.getNbt().getInt(KILLS));
-                }
+                String kills = String.valueOf(Optional.ofNullable(stack.get(ComponentRegistry.KILLS)).orElse(0));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.soul_trap_kills").formatted(Formatting.DARK_AQUA).append(Text.literal(kills).formatted(Formatting.WHITE)));
@@ -440,7 +437,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_3").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_4").formatted(Formatting.GRAY).append(Text.literal(
-                        String.valueOf(ConfigConstructor.lich_bane_bonus_magic_damage + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack))).formatted(Formatting.DARK_AQUA)));
+                        String.valueOf(ConfigConstructor.lich_bane_bonus_magic_damage + WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT))).formatted(Formatting.DARK_AQUA)));
             }
             case MJOLNIR_LIGHTNING -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightning").formatted(Formatting.GOLD));
@@ -593,7 +590,7 @@ public class TooltipUtil {
             case THIRD_SHOT -> {
                 float bonus = 0f;
                 if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER)) {
-                    bonus = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+                    bonus = WeaponUtil.getLevel(stack, Enchantments.POWER);
                 }
                 tooltip.add(Text.translatable("tooltip.soulsweapons.third_shot").formatted(Formatting.GOLD));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.third_shot_1").formatted(Formatting.GRAY));
