@@ -1,5 +1,6 @@
 package net.soulsweaponry.fluid;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.block.cauldron.CauldronBehavior;
@@ -7,18 +8,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
-import java.util.Map;
-import java.util.function.Predicate;
-
 public class PurifiedBloodCauldronBlock extends LeveledCauldronBlock {
 
-    public PurifiedBloodCauldronBlock(Settings settings, Predicate<Biome.Precipitation> precipitationPredicate, Map<Item, CauldronBehavior> behaviorMap) {
-        super(settings, precipitationPredicate, behaviorMap);
+    public PurifiedBloodCauldronBlock(Biome.Precipitation precipitation, CauldronBehavior.CauldronBehaviorMap behaviorMap, AbstractBlock.Settings settings) {
+        super(precipitation, behaviorMap, settings);
     }
 
     @Override

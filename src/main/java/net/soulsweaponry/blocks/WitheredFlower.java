@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.state.StateManager;
@@ -27,12 +28,12 @@ import java.util.function.Supplier;
  */
 public class WitheredFlower extends WitherRoseBlock implements Withered {
 
-    private final StatusEffect effect;
+    private final RegistryEntry<StatusEffect> effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
     private static final Supplier<List<Block>> SMALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.SMALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
 
-    public WitheredFlower(StatusEffect effect, Settings settings) {
-        super(effect, settings);
+    public WitheredFlower(RegistryEntry<StatusEffect> effect, Settings settings) {
+        super(createStewEffectList(effect, 16f), settings);
         this.effect = effect;
     }
 

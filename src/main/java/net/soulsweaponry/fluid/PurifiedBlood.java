@@ -31,7 +31,7 @@ public abstract class PurifiedBlood extends FlowableFluid {
     }
 
     @Override
-    protected int getFlowSpeed(WorldView world) {
+    protected int getMaxFlowDistance(WorldView world) {
         return 4;
     }
 
@@ -101,11 +101,6 @@ public abstract class PurifiedBlood extends FlowableFluid {
         @Override
         public int getLevel(FluidState state) {
             return state.get(LEVEL);
-        }
-
-        @Override
-        public boolean isStill(FluidState state) {
-            return false;
         }
     }
 
