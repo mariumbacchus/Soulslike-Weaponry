@@ -1,5 +1,6 @@
 package net.soulsweaponry.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -28,9 +29,15 @@ import java.util.function.Predicate;
 public class CrimsonObsidian extends BlockWithEntity {
 
     public static final VoxelShape DRIP_COLLISION_SHAPE = Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, 16.0, 10.0);
+    public static final MapCodec<CrimsonObsidian> CODEC = createCodec(CrimsonObsidian::new);
 
     public CrimsonObsidian(Settings settings) {
         super(settings.ticksRandomly());
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     @Override
