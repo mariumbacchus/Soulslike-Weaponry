@@ -84,7 +84,7 @@ public class FreyrSwordGoal extends Goal {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
                 if (target.damage(CustomDamageSource.create(this.entity.getWorld(), CustomDamageSource.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
                     int fire;
-                    if ((fire = WeaponUtil.getLevel(this.entity.asItemStack(), Enchantments.FIRE_ASPECT)) > 0) {
+                    if ((fire = WeaponUtil.getLevel(this.entity.getStack(), Enchantments.FIRE_ASPECT)) > 0) {
                         target.setOnFireFor(fire * 4);//TODO implement a way to automatically apply enchant effects instead of hardcoding like this
                     }
                     if (!world.isClient) {
@@ -100,6 +100,6 @@ public class FreyrSwordGoal extends Goal {
 
     public float getAttackDamage(LivingEntity target) {
         return target != null && this.entity.getWorld() instanceof ServerWorld serverWorld ? (ConfigConstructor.sword_of_freyr_damage +
-                EnchantmentHelper.getDamage(serverWorld, this.entity.asItemStack(), target, this.entity.getDamageSources().mobAttack(this.entity), 0)) : ConfigConstructor.sword_of_freyr_damage;
+                EnchantmentHelper.getDamage(serverWorld, this.entity.getStack(), target, this.entity.getDamageSources().mobAttack(this.entity), 0)) : ConfigConstructor.sword_of_freyr_damage;
     }
 }

@@ -15,10 +15,9 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -31,23 +30,20 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private static final TrackedData<Boolean> SMASH = DataTracker.registerData(FrostGiant.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public FrostGiant(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-        this.setTamed(false);
+        this.setTamed(false, false);
     }
 
     @Override
@@ -55,7 +51,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
         this.goalSelector.add(3, new FrostGiantGoal(this));
-        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
+        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
@@ -146,16 +142,10 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         this.dataTracker.set(SMASH, bl);
     }
 
-    @Nullable
     @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
-    }
-
-    @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(SMASH, false);
-        super.initDataTracker();
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(SMASH, false);
     }
 
     @Override
@@ -166,11 +156,6 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
-    }
-
-    @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
     }
 
     public static DefaultAttributeContainer.Builder createGiantAttributes() {
@@ -216,6 +201,11 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     @Override
     public void initEquip() {}
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
+    }
 
     static class FrostGiantGoal extends MeleeAttackGoal{
         private final FrostGiant mob;
@@ -269,7 +259,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
                         }
                         this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
                         this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
-                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
+                        this.mob.getWorld().playSound(null, this.mob.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
                     }
                     if (attackStatus >= 51) {
                         this.mob.setSmash(false);
@@ -285,6 +275,12 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         }
 
         @Override
-        protected void attack(LivingEntity target, double squaredDistance) {}
+        protected void attack(LivingEntity target) {}
+
+        //TODO move this into parent class when it is made
+        protected double getSquaredMaxAttackDistance(LivingEntity target) {
+            float reach = this.mob.getWidth() * 2.0F;
+            return reach * reach + target.getWidth();
+        }
     }
 }

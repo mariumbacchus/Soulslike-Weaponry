@@ -18,6 +18,7 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -27,7 +28,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
@@ -36,23 +36,21 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
 public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private final ItemStack stack;
-    public static final BlockPos NULLISH_POS = new BlockPos(0, 0, 0);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private ItemStack stack;
+    public static final BlockPos NULLISH_POS = BlockPos.ORIGIN;
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<BlockPos> STATIONARY = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Boolean> IS_STATIONARY = DataTracker.registerData(FreyrSwordEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final String STACK_NBT = "enchants_list";
 
     public FreyrSwordEntity(EntityType<? extends FreyrSwordEntity> entityType, World world) {
         super(entityType, world);
@@ -62,7 +60,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public FreyrSwordEntity(World world, PlayerEntity owner, ItemStack stack) {
         super(EntityRegistry.FREYR_SWORD_ENTITY_TYPE, world);
         this.stack = stack.copy();
-        this.setTamed(true);
+        this.setTamed(true, false);
         this.setOwner(owner);
     }
 
@@ -150,11 +148,6 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public EntityView method_48926() {
-        return super.getWorld();
-    }
-
-    @Override
     public int getAir() {
         return 300;
     }
@@ -197,7 +190,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         if (!player.getInventory().getMainHandStack().isEmpty()) {
             slot = -1;
         }
-        return player.getInventory().insertStack(slot, this.asItemStack());
+        return player.getInventory().insertStack(slot, this.getStack());
     }
 
     public void dropStack() {
@@ -209,7 +202,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public void onDeath(DamageSource damageSource) {
         if (!getWorld().isClient && this.getBlockPos() != null) {
             this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1f, 1f);
-            this.stack.damage(10, this.getRandom(), null);
+            this.stack.damage(10, this, EquipmentSlot.BODY);
             if (!((this.stack.getMaxDamage() - this.stack.getDamage()) <= 0)) {
                 if (this.getOwner() != null && this.getOwner() instanceof PlayerEntity player) {
                     if (!this.insertStack(player)) {
@@ -225,7 +218,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public boolean canUsePortals() {
+    public boolean canUsePortals(boolean allowVehicles) {
         return false;
     }
 
@@ -280,8 +273,20 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         return this.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
     }
 
-    public ItemStack asItemStack() {
+    public ItemStack getStack() {
         return this.stack;
+    }
+
+    protected void setStack(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            this.stack = stack;
+        } else {
+            this.stack = this.getDefaultItemStack();
+        }
+    }
+
+    public ItemStack getDefaultItemStack() {
+        return WeaponRegistry.FREYR_SWORD.getDefaultStack();
     }
 
     @Override
@@ -324,11 +329,11 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ATTACKING, Boolean.FALSE);
-        this.dataTracker.startTracking(STATIONARY, NULLISH_POS);
-        this.dataTracker.startTracking(IS_STATIONARY, Boolean.FALSE);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ATTACKING, false);
+        builder.add(STATIONARY, NULLISH_POS);
+        builder.add(IS_STATIONARY, false);
     }
 
     @Override
@@ -347,7 +352,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public boolean canBeLeashedBy(PlayerEntity player) {
+    public boolean canBeLeashed() {
         return false;
     }
 
@@ -359,17 +364,21 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        ItemStack itemStack = this.asItemStack();
-        if (itemStack.getNbt() != null) {
-            nbt.put(STACK_NBT, itemStack.getNbt());
-        }
+        nbt.put("item", this.stack.encode(this.getRegistryManager()));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains(STACK_NBT)) {
-            this.stack.setNbt((NbtCompound) nbt.get(STACK_NBT));
+        if (nbt.contains("item", NbtElement.COMPOUND_TYPE)) {
+            this.setStack(ItemStack.fromNbt(this.getRegistryManager(), nbt.getCompound("item")).orElse(this.getDefaultItemStack()));
+        } else {
+            this.setStack(this.getDefaultItemStack());
         }
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 }

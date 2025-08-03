@@ -94,6 +94,8 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.CHUNGUS_HEAD);
         this.getOrCreateTagBuilder(EntityTypeTags.UNDEAD)
                 .add(EntityRegistry.CHAOS_MONARCH)
+                .add(EntityRegistry.DRAUGR_BOSS)
+                .add(EntityRegistry.FROST_GIANT)
                 .add(EntityRegistry.ACCURSED_LORD_BOSS);
     }
 }

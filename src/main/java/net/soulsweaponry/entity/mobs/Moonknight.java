@@ -2,9 +2,10 @@ package net.soulsweaponry.entity.mobs;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -16,7 +17,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -32,28 +32,24 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.StopBossMusicS2C;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.keyframe.event.ParticleKeyframeEvent;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.keyframe.event.ParticleKeyframeEvent;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Moonknight extends BossEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private int phaseTransitionTicks;
@@ -208,9 +204,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
             if (this.getWorld() instanceof ServerWorld serverWorld) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeIdentifier(this.getBossMusic().getId());
-                PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), PacketIds.STOP_BOSS_MUSIC, buf);
+                PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().getId()));
                 this.setPlayingMusic(false);
             }
             this.clearStatusEffects();
@@ -414,13 +408,8 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isUndead() {
-        return ConfigConstructor.fallen_icon_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.fallen_icon_group_type;
+    public boolean hasInvertedHealingAndHarm() {
+        return ConfigConstructor.fallen_icon_has_inverted_heal_and_harm;
     }
 
     @Override
@@ -474,17 +463,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(SPAWNING, Boolean.FALSE);
-        this.dataTracker.startTracking(PHASE_2, Boolean.FALSE);
-        this.dataTracker.startTracking(INITIATE_PHASE_2, Boolean.FALSE);
-        this.dataTracker.startTracking(CAN_BEAM, Boolean.FALSE);
-        this.dataTracker.startTracking(IS_SWORD_CHARGING, Boolean.FALSE);
-        this.dataTracker.startTracking(ATTACK, 0);
-        this.dataTracker.startTracking(BEAM_LOCATION, new BlockPos(0, 0, 0));
-        this.dataTracker.startTracking(BEAM_HEIGHT, 0f);
-        this.dataTracker.startTracking(INITIATED_PHASE_2, false);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(SPAWNING, false);
+        builder.add(PHASE_2, false);
+        builder.add(INITIATE_PHASE_2, false);
+        builder.add(CAN_BEAM, false);
+        builder.add(IS_SWORD_CHARGING, false);
+        builder.add(ATTACK, 0);
+        builder.add(BEAM_LOCATION, BlockPos.ORIGIN);
+        builder.add(BEAM_HEIGHT, 0f);
+        builder.add(INITIATED_PHASE_2, false);
     }
 
     private PlayState heart(AnimationState<?> state) {

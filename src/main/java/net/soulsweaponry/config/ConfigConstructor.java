@@ -1001,8 +1001,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean old_champions_remains_disables_shields = true;
     @Entry public static boolean old_champions_remains_disables_shields_all_attacks = false;
     @Entry public static boolean old_champions_remains_is_fire_immune = true;
-    @Entry public static boolean old_champions_remains_is_undead = true;
-    @Entry public static String old_champions_remains_group_type = "UNDEAD";
+    @Entry public static boolean old_champions_remains_has_inverted_heal_and_harm = true;
     @Entry public static String[] old_champions_remains_status_effect_blacklist = {"soulsweapons:bleed"};
     @Entry(min=1, max=1000000D) public static double frenzied_shade_health = 150D;
     @Entry(min=1, max=1000000D) public static double frenzied_shade_armor = 2D;
@@ -1038,7 +1037,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] fallen_icon_projectile_immunity_whitelist = {};
     @Entry public static boolean fallen_icon_disables_shields = true;
     @Entry public static boolean fallen_icon_is_fire_immune = true;
-    @Entry public static boolean fallen_icon_is_undead = false;
+    @Entry public static boolean fallen_icon_has_inverted_heal_and_harm = false;
     @Entry public static String fallen_icon_group_type = "DEFAULT";
     @Entry public static String[] fallen_icon_status_effect_blacklist = {"minecraft:poison"};
 
@@ -1050,8 +1049,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float day_stalker_xp = 500;
     @Entry public static boolean day_stalker_disables_shields = true;
     @Entry public static boolean day_stalker_is_fire_immune = true;
-    @Entry public static boolean day_stalker_is_undead = false;
-    @Entry public static String day_stalker_group_type = "DEFAULT";
+    @Entry public static boolean day_stalker_has_inverted_heal_and_harm = false;
     @Entry(min=0, max=1) public static double day_stalker_projectile_cause_air_combustion_below_percent_health = 0.5;
     @Entry public static String[] day_stalker_status_effect_blacklist = {};
     @Entry(min=0) public static double day_stalker_cooldown_modifier_phase_1 = 1D;
@@ -1071,7 +1069,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float night_prowler_xp = 500;
     @Entry public static boolean night_prowler_disables_shields = true;
     @Entry public static boolean night_prowler_is_fire_immune = true;
-    @Entry public static boolean night_prowler_is_undead = false;
+    @Entry public static boolean night_prowler_has_inverted_heal_and_harm = false;
     @Entry public static String night_prowler_group_type = "DEFAULT";
     @Entry public static String[] night_prowler_status_effect_blacklist = {};
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_1 = 1D;

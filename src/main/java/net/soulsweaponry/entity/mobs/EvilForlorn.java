@@ -31,7 +31,7 @@ public class EvilForlorn extends Forlorn {
 
     public EvilForlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-        this.setTamed(false);
+        this.setTamed(false, false);
         Forlorn.initEquip(this, Collections.emptyMap());
         this.experiencePoints = 20;
     }

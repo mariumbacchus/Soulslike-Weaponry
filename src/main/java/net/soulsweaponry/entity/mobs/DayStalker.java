@@ -35,17 +35,16 @@ import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class DayStalker extends BossEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
@@ -226,13 +225,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isUndead() {
-        return ConfigConstructor.day_stalker_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.day_stalker_group_type;
+    public boolean hasInvertedHealingAndHarm() {
+        return ConfigConstructor.day_stalker_has_inverted_heal_and_harm;
     }
 
     @Override
@@ -258,20 +252,20 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ATTACKS, 0);
-        this.dataTracker.startTracking(INITIATING_PHASE_2, false);
-        this.dataTracker.startTracking(IS_PHASE_2, false);
-        this.dataTracker.startTracking(PARTNER_UUID, Optional.empty());
-        this.dataTracker.startTracking(REMAINING_ANI_TICKS, 0);
-        this.dataTracker.startTracking(IS_FLYING, false);
-        this.dataTracker.startTracking(TARGET_POS, new BlockPos(0, 0, 0));
-        this.dataTracker.startTracking(CHASE_TARGET, true);
-        this.dataTracker.startTracking(WAIT_ANIMATION, false);
-        this.dataTracker.startTracking(SPAWN_PARTICLES_STATE, 0);
-        this.dataTracker.startTracking(FLAMETHROWER_TARGET, new BlockPos(0, 0, 0));
-        this.dataTracker.startTracking(FLAMES_EDGE_RADIUS, 2f);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ATTACKS, 0);
+        builder.add(INITIATING_PHASE_2, false);
+        builder.add(IS_PHASE_2, false);
+        builder.add(PARTNER_UUID, Optional.empty());
+        builder.add(REMAINING_ANI_TICKS, 0);
+        builder.add(IS_FLYING, false);
+        builder.add(TARGET_POS, BlockPos.ORIGIN);
+        builder.add(CHASE_TARGET, true);
+        builder.add(WAIT_ANIMATION, false);
+        builder.add(SPAWN_PARTICLES_STATE, 0);
+        builder.add(FLAMETHROWER_TARGET, BlockPos.ORIGIN);
+        builder.add(FLAMES_EDGE_RADIUS, 2f);
     }
 
     @Nullable
