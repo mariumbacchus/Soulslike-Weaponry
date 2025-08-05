@@ -1,6 +1,6 @@
 package net.soulsweaponry.datagen.recipe;
 
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -16,11 +16,9 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModTags;
 
-import java.util.function.Consumer;
-
 public class ItemRecipes {
 
-    public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
+    public static void generateRecipes(RecipeExporter recipeExporter) {
         // Misc. items
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_DISC)
                 .input('#', ItemRegistry.CHUNGUS_EMERALD)
@@ -29,7 +27,7 @@ public class ItemRecipes {
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CHUNGUS_EMERALD).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FALLEN_ICON_DISC)
                 .input('#', ItemRegistry.MOONSTONE)
                 .pattern("###")
@@ -37,7 +35,7 @@ public class ItemRecipes {
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.DRAUGR_BOSS_DISC)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('X', Items.BONE)
@@ -46,7 +44,7 @@ public class ItemRecipes {
                 .pattern("#X#")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         /*ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FRENZIED_SHADE_DISC)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('X', ItemRegistry.LOST_SOUL)
@@ -55,7 +53,7 @@ public class ItemRecipes {
                 .pattern("#X#")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);*/
+                .offerTo(recipeExporter);*/
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL)
                 .input('Y', ModTags.Items.LOST_SOUL)
                 .input('I', Items.BONE)
@@ -65,7 +63,7 @@ public class ItemRecipes {
                 .pattern("XIX")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, Items.SOUL_LANTERN)
                 .input('#', Items.IRON_NUGGET)
                 .input('X', ModTags.Items.LOST_SOUL)
@@ -74,7 +72,7 @@ public class ItemRecipes {
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "soul_lantern_lost_soul"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "soul_lantern_lost_soul"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.SOUL_INGOT)
                 .input('C', ModTags.Items.IRON_INGOTS)
                 .input('#', ModTags.Items.LOST_SOUL)
@@ -83,7 +81,7 @@ public class ItemRecipes {
                 .pattern(" # ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         // Moonstone tools
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_AXE)
                 .input('/', ModTags.Items.STICKS)
@@ -94,7 +92,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_axe_left"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_axe_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_AXE)
                 .input('/', ModTags.Items.STICKS)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -104,7 +102,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_axe_right"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_axe_right"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_HOE)
                 .input('/', ModTags.Items.STICKS)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -114,7 +112,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_hoe_right"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_hoe_right"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_HOE)
                 .input('/', ModTags.Items.STICKS)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -124,7 +122,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_hoe_left"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_hoe_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_PICKAXE)
                 .input('/', ModTags.Items.STICKS)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -134,7 +132,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_SHOVEL)
                 .input('/', ModTags.Items.STICKS)
                 .input('#', ItemRegistry.MOONSTONE)
@@ -144,7 +142,7 @@ public class ItemRecipes {
                 .pattern(" / ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING)
                 .input('D', ItemRegistry.ARKENSTONE)
                 .input('i', ModTags.Items.IRON_INGOTS)
@@ -153,7 +151,7 @@ public class ItemRecipes {
                 .pattern(" i ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ARKENSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_ring_left"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_ring_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING)
                 .input('D', ItemRegistry.ARKENSTONE)
                 .input('i', ModTags.Items.IRON_INGOTS)
@@ -162,7 +160,7 @@ public class ItemRecipes {
                 .pattern(" i ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ARKENSTONE).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_ring_right"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_ring_right"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.BOSS_COMPASS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('X', Items.COMPASS)
@@ -171,7 +169,7 @@ public class ItemRecipes {
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.SKOFNUNG_STONE)
                 .input('C', ItemRegistry.MOONSTONE)
                 .input('#', ModTags.Items.LOST_SOUL)
@@ -181,7 +179,7 @@ public class ItemRecipes {
                 .pattern("#C#")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.VERGLAS).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.CHAOS_ORB)
                 .input(ItemRegistry.ESSENCE_OF_LUMINESCENCE)
@@ -190,37 +188,37 @@ public class ItemRecipes {
                 .input(ArmorRegistry.CHAOS_CROWN)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ESSENCE_OF_LUMINESCENCE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.DEMON_CHUNK)
                 .input(ItemRegistry.MOLTEN_DEMON_HEART, 4)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.DEMON_HEART).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.PURPLE_DYE)
                 .input(BlockRegistry.HYDRANGEA)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(BlockRegistry.HYDRANGEA).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "hydrangea_dye"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "hydrangea_dye"));
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.PURPLE_DYE, 2)
                 .input(BlockRegistry.OLEANDER)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(BlockRegistry.OLEANDER).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "oleander_dye"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "oleander_dye"));
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.MOONSTONE, 9)
                 .input(BlockRegistry.MOONSTONE_BLOCK)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.VERGLAS, 9)
                 .input(BlockRegistry.VERGLAS_BLOCK)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.VERGLAS).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_EMERALD, 9)
                 .input(BlockRegistry.CHUNGUS_EMERALD_BLOCK)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CHUNGUS_EMERALD).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.GLASS_VIAL, 5)
                 .input('#', Items.GLASS)
                 .pattern("# #")
@@ -228,23 +226,23 @@ public class ItemRecipes {
                 .pattern(" # ")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(Items.GLASS).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.PAPER, 1)
                 .input(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE).build()))
-                .offerTo(consumer, "special_page_to_paper");
+                .offerTo(recipeExporter, "special_page_to_paper");
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_TONIC_LINGERING, 3)
                 .input(ItemRegistry.CHUNGUS_TONIC_SPLASH)
                 .input(WeaponRegistry.CHUNGUS_STAFF)
                 .input(Items.DRAGON_BREATH)
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CHUNGUS_TONIC_SPLASH).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
-        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK), ItemRegistry.CRIMSON_INGOT, 0.1f, 200, ItemRegistry.DEMON_HEART, consumer);
-        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(Items.SOUL_SAND), ItemRegistry.LOST_SOUL, 0.1f, 200, Items.SOUL_SAND, consumer);
-        WeaponRecipeProvider.smeltingRecipe(Ingredient.fromTag(ModTags.Items.DEMON_HEARTS), ItemRegistry.MOLTEN_DEMON_HEART, 0.1f, 200, ModTags.Items.DEMON_HEARTS, consumer);
-        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.WITHERED_DEMON_HEART), Items.NETHERITE_INGOT, 10f, 500, ItemRegistry.WITHERED_DEMON_HEART, consumer, "smelt_withered_demon_heart");
+        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK), ItemRegistry.CRIMSON_INGOT, 0.1f, 200, ItemRegistry.DEMON_HEART, recipeExporter);
+        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(Items.SOUL_SAND), ItemRegistry.LOST_SOUL, 0.1f, 200, Items.SOUL_SAND, recipeExporter);
+        WeaponRecipeProvider.smeltingRecipe(Ingredient.fromTag(ModTags.Items.DEMON_HEARTS), ItemRegistry.MOLTEN_DEMON_HEART, 0.1f, 200, ModTags.Items.DEMON_HEARTS, recipeExporter);
+        WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.WITHERED_DEMON_HEART), Items.NETHERITE_INGOT, 10f, 500, ItemRegistry.WITHERED_DEMON_HEART, recipeExporter, "smelt_withered_demon_heart");
     }
 }

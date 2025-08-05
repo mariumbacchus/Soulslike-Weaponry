@@ -1,6 +1,6 @@
 package net.soulsweaponry.datagen.recipe;
 
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.item.Items;
@@ -10,18 +10,16 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
-import java.util.function.Consumer;
-
 public class ArmorRecipes {
 
-    public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
+    public static void generateRecipes(RecipeExporter recipeExporter) {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_INGOT_HELMET)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("###")
                 .pattern("# #")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_INGOT_CHESTPLATE)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("# #")
@@ -29,7 +27,7 @@ public class ArmorRecipes {
                 .pattern("###")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_INGOT_LEGGINGS)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("###")
@@ -37,14 +35,14 @@ public class ArmorRecipes {
                 .pattern("# #")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_INGOT_BOOTS)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("# #")
                 .pattern("# #")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_ROBES_HELMET)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .input('L', Items.LEATHER)
@@ -52,7 +50,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_ROBES_CHESTPLATE)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .input('L', Items.LEATHER)
@@ -61,7 +59,7 @@ public class ArmorRecipes {
                 .pattern("LLL")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_ROBES_LEGGINGS)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .input('L', Items.LEATHER)
@@ -70,7 +68,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_ROBES_BOOTS)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .input('L', Items.LEATHER)
@@ -78,7 +76,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.SOUL_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.FORLORN_HELMET)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('L', ItemRegistry.SOUL_INGOT)
@@ -86,7 +84,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CRIMSON_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.FORLORN_CHESTPLATE)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('L', ItemRegistry.SOUL_INGOT)
@@ -95,7 +93,7 @@ public class ArmorRecipes {
                 .pattern("LLL")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CRIMSON_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.FORLORN_LEGGINGS)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('L', ItemRegistry.SOUL_INGOT)
@@ -104,7 +102,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CRIMSON_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.FORLORN_BOOTS)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('L', ItemRegistry.SOUL_INGOT)
@@ -112,7 +110,7 @@ public class ArmorRecipes {
                 .pattern("L L")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CRIMSON_INGOT).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.ARKENPLATE)
                 .input('#', Items.IRON_INGOT)
                 .input('n', Items.NETHERITE_INGOT)
@@ -123,7 +121,7 @@ public class ArmorRecipes {
                 .pattern("D#D")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ARKENSTONE).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.WITHERED_CHEST)
                 .input('#', Items.NETHER_BRICK)
                 .input('n', Items.NETHERITE_INGOT)
@@ -134,9 +132,9 @@ public class ArmorRecipes {
                 .pattern("D#D")
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.WITHERED_DEMON_HEART).build()))
-                .offerTo(consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.ARKENPLATE), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER), ArmorRegistry.ENHANCED_ARKENPLATE, ItemRegistry.LORD_SOUL_NIGHT_PROWLER, consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.NETHERITE_HELMET), Ingredient.ofItems(ArmorRegistry.CHAOS_CROWN), ArmorRegistry.CHAOS_HELMET, ArmorRegistry.CHAOS_CROWN, consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.WITHERED_CHEST), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER), ArmorRegistry.ENHANCED_WITHERED_CHEST, ItemRegistry.LORD_SOUL_DAY_STALKER, consumer);
+                .offerTo(recipeExporter);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.ARKENPLATE), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER), ArmorRegistry.ENHANCED_ARKENPLATE, ItemRegistry.LORD_SOUL_NIGHT_PROWLER, recipeExporter);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.NETHERITE_HELMET), Ingredient.ofItems(ArmorRegistry.CHAOS_CROWN), ArmorRegistry.CHAOS_HELMET, ArmorRegistry.CHAOS_CROWN, recipeExporter);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.WITHERED_CHEST), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER), ArmorRegistry.ENHANCED_WITHERED_CHEST, ItemRegistry.LORD_SOUL_DAY_STALKER, recipeExporter);
     }
 }

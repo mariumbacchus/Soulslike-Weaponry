@@ -1,7 +1,7 @@
 package net.soulsweaponry.datagen.recipe;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -14,11 +14,9 @@ import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
 
-import java.util.function.Consumer;
-
 public class GunRecipes {
 
-    public static void generateRecipes(Consumer<RecipeJsonProvider> consumer) {
+    public static void generateRecipes(RecipeExporter recipeExporter) {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.HUNTER_CANNON)
                 .input('#', Items.IRON_INGOT)
                 .input('G', ModTags.Items.LOST_SOUL)
@@ -29,7 +27,7 @@ public class GunRecipes {
                 .pattern(" MM")
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.HUNTER_PISTOL)
                 .input('#', Items.IRON_INGOT)
@@ -40,7 +38,7 @@ public class GunRecipes {
                 .pattern("S  ")
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.GATLING_GUN)
                 .input('#', Items.IRON_INGOT)
@@ -52,7 +50,7 @@ public class GunRecipes {
                 .pattern(" #M")
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.BLUNDERBUSS)
                 .input('#', Blocks.IRON_BLOCK)
@@ -64,7 +62,7 @@ public class GunRecipes {
                 .pattern("S i")
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.SILVER_BULLET, 10)
                 .input(ModTags.Items.SILVER_INGOTS)
@@ -72,7 +70,7 @@ public class GunRecipes {
                 .input(Items.GUNPOWDER)
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer);
+                .offerTo(recipeExporter);
 
         ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.SILVER_BULLET, 3)
                 .input(Items.IRON_INGOT)
@@ -80,6 +78,6 @@ public class GunRecipes {
                 .input(Items.GUNPOWDER)
                 .criterion("has_lost_soul", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LOST_SOUL).build()))
-                .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "silver_bullet_iron_ingot"));
+                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "silver_bullet_iron_ingot"));
     }
 }

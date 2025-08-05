@@ -9,23 +9,27 @@ import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class BossLootTableProvider extends SimpleFabricLootTableProvider {
 
     public static final HashMap<String, ArrayList<Item>> BOSS_DROPS = new HashMap<>();
 
-    public BossLootTableProvider(FabricDataOutput dataGenerator) {
-        super(dataGenerator, LootContextTypes.ENTITY);
+    public BossLootTableProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(output, registryLookup, LootContextTypes.ENTITY);
     }
 
     @Override
-    public void accept(BiConsumer<Identifier, LootTable.Builder> bi) {
+    public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
         for (String id : BOSS_DROPS.keySet()) {
             LootTable.Builder builder = LootTable.builder();
             for (Item item : BOSS_DROPS.get(id)) {
@@ -33,7 +37,9 @@ public class BossLootTableProvider extends SimpleFabricLootTableProvider {
                 lootPoolBuilder.with(ItemEntry.builder(item).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))));
                 builder.pool(lootPoolBuilder);
             }
-            bi.accept(new Identifier(SoulsWeaponry.ModId, "entities/" + id), builder);
+            Identifier lootId = Identifier.of(SoulsWeaponry.ModId, "entities/" + id);
+            RegistryKey<LootTable> lootKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId);
+            lootTableBiConsumer.accept(lootKey, builder);
         }
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("all")
 public class ModWorldGenerator extends FabricDynamicRegistryProvider {
 
     public ModWorldGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
