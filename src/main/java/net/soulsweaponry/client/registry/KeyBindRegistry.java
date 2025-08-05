@@ -4,10 +4,10 @@ import com.mrcrayfish.controllable.client.binding.ButtonBindings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.networking.C2S.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -18,11 +18,9 @@ import org.lwjgl.glfw.GLFW;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.networking.PacketIds;
 
 public class KeyBindRegistry {
 
@@ -57,39 +55,39 @@ public class KeyBindRegistry {
             giveResistance = registerKeyboard("give_or_clear_resistance", GLFW.GLFW_KEY_J);
             ClientTickEvents.END_CLIENT_TICK.register(client -> {
                 while (killNearbyEntities.wasPressed()) {
-                    ClientPlayNetworking.send(PacketIds.KILL_NEARBY_ENTITIES, PacketByteBufs.empty());
+                    ClientPlayNetworking.send(new KillNearbyEntitiesC2S());
                 }
             });
             ClientTickEvents.END_CLIENT_TICK.register(client -> {
                 while (giveResistance.wasPressed()) {
-                    ClientPlayNetworking.send(PacketIds.GIVE_RESISTANCE, PacketByteBufs.empty());
+                    ClientPlayNetworking.send(new GiveResistanceC2S());
                 }
             });
         }
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnFreyrSword.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.RETURN_FREYR_SWORD, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new ReturnFreyrSwordC2S());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (stationaryFreyrSword.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.STATIONARY_FREYR_SWORD, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new StationaryFreyrSwordC2S());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (collectSummons.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.COLLECT_SUMMONS, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new CollectSummonsC2S());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (switchWeapon.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.SWITCH_TRICK_WEAPON, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new SwitchTrickWeaponC2S());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keybindAbility.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.KEYBIND_ABILITY, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new KeybindAbilityC2S());
                 if (client.player != null) {
                     ClientPlayerEntity player = client.player;
                     for (Hand hand : Hand.values()) {
@@ -117,7 +115,7 @@ public class KeyBindRegistry {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (parry.wasPressed()) {
                 try {
-                    ClientPlayNetworking.send(PacketIds.PARRY, PacketByteBufs.empty());
+                    ClientPlayNetworking.send(new ParryC2S());
                 } catch (Exception ignored) {}
             }
         });
@@ -146,15 +144,14 @@ public class KeyBindRegistry {
                         }
                     }
                     if (accept) {
-                        PacketByteBuf buf = PacketByteBufs.create();
-                        ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
+                        ClientPlayNetworking.send(new MoonlightC2S());
                     }
                 }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (returnThrownWeapon.wasPressed()) {
-                ClientPlayNetworking.send(PacketIds.RETURN_THROWN_WEAPON, PacketByteBufs.empty());
+                ClientPlayNetworking.send(new ReturnThrownWeaponC2S());
             }
         });
     }
