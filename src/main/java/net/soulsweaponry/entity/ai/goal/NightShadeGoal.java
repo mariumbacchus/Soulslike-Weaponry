@@ -224,7 +224,7 @@ public class NightShadeGoal extends Goal {
             projectile.setVelocity(e, f, g, 1.5f, 1f);
             projectile.setDamage(this.getModifiedDamage(25f));
             projectile.setDespawnParticleExpansion(0.5f);
-            projectile.setAgeAndPoints(30, 150, 10);
+            projectile.setAgeAndPoints(30, 150, (byte) 10);
             this.boss.getWorld().spawnEntity(projectile);
         }
         if (attackStatus >= 10) {
@@ -251,7 +251,7 @@ public class NightShadeGoal extends Goal {
             MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 2f, 1f);
-            projectile.setAgeAndPoints(30, 75, 4);
+            projectile.setAgeAndPoints(30, 75, (byte) 4);
             projectile.setDamage(this.getModifiedDamage(18f));
             this.boss.getWorld().spawnEntity(projectile);
         }

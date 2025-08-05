@@ -746,7 +746,7 @@ public class MoonknightGoal extends Goal {
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);
                 double z = z0 + r * Math.sin(theta * Math.PI / 180);
                 MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld());
-                projectile.setAgeAndPoints(15, 30, 1);
+                projectile.setAgeAndPoints(15, 30, (byte) 1);
                 projectile.setPos(x, y, z);
                 projectile.setVelocity(this.boss, 0, theta, 0.0f, 1.5f, 0f);
                 projectile.setDamage(this.getModifiedDamage(20f));

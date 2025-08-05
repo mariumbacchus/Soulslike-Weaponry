@@ -50,7 +50,7 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
                 entity.setAppliedStatusEffect(EffectRegistry.FREEZING.value());
                 entity.setEffectAmplifier(amp);
                 entity.setAppliedEffectDuration(duration);
-                entity.setAgeAndPoints(30, 150, 4);
+                entity.setAgeAndPoints(30, 150, (byte) 4);
                 entity.setAreaParticleCount((byte) 8);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setDamage(ConfigConstructor.dark_moon_greatsword_projectile_damage);

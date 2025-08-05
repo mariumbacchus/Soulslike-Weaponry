@@ -33,7 +33,7 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
             if (i >= 10) {
                 stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
-                entity.setAgeAndPoints(30, 150, 4);
+                entity.setAgeAndPoints(30, 150, (byte) 4);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
                 entity.setDamage(ConfigConstructor.master_sword_projectile_damage);
                 world.spawnEntity(entity);

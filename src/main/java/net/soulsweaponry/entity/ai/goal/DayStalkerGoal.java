@@ -493,7 +493,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private MoonlightProjectile getMoonlightProjectile(EntityType<? extends MoonlightProjectile> type, float damage, int rotationDegrees, int maxAge, int explosionParticleCount, int trailParticleCount, int fireTicksApplied) {
         MoonlightProjectile projectile = new MoonlightProjectile(type, this.boss.getWorld(), this.boss);
         if (this.boss.isEmpowered()) projectile.setAppliedEffectDuration(fireTicksApplied);
-        projectile.setAgeAndPoints(maxAge, explosionParticleCount, trailParticleCount);
+        projectile.setAgeAndPoints(maxAge, explosionParticleCount, (byte) trailParticleCount);
         projectile.setDamage(this.getModifiedDamage(damage));
         projectile.setModelRotation(rotationDegrees);
         projectile.setDespawnParticle(ParticleTypes.FLAME);

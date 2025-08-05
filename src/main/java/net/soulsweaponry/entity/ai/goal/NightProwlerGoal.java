@@ -604,7 +604,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         for (int i = -m; i <= m; i++) {
             Vec3d vec = target.rotateY((float) Math.toRadians(8 * i));
             MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld());
-            entity.setAgeAndPoints(30, 150, 4);
+            entity.setAgeAndPoints(30, 150, (byte) 4);
             entity.setDamage(this.getModifiedDamage(20f));
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             entity.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
@@ -625,7 +625,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 entity = new NoDragWitherSkull(EntityType.WITHER_SKULL, this.boss.getWorld());
             } else {
                 entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld());
-                ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, 4);
+                ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, (byte) 4);
                 ((MoonlightProjectile) entity).setDamage(this.getModifiedDamage(20f));
             }
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());

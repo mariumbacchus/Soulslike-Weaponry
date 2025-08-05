@@ -30,7 +30,7 @@ public class PureMoonlightGreatsword extends ChargeToUseItem {
                     stack.damage(5, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                     for (int j = -1; j < 2; j++) {
                         MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
-                        entity.setAgeAndPoints(30, 75, 4);
+                        entity.setAgeAndPoints(30, 75, (byte) 4);
                         entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw() + j*5, 0.0F, 1.5F, 1.0F);
                         entity.setDamage(ConfigConstructor.pure_moonlight_greatsword_projectile_damage);
                         world.spawnEntity(entity);

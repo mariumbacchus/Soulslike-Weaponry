@@ -42,7 +42,7 @@ public class MoonlightShortsword extends ModdedSword {
                     damage += user.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() * 2f;
                     user.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, 4);
                 }
-                projectile.setAgeAndPoints(15, 30, 1);
+                projectile.setAgeAndPoints(15, 30, (byte) 1);
                 projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, velocity, 0f);
                 projectile.setDamage(damage);
                 world.spawnEntity(projectile);

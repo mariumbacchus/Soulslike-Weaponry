@@ -41,7 +41,7 @@ public class MoonlightGreatsword extends ChargeToUseItem {
                 stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
 
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
-                entity.setAgeAndPoints(30, 150, 4);
+                entity.setAgeAndPoints(30, 150, (byte) 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.getProjectileVelocity(), 1.0F);
                 entity.setDamage(this.getProjectileDamage());
