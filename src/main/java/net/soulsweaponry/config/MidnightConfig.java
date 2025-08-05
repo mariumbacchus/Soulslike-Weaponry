@@ -46,7 +46,9 @@ import java.util.regex.Pattern;
  *  Credits to Minenash */
 
 /*
-    Edited to fit 1.20 version. Changed all necessary implementations to get from the new DrawnContext file.
+    Edited to fit 1.21 version.
+    NOTE: Throughout the changes, the widget system is likely broken. I don't use that system however, only
+    the client and common side files generated. This is a note for future me in case I want to use that system.
  */
 @SuppressWarnings("unchecked")
 public abstract class MidnightConfig {
@@ -263,8 +265,7 @@ public abstract class MidnightConfig {
                 Objects.requireNonNull(client).setScreen(parent);
             }).dimensions(this.width / 2 + 4, this.height - 28, 150, 20).build());
 
-            this.list = new MidnightConfigListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
-            if (this.client != null && this.client.world != null) this.list.setRenderBackground(false);
+            this.list = new MidnightConfigListWidget(this.client, this.width, this.height, 32, this.height - 32);
             this.addSelectableChild(this.list);
             for (EntryInfo info : entries) {
                 if (info.id.equals(modid)) {
@@ -329,7 +330,7 @@ public abstract class MidnightConfig {
         }
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            this.renderBackground(context);
+            this.renderBackground(context, mouseX, mouseY, delta);
             this.list.render(context, mouseX, mouseY, delta);
             context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 15, 0xFFFFFF);
 
@@ -354,17 +355,22 @@ public abstract class MidnightConfig {
             super.render(context,mouseX,mouseY,delta);
         }
     }
+
     @Environment(EnvType.CLIENT)
     public static class MidnightConfigListWidget extends ElementListWidget<ButtonEntry> {
         TextRenderer textRenderer;
 
-        public MidnightConfigListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l, int m) {
-            super(minecraftClient, i, j, k, l, m);
+        public MidnightConfigListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l) {
+            super(minecraftClient, i, j, k, l);
             this.centerListVertically = false;
+            this.setRenderHeader(false, 0);
             textRenderer = minecraftClient.textRenderer;
         }
+
         @Override
-        public int getScrollbarPositionX() { return this.width -7; }
+        protected int getScrollbarX() {
+            return this.width -7;
+        }
 
         public void addButton(List<ClickableWidget> buttons, Text text, EntryInfo info) {
             this.addEntry(ButtonEntry.create(buttons, text, info));
@@ -379,7 +385,13 @@ public abstract class MidnightConfig {
             }
             return Optional.empty();
         }
+
+        @Override
+        protected void drawMenuListBackground(DrawContext context) {
+
+        }
     }
+
     public static class ButtonEntry extends ElementListWidget.Entry<ButtonEntry> {
         private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         public final List<ClickableWidget> buttons;
