@@ -35,7 +35,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        MoonlightArrow projectile = new MoonlightArrow(world, shooter);
+        MoonlightArrow projectile = new MoonlightArrow(world, shooter, arrowStack, bowStack);
         ((PersistentProjectileEntityInvoker)projectile).invokeSetPierceLevel((byte) 4);
         projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
         return projectile;

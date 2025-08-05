@@ -1,5 +1,7 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.server.world.ServerWorld;
+import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,25 +18,22 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class CometSpearEntity extends ModPersistentProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private boolean dealtDamage;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
         super(entityType, world);
-        this.setItemStack(new ItemStack(WeaponRegistry.COMET_SPEAR));
     }
 
-    public CometSpearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, owner, world);
-        this.setItemStack(stack.copy());
+    public CometSpearEntity(World world, LivingEntity owner, ItemStack weaponStack) {
+        super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, owner, world, weaponStack, weaponStack);
     }
 
     @Override
@@ -69,38 +68,39 @@ public class CometSpearEntity extends ModPersistentProjectile implements GeoEnti
         if (entity == null) {
             return;
         }
-        if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
+        Entity owner = this.getOwner();
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, owner);
+        if (entity instanceof LivingEntity livingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
+            f = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), livingEntity, damageSource, f);
             float healthPercentLeft = livingEntity.getHealth()/livingEntity.getMaxHealth();
             if (healthPercentLeft < 0.2) {
                 f *= 2;
             }
         }
-
-        Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
-        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
-                }
-                this.onHit(livingEntity2);
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
+            }
+            if (entity instanceof LivingEntity livingEntity) {
+                this.knockback(livingEntity, damageSource);
+                this.onHit(livingEntity);
             }
         }
-
-        this.setVelocity(this.getVelocity().multiply(-0.01D, -0.1D, -0.01D));
-        float g = 1.0F;
-        this.playSound(soundEvent, g, 1.0F);
+        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
+        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     protected boolean tryPickup(PlayerEntity player) {
         return super.tryPickup(player) || this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.COMET_SPEAR.getDefaultStack();
     }
 
     @Override

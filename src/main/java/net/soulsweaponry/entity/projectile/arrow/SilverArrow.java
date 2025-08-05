@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.projectile.arrow;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -19,12 +20,12 @@ public class SilverArrow extends ModArrow implements IPostureLossProjectile {
         super(entityType, world);
     }
 
-    public SilverArrow(double x, double y, double z, World world) {
-        super(EntityRegistry.SILVER_ARROW, x, y, z, world);
+    public SilverArrow(double x, double y, double z, World world, ItemStack arrowStack, ItemStack bowStack) {
+        super(EntityRegistry.SILVER_ARROW, x, y, z, world, arrowStack, bowStack);
     }
 
-    public SilverArrow(LivingEntity owner, World world) {
-        super(EntityRegistry.SILVER_ARROW, owner, world);
+    public SilverArrow(LivingEntity owner, World world, ItemStack arrowStack, ItemStack bowStack) {
+        super(EntityRegistry.SILVER_ARROW, owner, world, arrowStack, bowStack);
     }
 
     @Override

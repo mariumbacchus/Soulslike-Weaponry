@@ -5,6 +5,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
@@ -35,7 +36,7 @@ public class KrakenSlayer extends ModdedBow {
         Integer firedShots = bowStack.get(ComponentRegistry.AMOUNT_USED);
         if (firedShots != null) {
             if (firedShots >= 2) {
-                TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
+                TrueDamageArrow projectile = new TrueDamageArrow(world, shooter, Items.ARROW.getDefaultStack(), bowStack);
                 projectile.setTrueDamage(trueDamage);
                 projectile.setDamage(damage);
                 bowStack.set(ComponentRegistry.AMOUNT_USED, 0);

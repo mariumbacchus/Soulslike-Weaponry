@@ -32,17 +32,16 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 
 public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     protected static final TrackedData<Boolean> CHARGING = DataTracker.registerData(RimeSpectre.class, TrackedDataHandlerRegistry.BOOLEAN);
     protected static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(RimeSpectre.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -52,7 +51,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     public RimeSpectre(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new SpectreMoveControl(this);
-        this.setTamed(false);
+        this.setTamed(false, false);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
         this.goalSelector.add(3, new RimeSpectreGoal(this));
-        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
+        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
@@ -100,12 +99,12 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ATTACKING, false);
-        this.dataTracker.startTracking(CHARGING, false);
-        this.dataTracker.startTracking(ATTACK_PARTICLE, false);
-        this.dataTracker.startTracking(POS, new BlockPos(0, 0, 0));
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ATTACKING, false);
+        builder.add(CHARGING, false);
+        builder.add(ATTACK_PARTICLE, false);
+        builder.add(POS, BlockPos.ORIGIN);
     }
 
     class SpectreMoveControl extends MoveControl {
@@ -324,7 +323,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
             if (attackStatus >= 15) {
                 this.mob.setShootingParticle(true);
                 if (attackStatus % 2 == 0) {
-                    Box box = new Box(target.getBlockPos(), this.mob.getBlockPos().add(0, 1, 0)).expand(1D);
+                    Box box = new Box(target.getPos(), this.mob.getPos().add(0, 1, 0)).expand(1D);
                     for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
                             living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 2));
@@ -376,7 +375,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    public boolean isUndead() {
+    public boolean hasInvertedHealingAndHarm() {
         return false;
     }
 }

@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -20,14 +21,13 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int lifespan;
 
     public ChaosOrbEntity(EntityType<? extends ChaosOrbEntity> entityType, World world) {
@@ -105,7 +105,7 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
     }
 
     @Override
-    protected void initDataTracker() {
+    protected void initDataTracker(DataTracker.Builder builder) {
     }
 
     @Override

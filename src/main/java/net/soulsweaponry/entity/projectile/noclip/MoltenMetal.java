@@ -16,16 +16,16 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ModTags;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Map;
 
 public class MoltenMetal extends NoClipEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MoltenMetal(EntityType<? extends MoltenMetal> entityType, World world) {
         super(entityType, world);
@@ -78,8 +78,8 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
             livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
             ItemStack stack = livingEntity.getOffHandStack();
             if (livingEntity instanceof PlayerEntity player && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                player.disableShield(true);
-                stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, p -> p.sendToolBreakStatus(Hand.OFF_HAND));
+                player.disableShield();
+                stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
             }
         }
         if (this.age > this.getMaxAge() || this.getWorld().getBlockState(this.getBlockPos().down()).isAir()) {

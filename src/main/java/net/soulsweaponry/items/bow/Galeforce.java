@@ -43,7 +43,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Nullable
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
-        return new ChargedArrow(world, shooter, false);
+        return new ChargedArrow(world, shooter, arrowStack, bowStack, false);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, @Nullable Vec3d currentTargetPos) {
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
-        ChargedArrow chargedArrow = new ChargedArrow(world, player, true);
+        ChargedArrow chargedArrow = new ChargedArrow(world, player, arrowStack, stack, true);
         chargedArrow.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
         if (currentTargetPos != null) {
             chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), ConfigConstructor.galeforce_max_velocity, 1f);

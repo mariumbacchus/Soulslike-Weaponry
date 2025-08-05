@@ -51,7 +51,7 @@ public class AirCombustion extends DamagingWarmupEntity {
 
     @Override
     public void handleSoundStatus(byte status) {
-        this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, this.getSoundCategory(), 1f, 1f, true);
+        this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), this.getSoundCategory(), 1f, 1f, true);
     }
 
     @Override

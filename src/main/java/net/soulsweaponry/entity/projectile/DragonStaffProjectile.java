@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class DragonStaffProjectile extends DragonFireballEntity {
 
-    private final ItemStack stack;
+    private ItemStack stack;
     private float radius = 2f;
 
     public DragonStaffProjectile(EntityType<? extends DragonStaffProjectile> entityType, World world) {
@@ -95,11 +96,25 @@ public class DragonStaffProjectile extends DragonFireballEntity {
         }
     }
 
+    protected void setStack(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            this.stack = stack;
+        } else {
+            this.stack = this.getDefaultItemStack();
+        }
+    }
+
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.DRAGON_STAFF.getDefaultStack();
+    }
+
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("itemStack")) {
-            this.stack.setNbt((NbtCompound) nbt.get("itemStack"));
+        if (nbt.contains("item", NbtElement.COMPOUND_TYPE)) {
+            this.setStack(ItemStack.fromNbt(this.getRegistryManager(), nbt.getCompound("item")).orElse(this.getDefaultItemStack()));
+        } else {
+            this.setStack(this.getDefaultItemStack());
         }
         if (nbt.contains("sphereRadius")) {
             this.radius = nbt.getFloat("sphereRadius");
@@ -109,9 +124,7 @@ public class DragonStaffProjectile extends DragonFireballEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        if (this.stack.getNbt() != null) {
-            nbt.put("itemStack", this.stack.getNbt());
-        }
+        nbt.put("item", this.stack.encode(this.getRegistryManager()));
         nbt.putFloat("sphereRadius", this.radius);
     }
 }

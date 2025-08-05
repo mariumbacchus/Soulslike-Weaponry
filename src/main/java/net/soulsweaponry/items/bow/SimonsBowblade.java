@@ -45,7 +45,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
 
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        SilverArrow arrow = new SilverArrow(shooter, world);
+        SilverArrow arrow = new SilverArrow(shooter, world, arrowStack, bowStack);
         arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));
         arrow.setPostureLoss(this.getPostureLoss());
         return arrow;

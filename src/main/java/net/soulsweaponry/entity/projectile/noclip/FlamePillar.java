@@ -7,15 +7,14 @@ import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class FlamePillar extends DamagingWarmupEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public FlamePillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);

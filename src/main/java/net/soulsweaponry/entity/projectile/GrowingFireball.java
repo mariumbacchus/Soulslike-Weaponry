@@ -26,17 +26,16 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.entitydata.ParryData;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class GrowingFireball extends UntargetableFireball implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int maxAge = 126;
     private boolean hasChangedCourse;
     private static final TrackedData<Optional<UUID>> TARGET_UUID = DataTracker.registerData(GrowingFireball.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
@@ -111,9 +110,7 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
                     if (!this.getWorld().isClient) {
                         Vec3d vec3d = player.getRotationVector();
                         this.setVelocity(vec3d);
-                        this.powerX = vec3d.x * 0.1;
-                        this.powerY = vec3d.y * 0.1;
-                        this.powerZ = vec3d.z * 0.1;
+                        this.setVelocityWithAcceleration(vec3d, 0.1);
                         this.setOwner(player);
                         return;
                     }
@@ -139,10 +136,10 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(TARGET_UUID, Optional.empty());
-        this.getDataTracker().startTracking(RADIUS, 0.5F);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(TARGET_UUID, Optional.empty());
+        builder.add(RADIUS, 0.5F);
     }
 
     public void setRadius(float radius) {

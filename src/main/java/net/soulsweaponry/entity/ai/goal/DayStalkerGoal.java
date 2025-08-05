@@ -624,7 +624,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 double f = target.getX() - this.boss.getX();
                 double g = target.getBodyY(0.5) - (this.boss.getEyeY() + 1.5D);
                 double h = target.getZ() - this.boss.getZ();
-                UntargetableFireball fireballEntity = new UntargetableFireball(this.boss.getWorld(), this.boss, f, g, h, 2);
+                UntargetableFireball fireballEntity = new UntargetableFireball(this.boss.getWorld(), this.boss, new Vec3d(f, g, h), 2);
                 fireballEntity.setPosition(this.boss.getX(), this.boss.getEyeY() + 1D, fireballEntity.getZ());
                 this.boss.getWorld().spawnEntity(fireballEntity);
             }

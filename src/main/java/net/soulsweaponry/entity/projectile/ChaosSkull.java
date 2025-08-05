@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -17,6 +18,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.ExplosionBehavior;
@@ -26,8 +28,10 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ChaosSkull extends WitherSkullEntity {
 
@@ -35,16 +39,16 @@ public class ChaosSkull extends WitherSkullEntity {
         super(chaosSkullEntityType, world);
     }
 
-    public ChaosSkull(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
+    public ChaosSkull(double x, double y, double z, Vec3d velocity, World world) {
         super(EntityRegistry.CHAOS_SKULL, world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
-        double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
-        if (d != 0.0) {
-            this.powerX = directionX / d * 0.1;
-            this.powerY = directionY / d * 0.1;
-            this.powerZ = directionZ / d * 0.1;
-        }
+        this.setVelocityWithAcceleration(velocity, this.accelerationPower);
+    }
+
+    private void setVelocityWithAcceleration(Vec3d velocity, double accelerationPower) {
+        this.setVelocity(velocity.normalize().multiply(accelerationPower));
+        this.velocityDirty = true;
     }
 
     @Override
@@ -155,8 +159,8 @@ public class ChaosSkull extends WitherSkullEntity {
         for (ItemStack stack : equip.keySet()) {
             if (entity.getRandom().nextDouble() < 0.5D) {
                 if (!(stack.getItem() instanceof SwordItem)) {
-                    stack.addEnchantment(Enchantments.PROTECTION, 2);
-                    stack.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+                    WeaponUtil.applyEnchantment(entity.getWorld(), stack, Enchantments.PROTECTION, 2);
+                    WeaponUtil.applyEnchantment(entity.getWorld(), stack, Enchantments.VANISHING_CURSE, 1);
                 }
                 entity.equipStack(equip.get(stack), stack);
             }
@@ -174,8 +178,8 @@ public class ChaosSkull extends WitherSkullEntity {
     /**
      * There are mainly bad/irritating effects with a few good ones sprinkled in, this is for a boss fight after all.
      */
-    private StatusEffect getPotionEffect() {
-        StatusEffect[] effects = {
+    private RegistryEntry<StatusEffect> getPotionEffect() {
+        List<RegistryEntry<StatusEffect>> effects = List.of(
             StatusEffects.ABSORPTION,
             StatusEffects.BAD_OMEN,
             StatusEffects.BLINDNESS,
@@ -197,9 +201,9 @@ public class ChaosSkull extends WitherSkullEntity {
             StatusEffects.SPEED,
             StatusEffects.STRENGTH,
             StatusEffects.WEAKNESS,
-            StatusEffects.WITHER,
-        };
-        return effects[this.random.nextInt(effects.length)];
+            StatusEffects.WITHER
+        );
+        return effects.get(this.random.nextInt(effects.size()));
     }
 
     @Override

@@ -3,16 +3,16 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -20,6 +20,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -46,22 +47,22 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         super(entityType, world);
     }
     
-    public WitheredWabbajackProjectile(World world, LivingEntity owner, double directionX, double directionY, double directionZ) {
-        this(owner.getX(), owner.getY(), owner.getZ(), directionX, directionY, directionZ, world);
+    public WitheredWabbajackProjectile(World world, LivingEntity owner, Vec3d velocity) {
+        this(owner.getX(), owner.getY(), owner.getZ(), velocity, world);
         this.setOwner(owner);
         this.setRotation(owner.getYaw(), owner.getPitch());
     }
 
-    public WitheredWabbajackProjectile(double x, double y, double z, double directionX, double directionY, double directionZ, World world) {
+    public WitheredWabbajackProjectile(double x, double y, double z, Vec3d velocity, World world) {
         super(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, world);
         this.refreshPositionAndAngles(x, y, z, this.getYaw(), this.getPitch());
         this.refreshPosition();
-        double d = Math.sqrt(directionX * directionX + directionY * directionY + directionZ * directionZ);
-        if (d != 0.0) {
-            this.powerX = directionX / d * 0.1;
-            this.powerY = directionY / d * 0.1;
-            this.powerZ = directionZ / d * 0.1;
-        }
+        this.setVelocityWithAcceleration(velocity, this.accelerationPower);
+    }
+
+    public void setVelocityWithAcceleration(Vec3d velocity, double accelerationPower) {
+        this.setVelocity(velocity.normalize().multiply(accelerationPower));
+        this.velocityDirty = true;
     }
 
     @Override
@@ -154,7 +155,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             for (int i = 0; i < 3; i++) {
                 if (isWarden && !this.getWorld().isClient) {
                     WardenEntity warden = new WardenEntity(EntityType.WARDEN, getWorld());
-                    warden.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null, null);
+                    warden.initialize((ServerWorldAccess) getWorld(), getWorld().getLocalDifficulty(user.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
                     warden.setPos(this.getX(), this.getY(), this.getZ());
                     warden.increaseAngerAt(user, 80, true);
                     getWorld().spawnEntity(warden);
@@ -188,7 +189,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             case PARTICLES -> {
                 if (!this.getWorld().isClient) {
-                    DefaultParticleType particle = this.getRandomParticle();
+                    ParticleEffect particle = this.getRandomParticle();
                     int amount = 1000;
                     if (particle == ParticleTypes.ELDER_GUARDIAN) {
                         amount = 1;
@@ -210,11 +211,11 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         }
     }
 
-    private DefaultParticleType getRandomParticle() {
+    private ParticleEffect getRandomParticle() {
         Random number = new Random();
-        ArrayList<DefaultParticleType> arr = new ArrayList<>();
+        ArrayList<ParticleEffect> arr = new ArrayList<>();
         Registries.PARTICLE_TYPE.stream().forEach(p -> {
-            if (p instanceof DefaultParticleType d) {
+            if (p instanceof ParticleEffect d) {
                 arr.add(d);
             }
         });
@@ -253,7 +254,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         return WeaponUtil.getRandomlyChosenObject(user, ENTITIES, false);
     }
 
-    private StatusEffect getRandomEffect(boolean flipLuckTypes) {
+    private RegistryEntry<StatusEffect> getRandomEffect(boolean flipLuckTypes) {
         if (this.getOwner() instanceof LivingEntity) {
             return WeaponUtil.getRandomlyChosenObject((LivingEntity)this.getOwner(), this.getEffectList(), flipLuckTypes);
         } else {
@@ -266,16 +267,17 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         return WeaponUtil.getRandomlyChosenObject(user, ENTITY_EFFECTS, false);
     }
 
-    private List<LuckChosenObject<StatusEffect>> getEffectList() {
-        List<LuckChosenObject<StatusEffect>> list = new ArrayList<>();
-        for (StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (effect.getCategory().equals(StatusEffectCategory.HARMFUL)) {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.BAD));
-            } else if (effect.getCategory().equals(StatusEffectCategory.BENEFICIAL)) {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.GOOD));
-            } else {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.NEUTRAL));
+    private List<LuckChosenObject<RegistryEntry<StatusEffect>>> getEffectList() {
+        List<LuckChosenObject<RegistryEntry<StatusEffect>>> list = new ArrayList<>();
+        for (RegistryEntry<StatusEffect> entry : Registries.STATUS_EFFECT.getIndexedEntries()) {
+            StatusEffect effect = entry.value();
+            WeaponUtil.LuckType type;
+            switch (effect.getCategory()) {
+                case HARMFUL -> type = WeaponUtil.LuckType.BAD;
+                case BENEFICIAL -> type = WeaponUtil.LuckType.GOOD;
+                default -> type = WeaponUtil.LuckType.NEUTRAL;
             }
+            list.add(new LuckChosenObject<>(entry, type));
         }
         return list;
     }

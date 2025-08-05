@@ -38,10 +38,9 @@ import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.*;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -49,7 +48,7 @@ import java.util.List;
 
 public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private List<Integer> summonIds = new ArrayList<>();
 
@@ -105,15 +104,15 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(CLAP, Boolean.FALSE);
-        this.dataTracker.startTracking(SMASH, Boolean.FALSE);
-        this.dataTracker.startTracking(START_BEAM, Boolean.FALSE);
-        this.dataTracker.startTracking(STOP_BEAM, Boolean.FALSE);
-        this.dataTracker.startTracking(BEAMING, Boolean.FALSE);
-        this.dataTracker.startTracking(SACRIFICE, Boolean.FALSE);
-        this.dataTracker.startTracking(BEAM_CORDS, new BlockPos(0, 0, 0));
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(CLAP, false);
+        builder.add(SMASH, false);
+        builder.add(START_BEAM, false);
+        builder.add(STOP_BEAM, false);
+        builder.add(BEAMING, false);
+        builder.add(SACRIFICE, false);
+        builder.add(BEAM_CORDS, BlockPos.ORIGIN);
     }
 
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {

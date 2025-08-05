@@ -984,8 +984,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static String[] returning_knight_projectile_immunity_whitelist = {};
     @Entry public static boolean returning_knight_disables_shields = true;
     @Entry public static boolean returning_knight_is_fire_immune = true;
-    @Entry public static boolean returning_knight_is_undead = true;
-    @Entry public static String returning_knight_group_type = "UNDEAD";
+    @Entry public static boolean returning_knight_has_inverted_heal_and_harm = true;
     @Entry public static String[] returning_knight_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
@@ -1010,8 +1009,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frenzied_shade_xp = 400;
     @Entry public static boolean frenzied_shade_disables_shields = false;
     @Entry public static boolean frenzied_shade_is_fire_immune = true;
-    @Entry public static boolean frenzied_shade_is_undead = true;
-    @Entry public static String frenzied_shade_group_type = "UNDEAD";
+    @Entry public static boolean frenzied_shade_has_inverted_heal_and_harm = true;
     @Entry public static String[] frenzied_shade_status_effect_blacklist = {};
 
     @Entry public static boolean chaos_monarch_disable_respawn = false;

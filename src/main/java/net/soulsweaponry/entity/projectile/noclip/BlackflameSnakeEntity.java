@@ -57,7 +57,7 @@ public class BlackflameSnakeEntity extends NoClipEntity {
                         }
                     }
                 }
-                this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1f, 1f);
+                this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1f, 1f);
             }
         } else {
             if (this.age % 4 == 0) {
@@ -71,9 +71,9 @@ public class BlackflameSnakeEntity extends NoClipEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(TARGET_UUID, Optional.empty());
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(TARGET_UUID, Optional.empty());
     }
 
     public void setTargetUuid(@Nullable UUID uuid) {

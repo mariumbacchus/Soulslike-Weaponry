@@ -203,7 +203,7 @@ public class ChaosMonarchGoal extends Goal {
         double e = target.getX() - (this.boss.getX());
         double f = target.getBodyY(0.5D) - this.boss.getBodyY(1.0D);
         double g = target.getZ() - this.boss.getZ();
-        ChaosSkull skull = new ChaosSkull(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), e, f + 1, g, this.boss.getWorld());
+        ChaosSkull skull = new ChaosSkull(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ(), new Vec3d(e, f + 1, g), this.boss.getWorld());
         skull.setOwner(this.boss);
         this.boss.getWorld().spawnEntity(skull);
         this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1f);

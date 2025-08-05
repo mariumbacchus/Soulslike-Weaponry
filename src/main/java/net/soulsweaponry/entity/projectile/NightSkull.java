@@ -19,16 +19,15 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
 public class NightSkull extends ModPersistentProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public NightSkull(EntityType<? extends NightSkull> entityType, World world) {
         super(entityType, world);
@@ -139,6 +138,11 @@ public class NightSkull extends ModPersistentProjectile implements GeoEntity {
 
     @Override
     protected ItemStack asItemStack() {
+        return Items.WITHER_SKELETON_SKULL.getDefaultStack();
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
         return Items.WITHER_SKELETON_SKULL.getDefaultStack();
     }
 }

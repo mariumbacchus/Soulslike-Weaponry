@@ -9,24 +9,24 @@ import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public GhostGlaiveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
         this.setAreaParticle(ParticleRegistry.SUN_PARTICLE);
-        this.setAreaParticleCount(20);
+        this.setAreaParticleCount((byte) 20);
     }
 
     public GhostGlaiveEntity(World world, LivingEntity owner, int maxAge) {
         super(EntityRegistry.GHOST_GLAIVE_TYPE, world, owner, maxAge);
         this.setAreaParticle(ParticleRegistry.SUN_PARTICLE);
-        this.setAreaParticleCount(20);
+        this.setAreaParticleCount((byte) 20);
     }
 
     @Override

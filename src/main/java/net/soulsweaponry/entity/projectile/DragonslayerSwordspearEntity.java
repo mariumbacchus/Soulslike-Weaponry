@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile;
 
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -30,19 +31,17 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
 
     public DragonslayerSwordspearEntity(EntityType<? extends DragonslayerSwordspearEntity> entityType, World world) {
         super(entityType, world);
-        this.setItemStack(new ItemStack(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR));
     }
 
     public DragonslayerSwordspearEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, owner, world);
-        this.setItemStack(stack.copy());
+        super(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, owner, world, stack, stack);
         this.dataTracker.set(ENCHANTED, stack.hasGlint());
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ENCHANTED, false);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ENCHANTED, false);
     }
 
     @Override
@@ -65,30 +64,36 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
     }
 
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.DRAGONSLAYER_SWORDSPEAR.getDefaultStack();
+    }
+
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.dragonslayer_swordspear_projectile_damage;
-        if (this.getOwner() == null || entity == null) return;
-        if (entity instanceof LivingEntity) {
-            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) entity).getGroup());
+        if (this.getOwner() == null || entity == null) {
+            return;
+        }
+        DamageSource damageSource = this.getWorld().getDamageSources().lightningBolt();
+        if (entity instanceof LivingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
+            f = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), entity, damageSource, f);
         }
         Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.getWorld().getDamageSources().lightningBolt();
         this.dealtDamage = true;
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
-                }
-                this.onHit(livingEntity2);
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
+            }
+            if (entity instanceof LivingEntity livingEntity) {
+                this.knockback(livingEntity, damageSource);
+                this.onHit(livingEntity);
             }
         }
-
         this.setVelocity(this.getVelocity().multiply(-0.01D, -0.1D, -0.01D));
         float g = 1.0F;
         if (!getWorld().isClient) {
@@ -99,7 +104,7 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
                     this.getWorld().spawnEntity(lightningEntity);
-                    soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
+                    soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER.value();
                     g = 5.0F;
                 }
             }

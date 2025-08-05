@@ -96,6 +96,9 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.CHAOS_MONARCH)
                 .add(EntityRegistry.DRAUGR_BOSS)
                 .add(EntityRegistry.FROST_GIANT)
+                .add(EntityRegistry.NIGHT_SHADE)
+                .add(EntityRegistry.RETURNING_KNIGHT)
+                .add(EntityRegistry.WITHERED_DEMON)
                 .add(EntityRegistry.ACCURSED_LORD_BOSS);
     }
 }

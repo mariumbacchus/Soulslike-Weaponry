@@ -12,18 +12,17 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
 
 public class HolyMoonlightPillar extends DamagingWarmupEntity implements GeoEntity {
 
     private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);

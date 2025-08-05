@@ -22,8 +22,8 @@ public class TrueDamageArrow extends ModArrow {
         super(entityType, world);
     }
 
-    public TrueDamageArrow(World world, LivingEntity owner) {
-        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world);
+    public TrueDamageArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack) {
+        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE, owner, world, arrowStack, weaponStack);
     }
 
     public void setTrueDamage(float trueDamage) {

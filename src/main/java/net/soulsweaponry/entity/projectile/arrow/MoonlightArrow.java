@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Vec3d;
@@ -21,8 +22,8 @@ public class MoonlightArrow extends ModArrow {
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
-    public MoonlightArrow(World world, LivingEntity owner) {
-        super(EntityRegistry.MOONLIGHT_ARROW, owner, world);
+    public MoonlightArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack) {
+        super(EntityRegistry.MOONLIGHT_ARROW, owner, world, arrowStack, weaponStack);
         this.pickupType = PickupPermission.DISALLOWED;
     }
 

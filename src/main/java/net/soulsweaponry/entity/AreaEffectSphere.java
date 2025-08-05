@@ -2,21 +2,21 @@ package net.soulsweaponry.entity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.command.argument.ParticleEffectArgumentType;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryOps;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
@@ -65,11 +65,12 @@ public class AreaEffectSphere extends Entity implements Ownable {
         this.setPosition(x, y, z);
     }
 
-    protected void initDataTracker() {
-        this.getDataTracker().startTracking(RADIUS, 3.0F);
-        this.getDataTracker().startTracking(PARTICLE_COUNT_MODIFIER, 6.7f);
-        this.getDataTracker().startTracking(WAITING, false);
-        this.getDataTracker().startTracking(PARTICLE_ID, ParticleTypes.ENTITY_EFFECT);
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(RADIUS, 3f);
+        builder.add(PARTICLE_COUNT_MODIFIER, 6.7f);
+        builder.add(WAITING, false);
+        builder.add(PARTICLE_ID, EntityEffectParticleEffect.create(ParticleTypes.ENTITY_EFFECT, -1));
     }
 
     public void setRadius(float radius) {
@@ -195,8 +196,8 @@ public class AreaEffectSphere extends Entity implements Ownable {
                             this.affectedEntities.put(livingEntity, this.age + this.reapplicationDelay);
 
                             for (StatusEffectInstance statusEffectInstance2 : list) {
-                                if (statusEffectInstance2.getEffectType().isInstant()) {
-                                    statusEffectInstance2.getEffectType().applyInstantEffect(this, this.getOwner(), livingEntity, statusEffectInstance2.getAmplifier(), 0.5);
+                                if (statusEffectInstance2.getEffectType().value().isInstant()) {
+                                    statusEffectInstance2.getEffectType().value().applyInstantEffect(this, this.getOwner(), livingEntity, statusEffectInstance2.getAmplifier(), 0.5);
                                 } else {
                                     livingEntity.addStatusEffect(new StatusEffectInstance(statusEffectInstance2), this);
                                 }
@@ -301,12 +302,12 @@ public class AreaEffectSphere extends Entity implements Ownable {
         if (nbt.containsUuid("Owner")) {
             this.ownerUuid = nbt.getUuid("Owner");
         }
-        if (nbt.contains("Particle", 8)) {
-            try {
-                this.setParticleType(ParticleEffectArgumentType.readParameters(new StringReader(nbt.getString("Particle")), Registries.PARTICLE_TYPE.getReadOnlyWrapper()));
-            } catch (CommandSyntaxException var5) {
-                LOGGER.warn("Couldn't load custom particle {}", nbt.getString("Particle"), var5);
-            }
+        RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+        if (nbt.contains("Particle", NbtElement.COMPOUND_TYPE)) {
+            ParticleTypes.TYPE_CODEC
+                    .parse(registryOps, nbt.get("Particle"))
+                    .resultOrPartial(string -> LOGGER.warn("Failed to parse area effect cloud particle options: '{}'", string))
+                    .ifPresent(this::setParticleType);
         }
         if (nbt.contains("Effects", 9)) {
             NbtList nbtList = nbt.getList("Effects", 10);
@@ -331,14 +332,15 @@ public class AreaEffectSphere extends Entity implements Ownable {
         nbt.putFloat("RadiusPerTick", this.radiusGrowth);
         nbt.putFloat("Radius", this.getRadius());
         nbt.putFloat("ParticleAmountMod", this.getParticleAmountModifier());
-        nbt.putString("Particle", this.getParticleType().asString());
+        RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+        nbt.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getParticleType()).getOrThrow());
         if (this.ownerUuid != null) {
             nbt.putUuid("Owner", this.ownerUuid);
         }
         if (!this.effects.isEmpty()) {
             NbtList nbtList = new NbtList();
             for (StatusEffectInstance statusEffectInstance : this.effects) {
-                nbtList.add(statusEffectInstance.writeNbt(new NbtCompound()));
+                nbtList.add(statusEffectInstance.writeNbt());
             }
             nbt.put("Effects", nbtList);
         }

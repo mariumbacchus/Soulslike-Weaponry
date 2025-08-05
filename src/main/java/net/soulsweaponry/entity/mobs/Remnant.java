@@ -24,7 +24,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
@@ -36,7 +35,7 @@ public class Remnant extends TameableEntity {
 
     public Remnant(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-        this.setTamed(false);
+        this.setTamed(false, false);
         this.initEquip();
     }
     
@@ -44,7 +43,7 @@ public class Remnant extends TameableEntity {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1D, true));
-        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F, false));
+        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
@@ -148,7 +147,7 @@ public class Remnant extends TameableEntity {
     }
 
     @Override
-    public boolean isUndead() {
+    public boolean hasInvertedHealingAndHarm() {
         return true;
     }
 
@@ -178,16 +177,16 @@ public class Remnant extends TameableEntity {
     }
 
     @Override
-    public EntityView method_48926() {
-        return super.getWorld();
-    }
-
-    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("soul_amount")) {
             this.soulAmount = nbt.getInt("soul_amount");
         }
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 
     @Override

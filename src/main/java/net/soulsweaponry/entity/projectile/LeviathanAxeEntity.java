@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.projectile;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,18 +16,16 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
-        this.setItemStack(new ItemStack(WeaponRegistry.LEVIATHAN_AXE));
     }
 
     public LeviathanAxeEntity(World world, LivingEntity owner, ItemStack stack) {
@@ -37,29 +34,28 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
 
     @Override
     public float getDamage(Entity target) {
-        return ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.asItemStack());
+        return ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.getItemStack());
     }
 
     @Override
-    public boolean collide(Entity owner, Entity target, float damage) {
+    public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
         if (!this.getWorld().isClient && target instanceof MjolnirProjectile) {
             ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
             this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
         }
-        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
         boolean damaged = target.damage(damageSource, damage);
         if (damaged) {
             if (target instanceof LivingEntity living) {
-                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack())));
+                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS)));
             }
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack()));
+            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS));
         }
         return damaged;
     }
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return ConfigConstructor.leviathan_axe_return_speed + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
+        return ConfigConstructor.leviathan_axe_return_speed + (double) WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) /2f;
     }
 
     @Override
@@ -69,6 +65,11 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         } else {
             return super.canHit(entity);
         }
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.LEVIATHAN_AXE.getDefaultStack();
     }
 
     private PlayState predicate(AnimationState<?> state) {

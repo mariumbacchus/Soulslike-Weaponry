@@ -3,22 +3,15 @@ package net.soulsweaponry.entity.projectile.noclip;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.ModPersistentProjectile;
-import net.soulsweaponry.registry.WeaponRegistry;
 
 public abstract class NoClipEntity extends ModPersistentProjectile {
 
@@ -27,7 +20,11 @@ public abstract class NoClipEntity extends ModPersistentProjectile {
         this.noClip = true;
         this.setDamage(2D);
         this.pickupType = PickupPermission.DISALLOWED;
-        this.setItemStack(new ItemStack(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD));
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return Items.COAL.getDefaultStack();
     }
 
     @Override

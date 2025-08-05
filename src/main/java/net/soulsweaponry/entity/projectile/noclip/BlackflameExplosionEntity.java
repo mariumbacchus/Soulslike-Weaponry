@@ -9,14 +9,13 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BlackflameExplosionEntity extends DamagingWarmupEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public BlackflameExplosionEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -24,7 +23,7 @@ public class BlackflameExplosionEntity extends DamagingWarmupEntity implements G
 
     @Override
     public void handleSoundStatus(byte status) {
-        this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, this.getSoundCategory(), 1f, 1f, true);
+        this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), this.getSoundCategory(), 1f, 1f, true);
     }
 
     public BlackflameExplosionEntity(World world) {

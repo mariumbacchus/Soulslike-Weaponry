@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -15,6 +16,7 @@ import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
@@ -22,25 +24,20 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.Hallowheart;
-import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Random;
 
 public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimatedDeath {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -67,10 +64,10 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(SWING_ARM, Boolean.FALSE);
-        this.dataTracker.startTracking(DEATH, Boolean.FALSE);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(SWING_ARM, false);
+        builder.add(DEATH, false);
     }
 
     public boolean getSwingArm() {
@@ -95,11 +92,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
 
     public boolean isFireImmune() {
         return true;
-    }
-
-    @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
     }
 
     @Override
@@ -192,12 +184,16 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(this.getWorld().getDamageSources().mobAttack(this), g);
+        DamageSource damageSource = this.getDamageSources().mobAttack(this);
+        boolean bl = target.damage(damageSource, g);
         if (bl) {
-           target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
-           this.applyDamageEffects(this, target);
+            double d = target instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE) : 0.0;
+            double e = Math.max(0.0, 1.0 - d);
+            target.setVelocity(target.getVelocity().add(0.0, 0.4F * e, 0.0));
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                EnchantmentHelper.onTargetDamaged(serverWorld, target, damageSource);
+            }
         }
-        
         return bl;
     }
 
@@ -245,8 +241,9 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         }
 
         @Override
-        protected void attack(LivingEntity target, double squaredDistance) {
+        protected void attack(LivingEntity target) {
             double attackDistance = this.getSquaredMaxAttackDistance(target);
+            double squaredDistance = this.mob.squaredDistanceTo(target);
             if (squaredDistance <= attackDistance && this.getCooldown() <= 0) {
                 this.mob.setSwingArm(true);
             }
@@ -262,6 +259,12 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
                     this.resetCooldown();
                 }
             }
+        }
+
+        //TODO move this into parent class when it is made
+        protected double getSquaredMaxAttackDistance(LivingEntity target) {
+            float reach = this.mob.getWidth() * 2.0F;
+            return reach * reach + target.getWidth();
         }
     }
 
@@ -298,7 +301,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     @Override
-    public boolean isUndead() {
+    public boolean hasInvertedHealingAndHarm() {
         return true;
     }
 

@@ -17,28 +17,28 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.world.EntityView;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 
 public class WarmthEntity extends TameableEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final TrackedData<Integer> STATES = DataTracker.registerData(WarmthEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public WarmthEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -84,9 +84,9 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(STATES, 0);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(STATES, 0);
     }
 
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
@@ -97,11 +97,6 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 30D);
-    }
-
-    @Override
-    public EntityView method_48926() {
-        return super.getWorld();
     }
 
     @Nullable
@@ -131,6 +126,11 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             this.getWorld().addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
         }
         super.tickMovement();
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -251,7 +251,7 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             double g = livingEntity.getZ() - this.entity.getZ();
             if (this.attackStatus == 7 || this.attackStatus == 15 || this.attackStatus == 21) {
                 this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.getWorld(), this.entity, e, f, g);
+                SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.entity.getWorld(), this.entity, new Vec3d(e, f, g));
                 smallFireballEntity.setPosition(smallFireballEntity.getX(), this.entity.getBodyY(0.5f), smallFireballEntity.getZ());
                 this.entity.getWorld().spawnEntity(smallFireballEntity);
             }

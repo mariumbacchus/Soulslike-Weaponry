@@ -15,11 +15,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +33,7 @@ import java.util.UUID;
  * TODO: This was fixed in the newest geckolib version this mod now uses, so this can be rewritten to a projectile class again
  */
 public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
+
     @Nullable
     private LivingEntity owner;
     @Nullable
@@ -43,7 +43,7 @@ public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
     private int ticksLeft = maxTicks;
     private float damage = 15f;
     private boolean startedAttack;
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(NightsEdge.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public NightsEdge(EntityType<? extends NightsEdge> type, World world) {
@@ -144,9 +144,9 @@ public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(EMERGE, false);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(EMERGE, false);
     }
 
     private void setEmerge(boolean bl) {

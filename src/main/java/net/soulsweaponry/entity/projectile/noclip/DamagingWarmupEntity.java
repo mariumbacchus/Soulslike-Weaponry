@@ -134,11 +134,11 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(EMERGE, false);
-        this.dataTracker.startTracking(PARTICLE_MOD, 1f);
-        this.dataTracker.startTracking(EVENT_ID, -1);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(EMERGE, false);
+        builder.add(PARTICLE_MOD, 1f);
+        builder.add(EVENT_ID, -1);
     }
 
     /**

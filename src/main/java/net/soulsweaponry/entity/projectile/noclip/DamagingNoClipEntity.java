@@ -3,9 +3,11 @@ package net.soulsweaponry.entity.projectile.noclip;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -36,19 +38,20 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
         super.tick();
         this.setPitch(0f);
         this.setYaw(0f);
-        if (!this.getWorld().isClient) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.4D));
+            DamageSource source;
             for (LivingEntity living : list) {
                 if (this.isOwner(living) || this.entitiesHit.contains(living.getUuid())) {
                     continue;
                 }
-                this.updateEntityDamage(living);
-                boolean wasHit;
                 if (this.getOwner() instanceof LivingEntity) {
-                    wasHit = living.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
+                    source = this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner());
                 } else {
-                    wasHit = living.damage(this.getWorld().getDamageSources().mobProjectile(this, null), (float) this.getDamage());
+                    source = this.getDamageSources().mobProjectile(this, null);
                 }
+                this.updateEntityDamage(serverWorld, living, source);
+                boolean wasHit = living.damage(source, (float) this.getDamage());
                 this.applyDamageEffects(wasHit, living);
                 this.entitiesHit.add(living.getUuid());
             }
@@ -63,8 +66,8 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
      */
     public abstract void applyDamageEffects(boolean wasHit, LivingEntity target);
 
-    public void updateEntityDamage(LivingEntity target) {
-        this.setDamage(this.getDamage() + EnchantmentHelper.getAttackDamage(this.asItemStack(), target.getGroup()));
+    public void updateEntityDamage(ServerWorld serverWorld, LivingEntity target, DamageSource source) {
+        this.setDamage(this.getDamage() + EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), target, source, 0));
     }
 
     @Override

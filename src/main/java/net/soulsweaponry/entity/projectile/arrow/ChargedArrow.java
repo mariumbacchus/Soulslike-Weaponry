@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.projectile.arrow;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -20,16 +21,17 @@ public class ChargedArrow extends ModArrow {
         this.scaleDamageHp = false;
     }
 
-    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world);
+    public ChargedArrow(World world, double x, double y, double z, ItemStack arrowStack, ItemStack weaponStack, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, x, y, z, world, arrowStack, weaponStack);
         this.scaleDamageHp = scaleDamageHp;
     }
 
-    public ChargedArrow(World world, LivingEntity owner, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world);
+    public ChargedArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, owner, world, arrowStack, weaponStack);
         this.scaleDamageHp = scaleDamageHp;
     }
-  
+
+    @Override
     public void tick() {
         if (!this.inGround) {
             Vec3d vec3d = this.getVelocity();

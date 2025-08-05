@@ -20,18 +20,16 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class MjolnirProjectile extends ReturningProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world) {
         super(entityType, world);
-        this.setItemStack(new ItemStack(WeaponRegistry.MJOLNIR));
     }
 
     public MjolnirProjectile(World world, LivingEntity owner, ItemStack stack) {
@@ -46,13 +44,14 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
     @Override
     public float getDamage(Entity target) {
         float f = ConfigConstructor.mjolnir_projectile_damage;
-        if (target instanceof LivingEntity) f += EnchantmentHelper.getAttackDamage(this.asItemStack(), ((LivingEntity) target).getGroup());
+        if (target instanceof LivingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
+            f = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), target, this.getDamageSources().trident(this, this.getOwner()), f);
+        }
         return f;
     }
 
     @Override
-    public boolean collide(Entity owner, Entity target, float damage) {
-        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
+    public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
@@ -72,7 +71,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
                 frozenLightning.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                 this.getWorld().spawnEntity(frozenLightning);
             }
-            soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER;
+            soundEvent = SoundEvents.ITEM_TRIDENT_THUNDER.value();
             g = 5.0f;
         }
         this.playSound(soundEvent, g, 1.0f);
@@ -86,6 +85,11 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
         } else {
             return super.canHit(entity);
         }
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.MJOLNIR.getDefaultStack();
     }
 
     private PlayState predicate(AnimationState<?> state) {

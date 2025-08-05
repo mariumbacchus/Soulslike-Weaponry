@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
@@ -60,7 +61,7 @@ public class FrozenLightning extends Entity {
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(this.getBlockPos()));
                 lightningEntity.setChanneler(null);
                 this.getWorld().spawnEntity(lightningEntity);
-                this.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, 1f, 1.0f);
+                this.playSound(SoundEvents.ITEM_TRIDENT_THUNDER.value(), 1f, 1.0f);
                 this.discard();
             }
         }
@@ -68,7 +69,7 @@ public class FrozenLightning extends Entity {
     }
 
     @Override
-    protected void initDataTracker() {
+    protected void initDataTracker(DataTracker.Builder builder) {
     }
 
     @Override

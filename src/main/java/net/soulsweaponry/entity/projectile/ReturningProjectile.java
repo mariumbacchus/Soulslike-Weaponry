@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -34,32 +35,32 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
         this.setAllowArrowSticking(false);
     }
 
-    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack stack) {
-        super(type, owner, world);
+    public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack weaponStack) {
+        super(type, owner, world, weaponStack, weaponStack);
         this.ignoreCameraFrustum = true;
         this.setAllowArrowSticking(false);
-        this.setItemStack(stack.copy());
     }
 
     public abstract float getDamage(Entity target);
-    public abstract boolean collide(Entity owner, Entity target, float damage);
+    public abstract boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage);
     public abstract double getReturnSpeed(ItemStack stack);
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity owner = this.getOwner() == null ? this : this.getOwner();
         Entity entity = entityHitResult.getEntity();
+        DamageSource damageSource = this.getDamageSources().trident(this, owner);
         this.dealtDamage = true;
-        if (this.collide(owner, entity, this.getDamage(entity))) {
+        if (this.collide(owner, entity, damageSource, this.getDamage(entity))) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity target) {
-                if (owner instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(target, owner);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)owner, target);
-                }
-                this.onHit(target);
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
+            }
+            if (entity instanceof LivingEntity livingEntity) {
+                this.knockback(livingEntity, damageSource);
+                this.onHit(livingEntity);
             }
         }
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
@@ -106,9 +107,10 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
                 double d = 0.05 * returnSpeed;
                 this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
                 this.returnTimer++;
+                DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
                 for (Entity entity1 : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2D))) {
                     if (entity1 instanceof LivingEntity target && !target.isTeammate(owner) && !this.isOwner(entity1)) {
-                        this.collide(owner, target, this.getDamage(target));
+                        this.collide(owner, target, damageSource, this.getDamage(target));
                     }
                 }
             }

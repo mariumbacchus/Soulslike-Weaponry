@@ -1,9 +1,9 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -21,10 +23,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
@@ -40,19 +45,21 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
         this.quickInit();
-        this.setAllowArrowSticking(false);
     }
     
-    public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner, ItemStack stack) {
-        super(type, owner, world, stack);
+    public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner, ItemStack weaponStack) {
+        super(type, owner, world, weaponStack, weaponStack);
         this.quickInit();
-        this.setAllowArrowSticking(false);
     }
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
-        super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack());
+        super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack(), null);
         this.quickInit();
-        this.setAllowArrowSticking(false);
+    }
+
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack();
     }
 
     private void quickInit() {
@@ -63,18 +70,19 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
         this.setTrailParticle(ParticleTypes.GLOW);
         this.setDespawnParticleCount(4);
         this.setDespawnParticleExpansion(0.125f);
+        this.setAllowArrowSticking(false);
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(MODEL_ROTATION, 0);
-        this.dataTracker.startTracking(EFFECT_TICKS, 0);
-        this.dataTracker.startTracking(EFFECT_AMPLIFIER, 0);
-        this.dataTracker.startTracking(APPLIED_EFFECT_ID, "");
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(MODEL_ROTATION, 0);
+        builder.add(EFFECT_TICKS, 0);
+        builder.add(EFFECT_AMPLIFIER, 0);
+        builder.add(APPLIED_EFFECT_ID, "");
     }
 
-    public void setAgeAndPoints(int maxAge, int explosionPoints, int tickParticleAmount) {
+    public void setAgeAndPoints(int maxAge, int explosionPoints, byte tickParticleAmount) {
         this.setMaxAge(maxAge);
         this.setDespawnParticleCount(explosionPoints);
         this.setTrailParticleCount(tickParticleAmount);
@@ -112,17 +120,10 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     @Override
-    public int getPunch() {
-        if (this.asItemStack() != null) {
-            return EnchantmentHelper.getLevel(Enchantments.KNOCKBACK, this.asItemStack());
-        }
-        return super.getPunch();
-    }
-
-    @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() instanceof LivingEntity living && this.asItemStack() != null) {
-            float bonus = EnchantmentHelper.getAttackDamage(this.asItemStack(), living.getGroup());
+        if (entityHitResult.getEntity() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
+            DamageSource damageSource = this.getDamageSources().arrow(this, this.getOwner());
+            float bonus = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), living, damageSource, 0);
             this.setDamage(this.getDamage() + (bonus >= 5 ? bonus * 0.7f : bonus));
         }
         super.onEntityHit(entityHitResult);
@@ -136,15 +137,9 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     public void detonateEntity(World world, double x, double y, double z, double points, float sizeModifier) {
-        double phi = Math.PI * (3. - Math.sqrt(5.));
-        for (int i = 0; i < points; i++) {
-            double velocityY = 1 - (i/(points - 1)) * 2;
-            double radius = Math.sqrt(1 - velocityY*velocityY);
-            double theta = phi * i;
-            double velocityX = Math.cos(theta) * radius;
-            double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(this.getDespawnParticle(), true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
-        } 
+        for (Vec3d vec : ParticleHandler.getSphereParticleCords(points, sizeModifier)) {
+            world.addParticle(this.getDespawnParticle(), true, x, y, z, vec.x, vec.y, vec.z);
+        }
     }
 
     @Override
@@ -155,7 +150,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
 
     @Override
     protected SoundEvent getHitSound() {
-        return SoundEvents.ENTITY_GENERIC_EXPLODE;
+        return SoundEvents.ENTITY_GENERIC_EXPLODE.value();
     }
 
     protected float getDragInWater() {
@@ -219,8 +214,12 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
         this.setAppliedEffectId(identifier.toString());
     }
 
-    public StatusEffect getAppliedEffect() {
-        return Registries.STATUS_EFFECT.get(Identifier.of(this.getAppliedEffectId()));
+    public RegistryEntry<StatusEffect> getAppliedEffect() {
+        var effect = Registries.STATUS_EFFECT.getEntry(Identifier.of(this.getAppliedEffectId()));
+        if (effect.isPresent()) {
+            return effect.get();
+        }
+        return EffectRegistry.FREEZING;
     }
 
     public int getEffectAmplifier() {

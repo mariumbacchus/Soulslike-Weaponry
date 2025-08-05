@@ -9,13 +9,13 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class MoonveilWave extends DamagingNoClipEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final TrackedData<Integer> MODEL_ROTATION_X = DataTracker.registerData(MoonveilWave.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Float> MODEL_TRANSLATION_Y = DataTracker.registerData(MoonveilWave.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<String> TEXTURE_ID = DataTracker.registerData(MoonveilWave.class, TrackedDataHandlerRegistry.STRING);
@@ -56,11 +56,11 @@ public class MoonveilWave extends DamagingNoClipEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(MODEL_ROTATION_X, 0);
-        this.dataTracker.startTracking(MODEL_TRANSLATION_Y, 0f);
-        this.dataTracker.startTracking(TEXTURE_ID, "moonveil_wave");
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(MODEL_ROTATION_X, 0);
+        builder.add(MODEL_TRANSLATION_Y, 0f);
+        builder.add(TEXTURE_ID, "moonveil_wave");
     }
 
     public void setModelRotationX(int degrees) {
