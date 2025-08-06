@@ -3,9 +3,12 @@ package net.soulsweaponry.client.registry;
 import net.minecraft.client.item.CompassAnglePredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.sword.Skofnung;
@@ -110,6 +113,12 @@ public class PredicateRegistry {
                 return 1f;
             }
             return 0.0f;
+        });
+
+        ModelPredicateProviderRegistry.register(Items.POTION, Identifier.of("soulsweapons", "custom_potion"), (itemStack, clientWorld, livingEntity, seed) -> {
+            PotionContentsComponent contents = itemStack.get(DataComponentTypes.POTION_CONTENTS);
+            // NOTE: As of now, hardcoded to only work for Chungus Tonic Potions
+            return contents != null && contents.matches(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f;
         });
     }
 

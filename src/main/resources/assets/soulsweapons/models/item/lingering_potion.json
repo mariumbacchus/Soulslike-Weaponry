@@ -3,7 +3,7 @@
   "overrides": [
     {
       "predicate": {
-        "potion": "soulsweapons:chungus_tonic"
+        "custom_potion": 1
       },
       "model": "soulsweapons:item/chungus_tonic_lingering"
     }

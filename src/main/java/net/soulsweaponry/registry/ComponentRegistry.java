@@ -37,4 +37,6 @@ public class ComponentRegistry {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),
                 builder.apply(ComponentType.builder()).build());
     }
+
+    public static void init() {}
 }

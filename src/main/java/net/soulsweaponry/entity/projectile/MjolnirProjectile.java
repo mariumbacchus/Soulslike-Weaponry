@@ -93,6 +93,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
     }
 
     private PlayState predicate(AnimationState<?> state) {
+        //TODO dont try calling if animation is null
         try {
             if (!this.inGround || this.isNoClip()) {
                 state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));

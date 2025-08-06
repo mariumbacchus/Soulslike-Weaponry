@@ -308,7 +308,7 @@ public class WeaponUtil {
      */
     @Nullable
     public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float amount) {
-        return makeAttribute(attr, slot.getName().toUpperCase(), amount);
+        return makeAttribute(attr, slot.getName().toLowerCase(), amount);
     }
 
     /**
@@ -322,7 +322,8 @@ public class WeaponUtil {
             return null;
         }
         // e.g. "soulsweapons:bleed_buildup:chungus"
-        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s:%s", attr.value().getTranslationKey(), name));
+        // Any non [a-z0-9/._-] character will be replaced with "-" to satisfy Identifier class (Looking at you, Mjölnir)
+        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.value().getTranslationKey(), name));
         return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
     }
 

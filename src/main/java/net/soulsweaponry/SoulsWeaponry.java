@@ -47,6 +47,7 @@ public class SoulsWeaponry implements ModInitializer {
         LOGGER.info("Config initialized!");
         //TODO i guess they removed geckolib.initialize, we'll see if things break in the future or not
         AttributeRegistry.init();
+        ComponentRegistry.init();
         BlockRegistry.init();
         ItemRegistry.init();
         FluidRegistry.init();
