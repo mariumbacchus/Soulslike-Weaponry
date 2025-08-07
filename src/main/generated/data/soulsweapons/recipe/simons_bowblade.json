@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "S": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    " X#",
+    "S #",
+    " X#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:simons_bowblade"
+  }
+}

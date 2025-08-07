@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:blaze_rod"
+    },
+    "0": {
+      "item": "minecraft:egg"
+    },
+    "E": {
+      "item": "soulsweapons:chungus_emerald"
+    }
+  },
+  "pattern": [
+    " E0",
+    " #E",
+    "#  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:chungus_staff"
+  }
+}

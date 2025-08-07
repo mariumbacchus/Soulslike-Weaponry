@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:verglas",
+  "criteria": {
+    "soulsweapons:leviathan_axe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:leviathan_axe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.leviathan_axe.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:leviathan_axe"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.leviathan_axe.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:leviathan_axe"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

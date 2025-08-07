@@ -21,18 +21,18 @@ public class BlockTagsProvider extends FabricTagProvider.BlockTagProvider {
 
         //TODO test all mining levels if they work or not
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_IRON_BLOCK_TOOL)
-                .addTag(BlockTags.NEEDS_IRON_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_IRON_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_LOST_SOUL_TOOL)
-                .addTag(BlockTags.NEEDS_IRON_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_IRON_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_LOST_SOUL_DURABLE_TOOL)
-                .addTag(BlockTags.NEEDS_IRON_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_IRON_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_MOONSTONE_OR_VERGLAS_TOOL)
-                .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_DIAMOND_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_CRIMSON_INGOT_TOOL)
-                .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_DIAMOND_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_MOONSTONE_TOOL)
-                .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_DIAMOND_TOOL);
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_ECHO_SHARD_TOOL)
-                .addTag(BlockTags.NEEDS_DIAMOND_TOOL);
+                .addOptionalTag(BlockTags.NEEDS_DIAMOND_TOOL);
     }
 }

@@ -8,10 +8,7 @@ import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.enchantment.EnchantmentProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
-import net.soulsweaponry.datagen.tags.BlockTagsProvider;
-import net.soulsweaponry.datagen.tags.EnchantmentTagsProvider;
-import net.soulsweaponry.datagen.tags.EntityTagsProvider;
-import net.soulsweaponry.datagen.tags.ItemTagsProvider;
+import net.soulsweaponry.datagen.tags.*;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
 import net.soulsweaponry.world.feature.ConfiguredFeatures;
 import net.soulsweaponry.world.feature.PlacedFeatures;
@@ -36,6 +33,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         pack.addProvider(EntityTagsProvider::new);
         pack.addProvider(ItemTagsProvider::new);
         pack.addProvider(AdvancementsProvider::new);
+        pack.addProvider(StatusEffectTagProvider::new);
     }
 
     @Override

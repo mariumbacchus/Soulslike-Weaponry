@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:lord_soul",
+  "criteria": {
+    "soulsweapons:whirligig_sawblade": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:whirligig_sawblade"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.whirligig_sawblade.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:whirligig_sawblade"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.whirligig_sawblade.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:whirligig_sawblade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

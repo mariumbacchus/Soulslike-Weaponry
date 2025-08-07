@@ -184,7 +184,7 @@ public class BossLootTableProvider extends SimpleFabricLootTableProvider {
     }
 
     public static void registerLootTable(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer, EntityType<?> entityType, LootTable.Builder lootTable) {
-        Identifier lootId = Identifier.of(SoulsWeaponry.ModId, "entities/" + entityType.getLootTableId());
+        Identifier lootId = Identifier.of(SoulsWeaponry.ModId, "entities/" + entityType.toString());
         RegistryKey<LootTable> lootKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId);
         lootTableBiConsumer.accept(lootKey, lootTable);
     }

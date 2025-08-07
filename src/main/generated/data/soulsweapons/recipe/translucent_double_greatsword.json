@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:lost_soul"
+    },
+    "X": {
+      "item": "soulsweapons:soul_ingot"
+    }
+  },
+  "pattern": [
+    " ##",
+    " X ",
+    "## "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:translucent_double_greatsword"
+  }
+}

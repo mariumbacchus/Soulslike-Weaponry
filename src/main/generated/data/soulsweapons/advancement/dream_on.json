@@ -1,0 +1,46 @@
+{
+  "parent": "soulsweapons:lord_soul",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "distance": {
+          "y": {
+            "min": 50.0
+          }
+        },
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "effects": {
+                "soulsweapons:calculated_fall": {}
+              }
+            }
+          }
+        ],
+        "start_position": {}
+      },
+      "trigger": "minecraft:fall_from_height"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.dream_on.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:golden_boots"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.dream_on.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

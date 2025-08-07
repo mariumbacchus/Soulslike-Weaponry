@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "O": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "S": {
+      "item": "soulsweapons:shard_of_uncertainty"
+    }
+  },
+  "pattern": [
+    "N",
+    "O",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:mehrunes_razor"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:lord_soul",
+  "criteria": {
+    "soulsweapons:glaive_of_hodir": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:glaive_of_hodir"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.glaive_of_hodir.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:glaive_of_hodir"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.glaive_of_hodir.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:glaive_of_hodir"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

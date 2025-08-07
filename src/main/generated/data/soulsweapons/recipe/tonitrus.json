@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:iron_ingots"
+    },
+    "I": {
+      "tag": "c:wood_sticks"
+    },
+    "O": {
+      "item": "minecraft:soul_lantern"
+    }
+  },
+  "pattern": [
+    " ##",
+    " O#",
+    "I  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:tonitrus"
+  }
+}

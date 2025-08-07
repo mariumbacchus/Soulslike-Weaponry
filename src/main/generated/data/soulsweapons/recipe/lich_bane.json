@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "minecraft:copper_ingot"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "g": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "  /",
+    "gS ",
+    "Fg "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:lich_bane"
+  }
+}

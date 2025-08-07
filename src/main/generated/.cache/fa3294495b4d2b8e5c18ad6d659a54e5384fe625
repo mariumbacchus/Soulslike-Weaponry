@@ -1,6 +1,9 @@
-// 1.20.1	2025-07-22T20:03:33.9593643	Marium's Soulslike Weaponry/Tags for minecraft:entity_type
-03f6a9c764af218e0aae04c256b0bba536ea3f60 data\minecraft\tags\entity_types\freeze_immune_entity_types.json
-27b1a80783ef1703af8ce585987b47cb58b55434 data\c\tags\entity_types\ranged_mobs.json
-24a86eaab93220486f41a34ecaa6e7eaa8f88b7b data\c\tags\entity_types\bosses.json
-62fd71e78bcac7c2c5b4514697f6eed886bd34cc data\c\tags\entity_types\dragons.json
-76e241b1b1e6516f4476999cc735572b6db39b3d data\c\tags\entity_types\skeletons.json
+// 1.21.1	2025-08-07T12:56:23.3205986	Marium's Soulslike Weaponry/Tags for minecraft:entity_type
+9ed6f58ded647dbe8eace5dd297e6bb37b1c0479 data\c\tags\entity_type\bosses.json
+35aa4b323660ba5c05bbf0df0a9c6993119028e8 data\c\tags\entity_type\dragons.json
+c42662e3c7d99bd4115e43c7a82ea7b87914ae50 data\c\tags\entity_type\ranged_mobs.json
+6e07fb58a00d6ac5ca53851f6dcafb4dab9aba4b data\c\tags\entity_type\skeletons.json
+7d2c4576ddca5094e15e07a86e75d2aa485ffe1a data\minecraft\tags\entity_type\freeze_immune_entity_types.json
+4ff1de98890dfaa645849c1ca0d0c29af4178bb7 data\minecraft\tags\entity_type\impact_projectiles.json
+525f0866a97945036f05a68f56b769cc5fa6bfde data\minecraft\tags\entity_type\arrows.json
+8fc7cceed3770d4c5a3725c96fa905587687ea32 data\minecraft\tags\entity_type\undead.json

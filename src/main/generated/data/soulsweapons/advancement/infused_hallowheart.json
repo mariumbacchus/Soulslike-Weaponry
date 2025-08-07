@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:hallowheart",
+  "criteria": {
+    "soulsweapons:enhanced_withered_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:enhanced_withered_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.infused_hallowheart.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:enhanced_withered_chest"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.infused_hallowheart.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:enhanced_withered_chest"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

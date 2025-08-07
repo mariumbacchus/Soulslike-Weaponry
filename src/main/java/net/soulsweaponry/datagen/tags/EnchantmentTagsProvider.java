@@ -19,32 +19,32 @@ public class EnchantmentTagsProvider extends FabricTagProvider.EnchantmentTagPro
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         this.getOrCreateTagBuilder(EnchantmentTags.CURSE)
-                .add(EnchantRegistry.MISFIRE_CURSE);
+                .addOptional(EnchantRegistry.MISFIRE_CURSE);
 
         this.getOrCreateTagBuilder(EnchantmentTags.TREASURE)
-                .add(EnchantRegistry.MISFIRE_CURSE);
+                .addOptional(EnchantRegistry.MISFIRE_CURSE);
 
         this.getOrCreateTagBuilder(EnchantmentTags.TRADEABLE)
-                .add(EnchantRegistry.FAST_HANDS)
-                .add(EnchantRegistry.STAGGER)
-                .add(EnchantRegistry.VISCERAL)
-                .add(EnchantRegistry.RICOCHET)
-                .add(EnchantRegistry.PHANTOM_TRACE)
-                .add(EnchantRegistry.FROSTSILVER)
-                .add(EnchantRegistry.MISFIRE_CURSE)
-                .add(EnchantRegistry.CHAIN_LIGHTNING)
-                .add(EnchantRegistry.EXPLOSIVE_ROUNDS)
-                .add(EnchantRegistry.ETHEREAL);
+                .addOptional(EnchantRegistry.FAST_HANDS)
+                .addOptional(EnchantRegistry.STAGGER)
+                .addOptional(EnchantRegistry.VISCERAL)
+                .addOptional(EnchantRegistry.RICOCHET)
+                .addOptional(EnchantRegistry.PHANTOM_TRACE)
+                .addOptional(EnchantRegistry.FROSTSILVER)
+                .addOptional(EnchantRegistry.MISFIRE_CURSE)
+                .addOptional(EnchantRegistry.CHAIN_LIGHTNING)
+                .addOptional(EnchantRegistry.EXPLOSIVE_ROUNDS)
+                .addOptional(EnchantRegistry.ETHEREAL);
 
         this.getOrCreateTagBuilder(ModTags.Enchantments.BULLET_COLLISION_EXCLUSIVE_SET)
-                .add(EnchantRegistry.ETHEREAL)
-                .add(EnchantRegistry.RICOCHET);
+                .addOptional(EnchantRegistry.ETHEREAL)
+                .addOptional(EnchantRegistry.RICOCHET);
 
         this.getOrCreateTagBuilder(ModTags.Enchantments.APPLY_FIRE)
-                .add(Enchantments.FLAME)
-                .add(Enchantments.FIRE_ASPECT);
+                .addOptional(Enchantments.FLAME)
+                .addOptional(Enchantments.FIRE_ASPECT);
 
         this.getOrCreateTagBuilder(ModTags.Enchantments.PREVENTS_AMMO_CONSUME)
-                .add(Enchantments.INFINITY);
+                .addOptional(Enchantments.INFINITY);
     }
 }

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "soulsweapons:molten_demon_heart"
+    },
+    {
+      "item": "soulsweapons:molten_demon_heart"
+    },
+    {
+      "item": "soulsweapons:molten_demon_heart"
+    },
+    {
+      "item": "soulsweapons:molten_demon_heart"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:demon_chunk"
+  }
+}

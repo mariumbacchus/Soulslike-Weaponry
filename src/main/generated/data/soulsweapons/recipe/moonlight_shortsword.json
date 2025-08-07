@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "soulsweapons:lord_soul"
+  },
+  "base": {
+    "item": "soulsweapons:bluemoon_shortsword"
+  },
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:moonlight_shortsword"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "parent": "soulsweapons:root",
+  "criteria": {
+    "condition_0": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "soulsweapons:draugr_boss"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "condition_1": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:essence_of_eventide"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.draugr_boss.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:essence_of_eventide"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.draugr_boss.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_0"
+    ],
+    [
+      "condition_1"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

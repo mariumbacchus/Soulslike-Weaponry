@@ -1,0 +1,33 @@
+{
+  "parent": "soulsweapons:end_of_reigns",
+  "criteria": {
+    "soulsweapons:withered_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:withered_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.hallowheart.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:withered_chest"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.hallowheart.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:withered_chest"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

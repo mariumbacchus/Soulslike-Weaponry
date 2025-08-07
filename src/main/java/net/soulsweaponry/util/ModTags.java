@@ -13,7 +13,7 @@ import net.soulsweaponry.SoulsWeaponry;
 
 @SuppressWarnings("unused")
 public class ModTags {
-    //TODO add translations for tags (read https://fabricmc.net/2024/05/31/121.html for more info)
+
     public static class Blocks {
 
         public static final TagKey<Block> NEEDS_IRON_BLOCK_TOOL = createTag("needs_iron_block_tool");
@@ -55,13 +55,13 @@ public class ModTags {
         public static final TagKey<Item> GUNS = createTag("guns");
         public static final TagKey<Item> LOST_SOUL_REPAIR = createTag("lost_soul_items_repair_ingredients");
         public static final TagKey<Item> DRAGONBANE_MATERIAL = createTag("dragonbane_material");
+        public static final TagKey<Item> GUN_ENCHANTABLE = createTag("enchantable/gun");
 
         public static final TagKey<Item> STICKS = createCommonTag("wood_sticks");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
         public static final TagKey<Item> IRON_INGOTS = createCommonTag("iron_ingots");
         public static final TagKey<Item> SHIELDS = createCommonTag("shields");
         public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
-        public static final TagKey<Item> GUN_ENCHANTABLE = createTag("enchantable/gun");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, Identifier.of(SoulsWeaponry.ModId, name));

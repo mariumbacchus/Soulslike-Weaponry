@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:flame",
+      "required": false
+    },
+    {
+      "id": "minecraft:fire_aspect",
+      "required": false
+    }
+  ]
+}

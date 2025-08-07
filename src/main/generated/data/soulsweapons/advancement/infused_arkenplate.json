@@ -1,0 +1,34 @@
+{
+  "parent": "soulsweapons:arkenplate",
+  "criteria": {
+    "soulsweapons:enhanced_arkenplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:enhanced_arkenplate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.infused_arkenplate.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:enhanced_arkenplate"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.infused_arkenplate.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:enhanced_arkenplate"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

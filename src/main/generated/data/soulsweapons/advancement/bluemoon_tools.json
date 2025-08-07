@@ -1,0 +1,44 @@
+{
+  "parent": "soulsweapons:moonstone",
+  "criteria": {
+    "soulsweapons:bluemoon_greatsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:bluemoon_greatsword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "soulsweapons:bluemoon_shortsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:bluemoon_shortsword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.bluemoon_tools.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:bluemoon_greatsword"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.bluemoon_tools.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:bluemoon_greatsword",
+      "soulsweapons:bluemoon_shortsword"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

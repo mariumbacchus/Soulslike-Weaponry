@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "tag": "c:wood_sticks"
+    },
+    "O": {
+      "tag": "c:demon_hearts"
+    },
+    "X": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "pattern": [
+    " XX",
+    "XO ",
+    "/  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:bloodlust"
+  }
+}

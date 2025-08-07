@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "soulsweapons:chungus_tonic_splash"
+    },
+    {
+      "item": "soulsweapons:chungus_staff"
+    },
+    {
+      "item": "minecraft:dragon_breath"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "soulsweapons:chungus_tonic_lingering"
+  }
+}

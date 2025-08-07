@@ -1,0 +1,45 @@
+{
+  "parent": "soulsweapons:lord_soul",
+  "criteria": {
+    "soulsweapons:darkin_scythe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:darkin_scythe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "soulsweapons:shadow_assassin_scythe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:shadow_assassin_scythe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.soulsweapons.transform_scythe.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "soulsweapons:darkin_scythe_pre"
+    },
+    "title": {
+      "translate": "advancements.soulsweapons.transform_scythe.title"
+    }
+  },
+  "requirements": [
+    [
+      "soulsweapons:darkin_scythe",
+      "soulsweapons:shadow_assassin_scythe"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

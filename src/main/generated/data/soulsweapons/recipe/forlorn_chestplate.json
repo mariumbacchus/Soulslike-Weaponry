@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "soulsweapons:crimson_ingot"
+    },
+    "L": {
+      "item": "soulsweapons:soul_ingot"
+    }
+  },
+  "pattern": [
+    "# #",
+    "L#L",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:forlorn_chestplate"
+  }
+}

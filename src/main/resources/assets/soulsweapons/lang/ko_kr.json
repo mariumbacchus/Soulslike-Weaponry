@@ -1167,5 +1167,50 @@
     "advancements.soulsweapons.glaive_of_hodir.description": "Acquire the Glaive of Hodir, decimate your foes with never-ending aggression.",
 
     "advancements.soulsweapons.excalibur.title": "Right back at ya!",
-    "advancements.soulsweapons.excalibur.description": "Kill the Warden after acquiring the Excalibur."
+    "advancements.soulsweapons.excalibur.description": "Kill the Warden after acquiring the Excalibur.",
+
+    "tag.block.soulsweapons.needs_iron_block_tool": "Block needs Iron Block Tool",
+    "tag.block.soulsweapons.incorrect_for_iron_block_tool": "Incorrect Block for Iron Block Tool",
+    "tag.block.soulsweapons.needs_lost_soul_tool": "Block needs Lost Soul Tool",
+    "tag.block.soulsweapons.incorrect_for_lost_soul_tool": "Incorrect Block for Lost Soul Tool",
+    "tag.block.soulsweapons.needs_lost_soul_durable_tool": "Block needs Durable Lost Soul Tool",
+    "tag.block.soulsweapons.incorrect_for_lost_soul_durable_tool": "Incorrect Block for Durable Lost Soul Tool",
+    "tag.block.soulsweapons.needs_moonstone_or_verglas_tool": "Block needs Moonstone or Verglas Tool",
+    "tag.block.soulsweapons.incorrect_for_moonstone_or_verglas_tool": "Incorrect Block for Moonstone or Verglas Tool",
+    "tag.block.soulsweapons.needs_crimson_ingot_tool": "Block needs Crimson Ingot Tool",
+    "tag.block.soulsweapons.incorrect_crimson_ingot_tool": "Incorrect Block for Crimson Ingot Tool",
+    "tag.block.soulsweapons.needs_moonstone_tool": "Block needs Moonstone Tool",
+    "tag.block.soulsweapons.incorrect_for_moonstone_tool": "Incorrect Block for Moonstone Tool",
+    "tag.block.soulsweapons.needs_echo_shard_tool": "Block needs Echo Shard Tool",
+    "tag.block.soulsweapons.incorrect_for_echo_shard_tool": "Incorrect Block for Echo Shard Tool",
+
+    "tag.item.soulsweapons.lord_soul": "Lord Souls",
+    "tag.item.soulsweapons.moonlight_sword": "Moonlight Swords",
+    "tag.item.soulsweapons.duo_boss_souls": "Duo Boss Lord Souls",
+    "tag.item.soulsweapons.trick_weapons": "Trick Weapons",
+    "tag.item.soulsweapons.guns": "Posture Breaking Guns",
+    "tag.item.soulsweapons.lost_soul_items_repair_ingredients": "Lost Soul Item repair ingredients",
+    "tag.item.soulsweapons.dragonbane_material": "Dragonbane crafting materials",
+    "tag.item.soulsweapons.enchantable.gun": "Enchantable Guns",
+
+    "tag.item.c.demon_hearts": "Demon Hearts",
+    "tag.item.c.lost_soul": "Lost Souls",
+    "tag.item.c.shields": "Shields",
+    "tag.item.c.iron_ingots": "Iron Ingots",
+    "tag.item.c.silver_ingots": "Silver Ingots",
+    "tag.item.c.wood_sticks": "Wood Sticks",
+
+    "tag.structure.soulsweapons.decaying_kingdom": "Decaying Kingdom",
+    "tag.structure.soulsweapons.champions_graves": "Champion's Graves",
+
+    "tag.entity_type.c.skeletons": "Skeletons",
+    "tag.entity_type.c.ranged_mobs": "Ranged Mobs",
+    "tag.entity_type.c.bosses": "Bosses",
+    "tag.entity_type.c.dragons": "Dragons",
+
+    "tag.mob_effect.c.damage_over_time": "Damage over time effects",
+
+    "tag.enchantments.soulsweapons.exclusive_set.bullet_collision": "Bullet Collision Exclusive Set",
+    "tag.enchantments.soulsweapons.apply_fire": "Enchants that apply fire",
+    "tag.enchantments.soulsweapons.prevents_ammo_consume": "Enchants preventing ammo consumption"
 }

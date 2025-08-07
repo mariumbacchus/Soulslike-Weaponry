@@ -1,0 +1,9 @@
+// 1.21.1	2025-08-07T12:56:23.3183396	Marium's Soulslike Weaponry/Tags for minecraft:item
+56163d456c5b20fd223b4db0348e7f5820199cb1 data\minecraft\tags\item\swords.json
+23fba001d99af3b1d656daa3b388779483ddb9d1 data\minecraft\tags\item\shovels.json
+e6d7be94acb15c4e70212dcf15f3596af46b8eb9 data\minecraft\tags\item\enchantable\bow.json
+7f6ecf18081cd6f543887ff3b17da3067ea4267d data\minecraft\tags\item\enchantable\crossbow.json
+ab7583e904bf80aebb3269797c08f48d3357ba4c data\minecraft\tags\item\hoes.json
+9dc46d5cdf58b0392e68eab4464b172801dce69a data\minecraft\tags\item\pickaxes.json
+0e1779f94fe2aa0921e04cdec96fece5cc8e0c88 data\minecraft\tags\item\axes.json
+de0bec8a18c0e73360505f7508519151f5b4f1d1 data\soulsweapons\tags\item\enchantable\gun.json
