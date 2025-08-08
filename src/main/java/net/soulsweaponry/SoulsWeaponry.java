@@ -45,7 +45,7 @@ public class SoulsWeaponry implements ModInitializer {
         MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
         LOGGER.info("Config initialized!");
-        //TODO i guess they removed geckolib.initialize, we'll see if things break in the future or not
+
         AttributeRegistry.init();
         ComponentRegistry.init();
         BlockRegistry.init();

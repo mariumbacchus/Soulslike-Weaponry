@@ -10,11 +10,9 @@ import net.soulsweaponry.mixin.ModelInvoker;
 
 import java.util.HashMap;
 
-// Due to bug regarding Valhelsia Core redirecting the mixin used in the model provider, the game crashes if both this
-// mod and VC is installed, therefore, the generation of models here has been deprecated.
-@Deprecated
 public class ModelProvider extends FabricModelProvider {
 
+    //TODO remove or start using for regular item models
     public static HashMap<Item, Model> ITEMS = new HashMap<>();
     public static Model SPAWN_EGG = ModelInvoker.invokeItemModelBuilder("template_spawn_egg");
 
@@ -29,8 +27,8 @@ public class ModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        for (Item item : ITEMS.keySet()) {
+        /*for (Item item : ITEMS.keySet()) {
             itemModelGenerator.register(item, ITEMS.get(item));
-        }
+        }*/
     }
 }

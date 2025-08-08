@@ -1,12 +1,12 @@
 package net.soulsweaponry.items;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -44,7 +44,7 @@ public abstract class SoulHarvestingItem extends ModdedSword {
     }
 
     public void handleKill(LivingEntity target, ItemStack stack) {
-        if (target.getType().isIn(ModTags.Entities.BOSSES)) {
+        if (target.getType().isIn(ConventionalEntityTypeTags.BOSSES)) {
             this.addAmount(stack, 50);
         } else {
             this.addKillCounter(stack);

@@ -1,0 +1,13 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "idle": {
+      "loop": true,
+      "bones": {}
+    },
+    "spin": {
+      "loop": true,
+      "bones": {}
+    }
+  }
+}

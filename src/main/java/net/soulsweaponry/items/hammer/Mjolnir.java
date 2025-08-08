@@ -36,7 +36,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
+public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<Mjolnir> {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final EntityAttributeModifier RAIN_DAMAGE = WeaponUtil.makeAttribute(
@@ -182,7 +182,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem {
     }
 
     @Override
-    public GeoItemRenderer<?> getGeckolibRenderer() {
+    public GeoItemRenderer<Mjolnir> getGeckolibRenderer() {
         return new MjolnirItemRenderer();
     }
 }

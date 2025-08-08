@@ -2,6 +2,7 @@ package net.soulsweaponry.datagen.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EntityTypeTags;
@@ -34,7 +35,7 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityType.SKELETON)
                 .add(EntityType.WITHER_SKELETON)
                 .add(EntityType.SKELETON_HORSE);
-        this.getOrCreateTagBuilder(ModTags.Entities.BOSSES)
+        this.getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.WITHER)
                 .add(EntityRegistry.ACCURSED_LORD_BOSS)

@@ -1,5 +1,6 @@
 package net.soulsweaponry.items.scythe;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
@@ -40,7 +41,7 @@ public class DarkinScythePre extends SoulHarvestingItem {
 
     @Override
     public void handleKill(LivingEntity target, ItemStack stack) {
-        int amount = target.getType().isIn(ModTags.Entities.BOSSES) ? 20 : 1;
+        int amount = target.getType().isIn(ConventionalEntityTypeTags.BOSSES) ? 20 : 1;
         if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
             this.addAmount(stack, amount, ComponentRegistry.BLUE_SOULS);
         } else {
