@@ -6,7 +6,7 @@
       "item": "minecraft:bone"
     },
     "X": {
-      "tag": "c:iron_ingots"
+      "tag": "c:ingots/iron"
     },
     "Y": {
       "tag": "c:lost_soul"

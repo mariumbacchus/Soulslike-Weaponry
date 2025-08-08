@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "c:wood_sticks"
+      "tag": "c:rods/wooden"
     },
     "O": {
       "item": "soulsweapons:verglas"

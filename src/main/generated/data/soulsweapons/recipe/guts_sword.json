@@ -6,7 +6,7 @@
       "item": "minecraft:iron_block"
     },
     "X": {
-      "tag": "c:wood_sticks"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [

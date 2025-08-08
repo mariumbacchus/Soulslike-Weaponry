@@ -136,15 +136,19 @@ public class ItemRegistry {
     public static <I extends Item> I registerItem(I item, String name) {
         SoulsWeaponry.ITEM_GROUP_LIST.add(item);
         if (DatagenUtil.isDatagenRunning()) {
-            // Looks bad but works (hopefully lol)
-            if (item instanceof SwordItem) {
-                ItemTagsProvider.SWORDS.add(item);
-            } else if (item instanceof AxeItem) {
-                ItemTagsProvider.AXES.add(item);
-            } else if (item instanceof BowItem) {
-                ItemTagsProvider.BOWS.add(item);
-            } else if (item instanceof CrossbowItem) {
-                ItemTagsProvider.CROSSBOWS.add(item);
+            switch (item) {
+                case SwordItem s -> ItemTagsProvider.SWORDS.add(item);
+                case AxeItem a -> ItemTagsProvider.AXES.add(item);
+                case BowItem b -> ItemTagsProvider.BOWS.add(item);
+                case CrossbowItem c -> ItemTagsProvider.CROSSBOWS.add(item);
+                case MaceItem m -> ItemTagsProvider.MACES.add(item);
+                default -> {}
+            }
+            if (item instanceof IUltraHeavy heavy && heavy.isHeavy()) {
+                ItemTagsProvider.HEAVY_WEAPONS.add(item);
+            }
+            if (item instanceof SoulHarvestingItem) {
+                ItemTagsProvider.SOUL_HARVESTING_WEAPONS.add(item);
             }
         }
 		return Registry.register(Registries.ITEM, Identifier.of(SoulsWeaponry.ModId, name), item);
@@ -160,7 +164,7 @@ public class ItemRegistry {
      */
     public static <I extends Item> I registerLegendaryItem(I item, String name, boolean fireproof) {
         if (DatagenUtil.isDatagenRunning()) {
-            AdvancementsProvider.ALL_WEAPONS.add(item);//TODO check size of this with print in & out of datagen
+            AdvancementsProvider.ALL_WEAPONS.add(item);
         }
         return registerItem(item, name, fireproof);
     }

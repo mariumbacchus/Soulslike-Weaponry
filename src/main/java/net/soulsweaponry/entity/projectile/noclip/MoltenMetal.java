@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -77,7 +78,7 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
             livingEntity.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
             livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
             ItemStack stack = livingEntity.getOffHandStack();
-            if (livingEntity instanceof PlayerEntity player && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+            if (livingEntity instanceof PlayerEntity player && stack.isIn(ConventionalItemTags.SHIELD_TOOLS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 player.disableShield();
                 stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
             }

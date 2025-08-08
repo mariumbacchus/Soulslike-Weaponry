@@ -1,5 +1,6 @@
 package net.soulsweaponry.datagen.recipe;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
@@ -57,7 +58,7 @@ public class ItemRecipes {
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL)
                 .input('Y', ModTags.Items.LOST_SOUL)
                 .input('I', Items.BONE)
-                .input('X', ModTags.Items.IRON_INGOTS)
+                .input('X', ConventionalItemTags.IRON_INGOTS)
                 .pattern("XIX")
                 .pattern("IYI")
                 .pattern("XIX")
@@ -74,7 +75,7 @@ public class ItemRecipes {
                         .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "soul_lantern_lost_soul"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.SOUL_INGOT)
-                .input('C', ModTags.Items.IRON_INGOTS)
+                .input('C', ConventionalItemTags.IRON_INGOTS)
                 .input('#', ModTags.Items.LOST_SOUL)
                 .pattern(" # ")
                 .pattern("#C#")
@@ -84,7 +85,7 @@ public class ItemRecipes {
                 .offerTo(recipeExporter);
         // Moonstone tools
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_AXE)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern("## ")
@@ -94,7 +95,7 @@ public class ItemRecipes {
                         .items(ItemRegistry.MOONSTONE).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_axe_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_AXE)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern(" ##")
@@ -104,7 +105,7 @@ public class ItemRecipes {
                         .items(ItemRegistry.MOONSTONE).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_axe_right"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_HOE)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern(" ##")
@@ -114,7 +115,7 @@ public class ItemRecipes {
                         .items(ItemRegistry.MOONSTONE).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_hoe_right"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_HOE)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern("## ")
@@ -124,7 +125,7 @@ public class ItemRecipes {
                         .items(ItemRegistry.MOONSTONE).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_hoe_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_PICKAXE)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern("###")
@@ -134,7 +135,7 @@ public class ItemRecipes {
                         .items(ItemRegistry.MOONSTONE).build()))
                 .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ItemRegistry.MOONSTONE_SHOVEL)
-                .input('/', ModTags.Items.STICKS)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('i', ItemRegistry.VERGLAS)
                 .pattern(" # ")
@@ -145,7 +146,7 @@ public class ItemRecipes {
                 .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING)
                 .input('D', ItemRegistry.ARKENSTONE)
-                .input('i', ModTags.Items.IRON_INGOTS)
+                .input('i', ConventionalItemTags.IRON_INGOTS)
                 .pattern("Di ")
                 .pattern("i i")
                 .pattern(" i ")
@@ -154,7 +155,7 @@ public class ItemRecipes {
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "moonstone_ring_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING)
                 .input('D', ItemRegistry.ARKENSTONE)
-                .input('i', ModTags.Items.IRON_INGOTS)
+                .input('i', ConventionalItemTags.IRON_INGOTS)
                 .pattern(" iD")
                 .pattern("i i")
                 .pattern(" i ")

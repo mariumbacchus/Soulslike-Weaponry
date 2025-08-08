@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "c:iron_ingots"
+      "tag": "c:ingots/iron"
     },
     "I": {
-      "tag": "c:wood_sticks"
+      "tag": "c:rods/wooden"
     },
     "O": {
       "item": "minecraft:soul_lantern"

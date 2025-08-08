@@ -47,20 +47,23 @@ public class ModTags {
     }
 
     public static class Items {
+        //TODO translate
         public static final TagKey<Item> LORD_SOUL = createTag("lord_soul");
-        public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
-        public static final TagKey<Item> MOONLIGHT_SWORD = createTag("moonlight_sword");
+        public static final TagKey<Item> UPGRADABLE_MOONLIGHT_SWORDS = createTag("upgradable_moonlight_swords");
         public static final TagKey<Item> DUO_BOSS_SOULS = createTag("duo_boss_souls");
         public static final TagKey<Item> TRICK_WEAPONS = createTag("trick_weapons");
         public static final TagKey<Item> GUNS = createTag("guns");
         public static final TagKey<Item> LOST_SOUL_REPAIR = createTag("lost_soul_items_repair_ingredients");
         public static final TagKey<Item> DRAGONBANE_MATERIAL = createTag("dragonbane_material");
         public static final TagKey<Item> GUN_ENCHANTABLE = createTag("enchantable/gun");
+        public static final TagKey<Item> HEAVY_WEAPONS = createTag("heavy_weapons");
+        public static final TagKey<Item> SCYTHES = createTag("scythes");
+        public static final TagKey<Item> SUMMONABLE_WEAPONS = createTag("summonable_weapons");
+        public static final TagKey<Item> STAVES = createTag("staves");
+        public static final TagKey<Item> SOUL_HARVESTING_WEAPONS = createTag("soul_harvesting_weapons");
 
-        public static final TagKey<Item> STICKS = createCommonTag("wood_sticks");
+        public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
-        public static final TagKey<Item> IRON_INGOTS = createCommonTag("iron_ingots");
-        public static final TagKey<Item> SHIELDS = createCommonTag("shields");
         public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
 
         private static TagKey<Item> createTag(String name) {

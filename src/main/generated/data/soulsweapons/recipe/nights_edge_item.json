@@ -6,7 +6,7 @@
       "item": "soulsweapons:soul_ingot"
     },
     "/": {
-      "tag": "c:wood_sticks"
+      "tag": "c:rods/wooden"
     },
     "X": {
       "item": "soulsweapons:moonstone"

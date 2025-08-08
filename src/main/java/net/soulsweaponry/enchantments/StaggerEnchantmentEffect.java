@@ -13,10 +13,9 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.IUltraHeavy;
 
-public final class StaggerEnchantmentEffect implements EnchantmentEntityEffect {
+public record StaggerEnchantmentEffect() implements EnchantmentEntityEffect {
 
-    public static final StaggerEnchantmentEffect INSTANCE = new StaggerEnchantmentEffect();
-    public static final MapCodec<StaggerEnchantmentEffect> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<StaggerEnchantmentEffect> CODEC = MapCodec.unit(StaggerEnchantmentEffect::new);
 
     @Override
     public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity target, Vec3d pos) {
@@ -24,7 +23,6 @@ public final class StaggerEnchantmentEffect implements EnchantmentEntityEffect {
             int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
             if (context.owner() != null && context.owner().getStackInHand(Hand.MAIN_HAND).getItem() instanceof IUltraHeavy heavy && heavy.isHeavy()) {
                 postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
-                //TODO test
             }
             postureLoss *= level;
             PostureData.addPostureLoss(living, postureLoss);

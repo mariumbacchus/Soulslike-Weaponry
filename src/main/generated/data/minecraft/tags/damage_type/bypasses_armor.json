@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:bleed",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:dragon_mist",
+      "required": false
+    }
+  ]
+}

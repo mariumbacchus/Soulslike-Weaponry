@@ -12,7 +12,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.DatagenUtil;
-import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTables;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
@@ -179,6 +179,6 @@ public class EntityRegistry {
     }
 
     private static void registerBossDrops(String id, Item... items) {
-        BossLootTableProvider.BOSS_DROPS.put(id, Lists.newArrayList(items));
+        EntityLootTables.BOSS_DROPS.put(id, Lists.newArrayList(items));
     }
 }

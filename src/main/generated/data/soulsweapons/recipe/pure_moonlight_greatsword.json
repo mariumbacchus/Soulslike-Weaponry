@@ -4,7 +4,7 @@
     "item": "soulsweapons:essence_of_luminescence"
   },
   "base": {
-    "tag": "soulsweapons:moonlight_sword"
+    "tag": "soulsweapons:upgradable_moonlight_swords"
   },
   "result": {
     "count": 1,

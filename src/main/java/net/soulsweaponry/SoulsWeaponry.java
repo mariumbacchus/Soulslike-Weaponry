@@ -53,6 +53,7 @@ public class SoulsWeaponry implements ModInitializer {
         FluidRegistry.init();
         FluidRegistry.registerCauldronBehavior();
         EffectRegistry.init();
+        EnchantRegistry.init();
         EntityRegistry.init();
         EventRegistry.init();
         ParticleRegistry.init();

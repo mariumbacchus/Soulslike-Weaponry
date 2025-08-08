@@ -1,5 +1,6 @@
 package net.soulsweaponry.datagen.recipe;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
@@ -21,7 +22,7 @@ public class GunRecipes {
                 .input('#', Items.IRON_INGOT)
                 .input('G', ModTags.Items.LOST_SOUL)
                 .input('M', Blocks.IRON_BLOCK)
-                .input('S', ModTags.Items.STICKS)
+                .input('S', ConventionalItemTags.WOODEN_RODS)
                 .pattern("S M")
                 .pattern("SG#")
                 .pattern(" MM")
@@ -32,7 +33,7 @@ public class GunRecipes {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.HUNTER_PISTOL)
                 .input('#', Items.IRON_INGOT)
                 .input('G', ModTags.Items.LOST_SOUL)
-                .input('S', ModTags.Items.STICKS)
+                .input('S', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" ##")
                 .pattern("SG#")
                 .pattern("S  ")
@@ -44,7 +45,7 @@ public class GunRecipes {
                 .input('#', Items.IRON_INGOT)
                 .input('G', ModTags.Items.LOST_SOUL)
                 .input('M', Blocks.IRON_BLOCK)
-                .input('S', ModTags.Items.STICKS)
+                .input('S', ConventionalItemTags.WOODEN_RODS)
                 .pattern("S #")
                 .pattern("SG#")
                 .pattern(" #M")
@@ -55,7 +56,7 @@ public class GunRecipes {
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, GunRegistry.BLUNDERBUSS)
                 .input('#', Blocks.IRON_BLOCK)
                 .input('G', ModTags.Items.LOST_SOUL)
-                .input('S', ModTags.Items.STICKS)
+                .input('S', ConventionalItemTags.WOODEN_RODS)
                 .input('i', Items.IRON_INGOT)
                 .pattern(" i#")
                 .pattern("SGi")

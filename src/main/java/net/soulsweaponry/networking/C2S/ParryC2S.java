@@ -1,6 +1,7 @@
 package net.soulsweaponry.networking.C2S;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -38,7 +39,7 @@ public record ParryC2S() implements CustomPayload {
         ServerPlayerEntity player = ctx.player();
         server.execute(() -> {
             ItemStack stack = player.getStackInHand(Hand.OFF_HAND);
-            if (ConfigConstructor.enable_shield_parry && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+            if (ConfigConstructor.enable_shield_parry && stack.isIn(ConventionalItemTags.SHIELD_TOOLS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 ParryData.setParryFrames((IEntityDataSaver) player, 1);
                 player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : (int) ConfigConstructor.shield_parry_cooldown);
             }

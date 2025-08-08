@@ -1,9 +1,11 @@
 package net.soulsweaponry.registry;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
+import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.item.Item;
 import net.minecraft.registry.*;
 import net.minecraft.registry.tag.ItemTags;
@@ -13,6 +15,8 @@ import net.soulsweaponry.enchantments.*;
 import net.soulsweaponry.util.ModTags;
 
 public class EnchantRegistry {
+
+    public static final MapCodec<? extends EnchantmentEntityEffect> STAGGER_EFFECT_TYPE = registerEntityEffect("stagger", StaggerEnchantmentEffect.CODEC);
 
     // TODO gotta make sure gun enchants dont apply to bows during enchantment
     public static final RegistryKey<Enchantment> FAST_HANDS = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "fast_hands"));
@@ -58,7 +62,7 @@ public class EnchantRegistry {
                         EnchantmentEffectComponentTypes.POST_ATTACK,
                         EnchantmentEffectTarget.ATTACKER,
                         EnchantmentEffectTarget.VICTIM,
-                        StaggerEnchantmentEffect.INSTANCE
+                        new StaggerEnchantmentEffect()
                 ).build(STAGGER.getValue())
         );
 
@@ -174,4 +178,10 @@ public class EnchantRegistry {
                 )).exclusiveSet(enchantments.getOrThrow(ModTags.Enchantments.BULLET_COLLISION_EXCLUSIVE_SET))
                 .build(ETHEREAL.getValue()));
     }
+
+    public static MapCodec<? extends EnchantmentEntityEffect> registerEntityEffect(String name, MapCodec<? extends EnchantmentEntityEffect> codec) {
+        return Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Identifier.of(name), codec);
+    }
+
+    public static void init() {}
 }
