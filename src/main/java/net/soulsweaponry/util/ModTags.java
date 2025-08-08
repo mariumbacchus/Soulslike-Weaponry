@@ -47,7 +47,7 @@ public class ModTags {
     }
 
     public static class Items {
-        //TODO translate
+
         public static final TagKey<Item> LORD_SOUL = createTag("lord_soul");
         public static final TagKey<Item> UPGRADABLE_MOONLIGHT_SWORDS = createTag("upgradable_moonlight_swords");
         public static final TagKey<Item> DUO_BOSS_SOULS = createTag("duo_boss_souls");
