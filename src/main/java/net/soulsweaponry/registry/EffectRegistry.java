@@ -1,12 +1,16 @@
 package net.soulsweaponry.registry;
 
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -14,8 +18,13 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
+
+import java.awt.*;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EffectRegistry {
 
@@ -60,7 +69,7 @@ public class EffectRegistry {
                         new StatusEffectInstance(StatusEffects.SATURATION, 400, 1)
                 ),
             "chungus_tonic"
-        );//TODO test to see if the custom "potion.json" models that are meant to override the vanilla potion model work with chungus tonic only or not, maybe a predicate to be registered is needed or the file must be in minecraft folder instead of soulsweapons/models/items
+        );
 
     public static void init() {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
@@ -68,8 +77,28 @@ public class EffectRegistry {
             builder.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), TAINTED_AMBROSIA);
             builder.registerPotionRecipe(WARDING, Items.GLOWSTONE_DUST, STRONG_WARDING);
             builder.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING);
-            builder.registerItemRecipe(Items.POTION, ItemRegistry.CHUNGUS_EMERALD, ItemRegistry.CHUNGUS_TONIC_POTION);
-            builder.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
+            builder.registerPotionRecipe(Potions.AWKWARD, ItemRegistry.CHUNGUS_EMERALD, CHUNGUS_TONIC_POTION);
+        });
+
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            ItemStack stack = player.getStackInHand(hand);
+            if (!stack.isOf(Items.POTION) && !stack.isOf(Items.SPLASH_POTION) && !stack.isOf(Items.LINGERING_POTION)) {
+                return TypedActionResult.pass(stack);
+            }
+            PotionContentsComponent contents = stack.get(DataComponentTypes.POTION_CONTENTS);
+            if (contents == null || !contents.matches(EffectRegistry.CHUNGUS_TONIC_POTION)) {
+                return TypedActionResult.pass(stack);
+            }
+            if (!world.isClient) {
+                ItemStack updated = stack.copy();
+                updated.set(
+                        DataComponentTypes.POTION_CONTENTS,
+                        new PotionContentsComponent(contents.potion(), Optional.of(randomVibrantRGBA()), contents.customEffects())
+                );
+                player.setStackInHand(hand, updated);
+            }
+
+            return TypedActionResult.pass(stack);
         });
     }
 
@@ -86,5 +115,13 @@ public class EffectRegistry {
         public DefaultStatusEffect(StatusEffectCategory statusEffectCategory, int color) {
             super(statusEffectCategory, color);
         }
+    }
+
+    public static int randomVibrantRGBA() {
+        float h = ThreadLocalRandom.current().nextFloat();
+        float s = 0.65f + ThreadLocalRandom.current().nextFloat() * 0.35f; // 0.65–1.0
+        float v = 0.75f + ThreadLocalRandom.current().nextFloat() * 0.25f; // 0.75–1.0
+        int rgb = Color.HSBtoRGB(h, s, v); // to hex
+        return 0xFF000000 | rgb; // full alpha
     }
 }

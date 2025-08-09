@@ -73,11 +73,5 @@ public class CustomSplashPotion extends CustomPotionItem {
         }
     }
 
-    public static int randomVibrantRGBA() {
-        float h = ThreadLocalRandom.current().nextFloat();
-        float s = 0.65f + ThreadLocalRandom.current().nextFloat() * 0.35f; // 0.65–1.0
-        float v = 0.75f + ThreadLocalRandom.current().nextFloat() * 0.25f; // 0.75–1.0
-        int rgb = Color.HSBtoRGB(h, s, v); // to hex
-        return 0xFF000000 | rgb; // full alpha
-    }
+
 }

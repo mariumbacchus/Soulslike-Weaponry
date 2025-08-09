@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-09T00:28:29.1194131	Marium's Soulslike Weaponry/Block Loot Tables
+// 1.21.1	2025-08-09T17:37:10.6710507	Marium's Soulslike Weaponry/Block Loot Tables
 ed260e42282b30ecd4f0026a6f6fbc333cc9ca8a data\soulsweapons\loot_table\blocks\moonstone_ore.json
 0fb9a58abf8efbe016932e9f8926a8c229c9a01c data\soulsweapons\loot_table\blocks\withered_dirt.json
 54131da0c2960460cefa3d866cfd0ea70a3656fe data\soulsweapons\loot_table\blocks\infused_blackstone.json
@@ -15,6 +15,6 @@ be9ffa1d62f64c2cbb544c89e22ad548d1e462a0 data\soulsweapons\loot_table\blocks\chu
 b562cd66f2afdad79038e896dc7a672d40074861 data\soulsweapons\loot_table\blocks\chungus_emerald_block.json
 0cb972001c48af7c6cc1eac5064ef32b5a156a4b data\soulsweapons\loot_table\blocks\soul_lamp.json
 fda3edc020d56ff9565d819ffc127460f81fae22 data\soulsweapons\loot_table\blocks\moonstone_block.json
-5e7242dc13112ce477adcabbf18fd105d49a5806 data\soulsweapons\loot_table\blocks\altar_block.json
 d82b2bccade39caf19e668972d63b22f78a8cff8 data\soulsweapons\loot_table\blocks\verglas_block.json
+5e7242dc13112ce477adcabbf18fd105d49a5806 data\soulsweapons\loot_table\blocks\altar_block.json
 052c6dbf8c56a0d07cdf59a8f03e02d05e35eb8b data\soulsweapons\loot_table\blocks\withered_grass_block.json

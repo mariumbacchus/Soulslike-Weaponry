@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-09T00:28:29.1182577	Marium's Soulslike Weaponry/Recipes
+// 1.21.1	2025-08-09T17:37:10.6682872	Marium's Soulslike Weaponry/Recipes
 2465fb1e3b35cc9424e37eabd907d8a27cd5e33a data\soulsweapons\recipe\mehrunes_razor.json
 487e01909939668cf603cb086b7b52b6983c1648 data\soulsweapons\advancement\recipes\combat\darkin_blade.json
 552ce0a41391e02459cd87e1ff7423d75e289902 data\soulsweapons\advancement\recipes\combat\dragonslayer_swordspear.json
@@ -11,7 +11,6 @@ e3eda9a0cda985886c547a969d7a3247a3a54264 data\soulsweapons\recipe\smelt_withered
 1c47cb9cd64219f088fdce7dc08c401cffadacb1 data\soulsweapons\recipe\leviathan_axe_left.json
 0ad32e0b1f2c656e5a14674e7fbe5c60af52a1c4 data\soulsweapons\advancement\recipes\building_blocks\soulfire_stain.json
 0e5889b6a025de5bc97685471255337ae02463a8 data\soulsweapons\advancement\recipes\combat\frostmourne.json
-9e9a617e10d0521ff84bc7199658f96c3738805a data\soulsweapons\recipe\chungus_tonic_lingering.json
 6ef1339c55f184b82e39c3fc3072bcba04206bf6 data\soulsweapons\recipe\chaos_helmet.json
 a7b5955ee1a8ecabbe3cbbafc24c1f8fdda0c589 data\soulsweapons\advancement\recipes\combat\soul_robes_boots.json
 83d42b719f2e98ea6b1c26ea6767a9462950fcf9 data\soulsweapons\advancement\recipes\building_blocks\cracked_infused_blackstone.json
@@ -228,7 +227,6 @@ e7e958a748fd93874ea4703d081995482670a70c data\soulsweapons\advancement\recipes\c
 13a00781b11dfdc74b0359940534d45a527a24b7 data\soulsweapons\recipe\oleander_dye.json
 9788ea9be55f107c71472a2481af7e64b0dad663 data\soulsweapons\recipe\leviathan_axe_right.json
 93bc8d983a9b5e79250ed3b908c77515865d46f5 data\soulsweapons\recipe\chaos_orb.json
-e00540ec35a3df826ab9a86f7f0e6831c790ec27 data\soulsweapons\advancement\recipes\misc\chungus_tonic_lingering.json
 5d98b6df3f3379b73e34edd92746d7309282001f data\soulsweapons\advancement\recipes\tools\moonstone_pickaxe.json
 ee3260c1cc0fff2109b18c0c531c9848c2a6581f data\soulsweapons\advancement\recipes\misc\chungus_emerald.json
 d70ed14188ed7c9e50d47f0b3a3859860f1fd25c data\soulsweapons\advancement\recipes\combat\dawnbreaker.json

@@ -309,15 +309,10 @@
     "item.minecraft.splash_potion.effect.tainted_ambrosia": "§cSplash Tainted Ambrosia§r",
     "item.minecraft.lingering_potion.effect.tainted_ambrosia": "§cLingering Tainted Ambrosia§r",
     "item.minecraft.tipped_arrow.effect.tainted_ambrosia": "§cArrow of Tainted Ambrosia§r",
-
-    "item.minecraft.potion.effect.chungus_tonic": "§4Tampered Chungus Tonic§r",
-    "item.minecraft.splash_potion.effect.chungus_tonic": "§4Splash Tampered Chungus Tonic§r",
-    "item.minecraft.lingering_potion.effect.chungus_tonic": "§4Lingering Tampered Chungus Tonic§r",
-    "item.minecraft.tipped_arrow.effect.chungus_tonic": "§4Arrow of Tampered Chungus Tonic§r",
-
-    "item.soulsweapons.chungus_tonic_potion": "§3Chungus Tonic§r",
-    "item.soulsweapons.chungus_tonic_splash": "§3Splash Chungus Tonic§r",
-    "item.soulsweapons.chungus_tonic_lingering": "§3Lingering Chungus Tonic§r",
+    "item.minecraft.potion.effect.chungus_tonic": "§3Chungus Tonic§r",
+    "item.minecraft.splash_potion.effect.chungus_tonic": "§§3Splash Chungus Tonic§r",
+    "item.minecraft.lingering_potion.effect.chungus_tonic": "§3Lingering Chungus Tonic§r",
+    "item.minecraft.tipped_arrow.effect.chungus_tonic": "§3Arrow of Chungus Tonic§r",
 
     "attribute.soulsweapons.posture_buildup_resistance": "Posture Loss Buildup Resistance",
     "attribute.soulsweapons.base_posture_increase": "Base Posture Increase",

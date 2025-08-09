@@ -75,10 +75,6 @@ public class ItemRegistry {
     public static final Item GLASS_VIAL = new Item(new Item.Settings());
     public static final Item BLOOD_VIAL = new BloodVial(new Item.Settings().maxCount(20));
 
-    public static final PotionItem CHUNGUS_TONIC_POTION = new CustomPotionItem(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value());
-    public static final PotionItem CHUNGUS_TONIC_SPLASH = new CustomSplashPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value(), -1);
-    public static final PotionItem CHUNGUS_TONIC_LINGERING = new CustomLingeringPotion(new Item.Settings().maxCount(16), EffectRegistry.CHUNGUS_TONIC_POTION.value(), -1);
-
     public static final Item CHUNGUS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.BIG_CHUNGUS_SONG_EVENT_KEY).maxCount(1));
     public static final Item FALLEN_ICON_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.FALLEN_ICON_MONO_KEY).maxCount(1));
     public static final Item DRAUGR_BOSS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.DRAUGR_BOSS_SONG_MONO_KEY).maxCount(1));
@@ -122,10 +118,6 @@ public class ItemRegistry {
         registerItem(CHAOS_ORB, "chaos_orb");
         registerItem(GLASS_VIAL, "glass_vial");
         registerItem(BLOOD_VIAL, "blood_vial");
-
-        registerItem(CHUNGUS_TONIC_POTION, "chungus_tonic_potion");
-        registerItem(CHUNGUS_TONIC_SPLASH, "chungus_tonic_splash");
-        registerItem(CHUNGUS_TONIC_LINGERING, "chungus_tonic_lingering");
 
         registerItem(CHUNGUS_DISC, "chungus_disc");
         registerItem(FALLEN_ICON_DISC, "fallen_icon_disc");

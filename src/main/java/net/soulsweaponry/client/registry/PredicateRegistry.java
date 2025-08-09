@@ -115,9 +115,14 @@ public class PredicateRegistry {
             return 0.0f;
         });
 
-        ModelPredicateProviderRegistry.register(Items.POTION, Identifier.of("soulsweapons", "custom_potion"), (itemStack, clientWorld, livingEntity, seed) -> {
+        registerChungusPotion(Items.POTION);
+        registerChungusPotion(Items.SPLASH_POTION);
+        registerChungusPotion(Items.LINGERING_POTION);
+    }
+
+    private static void registerChungusPotion(Item item) {
+        ModelPredicateProviderRegistry.register(item, Identifier.of("chungus_tonic"), (itemStack, clientWorld, livingEntity, seed) -> {
             PotionContentsComponent contents = itemStack.get(DataComponentTypes.POTION_CONTENTS);
-            // NOTE: As of now, hardcoded to only work for Chungus Tonic Potions
             return contents != null && contents.matches(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f;
         });
     }

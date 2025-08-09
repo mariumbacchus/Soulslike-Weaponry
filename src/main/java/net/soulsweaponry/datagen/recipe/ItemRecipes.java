@@ -14,7 +14,6 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModTags;
 
 public class ItemRecipes {
@@ -233,13 +232,6 @@ public class ItemRecipes {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE).build()))
                 .offerTo(recipeExporter, "special_page_to_paper");
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.CHUNGUS_TONIC_LINGERING, 3)
-                .input(ItemRegistry.CHUNGUS_TONIC_SPLASH)
-                .input(WeaponRegistry.CHUNGUS_STAFF)
-                .input(Items.DRAGON_BREATH)
-                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.CHUNGUS_TONIC_SPLASH).build()))
-                .offerTo(recipeExporter);
 
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK), ItemRegistry.CRIMSON_INGOT, 0.1f, 200, ItemRegistry.DEMON_HEART, recipeExporter);
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(Items.SOUL_SAND), ItemRegistry.LOST_SOUL, 0.1f, 200, Items.SOUL_SAND, recipeExporter);
