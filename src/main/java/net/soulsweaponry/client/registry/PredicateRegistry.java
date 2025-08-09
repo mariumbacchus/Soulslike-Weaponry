@@ -118,6 +118,7 @@ public class PredicateRegistry {
         registerChungusPotion(Items.POTION);
         registerChungusPotion(Items.SPLASH_POTION);
         registerChungusPotion(Items.LINGERING_POTION);
+        registerChungusPotion(Items.TIPPED_ARROW);
     }
 
     private static void registerChungusPotion(Item item) {

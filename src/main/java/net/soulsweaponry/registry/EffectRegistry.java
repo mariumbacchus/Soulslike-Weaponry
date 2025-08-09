@@ -82,7 +82,7 @@ public class EffectRegistry {
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
             ItemStack stack = player.getStackInHand(hand);
-            if (!stack.isOf(Items.POTION) && !stack.isOf(Items.SPLASH_POTION) && !stack.isOf(Items.LINGERING_POTION)) {
+            if (!stack.isOf(Items.POTION) && !stack.isOf(Items.SPLASH_POTION) && !stack.isOf(Items.LINGERING_POTION) && !stack.isOf(Items.TIPPED_ARROW)) {
                 return TypedActionResult.pass(stack);
             }
             PotionContentsComponent contents = stack.get(DataComponentTypes.POTION_CONTENTS);
