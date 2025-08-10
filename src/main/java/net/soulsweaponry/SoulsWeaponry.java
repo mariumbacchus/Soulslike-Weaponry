@@ -47,6 +47,7 @@ public class SoulsWeaponry implements ModInitializer {
         LOGGER.info("Config initialized!");
 
         AttributeRegistry.init();
+        DamageSourceRegistry.init();
         ComponentRegistry.init();
         BlockRegistry.init();
         ItemRegistry.init();

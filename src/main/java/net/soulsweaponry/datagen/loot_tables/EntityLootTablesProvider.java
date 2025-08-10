@@ -1,11 +1,14 @@
 package net.soulsweaponry.datagen.loot_tables;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.KilledByPlayerLootCondition;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.EnchantedCountIncreaseLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
@@ -21,13 +24,22 @@ import net.soulsweaponry.registry.ItemRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class EntityLootTables {
+public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
 
     public static final HashMap<String, ArrayList<Item>> BOSS_DROPS = new HashMap<>();
 
-    public static void generateLoot(RegistryWrapper.WrapperLookup registryLookup, BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
+    private final RegistryWrapper.WrapperLookup registryLookup;
+
+    public EntityLootTablesProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(output, registryLookup, LootContextTypes.ENTITY);
+        this.registryLookup = registryLookup.join();
+    }
+
+    @Override
+    public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
         for (String id : BOSS_DROPS.keySet()) {
             LootTable.Builder builder = LootTable.builder();
             for (Item item : BOSS_DROPS.get(id)) {

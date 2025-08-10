@@ -23,7 +23,7 @@ import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -48,7 +48,7 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
                 float power = ConfigConstructor.holy_moonlight_ability_damage;
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player),
+                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
                                 power + 2 * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0));
                         entity.addVelocity(0, this.getKnockup(stack), 0);
                     }

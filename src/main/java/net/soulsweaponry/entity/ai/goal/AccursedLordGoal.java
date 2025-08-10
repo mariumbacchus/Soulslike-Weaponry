@@ -21,7 +21,7 @@ import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
@@ -301,7 +301,7 @@ public class AccursedLordGoal extends Goal {
             }
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity) {
-                    this.damageTarget((LivingEntity) entity, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), 30f);
+                    this.damageTarget((LivingEntity) entity, DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), 30f);
                     entity.setVelocity(entity.getVelocity().x, .3f, entity.getVelocity().z);
                 }
             }

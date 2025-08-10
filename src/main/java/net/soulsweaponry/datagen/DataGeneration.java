@@ -5,13 +5,16 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
-import net.soulsweaponry.datagen.enchantment.EnchantmentProvider;
 import net.soulsweaponry.datagen.loot_tables.BlockLootTableProvider;
-import net.soulsweaponry.datagen.loot_tables.ModLootTableProvider;
+import net.soulsweaponry.datagen.loot_tables.ChestLootTableProvider;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
+import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTableProvider;
 import net.soulsweaponry.datagen.models.ModelProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.*;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
+import net.soulsweaponry.registry.DamageSourceRegistry;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.world.feature.ConfiguredFeatures;
 import net.soulsweaponry.world.feature.PlacedFeatures;
 
@@ -25,8 +28,10 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-        pack.addProvider(EnchantmentProvider::new);
-        pack.addProvider(ModLootTableProvider::new);
+        pack.addProvider(RegistryDataGen::new);
+        pack.addProvider(ChungusBarterLootTableProvider::new);
+        pack.addProvider(ChestLootTableProvider::new);
+        pack.addProvider(EntityLootTablesProvider::new);
         pack.addProvider(BlockLootTableProvider::new);
         pack.addProvider(BlockTagsProvider::new);
         pack.addProvider(WeaponRecipeProvider::new);
@@ -46,5 +51,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     public void buildRegistry(RegistryBuilder registryBuilder) {
         registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, PlacedFeatures::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.ENCHANTMENT, EnchantRegistry::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.DAMAGE_TYPE, DamageSourceRegistry::bootstrap);
     }
 }

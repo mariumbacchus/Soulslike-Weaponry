@@ -21,7 +21,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.DetonateGroundAttributes;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -40,7 +40,7 @@ public interface IDetonateGround {
                     continue;
                 }
                 float bonus = world instanceof ServerWorld serverWorld ? EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0) : 0;
-                boolean canDamageTarget = livingEntity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, user), power + bonus);
+                boolean canDamageTarget = livingEntity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, user), power + bonus);
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getDetonationAttributes().launchMod(), this.getDetonationAttributes().maxLaunchPower()), 0);
                     float healMod = this.getDetonationAttributes().healMod();

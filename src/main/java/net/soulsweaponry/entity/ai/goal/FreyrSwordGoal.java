@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -82,7 +82,7 @@ public class FreyrSwordGoal extends Goal {
         for (double[] hitFrame : this.hitFrames) {
             if (this.attackTicks == hitFrame[0]) {
                 //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
-                if (target.damage(CustomDamageSource.create(this.entity.getWorld(), CustomDamageSource.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
+                if (target.damage(DamageSourceRegistry.create(this.entity.getWorld(), DamageSourceRegistry.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
                     int fire;
                     if ((fire = WeaponUtil.getLevel(this.entity.getStack(), Enchantments.FIRE_ASPECT)) > 0) {
                         target.setOnFireFor(fire * 4);//TODO implement a way to automatically apply enchant effects instead of hardcoding like this

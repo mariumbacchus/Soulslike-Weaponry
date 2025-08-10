@@ -11,7 +11,6 @@
   - Recipes for the Splash and Lingering has been changed due to this
 - Fixed compatibility issue with Create mod and the Chungus Potions, they can now be inserted and extracted from fluid tanks correctly
 - Splash Chungus Potions now have random particle colors
-- Added Tampered Chungus Tonic potions, they do nothing out of the ordinary compared to normal Chungus Potions :)
 - Added config lines for how many bullets are needed in the inventory for guns with infinity to shoot
 
 

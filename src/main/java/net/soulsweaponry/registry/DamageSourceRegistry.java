@@ -1,15 +1,17 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.registry;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageScaling;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 
-public class CustomDamageSource {
+public class DamageSourceRegistry {
 
     public static RegistryKey<DamageType> BLEED = createType("bleed");
     public static RegistryKey<DamageType> OBLITERATED = createType("obliterated");
@@ -36,4 +38,18 @@ public class CustomDamageSource {
     public static RegistryKey<DamageType> createType(String name) {
         return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(SoulsWeaponry.ModId, name));
     }
+
+    public static void bootstrap(Registerable<DamageType> registerable) {
+        registerable.register(BLEED, new DamageType("bleed", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(OBLITERATED, new DamageType("obliterated", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(OBLIVION, new DamageType("oblivion", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(FREYR_SWORD, new DamageType("freyr_sword", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(SHADOW_ORB, new DamageType("shadow_orb", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(BEAM, new DamageType("beam", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(DRAGON_MIST, new DamageType("dragon_mist", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(PLAYER_LIGHTNING, new DamageType("player_lightning", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(PLAYER_FIRE, new DamageType("player_fire", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+    }
+
+    public static void init() {}
 }

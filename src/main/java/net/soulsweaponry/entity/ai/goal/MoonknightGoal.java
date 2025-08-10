@@ -30,7 +30,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.EntityLookUtil;
@@ -366,13 +366,13 @@ public class MoonknightGoal extends Goal {
                 this.boss.setBeamLocation(BlockPos.ofFloored(targetPos));
                 this.boss.setCanBeam(true);
                 if (this.attackStatus % 2 == 0) {
-                    this.boss.getWorld().createExplosion(boss, CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 4f, false, World.ExplosionSourceType.NONE);
+                    this.boss.getWorld().createExplosion(boss, DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 4f, false, World.ExplosionSourceType.NONE);
                     Vec3d vec = new Vec3d(targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ());
                     ParticleHandler.particleOutburstMap(this.boss.getWorld(), 20, vec.getX() + boss.getRandom().nextDouble() - 0.5, vec.getY() + boss.getRandom().nextDouble() - 0.5, vec.getZ() + boss.getRandom().nextDouble() - 0.5, ParticleEvents.CORE_BEAM_EXPLOSION_MAP, 1.3f);
                     this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
                     for (Entity entity : this.boss.getWorld().getOtherEntities(boss, new Box(targetPos, this.boss.getPos().add(0, 4, 0)))) {
                         if (entity instanceof LivingEntity) {
-                            entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.BEAM, this.boss), this.getModifiedDamage(20f));
+                            entity.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.BEAM, this.boss), this.getModifiedDamage(20f));
                             entity.setOnFireFor(4);
                         }
                     }
@@ -571,7 +571,7 @@ public class MoonknightGoal extends Goal {
     private void smashGround(float damage, SoundEvent sound, boolean isSoundDelayed) {
         for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(BlockPos.ofFloored(this.targetPos)).expand(3))) {
             if (entity instanceof LivingEntity living) {
-                entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(damage));
+                entity.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(damage));
                 entity.addVelocity(0, 1, 0);
                 if (living.hasInvertedHealingAndHarm() && living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                     this.summonRemnant(living.getPos());

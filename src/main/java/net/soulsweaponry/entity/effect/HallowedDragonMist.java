@@ -5,7 +5,7 @@ import net.minecraft.entity.Tameable;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 
 public class HallowedDragonMist extends StatusEffect {
 
@@ -30,7 +30,7 @@ public class HallowedDragonMist extends StatusEffect {
                 entity.heal(amplifier + 1);
             }
         } else {
-            entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.DRAGON_MIST), 2.0F + (float) amplifier);
+            entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.DRAGON_MIST), 2.0F + (float) amplifier);
         }
         return true;
     }

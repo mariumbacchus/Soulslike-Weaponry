@@ -882,7 +882,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=2) public static float shield_parry_max_animation_frames = 10;
     @Entry(min=2) public static float shield_parry_frames = 3;
 
-    @Entry public static boolean chungus_tonic_can_use = true;
+    @Entry public static boolean chungus_tonic_can_change_entities = true;
     @Entry public static float chungus_tonic_ticks_until_chungified = 300;
     @Entry public static boolean can_chungus_barter = true;
 

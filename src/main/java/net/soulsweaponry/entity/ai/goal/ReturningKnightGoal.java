@@ -18,7 +18,7 @@ import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.entity.util.RandomSummonPos;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
@@ -214,7 +214,7 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 18) { //23
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity living) {
-                            entity.damage(CustomDamageSource.create(this.boss.getWorld(), CustomDamageSource.OBLITERATED, this.boss), this.getModifiedDamage(60f));
+                            entity.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
                             if (living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                                 this.summonAllies(living.getPos(), false);

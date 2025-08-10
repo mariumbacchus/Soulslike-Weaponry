@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 
 public class ChainLightning {
 
@@ -31,7 +31,7 @@ public class ChainLightning {
                             || !tameable.getOwner().equals(user)))) {
                 LivingEntity secondary = (LivingEntity)e;
                 world.playSound(null, secondary.getBlockPos(), SoundRegistry.SHOCK, SoundCategory.PLAYERS, 1f, 1f);
-                secondary.damage(CustomDamageSource.create(world, CustomDamageSource.PLAYER_LIGHTNING, user), damage);
+                secondary.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.PLAYER_LIGHTNING, user), damage);
                 Vec3d toSecondary = new Vec3d(secondary.getX(), secondary.getBodyY(0.5f), secondary.getZ());
                 ParticleHandler.chainLightning(world, toPrimary, toSecondary);
             }

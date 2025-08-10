@@ -6,13 +6,13 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 
 public class StormveilThorns {
 
     public static void trigger(LivingEntity user, LivingEntity attacker, float amp) {
         if (user.getRandom().nextFloat() < ConfigConstructor.tonitrus_stormveil_effect_thorns_chance) {
-            attacker.damage(CustomDamageSource.create(user.getWorld(), CustomDamageSource.PLAYER_LIGHTNING, user),
+            attacker.damage(DamageSourceRegistry.create(user.getWorld(), DamageSourceRegistry.PLAYER_LIGHTNING, user),
                     ConfigConstructor.tonitrus_stormveil_effect_thorns_base_damage + amp * ConfigConstructor.tonitrus_stormveil_effect_thorns_damage_per_amp_level);
             user.getWorld().playSound(null, user.getBlockPos(), SoundRegistry.STORMVEIL_THORNS, SoundCategory.PLAYERS, 1f, 1f);
             if (!user.getWorld().isClient) {
