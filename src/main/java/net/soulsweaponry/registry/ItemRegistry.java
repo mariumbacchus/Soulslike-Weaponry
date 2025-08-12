@@ -31,15 +31,14 @@ public class ItemRegistry {
             .statusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 150, 0), 10)
             .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build();
 
-    // Integer is lines of lore, boolean after is whether the LoreItem is fireproof or not (false by default)
-    public static final LoreItem LORD_SOUL_RED = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 4, true);
-    public static final LoreItem LORD_SOUL_DARK = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
-    public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 2, true);
-    public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC), 3, true);
+    public static final LoreItem LORD_SOUL_RED = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 4, true);
+    public static final LoreItem LORD_SOUL_DARK = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
+    public static final LoreItem LORD_SOUL_VOID = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
+    public static final LoreItem LORD_SOUL_ROSE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
+    public static final LoreItem LORD_SOUL_PURPLE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
+    public static final LoreItem LORD_SOUL_WHITE = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
+    public static final LoreItem LORD_SOUL_DAY_STALKER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 2, true);
+    public static final LoreItem LORD_SOUL_NIGHT_PROWLER = new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true);
     public static final Item LOST_SOUL = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5);
     public static final Item MOONSTONE = new Item(new Item.Settings());
     public static final Item CHUNGUS_EMERALD = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true);
@@ -67,10 +66,10 @@ public class ItemRegistry {
     public static final Item MOONSTONE_HOE = new HoeItem(ModToolMaterials.MOONSTONE_TOOL, new Item.Settings()
             .attributeModifiers(HoeItem.createAttributeModifiers(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f)));
 
-    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
-    public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 4, true);
+    public static final LoreItem WITHERED_DEMON_HEART = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true);
+    public static final LoreItem ARKENSTONE = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true);
     public static final LoreItem ESSENCE_OF_EVENTIDE = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true);
-    public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new Item.Settings().rarity(Rarity.RARE), 3, true);
+    public static final LoreItem ESSENCE_OF_LUMINESCENCE = new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 3, true);
     public static final Item CHAOS_ORB = new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof());
     public static final Item GLASS_VIAL = new Item(new Item.Settings());
     public static final Item BLOOD_VIAL = new BloodVial(new Item.Settings().maxCount(20));

@@ -61,7 +61,6 @@ public class WeaponUtil {
     }
 
     /**
-     * TODO test
      * Gets the level of a specific enchant based on the RegistryKey for simplicity
      * TODO alternatively, look at what has been done in ICooldownItem to get level of the enchant, maybe replace this with that
      */
@@ -72,13 +71,6 @@ public class WeaponUtil {
             }
         }
         return 0;
-    }
-
-    //TODO idk if this is needed
-    public static Enchantment getEnchantmentById(World world, String enchantId) {
-        Registry<Enchantment> enchantRegistry = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
-        Identifier id = Identifier.of(enchantId);
-        return enchantRegistry.get(id);
     }
 
     public static void applyEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantKey, int level) {

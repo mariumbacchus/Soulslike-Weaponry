@@ -62,7 +62,6 @@ public class SoulsWeaponry implements ModInitializer {
         SpawnInit.init();
         WeaponRegistry.init();
         ArmorRegistry.init();
-        //TODO only items to test are the gun items and all the enchants on them
         GunRegistry.init();
         WorldGen.generateCustomWorldGen();
         LOGGER.info("Successfully registered SoulsWeapons content!");
@@ -94,7 +93,6 @@ public class SoulsWeaponry implements ModInitializer {
             ItemRegistry.registerItem(new TestItem(new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
         }
 
-        // TODO test this
         DefaultItemComponentEvents.MODIFY.register(context -> context.modify(
                 ItemRegistry.FIREPROOF_ITEMS::contains,
                 (builder, item) -> builder.add(DataComponentTypes.FIRE_RESISTANT, Unit.INSTANCE)
