@@ -5,8 +5,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -15,18 +15,12 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
-import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.axe.LeviathanAxe;
-import net.soulsweaponry.items.sword.MehrunesRazor;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModifyDamageUtil {
 
@@ -39,36 +33,6 @@ public class ModifyDamageUtil {
      * @return new damage amount to be taken
      */
     public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
-        if (source.getAttacker() instanceof LivingEntity attacker) {
-            List<ItemStack> stacks = new ArrayList<>();
-            stacks.add(attacker.getMainHandStack());
-            if (WeaponUtil.isFightModLoaded()) {
-                stacks.add(attacker.getOffHandStack());
-            }
-            for (ItemStack heldStack : stacks) {
-                Item item = heldStack.getItem();
-                // Bonus damage to dragons
-                if (entity.getType().isIn(ModTags.Entities.DRAGONS) &&
-                        item instanceof IDragonBonus dragonBonus &&
-                        !(item instanceof IConfigDisable configDisable && configDisable.isDisabled(heldStack))) {
-
-                    newAmount += dragonBonus.getDragonBonus(heldStack);
-                }
-                // Mehrunes’ Razor missing health bonus
-                if (item instanceof MehrunesRazor) {
-                    float ratio = entity.getMaxHealth() >= ConfigConstructor.mehrunes_razor_missing_health_trigger_cap ? ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap : ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap;
-                    if (attacker.getRandom().nextDouble() <= ratio) {
-                        double missing = entity.getMaxHealth() - entity.getHealth();
-                        float bonus = (float) Math.min(
-                                missing * ConfigConstructor.mehrunes_razor_missing_health_modifier
-                                * (entity instanceof PlayerEntity ? ConfigConstructor.mehrunes_razor_missing_health_modifier_against_players : 1f),
-                                ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage
-                        );
-                        newAmount += bonus;
-                    }
-                }
-            }
-        }
         if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_HELMET)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
@@ -87,6 +51,9 @@ public class ModifyDamageUtil {
             newAmount += ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
             entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
+            if (entity.hasStatusEffect(StatusEffects.SLOWNESS)) entity.removeStatusEffect(StatusEffects.SLOWNESS);
+            if (entity.hasStatusEffect(StatusEffects.WEAKNESS)) entity.removeStatusEffect(StatusEffects.WEAKNESS);
+            if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE)) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
             if (entity.hasStatusEffect(EffectRegistry.FREEZING)) {
                 LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), entity.getStatusEffect(EffectRegistry.FREEZING).getAmplifier());
                 entity.removeStatusEffect(EffectRegistry.FREEZING);

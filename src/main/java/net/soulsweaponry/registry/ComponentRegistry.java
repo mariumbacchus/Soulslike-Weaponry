@@ -27,8 +27,6 @@ public class ComponentRegistry {
                     .packetCodec(PacketCodecs.STRING.xmap(UUID::fromString, UUID::toString).mapBuf(buf -> buf)));
     public static final ComponentType<List<Integer>> INT_LIST = register("int_list", builder ->
                     builder.codec(Codec.list(Codec.INT)).packetCodec(PacketCodecs.registryCodec(Codec.list(Codec.INT))));
-    public static final ComponentType<Float> BLADE_DANCE_BONUS_DAMAGE = register("blade_dance_bonus_damage", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
-    public static final ComponentType<Float> BLADE_DANCE_BONUS_ATTACK_SPEED = register("blade_dance_bonus_attack_speed", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
     public static final ComponentType<BlockPos> SAVED_BLOCK_POS = register("saved_block_pos", builder -> builder.codec(BlockPos.CODEC).packetCodec(BlockPos.PACKET_CODEC));
     public static final ComponentType<Boolean> INVISIBLE = register("invisible", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
     public static final ComponentType<String> MAPPED_TRICK_WEAPON = register("mapped_trick_weapon", builder -> builder.codec(Codec.STRING).packetCodec(PacketCodecs.STRING));

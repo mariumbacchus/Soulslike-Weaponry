@@ -59,7 +59,7 @@ public class GatlingGun extends GunItem {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % 4 == 0) {
+        if (remainingUseTicks < this.getMaxUseTime(stack, user) - 15 && remainingUseTicks % 4 == 0) {
             if (user instanceof PlayerEntity playerEntity) {
                 ItemStack itemStack = this.canShoot(playerEntity, stack);
                 if (itemStack != null) {
@@ -70,7 +70,7 @@ public class GatlingGun extends GunItem {
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
                 }
             }
-        } else if (-remainingUseTicks > this.getMaxUseTime(stack)) {
+        } else if (-remainingUseTicks > this.getMaxUseTime(stack, user)) {
             user.stopUsingItem();
             super.usageTick(world, user, stack, remainingUseTicks);
         }
@@ -83,7 +83,7 @@ public class GatlingGun extends GunItem {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS);
         return (int) (ConfigConstructor.gatling_gun_max_time * (lvl == 0 ? 1 : lvl));
     }

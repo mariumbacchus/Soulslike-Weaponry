@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.S2C.ShouldDamageRidingSyncS2C;
-import net.soulsweaponry.networking.S2C.UTDamageCooldownSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.ShouldDamageRidingSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.UTDamageCooldownSyncS2C;
 
 public class UmbralTrespassData {
 

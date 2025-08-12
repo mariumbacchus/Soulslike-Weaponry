@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+// NOTE: Remember to add the item to ConventionalItemTags.BOW_TOOLS or something like that to make UseAction.BOW animation work
 public abstract class GunItem extends RangedWeaponItem implements IConfigDisable, ITooltipInfo {
 
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
@@ -63,7 +64,8 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     public abstract float getBulletDivergence(ItemStack stack);
     public abstract int getCooldown(ItemStack stack);
 
-    public int getMaxUseTime(ItemStack stack) {
+    @Override
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 0;
     }
 
@@ -136,11 +138,6 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
             }
         }
         return entity;
-    }
-
-    @Override
-    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
-        projectile.setVelocity(shooter, shooter.getPitch(), shooter.getYaw() + yaw, 0.0F, speed, divergence);
     }
 
     @Nullable
@@ -277,12 +274,17 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
     }
 
     @Override
+    public int getEnchantability() {
+        return 7;
+    }
+
+    @Override
     public int getRange() {
         return 15;
     }
 
     @Override
-    public int getEnchantability() {
-        return 7;
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+
     }
 }

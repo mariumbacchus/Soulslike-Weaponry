@@ -686,8 +686,8 @@ public class TooltipUtil {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.format("%.1f", gun.getBulletDamage(stack)))).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(gun.getCooldown(stack)))).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(gun.getBulletsNeeded(stack)))).formatted(Formatting.GRAY));
-                    if (gun.getMaxUseTime(stack) != 0) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(gun.getMaxUseTime(stack)))).formatted(Formatting.GRAY));
+                    if (gun.getMaxUseTime(stack, null) != 0) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(gun.getMaxUseTime(stack, null)))).formatted(Formatting.GRAY));
                     }
                 }
             }
@@ -699,7 +699,7 @@ public class TooltipUtil {
             }
             case DRAGONS_SCOURGE -> {
                 if (stack.getItem() instanceof IDragonBonus bonus) {
-                    float amount = bonus.getDragonBonus(stack);
+                    float amount = bonus.getTotalDragonBonus(stack);
                     tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane").formatted(Formatting.DARK_PURPLE));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.1", String.format("%.1f", amount)).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.2").formatted(Formatting.DARK_GRAY));

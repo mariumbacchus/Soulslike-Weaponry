@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.bow;
 
-import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -27,8 +26,8 @@ import java.util.function.Supplier;
 public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, new RangedConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks,
-                        ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_max_velocity),
+        super(settings, createConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks,
+                ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_bonus_velocity),
                 repairIngredientSupplier);
         this.addTooltipAbility( TooltipAbilities.SLOW_PULL, TooltipAbilities.MOONLIGHT_ARROW, TooltipAbilities.ARROW_STORM);
     }

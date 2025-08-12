@@ -366,7 +366,7 @@ public class MoonknightGoal extends Goal {
                 this.boss.setBeamLocation(BlockPos.ofFloored(targetPos));
                 this.boss.setCanBeam(true);
                 if (this.attackStatus % 2 == 0) {
-                    this.boss.getWorld().createExplosion(boss, DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 4f, false, World.ExplosionSourceType.NONE);
+                    this.boss.getWorld().createExplosion(boss, DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.BEAM, this.boss), null, targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ(), 4f, false, World.ExplosionSourceType.TRIGGER);
                     Vec3d vec = new Vec3d(targetPos.getX(), targetPos.getY() + this.bonusBeamHeight, targetPos.getZ());
                     ParticleHandler.particleOutburstMap(this.boss.getWorld(), 20, vec.getX() + boss.getRandom().nextDouble() - 0.5, vec.getY() + boss.getRandom().nextDouble() - 0.5, vec.getZ() + boss.getRandom().nextDouble() - 0.5, ParticleEvents.CORE_BEAM_EXPLOSION_MAP, 1.3f);
                     this.boss.getWorld().playSound(null, BlockPos.ofFloored(vec), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);

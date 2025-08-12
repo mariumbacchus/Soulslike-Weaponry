@@ -44,7 +44,7 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
     public void detonate() {
         if (this.getOwner() != null && this.getBlockPos() != null && !getWorld().isClient) {
             float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) WeaponUtil.getLevel(asItemStack(), Enchantments.SHARPNESS) / 2.5f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.NONE);
+            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TRIGGER);
             if (power > 2f) {
                 for (Entity entity : getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
                     if (entity instanceof LivingEntity living) {
@@ -139,5 +139,10 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
     @Override
     public boolean isFireImmune() {
         return true;
+    }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
     }
 }

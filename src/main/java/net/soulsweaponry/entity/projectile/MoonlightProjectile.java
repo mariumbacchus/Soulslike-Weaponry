@@ -255,4 +255,9 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
             this.setAppliedEffectDuration(nbt.getInt("AppliedEffectTicks"));
         }
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

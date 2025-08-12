@@ -83,7 +83,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                         this.spawnRemnant(target, user);
                     }
                 }
-                world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
             }
         }

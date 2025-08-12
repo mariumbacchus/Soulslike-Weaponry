@@ -1,7 +1,9 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -114,5 +116,10 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public int getPostureLoss() {
         return (int) ConfigConstructor.heap_of_raw_iron_posture_loss;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getDragonBonus(target, baseAttackDamage, damageSource);
     }
 }

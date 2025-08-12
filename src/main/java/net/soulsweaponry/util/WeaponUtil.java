@@ -95,10 +95,9 @@ public class WeaponUtil {
      * @param stack item stack
      * @param damage damage
      * @param attackSpeed attack speed, this is not pre-calculated so you need to enter {@code - (4f - 1.6f)}
-     *                    if you want 1.6 in attack speed
+     *                    if you want 1.6 in attack speed as a result
      */
     public static void modifyStackAttributes(ItemStack stack, float damage, float attackSpeed) {
-        //TODO damage might need to be -1 to give correct output instead of just 0
         stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
                 .add(
                         EntityAttributes.GENERIC_ATTACK_DAMAGE,
@@ -106,7 +105,7 @@ public class WeaponUtil {
                         AttributeModifierSlot.MAINHAND
                 )
                 .add(
-                        EntityAttributes.GENERIC_ATTACK_SPEED, // TODO see if it is necessary to do this calculation or not
+                        EntityAttributes.GENERIC_ATTACK_SPEED,
                         new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND
                 )

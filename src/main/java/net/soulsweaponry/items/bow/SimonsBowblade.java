@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.bow;
 
-import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -22,8 +21,8 @@ import java.util.function.Supplier;
 public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureLossItem {
 
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, new RangedConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
-                ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_max_velocity),
+        super(settings, createConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
+                ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
                 repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
     }

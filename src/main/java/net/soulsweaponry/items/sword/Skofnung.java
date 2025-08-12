@@ -58,9 +58,11 @@ public class Skofnung extends ModdedSword {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack)) return;
+        if (this.isDisabled(stack) || world.isClient) {
+            return;
+        }
         float bonus = isEmpowered(stack) ? ConfigConstructor.skofnung_bonus_damage : 0;
-        WeaponUtil.modifyStackAttributes(stack, this.getAttackDamage() + bonus, this.getAttackSpeed());
+        WeaponUtil.modifyStackAttributes(stack, this.getAttackDamage() + bonus - 1, this.getAttackSpeed());
     }
 
     public static boolean isEmpowered(ItemStack stack) {

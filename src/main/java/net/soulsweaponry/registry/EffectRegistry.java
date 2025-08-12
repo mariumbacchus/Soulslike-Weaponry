@@ -26,6 +26,7 @@ import java.awt.*;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+// NOTE: Never remove effects whenever iterating through the effect list, especially inside the onRemoved method in StatusEffect classes
 public class EffectRegistry {
 
     public static final RegistryEntry<StatusEffect> HALLOWED_DRAGON_MIST = registerEffect(new HallowedDragonMist(), "hallowed_dragon_mist");

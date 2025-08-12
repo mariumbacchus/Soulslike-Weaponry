@@ -1,6 +1,7 @@
 package net.soulsweaponry.items.spear;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.TameableEntity;
@@ -102,15 +103,16 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!this.isDisabled(stack)) {
-            float damage = this.getAttackDamage();
-            float attackSpeed = this.getAttackSpeed();
-            if (world.isRaining()) {
-                damage += ConfigConstructor.dragonslayer_swordspear_damage + ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage - 1;
-                attackSpeed = - (4f - ConfigConstructor.dragonslayer_swordspear_rain_total_attack_speed);
-            }
-            WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
+        if (this.isDisabled(stack) || world.isClient) {
+            return;
         }
+        float damage = this.getAttackDamage() - 1;
+        float attackSpeed = this.getAttackSpeed();
+        if (world.isRaining()) {
+            damage += ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage;
+            attackSpeed = - (4f - ConfigConstructor.dragonslayer_swordspear_rain_total_attack_speed);
+        }
+        WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
     }
 
     @Override
@@ -121,5 +123,10 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     @Override
     public float getBaseDragonBonus(ItemStack stack) {
         return ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getDragonBonus(target, baseAttackDamage, damageSource);
     }
 }

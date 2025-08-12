@@ -418,7 +418,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_scythe_prime_heal_modifier = 0.25f;
     @Entry public static float darkin_scythe_prime_ticks_before_dismount = 80;
     @Entry public static float darkmoon_longbow_damage = 9;
-    @Entry public static float darkmoon_longbow_max_velocity = 3f;
+    @Entry public static float darkmoon_longbow_bonus_velocity = 0f;
     @Entry public static float darkmoon_longbow_pull_time_ticks = 25;
     @Entry public static double darkmoon_longbow_ability_damage = 13D;
     @Entry public static float darkmoon_longbow_ability_cooldown_ticks = 150;
@@ -473,7 +473,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonbane_chain_lightning_damage_per_level = 6f;
     @Entry public static float dragonbane_chain_lightning_range_per_enchant_level = 2.25f;
     @Entry public static boolean dragonbane_chain_lightning_enchant_can_boost = true;
-    @Entry public static String[] dragonbane_chain_lightning_boost_enchant = {"sweeping"};
+    @Entry public static String[] dragonbane_chain_lightning_boost_enchant = {"sweeping_edge"};
     @Entry public static float dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
     @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;
@@ -549,7 +549,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frostmourne_attack_speed = 1.6f;
     @Entry public static float frostmourne_summoned_allies_cap = 50;
     @Entry public static float galeforce_damage = 10;
-    @Entry public static float galeforce_max_velocity = 3f;
+    @Entry public static float galeforce_bonus_velocity = 0.25f;
+    @Entry public static float galeforce_ability_velocity = 3f;
     @Entry public static float galeforce_pull_time_ticks = 20;
     @Entry public static float galeforce_speed_effect_duration_ticks = 50;
     @Entry public static float galeforce_speed_effect_amplifier = 4;
@@ -611,10 +612,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kirkhammer_silver_sword_righteous_undead_bonus_damage = 2f;
     @Entry public static float kraken_slayer_damage = 7;
     @Entry public static String kraken_slayer_bow_use_animation = "SPEAR";
-    @Entry public static float kraken_slayer_max_velocity = 3f;
+    @Entry public static float kraken_slayer_bonus_velocity = 0f;
     @Entry public static float kraken_slayer_pull_time_ticks = 10;
     @Entry public static float kraken_slayer_crossbow_damage = 9;
-    @Entry public static float kraken_slayer_crossbow_max_velocity = 3.15f;
+    @Entry public static float kraken_slayer_crossbow_bonus_velocity = 0f;
     @Entry public static float kraken_slayer_crossbow_pull_time_ticks = 15;
     @Entry public static float kraken_slayer_bonus_true_damage = 4f;
     @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
@@ -723,7 +724,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float simons_blade_attack_speed = 1.6f;
     @Entry public static float simons_blade_righteous_undead_bonus_damage = 3f;
     @Entry public static float simons_bowblade_projectile_damage = 6;
-    @Entry public static float simons_bowblade_max_velocity = 3f;
+    @Entry public static float simons_bowblade_bonus_velocity = 0f;
     @Entry public static float simons_bowblade_pull_time_ticks = 25;
     @Entry public static float simons_bowblade_projectile_righteous_undead_bonus_damage = 4f;
     @Entry public static float simons_bowblade_projectile_posture_loss = 30;

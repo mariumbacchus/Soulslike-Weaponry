@@ -35,13 +35,16 @@ public class CrucibleSword extends ModdedSword {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!this.isDisabled(stack) && entity instanceof PlayerEntity player) {
+        if (this.isDisabled(stack) || world.isClient) {
+            return;
+        }
+        if (entity instanceof PlayerEntity player) {
             float damage = this.getAttackDamage();
             float attackSpeed = this.getAttackSpeed();
             if (!player.getItemCooldownManager().isCoolingDown(this)) {
                 damage = ConfigConstructor.crucible_sword_empowered_damage;
             }
-            WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
+            WeaponUtil.modifyStackAttributes(stack, damage - 1, attackSpeed);
         }
     }
 

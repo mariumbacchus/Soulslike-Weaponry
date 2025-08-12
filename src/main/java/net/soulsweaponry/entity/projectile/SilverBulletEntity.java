@@ -61,17 +61,14 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world) {
         super(entityType, world);
-        this.setAllowArrowSticking(false);//TODO see if this works
     }
 
     public SilverBulletEntity(World world, LivingEntity owner, ItemStack bullet) {
         super(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, owner, world, bullet, null);
-        this.setAllowArrowSticking(false);
     }
 
     public SilverBulletEntity(EntityType<? extends SilverBulletEntity> entityType, World world, LivingEntity owner, ItemStack bullet) {
         super(entityType, owner, world, bullet, null);
-        this.setAllowArrowSticking(false);
     }
 
     @Override
@@ -286,7 +283,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
         }
         if (this.explosionPower > 0f && !this.getWorld().isClient) {
             ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.NONE);
+            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.TRIGGER);
         }
         this.discard();
     }
@@ -488,5 +485,10 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
 
     public void setMaxEchoDelay(int maxEchoDelay) {
         this.maxEchoDelay = maxEchoDelay;
+    }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
     }
 }

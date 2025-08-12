@@ -124,4 +124,9 @@ public class CometSpearEntity extends ModPersistentProjectile implements GeoEnti
     public boolean isFireImmune() {
         return true;
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

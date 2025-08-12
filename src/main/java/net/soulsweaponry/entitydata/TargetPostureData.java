@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.networking.S2C.TargetPostureSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.TargetPostureSyncS2C;
 
 /**
  * Get the posture values and the name of the target the entity is attacking, in other words

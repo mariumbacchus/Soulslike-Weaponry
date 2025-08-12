@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.crossbow;
 
-import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -18,8 +17,8 @@ import java.util.function.Supplier;
 public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     public KrakenSlayerCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, new RangedConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
-                ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_max_velocity),
+        super(settings, createConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
+                ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_bonus_velocity),
                 repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
     }

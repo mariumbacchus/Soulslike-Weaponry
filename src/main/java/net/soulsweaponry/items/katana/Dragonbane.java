@@ -1,6 +1,8 @@
 package net.soulsweaponry.items.katana;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -48,5 +50,10 @@ public class Dragonbane extends ModdedSword implements IDragonBonus {
     @Override
     public float getBaseDragonBonus(ItemStack stack) {
         return ConfigConstructor.dragonbane_dragons_scourge_bonus;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getDragonBonus(target, baseAttackDamage, damageSource);
     }
 }

@@ -52,7 +52,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
                     if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage
                             + EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().mobAttack(user), 0))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
-                        target.takeKnockback(1F, 0, 0);
+                        target.takeKnockback(0.25F, 0, 0);
                         BleedData.addBleed(target, (int) ConfigConstructor.whirligig_sawblade_bleed_added);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, (int) ConfigConstructor.whirligig_sawblade_bleed_effect_duration, (int) ConfigConstructor.whirligig_sawblade_bleed_effect_amp));
                     }

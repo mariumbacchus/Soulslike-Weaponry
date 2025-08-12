@@ -1,11 +1,10 @@
 package net.soulsweaponry.items.hammer;
 
+import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity.PickupPermission;
 import net.minecraft.item.ItemStack;
@@ -24,23 +23,21 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.IGeckolibItem;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<Mjolnir> {
+public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private static final EntityAttributeModifier RAIN_DAMAGE = WeaponUtil.makeAttribute(
-            EntityAttributes.GENERIC_ATTACK_DAMAGE, "rain_damage_bonus", ConfigConstructor.mjolnir_rain_bonus_damage);
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
@@ -50,21 +47,15 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<M
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (selected && !this.isDisabled(stack) && entity instanceof PlayerEntity player && entity.age % 40 == 0) {
-            var inst = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (inst != null) {
-                boolean raining = world.isRaining();
-                if (raining) {
-                    if (!inst.hasModifier(RAIN_DAMAGE.id())) {
-                        //TODO test and see if damage is correct (may be +1 over or -1 under whats written in config)
-                        // TODO maybe the DarkinScythePre implementation is better for dynamic changing on the item
-                        inst.addTemporaryModifier(RAIN_DAMAGE);
-                    }
-                } else {
-                    inst.removeModifier(RAIN_DAMAGE);
-                }
-            }
+        if (this.isDisabled(stack) || world.isClient) {
+            return;
         }
+        float damage = this.getAttackDamage() - 1;
+        float attackSpeed = this.getAttackSpeed();
+        if (world.isRaining()) {
+            damage += ConfigConstructor.mjolnir_rain_bonus_damage;
+        }
+        WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
     }
 
     @Override
@@ -77,6 +68,17 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<M
                 if (world instanceof ServerWorld serverWorld) {
                     this.smashGround(stack, serverWorld, player);
                     this.lightningCall(player, world);
+                }
+                double d = player.getRandom().nextGaussian() * 0.05D;
+                double e = player.getRandom().nextGaussian() * 0.05D;
+                for (int j = 0; j < 200; ++j) {
+                    double newX = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + d;
+                    double newZ = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + e;
+                    double newY = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextDouble() * 0.5D;
+                    world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.STONE.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
+                    world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.DIRT.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
+                    world.addParticle(ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), newX, newY/8, newZ);
+                    world.addParticle(ParticleTypes.ELECTRIC_SPARK, player.getX(), player.getY(), player.getZ(), newX*10, newY*2, newZ*10);
                 }
                 cooldown = (int) ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
@@ -136,19 +138,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<M
                 entity.addVelocity(0, .25f, 0);
             }
         }
-
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.PLAYERS, .75f, 1f);
-        double d = player.getRandom().nextGaussian() * 0.05D;
-        double e = player.getRandom().nextGaussian() * 0.05D;
-        for(int j = 0; j < 200; ++j) {
-            double newX = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + d;
-            double newZ = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextGaussian() * 0.15D + e;
-            double newY = player.getRandom().nextDouble() - 0.5D + player.getRandom().nextDouble() * 0.5D;
-            world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.STONE.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
-            world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, Items.DIRT.getDefaultStack()), player.getX(), player.getY(), player.getZ(), newX, newY/2, newZ);
-            world.addParticle(ParticleTypes.LARGE_SMOKE, player.getX(), player.getY(), player.getZ(), newX, newY/8, newZ);
-            world.addParticle(ParticleTypes.ELECTRIC_SPARK, player.getX(), player.getY(), player.getZ(), newX*10, newY*2, newZ*10);
-        }
     }
 
     private void lightningCall(PlayerEntity player, World world) {
@@ -182,7 +172,17 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem, IGeckolibItem<M
     }
 
     @Override
-    public GeoItemRenderer<Mjolnir> getGeckolibRenderer() {
-        return new MjolnirItemRenderer();
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private MjolnirItemRenderer renderer;
+
+            @Override
+            public BuiltinModelItemRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new MjolnirItemRenderer();
+
+                return this.renderer;
+            }
+        });
     }
 }

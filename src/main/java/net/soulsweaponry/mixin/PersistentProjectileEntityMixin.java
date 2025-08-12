@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(PersistentProjectileEntity.class)
 public abstract class PersistentProjectileEntityMixin {
 
-    /** TODO test
+    /**
      * Redirects the setStuckArrowCount inside {@code PersistentProjectileEntity#onEntityHit}
      * if the projectile doesn't allow it.
      * <p>
-     * Would be wierd for a moonlight beam to apply arrows visually, huh?
+     * Would be weird for a moonlight beam to apply arrows visually, huh?
      */
     @Redirect(
             method = "onEntityHit(Lnet/minecraft/util/hit/EntityHitResult;)V",
@@ -25,9 +25,9 @@ public abstract class PersistentProjectileEntityMixin {
             require = 0 // Ignore if other mods try to do the same tactic
     )
     private void redirectSetStuckArrowCount(LivingEntity target, int newCount) {
-        Object self = this;
+        PersistentProjectileEntity self = (PersistentProjectileEntity)(Object) this;
         if (self instanceof ModPersistentProjectile modPersistentProjectile) {
-            if (modPersistentProjectile.shouldAllowArrowSticking()) {
+            if (!modPersistentProjectile.shouldAllowArrowSticking()) {
                 return;
             }
         }

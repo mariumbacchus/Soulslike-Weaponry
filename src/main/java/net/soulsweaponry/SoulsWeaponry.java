@@ -23,6 +23,7 @@ import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
 import net.soulsweaponry.items.TestItem;
+import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.world.gen.WorldGen;
@@ -61,11 +62,12 @@ public class SoulsWeaponry implements ModInitializer {
         SpawnInit.init();
         WeaponRegistry.init();
         ArmorRegistry.init();
+        //TODO only items to test are the gun items and all the enchants on them
         GunRegistry.init();
         WorldGen.generateCustomWorldGen();
         LOGGER.info("Successfully registered SoulsWeapons content!");
         PacketRegistry.registerPackets();
-        PacketRegistry.registerC2SReceivers();
+        PacketReceiverRegistry.registerC2SReceivers();
 
         FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "2d_weapons"), modContainer, Text.literal("2D Weapon Models"), ResourcePackActivationType.NORMAL);

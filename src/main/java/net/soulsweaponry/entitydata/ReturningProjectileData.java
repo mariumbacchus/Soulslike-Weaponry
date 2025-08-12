@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.S2C.ReturningProjectileDataSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.ReturningProjectileDataSyncS2C;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;

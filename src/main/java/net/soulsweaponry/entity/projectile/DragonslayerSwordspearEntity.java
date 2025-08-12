@@ -126,4 +126,9 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
     public boolean isFireImmune() {
         return true;
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

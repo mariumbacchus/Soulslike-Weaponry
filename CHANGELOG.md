@@ -5,6 +5,8 @@
   - If you want to make a boss a different group, make a tag for that group and add the boss to it
   - The same goes for if you want to remove a boss from a tag, simply add a "remove" list like how there exists one for "values"
 - Config lines determining whether bosses are undead or not have been renamed to ```_has_inverted_heal_and_harm``` for clarity as that is the effect in game the line had
+- Config lines regarding max velocity of projectiles shot out of bows and crossbows have been changed to ```_bonus_velocity``` and their values have been changed due to this
+- Updated config values referring to Sweeping Edge enchant boosting damage or reducing cooldowns due to mojang changing the id from ```sweeping``` to ```sweeping_edge```, delete of the config and relaunch to create a new one is recommended
 
 ## 1.3.1
 - Fixed a bug preventing Chungus Potions from being crafted
@@ -12,6 +14,8 @@
 - Fixed compatibility issue with Create mod and the Chungus Potions, they can now be inserted and extracted from fluid tanks correctly
 - Splash Chungus Potions now have random particle colors
 - Added config lines for how many bullets are needed in the inventory for guns with infinity to shoot
+- Fixed bug causing Tonitrus to not have any cooldown
+- Fixed missing translation of cauldrons filled with Purified Blood
 
 
 ## 1.3

@@ -130,8 +130,9 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     private void saveSpearData(ItemStack stack, DraupnirSpearEntity entity) {
         List<Integer> ids = Optional.ofNullable(stack.get(ComponentRegistry.INT_LIST)).orElse(new ArrayList<>());
-        ids.add(entity.getId());
-        stack.set(ComponentRegistry.INT_LIST, ids);
+        List<Integer> newList = new ArrayList<>(ids);
+        newList.add(entity.getId());
+        stack.set(ComponentRegistry.INT_LIST, newList);
     }
 
     @Override

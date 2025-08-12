@@ -66,7 +66,9 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(ItemTags.BOW_ENCHANTABLE)
                 .add(BOWS.toArray(Item[]::new));
 
+        // Add to this tag to make items using UseAction.BOW animation work
         this.getOrCreateTagBuilder(ConventionalItemTags.BOW_TOOLS)
+                .add(GunRegistry.GATLING_GUN)
                 .add(BOWS.toArray(Item[]::new));
 
         this.getOrCreateTagBuilder(ItemTags.CROSSBOW_ENCHANTABLE)

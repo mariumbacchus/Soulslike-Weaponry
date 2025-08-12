@@ -233,4 +233,9 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
     public boolean inGround() {
         return this.inGround;
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

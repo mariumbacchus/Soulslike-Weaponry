@@ -76,14 +76,14 @@ public interface ICooldownItem {
         if (enchantId.equals("damage")) {
             return WeaponUtil.getEnchantDamageBonus(stack);
         } else {
-            //TODO test
             //NOTE: Config values have just the enchant name so it will struggle to find enchants from other mods I think
             Identifier id = Identifier.of(enchantId);
             RegistryKey<Registry<Enchantment>> enchantmentRegistryKey = RegistryKeys.ENCHANTMENT;
             RegistryKey<Enchantment> key = RegistryKey.of(enchantmentRegistryKey, id);
             ItemEnchantmentsComponent enchComp = stack.getEnchantments();
             for (RegistryEntry<Enchantment> entry : enchComp.getEnchantments()) {
-                if (entry.equals(key)) {
+                Optional<RegistryKey<Enchantment>> forKey = entry.getKey();
+                if (forKey.isPresent() && forKey.get().equals(key)) {
                     return enchComp.getLevel(entry);
                 }
             }

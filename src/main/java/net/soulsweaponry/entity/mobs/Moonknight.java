@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.S2C.StopBossMusicS2C;
+import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;

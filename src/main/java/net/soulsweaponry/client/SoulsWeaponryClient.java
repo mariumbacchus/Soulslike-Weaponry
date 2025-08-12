@@ -9,7 +9,7 @@ import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.*;
-import net.soulsweaponry.networking.PacketRegistry;
+import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.FluidRegistry;
 
@@ -55,7 +55,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         EntityModelLayerModRegistry.initClient();
         EntityModelRegistry.initClient();
         PredicateRegistry.initClient();
-        PacketRegistry.registerS2CReceivers();
+        PacketReceiverRegistry.registerS2CReceivers();
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
         HudRegistry.init();

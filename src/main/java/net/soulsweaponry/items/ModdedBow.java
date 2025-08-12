@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.fabric_extras.ranged_weapon.api.CustomBow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.recipe.Ingredient;
@@ -56,5 +57,9 @@ public abstract class ModdedBow extends CustomBow implements IConfigDisable, ISh
     @Override
     public Text[] getAdditionalTooltips() {
         return new Text[0];
+    }
+
+    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
+        return new RangedConfig(damage, (float) (pullTime - BowItem.TICKS_PER_SECOND) / BowItem.TICKS_PER_SECOND, bonusVelocity);
     }
 }

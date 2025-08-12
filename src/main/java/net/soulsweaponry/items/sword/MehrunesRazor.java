@@ -1,7 +1,10 @@
 package net.soulsweaponry.items.sword;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -30,6 +33,22 @@ public class MehrunesRazor extends ModdedSword {
             }
         }
         return super.postHit(stack, target, attacker);
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        if (target instanceof LivingEntity living && damageSource.getAttacker() instanceof LivingEntity attacker) {
+            float ratio = living.getMaxHealth() >= ConfigConstructor.mehrunes_razor_missing_health_trigger_cap ? ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap : ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap;
+            if (attacker.getRandom().nextDouble() <= ratio) {
+                double missing = living.getMaxHealth() - living.getHealth();
+                return (float) Math.min(
+                        missing * ConfigConstructor.mehrunes_razor_missing_health_modifier
+                                * (attacker instanceof PlayerEntity ? ConfigConstructor.mehrunes_razor_missing_health_modifier_against_players : 1f),
+                        ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage
+                );
+            }
+        }
+        return 0;
     }
 
     @Override

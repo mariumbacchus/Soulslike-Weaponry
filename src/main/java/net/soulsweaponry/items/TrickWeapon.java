@@ -1,6 +1,8 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -72,5 +74,10 @@ public class TrickWeapon extends ModdedSword implements IUltraHeavy, IUndeadBonu
     @Override
     public float getUndeadBonus(ItemStack stack) {
         return this.undeadBonus;
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
     }
 }

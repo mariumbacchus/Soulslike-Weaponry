@@ -10,7 +10,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.S2C.*;
+import net.soulsweaponry.networking.S2C.packets.*;
 import org.joml.Vector3f;
 
 import java.util.*;

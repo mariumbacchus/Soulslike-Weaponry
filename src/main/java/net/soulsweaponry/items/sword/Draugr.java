@@ -21,9 +21,9 @@ public class Draugr extends ModdedSword {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack)) return;
-        float bonus = world.getDimension().hasSkyLight() && world.isNight() ? ConfigConstructor.draugr_damage_at_night : this.getAttackDamage();
-        WeaponUtil.modifyStackAttributes(stack, bonus, this.getAttackSpeed());
+        if (this.isDisabled(stack) || world.isClient) return;
+        float damage = world.getDimension().hasSkyLight() && world.isNight() ? ConfigConstructor.draugr_damage_at_night : this.getAttackDamage();
+        WeaponUtil.modifyStackAttributes(stack, damage - 1, this.getAttackSpeed());
     }
 
     @Override

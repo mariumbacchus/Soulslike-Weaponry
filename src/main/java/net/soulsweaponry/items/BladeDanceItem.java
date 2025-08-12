@@ -36,7 +36,7 @@ public abstract class BladeDanceItem extends ModdedSword {
             if (Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) >= 3) {
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
-                        living.damage(attacker.getDamageSources().mobAttack(attacker), this.getTotalDamage(stack));
+                        living.damage(attacker.getDamageSources().mobAttack(attacker), this.getAttackDamage());
                     }
                 }
                 for (int i = 0; i < 360; i += 30) {
@@ -56,14 +56,23 @@ public abstract class BladeDanceItem extends ModdedSword {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack)) return;
-        WeaponUtil.modifyStackAttributes(stack, this.getTotalDamage(stack), this.getTotalAttackSpeed(stack));
+        if (this.isDisabled(stack)) {
+            return;
+        }
+        if (entity instanceof LivingEntity living) {
+            int amp = 0;
+            var inst = living.getStatusEffect(EffectRegistry.BLADE_DANCE);
+            if (inst != null) {
+                amp = inst.getAmplifier() + 1;
+            }
+            BladeDanceItem.updateBladeDanceItem(stack, amp);
+        }
     }
 
     public static void updateBladeDanceItem(ItemStack stack, int effectAmplifier) {
         if (stack.getItem() instanceof BladeDanceItem item) {
-            stack.set(ComponentRegistry.BLADE_DANCE_BONUS_DAMAGE, item.getBonusDamagePerStack() * effectAmplifier);
-            stack.set(ComponentRegistry.BLADE_DANCE_BONUS_ATTACK_SPEED, item.getBonusAttackSpeedPerStack() * effectAmplifier);
+            WeaponUtil.modifyStackAttributes(stack, (item.getAttackDamage() + item.getBonusDamagePerStack() * effectAmplifier) - 1,
+                    item.getAttackSpeed() + item.getBonusAttackSpeedPerStack() * effectAmplifier);
         }
     }
 
@@ -72,16 +81,4 @@ public abstract class BladeDanceItem extends ModdedSword {
     public abstract int getMaxStacks();
     public abstract void applyMaxStacksEffects(LivingEntity entity, ItemStack stack);
     public abstract int getMaxStacksCooldown();
-
-    public float getTotalDamage(ItemStack stack) {
-        float damage = this.getAttackDamage();
-        damage += Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_BONUS_DAMAGE)).orElse(0f);
-        return damage;
-    }
-
-    public float getTotalAttackSpeed(ItemStack stack) {
-        float attackSpeed = this.getAttackSpeed();
-        attackSpeed += Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_BONUS_ATTACK_SPEED)).orElse(0f);
-        return attackSpeed;
-    }
 }

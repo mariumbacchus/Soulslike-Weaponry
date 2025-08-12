@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.networking.C2S.*;
+import net.soulsweaponry.networking.C2S.packets.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -131,7 +131,6 @@ public class KeyBindRegistry {
                     boolean accept = false;
                     if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
                         accept = true;
-                        client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, (int) ConfigConstructor.moonstone_ring_projectile_cooldown);
                     } else if (melee || controller) {
                         for (Hand hand : Hand.values()) {
                             ItemStack stack = client.player.getStackInHand(hand);

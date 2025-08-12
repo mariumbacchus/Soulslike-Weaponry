@@ -6,8 +6,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.networking.S2C.MaxPostureSyncS2C;
-import net.soulsweaponry.networking.S2C.PostureSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.MaxPostureSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.PostureSyncS2C;
 
 public class PostureData {
 

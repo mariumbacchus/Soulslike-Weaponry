@@ -28,7 +28,6 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     }
 
     private float getBonusDamage(ItemStack stack) {
-        if (this.isDisabled(stack)) return 0;
         float per = (float) this.getCharge(stack) / ConfigConstructor.holy_moonlight_ability_charge_needed;
         return ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }
@@ -36,10 +35,10 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack)) {
+        if (this.isDisabled(stack) || world.isClient) {
             return;
         }
-        WeaponUtil.modifyStackAttributes(stack, this.getAttackDamage() + this.getBonusDamage(stack), this.getAttackSpeed());
+        WeaponUtil.modifyStackAttributes(stack, this.getAttackDamage() + this.getBonusDamage(stack) - 1, this.getAttackSpeed());
     }
 
     @Override

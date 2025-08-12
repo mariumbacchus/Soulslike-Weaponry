@@ -33,6 +33,9 @@ public class MoonlightShortsword extends ModdedSword {
         for (Hand hand : Hand.values()) {
             ItemStack itemStack = user.getStackInHand(hand);
             boolean effect = user.hasStatusEffect(EffectRegistry.MOON_HERALD);
+            if (effect && itemStack.isEmpty()) {
+                itemStack = WeaponRegistry.MOONLIGHT_SHORTSWORD.getDefaultStack();
+            }
             boolean acceptItem = itemStack.getItem() instanceof MoonlightShortsword;
             if ((acceptItem && !user.getItemCooldownManager().isCoolingDown(itemStack.getItem())) || (effect && !user.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING))) {
                 float damage = itemStack.getItem() instanceof MoonlightShortsword item ? item.getProjectileDamage() : ConfigConstructor.moonlight_shortsword_projectile_damage;
@@ -57,6 +60,7 @@ public class MoonlightShortsword extends ModdedSword {
                 }
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                 user.getItemCooldownManager().set(WeaponRegistry.MOONLIGHT_SHORTSWORD, (int) ConfigConstructor.moonlight_shortsword_projectile_cooldown);
+                user.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, (int) ConfigConstructor.moonstone_ring_projectile_cooldown);
                 user.swingHand(Hand.MAIN_HAND, true);
             }
         }

@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.soulsweaponry.networking.C2S.DamagingBoxC2S;
+import net.soulsweaponry.networking.C2S.packets.DamagingBoxC2S;
 
 import java.util.UUID;
 

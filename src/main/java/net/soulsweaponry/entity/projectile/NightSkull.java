@@ -145,4 +145,9 @@ public class NightSkull extends ModPersistentProjectile implements GeoEntity {
     protected ItemStack getDefaultItemStack() {
         return Items.WITHER_SKELETON_SKULL.getDefaultStack();
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

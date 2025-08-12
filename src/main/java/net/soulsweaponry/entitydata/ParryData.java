@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.networking.S2C.ParrySyncS2C;
+import net.soulsweaponry.networking.S2C.packets.ParrySyncS2C;
 
 public class ParryData {
 

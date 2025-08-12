@@ -70,4 +70,9 @@ public abstract class NoClipEntity extends ModPersistentProjectile {
     public PistonBehavior getPistonBehavior() {
         return PistonBehavior.IGNORE;
     }
+
+    @Override
+    public boolean shouldAllowArrowSticking() {
+        return false;
+    }
 }

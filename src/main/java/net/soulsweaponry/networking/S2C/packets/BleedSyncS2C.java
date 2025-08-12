@@ -1,0 +1,21 @@
+package net.soulsweaponry.networking.S2C.packets;
+
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.util.Identifier;
+import net.soulsweaponry.SoulsWeaponry;
+
+public record BleedSyncS2C(int bleedLevel) implements CustomPayload {
+
+    public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "bleed_data_sync");
+    public static final CustomPayload.Id<BleedSyncS2C> TYPE = new CustomPayload.Id<>(ID);
+    public static final PacketCodec<RegistryByteBuf, BleedSyncS2C> CODEC =
+            PacketCodec.tuple(PacketCodecs.INTEGER, BleedSyncS2C::bleedLevel, BleedSyncS2C::new);
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return TYPE;
+    }
+}

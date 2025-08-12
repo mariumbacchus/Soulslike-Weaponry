@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityBleed;
-import net.soulsweaponry.networking.S2C.BleedSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.BleedSyncS2C;
 
 public class BleedData {
 

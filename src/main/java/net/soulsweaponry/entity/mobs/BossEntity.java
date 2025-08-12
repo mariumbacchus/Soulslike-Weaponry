@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.networking.PacketHelper;
-import net.soulsweaponry.networking.S2C.StopBossMusicS2C;
+import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +58,8 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
             this.playingMusic = true;
         }
     }
+
+    //TODO always render as long as not in idle? (meaning always render when doing attack so no desync happens)
 
     @Override
     public void tick() {

@@ -63,7 +63,7 @@ public class Tonitrus extends ModdedSword implements GeoItem {
                 attacker.removeStatusEffect(EffectRegistry.STORMVEIL);
                 // Reduce Stormveil to 20 ticks (originally remove, but want to keep immunity to lightning for a second still)
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, 20));
-                if (target instanceof PlayerEntity player) {
+                if (attacker instanceof PlayerEntity player) {
                     this.applyEffectCooldown(player, (int) Math.max(ConfigConstructor.tonitrus_ability_max_cooldown, ConfigConstructor.tonitrus_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10));
                 }
             }

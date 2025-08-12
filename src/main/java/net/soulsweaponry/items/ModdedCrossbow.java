@@ -63,4 +63,8 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }
+
+    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
+        return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
+    }
 }

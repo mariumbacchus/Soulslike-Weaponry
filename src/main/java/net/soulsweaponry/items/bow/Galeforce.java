@@ -1,9 +1,6 @@
 package net.soulsweaponry.items.bow;
 
-import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -23,7 +20,6 @@ import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
 import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -33,8 +29,8 @@ import java.util.function.Supplier;
 public class Galeforce extends ModdedBow implements IKeybindAbility {
 
     public Galeforce(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, new RangedConfig((int) ConfigConstructor.galeforce_pull_time_ticks,
-                ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_max_velocity),
+        super(settings, createConfig((int) ConfigConstructor.galeforce_pull_time_ticks,
+                ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_bonus_velocity),
                 repairIngredientSupplier);
         this.addTooltipAbility(TooltipAbilities.GALEFORCE);
     }
@@ -74,16 +70,13 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
         ChargedArrow chargedArrow = new ChargedArrow(world, player, arrowStack, stack, true);
         chargedArrow.setPos(player.getX(), player.getY() + 1.5F, player.getZ());
         if (currentTargetPos != null) {
-            chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), ConfigConstructor.galeforce_max_velocity, 1f);
+            chargedArrow.setVelocity(currentTargetPos.getX(), currentTargetPos.getY(), currentTargetPos.getZ(), ConfigConstructor.galeforce_ability_velocity, 1f);
         } else {
-            chargedArrow.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, ConfigConstructor.galeforce_max_velocity, 1.0F);
+            chargedArrow.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, ConfigConstructor.galeforce_ability_velocity, 1.0F);
         }
         chargedArrow.setCritical(true);
-        double damage = WeaponUtil.getLevel(stack, Enchantments.POWER) * 0.6f + ConfigConstructor.galeforce_damage / ConfigConstructor.galeforce_max_velocity;
-        chargedArrow.setDamage(damage); // TODO test to see if power is increased by POWER enchant twice or not due to charged arrow is in tag so it gets enchantment applied
-        if (EnchantmentHelper.hasAnyEnchantmentsIn(stack, ModTags.Enchantments.APPLY_FIRE)) {
-            chargedArrow.setOnFireFor(8);
-        }
+        double damage = ConfigConstructor.galeforce_damage / ConfigConstructor.galeforce_ability_velocity;
+        chargedArrow.setDamage(damage);
         stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         chargedArrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         world.spawnEntity(chargedArrow);
