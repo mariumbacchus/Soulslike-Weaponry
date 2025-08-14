@@ -34,7 +34,7 @@ public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, I
         super(material, type, settings);
     }
 
-    private final Supplier<AttributeModifiersComponent> attributeModifiers = Suppliers.memoize(() -> { //TODO test this
+    private final Supplier<AttributeModifiersComponent> attributeModifiers = Suppliers.memoize(() -> {
         AttributeModifiersComponent vanilla = super.getAttributeModifiers();
         AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanilla);
         EquipmentSlot eqSlot = this.type.getEquipmentSlot();

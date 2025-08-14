@@ -7,6 +7,9 @@
 - Config lines determining whether bosses are undead or not have been renamed to ```_has_inverted_heal_and_harm``` for clarity as that is the effect in game the line had
 - Config lines regarding max velocity of projectiles shot out of bows and crossbows have been changed to ```_bonus_velocity``` and their values have been changed due to this
 - Updated config values referring to Sweeping Edge enchant boosting damage or reducing cooldowns due to mojang changing the id from ```sweeping``` to ```sweeping_edge```, delete of the config and relaunch to create a new one is recommended
+- Due to enchantments being datapacks, some config lines regarding enchants have been changed:
+  - Lines for enchant levels have been removed
+  - Lines for disabling enchants only disable the functionality of the enchants, they can still be acquired despite not working
 
 ## 1.3.1
 - Fixed a bug preventing Chungus Potions from being crafted

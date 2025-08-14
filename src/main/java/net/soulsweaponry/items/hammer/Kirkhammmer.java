@@ -14,7 +14,7 @@ import net.soulsweaponry.util.DetonateGroundAttributes;
 import java.util.Map;
 
 public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
-
+    //TODO turn into mace? turn most trickweapon stuff into interface?
     private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
             ConfigConstructor.kirkhammer_calculated_fall_base_radius,
             ConfigConstructor.kirkhammer_calculated_fall_height_increase_radius_modifier,

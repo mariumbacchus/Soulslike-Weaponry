@@ -25,6 +25,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.EnchantRegistry;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,6 +67,11 @@ public class WeaponUtil {
      * TODO alternatively, look at what has been done in ICooldownItem to get level of the enchant, maybe replace this with that
      */
     public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
+        // TODO remove this when making enchants builtin into silver bullets
+        Boolean disable = EnchantRegistry.DISABLED_ENCHANTMENTS.get(enchantKey);
+        if (ConfigConstructor.disable_all_enchantments || (disable != null && disable)) {
+            return 0;
+        }
         for (Map.Entry<RegistryEntry<Enchantment>, Integer> e : EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries()) {
             if (e.getKey().getKey().filter(key -> key.equals(enchantKey)).isPresent()) {
                 return e.getValue();

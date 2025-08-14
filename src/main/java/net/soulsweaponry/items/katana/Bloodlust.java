@@ -13,6 +13,8 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.BloodlustRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -120,7 +122,7 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
         stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 300, (int) ConfigConstructor.bloodlust_ability_bloodthirsty_amp));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 400, (int) ConfigConstructor.bloodlust_ability_strength_amp));
-        //world.playSound(null, player.getBlockPos(), SoundEvents.HURT, SoundCategory.PLAYERS, .75f, 1f);//TODO other sound, bleed soundalike?
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.PLAYERS, .75f, 1f);
     }
 
     @Override

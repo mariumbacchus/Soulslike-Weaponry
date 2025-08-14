@@ -54,6 +54,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
         float attackSpeed = this.getAttackSpeed();
         if (world.isRaining()) {
             damage += ConfigConstructor.mjolnir_rain_bonus_damage;
+            attackSpeed = - (4f - ConfigConstructor.mjolnir_rain_total_attack_speed);
         }
         WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
     }

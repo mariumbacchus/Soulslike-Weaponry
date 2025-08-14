@@ -59,7 +59,11 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.SILVER_ARROW)
                 .add(EntityRegistry.KRAKEN_SLAYER_PROJECTILE)
                 .add(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE);
-        this.getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES) //TODO see if custom arrows automatically are added or not (should be due to arrows tag being added in vanilla)
+        this.getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
+                .add(EntityRegistry.MOONLIGHT_ARROW)
+                .add(EntityRegistry.SILVER_ARROW)
+                .add(EntityRegistry.KRAKEN_SLAYER_PROJECTILE)
+                .add(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE)
                 .add(EntityRegistry.MOONLIGHT_ENTITY_TYPE)
                 .add(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE)
                 .add(EntityRegistry.DARK_MOON_PROJECTILE)

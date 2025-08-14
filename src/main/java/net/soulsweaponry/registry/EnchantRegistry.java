@@ -11,14 +11,19 @@ import net.minecraft.registry.*;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.enchantments.*;
 import net.soulsweaponry.util.ModTags;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EnchantRegistry {
+
+    public static final Map<RegistryKey<Enchantment>, Boolean> DISABLED_ENCHANTMENTS = new HashMap<>();
 
     public static final MapCodec<? extends EnchantmentEntityEffect> STAGGER_EFFECT_TYPE = registerEntityEffect("stagger", StaggerEnchantmentEffect.CODEC);
 
-    // TODO gotta make sure gun enchants dont apply to bows during enchantment
     public static final RegistryKey<Enchantment> FAST_HANDS = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "fast_hands"));
     public static final RegistryKey<Enchantment> STAGGER = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "stagger"));
     public static final RegistryKey<Enchantment> VISCERAL = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "visceral"));
@@ -32,8 +37,6 @@ public class EnchantRegistry {
     public static final RegistryKey<Enchantment> EXPLOSIVE_ROUNDS = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "explosive_rounds"));
     public static final RegistryKey<Enchantment> ETHEREAL = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, "ethereal"));
 
-    // TODO since enchants are now datapack based, config values are useless such as max level and stuff
-    // TODO gotta also figure out how to disable them, or just make people delete/create empty datapack files instead
     public static void bootstrap(Registerable<Enchantment> registerable) {
         RegistryEntryLookup<Enchantment> enchantments = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);
         RegistryEntryLookup<Item> itemLookup = registerable.getRegistryLookup(RegistryKeys.ITEM);
@@ -183,5 +186,19 @@ public class EnchantRegistry {
         return Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Identifier.of(name), codec);
     }
 
-    public static void init() {}
+    public static void init() {
+        // TODO replace with disabling directly in the enchant class when those are made
+        DISABLED_ENCHANTMENTS.put(FAST_HANDS, ConfigConstructor.disable_enchantment_fast_hands);
+        DISABLED_ENCHANTMENTS.put(VISCERAL, ConfigConstructor.disable_enchantment_posture_breaker);
+        DISABLED_ENCHANTMENTS.put(STAGGER, ConfigConstructor.disable_enchantment_stagger);
+        DISABLED_ENCHANTMENTS.put(ETHEREAL, ConfigConstructor.disable_enchantment_ethereal_ammunition);
+        DISABLED_ENCHANTMENTS.put(EXPLOSIVE_ROUNDS, ConfigConstructor.disable_enchantment_explosive_rounds);
+        DISABLED_ENCHANTMENTS.put(CHAIN_LIGHTNING, ConfigConstructor.disable_enchantment_chain_lightning);
+        DISABLED_ENCHANTMENTS.put(MISFIRE_CURSE, ConfigConstructor.disable_enchantment_misfire_curse);
+        DISABLED_ENCHANTMENTS.put(BLIGHT_CARRIER, ConfigConstructor.disable_enchantment_blight_carrier);
+        DISABLED_ENCHANTMENTS.put(FROSTSILVER, ConfigConstructor.disable_enchantment_frostsilver);
+        DISABLED_ENCHANTMENTS.put(PHANTOM_TRACE, ConfigConstructor.disable_enchantment_phantom_trace);
+        DISABLED_ENCHANTMENTS.put(TETHER, ConfigConstructor.disable_enchantment_tether);
+        DISABLED_ENCHANTMENTS.put(RICOCHET, ConfigConstructor.disable_enchantment_ricochet);
+    }
 }

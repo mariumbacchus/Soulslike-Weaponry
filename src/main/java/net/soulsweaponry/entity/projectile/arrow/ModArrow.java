@@ -4,10 +4,10 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Unit;
 import net.minecraft.world.World;
@@ -41,6 +41,9 @@ public abstract class ModArrow extends ArrowEntity {
             }
             EnchantmentHelper.onProjectileSpawned(serverWorld, weapon, this, item -> ((PersistentProjectileEntityAccessor) this).setWeaponStack(null));
         }
+        if (!this.canHaveArrowEffects()) {
+            this.setStack(Items.ARROW.getDefaultStack());
+        }
     }
 
     public ModArrow(EntityType<? extends ArrowEntity> type, LivingEntity owner, World world, ItemStack stack, @Nullable ItemStack shotFrom) {
@@ -52,10 +55,4 @@ public abstract class ModArrow extends ArrowEntity {
      * @return whether the arrow should apply custom status effects based on the effect-arrow-item used
      */
     public abstract boolean canHaveArrowEffects();
-
-    @Override
-    public void addEffect(StatusEffectInstance effect) {//TODO test
-        if (!this.canHaveArrowEffects()) return;
-        super.addEffect(effect);
-    }
 }

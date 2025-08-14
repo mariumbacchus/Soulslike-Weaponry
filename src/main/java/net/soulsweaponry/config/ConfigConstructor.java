@@ -843,38 +843,27 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bleed_effect_base_increase = 4;
     @Entry public static float bleed_post_hit_bloodthirsty_effect_increase_mod = 0.75f;
 
-    @Entry(min=0) public static float blight_carrier_enchant_max_level = 2;
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
     @Entry(min=0) public static float blight_carrier_enchant_blight_per_level = 2;
 
-    @Entry(min=0) public static float chain_lightning_enchant_max_level = 3;
     @Entry(min=0) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
     @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
 
-    @Entry(min=0) public static float explosive_rounds_enchant_max_level = 3;
     @Entry(min=0) public static boolean explosive_rounds_enchant_destroys_blocks = false;
 
-    @Entry(min=0) public static float fast_hands_enchant_max_level = 3;
-
-    @Entry(min=0) public static float frostsilver_enchant_max_level = 2;
     @Entry(min=0) public static float frostsilver_enchant_permafrost_per_level = 4;
     @Entry(min=0) public static float frostsilver_enchant_permafrost_duration = 100;
 
     @Entry(min=0) public static double misfire_curse_enchant_trigger_chance = 0.3;
 
-    @Entry(min=0) public static float phantom_trace_enchant_max_level = 3;
     @Entry(min=0) public static float phantom_trace_enchant_phantom_projectile_damage_mod = 0.5f;
 
-    @Entry(min=0) public static float posture_breaker_enchant_max_level = 3;
 
-    @Entry(min=0) public static float ricochet_enchant_max_level = 3;
     @Entry(min=0) public static float ricochet_enchant_bounce_per_level = 1;
 
-    @Entry(min=0) public static float stagger_enchant_max_level = 3;
     @Entry(min=0) public static float stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
 
-    @Entry(min=0) public static float tether_enchant_max_level = 2;
     @Entry(min=0) public static float tether_enchant_drag_mod = 1f;
     @Entry(min=0) public static float tether_enchant_min_activation_range_per_level = 3f;
 
@@ -1037,7 +1026,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean fallen_icon_disables_shields = true;
     @Entry public static boolean fallen_icon_is_fire_immune = true;
     @Entry public static boolean fallen_icon_has_inverted_heal_and_harm = false;
-    @Entry public static String fallen_icon_group_type = "DEFAULT";
     @Entry public static String[] fallen_icon_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry(min=1, max=1000000D) public static double day_stalker_health = 600D;
@@ -1069,7 +1057,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean night_prowler_disables_shields = true;
     @Entry public static boolean night_prowler_is_fire_immune = true;
     @Entry public static boolean night_prowler_has_inverted_heal_and_harm = false;
-    @Entry public static String night_prowler_group_type = "DEFAULT";
     @Entry public static String[] night_prowler_status_effect_blacklist = {};
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_1 = 1D;
     @Entry(min=0) public static double night_prowler_cooldown_modifier_phase_2 = 1D;

@@ -9,7 +9,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class WitheredGrass extends ShortPlantBlock implements Withered {//TODO test
+public class WitheredGrass extends ShortPlantBlock implements Withered {
 
     private final Block replacedBlock;
 

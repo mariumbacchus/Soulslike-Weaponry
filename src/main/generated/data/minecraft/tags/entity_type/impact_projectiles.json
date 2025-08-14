@@ -1,5 +1,9 @@
 {
   "values": [
+    "soulsweapons:moonlight_arrow",
+    "soulsweapons:silver_arrow",
+    "soulsweapons:kraken_slayer_projectile",
+    "soulsweapons:charged_arrow_entity",
     "soulsweapons:moonlight_projectile",
     "soulsweapons:big_moonlight_projectile",
     "soulsweapons:dark_moon_projectile",
