@@ -186,7 +186,7 @@ public class MoonknightGoal extends Goal {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
-            case CORE_BEAM -> {
+            case CORE_BEAM, MOONVEIL -> {
                 if (this.specialCooldown < 0 && distance < 750) {
                     this.boss.setPhaseTwoAttack(attack);
                 } else if (this.specialCooldown > 10 || this.attackCooldown < -30) {
@@ -197,13 +197,6 @@ public class MoonknightGoal extends Goal {
                 if (distance < 120 && target.getBlockPos() != null) {
                     this.boss.setPhaseTwoAttack(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
-                }
-            }
-            case MOONVEIL -> {
-                if (distance < 600D && this.specialCooldown < 0) {
-                    this.boss.setPhaseTwoAttack(attack);
-                } else if (this.specialCooldown > 10 || this.attackCooldown < -10) {
                     this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
                 }
             }
