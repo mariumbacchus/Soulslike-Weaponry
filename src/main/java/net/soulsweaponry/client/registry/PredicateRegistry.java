@@ -6,6 +6,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.sword.Skofnung;
@@ -60,7 +62,7 @@ public class PredicateRegistry {
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.DRAUGR, new Identifier("night"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity != null && livingEntity.getWorld().getDimension().hasSkyLight() && livingEntity.getWorld().getTimeOfDay() % 24000 > 13000 && livingEntity.getWorld().getTimeOfDay() % 24000 < 23000) {
-                if (itemStack.getEnchantments().size() > 0) {
+                if (!itemStack.getEnchantments().isEmpty()) {
                     return 0.5F;
                 }
                 return 1.0F;
@@ -111,6 +113,15 @@ public class PredicateRegistry {
             }
             return 0.0f;
         });
+
+        registerChungusPotion(Items.POTION);
+        registerChungusPotion(Items.SPLASH_POTION);
+        registerChungusPotion(Items.LINGERING_POTION);
+        registerChungusPotion(Items.TIPPED_ARROW);
+    }
+
+    private static void registerChungusPotion(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("chungus_tonic"), (itemStack, clientWorld, livingEntity, seed) -> PotionUtil.getPotion(itemStack).equals(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f);
     }
 
     // The Ranged Weapon API does this for you

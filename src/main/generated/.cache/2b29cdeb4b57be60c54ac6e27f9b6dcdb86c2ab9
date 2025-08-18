@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-22T20:03:33.952356	Marium's Soulslike Weaponry/Recipes
+// 1.20.1	2025-08-18T20:02:05.9376752	Marium's Soulslike Weaponry/Recipes
 6ac617da1c0aca4adcdebe9d40978c99d55b236d data\soulsweapons\recipes\holy_greatsword.json
 77e2400341d4a08730ea5fd56df357ee5ee94537 data\soulsweapons\advancements\recipes\combat\draugr.json
 58d40c755e5fc68eb99e6f272a31fdc9b5779338 data\soulsweapons\recipes\oleander_dye.json
@@ -48,7 +48,6 @@ e952b8e69c8017cf7cfb73aa6207e5bd002216ac data\soulsweapons\advancements\recipes\
 e7be6253334e4955554155f262030db14416228e data\soulsweapons\advancements\recipes\combat\leviathan_axe_left.json
 eea56f1f9a0dbd4d672fc59aea0ba01c8968cb23 data\soulsweapons\recipes\boss_compass.json
 8fc0339b2f7fbf64556cfb0c55faf6fd265adebe data\soulsweapons\recipes\silver_bullet.json
-345ef8b009fb849126d321e3f6281b7ff258f5ec data\soulsweapons\recipes\chungus_tonic_lingering.json
 ba5e243ec923ee4713329ccb6c4a410fabd0c2e1 data\soulsweapons\recipes\gatling_gun.json
 fc6edd4d5cbe4decc6e17aa1780dbf641be2d0dc data\soulsweapons\recipes\kraken_slayer_crossbow.json
 99144831f2b6f8a78ad83219752f382295077339 data\soulsweapons\advancements\recipes\tools\moonstone_axe_right.json
@@ -176,7 +175,6 @@ c1a79205800c0a900293203c965c05f154f8448c data\soulsweapons\recipes\chungus_staff
 e59fe17f275b4dd9c52cf57cf1d16e384471af95 data\soulsweapons\recipes\chungus_emerald.json
 35b7b4d41c1d6cf86636081fcdfab6cd416bde4f data\soulsweapons\advancements\recipes\misc\lost_soul.json
 1c6c81b177fd5f0963aa8d201b258cfc36944cb6 data\soulsweapons\recipes\sting.json
-a23e9db600b1f688a1639028a3f745f4015e9cf6 data\soulsweapons\advancements\recipes\misc\chungus_tonic_lingering.json
 35300c6424eecef0eb6ac12e91e95c3c2b0310c0 data\soulsweapons\recipes\kirkhammer.json
 c3c25bb0f53858ecbb66dba37be8ca2b9be81387 data\soulsweapons\advancements\recipes\misc\soul_ingot.json
 27473bfc2e8a71ef9fea1a5bb90b8c6c9d9d926f data\soulsweapons\advancements\recipes\misc\moonstone.json
@@ -187,8 +185,8 @@ c3c25bb0f53858ecbb66dba37be8ca2b9be81387 data\soulsweapons\advancements\recipes\
 c0b5b3f12f6c7bd3a02a1129ff691cafac55ba78 data\soulsweapons\recipes\galeforce.json
 0c8fafb742f0e0e57f40b6c35766aaba71eb26b5 data\soulsweapons\advancements\recipes\combat\soul_robes_leggings.json
 9a4934d9b36e7a69b623321c86c22a9a5667ab05 data\soulsweapons\advancements\recipes\tools\moonstone_axe_left.json
-a4ebec62a298dd41e8595729c5c87a9be171335b data\soulsweapons\recipes\chungus_disc.json
 bcff32f328012d5d3fbc631ed158d2421a322083 data\soulsweapons\recipes\moonlight_greatsword.json
+a4ebec62a298dd41e8595729c5c87a9be171335b data\soulsweapons\recipes\chungus_disc.json
 412cba566f88b3267efc630be745c45e2d163683 data\soulsweapons\advancements\recipes\combat\forlorn_helmet.json
 7bb7c6d2a1addd0e9142b1533188cb8645fafad0 data\soulsweapons\advancements\recipes\misc\crimson_ingot.json
 ee7c3f8d937aa2e2d8c3e5c93f7f49f7741b830c data\soulsweapons\advancements\recipes\combat\silver_bullet.json

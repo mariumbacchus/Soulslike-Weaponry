@@ -16,11 +16,8 @@
     "LivingEntityMixin",
     "ModelInvoker",
     "PlayerEntityMixin",
-    "PotionEntityMixin",
-    "PotionUtilMixin",
     "RecipeManagerMixin",
-    "WitherEntityMixin",
-    "create.PotionFluidHandlerMixin"
+    "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",

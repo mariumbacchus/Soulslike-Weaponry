@@ -6,6 +6,7 @@ import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTableProvider;
+import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTableProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.EntityTagsProvider;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
@@ -28,6 +29,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         pack.addProvider(ModWorldGenerator::new);
         pack.addProvider(EntityTagsProvider::new);
         pack.addProvider(AdvancementsProvider::new);
+        pack.addProvider(ChungusBarterLootTableProvider::new);
     }
 
     @Override

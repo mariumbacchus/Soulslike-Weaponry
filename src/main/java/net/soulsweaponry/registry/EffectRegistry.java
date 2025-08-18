@@ -1,20 +1,27 @@
 package net.soulsweaponry.registry;
 
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
+
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EffectRegistry {
 
@@ -59,9 +66,24 @@ public class EffectRegistry {
         BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.asItem(), TAINTED_AMBROSIA);
         BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.GLOWSTONE_DUST, STRONG_WARDING);
         BrewingRecipeRegistry.registerPotionRecipe(WARDING, Items.REDSTONE, LONG_WARDING);
+        BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, ItemRegistry.CHUNGUS_EMERALD, CHUNGUS_TONIC_POTION);
 
-        BrewingRecipeRegistry.registerItemRecipe(Items.POTION, ItemRegistry.CHUNGUS_EMERALD, ItemRegistry.CHUNGUS_TONIC_POTION);
-        BrewingRecipeRegistry.registerItemRecipe(Items.POTION, BlockRegistry.CHUNGUS_EMERALD_BLOCK.asItem(), ItemRegistry.CHUNGUS_TONIC_SPLASH);
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            ItemStack stack = player.getStackInHand(hand);
+            if (!stack.isOf(Items.POTION) && !stack.isOf(Items.SPLASH_POTION) && !stack.isOf(Items.LINGERING_POTION) && !stack.isOf(Items.TIPPED_ARROW)) {
+                return TypedActionResult.pass(stack);
+            }
+            Potion potion = PotionUtil.getPotion(stack);
+            if (potion == null || !potion.equals(EffectRegistry.CHUNGUS_TONIC_POTION)) {
+                return TypedActionResult.pass(stack);
+            }
+            if (!world.isClient) {
+                ItemStack updated = stack.copy();
+                updated.getOrCreateNbt().putInt("CustomPotionColor", randomVibrantRGBA());
+                player.setStackInHand(hand, updated);
+            }
+            return TypedActionResult.pass(stack);
+        });
     }
 
     public static <I extends StatusEffect> I registerEffect(I effect, String name) {
@@ -77,5 +99,13 @@ public class EffectRegistry {
         public DefaultStatusEffect(StatusEffectCategory statusEffectCategory, int color) {
             super(statusEffectCategory, color);
         }
+    }
+
+    public static int randomVibrantRGBA() {
+        float h = ThreadLocalRandom.current().nextFloat();
+        float s = 0.65f + ThreadLocalRandom.current().nextFloat() * 0.35f; // 0.65–1.0
+        float v = 0.75f + ThreadLocalRandom.current().nextFloat() * 0.25f; // 0.75–1.0
+        int rgb = Color.HSBtoRGB(h, s, v); // to hex
+        return 0xFF000000 | rgb; // full alpha
     }
 }
