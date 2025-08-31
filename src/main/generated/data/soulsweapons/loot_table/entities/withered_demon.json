@@ -31,7 +31,7 @@
               "function": "minecraft:enchanted_count_increase"
             }
           ],
-          "name": "soulsweapons:withered_demon_heart"
+          "name": "soulsweapons:demon_heart"
         }
       ],
       "rolls": 1.0

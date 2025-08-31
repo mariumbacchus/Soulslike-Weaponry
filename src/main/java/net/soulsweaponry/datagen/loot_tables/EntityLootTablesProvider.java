@@ -152,7 +152,7 @@ public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
                                 .bonusRolls(ConstantLootNumberProvider.create(0.0f))
                                 .conditionally(KilledByPlayerLootCondition.builder())
                                 .with(
-                                        ItemEntry.builder(ItemRegistry.WITHERED_DEMON_HEART)
+                                        ItemEntry.builder(ItemRegistry.DEMON_HEART)
                                                 .apply(SetCountLootFunction.builder(
                                                         UniformLootNumberProvider.create(0.0f, 1.0f)
                                                 ))
@@ -185,7 +185,7 @@ public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
     }
 
     public static void registerEntityLootTable(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer, EntityType<?> entityType, LootTable.Builder lootTable) {
-        Identifier lootId = Identifier.of(SoulsWeaponry.ModId, "entities/" + entityType.toString());
+        Identifier lootId = entityType.getLootTableId().getValue();
         RegistryKey<LootTable> lootKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId);
         lootTableBiConsumer.accept(lootKey, lootTable);
     }

@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-14T18:26:04.9473887	Marium's Soulslike Weaponry/Tags for minecraft:item
+// 1.21.1	2025-08-31T14:57:50.741118	Marium's Soulslike Weaponry/Tags for minecraft:item
 56163d456c5b20fd223b4db0348e7f5820199cb1 data\minecraft\tags\item\swords.json
 9dc46d5cdf58b0392e68eab4464b172801dce69a data\minecraft\tags\item\pickaxes.json
 21c0483931ff332624c2738f2eccfeed4560d0b5 data\soulsweapons\tags\item\lord_soul.json
@@ -8,8 +8,8 @@ de2a6aee06ce7f209c2f53a12f2f28303613036c data\soulsweapons\tags\item\dragonbane_
 7f6ecf18081cd6f543887ff3b17da3067ea4267d data\minecraft\tags\item\enchantable\crossbow.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\minecraft\tags\item\enchantable\mace.json
 0e1779f94fe2aa0921e04cdec96fece5cc8e0c88 data\minecraft\tags\item\axes.json
-a71bcd984fd37a7dabffd9ee72b3b8ad6d2bfa5a data\soulsweapons\tags\item\heavy_weapons.json
 b5421453ebe969762e800cb0542b19155a8e71f2 data\c\tags\item\tools\melee_weapon.json
+a71bcd984fd37a7dabffd9ee72b3b8ad6d2bfa5a data\soulsweapons\tags\item\heavy_weapons.json
 dcca5cc17e291e01e6e69a8d1ef52c0cefa1b24d data\soulsweapons\tags\item\soul_harvesting_weapons.json
 2560efd905bb904fc19e7c955c107d6798e32cbe data\soulsweapons\tags\item\scythes.json
 e5b14003192b55614f32e6b87c0834250258d8e5 data\c\tags\item\music_discs.json
