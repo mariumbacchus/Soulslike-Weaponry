@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.3.2
+- Fixed bug preventing mobs from dropping items
+
 # 1.3.1 - 1.21.1 Specific changes
 - Entity groups have been changed to be tags, therefore config lines such as ```decaying_king_group_type = "UNDEAD"``` have been removed.
   - If you want to make a boss a different group, make a tag for that group and add the boss to it
