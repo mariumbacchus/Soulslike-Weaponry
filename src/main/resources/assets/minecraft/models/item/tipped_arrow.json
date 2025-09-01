@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/tipped_arrow_head",
+    "layer1": "minecraft:item/tipped_arrow_base"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "chungus_tonic": 1
+      },
+      "model": "soulsweapons:item/chungus_tonic_tipped_arrow"
+    }
+  ]
+}

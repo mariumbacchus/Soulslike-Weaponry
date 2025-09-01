@@ -1,0 +1,6 @@
+{
+    "parent": "soulsweapons:item/tonitrus",
+    "textures": {
+      "layer0": "soulsweapons:item/tonitrus_ani"
+    }
+}
