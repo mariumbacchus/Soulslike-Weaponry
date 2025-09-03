@@ -1,9 +1,6 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -16,8 +13,6 @@ import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -32,6 +27,7 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     public static final Identifier CRYSTAL_BEAM_TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
     private int currentTick = -1;
+    private static final int FULLBRIGHT_LIGHT = 0xF000F0;
 
     public MoonknightRenderer(Context ctx) {
         super(ctx, new MoonknightModel());
@@ -44,6 +40,11 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     }
 
     @Override
+    public boolean shouldRender(Moonknight entity, Frustum frustum, double x, double y, double z) {
+        return entity.getCanBeam() || super.shouldRender(entity, frustum, x, y, z);
+    }
+
+    @Override
     public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
                        VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
@@ -53,14 +54,15 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
 
         BlockPos blockPos = entity.getBeamLocation();
         if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
-            float yOffset = 4f;
-            if (entity.getIncreasingBeamHeight()) {
-                entity.setBeamHeight(0.0325f + entity.getBeamHeight());
-            } else {
-                entity.setBeamHeight(0f);
+            float yOffset = 6f;
+            float exactTarget = MathHelper.lerp(partialTicks, entity.prevBeamHeight, entity.getBeamHeight());
+            if (exactTarget < entity.renderBeamHeight) {
+                entity.renderBeamHeight = exactTarget;
             }
+            entity.renderBeamHeight += (exactTarget - entity.renderBeamHeight) * 0.1f;
+
             float m = (float)blockPos.getX() + 0.5f;
-            float n = (float)blockPos.getY() + entity.getBeamHeight();
+            float n = blockPos.getY() + entity.renderBeamHeight;
             float o = (float)blockPos.getZ() + 0.5f;
             float p = (float)((double)m - entity.getX());
             float q = (float)((double)n - entity.getY());
@@ -70,33 +72,46 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
         }
     }
 
-    private static void renderCoreBeam(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        float xzLength = MathHelper.sqrt(dx * dx + dz * dz);
-        float vecLength = MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
+    private void renderCoreBeam(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers, int packedLight) {
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 1.0f, 255, 255, 255, 255);
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 0.8f, 200, 200, 255, 200);
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 0.4f, 255, 255, 255, 128);
+    }
+
+    private static void renderBeamRing(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers, int packedLight, float radiusScale, int r, int g, int b, int a) {
+        VertexConsumer vb = consumers.getBuffer(CRYSTAL_BEAM_LAYER);
+        float xzLen = MathHelper.sqrt(dx*dx + dz*dz);
+        float vecLen = MathHelper.sqrt(dx*dx + dy*dy + dz*dz);
+
         matrices.push();
-        matrices.translate(0.0f, 2.0f, 0.0f);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float)(-Math.atan2(dz, dx)) - 1.5707964f));
-        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float)(-Math.atan2(xzLength, dy)) - 1.5707964f));
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(CRYSTAL_BEAM_LAYER);
-        float h = 0.0f - ((float)age + tickDelta) * 0.01f;
-        float i = vecLength / 32.0f - ((float)age + tickDelta) * 0.01f;
-        float k = 0.0f;
-        float l = 0.75f;
-        float m = 0.0f;
-        MatrixStack.Entry entry = matrices.peek();
-        Matrix4f matrix4f = entry.getPositionMatrix();
-        Matrix3f matrix3f = entry.getNormalMatrix();
-        for (int n = 1; n <= 8; ++n) {
-            float o = MathHelper.sin((float)n * ((float)Math.PI * 2) / 8.0f) * 0.75f;
-            float p = MathHelper.cos((float)n * ((float)Math.PI * 2) / 8.0f) * 0.75f;
-            float q = (float)n / 8.0f;
-            vertexConsumer.vertex(matrix4f, k * 0.2f, l * 0.2f, 0.0f).color(255, 255, 255, 255).texture(m, h).overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(matrix3f, 0.0f, -1f, 0.0f).next();
-            vertexConsumer.vertex(matrix4f, k, l, vecLength).color(255, 255, 255, 255).texture(m, i).overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(matrix3f, 0.0f, -1f, 0.0f).next();
-            vertexConsumer.vertex(matrix4f, o, p, vecLength).color(255, 255, 255, 255).texture(q, i).overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(matrix3f, 0.0f, -1f, 0.0f).next();
-            vertexConsumer.vertex(matrix4f, o * 0.2f, p * 0.2f, 0.0f).color(255, 255, 255, 255).texture(q, h).overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(matrix3f, 0.0f, -1f, 0.0f).next();
-            k = o;
-            l = p;
-            m = q;
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float)(-Math.atan2(dz,dx)) - 1.5707964f));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float)(-Math.atan2(xzLen,dy)) - 1.5707964f));
+
+        float vMin = 0.0f - ((age + tickDelta) * -0.05f);
+        float vMax = vecLen/32.0f - ((age + tickDelta) * -0.05f);
+        float prevX = 0, prevY = 0, prevU = 0;
+        for (int i = 1; i <= 8; i++) {
+            float theta = i * (MathHelper.PI * 2F) / 8F;
+            float cx = MathHelper.sin(theta) * 0.75f * radiusScale;
+            float cy = MathHelper.cos(theta) * 0.75f * radiusScale;
+            float u = (float)i / 8F;
+            vb.vertex(matrices.peek().getPositionMatrix(), prevX*radiusScale, prevY*radiusScale, 0)
+                    .color(r, g, b, a).texture(prevU, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+
+            vb.vertex(matrices.peek().getPositionMatrix(), prevX, prevY, vecLen)
+                    .color(r, g, b, a).texture(prevU, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+
+            vb.vertex(matrices.peek().getPositionMatrix(), cx, cy, vecLen)
+                    .color(r, g, b, a).texture(u, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+
+            vb.vertex(matrices.peek().getPositionMatrix(), cx*radiusScale, cy*radiusScale, 0)
+                    .color(r, g, b, a).texture(u, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .normal(matrices.peek().getNormalMatrix(), 0, -1, 0).next();
+
+            prevX = cx; prevY = cy; prevU = u;
         }
         matrices.pop();
     }

@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.hud.CustomBossBar;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
+import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.client.registry.*;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -38,6 +39,7 @@ public class ClientModBusEvents {
         event.registerSpriteSet(ParticleRegistry.MOONVEIL_PARTICLE.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.BLUE_FLAME.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.SOUL_SPARK.get(), SoulSparkFactory::new);
+        event.registerSpriteSet(ParticleRegistry.ECHO_SMOKE.get(), EchoSmokeFactory::new);
     }
 
     @SubscribeEvent
@@ -48,6 +50,7 @@ public class ClientModBusEvents {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("posture_bar", PostureHudOverlay.HUD_POSTURE);
+        //TODO add other huds
     }
 
     @SubscribeEvent

@@ -1,15 +1,16 @@
 package net.soulsweaponry.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
-import net.soulsweaponry.registry.EnchantRegistry;
 
 public class ExplosiveEnchantment extends Enchantment {
 
     public ExplosiveEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-        super(weight, EnchantRegistry.GUN, slotTypes);
+        super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class ExplosiveEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return (int) ConfigConstructor.explosive_rounds_enchant_max_level;
     }
 
     @Override

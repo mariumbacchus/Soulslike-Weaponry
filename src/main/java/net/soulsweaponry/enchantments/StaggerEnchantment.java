@@ -9,13 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.posture.PostureData;
 import net.soulsweaponry.items.IUltraHeavy;
+import net.soulsweaponry.entitydata.PostureData;
 
 public class StaggerEnchantment extends Enchantment {
 
-    public StaggerEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, EnchantmentTarget.WEAPON, pApplicableSlots);
+    public StaggerEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
+        super(weight, EnchantmentTarget.WEAPON, slotTypes);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class StaggerEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return (int) ConfigConstructor.stagger_enchant_max_level;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class StaggerEnchantment extends Enchantment {
                 postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
             }
             postureLoss *= level;
-            PostureData.addPosture(living, postureLoss);
+            PostureData.addPostureLoss(living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
     }

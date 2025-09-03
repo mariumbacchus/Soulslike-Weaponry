@@ -7,6 +7,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
@@ -29,16 +30,23 @@ public class KeyBindRegistry {
     public static KeyBinding parry;
     public static KeyBinding effectShootMoonlight;
     public static KeyBinding returnThrownWeapon;
+    public static KeyBinding showItemTooltip;
+    public static KeyBinding showItemLore;
+
+    public static KeyBinding killNearbyEntities;
+    public static KeyBinding giveResistance;
 
     public static void register(RegisterKeyMappingsEvent event) {
-        returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_R);
-        stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_Z);
+        returnFreyrSword = registerKeyboard("return_freyr_sword", GLFW.GLFW_KEY_Z);
+        stationaryFreyrSword = registerKeyboard("freyr_sword_stationary", GLFW.GLFW_KEY_RIGHT_ALT);
         collectSummons = registerKeyboard("collect_summons_soul_reaper", GLFW.GLFW_KEY_V);
         switchWeapon = registerKeyboard("switch_weapon", GLFW.GLFW_KEY_B);
         keybindAbility = registerKeyboard("keybind_ability", GLFW.GLFW_KEY_LEFT_ALT);
-        parry = registerKeyboard("parry", GLFW.GLFW_KEY_RIGHT_ALT);
+        parry = registerKeyboard("parry", GLFW.GLFW_KEY_R);
         effectShootMoonlight = registerKeyboard("effect_shoot_moonlight", GLFW.GLFW_KEY_H);
         returnThrownWeapon = registerKeyboard("return_thrown_weapon", GLFW.GLFW_KEY_N);
+        showItemTooltip = registerKeyboard("show_tooltip", GLFW.GLFW_KEY_UNKNOWN);
+        showItemLore = registerKeyboard("show_lore", GLFW.GLFW_KEY_UNKNOWN);
 
         event.register(KeyBindRegistry.returnFreyrSword);
         event.register(KeyBindRegistry.stationaryFreyrSword);
@@ -48,6 +56,14 @@ public class KeyBindRegistry {
         event.register(KeyBindRegistry.parry);
         event.register(KeyBindRegistry.effectShootMoonlight);
         event.register(KeyBindRegistry.returnThrownWeapon);
+        event.register(KeyBindRegistry.showItemTooltip);
+        event.register(KeyBindRegistry.showItemLore);
+
+        if (FMLLoader.isProduction()) {
+            //TODO test
+            killNearbyEntities = registerKeyboard("kill_nearby_entities", GLFW.GLFW_KEY_K);
+            giveResistance = registerKeyboard("give_or_clear_resistance", GLFW.GLFW_KEY_J);
+        }
     }
 
     public static void registerKeyInputs() {
@@ -106,7 +122,7 @@ public class KeyBindRegistry {
                 boolean accept = false;
                 if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.get())) {
                     accept = true;
-                    client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), ConfigConstructor.moonlight_ring_projectile_cooldown);
+                    client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.get(), (int) ConfigConstructor.moonstone_ring_projectile_cooldown);
                 } else if (melee || controller) {
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = client.player.getStackInHand(hand);
@@ -125,6 +141,14 @@ public class KeyBindRegistry {
         }
         while (returnThrownWeapon.wasPressed()) {
             ModMessages.sendToServer(new ReturnThrownWeaponC2S());
+        }
+        if (FMLLoader.isProduction()) {
+            while (killNearbyEntities.wasPressed()) {
+                ModMessages.sendToServer(new KillNearbyEntitiesC2S());//TODO create
+            }
+            while (giveResistance.wasPressed()) {
+                ModMessages.sendToServer(new GiveResistanceC2S());//TODO create
+            }
         }
     }
 

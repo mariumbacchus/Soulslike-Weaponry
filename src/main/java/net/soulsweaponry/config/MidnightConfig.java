@@ -25,6 +25,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -80,6 +81,13 @@ public abstract class MidnightConfig {
 
     public static void init(String modid, Class<?> config) {
         path = FMLPaths.CONFIGDIR.get().resolve(modid + ".json");
+        // Modified to create folder if it doesn't exist, so foo/bar.json can exist
+        try {
+            Files.createDirectories(path.getParent());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create config directory for " + path, e);
+        }
+        //
         configClass.put(modid, config);
 
         for (Field field : config.getFields()) {

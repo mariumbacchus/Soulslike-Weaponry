@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTables;
+import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTables;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.EntityTagsProvider;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenProvider;
@@ -36,7 +37,11 @@ public class DataGenerators {
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
         CompletableFuture<RegistryWrapper.WrapperLookup> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.LootTypeGenerator(BossLootTables::new, LootContextTypes.ENTITY))));
+        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
+                List.of(
+                        new LootTableProvider.LootTypeGenerator(BossLootTables::new, LootContextTypes.ENTITY),
+                        new LootTableProvider.LootTypeGenerator(ChungusBarterLootTables::new, LootContextTypes.BARTER)
+                )));
         generator.addProvider(event.includeServer(), new WeaponRecipeProvider(output));
         generator.addProvider(event.includeServer(), new EntityTagsProvider(output, lookupProvider, fileHelper));
         generator.addProvider(event.includeServer(), new ForgeAdvancementProvider(output, event.getLookupProvider(), event.getExistingFileHelper(),

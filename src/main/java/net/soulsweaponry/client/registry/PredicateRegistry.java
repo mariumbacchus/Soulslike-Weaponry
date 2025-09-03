@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.sword.Skofnung;
@@ -89,6 +90,22 @@ public class PredicateRegistry {
             }
             return 0.0f;
         });
+
+        ModelPredicateProviderRegistry.register(WeaponRegistry.TONITRUS.get(), new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+            if (livingEntity != null && livingEntity.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
+                return 1f;
+            }
+            return 0.0f;
+        });
+
+        registerChungusPotion(Items.POTION);
+        registerChungusPotion(Items.SPLASH_POTION);
+        registerChungusPotion(Items.LINGERING_POTION);
+        registerChungusPotion(Items.TIPPED_ARROW);
+    }
+
+    private static void registerChungusPotion(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("chungus_tonic"), (itemStack, clientWorld, livingEntity, seed) -> PotionUtil.getPotion(itemStack).equals(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f);
     }
 
     protected static void registerPrime(Item item, ModelPredicateProvider predicate) {

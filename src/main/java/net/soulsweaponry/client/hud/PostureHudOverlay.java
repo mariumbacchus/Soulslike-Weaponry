@@ -2,16 +2,41 @@ package net.soulsweaponry.client.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.client.entitydata.ClientPostureData;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.PostureData;
 
-public class PostureHudOverlay {
+public class PostureHudOverlay extends EffectHudOverlay {
 
+    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture_bars.png");
+
+    @Override
+    public Identifier getTexture() {
+        return TEXTURE;
+    }
+
+    @Override
+    public int getBarPixelOffset(ClientPlayerEntity player) {
+        int posture = PostureData.getPosture(player);
+        float posturePerPixel = EntityPosture.getMaxPostureLoss(player) / (float) 182;
+        return MathHelper.floor((float) posture / posturePerPixel);
+    }
+
+    @Override
+    public boolean shouldShow(ClientPlayerEntity player) {
+        int posture = PostureData.getPosture(player);
+        return posture > 0 && !ClientConfig.disable_player_posture_hud;
+    }
+
+    //TODO this was old, implement to new parent class EffectHudOverlay
     private static final Identifier FILLED_BAR = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/full.png");
     private static final Identifier EMPTY_BAR = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/empty.png");
     private static final Identifier ICON = new Identifier(SoulsWeaponry.ModId, "textures/gui/posture/icon.png");

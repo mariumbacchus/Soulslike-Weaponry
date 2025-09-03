@@ -4,12 +4,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
 
-public class EtherealEnchantment extends Enchantment {
+public class RicochetEnchantment extends Enchantment {
 
-    public EtherealEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
+    public RicochetEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
         super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
+    }
+
+    @Override
+    public int getMaxLevel() {
+        return (int) ConfigConstructor.ricochet_enchant_max_level;
     }
 
     @Override
@@ -29,6 +35,6 @@ public class EtherealEnchantment extends Enchantment {
 
     @Override
     public boolean canAccept(Enchantment other) {
-        return !(other instanceof RicochetEnchantment) && super.canAccept(other);
+        return !(other instanceof EtherealEnchantment) && super.canAccept(other);
     }
 }

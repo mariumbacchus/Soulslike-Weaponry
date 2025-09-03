@@ -4,6 +4,7 @@ import net.minecraft.data.DataOutput;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.util.Identifier;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -49,6 +50,9 @@ public class EntityTagsProvider extends ForgeEntityTypeTagsProvider {
                 .add(EntityRegistry.FROST_GIANT.get())
                 .add(EntityRegistry.RIME_SPECTRE.get());
         this.getOrCreateTagBuilder(ModTags.Entities.DRAGONS)
-                .add(EntityType.ENDER_DRAGON);
+                .add(EntityType.ENDER_DRAGON)
+                .addOptional(new Identifier("iceandfire", "ice_dragon"))
+                .addOptional(new Identifier("iceandfire", "fire_dragon"))
+                .addOptional(new Identifier("iceandfire", "lightning_dragon"));
     }
 }

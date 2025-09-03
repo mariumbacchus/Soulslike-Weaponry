@@ -19,7 +19,6 @@ public class MjolnirItemModel extends GeoModel<Mjolnir> {
 
     @Override
     public Identifier getTextureResource(Mjolnir object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/entity/mjolnir_texture.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/item/mjolnir.png");
     }
-
 }

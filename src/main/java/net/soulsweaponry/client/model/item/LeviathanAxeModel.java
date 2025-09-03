@@ -19,7 +19,6 @@ public class LeviathanAxeModel extends GeoModel<LeviathanAxe> {
 
     @Override
     public Identifier getTextureResource(LeviathanAxe object) {
-        return new Identifier(SoulsWeaponry.ModId, "textures/item/leviathan_axe_texture.png");
+        return new Identifier(SoulsWeaponry.ModId, "textures/item/leviathan_axe.png");
     }
-
 }
