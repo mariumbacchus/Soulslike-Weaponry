@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.4
+- Added Sword of the Nightlord
+  - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), and lastly blight & decay
+  - Attacking targets having either one of these effects deals bonus damage
+  - Switching to this weapon gives you the Potency effect, making certain weapons (like this one) deal bonus damage for a few seconds
+
 # 1.3.2
 - Fixed bug preventing mobs from dropping items
 
