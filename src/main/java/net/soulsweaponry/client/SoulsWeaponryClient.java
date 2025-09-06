@@ -4,14 +4,18 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.*;
+import net.soulsweaponry.items.abilities.SwitchPostHit;
 import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.FluidRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 
 import static net.minecraft.client.render.RenderPhase.END_PORTAL_PROGRAM;
 
@@ -65,5 +69,12 @@ public class SoulsWeaponryClient implements ClientModInitializer {
                         Identifier.of(SoulsWeaponry.ModId, "block/purified_blood_still"),
                         Identifier.of(SoulsWeaponry.ModId, "block/purified_blood_flow")
                 ));
+
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+            if (tintIndex > 0) {
+                return ColorHelper.Argb.fullAlpha(SwitchPostHit.getModelColor(stack));
+            }
+            return -1;
+        }, WeaponRegistry.NIGHTLORDS_SWORD);
     }
 }

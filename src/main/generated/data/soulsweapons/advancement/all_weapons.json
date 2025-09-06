@@ -391,6 +391,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "soulsweapons:nightlords_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:nightlords_sword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "soulsweapons:nights_edge_item": {
       "conditions": {
         "items": [
@@ -691,6 +701,9 @@
     ],
     [
       "soulsweapons:bloodlust"
+    ],
+    [
+      "soulsweapons:nightlords_sword"
     ]
   ],
   "sends_telemetry_event": true

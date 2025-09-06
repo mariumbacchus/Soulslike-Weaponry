@@ -1,11 +1,13 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.abilities;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.Item;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -13,47 +15,47 @@ import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-// TODO this can be merged into IHasAbilities and IAbility, IAbility should have own methods with tooltip info & lore
-@Deprecated
-public interface ITooltipInfo {
+/**
+ * TODO
+ * Build upon this when needed, remember to actually call each method when adding them!
+ */
+public interface IAbility {
 
-    List<TooltipAbilities> getTooltipAbilities();
-    Text[] getAdditionalTooltips();
-    void addTooltipAbility(TooltipAbilities... abilities);
+    default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}
+    default void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+    default float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) { return 0f; }
 
-    default Text[] getLoreTooltips() {
-        return new Text[0];
-    }
+    List<Text> getTooltipAbilities(ItemStack stack);
 
-    default boolean removeTooltipAbility(TooltipAbilities ability) {
-        return this.getTooltipAbilities().remove(ability);
+    default List<Text> getLoreTooltips(ItemStack stack) {
+        return List.of();
     }
 
     /**
-     * Adds all tooltip abilities listed in {@link #getTooltipAbilities()} and {@link #getAdditionalTooltips()} to the
+     * Adds all tooltip abilities listed in {@link #getTooltipAbilities(ItemStack)} to the
      * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
      */
-    default void appendTooltipAbilities(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if (this.getAdditionalTooltips().length > 0 || (this.getTooltipAbilities() != null && !this.getTooltipAbilities().isEmpty())) {
+    static void appendTooltipAbilities(List<IAbility> abilities, List<Text> tooltip, ItemStack stack) {
+        List<Text> tooltipAbilities = new ArrayList<>();
+        List<Text> lore = new ArrayList<>();
+        abilities.forEach(ability -> tooltipAbilities.addAll(ability.getTooltipAbilities(stack)));
+        abilities.forEach(ability -> lore.addAll(ability.getLoreTooltips(stack)));
+        if (!tooltipAbilities.isEmpty()) {
             if (shouldShowInfo()) {
-                for (TooltipAbilities ability : this.getTooltipAbilities()) {
-                    TooltipUtil.addAbilityTooltip(ability, stack, tooltip);
-                }
-                tooltip.addAll(Arrays.asList(this.getAdditionalTooltips()));
+                tooltip.addAll(tooltipAbilities);
             } else {
                 addShowInfoText(tooltip);
             }
         }
-        if (this.getLoreTooltips().length > 0) {
+        if (!lore.isEmpty()) {
             if (shouldShowLore()) {
-                tooltip.addAll(Arrays.asList(this.getLoreTooltips()));
+                tooltip.addAll(lore);
             } else {
                 addShowLoreText(tooltip);
             }

@@ -58,6 +58,7 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
     public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
     public static final RegistryEntry<StatusEffect> STORMVEIL = registerEffect(new Stormveil(), "stormveil");
+    public static final RegistryEntry<StatusEffect> POTENCY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094), "potency");
 
     public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");

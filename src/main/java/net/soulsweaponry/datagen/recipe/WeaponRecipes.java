@@ -477,5 +477,6 @@ public class WeaponRecipes {
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.STING), WeaponRegistry.HOLY_MOONLIGHT_SWORD, recipeExporter);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.DIAMOND_SWORD), WeaponRegistry.MASTER_SWORD, recipeExporter);
         WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(WeaponRegistry.DAWNBREAKER), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER), WeaponRegistry.EMPOWERED_DAWNBREAKER, ItemRegistry.LORD_SOUL_DAY_STALKER, recipeExporter);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.STONE_SWORD), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER), WeaponRegistry.NIGHTLORDS_SWORD, ItemRegistry.LORD_SOUL_NIGHT_PROWLER, recipeExporter);
     }
 }

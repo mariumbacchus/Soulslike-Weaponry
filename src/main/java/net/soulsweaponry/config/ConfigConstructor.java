@@ -83,6 +83,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_mehrunes_razor = false;
     @Entry public static boolean disable_recipe_tonitrus = false;
     @Entry public static boolean disable_recipe_bloodlust = false;
+    @Entry public static boolean disable_recipe_sword_of_the_nightlord = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -167,6 +168,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_mehrunes_razor = false;
     @Entry public static boolean disable_use_tonitrus = false;
     @Entry public static boolean disable_use_bloodlust = false;
+    @Entry public static boolean disable_use_sword_of_the_nightlord = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -234,6 +236,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_mehrunes_razor = true;
     @Entry public static boolean is_fireproof_tonitrus = false;
     @Entry public static boolean is_fireproof_bloodlust = false;
+    @Entry public static boolean is_fireproof_sword_of_the_nightlord = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -779,6 +782,35 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static double sword_of_freyr_health = 50D;
     @Entry public static double sword_of_freyr_armor = 10D;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
+    @Entry public static float sword_of_the_nightlord_damage = 10;
+    @Entry public static float sword_of_the_nightlord_attack_speed = 1.2f;
+    @Entry public static float sword_of_the_nightlord_bonus_damage_per_potency_amp = 2f;
+    @Entry public static float sword_of_the_nightlord_bonus_damage_if_target_is_afflicted = 2f;
+
+    @Entry public static float sword_of_the_nightlord_base_bleed = 40;
+    @Entry public static float sword_of_the_nightlord_bleed_duration = 60;
+    @Entry public static float sword_of_the_nightlord_bleed_amp = 0;
+    @Entry public static float sword_of_the_nightlord_poison_duration = 160;
+    @Entry public static float sword_of_the_nightlord_poison_amp = 2;
+    @Entry public static float sword_of_the_nightlord_chain_lightning_base_radius = 2.25f;
+    @Entry public static float sword_of_the_nightlord_chain_lightning_radius_per_level = 0.8f;
+    @Entry public static float sword_of_the_nightlord_chain_lightning_base_damage = 5f;
+    @Entry public static float sword_of_the_nightlord_chain_lightning_damage_per_level = 2f;
+    @Entry public static float sword_of_the_nightlord_wither_duration = 120;
+    @Entry public static float sword_of_the_nightlord_wither_amp = 1;
+    @Entry public static float sword_of_the_nightlord_base_permafrost = 50;
+    @Entry public static float sword_of_the_nightlord_permafrost_duration = 100;
+    @Entry public static float sword_of_the_nightlord_permafrost_amp = 0;
+    @Entry public static float sword_of_the_nightlord_fire_ticks = 200;
+    @Entry public static float sword_of_the_nightlord_cripple_duration = 200;
+    @Entry public static float sword_of_the_nightlord_slowness_amp = 1;
+    @Entry public static float sword_of_the_nightlord_weakness_amp = 0;
+    @Entry public static float sword_of_the_nightlord_mining_fatigue_amp = 0;
+    @Entry public static float sword_of_the_nightlord_decay_duration = 100;
+    @Entry public static float sword_of_the_nightlord_decay_amp = 0;
+    @Entry public static float sword_of_the_nightlord_blight_duration = 200;
+    @Entry public static float sword_of_the_nightlord_blight_amp = 3;
+
     @Entry public static float tonitrus_damage = 6;
     @Entry public static float tonitrus_attack_speed = 1.4f;
     @Entry public static float tonitrus_stormveil_effect_lightning_damage_heal = 2f;

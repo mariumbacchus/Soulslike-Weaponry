@@ -96,9 +96,14 @@ public class ModTags {
 
     public static class Effects {
         public static final TagKey<StatusEffect> DAMAGE_OVER_TIME = createCommonTag("damage_over_time");
+        public static final TagKey<StatusEffect> NIGHTLORD_ATTACK_BOOST_GAINED_FROM = createTag("nightlord_attack_boost_gained_from");
 
         private static TagKey<StatusEffect> createCommonTag(String id) {
             return TagKey.of(RegistryKeys.STATUS_EFFECT, Identifier.of("c", id));
+        }
+
+        private static TagKey<StatusEffect> createTag(String id) {
+            return TagKey.of(RegistryKeys.STATUS_EFFECT, Identifier.of(SoulsWeaponry.ModId, id));
         }
     }
 

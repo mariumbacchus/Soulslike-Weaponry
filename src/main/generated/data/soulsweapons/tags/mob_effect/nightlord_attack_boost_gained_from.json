@@ -1,0 +1,13 @@
+{
+  "values": [
+    "soulsweapons:bleed",
+    "soulsweapons:freezing",
+    "soulsweapons:decay",
+    "soulsweapons:blight",
+    "minecraft:wither",
+    "minecraft:slowness",
+    "minecraft:mining_fatigue",
+    "minecraft:weakness",
+    "minecraft:poison"
+  ]
+}

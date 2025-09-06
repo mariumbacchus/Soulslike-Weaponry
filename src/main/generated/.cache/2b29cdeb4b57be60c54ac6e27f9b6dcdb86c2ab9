@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-31T14:57:50.7425433	Marium's Soulslike Weaponry/Recipes
+// 1.21.1	2025-09-05T23:39:53.2710092	Marium's Soulslike Weaponry/Recipes
 2465fb1e3b35cc9424e37eabd907d8a27cd5e33a data\soulsweapons\recipe\mehrunes_razor.json
 487e01909939668cf603cb086b7b52b6983c1648 data\soulsweapons\advancement\recipes\combat\darkin_blade.json
 552ce0a41391e02459cd87e1ff7423d75e289902 data\soulsweapons\advancement\recipes\combat\dragonslayer_swordspear.json
@@ -139,6 +139,7 @@ c42c4a5b826b60c9424c030db0ff9bc844a63970 data\soulsweapons\recipe\dark_moon_grea
 afee070001cc383b548edd8b55557ec30faa42ea data\soulsweapons\advancement\recipes\combat\empowered_dawnbreaker.json
 4f32a1603fa6dc8fd433439576296346abcfbaf9 data\soulsweapons\recipe\dragonslayer_swordspear.json
 cd9bbace166cc5e8b92666e84782ccaafd2c3781 data\soulsweapons\advancement\recipes\combat\dark_moon_greatsword.json
+bebae4b78786f4111ea806b1c0ddbb5cf34ada72 data\soulsweapons\advancement\recipes\combat\nightlords_sword.json
 d73096851680d531c085d004d54491b1852524f1 data\soulsweapons\recipe\chungus_staff.json
 978a65afbd2d0b6b88d2a10acc0743eeea7b6bd8 data\soulsweapons\advancement\recipes\combat\draugr.json
 4ae7cad5504b0d7491f067f0ab6719f8deefb191 data\soulsweapons\recipe\chungus_disc.json
@@ -192,6 +193,7 @@ cbc2aaea2d0f092ef16ad35496b4dde281a6bf2d data\soulsweapons\advancement\recipes\t
 c9d3d671c87aab296509c11f0aced226971915d4 data\soulsweapons\recipe\glaive_of_hodir.json
 d8b53b7e09c681375bd39d71d49e6d23149cecc4 data\soulsweapons\recipe\simons_bowblade.json
 0df74820d716dcb004a3f3adf39cea33e27b6d83 data\soulsweapons\recipe\boss_compass.json
+a19ee6cdcae309052bbbca1aa8522e379442fe5d data\soulsweapons\recipe\nightlords_sword.json
 1229ec217c93dede7cd41498e110a2b4b1784bc5 data\soulsweapons\advancement\recipes\combat\moonstone_ring_left.json
 2029c31e9a9d435216133db7e2a46a08aa4edaf5 data\soulsweapons\recipe\featherlight.json
 d18011317b618fb9c9677fea94752158313dabed data\soulsweapons\advancement\recipes\combat\excalibur.json

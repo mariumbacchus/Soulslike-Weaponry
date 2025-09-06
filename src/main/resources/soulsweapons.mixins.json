@@ -19,6 +19,7 @@
     "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
+    "ServerPlayNetworkHandlerMixin",
     "WitherEntityMixin"
   ],
   "client": [
