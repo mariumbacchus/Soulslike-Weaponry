@@ -545,7 +545,7 @@
     "tooltip.soulsweapons.chaos_robes_description_4": "§5시듦§r를 적용합니다.",
 
     "tooltip.soulsweapons.freeze": "서리 룬",
-    "tooltip.soulsweapons.freeze_description": "- 타격 후 적들에게 §b영구동토§r을 적용합니다.",
+    "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
 
     "tooltip.soulsweapons.permafrost": "빙하 폭발",
     "tooltip.soulsweapons.permafrost_description_1": "- §b영구동토§r 상태인 적이 죽으면 폭발하여",

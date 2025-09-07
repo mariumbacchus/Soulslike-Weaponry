@@ -13,6 +13,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.FrostData;
+import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.IDetonateGround;
@@ -62,6 +64,12 @@ public class LivingEntityMixin {
             entity.heal(ConfigConstructor.tonitrus_stormveil_effect_lightning_damage_heal + entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
             info.setReturnValue(false);
             info.cancel();
+        }
+        if (source.isIn(DamageTypeTags.IS_FIRE)) {
+            FrostData.setFrost((IEntityDataSaver) entity, 0, false);
+            if (entity.hasStatusEffect(EffectRegistry.FREEZING)) {
+                entity.removeStatusEffect(EffectRegistry.FREEZING);
+            }
         }
     }
 

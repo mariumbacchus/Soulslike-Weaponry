@@ -44,5 +44,6 @@ public class PacketReceiverRegistry {
         ClientPlayNetworking.registerGlobalReceiver(BleedSyncS2C.TYPE, BleedSyncS2CReceiver::receive);
         ClientPlayNetworking.registerGlobalReceiver(TargetPostureSyncS2C.TYPE, TargetPostureSyncS2CReceiver::receive);
         ClientPlayNetworking.registerGlobalReceiver(MaxPostureSyncS2C.TYPE, MaxPostureSyncS2CReceiver::receive);
+        ClientPlayNetworking.registerGlobalReceiver(FrostSyncS2C.TYPE, FrostSyncS2CReceiver::receive);
     }
 }

@@ -5,6 +5,12 @@
   - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), and lastly blight & decay
   - Attacking targets having either one of these effects deals bonus damage
   - Switching to this weapon gives you the Potency effect, making certain weapons (like this one) deal bonus damage for a few seconds
+- Added Frost Buildup mechanic & entity stats
+  - Leviathan Axe, Dark Moon Greatsword and Frostmourne all apply Frost Buildup
+  - Permafrost effect applies gradual Frost
+  - At max Frost, Icicle AOE Explosion is triggered, damaging the main entity and others around it. Instead of the buildup being set to 0, it enters a cooldown state, gradually reducing the buildup from the max amount and where additional buildup added during cooldown is ignored
+  - ```max_frost_buildup```, ```frost_buildup_resistance``` and ```frost_damage_resistance``` have been added as options in the ```entitystats``` file
+- Taking fire damage now removes Permafrost effect
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items

@@ -509,7 +509,7 @@
     "tooltip.soulsweapons.chaos_robes_description_3": "- Каждые 2 секунды накладывайте §5Иссушение§r на",
     "tooltip.soulsweapons.chaos_robes_description_4": "ближайшие сущности, не являющиеся игроками.",
     "tooltip.soulsweapons.freeze": "Руны Мороза",
-    "tooltip.soulsweapons.freeze_description": "- Накладывает §bВечную Мерзлоту§r на врагов после удара.",
+    "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
     "tooltip.soulsweapons.permafrost": "Взрыв Льда",
     "tooltip.soulsweapons.permafrost_description_1": "- Враги под эффектом §bВечной Мерзлоты§r взрываются при смерти,",
     "tooltip.soulsweapons.permafrost_description_2": "нанося урон и распространяя §bВечную Мерзлоту§r на ближайших мобов.",

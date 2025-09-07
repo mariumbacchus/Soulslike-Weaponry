@@ -509,7 +509,7 @@
     "tooltip.soulsweapons.chaos_robes_description_3": "- Every 2 seconds, apply §5Wither§r to",
     "tooltip.soulsweapons.chaos_robes_description_4": "nearby non-player entities.",
     "tooltip.soulsweapons.freeze": "Frost Runes",
-    "tooltip.soulsweapons.freeze_description": "- Apply §bPermafrost§r on enemies post hit.",
+    "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
     "tooltip.soulsweapons.permafrost": "Icicle Explosion",
     "tooltip.soulsweapons.permafrost_description_1": "- §bPermafrosted§r enemies explode when they die",
     "tooltip.soulsweapons.permafrost_description_2": "damaging and spreading §bPermafrost§r to mobs nearby.",

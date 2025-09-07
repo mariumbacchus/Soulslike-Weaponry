@@ -509,7 +509,7 @@
   "tooltip.soulsweapons.chaos_robes_description_3": "- Cada 2 segundos, aplica §5Marchitar§r a",
   "tooltip.soulsweapons.chaos_robes_description_4": "entidades cercanas que no sean jugadores.",
   "tooltip.soulsweapons.freeze": "Runas de escarcha",
-  "tooltip.soulsweapons.freeze_description": "- Aplica §bPermafrost§r en los enemigos después de golpearlos.",
+  "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
   "tooltip.soulsweapons.permafrost": "Explosión de carámbanos",
   "tooltip.soulsweapons.permafrost_description_1": "- Los enemigos con §bPermafrost§r explotan al morir",
   "tooltip.soulsweapons.permafrost_description_2": "dañando y extendiendo §bPermafrost§r a los mobs cercanos.",

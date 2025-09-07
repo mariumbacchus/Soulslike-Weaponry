@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
+import net.soulsweaponry.items.IPermafrost;
 import net.soulsweaponry.items.ModdedAxe;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -39,13 +40,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class LeviathanAxe extends ModdedAxe implements GeoItem {
+public class LeviathanAxe extends ModdedAxe implements GeoItem, IPermafrost {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
+        this.addTooltipAbility(TooltipAbilities.PERMAFROST, TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
         }
         if (attacker.getWorld() instanceof ServerWorld serverWorld) {
             int sharpness = MathHelper.floor(EnchantmentHelper.getDamage(serverWorld, stack, target, attacker.getDamageSources().mobAttack(attacker), 0));
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, sharpness));
+            this.applyPermafrost(attacker, target, 200, sharpness);
         }
         return super.postHit(stack, target, attacker);
     }
@@ -111,12 +112,12 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
         }
     }
 
-    public static void iceExplosion(World world, BlockPos pos, @Nullable Entity attacker, int amplifier) {
+    public static void iceExplosion(World world, BlockPos pos, @Nullable Entity attacker, float damage, int amplifier) {
         Box box = new Box(pos).expand(1D);
         List<Entity> entities = world.getOtherEntities(attacker, box);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity && !(entity instanceof PlayerEntity)) {
-                livingEntity.damage(world.getDamageSources().freeze(), (amplifier + 1) * 1.5f);
+                livingEntity.damage(world.getDamageSources().freeze(), damage);
                 livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
             }
         }
@@ -158,5 +159,10 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     @Override
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
+    }
+
+    @Override
+    public int getFrostBuildup() {
+        return (int) ConfigConstructor.leviathan_axe_frost_buildup_post_hit;
     }
 }

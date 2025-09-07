@@ -433,6 +433,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_amplifier = 0;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_duration = 80;
+    @Entry public static float dark_moon_greatsword_frost_buildup_post_hit = 60;
     @Entry public static float dark_moon_greatsword_frost_moon_base_duration = 400;
     @Entry public static float dark_moon_greatsword_frost_moon_base_amplifier = 0;
     @Entry public static float dark_moon_greatsword_frost_moon_cooldown = 700;
@@ -551,6 +552,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frostmourne_damage = 11;
     @Entry public static float frostmourne_attack_speed = 1.6f;
     @Entry public static float frostmourne_summoned_allies_cap = 50;
+    @Entry public static float frostmourne_frost_buildup_post_hit = 40;
     @Entry public static float galeforce_damage = 10;
     @Entry public static float galeforce_bonus_velocity = 0.25f;
     @Entry public static float galeforce_ability_velocity = 3f;
@@ -625,6 +627,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean kraken_slayer_can_apply_arrow_effects = true;
     @Entry public static float leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;
+    @Entry public static float leviathan_axe_frost_buildup_post_hit = 50;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4D;
     @Entry public static float lich_bane_damage = 7;
@@ -874,6 +877,18 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bleed_effect_increase_per_amp = 6;
     @Entry public static float bleed_effect_base_increase = 4;
     @Entry public static float bleed_post_hit_bloodthirsty_effect_increase_mod = 0.75f;
+
+    @Entry public static boolean disable_frost_buildup_mechanic_for_all_mobs = false;
+    @Entry public static float max_frost_buildup = 200;
+    @Entry public static float base_frost_buildup_resistance_unless_overridden = 0f;
+    @Entry public static float base_frost_damage_resistance_unless_overridden = 0f;
+    @Entry public static float frost_reduction_amount = 1;
+    @Entry public static float frost_reduction_interval = 5;
+    @Entry public static float frost_base_damage = 4f;
+    @Entry(min=0, max=1) public static float frost_percent_health_damage = 0.15f;
+    @Entry public static float frost_permafrost_spread_effect_amp = 2;
+    @Entry public static float permafrost_effect_base_frost_buildup = 5;
+    @Entry public static float permafrost_effect_buildup_per_amp = 3;
 
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
     @Entry(min=0) public static float blight_carrier_enchant_blight_per_level = 2;

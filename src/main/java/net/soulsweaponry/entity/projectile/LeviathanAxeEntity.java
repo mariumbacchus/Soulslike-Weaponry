@@ -45,10 +45,11 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         }
         boolean damaged = target.damage(damageSource, damage);
         if (damaged) {
+            int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
             if (target instanceof LivingEntity living) {
-                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS)));
+                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
             }
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS));
+            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), (enchant + 1) * 1.5f, enchant);
         }
         return damaged;
     }

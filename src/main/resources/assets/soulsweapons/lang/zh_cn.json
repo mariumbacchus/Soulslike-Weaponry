@@ -508,7 +508,7 @@
     "tooltip.soulsweapons.chaos_robes_description_3": "- Every 2 seconds, apply §5Wither§r to",
     "tooltip.soulsweapons.chaos_robes_description_4": "nearby non-player entities.",
     "tooltip.soulsweapons.freeze": "冰霜符文",
-    "tooltip.soulsweapons.freeze_description": "- 对所有攻击到的敌人施加§b永冻之触§r",
+    "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
     "tooltip.soulsweapons.permafrost": "冰柱爆破",
     "tooltip.soulsweapons.permafrost_description_1": "- 杀死敌人会使其化为冰柱后爆炸",
     "tooltip.soulsweapons.permafrost_description_2": "对周围敌人造成伤害，并施加§b永冻之触§r",

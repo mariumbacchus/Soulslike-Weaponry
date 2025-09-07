@@ -56,7 +56,7 @@ public class FrozenLightning extends Entity {
                     ParticleHandler.particleSphere(this.getWorld(), 500, this.getX(), this.getBodyY(0.25f), this.getZ(), ParticleEvents.ICE_PARTICLE, 2f);
                 }
                 this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
-                LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), null, 5);
+                LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), null, 7.5f, 5);
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(this.getBlockPos()));
                 lightningEntity.setChanneler(null);

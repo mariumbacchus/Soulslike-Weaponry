@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.IPermafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -22,18 +23,18 @@ import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbility {
+public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbility, IPermafrost {
 
     public DarkMoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dark_moon_greatsword_damage, ConfigConstructor.dark_moon_greatsword_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.FROST_MOON);
+        this.addTooltipAbility(TooltipAbilities.PERMAFROST, TooltipAbilities.FROST_MOON);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_duration,
-                    (int) (ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack))));
+            this.applyPermafrost(attacker, target, (int) ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_duration,
+                    (int) (ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack)));
         }
         return super.postHit(stack, target, attacker);
     }
@@ -101,5 +102,10 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
     @Override
     public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
 
+    }
+
+    @Override
+    public int getFrostBuildup() {
+        return (int) ConfigConstructor.dark_moon_greatsword_frost_buildup_post_hit;
     }
 }

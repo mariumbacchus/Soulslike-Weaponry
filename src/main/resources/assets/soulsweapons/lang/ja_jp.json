@@ -509,7 +509,7 @@
     "tooltip.soulsweapons.chaos_robes_description_3": "- 2秒ごとに§5衰弱§rを",
     "tooltip.soulsweapons.chaos_robes_description_4": "近くのエンティティに適用する。",
     "tooltip.soulsweapons.freeze": "フロストルーン",
-    "tooltip.soulsweapons.freeze_description": "- ヒット後の敵に§b永久凍結§r を適用します。",
+    "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",
     "tooltip.soulsweapons.permafrost": "つららの爆発",
     "tooltip.soulsweapons.permafrost_description_1": "- §b永久凍結§r の敵は死ぬと爆発し、",
     "tooltip.soulsweapons.permafrost_description_2": "近くのMobにダメージを与え、§b永久凍結§rを撒き散らす。",

@@ -42,5 +42,6 @@ public class PacketRegistry {
         PayloadTypeRegistry.playS2C().register(SingleParticleS2C.TYPE, SingleParticleS2C.CODEC);
         PayloadTypeRegistry.playS2C().register(ParticleSphereS2C.TYPE, ParticleSphereS2C.CODEC);
         PayloadTypeRegistry.playS2C().register(ParticleOutburstS2C.TYPE, ParticleOutburstS2C.CODEC);
+        PayloadTypeRegistry.playS2C().register(FrostSyncS2C.TYPE, FrostSyncS2C.CODEC);
     }
 }
