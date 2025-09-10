@@ -113,10 +113,13 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem, IPermafrost {
     }
 
     public static void iceExplosion(World world, BlockPos pos, @Nullable Entity attacker, float damage, int amplifier) {
-        Box box = new Box(pos).expand(1D);
+        Box box = new Box(pos).expand(1.25D);
         List<Entity> entities = world.getOtherEntities(attacker, box);
         for (Entity entity : entities) {
-            if (entity instanceof LivingEntity livingEntity && !(entity instanceof PlayerEntity)) {
+            if (entity instanceof LivingEntity livingEntity) {
+                if (attacker != null && livingEntity.isTeammate(attacker)) {
+                    continue;
+                }
                 livingEntity.damage(world.getDamageSources().freeze(), damage);
                 livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
             }

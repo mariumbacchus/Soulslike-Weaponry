@@ -628,6 +628,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;
     @Entry public static float leviathan_axe_frost_buildup_post_hit = 50;
+    @Entry public static float leviathan_axe_projectile_frost_buildup_on_collision = 50;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4D;
     @Entry public static float lich_bane_damage = 7;
@@ -801,7 +802,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float sword_of_the_nightlord_chain_lightning_damage_per_level = 2f;
     @Entry public static float sword_of_the_nightlord_wither_duration = 120;
     @Entry public static float sword_of_the_nightlord_wither_amp = 1;
-    @Entry public static float sword_of_the_nightlord_base_permafrost = 50;
+    @Entry public static float sword_of_the_nightlord_frost_buildup_post_hit = 50;
     @Entry public static float sword_of_the_nightlord_permafrost_duration = 100;
     @Entry public static float sword_of_the_nightlord_permafrost_amp = 0;
     @Entry public static float sword_of_the_nightlord_fire_ticks = 200;
@@ -882,13 +883,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float max_frost_buildup = 200;
     @Entry public static float base_frost_buildup_resistance_unless_overridden = 0f;
     @Entry public static float base_frost_damage_resistance_unless_overridden = 0f;
-    @Entry public static float frost_reduction_amount = 1;
-    @Entry public static float frost_reduction_interval = 5;
+    @Entry public static float frost_reduction_amount = 3;
+    @Entry public static float frost_reduction_interval = 4;
     @Entry public static float frost_base_damage = 4f;
     @Entry(min=0, max=1) public static float frost_percent_health_damage = 0.15f;
     @Entry public static float frost_permafrost_spread_effect_amp = 2;
-    @Entry public static float permafrost_effect_base_frost_buildup = 5;
-    @Entry public static float permafrost_effect_buildup_per_amp = 3;
+    @Entry public static float permafrost_effect_base_frost_buildup = 1;
+    @Entry public static float permafrost_effect_buildup_per_amp = 1;
 
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
     @Entry(min=0) public static float blight_carrier_enchant_blight_per_level = 2;

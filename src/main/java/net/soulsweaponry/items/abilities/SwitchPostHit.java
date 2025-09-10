@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.entitydata.BleedData;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.IHasAbilities;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -88,7 +89,7 @@ public final class SwitchPostHit implements IAbility {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, this.witherDuration, this.witherAmp));
             }
             case FREEZE -> {
-                // TODO apply freeze data stacks when implemented this.baseFreeze
+                FrostData.addFrost(target, this.baseFreeze);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.freezeDuration, this.freezeAmp));
             }
             case FIRE -> {

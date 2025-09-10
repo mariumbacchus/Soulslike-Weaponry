@@ -6,11 +6,15 @@
   - Attacking targets having either one of these effects deals bonus damage
   - Switching to this weapon gives you the Potency effect, making certain weapons (like this one) deal bonus damage for a few seconds
 - Added Frost Buildup mechanic & entity stats
-  - Leviathan Axe, Dark Moon Greatsword and Frostmourne all apply Frost Buildup
+  - Leviathan Axe, Dark Moon Greatsword, Sword of the Nightlord (given right ability) and Frostmourne all apply Frost Buildup
   - Permafrost effect applies gradual Frost
   - At max Frost, Icicle AOE Explosion is triggered, damaging the main entity and others around it. Instead of the buildup being set to 0, it enters a cooldown state, gradually reducing the buildup from the max amount and where additional buildup added during cooldown is ignored
   - ```max_frost_buildup```, ```frost_buildup_resistance``` and ```frost_damage_resistance``` have been added as options in the ```entitystats``` file
-- Taking fire damage now removes Permafrost effect
+- Changed Permafrost effect slightly
+  - Taking fire damage now removes Permafrost effect
+  - Permafrost icicle explosion now damages nearby players too, but will no longer target allies of the attacker
+  - Increased the icicle explosion spread range slightly
+- Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items

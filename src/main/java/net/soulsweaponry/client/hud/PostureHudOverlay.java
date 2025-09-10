@@ -13,15 +13,17 @@ public class PostureHudOverlay extends EffectHudOverlay {
     private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/gui/posture_bars.png");
 
     @Override
-    public Identifier getTexture() {
+    public Identifier getTexture(ClientPlayerEntity player) {
         return TEXTURE;
     }
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int posture = PostureData.getPosture(player);
-        float posturePerPixel = EntityPosture.getMaxPostureLoss(player) / (float) 182;
-        return MathHelper.floor((float) posture / posturePerPixel);
+        int posture = Math.max(0, PostureData.getPosture(player));
+        int max = Math.max(1, EntityPosture.getMaxPostureLoss(player));
+        posture = Math.min(posture, max);
+        int pixels = posture * BAR_WIDTH / max;
+        return MathHelper.clamp(pixels, 0, BAR_WIDTH);
     }
 
     @Override

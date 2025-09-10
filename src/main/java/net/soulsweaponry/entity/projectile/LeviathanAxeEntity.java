@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -47,6 +48,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         if (damaged) {
             int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
             if (target instanceof LivingEntity living) {
+                FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
                 living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
             }
             LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), (enchant + 1) * 1.5f, enchant);

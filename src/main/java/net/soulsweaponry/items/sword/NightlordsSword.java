@@ -34,7 +34,7 @@ public class NightlordsSword extends ModdedSword {
                             (int) ConfigConstructor.sword_of_the_nightlord_wither_amp
                     )
                     .freeze(
-                            (int) ConfigConstructor.sword_of_the_nightlord_base_permafrost,
+                            (int) ConfigConstructor.sword_of_the_nightlord_frost_buildup_post_hit,
                             (int) ConfigConstructor.sword_of_the_nightlord_permafrost_duration,
                             (int) ConfigConstructor.sword_of_the_nightlord_permafrost_amp
                     )

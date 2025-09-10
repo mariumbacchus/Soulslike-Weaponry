@@ -29,7 +29,7 @@ public class Freezing extends StatusEffect {
         if (entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entity.hasStatusEffect(EffectRegistry.FROST_MOON)) {
             return false;
         }
-        FrostData.addFrost(entity, (int) (ConfigConstructor.permafrost_effect_base_frost_buildup + (ConfigConstructor.permafrost_effect_buildup_per_amp + 1) * amplifier));
+        FrostData.addFrost(entity, (int) (ConfigConstructor.permafrost_effect_base_frost_buildup + ConfigConstructor.permafrost_effect_buildup_per_amp * (amplifier + 1)));
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
         if (!entity.getWorld().isClient) {

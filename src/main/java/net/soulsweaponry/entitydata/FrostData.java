@@ -19,11 +19,11 @@ public class FrostData {
     public static void addFrost(LivingEntity entity, int amount) {
         if (!EntityFrost.isFrostBuildupDisabled(entity) && !entity.isOnFire() && !isFrostCoolingDown(entity) && !entity.isDead() && !entity.getWorld().isClient) {
             int newAmount = EntityFrost.getFrostBuildup(entity, amount);
-            addFrost((IEntityDataSaver) entity, newAmount);
+            addFrost((IEntityDataSaver) entity, newAmount, EntityFrost.getMaxFrostBuildup(entity));
         }
     }
 
-    private static int addFrost(IEntityDataSaver entity, int amount) {
+    private static int addFrost(IEntityDataSaver entity, int amount, int max) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(FROST_VALUE_ID)) {
             nbt.putInt(FROST_VALUE_ID, 0);
@@ -32,7 +32,7 @@ public class FrostData {
         if (value < 0) {
             value = 0;
         } else {
-            value += amount;
+            value = Math.min(value + amount, max);
         }
         nbt.putInt(FROST_VALUE_ID, value);
         if (entity instanceof ServerPlayerEntity) {
@@ -56,8 +56,8 @@ public class FrostData {
     /**
      * This bypasses the check for if frost is cooling down so it successfully reduces the value
      */
-    public static int reduceFrost(IEntityDataSaver entity, int amount) {
-        return addFrost(entity, -amount);
+    public static int reduceFrost(IEntityDataSaver entity, int amount, int max) {
+        return addFrost(entity, -amount, max);
     }
 
     public static int setFrost(IEntityDataSaver entity, int amount, boolean frostCoolingDown) {

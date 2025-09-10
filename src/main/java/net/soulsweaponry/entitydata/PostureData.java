@@ -17,11 +17,11 @@ public class PostureData {
     public static void addPostureLoss(LivingEntity entity, int amount) {
         if (!EntityPosture.isPostureDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
             int newAmount = EntityPosture.getPostureLoss(entity, amount);
-            addPostureLoss((IEntityDataSaver) entity, newAmount);
+            addPostureLoss((IEntityDataSaver) entity, newAmount, EntityPosture.getMaxPostureLoss(entity));
         }
     }
 
-    private static void addPostureLoss(IEntityDataSaver entity, int amount) {
+    private static void addPostureLoss(IEntityDataSaver entity, int amount, int max) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(POSTURE_ID)) {
             nbt.putInt(POSTURE_ID, 0);
@@ -30,7 +30,7 @@ public class PostureData {
         if (posture < 0) {
             posture = 0;
         } else {
-            posture += amount;
+            posture = Math.min(posture + amount, max);
         }
         nbt.putInt(POSTURE_ID, posture);
         if (entity instanceof ServerPlayerEntity) {
