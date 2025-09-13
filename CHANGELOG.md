@@ -12,7 +12,7 @@
   - ```max_frost_buildup```, ```frost_buildup_resistance``` and ```frost_damage_resistance``` have been added as options in the ```entitystats``` file
 - Changed Permafrost effect slightly
   - Taking fire damage now removes Permafrost effect
-  - Permafrost icicle explosion now damages nearby players too, but will no longer target allies of the attacker
+  - Permafrost icicle explosion now damages nearby players too (not the main inflicter), and will no longer target allies of the inflicter
   - Increased the icicle explosion spread range slightly
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
 
