@@ -56,7 +56,7 @@ public class ModifyDamageUtil {
             if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE)) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
             if (entity.hasStatusEffect(EffectRegistry.FREEZING)) {
                 int amp = entity.getStatusEffect(EffectRegistry.FREEZING).getAmplifier();
-                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), (amp + 1) * 1.5f, amp);
+                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amp + 1) * 1.5f, amp);
                 entity.removeStatusEffect(EffectRegistry.FREEZING);
             }
         }

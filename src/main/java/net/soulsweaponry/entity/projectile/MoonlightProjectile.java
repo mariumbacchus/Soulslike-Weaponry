@@ -23,6 +23,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -131,7 +132,11 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
             entityHitResult.getEntity().setFireTicks(this.getAppliedEffectTicks());
         }
         if (!this.getAppliedEffectId().isEmpty() && entityHitResult.getEntity() instanceof LivingEntity target) {
-            target.addStatusEffect(new StatusEffectInstance(this.getAppliedEffect(), this.getAppliedEffectTicks(), this.getEffectAmplifier()));
+            RegistryEntry<StatusEffect> effect = this.getAppliedEffect();
+            if (effect.equals(EffectRegistry.FREEZING) && this.getOwner() != null) {
+                FrostData.setFrostSource(target, this.getOwner());
+            }
+            target.addStatusEffect(new StatusEffectInstance(effect, this.getAppliedEffectTicks(), this.getEffectAmplifier()));
         }
         this.discard();
     }

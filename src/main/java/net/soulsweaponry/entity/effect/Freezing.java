@@ -38,11 +38,11 @@ public class Freezing extends StatusEffect {
         if (entity.isDead()) {
             if (entity instanceof IAnimatedDeath animated) {
                 if (animated.getDeathTicks() < 2) {
-                    LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), (amplifier + 1) * 1.5f, amplifier);
+                    LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
                 }
             }
             else if (entity.deathTime < 2) {
-                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), (amplifier + 1) * 1.5f, amplifier);
+                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
             }
         }
         return true;

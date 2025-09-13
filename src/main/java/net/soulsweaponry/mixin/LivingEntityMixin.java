@@ -67,6 +67,7 @@ public class LivingEntityMixin {
         }
         if (source.isIn(DamageTypeTags.IS_FIRE)) {
             FrostData.setFrost((IEntityDataSaver) entity, 0, false);
+            FrostData.setFrostSource(entity, FrostData.NIL_UUID);
             if (entity.hasStatusEffect(EffectRegistry.FREEZING)) {
                 entity.removeStatusEffect(EffectRegistry.FREEZING);
             }

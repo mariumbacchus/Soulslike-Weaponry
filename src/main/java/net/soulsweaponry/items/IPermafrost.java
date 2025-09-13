@@ -10,6 +10,7 @@ public interface IPermafrost {
     int getFrostBuildup();
 
     default void applyPermafrost(LivingEntity attacker, LivingEntity target, int duration, int amp) {
+        FrostData.setFrostSource(target, attacker);
         FrostData.addFrost(target, this.getFrostBuildup());
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, duration, amp));
     }

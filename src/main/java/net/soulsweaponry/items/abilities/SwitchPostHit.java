@@ -89,6 +89,7 @@ public final class SwitchPostHit implements IAbility {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, this.witherDuration, this.witherAmp));
             }
             case FREEZE -> {
+                FrostData.setFrostSource(target, attacker);
                 FrostData.addFrost(target, this.baseFreeze);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.freezeDuration, this.freezeAmp));
             }

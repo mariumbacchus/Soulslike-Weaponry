@@ -1,16 +1,22 @@
 package net.soulsweaponry.entitydata;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityFrost;
 import net.soulsweaponry.networking.S2C.packets.FrostSyncS2C;
 
+import java.util.UUID;
+
 public class FrostData {
 
     public static final String FROST_VALUE_ID = "frost_status";
     public static final String FROST_COOLING_DOWN_ID = "frost_cooling_down";
+    public static final String FROST_SOURCE_ID = "frost_source_uuid_id";
+
+    public static final UUID NIL_UUID = new UUID(0L, 0L);
 
     /**
      * Adds frost buildup to entities that are NOT on fire and have NOT triggered frost yet (meaning frost
@@ -93,5 +99,43 @@ public class FrostData {
 
     public static void syncFrostData(int value, boolean frostCoolingDown, ServerPlayerEntity entity) {
         ServerPlayNetworking.send(entity, new FrostSyncS2C(value, frostCoolingDown));
+    }
+
+    /**
+     * Set the inflicter of the frost buildup or Permafrost effect.
+     * <p>
+     * Mainly used when the player attacks a target, inflicting it with Permafrost,
+     * and to avoid the Permafrost from spreading back to the main attacker (player)
+     * via another mob, the attacker is saved to each mob so that before the
+     * damage and AOE is triggered, it checks whether the attacker is being
+     * targeted or not.
+     */
+    public static UUID setFrostSource(Entity entity, Entity source) {
+        return setFrostSource(entity, source.getUuid());
+    }
+
+    public static UUID setFrostSource(Entity entity, UUID uuid) {
+        IEntityDataSaver saver = (IEntityDataSaver) entity;
+        NbtCompound nbt = saver.getPersistentData();
+        nbt.putUuid(FROST_SOURCE_ID, uuid);
+        // Only handled server side so no need to sync
+        return uuid;
+    }
+
+    /**
+     * Get the inflicter of the frost buildup or Permafrost effect.
+     * <p>
+     * Mainly used when the player attacks a target, inflicting it with Permafrost,
+     * and to avoid the Permafrost from spreading back to the main attacker (player)
+     * via another mob, the attacker is saved to each mob so that before the
+     * damage and AOE is triggered, it checks whether the attacker is being
+     * targeted or not.
+     */
+    public static UUID getFrostSource(Entity entity) {
+        IEntityDataSaver target = (IEntityDataSaver)entity;
+        if (!target.getPersistentData().contains(FROST_SOURCE_ID)) {
+            target.getPersistentData().putUuid(FROST_SOURCE_ID, NIL_UUID);
+        }
+        return target.getPersistentData().getUuid(FROST_SOURCE_ID);
     }
 }

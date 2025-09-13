@@ -26,6 +26,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -290,6 +291,9 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
 
     private void onPostureBreak(LivingEntity target) {
         if (this.getFreezeAmplifier() > 0) {
+            if (this.getOwner() != null) {
+                FrostData.setFrostSource(target, this.getOwner());
+            }
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
             target.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, SoundCategory.HOSTILE, 1f, 1f);
         }

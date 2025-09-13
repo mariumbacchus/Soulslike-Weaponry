@@ -49,9 +49,11 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
             int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
             if (target instanceof LivingEntity living) {
                 FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
+                FrostData.setFrostSource(living, owner);
                 living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
             }
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), (enchant + 1) * 1.5f, enchant);
+            FrostData.setFrostSource(this, owner);
+            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
         }
         return damaged;
     }

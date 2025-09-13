@@ -99,7 +99,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), null, 3f, 1);
+        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), this, 3f, 1);
         super.onDeath(damageSource);
     }
 
