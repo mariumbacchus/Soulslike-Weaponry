@@ -1,0 +1,14 @@
+{
+  "type": "soulsweapons:smithing_item_upgrade",
+  "addition": {
+    "item": "minecraft:stick"
+  },
+  "base": {
+    "tag": "soulsweapons:melee_item_upgradables"
+  },
+  "primaryBonus": 1.0,
+  "secondaryBonus": 0.05,
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

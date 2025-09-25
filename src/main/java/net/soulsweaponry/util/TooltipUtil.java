@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -680,9 +681,14 @@ public class TooltipUtil {
             }
             case GUN_ITEM -> {
                 if (stack.getItem() instanceof GunItem gun) {
+                    float bonus = stack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f);
+                    MutableText damage = Text.literal(String.format("%.1f", (gun.getBulletDamage(stack) + bonus)));
+                    if (bonus > 0) {
+                        damage.formatted(Formatting.BLUE);
+                    }
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(Text.literal(String.valueOf(gun.getPostureLoss(stack)))).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.format("%.1f", gun.getBulletDamage(stack)))).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").formatted(Formatting.GRAY).append(damage));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(gun.getCooldown(stack)))).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(gun.getBulletsNeeded(stack)))).formatted(Formatting.GRAY));
                     if (gun.getMaxUseTime(stack, null) != 0) {

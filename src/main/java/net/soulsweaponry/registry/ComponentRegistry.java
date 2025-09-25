@@ -31,6 +31,8 @@ public class ComponentRegistry {
     public static final ComponentType<Boolean> INVISIBLE = register("invisible", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
     public static final ComponentType<String> MAPPED_TRICK_WEAPON = register("mapped_trick_weapon", builder -> builder.codec(Codec.STRING).packetCodec(PacketCodecs.STRING));
     public static final ComponentType<Integer> POST_HIT_EFFECT_ID = register("post_hit_effect_id", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> ITEM_UPGRADE_LEVEL = register("item_upgrade_level", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Float> GUN_BONUS_DAMAGE = register("gun_bonus_damage", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),

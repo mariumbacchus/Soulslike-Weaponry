@@ -1,11 +1,13 @@
-// 1.21.1	2025-09-05T23:39:53.26958	Marium's Soulslike Weaponry/Tags for minecraft:item
+// 1.21.1	2025-09-26T00:15:40.6484461	Marium's Soulslike Weaponry/Tags for minecraft:item
 86d10b7465ad76de26963f203b796c8b71945582 data\minecraft\tags\item\swords.json
+e0ab947b7898fa46fae7b9f8f8a16737c789e67c data\minecraft\tags\item\foot_armor.json
 9dc46d5cdf58b0392e68eab4464b172801dce69a data\minecraft\tags\item\pickaxes.json
 21c0483931ff332624c2738f2eccfeed4560d0b5 data\soulsweapons\tags\item\lord_soul.json
 8f957d7b30b91b7c8f0478654b4f31d2d714baf7 data\soulsweapons\tags\item\trick_weapons.json
-7c73808ea5ebb70e3adeb1504b66f4345a219ef4 data\c\tags\item\tools\ranged_weapon.json
 de2a6aee06ce7f209c2f53a12f2f28303613036c data\soulsweapons\tags\item\dragonbane_material.json
 7f6ecf18081cd6f543887ff3b17da3067ea4267d data\minecraft\tags\item\enchantable\crossbow.json
+5f25561602971c131fbc0cc8b3b2158c80acb3cc data\c\tags\item\armors.json
+4c5d5af3973ede7bc57a6c7c1116c48ebcd82c2f data\soulsweapons\tags\item\melee_item_upgradables.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\minecraft\tags\item\enchantable\mace.json
 0e1779f94fe2aa0921e04cdec96fece5cc8e0c88 data\minecraft\tags\item\axes.json
 1386ffd99a22f525ce343e24bd6f11198b411e72 data\c\tags\item\tools\melee_weapon.json
@@ -13,7 +15,9 @@ a71bcd984fd37a7dabffd9ee72b3b8ad6d2bfa5a data\soulsweapons\tags\item\heavy_weapo
 dcca5cc17e291e01e6e69a8d1ef52c0cefa1b24d data\soulsweapons\tags\item\soul_harvesting_weapons.json
 2560efd905bb904fc19e7c955c107d6798e32cbe data\soulsweapons\tags\item\scythes.json
 e5b14003192b55614f32e6b87c0834250258d8e5 data\c\tags\item\music_discs.json
+dedb892f8ffd1d0ebf1eb8437cca9b757cd78893 data\minecraft\tags\item\chest_armor.json
 7f6ecf18081cd6f543887ff3b17da3067ea4267d data\c\tags\item\tools\crossbow.json
+d44ed630af0e3fcac7cad20d2bb1d21e76a6e2fd data\minecraft\tags\item\leg_armor.json
 23fba001d99af3b1d656daa3b388779483ddb9d1 data\minecraft\tags\item\shovels.json
 72059ac0bbab07f7de9e1d21c3a610467ad30b85 data\soulsweapons\tags\item\lost_soul_items_repair_ingredients.json
 7da12b4fe370ee15447fbc295fa046dd94a425d2 data\c\tags\item\tools\bow.json
@@ -26,4 +30,6 @@ e6d7be94acb15c4e70212dcf15f3596af46b8eb9 data\minecraft\tags\item\enchantable\bo
 ab7583e904bf80aebb3269797c08f48d3357ba4c data\minecraft\tags\item\hoes.json
 de0bec8a18c0e73360505f7508519151f5b4f1d1 data\soulsweapons\tags\item\guns.json
 32f15e3bfc20fc310dbb58321fdcbb4ee10895b2 data\c\tags\item\demon_hearts.json
+de75671f136ad29ecb1fee30fc8326bbb0cce33f data\soulsweapons\tags\item\ranged_item_upgradables.json
 9b4711b1d8a3edf849f4085ec34f1492c2aea241 data\soulsweapons\tags\item\staves.json
+d3bc6d2c4305da92a1c4b7072533fc0b4f345db1 data\minecraft\tags\item\head_armor.json

@@ -1,0 +1,14 @@
+{
+  "type": "soulsweapons:smithing_item_upgrade",
+  "addition": {
+    "item": "minecraft:stick"
+  },
+  "base": {
+    "item": "soulsweapons:blunderbuss"
+  },
+  "primaryBonus": 1.5,
+  "secondaryBonus": 0.0,
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

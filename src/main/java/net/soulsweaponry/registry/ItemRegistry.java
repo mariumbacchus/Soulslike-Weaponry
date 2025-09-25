@@ -133,6 +133,7 @@ public class ItemRegistry {
                 case BowItem b -> ItemTagsProvider.BOWS.add(item);
                 case CrossbowItem c -> ItemTagsProvider.CROSSBOWS.add(item);
                 case MaceItem m -> ItemTagsProvider.MACES.add(item);
+                case ArmorItem ar -> ItemTagsProvider.ARMORS.add(item);
                 default -> {}
             }
             if (item instanceof IUltraHeavy heavy && heavy.isHeavy()) {

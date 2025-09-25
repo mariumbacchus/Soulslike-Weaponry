@@ -8,6 +8,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
+import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -27,6 +28,7 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
     public static final List<Item> CROSSBOWS = new ArrayList<>();
     public static final List<Item> AXES = new ArrayList<>();
     public static final List<Item> MACES = new ArrayList<>();
+    public static final List<Item> ARMORS = new ArrayList<>();
 
     // Not used for enchanting necessarily
     public static final List<Item> HEAVY_WEAPONS = new ArrayList<>();
@@ -77,13 +79,11 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(ConventionalItemTags.CROSSBOW_TOOLS)
                 .add(CROSSBOWS.toArray(Item[]::new));
 
+        this.getOrCreateTagBuilder(ConventionalItemTags.ARMORS)
+                .add(ARMORS.toArray(Item[]::new));
+
         this.getOrCreateTagBuilder(ItemTags.MACE_ENCHANTABLE)
                 .add(MACES.toArray(Item[]::new));
-
-        this.getOrCreateTagBuilder(ConventionalItemTags.RANGED_WEAPON_TOOLS)
-                .add(CROSSBOWS.toArray(Item[]::new))
-                .add(BOWS.toArray(Item[]::new))
-                .addTag(ModTags.Items.GUNS);
 
         this.getOrCreateTagBuilder(ConventionalItemTags.MELEE_WEAPON_TOOLS)
                 .add(SWORDS.toArray(Item[]::new))
@@ -157,5 +157,42 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ItemRegistry.CHUNGUS_DISC)
                 .add(ItemRegistry.DRAUGR_BOSS_DISC)
                 .add(ItemRegistry.FALLEN_ICON_DISC);
+
+        this.getOrCreateTagBuilder(ModTags.Items.MELEE_ITEM_UPGRADABLES)
+                .addTag(ItemTags.SHOVELS)
+                .addTag(ItemTags.HOES)
+                .addTag(ItemTags.PICKAXES)
+                .addTag(ConventionalItemTags.MELEE_WEAPON_TOOLS);
+
+        this.getOrCreateTagBuilder(ModTags.Items.RANGED_ITEM_UPGRADABLES)
+                .addTag(ConventionalItemTags.BOW_TOOLS)
+                .addTag(ConventionalItemTags.CROSSBOW_TOOLS);
+
+        this.getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
+                .add(ArmorRegistry.CHAOS_CROWN)
+                .add(ArmorRegistry.CHAOS_HELMET)
+                .add(ArmorRegistry.FORLORN_HELMET)
+                .add(ArmorRegistry.SOUL_INGOT_HELMET)
+                .add(ArmorRegistry.SOUL_ROBES_HELMET);
+
+        this.getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
+                .add(ArmorRegistry.ARKENPLATE)
+                .add(ArmorRegistry.CHAOS_ROBES)
+                .add(ArmorRegistry.ENHANCED_ARKENPLATE)
+                .add(ArmorRegistry.ENHANCED_WITHERED_CHEST)
+                .add(ArmorRegistry.WITHERED_CHEST)
+                .add(ArmorRegistry.FORLORN_CHESTPLATE)
+                .add(ArmorRegistry.SOUL_INGOT_CHESTPLATE)
+                .add(ArmorRegistry.SOUL_ROBES_CHESTPLATE);
+
+        this.getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
+                .add(ArmorRegistry.FORLORN_LEGGINGS)
+                .add(ArmorRegistry.SOUL_INGOT_LEGGINGS)
+                .add(ArmorRegistry.SOUL_ROBES_LEGGINGS);
+
+        this.getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
+                .add(ArmorRegistry.FORLORN_BOOTS)
+                .add(ArmorRegistry.SOUL_INGOT_BOOTS)
+                .add(ArmorRegistry.SOUL_ROBES_BOOTS);
     }
 }

@@ -31,6 +31,7 @@ public class WeaponRecipeProvider extends FabricRecipeProvider {
         GunRecipes.generateRecipes(recipeExporter);
         WeaponRecipes.generateRecipes(recipeExporter);
         ArmorRecipes.generateRecipes(recipeExporter);
+        UpgradeRecipes.generateRecipes(recipeExporter);
     }
 
     public static void smithingRecipe(Ingredient smithingTemplate, Ingredient base, Ingredient addition, Item output, RecipeCategory recipeCategory, Item itemCriterion, RecipeExporter recipeExporter) {

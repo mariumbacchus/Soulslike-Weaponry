@@ -2,6 +2,8 @@ package net.soulsweaponry.config;
 
 public class ConfigConstructor extends MidnightConfig {
 
+    @Entry public static float item_upgrading_max_level = 5f;
+
     @Entry public static boolean inform_player_about_disabled_use = true;
     @Entry public static boolean inform_player_about_no_bound_freyr_sword = true;
     @Entry public static boolean inform_player_about_no_soulbound_thrown_weapon = true;

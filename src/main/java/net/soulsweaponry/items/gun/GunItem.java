@@ -1,8 +1,10 @@
 package net.soulsweaponry.items.gun;
 
+import net.fabric_extras.ranged_weapon.api.EntityAttributes_RangedWeapon;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.tooltip.TooltipType;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.WeaponUtil;
 import net.minecraft.enchantment.Enchantments;
@@ -83,7 +85,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
-        float power = this.getCalculatedDamage(this.getBulletDamage(gunStack), gunStack);
+        float power = this.getCalculatedDamage(this.getBulletDamage(gunStack), gunStack, shooter);
         int ethereal = WeaponUtil.getLevel(gunStack, EnchantRegistry.ETHEREAL);
         int explosivePower = WeaponUtil.getLevel(gunStack, EnchantRegistry.EXPLOSIVE_ROUNDS);
         int chainLightningLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.CHAIN_LIGHTNING);
@@ -133,7 +135,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
                 copy.setEchoCopy(true);
                 copy.setEchoCopyTimer(10 * i);
                 copy.setMaxEchoDelay(10 * i);
-                copy.setDamage(this.getCalculatedDamage(this.getBulletDamage(gunStack) * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
+                copy.setDamage(this.getCalculatedDamage(this.getBulletDamage(gunStack) * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack, shooter));
                 world.spawnEntity(copy);
             }
         }
@@ -233,7 +235,9 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
      * Calculates the damage so that the input damage equals the damage dealt, factoring velocity damage increase so that the config reflects correct sum.
      * @return damage value the projectile needs to afflict the resultDamage parameter inputted
      */
-    public float getCalculatedDamage(float resultDamage, ItemStack gunStack) {
+    public float getCalculatedDamage(float resultDamage, ItemStack gunStack, LivingEntity shooter) {
+        // double attr = shooter.getAttributeValue(EntityAttributes_RangedWeapon.DAMAGE.entry); If weapon with bonus was held in offhand (with ANY attribute bonus), it would apply to main hand weapon >:(
+        resultDamage += gunStack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f);
         return (resultDamage / this.getBulletVelocity(gunStack)) + WeaponUtil.getLevel(gunStack, Enchantments.POWER) / 2f;
     }
 

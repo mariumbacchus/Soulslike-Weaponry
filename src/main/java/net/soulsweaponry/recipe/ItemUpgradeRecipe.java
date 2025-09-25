@@ -1,0 +1,127 @@
+package net.soulsweaponry.recipe;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.SmithingRecipe;
+import net.minecraft.recipe.input.SmithingRecipeInput;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.gun.GunItem;
+import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.registry.RecipeSerializerRegistry;
+import net.soulsweaponry.util.UpgradeUtil;
+
+public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient addition, float primaryBonus, float secondaryBonus) implements SmithingRecipe {
+
+    @Override
+    public boolean testTemplate(ItemStack stack) {
+        return this.template.test(stack);
+    }
+
+    @Override
+    public boolean testBase(ItemStack stack) {
+        return this.base.test(stack);
+    }
+
+    @Override
+    public boolean testAddition(ItemStack stack) {
+        return this.addition.test(stack);
+    }
+
+    @Override
+    public boolean matches(SmithingRecipeInput input, World world) {
+        if (!this.template.test(input.template()) || !this.base.test(input.base()) || !this.addition.test(input.addition())) {
+            return false;
+        }
+        int level = input.base().getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        return level < (int) ConfigConstructor.item_upgrading_max_level;
+    }
+
+    @Override
+    public ItemStack craft(SmithingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
+        ItemStack out = input.base().copy();
+        int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        int nextLevel = Math.min(prev + 1, 5);
+        out.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, nextLevel);
+        float primary = this.primaryBonus() * nextLevel;
+        float secondary = this.secondaryBonus() * nextLevel;
+        switch (out.getItem()) {
+            case ArmorItem armor -> {
+                UpgradeUtil.setOrReplaceArmorUpgrade(out, armor, primary);
+                UpgradeUtil.setOrReplaceArmorToughnessUpgrade(out, armor, secondary);
+            }
+            case RangedWeaponItem ranged -> {
+                if (ranged instanceof GunItem) {
+                    out.set(ComponentRegistry.GUN_BONUS_DAMAGE, primary); // Calculated inside the weapon instead of attribute
+                } else {
+                    UpgradeUtil.setOrReplaceRangedDamageUpgrade(out, primary); // +% projectile damage
+                    UpgradeUtil.setOrReplaceRangedHasteUpgrade(out, secondary); // +% draw speed
+                }
+            }
+            default -> {
+                UpgradeUtil.setOrReplaceDamageUpgrade(out, primary);
+                if (secondary > 0) {
+                    UpgradeUtil.setOrReplaceAttackSpeedUpgrade(out, secondary);
+                }
+            }
+        }
+        return out;
+    }
+
+    /**
+     * Used for recipe book preview, smithing results depend on inputs,
+     * so returning EMPTY is fine.
+     */
+    @Override
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+        ItemStack[] matches = this.base.getMatchingStacks();
+        return matches.length > 0 ? matches[0].copy() : ItemStack.EMPTY;
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return RecipeSerializerRegistry.SMITHING_ITEM_UPGRADE;
+    }
+
+    public static class Serializer implements RecipeSerializer<ItemUpgradeRecipe> {
+        private static final MapCodec<ItemUpgradeRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                instance -> instance.group(
+                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("template").forGetter(recipe -> recipe.template),
+                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("base").forGetter(recipe -> recipe.base),
+                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("addition").forGetter(recipe -> recipe.addition),
+                                Codec.FLOAT.fieldOf("primaryBonus").forGetter(ItemUpgradeRecipe::primaryBonus),
+                                Codec.FLOAT.fieldOf("secondaryBonus").forGetter(ItemUpgradeRecipe::secondaryBonus)
+                        )
+                        .apply(instance, ItemUpgradeRecipe::new)
+        );
+        private static final PacketCodec<RegistryByteBuf, ItemUpgradeRecipe> PACKET_CODEC =
+                PacketCodec.tuple(
+                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::template,
+                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::base,
+                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::addition,
+                        PacketCodecs.FLOAT, ItemUpgradeRecipe::primaryBonus,
+                        PacketCodecs.FLOAT, ItemUpgradeRecipe::secondaryBonus,
+                        ItemUpgradeRecipe::new
+                );
+
+        @Override
+        public MapCodec<ItemUpgradeRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public PacketCodec<RegistryByteBuf, ItemUpgradeRecipe> packetCodec() {
+            return PACKET_CODEC;
+        }
+    }
+}

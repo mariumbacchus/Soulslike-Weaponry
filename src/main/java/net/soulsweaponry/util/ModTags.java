@@ -61,6 +61,8 @@ public class ModTags {
         public static final TagKey<Item> SUMMONABLE_WEAPONS = createTag("summonable_weapons");
         public static final TagKey<Item> STAVES = createTag("staves");
         public static final TagKey<Item> SOUL_HARVESTING_WEAPONS = createTag("soul_harvesting_weapons");
+        public static final TagKey<Item> MELEE_ITEM_UPGRADABLES = createTag("melee_item_upgradables");
+        public static final TagKey<Item> RANGED_ITEM_UPGRADABLES = createTag("ranged_item_upgradables");
 
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
