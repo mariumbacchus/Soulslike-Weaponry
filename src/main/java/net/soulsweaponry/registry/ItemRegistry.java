@@ -54,6 +54,7 @@ public class ItemRegistry {
     public static final Item VERGLAS = new Item(new Item.Settings());
     public static final Item SKOFNUNG_STONE = new SkofnungStone(new Item.Settings().maxDamage(20));
     public static final Item IRON_SKULL = new Item(new Item.Settings());
+    public static final Item TWINKLING_TITANITE = new Item(new Item.Settings().rarity(Rarity.RARE));
 
     public static final Item BLOOD_VIAL_RECIPE_PAGE = new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON).fireproof(), 12, true);
 
@@ -103,6 +104,7 @@ public class ItemRegistry {
         registerItem(VERGLAS, "verglas");
         registerItem(SKOFNUNG_STONE, "skofnung_stone");
         registerItem(IRON_SKULL, "iron_skull");
+        registerItem(TWINKLING_TITANITE, "twinkling_titanite");
         registerItem(BLOOD_VIAL_RECIPE_PAGE, "blood_vial_recipe_page");
 
         registerItem(MOONSTONE_SHOVEL, "moonstone_shovel");

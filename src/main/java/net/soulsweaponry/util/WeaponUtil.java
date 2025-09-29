@@ -89,26 +89,54 @@ public class WeaponUtil {
     }
 
     /**
-     * Override the {@code DataComponentTypes.ATTRIBUTE_MODIFIERS} component that holds damage
-     * and attack speed on the item. Call this in a tick method to update dynamically.
+     * Override the damage and attack speed inside the {@code DataComponentTypes.ATTRIBUTE_MODIFIERS} component
+     * while keeping all other attributes as is. Call this in a tick method to update dynamically.
      * @param stack item stack
      * @param damage damage
      * @param attackSpeed attack speed, this is not pre-calculated so you need to enter {@code - (4f - 1.6f)}
      *                    if you want 1.6 in attack speed as a result
      */
     public static void modifyStackAttributes(ItemStack stack, float damage, float attackSpeed) {
-        stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
-                .add(
-                        EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                        new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, damage, EntityAttributeModifier.Operation.ADD_VALUE),
-                        AttributeModifierSlot.MAINHAND
-                )
-                .add(
-                        EntityAttributes.GENERIC_ATTACK_SPEED,
-                        new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
-                        AttributeModifierSlot.MAINHAND
-                )
-                .build());
+        AttributeModifiersComponent source = stack.contains(DataComponentTypes.ATTRIBUTE_MODIFIERS)
+                ? stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS)
+                : stack.getItem().getComponents().getOrDefault(
+                DataComponentTypes.ATTRIBUTE_MODIFIERS,
+                AttributeModifiersComponent.DEFAULT
+        );
+
+        AttributeModifiersComponent.Builder b = AttributeModifiersComponent.builder();
+
+        // copy everything EXCEPT the two base MAINHAND rows we want to replace
+        for (AttributeModifiersComponent.Entry e : source.modifiers()) {
+            Identifier id = e.modifier().id();
+            boolean isMainhand = e.slot() == AttributeModifierSlot.MAINHAND;
+
+            boolean isBaseDamage = isMainhand
+                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                    && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(id);
+
+            boolean isBaseSpeed = isMainhand
+                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
+                    && BASE_ATTACK_SPEED_MODIFIER_ID.equals(id);
+
+            if (isBaseDamage || isBaseSpeed) continue; // drop those, replace later instead
+
+            b.add(e.attribute(), e.modifier(), e.slot());
+        }
+
+        // re-add the base rows with the dynamic values
+        b.add(
+                EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, damage, EntityAttributeModifier.Operation.ADD_VALUE),
+                AttributeModifierSlot.MAINHAND
+        );
+        b.add(
+                EntityAttributes.GENERIC_ATTACK_SPEED,
+                new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
+                AttributeModifierSlot.MAINHAND
+        );
+
+        stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, b.build());
     }
 
     public static EquipmentSlot getActiveHandSlot(PlayerEntity player) {

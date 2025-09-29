@@ -1,4 +1,4 @@
-// 1.21.1	2025-09-26T00:15:40.655165	Marium's Soulslike Weaponry/minecraft:entity Loot Table
+// 1.21.1	2025-09-29T23:55:30.5288677	Marium's Soulslike Weaponry/minecraft:entity Loot Table
 73a8cc12937143b2e1c9501b81a93390f85cc8e4 data\soulsweapons\loot_table\entities\soulmass.json
 d3e857923f4e2715ed6c1d6818d4008daa57ae3d data\soulsweapons\loot_table\entities\night_prowler.json
 72dbf6946a348ac5c2000dc262f53c52cdddbf1c data\soulsweapons\loot_table\entities\warmth_entity.json
@@ -13,5 +13,5 @@ ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_table\entities\m
 be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_table\entities\returning_knight.json
 bb067d9e00792672a68fe601c3a8498bd6780e7e data\soulsweapons\loot_table\entities\day_stalker.json
 04a04e9e1b0f8ec3981924f1e5a4825c14ca97dc data\soulsweapons\loot_table\entities\big_chungus.json
-325c1c76b71b1dd2fda346554d88a46b81cac7e2 data\soulsweapons\loot_table\entities\dark_sorcerer.json
 51b985ebbaca17fae4854e760e5e27568d4efffe data\soulsweapons\loot_table\entities\remnant.json
+325c1c76b71b1dd2fda346554d88a46b81cac7e2 data\soulsweapons\loot_table\entities\dark_sorcerer.json

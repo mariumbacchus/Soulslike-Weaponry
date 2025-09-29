@@ -80,6 +80,7 @@
     "item.soulsweapons.blood_vial": "Blood Vial",
     "item.soulsweapons.purified_blood_bucket": "Bucket of Purified Blood",
     "item.soulsweapons.blood_vial_recipe_page": "Recipe Page",
+    "item.soulsweapons.twinkling_titanite": "Twinkling Titanite",
 
     "item.soulsweapons.chungus_disc": "Big Chungus Music Disc",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (Official Main Theme)",
@@ -809,6 +810,7 @@
     "tooltip.soulsweapons.nightlord.fire": "§6Fire§r",
     "tooltip.soulsweapons.nightlord.cripple": "§dCripple§r",
     "tooltip.soulsweapons.nightlord.decay": "§5Blight & Decay§r",
+    "tooltip.soulsweapons.level": "Upgrade Level +%s",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

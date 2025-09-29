@@ -80,6 +80,7 @@
     "item.soulsweapons.blood_vial": "Blood Vial",
     "item.soulsweapons.purified_blood_bucket": "Bucket of Purified Blood",
     "item.soulsweapons.blood_vial_recipe_page": "Recipe Page",
+    "item.soulsweapons.twinkling_titanite": "Twinkling Titanite",
 
     "item.soulsweapons.chungus_disc": "ビッグ・チャンガス・ミュージック・ディスク",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (公式メインテーマ)",
@@ -807,6 +808,7 @@
     "tooltip.soulsweapons.nightlord.fire": "§6Fire§r",
     "tooltip.soulsweapons.nightlord.cripple": "§dCripple§r",
     "tooltip.soulsweapons.nightlord.decay": "§5Blight & Decay§r",
+    "tooltip.soulsweapons.level": "Upgrade Level +%s",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "絶滅したと考えられている珍しい形の魂。",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "暗く、しかしバランスの取れた色は、",

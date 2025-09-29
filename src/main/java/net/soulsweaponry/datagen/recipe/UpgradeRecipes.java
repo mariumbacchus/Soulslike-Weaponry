@@ -10,6 +10,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.GunRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ItemUpgradeRecipeJsonBuilder;
 import net.soulsweaponry.util.ModTags;
 
@@ -19,11 +20,8 @@ public class UpgradeRecipes {
 
     public static void generateRecipes(RecipeExporter recipeExporter) {
         // Upgrading recipes
-        // TODO make the addition into twinkling titanite instead of sticks
-        // TODO check different weapons if theyre balanced (damage and attack speed addition)
-        // TODO maybe change the color of the bonus attribute to green or smth to indicate the bonus (since always a new attribute line/row comes up)
-        // TODO update changelog to reflect the addition of upgrading system
         // TODO remove scaling off of enchants & replace with scaling off of this item level instead
+        // TODO make daggers do double posture break damage when triggering
         createUpgrade(recipeExporter, ModTags.Items.MELEE_ITEM_UPGRADABLES, 1f, 0.05f);
         createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f);
 
@@ -41,14 +39,14 @@ public class UpgradeRecipes {
     }
 
     public static void createUpgrade(RecipeExporter recipeExporter, TagKey<Item> tag, float primaryBonus, float secondaryBonus) {
-        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, Items.STICK, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
+        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(Items.STICK).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, tag.id().getPath() + "_upgrade"));
     }
 
     public static void createUpgrade(RecipeExporter recipeExporter, Item item, float primaryBonus, float secondaryBonus) {
-        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, item, Items.STICK, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
+        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, item, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(Items.STICK).build()))
                 .offerTo(recipeExporter, Identifier.of(item.toString() + "_upgrade"));

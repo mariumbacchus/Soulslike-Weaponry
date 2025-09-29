@@ -79,6 +79,7 @@
     "item.soulsweapons.glass_vial": "Стеклянный флакон",
     "item.soulsweapons.purified_blood_bucket": "Ведро Очищенной Крови",
     "item.soulsweapons.blood_vial_recipe_page": "Recipe Page",
+    "item.soulsweapons.twinkling_titanite": "Twinkling Titanite",
 
     "item.soulsweapons.chungus_disc": "Музыкальный диск Big Chungus",
     "item.soulsweapons.chungus_disc.desc": "Endigo - Big Chungus (Официальная Основная тема)",
@@ -807,6 +808,7 @@
     "tooltip.soulsweapons.nightlord.fire": "§6Fire§r",
     "tooltip.soulsweapons.nightlord.cripple": "§dCripple§r",
     "tooltip.soulsweapons.nightlord.decay": "§5Blight & Decay§r",
+    "tooltip.soulsweapons.level": "Upgrade Level +%s",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "Редкая форма душ, считавшаяся вымершей.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "Её тёмный, но сбалансированный цвет указывает,",

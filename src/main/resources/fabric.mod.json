@@ -26,6 +26,9 @@
     ],
     "client": [
       "net.soulsweaponry.client.SoulsWeaponryClient"
+    ],
+    "rei_client": [
+      "net.soulsweaponry.compat.SoulsWeaponryREIClientPlugin"
     ]
   },
   "mixins": [

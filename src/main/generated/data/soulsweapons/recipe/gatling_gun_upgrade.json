@@ -1,7 +1,7 @@
 {
   "type": "soulsweapons:smithing_item_upgrade",
   "addition": {
-    "item": "minecraft:stick"
+    "item": "soulsweapons:twinkling_titanite"
   },
   "base": {
     "item": "soulsweapons:gatling_gun"

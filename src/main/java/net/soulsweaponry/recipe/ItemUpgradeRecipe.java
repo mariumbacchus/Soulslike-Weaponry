@@ -52,6 +52,11 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
         ItemStack out = input.base().copy();
         int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
         int nextLevel = Math.min(prev + 1, 5);
+        applyUpgrades(out, nextLevel);
+        return out;
+    }
+
+    public void applyUpgrades(ItemStack out, int nextLevel) {
         out.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, nextLevel);
         float primary = this.primaryBonus() * nextLevel;
         float secondary = this.secondaryBonus() * nextLevel;
@@ -75,7 +80,6 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
                 }
             }
         }
-        return out;
     }
 
     /**

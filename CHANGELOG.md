@@ -1,6 +1,8 @@
 # Changelog
 
 # 1.4
+
+### Additions
 - Added Sword of the Nightlord
   - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), and lastly blight & decay
   - Attacking targets having either one of these effects deals bonus damage
@@ -14,7 +16,16 @@
   - Taking fire damage now removes Permafrost effect
   - Permafrost icicle explosion now damages nearby players too (not the main inflicter), and will no longer target allies of the inflicter
   - Increased the icicle explosion spread range slightly
+- Added a new upgrading system with the Smithing Table
+  - A new item Twinkling Titanite has been added, use it to upgrade items' stats, like damage and attack speed for melee and ranged weapons, or armor values for armor
+  - These bonuses are added as recipes with the type `"soulsweapons:smithing_item_upgrade"`, therefore making it possible to create own stat files for specific items or overwrite old ones
+  - Items can be upgraded max 5 times, but can be changed in config
+  - Added REI compatability for this system too
+  - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants
+
+### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
+- Fixed a bug causing weapons with dynamically changing attack damage and speed (i.e. Draugr during nightime, Mjølnir when raining, etc.) to have other attributes removed (like range from Better Combat)
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items

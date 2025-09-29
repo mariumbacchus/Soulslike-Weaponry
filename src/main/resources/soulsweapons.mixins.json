@@ -28,6 +28,7 @@
     "BossBarHudMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
+    "ItemStackTooltipMixin",
     "KeyBindingAccessor",
     "ShieldItemMixin"
   ],

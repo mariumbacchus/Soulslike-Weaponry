@@ -59,7 +59,7 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
         EntityAttributeModifier luckMod = WeaponUtil.makeAttribute(EntityAttributes.GENERIC_LUCK, eqSlot, ConfigConstructor.chaos_crown_luck_given);
         builder.add(EntityAttributes.GENERIC_LUCK, luckMod, slot);
         return builder.build();
-    });//TODO test
+    });
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
