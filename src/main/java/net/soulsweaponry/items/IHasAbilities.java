@@ -24,4 +24,6 @@ public interface IHasAbilities {
         }
         return Optional.empty();
     }
+
+    // TODO remove scaling off of enchants & replace with scaling off of this items upgrade level instead
 }

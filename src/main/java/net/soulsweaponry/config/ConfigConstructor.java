@@ -645,6 +645,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float master_sword_projectile_damage = 11.0f;
     @Entry public static float mehrunes_razor_damage = 6f;
     @Entry public static float mehrunes_razor_attack_speed = 2f;
+    @Entry(min=0) public static double mehrunes_razor_posture_break_crit_hit_percent_bonus = 1.0;
     @Entry public static float mehrunes_razor_missing_health_modifier = 0.75f;
     @Entry public static float mehrunes_razor_missing_health_modifier_against_players = 0.5f;
     @Entry public static float mehrunes_razor_missing_health_max_bonus_damage = 30f;

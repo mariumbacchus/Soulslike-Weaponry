@@ -20,8 +20,6 @@ public class UpgradeRecipes {
 
     public static void generateRecipes(RecipeExporter recipeExporter) {
         // Upgrading recipes
-        // TODO remove scaling off of enchants & replace with scaling off of this item level instead
-        // TODO make daggers do double posture break damage when triggering
         createUpgrade(recipeExporter, ModTags.Items.MELEE_ITEM_UPGRADABLES, 1f, 0.05f);
         createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f);
 

@@ -22,10 +22,12 @@
   - Items can be upgraded max 5 times, but can be changed in config
   - Added REI compatability for this system too
   - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants
+- Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
 - Fixed a bug causing weapons with dynamically changing attack damage and speed (i.e. Draugr during nightime, Mjølnir when raining, etc.) to have other attributes removed (like range from Better Combat)
+- Fixed a bug causing Mehrunes Razor to deal less bonus missing health damage
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items

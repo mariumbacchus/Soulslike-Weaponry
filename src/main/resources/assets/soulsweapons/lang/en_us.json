@@ -811,6 +811,8 @@
     "tooltip.soulsweapons.nightlord.cripple": "§dCripple§r",
     "tooltip.soulsweapons.nightlord.decay": "§5Blight & Decay§r",
     "tooltip.soulsweapons.level": "Upgrade Level +%s",
+    "tooltip.soulsweapons.posture_crit_bonus": "Critical Strike",
+    "tooltip.soulsweapons.posture_crit_bonus.1": "- Attacking posture broken targets deals %s more damage",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

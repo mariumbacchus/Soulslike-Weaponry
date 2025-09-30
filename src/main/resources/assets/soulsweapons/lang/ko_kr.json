@@ -896,6 +896,8 @@
     "tooltip.soulsweapons.nightlord.cripple": "§dCripple§r",
     "tooltip.soulsweapons.nightlord.decay": "§5Blight & Decay§r",
     "tooltip.soulsweapons.level": "Upgrade Level +%s",
+    "tooltip.soulsweapons.posture_crit_bonus": "Critical Strike",
+    "tooltip.soulsweapons.posture_crit_bonus.1": "- Attacking posture broken targets deals %s more damage",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "희귀한 형태의 영혼으로, 멸종된 것으로 여겨집니다.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "어두우면서도 균형 잡힌 색조는",

@@ -15,12 +15,16 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.items.IHasAbilities;
 import net.soulsweaponry.items.ILifeGuard;
+import net.soulsweaponry.items.abilities.BonusCritHitDamage;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+
+import java.util.Optional;
 
 public class ModifyDamageUtil {
 
@@ -46,9 +50,14 @@ public class ModifyDamageUtil {
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
             float baseAdded = entity instanceof PlayerEntity ? ConfigConstructor.posture_break_player_damage_per_amp : ConfigConstructor.posture_break_damage_per_amp;
-            float totalAdded = baseAdded * (amplifier + 1);
+            float totalAdded = baseAdded * (amplifier + 1) + ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
+            if (source.getAttacker() instanceof LivingEntity living) {
+                Optional<BonusCritHitDamage> op = IHasAbilities.getAbility(living.getStackInHand(Hand.MAIN_HAND), BonusCritHitDamage.class);
+                if (op.isPresent()) {
+                    totalAdded += (float) (totalAdded * op.get().percentBonus());
+                }
+            }
             newAmount += totalAdded;
-            newAmount += ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
             entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK);
             if (entity.hasStatusEffect(StatusEffects.SLOWNESS)) entity.removeStatusEffect(StatusEffects.SLOWNESS);

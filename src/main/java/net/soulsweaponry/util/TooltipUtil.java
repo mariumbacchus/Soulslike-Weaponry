@@ -76,14 +76,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.4").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.5").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
             }
-            case FINAL_WOUNDS -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds").formatted(Formatting.DARK_PURPLE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.1", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.2", ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.3", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_missing_health_trigger_cap).formatted(Formatting.DARK_GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.4", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.5", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_kill_trigger_cap).formatted(Formatting.DARK_GRAY));
-            }
             case ARMOR_BREAKER -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker.1").formatted(Formatting.GRAY));

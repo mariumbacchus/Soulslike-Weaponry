@@ -11,6 +11,7 @@ import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
+import net.soulsweaponry.items.dagger.MehrunesRazor;
 import net.soulsweaponry.items.hammer.*;
 import net.soulsweaponry.items.katana.Bloodlust;
 import net.soulsweaponry.items.katana.Dragonbane;
