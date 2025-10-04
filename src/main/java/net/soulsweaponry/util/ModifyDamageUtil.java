@@ -15,7 +15,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
-import net.soulsweaponry.items.IHasAbilities;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.abilities.BonusCritHitDamage;
 import net.soulsweaponry.items.axe.LeviathanAxe;

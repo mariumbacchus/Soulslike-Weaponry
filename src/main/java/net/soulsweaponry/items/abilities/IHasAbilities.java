@@ -1,7 +1,6 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.abilities;
 
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.items.abilities.IAbility;
 
 import java.util.List;
 import java.util.Optional;

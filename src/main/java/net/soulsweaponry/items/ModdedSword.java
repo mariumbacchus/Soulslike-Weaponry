@@ -9,6 +9,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;

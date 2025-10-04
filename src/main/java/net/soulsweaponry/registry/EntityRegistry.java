@@ -26,7 +26,7 @@ import net.soulsweaponry.entity.projectile.noclip.*;
 public class EntityRegistry {
 
     private static final String ModId = SoulsWeaponry.ModId;
-    public static final EntityType<WitheredDemon> WITHERED_DEMON = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "withered_demon"), EntityType.Builder.create(WitheredDemon::new, SpawnGroup.MONSTER).dimensions(1f, 2f).build());//TODO may need id as string into builder
+    public static final EntityType<WitheredDemon> WITHERED_DEMON = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "withered_demon"), EntityType.Builder.create(WitheredDemon::new, SpawnGroup.MONSTER).dimensions(1f, 2f).build());
     public static final EntityType<AccursedLordBoss> ACCURSED_LORD_BOSS = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "accursed_lord_boss"), EntityType.Builder.create(AccursedLordBoss::new, SpawnGroup.MONSTER).dimensions(3F, 6F).build());
     public static final EntityType<DraugrBoss> DRAUGR_BOSS = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "draugr_boss"), EntityType.Builder.create(DraugrBoss::new, SpawnGroup.MONSTER).dimensions(1.5F, 3F).build());
     public static final EntityType<NightShade> NIGHT_SHADE = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "night_shade"), EntityType.Builder.create(NightShade::new, SpawnGroup.MONSTER).dimensions(1.5F, 3.5F).build());

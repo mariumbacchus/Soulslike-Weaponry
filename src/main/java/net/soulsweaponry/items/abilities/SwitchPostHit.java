@@ -11,7 +11,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.FrostData;
-import net.soulsweaponry.items.IHasAbilities;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.ModTags;
