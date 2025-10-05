@@ -1,6 +1,10 @@
 package net.soulsweaponry.items.abilities;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +19,19 @@ public interface IHasAbilities {
             if (type.isInstance(a)) return Optional.of(type.cast(a));
         }
         return Optional.empty();
+    }
+
+    /**
+     * @return true if any ability is charge to use, meaning it will need the {@link net.minecraft.item.Item#onStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * call. This will make the item skip all calls from the {@link net.minecraft.item.Item#use(World, PlayerEntity, Hand)} method for abilities.
+     * <p>
+     * In other words, either only {@code use()} is called or only {@code onStoppedUsing()} is called.
+     */
+    default boolean hasChargeToUseAbility() {
+        for (IAbility a : getAbilities()) {
+            if (a.isChargeToUse()) return true;
+        }
+        return false;
     }
 
     static <T extends IAbility> Optional<T> getAbility(ItemStack stack, Class<T> type) {

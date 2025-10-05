@@ -11,8 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
+import net.soulsweaponry.items.ICooldownItem;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -25,11 +29,50 @@ import java.util.Locale;
  * TODO
  * Build upon this when needed, remember to actually call each method when adding them!
  */
-public interface IAbility {
+public interface IAbility extends ICooldownItem {
 
     default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}
     default void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
     default float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) { return 0f; }
+
+    /**
+     * Called when {@link #isChargeToUse()} returns {@code true}.
+     * @param stack itemstack used
+     * @param world world
+     * @param user user wielding the stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+
+    /**
+     * Called when {@link #isChargeToUse()} returns {@code false}.
+     * @param world world
+     * @param user user
+     * @param hand hand used
+     * @param stack stack in the hand used
+     * @return the typed action result
+     */
+    default TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+
+    /**
+     * NOTE: This must return true if the ability needs to be charged (hold down right click) for a certain time to be
+     * used, for example shooting moonlight beams with Moonlight Greatsword.
+     * <p>
+     * If this returns false, then the {@link #use(World, PlayerEntity, Hand, ItemStack)} method will be called for all abilities.
+     * <p>
+     * If this returns true, then the {@link #onStoppedUsing(ItemStack, World, LivingEntity, int)} method will be called after releasing the charge on the item
+     * and the {@link #use(World, PlayerEntity, Hand, ItemStack)} call is skipped for all other abilities as well.
+     * <p>
+     * In other words, either only {@code use()} is called or only {@code onStoppedUsing()} is called for all abilities depending on the return of this.
+     */
+    default boolean isChargeToUse() { return false; }
+
+    /**
+     * Called when the user is damaged when wielding this item.
+     */
+    default void onUserDamaged(DamageSource source, float amount, LivingEntity user, LivingEntity attacker) {}
 
     List<Text> getTooltipAbilities(ItemStack stack);
 

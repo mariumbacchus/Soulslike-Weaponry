@@ -10,18 +10,18 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 
+import java.util.function.Consumer;
+
 public class ChainLightning {
 
-    // TODO consider making an IAbility interface abstraction with a "trigger" method or something like that
-    // Other params can be turned into local variables instead that change based on weapon and such maybe?
-    public static void trigger(World world, LivingEntity target, LivingEntity user, boolean isMelee, float damage, double boxExpansion) {
+    public static void trigger(World world, LivingEntity target, LivingEntity user, float damage, double boxExpansion, Consumer<LivingEntity> targetConsumer) {
         if (!world.isClient) {
-            Vec3d fromPlayer = new Vec3d(user.getX(), user.getEyeY(), user.getZ());
             Vec3d toPrimary  = new Vec3d(target.getX(), target.getBodyY(0.5f), target.getZ());
-            if (isMelee) {
-                // Lightning from player to target
-                ParticleHandler.chainLightning(world, fromPlayer, toPrimary);
-            }
+            targetConsumer.accept(target);
+
+            // Lightning from player to target, was visually just in the way so disabling it for now
+            //Vec3d fromPlayer = new Vec3d(user.getX(), user.getEyeY(), user.getZ());
+            //ParticleHandler.chainLightning(world, fromPlayer, toPrimary);
 
             for (Entity e : world.getOtherEntities(target,
                     target.getBoundingBox().expand(boxExpansion),
@@ -34,7 +34,12 @@ public class ChainLightning {
                 secondary.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.PLAYER_LIGHTNING, user), damage);
                 Vec3d toSecondary = new Vec3d(secondary.getX(), secondary.getBodyY(0.5f), secondary.getZ());
                 ParticleHandler.chainLightning(world, toPrimary, toSecondary);
+                targetConsumer.accept(secondary);
             }
         }
+    }
+
+    public static void trigger(World world, LivingEntity target, LivingEntity user, float damage, double boxExpansion) {
+        trigger(world, target, user, damage, boxExpansion, (e) -> {});
     }
 }

@@ -23,7 +23,7 @@ public class Dragonbane extends ModdedSword implements IDragonBonus {
         if (!this.isDisabled(stack)) {
             float radius = ConfigConstructor.dragonbane_chain_lightning_range_per_enchant_level * (this.getReduceCooldownEnchantLevel(stack) + 1);
             float damage = ConfigConstructor.dragonbane_chain_lightning_damage_per_level * (this.getReduceCooldownEnchantLevel(stack) + 1);
-            ChainLightning.trigger(attacker.getWorld(), target, attacker, true, damage, radius);
+            ChainLightning.trigger(attacker.getWorld(), target, attacker, damage, radius);
         }
         return super.postHit(stack, target, attacker);
     }

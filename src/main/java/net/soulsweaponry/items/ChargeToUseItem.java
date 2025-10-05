@@ -50,7 +50,4 @@ public abstract class ChargeToUseItem extends ModdedSword {
             return TypedActionResult.success(itemStack);
         }
     }
-
-    @Override
-    public abstract void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks);
 }

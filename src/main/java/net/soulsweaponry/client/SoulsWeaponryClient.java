@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.*;
-import net.soulsweaponry.items.abilities.SwitchPostHit;
+import net.soulsweaponry.items.abilities.nightlords_sword.SwitchPostHit;
 import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.FluidRegistry;

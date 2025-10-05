@@ -74,16 +74,6 @@ public class MoonlightShortsword extends ModdedSword {
         return super.postHit(stack, target, attacker);
     }
 
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
     public float getProjectileDamage() {
         return ConfigConstructor.moonlight_shortsword_projectile_damage;
     }

@@ -251,7 +251,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
             }
             if (this.getOwner() instanceof LivingEntity owner) {
                 if (this.chainLightningDamage > 0f) {
-                    ChainLightning.trigger(this.getWorld(), target, owner, false, this.getChainLightningDamage(), this.getChainLightningRange());
+                    ChainLightning.trigger(this.getWorld(), target, owner, this.getChainLightningDamage(), this.getChainLightningRange());
                 }
             }
             if (this.getBlightCarrier() > 0) {

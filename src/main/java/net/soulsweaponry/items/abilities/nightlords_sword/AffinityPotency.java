@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities;
+package net.soulsweaponry.items.abilities.nightlords_sword;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.registry.EffectRegistry;
 
 import java.util.List;

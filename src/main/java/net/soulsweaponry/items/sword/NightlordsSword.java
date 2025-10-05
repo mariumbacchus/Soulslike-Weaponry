@@ -4,9 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.AffinityPotency;
+import net.soulsweaponry.items.abilities.nightlords_sword.AffinityPotency;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.items.abilities.SwitchPostHit;
+import net.soulsweaponry.items.abilities.nightlords_sword.SwitchPostHit;
 
 public class NightlordsSword extends ModdedSword {
 

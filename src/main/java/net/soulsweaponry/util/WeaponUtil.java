@@ -26,6 +26,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
@@ -42,8 +43,17 @@ import static net.minecraft.item.Item.BASE_ATTACK_SPEED_MODIFIER_ID;
 public class WeaponUtil {
 
     /**
+     * Returns the upgrade level of the item. One can upgrade it by mixing the item with
+     * a Twinkling Titanite in the Smithing Table with a Netherite Upgrade Template.
+     */
+    public static int getUpgradeLevel(ItemStack stack) {
+        return stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+    }
+
+    /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
+    @Deprecated
     public static int getEnchantDamageBonus(ItemStack stack) {
         return getHighestEnchantInTag(stack, EnchantmentTags.DAMAGE_EXCLUSIVE_SET);
     }
@@ -54,6 +64,7 @@ public class WeaponUtil {
      * will return the highest level of sharpness, smite or whatever damage enchant the item
      * has.
      */
+    @Deprecated
     public static int getHighestEnchantInTag(ItemStack stack, TagKey<Enchantment> tag) {
         return EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries().stream()
                 .filter(e -> e.getKey().isIn(tag))
@@ -66,6 +77,7 @@ public class WeaponUtil {
      * Gets the level of a specific enchant based on the RegistryKey for simplicity
      * TODO alternatively, look at what has been done in ICooldownItem to get level of the enchant, maybe replace this with that
      */
+    @Deprecated
     public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
         // TODO remove this when making enchants builtin into silver bullets
         Boolean disable = EnchantRegistry.DISABLED_ENCHANTMENTS.get(enchantKey);

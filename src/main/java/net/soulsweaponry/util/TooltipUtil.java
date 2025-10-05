@@ -62,12 +62,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.3").formatted(Formatting.GRAY));
             }
-            case STORMVEIL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil").formatted(Formatting.AQUA));
-                for (int i = 1; i <= 8; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil." + i).formatted(Formatting.GRAY));
-                }
-            }
             case LIGHTBRINGER -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer").formatted(Formatting.GOLD));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.1").formatted(Formatting.GRAY));
@@ -75,25 +69,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.3").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.4").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.5").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            }
-            case ARMOR_BREAKER -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker.1").formatted(Formatting.GRAY));
-            }
-            case MOLTEN_EDGE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge.1").formatted(Formatting.GRAY));
-            }
-            case FLAMEBURST -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.3").formatted(Formatting.GRAY));
-            }
-            case FIRETHORNS -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns").formatted(Formatting.DARK_RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.2").formatted(Formatting.GRAY));
             }
             case CHAIN_LIGHTNING -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning").formatted(Formatting.AQUA));

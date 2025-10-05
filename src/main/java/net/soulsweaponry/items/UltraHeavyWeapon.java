@@ -13,7 +13,7 @@ public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltra
         super(toolMaterial, attackDamage, attackSpeed, settings);
         this.isHeavy = isHeavy;
         this.addTooltipAbility(TooltipAbilities.HEAVY);
-    }
+    }//TODO make this ability based to there is no need for TooltipAbilities.HEAVY
 
     @Override
     public boolean isHeavy() {

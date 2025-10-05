@@ -19,13 +19,12 @@ import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
-import net.soulsweaponry.items.abilities.FireThorns;
-import net.soulsweaponry.items.abilities.StormveilThorns;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.tonitrus.ElectricCherry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -88,16 +87,15 @@ public class LivingEntityMixin {
             }
         }
         if (source.getAttacker() instanceof LivingEntity attacker) {
-            // Do fire-thorns when wielding Supernova
             for (Hand hand : Hand.values()) {
                 ItemStack stack = entity.getStackInHand(hand);
-                if (stack.isOf(WeaponRegistry.SUPERNOVA)) {
-                    FireThorns.trigger(entity, attacker);
+                if (stack.getItem() instanceof IHasAbilities has) {
+                    has.getAbilities().forEach(a -> a.onUserDamaged(source, amount, entity, attacker));
                 }
             }
             // Do lightning-thorns when having Stormveil effect
             if (entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
-                StormveilThorns.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
+                ElectricCherry.EFFECT_INSTANCE.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
             }
         }
     }

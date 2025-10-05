@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities;
+package net.soulsweaponry.items.abilities.nightlords_sword;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -11,9 +11,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.FrostData;
+import net.soulsweaponry.items.abilities.ChainLightning;
+import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +74,7 @@ public final class SwitchPostHit implements IAbility {
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        // TODO config values for duration & amp for each thing?
+        int level = WeaponUtil.getUpgradeLevel(stack);
         switch (this.getPostHitEffect(stack)) {
             case BLEED -> {
                 BleedData.addBleed(target, this.baseBleed);
@@ -80,9 +84,9 @@ public final class SwitchPostHit implements IAbility {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, this.poisonDuration, this.poisonAmp));
             }
             case CHAIN_LIGHTNING -> {
-                float radius = this.baseCLRadius; // TODO + this.clRadiusPerLvl * level
-                float damage = this.baseCLDamage;// TODO + this.clDamagePerLvl * level
-                ChainLightning.trigger(attacker.getWorld(), target, attacker, true, damage, radius);
+                float radius = this.baseCLRadius + clRadiusPerLvl * level;
+                float damage = this.baseCLDamage + clDamagePerLvl * level;
+                ChainLightning.trigger(attacker.getWorld(), target, attacker, damage, radius);
             }
             case WITHER -> {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, this.witherDuration, this.witherAmp));
