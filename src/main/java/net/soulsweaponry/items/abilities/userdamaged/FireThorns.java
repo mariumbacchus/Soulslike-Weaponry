@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.supernova;
+package net.soulsweaponry.items.abilities.userdamaged;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

@@ -17,7 +17,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.ILifeGuard;
-import net.soulsweaponry.items.abilities.mehrunes_razor.BonusCritHitDamage;
+import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;

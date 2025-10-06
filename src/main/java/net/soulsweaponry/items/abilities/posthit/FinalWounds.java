@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.mehrunes_razor;
+package net.soulsweaponry.items.abilities.posthit;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

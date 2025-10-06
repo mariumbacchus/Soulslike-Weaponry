@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.mehrunes_razor;
+package net.soulsweaponry.items.abilities.bonusdamage;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;

@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.nightlords_sword;
+package net.soulsweaponry.items.abilities.posthit;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

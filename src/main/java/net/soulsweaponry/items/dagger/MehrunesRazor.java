@@ -3,7 +3,7 @@ package net.soulsweaponry.items.dagger;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.abilities.mehrunes_razor.FinalWounds;
+import net.soulsweaponry.items.abilities.posthit.FinalWounds;
 
 public class MehrunesRazor extends ModdedDagger {
 

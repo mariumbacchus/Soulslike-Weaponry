@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.tonitrus;
+package net.soulsweaponry.items.abilities.use;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +11,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.posthit.StormveilSurge;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

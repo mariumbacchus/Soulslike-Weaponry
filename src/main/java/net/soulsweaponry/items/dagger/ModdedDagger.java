@@ -2,7 +2,7 @@ package net.soulsweaponry.items.dagger;
 
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.mehrunes_razor.BonusCritHitDamage;
+import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 
 public abstract class ModdedDagger extends ModdedSword {
 

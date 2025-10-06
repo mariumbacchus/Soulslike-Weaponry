@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.supernova;
+package net.soulsweaponry.items.abilities.posthit;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.tonitrus;
+package net.soulsweaponry.items.abilities.userdamaged;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;

@@ -20,7 +20,7 @@ import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.items.abilities.IHasAbilities;
-import net.soulsweaponry.items.abilities.tonitrus.ElectricCherry;
+import net.soulsweaponry.items.abilities.userdamaged.ElectricCherry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;

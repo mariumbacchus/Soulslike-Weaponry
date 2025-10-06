@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.tonitrus;
+package net.soulsweaponry.items.abilities.posthit;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
