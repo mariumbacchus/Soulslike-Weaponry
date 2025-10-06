@@ -3,6 +3,7 @@ package net.soulsweaponry.items;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.util.TooltipAbilities;
 
 public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltraHeavy, IDetonateGround {

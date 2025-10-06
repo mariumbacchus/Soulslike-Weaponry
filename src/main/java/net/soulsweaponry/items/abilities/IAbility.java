@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.items.ICooldownItem;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -29,7 +30,7 @@ import java.util.Locale;
  * TODO
  * Build upon this when needed, remember to actually call each method when adding them!
  */
-public interface IAbility extends ICooldownItem {
+public interface IAbility extends ICooldownItem, IDetonateGround {
 
     default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}
     default void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
@@ -37,6 +38,10 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code true}.
+     * Will not be called if the user is sneaking or if the item is in offhand,
+     * if so {@link #sneakingOnStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * or {@link #offhandOnStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * will be called instead.
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
@@ -47,7 +52,31 @@ public interface IAbility extends ICooldownItem {
     default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
 
     /**
+     * Called when {@link #isChargeToUse()} returns {@code true} and the user is sneaking.
+     * @param stack itemstack used
+     * @param world world
+     * @param user user wielding the stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    default void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+
+    /**
+     * Called when {@link #isChargeToUse()} returns {@code true} and only if the item is in offhand.
+     * @param stack itemstack used
+     * @param world world
+     * @param user user wielding the stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    default void offhandOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+
+    /**
      * Called when {@link #isChargeToUse()} returns {@code false}.
+     * Will not be called if the user is sneaking, if so {@link #sneakingUse(World, PlayerEntity, Hand, ItemStack)}
+     * will be called instead.
      * @param world world
      * @param user user
      * @param hand hand used
@@ -55,6 +84,26 @@ public interface IAbility extends ICooldownItem {
      * @return the typed action result
      */
     default TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+
+    /**
+     * Called when {@link #isChargeToUse()} returns {@code false} and the user is sneaking.
+     * @param world world
+     * @param user user
+     * @param hand hand used
+     * @param stack stack in the hand used
+     * @return the typed action result
+     */
+    default TypedActionResult<ItemStack> sneakingUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+
+    /**
+     * Called when {@link #isChargeToUse()} returns {@code false} and the item is in offhand.
+     * @param world world
+     * @param user user
+     * @param hand hand used
+     * @param stack stack in the hand used
+     * @return the typed action result
+     */
+    default TypedActionResult<ItemStack> offhandUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
 
     /**
      * NOTE: This must return true if the ability needs to be charged (hold down right click) for a certain time to be

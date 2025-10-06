@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.IDetonateGround;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;

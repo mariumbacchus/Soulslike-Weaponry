@@ -371,12 +371,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_attack_speed = 1.4f;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
     @Entry public static float comet_spear_ability_damage = 10;
-    @Entry public static boolean comet_spear_enchant_reduces_cooldown = true;
-    @Entry public static String[] comet_spear_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static float comet_spear_skyfall_ability_cooldown = 400;
     @Entry public static float comet_spear_skyfall_ability_min_cooldown = 200;
+    @Entry public static float comet_spear_skyfall_ability_reduced_cooldown_per_level = 20;
     @Entry public static float comet_spear_throw_ability_cooldown = 25;
     @Entry public static float comet_spear_throw_ability_min_cooldown = 0;
+    @Entry public static float comet_spear_throw_ability_reduced_cooldown_per_level = 5;
     @Entry public static float comet_spear_calculated_fall_base_radius = 0f;
     @Entry public static float comet_spear_calculated_fall_height_increase_radius_modifier = 2f;
     @Entry public static float comet_spear_calculated_fall_max_radius = 100f;

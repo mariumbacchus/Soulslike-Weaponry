@@ -90,6 +90,8 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         } else {
             // Presence-based hierarchy, do success if any ability returned success, do consume next if no success and so on...
             ItemStack out = itemStack;
+            boolean sneaking = user.isSneaking();
+
             boolean sawSuccess = false;
             boolean sawConsume = false;
             boolean sawConsumePartial = false;
@@ -97,7 +99,14 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
             boolean sawFail = false;
 
             for (var a : this.getAbilities()) {
-                TypedActionResult<ItemStack> r = a.use(world, user, hand, out);
+                TypedActionResult<ItemStack> r;
+                if (sneaking) {
+                    r = a.sneakingUse(world, user, hand, out);
+                } else if (hand == Hand.OFF_HAND) {
+                    r = a.offhandUse(world, user, hand, out);
+                } else {
+                    r = a.use(world, user, hand, out);
+                }
                 out = r.getValue();
                 switch (r.getResult()) {
                     case SUCCESS -> sawSuccess = true;
@@ -129,7 +138,16 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        this.getAbilities().forEach(a -> a.onStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks)));
+        boolean sneaking = user.isSneaking();
+        this.getAbilities().forEach(a -> {
+            if (sneaking) {
+                a.sneakingOnStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+            } else if (user.getOffHandStack().isOf(this)) {
+                a.offhandOnStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+            } else {
+                a.onStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+            }
+        });
     }
 
     @Override

@@ -17,7 +17,7 @@ import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
-import net.soulsweaponry.items.IDetonateGround;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.userdamaged.ElectricCherry;

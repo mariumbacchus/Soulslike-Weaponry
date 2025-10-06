@@ -6,16 +6,16 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
-import net.soulsweaponry.items.IDetonateGround;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.DetonateGroundAttributes;
 
 import java.util.Map;
 
-public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
+public class Kirkhammmer extends TrickWeapon {
     //TODO turn into mace? turn most trickweapon stuff into interface?
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.kirkhammer_calculated_fall_base_radius,
             ConfigConstructor.kirkhammer_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.kirkhammer_calculated_fall_target_launch_modifier,
@@ -32,13 +32,10 @@ public class Kirkhammmer extends TrickWeapon implements IDetonateGround {
             },
             (user, fallDistance, stack) -> {}
     );
+    private static final DetonateGroundAbility ABILITY = new DetonateGroundAbility(ATTRIBUTES);
 
     public Kirkhammmer(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, (int) ConfigConstructor.kirkhammer_posture_loss, 0f, ConfigConstructor.disable_use_kirkhammer);
-    }
-
-    @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return this.attributes;
+        this.addAbility(ABILITY);
     }
 }

@@ -28,14 +28,4 @@ public class MehrunesRazor extends ModdedDagger {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_mehrunes_razor;
     }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
-    }
 }

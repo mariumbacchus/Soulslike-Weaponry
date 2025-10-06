@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.abilities.detonateground;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
@@ -16,7 +15,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.spear.CometSpear;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -26,6 +28,7 @@ import net.soulsweaponry.util.DetonateGroundAttributes;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IDetonateGround {
 
@@ -72,16 +75,18 @@ public interface IDetonateGround {
     static boolean triggerCalculateFall(LivingEntity entity, float fallDistance, DamageSource source) {
         if (source.isOf(DamageTypes.FALL) && entity.hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
             StatusEffectInstance effect = entity.getStatusEffect(EffectRegistry.CALCULATED_FALL);
-            Item item = WeaponRegistry.COMET_SPEAR;
-            ItemStack stack = new ItemStack(item);
+            DetonateGroundAbility ability = CometSpear.METEOR_STRIKE;
+            ItemStack stack = WeaponRegistry.COMET_SPEAR.getDefaultStack();
             for (Hand hand : Hand.values()) {
                 ItemStack itemStack = entity.getStackInHand(hand);
-                if (stack.getItem() instanceof IDetonateGround) {
-                    item = stack.getItem();
+                Optional<DetonateGroundAbility> op = IHasAbilities.getAbility(itemStack, DetonateGroundAbility.class);
+                if (op.isPresent()) {
+                    ability = op.get();
                     stack = itemStack;
+                    break;
                 }
             }
-            ((IDetonateGround)item).detonateGroundEffect(entity, effect.getAmplifier(), fallDistance, entity.getWorld(), stack);
+            ability.detonateGroundEffect(entity, effect.getAmplifier(), fallDistance, entity.getWorld(), stack);
             entity.removeStatusEffect(EffectRegistry.CALCULATED_FALL);
             //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
             entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
@@ -90,5 +95,14 @@ public interface IDetonateGround {
         return false;
     }
 
-    DetonateGroundAttributes getDetonationAttributes();
+    /**
+     * Returns the detonation attributes, in other words all parameters for the detonation
+     * when the player lands on ground with {@link EffectRegistry#CALCULATED_FALL} effect.
+     * <p>
+     * Override this to return the proper parameters.
+     */
+    default DetonateGroundAttributes getDetonationAttributes() {
+        SoulsWeaponry.LOGGER.error("Missing override of getDetonationAttributes() in IDetonateGround! Defaulting to Comet Spears' explosion.");
+        return CometSpear.METEOR_STRIKE_ATTRIBUTES;
+    }
 }
