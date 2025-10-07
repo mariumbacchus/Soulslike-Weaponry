@@ -26,6 +26,7 @@ import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.items.ISummonAllies;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.DamageSourceRegistry;

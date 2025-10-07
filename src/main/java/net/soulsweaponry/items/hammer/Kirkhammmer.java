@@ -9,7 +9,7 @@ import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.DetonateGroundAttributes;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 
 import java.util.Map;
 

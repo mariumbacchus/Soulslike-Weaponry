@@ -17,7 +17,7 @@ import net.soulsweaponry.items.abilities.userdamaged.FireThorns;
 import net.soulsweaponry.items.abilities.stoppedusing.Flameburst;
 import net.soulsweaponry.items.abilities.posthit.MoltenEdge;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.DetonateGroundAttributes;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;

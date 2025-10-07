@@ -1,4 +1,4 @@
-package net.soulsweaponry.util;
+package net.soulsweaponry.items.abilities.detonateground;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

@@ -20,7 +20,7 @@ public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPer
                          float flamePillarBaseRadius, float flamePillarRadiusPerLvl,
                          float flamePillarBaseDamage, float flamePillarDamagePerLvl,
                          int minCooldown, int cooldown, int reducedCooldownPerLvl
-) implements IAbility {
+) implements IChargeToUse {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -44,11 +44,6 @@ public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPer
                 }
             }
         }
-    }
-
-    @Override
-    public boolean isChargeToUse() {
-        return true;
     }
 
     @Override

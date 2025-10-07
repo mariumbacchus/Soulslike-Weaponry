@@ -91,6 +91,9 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
             // Presence-based hierarchy, do success if any ability returned success, do consume next if no success and so on...
             ItemStack out = itemStack;
             boolean sneaking = user.isSneaking();
+            boolean hasSneakAbility = this.hasSneakToUseAbility();
+            boolean offhand = hand == Hand.OFF_HAND;
+            boolean hasOffhandAbility = this.hasOffhandToUseAbility();
 
             boolean sawSuccess = false;
             boolean sawConsume = false;
@@ -100,9 +103,9 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
 
             for (var a : this.getAbilities()) {
                 TypedActionResult<ItemStack> r;
-                if (sneaking) {
+                if (hasSneakAbility && sneaking) {
                     r = a.sneakingUse(world, user, hand, out);
-                } else if (hand == Hand.OFF_HAND) {
+                } else if (hasOffhandAbility && offhand) {
                     r = a.offhandUse(world, user, hand, out);
                 } else {
                     r = a.use(world, user, hand, out);
@@ -139,13 +142,17 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         boolean sneaking = user.isSneaking();
+        boolean hasSneakAbility = this.hasSneakToUseAbility();
+        boolean offhand = user.getOffHandStack().isOf(this);
+        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
+        int fixedTicks = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
         this.getAbilities().forEach(a -> {
-            if (sneaking) {
-                a.sneakingOnStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
-            } else if (user.getOffHandStack().isOf(this)) {
-                a.offhandOnStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+            if (hasSneakAbility && sneaking) {
+                a.sneakingOnStoppedUsing(stack, world, user, fixedTicks);
+            } else if (hasOffhandAbility && offhand) {
+                a.offhandOnStoppedUsing(stack, world, user, fixedTicks);
             } else {
-                a.onStoppedUsing(stack, world, user, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+                a.onStoppedUsing(stack, world, user, fixedTicks);
             }
         });
     }

@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.CometSpearEntity;
-import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IAbility {
+public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IChargeToUse {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -37,7 +37,9 @@ public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int re
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
-                //TODO
+                Text.translatable("tooltip.soulsweapons.throw_comet_spear").formatted(Formatting.GOLD),
+                Text.translatable("tooltip.soulsweapons.throw_comet_spear.1").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.throw_comet_spear.2").formatted(Formatting.GRAY)
         );
     }
 }

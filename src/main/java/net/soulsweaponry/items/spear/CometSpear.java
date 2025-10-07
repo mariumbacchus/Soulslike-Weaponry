@@ -11,8 +11,7 @@ import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.abilities.stoppedusing.Riptide;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowCometSpear;
-import net.soulsweaponry.util.DetonateGroundAttributes;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -50,12 +49,12 @@ public class CometSpear extends ChargeToUseItem implements GeoItem {
             (int) ConfigConstructor.comet_spear_ability_damage,
             (int) ConfigConstructor.comet_spear_skyfall_ability_min_cooldown,
             (int) ConfigConstructor.comet_spear_skyfall_ability_cooldown,
-            (int) ConfigConstructor.comet_spear_skyfall_ability_reduced_cooldown_per_level
+            (int) ConfigConstructor.comet_spear_skyfall_ability_reduced_cooldown_per_level,
+            Riptide.ALWAYS_COOLDOWN
     );
 
     public CometSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.comet_spear_damage, ConfigConstructor.comet_spear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SKYFALL, TooltipAbilities.INFINITY, TooltipAbilities.CRIT);
         this.addAbility(THROW_COMET_SPEAR, RIPTIDE, METEOR_STRIKE);
     }
 

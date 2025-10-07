@@ -34,6 +34,28 @@ public interface IHasAbilities {
         return false;
     }
 
+    /**
+     * @return true if any ability requires sneaking to use, meaning regular use methods will be skipped if
+     * at least one ability returns true.
+     */
+    default boolean hasSneakToUseAbility() {
+        for (IAbility a : getAbilities()) {
+            if (a.isSneakAbility()) return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return true if any ability requires the item to be in offhand to use, meaning regular use methods
+     * will be skipped if at least one ability returns true.
+     */
+    default boolean hasOffhandToUseAbility() {
+        for (IAbility a : getAbilities()) {
+            if (a.isOffhandAbility()) return true;
+        }
+        return false;
+    }
+
     static <T extends IAbility> Optional<T> getAbility(ItemStack stack, Class<T> type) {
         if (stack.getItem() instanceof IHasAbilities has) {
             return has.findAbility(type);

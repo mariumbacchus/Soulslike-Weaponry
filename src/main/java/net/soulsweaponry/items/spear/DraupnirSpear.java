@@ -46,7 +46,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.INFINITY, TooltipAbilities.DETONATE_SPEARS);
+        this.addTooltipAbility(TooltipAbilities.DETONATE_SPEARS);
     }
 
     @Override

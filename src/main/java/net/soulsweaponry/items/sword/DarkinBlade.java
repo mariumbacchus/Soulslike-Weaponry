@@ -16,7 +16,7 @@ import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.DetonateGroundAttributes;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;

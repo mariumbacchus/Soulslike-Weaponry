@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.items.ICooldownItem;
-import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -30,7 +29,7 @@ import java.util.Locale;
  * TODO
  * Build upon this when needed, remember to actually call each method when adding them!
  */
-public interface IAbility extends ICooldownItem, IDetonateGround {
+public interface IAbility extends ICooldownItem {
 
     default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}
     default void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
@@ -53,6 +52,7 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code true} and the user is sneaking.
+     * Remember to override {@link #isSneakAbility()} to return {@code true} when overriding this.
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
@@ -64,6 +64,8 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code true} and only if the item is in offhand.
+     * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed. Try turning it into a keybind or sneaking ability instead.
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
@@ -71,6 +73,7 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
+    @Deprecated
     default void offhandOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
 
     /**
@@ -87,6 +90,7 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code false} and the user is sneaking.
+     * Remember to override {@link #isSneakAbility()} to return {@code true} when overriding this.
      * @param world world
      * @param user user
      * @param hand hand used
@@ -97,12 +101,15 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code false} and the item is in offhand.
+     * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed. Try turning it into a keybind or sneaking ability instead.
      * @param world world
      * @param user user
      * @param hand hand used
      * @param stack stack in the hand used
      * @return the typed action result
      */
+    @Deprecated
     default TypedActionResult<ItemStack> offhandUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
 
     /**
@@ -117,6 +124,24 @@ public interface IAbility extends ICooldownItem, IDetonateGround {
      * In other words, either only {@code use()} is called or only {@code onStoppedUsing()} is called for all abilities depending on the return of this.
      */
     default boolean isChargeToUse() { return false; }
+
+    /**
+     * If true, both {@link #use(World, PlayerEntity, Hand, ItemStack)} and {@link #onStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * will be called even if the user is sneaking.
+     * <p>
+     * This way, if no ability returns true, regular use methods are called, meaning those are the
+     * only abilities that exist on the item and should still trigger, preventing nothing from happening at all.
+     */
+    default boolean isSneakAbility() { return false; }
+
+    /**
+     * If true, calls for both {@link #use(World, PlayerEntity, Hand, ItemStack)} and {@link #onStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * will be prevented.
+     * <p>
+     * This way, if no ability returns true, regular use methods are called, meaning those are the
+     * only abilities that exist on the item and should still trigger, preventing nothing from happening at all.
+     */
+    default boolean isOffhandAbility() { return false; }
 
     /**
      * Called when the user is damaged when wielding this item.
