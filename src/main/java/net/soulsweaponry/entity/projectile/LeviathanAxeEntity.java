@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -53,7 +53,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
                 living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
             }
             FrostData.setFrostSource(this, owner);
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
+            Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
         }
         return damaged;
     }

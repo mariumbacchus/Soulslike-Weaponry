@@ -5,6 +5,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.AttributeRegistry;
 
@@ -26,7 +27,7 @@ public class EntityFrost {
      * buildup cannot be applied during cooldown
      */
     public static void triggerFrost(LivingEntity entity) {
-        LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, ConfigConstructor.frost_base_damage, (int) ConfigConstructor.frost_permafrost_spread_effect_amp, ConfigConstructor.frost_percent_health_damage);
+        Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, ConfigConstructor.frost_base_damage, (int) ConfigConstructor.frost_permafrost_spread_effect_amp, ConfigConstructor.frost_percent_health_damage);
         FrostData.setFrostCoolingDown((IEntityDataSaver) entity, true);
     }
 

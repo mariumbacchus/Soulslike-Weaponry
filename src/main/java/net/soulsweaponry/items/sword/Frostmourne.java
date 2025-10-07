@@ -9,7 +9,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -18,33 +17,30 @@ import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.items.IPermafrost;
 import net.soulsweaponry.items.ISummonAllies;
 import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.UUID;
 
-public class Frostmourne extends SoulHarvestingItem implements ISummonAllies, IPermafrost {
+public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
+
+    private static final Permafrost PERMAFROST = new Permafrost(
+            (int) ConfigConstructor.frostmourne_frost_buildup_post_hit,
+            (int) ConfigConstructor.frostmourne_frost_post_hit_permafrost_base_duration,
+            (int) ConfigConstructor.frostmourne_frost_post_hit_permafrost_base_amplifier,
+            ConfigConstructor.frostmourne_frost_post_hit_permafrost_amp_per_level
+    );
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE, TooltipAbilities.PERMAFROST);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        int amp = MathHelper.ceil((float) WeaponUtil.getEnchantDamageBonus(stack)/2f);
-        this.applyPermafrost(attacker, target, 160, amp);
-        return super.postHit(stack, target, attacker);
+        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE);
+        this.addAbility(PERMAFROST);
     }
 
     @Override
@@ -90,20 +86,5 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies, IP
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_frostmourne;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public int getFrostBuildup() {
-        return (int) ConfigConstructor.frostmourne_frost_buildup_post_hit;
     }
 }

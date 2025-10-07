@@ -1,35 +1,23 @@
 package net.soulsweaponry.items.axe;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.soulsweaponry.api.entitystats.EntityFrost;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.LeviathanAxeEntity;
-import net.soulsweaponry.entitydata.FrostData;
-import net.soulsweaponry.items.IPermafrost;
 import net.soulsweaponry.items.ModdedAxe;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -38,34 +26,27 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
-import java.util.UUID;
 import java.util.function.Consumer;
 
-public class LeviathanAxe extends ModdedAxe implements GeoItem, IPermafrost {
+public class LeviathanAxe extends ModdedAxe implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final Permafrost PERMAFROST = new Permafrost(
+            (int) ConfigConstructor.leviathan_axe_frost_buildup_post_hit,
+            (int) ConfigConstructor.leviathan_axe_post_hit_permafrost_duration,
+            (int) ConfigConstructor.leviathan_axe_post_hit_permafrost_base_amp,
+            ConfigConstructor.leviathan_axe_post_hit_permafrost_amp_per_level
+    );
 
     public LeviathanAxe(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.leviathan_axe_damage, ConfigConstructor.leviathan_axe_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.PERMAFROST, TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
+        this.addTooltipAbility(TooltipAbilities.HEAVY_THROW, TooltipAbilities.RETURNING);
+        this.addAbility(PERMAFROST);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_leviathan_axe;
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (attacker.getWorld() instanceof ServerWorld serverWorld) {
-            int sharpness = MathHelper.floor(EnchantmentHelper.getDamage(serverWorld, stack, target, attacker.getDamageSources().mobAttack(attacker), 0));
-            this.applyPermafrost(attacker, target, 200, sharpness);
-        }
-        return super.postHit(stack, target, attacker);
     }
 
     @Override
@@ -114,35 +95,6 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem, IPermafrost {
         }
     }
 
-    public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier) {
-        iceExplosion(world, pos, affectedEntity, baseAoeDamage, amplifier, 0f);
-    }
-
-    public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier, float percentHealthDamage) {
-        if (world instanceof ServerWorld serverWorld) {
-            UUID uuid = FrostData.getFrostSource(affectedEntity);
-            Entity attacker = serverWorld.getEntity(uuid);
-            Box box = new Box(pos).expand(1.25D);
-            List<Entity> entities = world.getOtherEntities(attacker, box);
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity livingEntity) {
-                    if (attacker != null) {
-                        FrostData.setFrostSource(livingEntity, attacker);
-                        if (livingEntity.isTeammate(attacker)) {
-                            continue;
-                        }
-                    }
-                    float damage = EntityFrost.getFrostTriggerDamage(livingEntity, baseAoeDamage + livingEntity.getMaxHealth() * percentHealthDamage);
-                    livingEntity.damage(world.getDamageSources().freeze(), damage);
-                    livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
-                }
-            }
-            ParticleHandler.particleSphere(world, 300, pos.getX(), pos.getY() + .5f, pos.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
-        }
-        world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 1f);
-        world.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, .5f);
-    }
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
@@ -164,20 +116,5 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem, IPermafrost {
                 return this.renderer;
             }
         });
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public int getFrostBuildup() {
-        return (int) ConfigConstructor.leviathan_axe_frost_buildup_post_hit;
     }
 }

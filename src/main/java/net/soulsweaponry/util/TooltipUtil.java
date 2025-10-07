@@ -375,14 +375,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_throw_description").formatted(Formatting.GRAY));
             }
-            case PERMAFROST -> {
-                int amount = stack.getItem() instanceof IPermafrost permafrost ? permafrost.getFrostBuildup() : 0;
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freeze").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freeze_description", amount).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost").formatted(Formatting.DARK_AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.permafrost_description_2").formatted(Formatting.GRAY));
-            }
             case MAGIC_DAMAGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_1").formatted(Formatting.GRAY));

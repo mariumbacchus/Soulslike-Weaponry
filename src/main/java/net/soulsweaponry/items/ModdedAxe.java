@@ -91,7 +91,8 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, context, tooltip, type);
+        IAbility.appendTooltipAbilities(this.getAbilities(), tooltip, stack);
+        this.appendTooltipAbilities(stack, context, tooltip, type);//TODO remove when removing ITooltipInfo
         super.appendTooltip(stack, context, tooltip, type);
     }
 

@@ -23,7 +23,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -99,7 +99,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), this, 3f, 1);
+        Permafrost.iceExplosion(this.getWorld(), this.getBlockPos(), this, 3f, 1);
         super.onDeath(damageSource);
     }
 

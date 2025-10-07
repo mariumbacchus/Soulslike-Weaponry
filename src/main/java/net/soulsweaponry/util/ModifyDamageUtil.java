@@ -18,7 +18,7 @@ import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -65,7 +65,7 @@ public class ModifyDamageUtil {
             if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE)) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
             if (entity.hasStatusEffect(EffectRegistry.FREEZING)) {
                 int amp = entity.getStatusEffect(EffectRegistry.FREEZING).getAmplifier();
-                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amp + 1) * 1.5f, amp);
+                Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amp + 1) * 1.5f, amp);
                 entity.removeStatusEffect(EffectRegistry.FREEZING);
             }
         }

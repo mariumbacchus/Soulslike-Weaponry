@@ -434,7 +434,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_damage = 10;
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_amplifier = 0;
-    @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_duration = 80;
+    @Entry public static float dark_moon_greatsword_post_hit_permafrost_amp_per_level = 1f;
+    @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_duration = 100;
     @Entry public static float dark_moon_greatsword_frost_buildup_post_hit = 60;
     @Entry public static float dark_moon_greatsword_frost_moon_base_duration = 400;
     @Entry public static float dark_moon_greatsword_frost_moon_base_amplifier = 0;
@@ -555,6 +556,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frostmourne_attack_speed = 1.6f;
     @Entry public static float frostmourne_summoned_allies_cap = 50;
     @Entry public static float frostmourne_frost_buildup_post_hit = 40;
+    @Entry public static float frostmourne_frost_post_hit_permafrost_base_duration = 160;
+    @Entry public static float frostmourne_frost_post_hit_permafrost_base_amplifier = 0;
+    @Entry public static float frostmourne_frost_post_hit_permafrost_amp_per_level = 1f;
     @Entry public static float galeforce_damage = 10;
     @Entry public static float galeforce_bonus_velocity = 0.25f;
     @Entry public static float galeforce_ability_velocity = 3f;
@@ -630,6 +634,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;
     @Entry public static float leviathan_axe_frost_buildup_post_hit = 50;
+    @Entry public static float leviathan_axe_post_hit_permafrost_duration = 180;
+    @Entry public static float leviathan_axe_post_hit_permafrost_base_amp = 0f;
+    @Entry public static float leviathan_axe_post_hit_permafrost_amp_per_level = 1f;
     @Entry public static float leviathan_axe_projectile_frost_buildup_on_collision = 50;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4D;

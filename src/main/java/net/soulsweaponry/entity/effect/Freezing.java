@@ -7,7 +7,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -38,11 +38,11 @@ public class Freezing extends StatusEffect {
         if (entity.isDead()) {
             if (entity instanceof IAnimatedDeath animated) {
                 if (animated.getDeathTicks() < 2) {
-                    LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
+                    Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
                 }
             }
             else if (entity.deathTime < 2) {
-                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
+                Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, (amplifier + 1) * 1.5f, amplifier);
             }
         }
         return true;
