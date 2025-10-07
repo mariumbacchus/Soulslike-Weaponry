@@ -1,22 +1,77 @@
 package net.soulsweaponry.items;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
+import net.minecraft.world.World;
+import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo {
+public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo, IHasAbilities {
 
-    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>(); // TODO this can be merged into IAbility with own method calls in that child class, replace list with ability list instead
+    protected final List<IAbility> abilities = new ArrayList<>();
 
     public ModdedItem(Settings settings) {
         super(settings);
     }
+
+    @Override
+    public List<IAbility> getAbilities() {
+        return this.abilities;
+    }
+
+    @Override
+    public void addAbility(IAbility... abilities) {
+        Collections.addAll(this.abilities, abilities);
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        boolean vanilla = super.postHit(stack, target, attacker);
+        boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);
+        return vanilla || abilities;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        return IHasAbilities.super.use(world, user, hand);
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        IHasAbilities.super.onStoppedUsing(stack, world, user, remainingUseTicks);
+    }
+
+    @Override
+    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
+        return IHasAbilities.super.getBonusAttackDamage(target, baseAttackDamage, damageSource);
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return IHasAbilities.super.getUseAction(stack);
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+        return IHasAbilities.super.getMaxUseTime(stack, user);
+    }
+
+    // TODO everything under needs to be changed/merged with IAbility
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
