@@ -54,7 +54,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     );
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, (int) ConfigConstructor.heap_of_raw_iron_posture_loss);
         this.addTooltipAbility(TooltipAbilities.RAGE, TooltipAbilities.DRAGONS_SCOURGE);
     }
 
@@ -109,17 +109,12 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return this.attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.heap_of_raw_iron_posture_loss;
-    }
-
-    @Override
     public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
         return this.getDragonBonus(target, baseAttackDamage, damageSource);
+    }
+
+    @Override
+    public DetonateGroundAttributes getDetonateGroundAttributes() {
+        return this.attributes;
     }
 }

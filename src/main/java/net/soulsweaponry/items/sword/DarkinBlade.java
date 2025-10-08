@@ -46,7 +46,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     );
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss);
         this.addTooltipAbility(TooltipAbilities.OMNIVAMP, TooltipAbilities.SWORD_SLAM);
     }
 
@@ -81,7 +81,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
                 //NOTE: Ground Smash method is in parent class DetonateGroundItem
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, (int) ConfigConstructor.darkin_blade_ability_damage));
             } else {
-                this.detonateGroundEffect(user, (int) ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);
+                //this.detonateGroundEffect(user, (int) ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);TODO
             }
             stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
             this.applyItemCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
@@ -139,12 +139,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
+    public DetonateGroundAttributes getDetonateGroundAttributes() {
         return this.attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.darkin_blade_posture_loss;
     }
 }

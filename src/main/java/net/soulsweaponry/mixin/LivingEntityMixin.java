@@ -18,8 +18,8 @@ import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
-import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.items.abilities.userdamaged.ElectricCherry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -156,7 +156,7 @@ public class LivingEntityMixin {
     @Inject(method = "disablesShield", at = @At("HEAD"), cancellable = true)
     private void interceptDisablesShield(CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
-        if (ConfigConstructor.ultra_heavy_disables_shields && entity.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy()) {
+        if (ConfigConstructor.ultra_heavy_disables_shields && IHasAbilities.getAbility(entity.getMainHandStack(), UltraHeavy.class).isPresent()) {
             info.setReturnValue(true);
             info.cancel();
         }

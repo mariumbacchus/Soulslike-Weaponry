@@ -17,7 +17,7 @@ public abstract class ChargeToUseItem extends ModdedSword {
     public ChargeToUseItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
-
+    //TODO remove
     @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.SPEAR;

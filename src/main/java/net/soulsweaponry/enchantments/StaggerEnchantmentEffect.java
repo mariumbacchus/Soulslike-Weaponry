@@ -5,13 +5,15 @@ import net.minecraft.enchantment.EnchantmentEffectContext;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
-import net.soulsweaponry.items.IUltraHeavy;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 
 public record StaggerEnchantmentEffect() implements EnchantmentEntityEffect {
 
@@ -24,8 +26,11 @@ public record StaggerEnchantmentEffect() implements EnchantmentEntityEffect {
         }
         if (target instanceof LivingEntity living && !living.isDead()) {
             int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
-            if (context.owner() != null && context.owner().getStackInHand(Hand.MAIN_HAND).getItem() instanceof IUltraHeavy heavy && heavy.isHeavy()) {
-                postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
+            if (context.owner() != null) {
+                ItemStack stack = context.owner().getStackInHand(Hand.MAIN_HAND);
+                if (IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent()) {
+                    postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
+                }
             }
             postureLoss *= level;
             PostureData.addPostureLoss(living, postureLoss);

@@ -14,6 +14,8 @@ import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.tags.ItemTagsProvider;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.potion.*;
 import net.soulsweaponry.util.RecipeHandler;
@@ -138,7 +140,7 @@ public class ItemRegistry {
                 case ArmorItem ar -> ItemTagsProvider.ARMORS.add(item);
                 default -> {}
             }
-            if (item instanceof IUltraHeavy heavy && heavy.isHeavy()) {
+            if (IHasAbilities.getAbility(item.getDefaultStack(), UltraHeavy.class).isPresent()) {
                 ItemTagsProvider.HEAVY_WEAPONS.add(item);
             }
             if (item instanceof SoulHarvestingItem) {

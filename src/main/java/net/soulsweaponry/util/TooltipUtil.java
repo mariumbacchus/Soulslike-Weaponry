@@ -197,22 +197,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall").formatted(Formatting.AQUA, Formatting.BOLD));
                 for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));
             }
-            case HEAVY -> {
-                if (stack.getItem() instanceof IUltraHeavy heavy) {
-                    int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
-                    postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
-                    postureLoss *= WeaponUtil.getLevel(stack, EnchantRegistry.STAGGER);
-                    postureLoss += heavy.getPostureLoss();
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_4", postureLoss).formatted(Formatting.GRAY));
-                    if (ConfigConstructor.ultra_heavy_disables_shields) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
-                    }
-                }
-            }
             case LIFE_STEAL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_steal").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_steal_description").formatted(Formatting.GRAY));

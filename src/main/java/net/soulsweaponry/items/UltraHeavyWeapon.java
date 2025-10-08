@@ -1,32 +1,18 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 
-public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltraHeavy, IDetonateGround {
+public abstract class UltraHeavyWeapon extends ChargeToUseItem {
 
-    private final boolean isHeavy;
-
-    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, boolean isHeavy) {
+    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int postureLossPostHit) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.isHeavy = isHeavy;
-        this.addTooltipAbility(TooltipAbilities.HEAVY);
-    }//TODO make this ability based to there is no need for TooltipAbilities.HEAVY
-
-    @Override
-    public boolean isHeavy() {
-        return isHeavy;
+        UltraHeavy heavyAbility = new UltraHeavy(postureLossPostHit, 200, 1);
+        DetonateGroundAbility detonateGroundAbility = new DetonateGroundAbility(this.getDetonateGroundAttributes());
+        this.addAbility(heavyAbility, detonateGroundAbility);
     }
 
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled(stack)) {
-            this.gainStrength(attacker);
-            this.applyPostureLoss(target);
-        }
-        return super.postHit(stack, target, attacker);
-    }
+    public abstract DetonateGroundAttributes getDetonateGroundAttributes();
 }

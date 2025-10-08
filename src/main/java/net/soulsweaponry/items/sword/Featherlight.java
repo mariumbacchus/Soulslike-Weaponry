@@ -44,22 +44,12 @@ public class Featherlight extends UltraHeavyWeapon {
     );
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss);
         this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 
     @Override
@@ -73,12 +63,7 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.featherlight_posture_loss;
+    public DetonateGroundAttributes getDetonateGroundAttributes() {
+        return this.attributes;
     }
 }

@@ -18,8 +18,9 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
-import net.soulsweaponry.items.IUltraHeavy;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.WeaponUtil;
@@ -143,10 +144,10 @@ public class PlayerEntityMixin {
         PlayerEntity player = ((PlayerEntity) (Object)this);
 
         ItemStack stack = player.getInventory().getMainHandStack();
-        boolean mainHeavy = stack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        boolean mainHeavy = IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent();
 
         ItemStack offStack = player.getInventory().offHand.get(0);
-        boolean offHeavy = offStack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        boolean offHeavy = IHasAbilities.getAbility(offStack, UltraHeavy.class).isPresent();
         if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
             // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.
             // Therefore, only disable offhand completely if main hand is heavy, while give mining fatigue if heavy

@@ -8,6 +8,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.TrickWeapon;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 
@@ -33,9 +34,10 @@ public class Kirkhammmer extends TrickWeapon {
             (user, fallDistance, stack) -> {}
     );
     private static final DetonateGroundAbility ABILITY = new DetonateGroundAbility(ATTRIBUTES);
+    private static final UltraHeavy HEAVY_WEAPON = new UltraHeavy((int) ConfigConstructor.kirkhammer_posture_loss, 200, 1);
 
     public Kirkhammmer(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, true, (int) ConfigConstructor.kirkhammer_posture_loss, 0f, ConfigConstructor.disable_use_kirkhammer);
-        this.addAbility(ABILITY);
+        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, 0f, ConfigConstructor.disable_use_kirkhammer);
+        this.addAbility(ABILITY, HEAVY_WEAPON);
     }
 }

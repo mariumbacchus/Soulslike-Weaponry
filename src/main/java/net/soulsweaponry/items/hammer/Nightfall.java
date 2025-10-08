@@ -60,7 +60,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     );
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, (int) ConfigConstructor.nightfall_posture_loss);
         this.addTooltipAbility(TooltipAbilities.SUMMON_GHOST, TooltipAbilities.SHIELD, TooltipAbilities.OBLITERATE);
     }
 
@@ -204,12 +204,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.nightfall_posture_loss;
+    public DetonateGroundAttributes getDetonateGroundAttributes() {
+        return this.attributes;
     }
 }

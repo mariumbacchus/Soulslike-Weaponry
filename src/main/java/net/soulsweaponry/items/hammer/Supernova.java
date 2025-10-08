@@ -22,7 +22,7 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
 
-public class Supernova extends UltraHeavyWeapon {//TODO note: ChargeToUseItem overrides both use and onStoppedUsing so this wont work when extending UltraHeavyWeapon or ChargeToUseItem
+public class Supernova extends UltraHeavyWeapon {
 
     private static final FireThorns FIRETHORNS = new FireThorns(ConfigConstructor.supernova_firethorns_chance, ConfigConstructor.supernova_firethorns_damage, (int) ConfigConstructor.supernova_firethorns_fire_seconds);
     private static final MoltenEdge MOLTEN_EDGE = new MoltenEdge(ConfigConstructor.supernova_firehit_chance, MathHelper.floor(ConfigConstructor.supernova_firehit_duration_seconds));
@@ -61,7 +61,7 @@ public class Supernova extends UltraHeavyWeapon {//TODO note: ChargeToUseItem ov
     );
 
     public Supernova(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.supernova_damage, ConfigConstructor.supernova_attack_speed, settings, true);
+        super(toolMaterial, (int) ConfigConstructor.supernova_damage, ConfigConstructor.supernova_attack_speed, settings, (int) ConfigConstructor.supernova_posture_loss);
         this.addAbility(FIRETHORNS, MOLTEN_EDGE, ARMOR_BREAKER, FLAMEBURST);
     }
 
@@ -71,12 +71,7 @@ public class Supernova extends UltraHeavyWeapon {//TODO note: ChargeToUseItem ov
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
+    public DetonateGroundAttributes getDetonateGroundAttributes() {
         return this.attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.supernova_posture_loss;
     }
 }
