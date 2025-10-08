@@ -41,7 +41,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.RETURNING, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
+        this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING /*TooltipAbilities.RETURNING*/, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
     @Override

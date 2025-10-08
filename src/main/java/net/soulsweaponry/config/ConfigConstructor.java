@@ -637,6 +637,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float leviathan_axe_post_hit_permafrost_duration = 180;
     @Entry public static float leviathan_axe_post_hit_permafrost_base_amp = 0f;
     @Entry public static float leviathan_axe_post_hit_permafrost_amp_per_level = 1f;
+    @Entry public static float leviathan_axe_projectile_base_speed = 2.5f;
+    @Entry public static float leviathan_axe_projectile_speed_bonus_per_level = 0.2f;
     @Entry public static float leviathan_axe_projectile_frost_buildup_on_collision = 50;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4D;
