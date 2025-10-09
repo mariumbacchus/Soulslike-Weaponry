@@ -84,6 +84,11 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         return IHasAbilities.super.getMaxUseTime(stack, user);
     }
 
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
+    }
+
     // TODO everything under needs to be changed/merged with IAbility
 
     @Override

@@ -257,10 +257,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp_description").formatted(Formatting.GRAY));
             }
-            case WEATHERBORN -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn").formatted(Formatting.DARK_AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.weatherborn_description").formatted(Formatting.GRAY));
-            }
             case DRAGON_STAFF -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.dragon_staff").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.dragon_staff_description_1").formatted(Formatting.GRAY));

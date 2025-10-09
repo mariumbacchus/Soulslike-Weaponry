@@ -100,6 +100,37 @@ public class WeaponUtil {
         );
     }
 
+    public static float getBaseAttackDamage(ItemStack stack) {
+        AttributeModifiersComponent src = stack.getItem().getComponents()
+                .getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
+
+        for (var e : src.modifiers()) {
+            if (e.slot() == AttributeModifierSlot.MAINHAND
+                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                    && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
+                    && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(e.modifier().id())) {
+                return (float) e.modifier().value();
+            }
+        }
+        return 0f;
+    }
+
+
+    public static float getBaseAttackSpeed(ItemStack stack) {
+        AttributeModifiersComponent src = stack.getItem().getComponents()
+                .getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
+
+        for (var e : src.modifiers()) {
+            if (e.slot() == AttributeModifierSlot.MAINHAND
+                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
+                    && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
+                    && BASE_ATTACK_SPEED_MODIFIER_ID.equals(e.modifier().id())) {
+                return (float) e.modifier().value();
+            }
+        }
+        return 0f;
+    }
+
     /**
      * Override the damage and attack speed inside the {@code DataComponentTypes.ATTRIBUTE_MODIFIERS} component
      * while keeping all other attributes as is. Call this in a tick method to update dynamically.

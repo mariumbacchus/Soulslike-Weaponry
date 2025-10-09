@@ -17,6 +17,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IDragonBonus;
+import net.soulsweaponry.items.abilities.inventorytick.RainBoostsStats;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -26,9 +27,12 @@ import java.util.List;
 
 public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBonus {
 
+    private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage, ConfigConstructor.dragonslayer_swordspear_rain_bonus_attack_speed);
+
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.STORM_STOMP, TooltipAbilities.WEATHERBORN, TooltipAbilities.DRAGONS_SCOURGE);
+        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.STORM_STOMP, TooltipAbilities.DRAGONS_SCOURGE);
+        this.addAbility(RAIN_BOOSTS_STATS);
     }
 
     @Override
@@ -80,16 +84,6 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
         }
     }
 
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.dragonslayer_swordspear_enchant_reduces_cooldown_ids;
-    }
-
     protected int getScaledCooldownAbility(World world, ItemStack stack) {
         float base = ConfigConstructor.dragonslayer_swordspear_ability_cooldown;
         return (int) Math.max(ConfigConstructor.dragonslayer_swordspear_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20 / (world.isRaining() ? 2f : 1f));
@@ -98,21 +92,6 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     protected int getScaledCooldownThrow(World world, ItemStack stack) {
         float base = ConfigConstructor.dragonslayer_swordspear_throw_cooldown;
         return (int) Math.max(ConfigConstructor.dragonslayer_swordspear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 10 / (world.isRaining() ? 2f : 1f));
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack) || world.isClient) {
-            return;
-        }
-        float damage = this.getAttackDamage() - 1;
-        float attackSpeed = this.getAttackSpeed();
-        if (world.isRaining()) {
-            damage += ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage;
-            attackSpeed = - (4f - ConfigConstructor.dragonslayer_swordspear_rain_total_attack_speed);
-        }
-        WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
     }
 
     @Override

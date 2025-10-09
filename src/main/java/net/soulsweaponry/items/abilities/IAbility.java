@@ -148,6 +148,11 @@ public interface IAbility extends ICooldownItem {
      */
     default void onUserDamaged(DamageSource source, float amount, LivingEntity user, LivingEntity attacker) {}
 
+    /**
+     * Called every tick the item is in the users inventory.
+     */
+    default void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {}
+
     List<Text> getTooltipAbilities(ItemStack stack);
 
     default List<Text> getLoreTooltips(ItemStack stack) {

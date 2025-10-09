@@ -23,6 +23,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MjolnirProjectile;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.abilities.inventorytick.RainBoostsStats;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -38,25 +39,12 @@ import java.util.function.Consumer;
 public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.mjolnir_rain_bonus_damage, ConfigConstructor.mjolnir_rain_bonus_attack_speed);
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING /*TooltipAbilities.RETURNING*/, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack) || world.isClient) {
-            return;
-        }
-        float damage = this.getAttackDamage() - 1;
-        float attackSpeed = this.getAttackSpeed();
-        if (world.isRaining()) {
-            damage += ConfigConstructor.mjolnir_rain_bonus_damage;
-            attackSpeed = - (4f - ConfigConstructor.mjolnir_rain_total_attack_speed);
-        }
-        WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);
+        this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING /*TooltipAbilities.RETURNING*/, TooltipAbilities.OFF_HAND_FLIGHT);
+        this.addAbility(RAIN_BOOSTS_STATS);
     }
 
     @Override
@@ -93,16 +81,6 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
             }
             this.applyItemCooldown(player, cooldown);
         }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.mjolnir_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.mjolnir_ability_enchant_reduces_cooldown_ids;
     }
 
     private void throwHammer(World world, PlayerEntity player, ItemStack stack) {

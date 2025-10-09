@@ -529,7 +529,7 @@
   "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "gây sát thương cho các mob gần đó và triệu hồi §eSét§r",
   "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "lan ra từ người dùng.",
   "tooltip.soulsweapons.weatherborn": "Sinh Ra Từ Thời Tiết",
-  "tooltip.soulsweapons.weatherborn_description": "- Vũ khí này sẽ được cường hóa khi §9Trời Mưa§r.",
+  "tooltip.soulsweapons.weatherborn.description.1": "- Vũ khí này sẽ được cường hóa khi §9Trời Mưa§r.",
   "tooltip.soulsweapons.mjolnir_throw": "Công Cụ Thần Thánh",
   "tooltip.soulsweapons.mjolnir_throw_description_1": "- Ném vũ khí vào kẻ thù, triệu hồi",
   "tooltip.soulsweapons.mjolnir_throw_description_2": "sét lên chúng nếu trời quang.",

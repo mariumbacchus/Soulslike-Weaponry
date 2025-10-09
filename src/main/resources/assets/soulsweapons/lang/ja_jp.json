@@ -531,7 +531,7 @@
     "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "近くの敵にダメージを与え、",
     "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "使用者の外側に広がる§eLightning§rを召喚する。",
     "tooltip.soulsweapons.weatherborn": "ウェザーボーン",
-    "tooltip.soulsweapons.weatherborn_description": "- §9雨§rの場合に強化されます。",
+    "tooltip.soulsweapons.weatherborn.description.1": "- §9雨§rの場合に強化されます。",
     "tooltip.soulsweapons.mjolnir_throw": "神器",
     "tooltip.soulsweapons.mjolnir_throw_description_1": "- 武器を敵に投げつけ、",
     "tooltip.soulsweapons.mjolnir_throw_description_2": "晴れていれば敵に稲妻を召喚する。",

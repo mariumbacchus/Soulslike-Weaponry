@@ -74,8 +74,6 @@ public interface IHasAbilities extends IConfigDisable {
         return Optional.empty();
     }
 
-    // TODO remove scaling off of enchants & replace with scaling off of this items upgrade level instead
-
     default boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
             this.getAbilities().forEach(a -> a.postHit(stack, target, attacker));
@@ -186,5 +184,11 @@ public interface IHasAbilities extends IConfigDisable {
 
     default int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return this.hasChargeToUseAbility() ? 72000 : 0;
+    }
+
+    default void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if (!this.isDisabled(stack)) {
+            this.getAbilities().forEach(a -> a.inventoryTick(stack, world, entity, slot, selected));
+        }
     }
 }

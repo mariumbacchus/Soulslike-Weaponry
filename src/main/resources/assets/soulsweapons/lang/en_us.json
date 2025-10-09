@@ -531,7 +531,7 @@
     "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "damaging nearby mobs and summoning §eLightning§r",
     "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "that spreads outwards from the user.",
     "tooltip.soulsweapons.weatherborn": "Weatherborn",
-    "tooltip.soulsweapons.weatherborn_description": "- This becomes empowered when it is §9Raining§r.",
+    "tooltip.soulsweapons.weatherborn.description.1": "- This becomes empowered when it is §9Raining§r.",
     "tooltip.soulsweapons.mjolnir_throw": "Divine Instrument",
     "tooltip.soulsweapons.mjolnir_throw_description_1": "- Throw the weapon at enemies, summoning",
     "tooltip.soulsweapons.mjolnir_throw_description_2": "lightning on them if the skies are clear.",

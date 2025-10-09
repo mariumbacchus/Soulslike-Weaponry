@@ -574,7 +574,7 @@
     "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "사용자 주변에서 바깥으로 퍼지는 §e번개§r을 소환합니다.",
 
     "tooltip.soulsweapons.weatherborn": "날씨의 탄생",
-    "tooltip.soulsweapons.weatherborn_description": "- §9비§r가 올 때, 이 무기가 강화됩니다.",
+    "tooltip.soulsweapons.weatherborn.description.1": "- §9비§r가 올 때, 이 무기가 강화됩니다.",
 
     "tooltip.soulsweapons.mjolnir_throw": "신성한 도구",
     "tooltip.soulsweapons.mjolnir_throw_description_1": "- 적에게 무기를 던지면",

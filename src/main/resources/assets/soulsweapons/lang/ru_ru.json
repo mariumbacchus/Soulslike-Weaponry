@@ -531,7 +531,7 @@
     "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "нанося урон ближайшим мобам и призывая §eМолнии§r,",
     "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "которые распространяются от вас.",
     "tooltip.soulsweapons.weatherborn": "Порождённый Погодой",
-    "tooltip.soulsweapons.weatherborn_description": "- Это оружие становится усиленным, когда идет §9Дождь§r.",
+    "tooltip.soulsweapons.weatherborn.description.1": "- Это оружие становится усиленным, когда идет §9Дождь§r.",
     "tooltip.soulsweapons.mjolnir_throw": "Божественный Инструмент",
     "tooltip.soulsweapons.mjolnir_throw_description_1": "- Бросьте оружие во врагов, призывая",
     "tooltip.soulsweapons.mjolnir_throw_description_2": "на них молнию, если небо ясное.",

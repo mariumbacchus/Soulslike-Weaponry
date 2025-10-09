@@ -444,8 +444,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_projectile_damage = 7f;
     @Entry public static float dark_moon_greatsword_projectile_permafrost_base_amplifier = 0;
     @Entry public static float dark_moon_greatsword_projectile_permafrost_base_duration = 200;
-    @Entry public static boolean dark_moon_greatsword_enchant_reduces_cooldown = true;
-    @Entry public static String[] dark_moon_greatsword_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static float dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
     @Entry public static float dawnbreaker_ability_damage = 10.0f;
@@ -485,7 +483,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
     @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;
     @Entry public static float dragonslayer_swordspear_rain_bonus_damage = 1;
-    @Entry public static float dragonslayer_swordspear_rain_total_attack_speed = 1.8f;
+    @Entry public static float dragonslayer_swordspear_rain_bonus_attack_speed = 0.4f;
     @Entry public static float dragonslayer_swordspear_projectile_damage = 7.0f;
     @Entry public static float dragonslayer_swordspear_ability_damage = 6.0f;
     @Entry public static float dragonslayer_swordspear_lightning_amount = 1;
@@ -493,8 +491,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonslayer_swordspear_throw_min_cooldown = 20;
     @Entry public static float dragonslayer_swordspear_ability_cooldown = 300;
     @Entry public static float dragonslayer_swordspear_ability_min_cooldown = 80;
-    @Entry public static boolean dragonslayer_swordspear_enchant_reduces_cooldown = true;
-    @Entry public static String[] dragonslayer_swordspear_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static float dragon_staff_damage = 8;
     @Entry public static float dragon_staff_attack_speed = 1.2f;
     @Entry public static float dragon_staff_aura_strength = 1;
@@ -598,8 +594,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_ability_knockup = 0.3f;
     @Entry public static float holy_moonlight_ability_cooldown = 150;
     @Entry public static float holy_moonlight_ability_min_cooldown = 60;
-    @Entry public static boolean holy_moonlight_ability_enchant_reduces_cooldown = true;
-    @Entry public static String[] holy_moonlight_ability_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static float holy_moonlight_ruptures_amount = 8;
     @Entry public static float holy_moonlight_sword_damage = 7;
     @Entry public static float holy_moonlight_sword_attack_speed = 1.6f;
@@ -675,15 +669,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_damage = 9;
     @Entry public static float mjolnir_attack_speed = 1.2f;
     @Entry public static float mjolnir_rain_bonus_damage = 2;
-    @Entry public static float mjolnir_rain_total_attack_speed = 1.2f;
+    @Entry public static float mjolnir_rain_bonus_attack_speed = 0f;
     @Entry public static float mjolnir_smash_damage = 8f;
     @Entry public static float mjolnir_projectile_damage = 7f;
     @Entry public static float mjolnir_lightning_smash_cooldown = 200;
     @Entry public static float mjolnir_lightning_circle_amount = 3;
     @Entry public static float mjolnir_riptide_cooldown = 300;
     @Entry public static float mjolnir_ability_min_cooldown = 60;
-    @Entry public static boolean mjolnir_ability_enchant_reduces_cooldown = false;
-    @Entry public static String[] mjolnir_ability_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static double mjolnir_return_speed = 4D;
     @Entry public static float moonlight_greatsword_damage = 9;
     @Entry public static float moonlight_greatsword_attack_speed = 1.2f;

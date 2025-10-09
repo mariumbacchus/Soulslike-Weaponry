@@ -530,7 +530,7 @@
     "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "伤害周围的怪物并召唤§e雷击§r",
     "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "雷击将以玩家为中心向四周扩散",
     "tooltip.soulsweapons.weatherborn": "自然之力",
-    "tooltip.soulsweapons.weatherborn_description": "- §9下雨§r时得到强化",
+    "tooltip.soulsweapons.weatherborn.description.1": "- §9下雨§r时得到强化",
     "tooltip.soulsweapons.mjolnir_throw": "传说之兵",
     "tooltip.soulsweapons.mjolnir_throw_description_1": "- 命中敌人时，若其上方没有",
     "tooltip.soulsweapons.mjolnir_throw_description_2": "遮挡物，则会引来天雷轰击对方",

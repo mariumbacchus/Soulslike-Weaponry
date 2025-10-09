@@ -531,7 +531,7 @@
   "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "dañando a los mobs cercanos y convocando §eRayos§r",
   "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "que se extienden hacia afuera desde el usuario.",
   "tooltip.soulsweapons.weatherborn": "Nacido del clima",
-  "tooltip.soulsweapons.weatherborn_description": "- Esto se potencia cuando §9Llueve§r.",
+  "tooltip.soulsweapons.weatherborn.description.1": "- Esto se potencia cuando §9Llueve§r.",
   "tooltip.soulsweapons.mjolnir_throw": "Instrumento divino",
   "tooltip.soulsweapons.mjolnir_throw_description_1": "- Lanza el arma a los enemigos, convocando",
   "tooltip.soulsweapons.mjolnir_throw_description_2": "rayos sobre ellos si los cielos están despejados.",
