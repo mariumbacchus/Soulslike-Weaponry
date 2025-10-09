@@ -1,8 +1,6 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -13,17 +11,20 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.IUndeadBonus;
+import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
+public class MasterSword extends ChargeToUseItem {
+
+    private static final UndeadBonus UNDEAD_BONUS = new UndeadBonus(ConfigConstructor.master_sword_righteous_base_undead_bonus_damage, ConfigConstructor.master_sword_righteous_undead_bonus_damage_per_level);
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SKYWARD_STRIKES, TooltipAbilities.RIGHTEOUS);
+        this.addTooltipAbility(TooltipAbilities.SKYWARD_STRIKES);
+        this.addAbility(UNDEAD_BONUS);
     }
 
     @Override
@@ -43,21 +44,6 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
     }
 
     @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (user.getHealth() < user.getMaxHealth()) {
             return TypedActionResult.fail(user.getStackInHand(hand));
@@ -68,15 +54,5 @@ public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_master_sword;
-    }
-
-    @Override
-    public boolean isRighteous() {
-        return true;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return ConfigConstructor.master_sword_righteous_undead_bonus_damage;
     }
 }

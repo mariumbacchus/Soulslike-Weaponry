@@ -185,14 +185,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_no_charge_1").formatted(Formatting.DARK_GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_no_charge_2").formatted(Formatting.DARK_GRAY));
             }
-            case RIGHTEOUS -> {
-                if (stack.getItem() instanceof IUndeadBonus undeadBonus) {
-                    int amount = MathHelper.floor(WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT) + undeadBonus.getUndeadBonus(stack));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous").formatted(Formatting.GOLD));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_1").formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.righteous_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(String.valueOf(amount))));
-                }
-            }
             case MOONFALL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall").formatted(Formatting.AQUA, Formatting.BOLD));
                 for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));

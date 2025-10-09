@@ -1,42 +1,28 @@
 package net.soulsweaponry.items;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 
-public class TrickWeapon extends ModdedSword implements IUndeadBonus {
+public class TrickWeapon extends ModdedSword {
 
-    private final float undeadBonus;
     private final boolean isDisabled;
 
-    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, float undeadBonus, boolean isDisabled) {
+    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, boolean isDisabled, float baseUndeadBonus, float undeadBonusPerLvl) {
         super(toolMaterial, damage, attackSpeed, settings);
-        this.undeadBonus = undeadBonus;
         this.isDisabled = isDisabled;
-        if (this.isRighteous()) {
-            this.addTooltipAbility(TooltipAbilities.RIGHTEOUS);
+        if (baseUndeadBonus > 0f) {
+            UndeadBonus undeadBonusAbility = new UndeadBonus(baseUndeadBonus, undeadBonusPerLvl);
+            this.addAbility(undeadBonusAbility);
         }
+    }
+
+    public TrickWeapon(ToolMaterial toolMaterial, int damage, float attackSpeed, Settings settings, boolean isDisabled) {
+        this(toolMaterial, damage, attackSpeed, settings, isDisabled, 0, 0);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return this.isDisabled;
-    }
-
-    @Override
-    public boolean isRighteous() {
-        return this.undeadBonus > 0;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return this.undeadBonus;
-    }
-
-    @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
     }
 }

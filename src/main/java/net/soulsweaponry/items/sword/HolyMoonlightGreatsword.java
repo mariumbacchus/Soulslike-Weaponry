@@ -3,7 +3,6 @@ package net.soulsweaponry.items.sword;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -16,7 +15,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.noclip.HolyMoonlightPillar;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.items.IUndeadBonus;
+import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ComponentRegistry;
@@ -27,11 +26,14 @@ import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded, IUndeadBonus {
+public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded {
+
+    private static final UndeadBonus UNDEAD_BONUS = new UndeadBonus(ConfigConstructor.holy_moonlight_greatsword_righteous_base_undead_bonus_damage, ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage_per_level);
 
     public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.LUNAR_HERALD_NO_CHARGE, TooltipAbilities.CHARGE, TooltipAbilities.MOONFALL);
+        this.addAbility(UNDEAD_BONUS);
     }
 
     @Override
@@ -77,11 +79,6 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
     }
 
     @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
-    }
-
-    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) this.addCharge(stack, this.getAddedCharge(stack));
         return super.postHit(stack, target, attacker);
@@ -112,27 +109,7 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
     }
 
     @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_ids;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_holy_moonlight_greatsword;
-    }
-
-    @Override
-    public boolean isRighteous() {
-        return true;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage;
     }
 }

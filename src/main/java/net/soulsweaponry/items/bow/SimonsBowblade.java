@@ -1,9 +1,6 @@
 package net.soulsweaponry.items.bow;
 
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -11,20 +8,21 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
 import net.soulsweaponry.items.IPostureLossItem;
-import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.items.ModdedBow;
+import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
-public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureLossItem {
+public class SimonsBowblade extends ModdedBow implements IPostureLossItem {
 
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, createConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
                 ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
                 repairIngredientSupplier);
-        this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
+        UndeadBonus undeadBonus = new UndeadBonus(ConfigConstructor.simons_bowblade_projectile_righteous_base_undead_bonus_damage, ConfigConstructor.simons_bowblade_projectile_righteous_undead_bonus_damage_per_level);
+        this.addTooltipAbility(TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
+        //this.addAbility(undeadBonus); TODO make bows and crossbows implement IHasAbilities
     }
 
     @Override
@@ -33,36 +31,11 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     }
 
     @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         SilverArrow arrow = new SilverArrow(shooter, world, arrowStack, bowStack);
-        arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));
+        //arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));TODO implement when bows implement IHasAbilities
         arrow.setPostureLoss(this.getPostureLoss());
         return arrow;
-    }
-
-    @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getUndeadBonusAttackDamage(target, baseAttackDamage, damageSource);
-    }
-
-    @Override
-    public boolean isRighteous() {
-        return true;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return ConfigConstructor.simons_bowblade_projectile_righteous_undead_bonus_damage;
     }
 
     @Override
