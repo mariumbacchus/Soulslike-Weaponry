@@ -31,7 +31,7 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
 
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.STORM_STOMP, TooltipAbilities.DRAGONS_SCOURGE);
+        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL /*TooltipAbilities.THROW_LIGHTNING*/, TooltipAbilities.STORM_STOMP, TooltipAbilities.DRAGONS_SCOURGE);
         this.addAbility(RAIN_BOOSTS_STATS);
     }
 

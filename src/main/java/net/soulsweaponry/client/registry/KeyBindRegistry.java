@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.C2S.packets.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -90,6 +91,7 @@ public class KeyBindRegistry {
                 ClientPlayNetworking.send(new KeybindAbilityC2S());
                 if (client.player != null) {
                     ClientPlayerEntity player = client.player;
+                    //TODO remove these calls below when all abilities have been made
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (stack.getItem() instanceof IKeybindAbility abilityItem) {
@@ -106,6 +108,26 @@ public class KeyBindRegistry {
                                 configDisable.notifyDisabled(player);
                             } else {
                                 abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                            }
+                        }
+                    }
+                    //TODO remove above
+                    for (ItemStack armorStack : player.getArmorItems()) {
+                        if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
+                            if (abilityItem.isDisabled(armorStack)) {
+                                abilityItem.notifyDisabled(player);
+                            } else {
+                                abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityClient(client.world, armorStack, player));
+                            }
+                        }
+                    }
+                    for (Hand hand : Hand.values()) {
+                        ItemStack stack = player.getStackInHand(hand);
+                        if (stack.getItem() instanceof IHasAbilities abilityItem) {
+                            if (abilityItem.isDisabled(stack)) {
+                                abilityItem.notifyDisabled(player);
+                            } else {
+                                abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityClient(client.world, stack, player));
                             }
                         }
                     }

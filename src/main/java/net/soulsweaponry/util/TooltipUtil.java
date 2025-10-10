@@ -22,7 +22,6 @@ import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.Arrays;
@@ -53,7 +52,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.3").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case BLEED -> {
                 int amount = stack.getItem() instanceof IBleed bleed ? bleed.getBleedAmount() : 0;
@@ -107,7 +106,7 @@ public class TooltipUtil {
                 for (int i = 1; i <= 4; i++) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
                 }
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case CORRUPT_GROUND -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
@@ -246,12 +245,11 @@ public class TooltipUtil {
             case RAGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case LIGHTNING_CALL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning").formatted(Formatting.YELLOW));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_call").formatted(Formatting.YELLOW));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_call.description.1").formatted(Formatting.GRAY));
             }
             case STORM_STOMP -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
@@ -280,7 +278,7 @@ public class TooltipUtil {
                             .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
                     else tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
                 }
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
                 tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_6").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_7").formatted(Formatting.GRAY));
             }
@@ -323,7 +321,7 @@ public class TooltipUtil {
             }
             case GALEFORCE -> {
                 addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case FURY -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.fury").formatted(Formatting.RED));
@@ -344,21 +342,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_3").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_4").formatted(Formatting.GRAY).append(Text.literal(
                         String.valueOf(ConfigConstructor.lich_bane_bonus_magic_damage + WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT))).formatted(Formatting.DARK_AQUA)));
-            }
-            case MJOLNIR_LIGHTNING -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_lightning_call_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_lightning_call_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_lightning_call_description_3").formatted(Formatting.GRAY));
-            }
-            case OFF_HAND_FLIGHT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.off_hand_flight").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.off_hand_flight_description").formatted(Formatting.GRAY));
-            }
-            case THROW_LIGHTNING -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw_description_2").formatted(Formatting.GRAY));
             }
             case MOONLIGHT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
@@ -386,7 +369,7 @@ public class TooltipUtil {
             case SHIELD -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.shield").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.shield_description").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case OBLITERATE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.obliterate").formatted(Formatting.DARK_BLUE));
@@ -457,14 +440,12 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.skyward_strikes_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.skyward_strikes_description_2").formatted(Formatting.GRAY));
             }
-            case KEYBIND_ABILITY -> tooltip.add(Text.translatable("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY)
-                    .append(KeyBindRegistry.keybindAbility.getBoundKeyLocalizedText()));
             case NIGHTS_EDGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_3").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case CHAOS_STORM -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm").formatted(Formatting.RED));
@@ -476,7 +457,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_3").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case BLIGHT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.blight").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.BOLD));
@@ -519,7 +500,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm_2").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case TRANSPARENT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent").formatted(Formatting.AQUA));
@@ -532,7 +513,7 @@ public class TooltipUtil {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused." + i).formatted(Formatting.GRAY));
                 }
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused.8", ConfigConstructor.chungus_staff_ticks_before_explosion).formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
                 tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused.9").formatted(Formatting.DARK_GRAY));
             }
             case FROST_MOON -> {
@@ -541,7 +522,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.frost_moon.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.frost_moon.3").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.frost_moon.4").formatted(Formatting.GRAY));
-                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case GLAIVE_DANCE -> {
                 int maxStacks = stack.getItem() instanceof GlaiveOfHodir item ? item.getMaxStacks() : 5;

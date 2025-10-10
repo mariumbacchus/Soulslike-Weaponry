@@ -38,7 +38,7 @@ public record Riptide(
 ) implements ISneakChargeToUse {
 
     public static final Condition<World, LivingEntity> ALWAYS_COOLDOWN = Condition.of(Text.literal(""), ((world, user) -> true));
-    public static final Condition<World, LivingEntity> RAINING = Condition.of(Text.translatable("tooltip.soulsweapons.riptide.raining"), (world, user) -> world.isRaining());
+    public static final Condition<World, LivingEntity> RAINING = Condition.of(Text.translatable("tooltip.soulsweapons.riptide.raining"), (world, user) -> !world.isClient && !world.isRaining());
 
     public Riptide(float launchPower, float bonusPowerPerLvl, float collisionDamage, int minCooldown, int cooldown, int reducedCooldownPerLvl, Condition<World, LivingEntity> shouldApplyCooldown) {
         this(launchPower, bonusPowerPerLvl, collisionDamage, 0, 0, minCooldown, cooldown, reducedCooldownPerLvl, shouldApplyCooldown);

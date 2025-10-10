@@ -3,11 +3,13 @@ package net.soulsweaponry.items.abilities;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -153,7 +155,30 @@ public interface IAbility extends ICooldownItem {
      */
     default void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {}
 
+    /**
+     * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility}.
+     * @param world server world
+     * @param stack item stack
+     * @param player (server) player
+     */
+    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility}.
+     * @param world client world
+     * @param stack item stack
+     * @param player client player
+     */
+    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+
     List<Text> getTooltipAbilities(ItemStack stack);
+
+    /**
+     * Override this when you want to add additional tooltip right after the main tooltip.
+     */
+    default List<Text> getBonusAbilityTooltip(ItemStack stack) {
+        return List.of();
+    }
 
     default List<Text> getLoreTooltips(ItemStack stack) {
         return List.of();
@@ -166,7 +191,12 @@ public interface IAbility extends ICooldownItem {
     static void appendTooltipAbilities(List<IAbility> abilities, List<Text> tooltip, ItemStack stack) {
         List<Text> tooltipAbilities = new ArrayList<>();
         List<Text> lore = new ArrayList<>();
-        abilities.forEach(ability -> tooltipAbilities.addAll(ability.getTooltipAbilities(stack)));
+        abilities.forEach(ability -> {
+            List<Text> setup = new ArrayList<>();
+            setup.addAll(ability.getTooltipAbilities(stack));
+            setup.addAll(ability.getBonusAbilityTooltip(stack));
+            tooltipAbilities.addAll(setup);
+        });
         abilities.forEach(ability -> lore.addAll(ability.getLoreTooltips(stack)));
         if (!tooltipAbilities.isEmpty()) {
             if (shouldShowInfo()) {

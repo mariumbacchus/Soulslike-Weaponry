@@ -7,6 +7,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.C2S.packets.KeybindAbilityC2S;
 import net.soulsweaponry.util.IKeybindAbility;
 
@@ -20,6 +21,7 @@ public class KeybindAbilityC2SReceiver {
         ServerPlayerEntity player = ctx.player();
         ServerWorld serverWorld = player.getServerWorld();
         server.execute(() -> {
+            //TODO remove these calls below when all abilities have been made
             for (Hand hand : Hand.values()) {
                 ItemStack stack = player.getStackInHand(hand);
                 if (stack.getItem() instanceof IKeybindAbility keybindItem) {
@@ -36,6 +38,22 @@ public class KeybindAbilityC2SReceiver {
                         return;
                     }
                     abilityItem.useKeybindAbilityServer(serverWorld, armorStack, player);
+                }
+            }
+            //TODO remove above
+            for (ItemStack armorStack : player.getArmorItems()) {
+                if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
+                    if (!abilityItem.isDisabled(armorStack)) {
+                        abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityServer(serverWorld, armorStack, player));
+                    }
+                }
+            }
+            for (Hand hand : Hand.values()) {
+                ItemStack stack = player.getStackInHand(hand);
+                if (stack.getItem() instanceof IHasAbilities abilityItem) {
+                    if (!abilityItem.isDisabled(stack)) {
+                        abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityServer(serverWorld, stack, player));
+                    }
                 }
             }
         });

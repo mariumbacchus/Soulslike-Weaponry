@@ -442,9 +442,6 @@
     "tooltip.soulsweapons.obliterate": "파괴",
     "tooltip.soulsweapons.obliterate_description": "- 앞의 적들을 충전하고 부숴버립니다.",
 
-    "tooltip.soulsweapons.off_hand_flight": "보조 손 비행",
-    "tooltip.soulsweapons.off_hand_flight_description": "- 아이템이 보조 손에 있을 때, §3폭풍§r을 사용자에게 적용합니다.",
-
     "tooltip.soulsweapons.returning": "영혼 결속",
     "tooltip.soulsweapons.returning_description_1": "- 단축키를 눌러 던진 무기를 자신에게 되돌립니다.",
     "tooltip.soulsweapons.returning_description_2": "- 돌아오는 동안 충돌 시 피해와 효과가 발동합니다.",
@@ -456,9 +453,8 @@
     "tooltip.soulsweapons.rage": "분노",
     "tooltip.soulsweapons.rage_description": "- 능력 단축키를 눌러 §4피의 갈망§r 효과와 §c힘§r을 얻습니다.",
 
-    "tooltip.soulsweapons.lightning": "번개 호출",
-    "tooltip.soulsweapons.lightning_description_1": "- 보조 손에 사용할 때,",
-    "tooltip.soulsweapons.lightning_description_2": "주변의 모든 몬스터에게 §e번개§r을 소환합니다.",
+    "tooltip.soulsweapons.lightning_call": "Lightning Call",
+    "tooltip.soulsweapons.lightning_call.description.1": "- Summon §eLightning§r on all nearby mobs",
 
     "tooltip.soulsweapons.storm_stomp": "폭풍 발구르기",
     "tooltip.soulsweapons.storm_stomp_description": "- §e번개§r에 맞지 않은 대상을 밀쳐냅니다.",
@@ -569,16 +565,15 @@
     "tooltip.soulsweapons.sharpen_description_2": "이 무기가 강화됩니다. 그러면 공격 피해가 증가하고",
     "tooltip.soulsweapons.sharpen_description_3": "타격 후 §c출혈§r 효과가 추가됩니다.",
 
-    "tooltip.soulsweapons.mjolnir_lightning_call_description_1": "- 웅크리고 사용하면",
-    "tooltip.soulsweapons.mjolnir_lightning_call_description_2": "지면을 가격하여 주변 몬스터에 피해를 주고,",
-    "tooltip.soulsweapons.mjolnir_lightning_call_description_3": "사용자 주변에서 바깥으로 퍼지는 §e번개§r을 소환합니다.",
+    "tooltip.soulsweapons.mjolnir_lightning_call.description.1": "- Smash the ground and call forth §eLightning§r ",
+    "tooltip.soulsweapons.mjolnir_lightning_call.description.2": "that spreads outwards",
 
     "tooltip.soulsweapons.weatherborn": "날씨의 탄생",
     "tooltip.soulsweapons.weatherborn.description.1": "- §9비§r가 올 때, 이 무기가 강화됩니다.",
 
     "tooltip.soulsweapons.mjolnir_throw": "신성한 도구",
-    "tooltip.soulsweapons.mjolnir_throw_description_1": "- 적에게 무기를 던지면",
-    "tooltip.soulsweapons.mjolnir_throw_description_2": "하늘이 맑을 때 그들에게 번개를 소환합니다.",
+    "tooltip.soulsweapons.mjolnir_throw.description.1": "- 적에게 무기를 던지면",
+    "tooltip.soulsweapons.mjolnir_throw.description.2": "하늘이 맑을 때 그들에게 번개를 소환합니다.",
 
     "tooltip.soulsweapons.freyr_sword": "빛의 칼",
     "tooltip.soulsweapons.freyr_sword_description_1": "- Use to summon the §bSword of Freyr§r to fight",
