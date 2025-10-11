@@ -8,7 +8,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.abilities.abilitykeybind.CircleLightningCall;
 import net.soulsweaponry.items.abilities.inventorytick.RainBoostsStats;
-import net.soulsweaponry.items.abilities.stoppedusing.Riptide;
+import net.soulsweaponry.items.abilities.stoppedusing.sneaking.Riptide;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowMjolnir;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;

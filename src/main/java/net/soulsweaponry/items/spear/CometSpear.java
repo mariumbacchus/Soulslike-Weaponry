@@ -9,7 +9,7 @@ import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
-import net.soulsweaponry.items.abilities.stoppedusing.Riptide;
+import net.soulsweaponry.items.abilities.stoppedusing.sneaking.Riptide;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowCometSpear;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import software.bernie.geckolib.animatable.GeoItem;

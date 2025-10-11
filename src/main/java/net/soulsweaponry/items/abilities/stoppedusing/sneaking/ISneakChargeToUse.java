@@ -1,4 +1,6 @@
-package net.soulsweaponry.items.abilities.stoppedusing;
+package net.soulsweaponry.items.abilities.stoppedusing.sneaking;
+
+import net.soulsweaponry.items.abilities.stoppedusing.IChargeToUse;
 
 /**
  * Automatically sets {@link #isSneakAbility()} to return true.

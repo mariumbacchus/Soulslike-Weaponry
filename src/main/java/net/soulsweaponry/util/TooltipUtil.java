@@ -522,13 +522,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.5").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.6", item.getLifeSaveStackDamage(stack)).formatted(Formatting.DARK_GRAY));
             }
-            case TRANSIENT_MOONLIGHT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.transient_moonlight.4").formatted(Formatting.GRAY));
-            }
             case GUN_ITEM -> {
                 if (stack.getItem() instanceof GunItem gun) {
                     float bonus = stack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f);

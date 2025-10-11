@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.stoppedusing;
+package net.soulsweaponry.items.abilities.stoppedusing.sneaking;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
