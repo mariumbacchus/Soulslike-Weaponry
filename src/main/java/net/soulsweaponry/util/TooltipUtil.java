@@ -49,10 +49,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.4").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.5").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
             }
-            case CHAIN_LIGHTNING -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning.1").formatted(Formatting.GRAY));
-            }
             case SET_BONUS -> {
                 if (stack.getItem() instanceof SetBonusArmor armor) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
@@ -554,14 +550,6 @@ public class TooltipUtil {
                 if (stack.getItem() instanceof IPostureLossItem postureLoss) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss").formatted(Formatting.LIGHT_PURPLE));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss.1", postureLoss.getPostureLoss()).formatted(Formatting.GRAY));
-                }
-            }
-            case DRAGONS_SCOURGE -> {
-                if (stack.getItem() instanceof IDragonBonus bonus) {
-                    float amount = bonus.getTotalDragonBonus(stack);
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane").formatted(Formatting.DARK_PURPLE));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.1", String.format("%.1f", amount)).formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.dragons_bane.2").formatted(Formatting.DARK_GRAY));
                 }
             }
         }

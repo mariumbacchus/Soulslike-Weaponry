@@ -1,9 +1,7 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,7 +17,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -30,7 +27,7 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.Map;
 
-public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility, IDragonBonus {
+public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybindAbility {
 
     private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
             new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
@@ -55,7 +52,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, (int) ConfigConstructor.heap_of_raw_iron_posture_loss, ATTRIBUTES);
-        this.addTooltipAbility(TooltipAbilities.RAGE, TooltipAbilities.DRAGONS_SCOURGE);
+        this.addTooltipAbility(TooltipAbilities.RAGE); //TooltipAbilities.DRAGONS_SCOURGE ConfigConstructor.heap_of_raw_iron_dragons_scourge_bonus;
     }
 
     @Override
@@ -78,16 +75,6 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
     }
 
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.heap_of_raw_iron_enchant_reduces_cooldown_ids;
-    }
-
     protected int getScaledCooldown(ItemStack stack) {
         float base = ConfigConstructor.heap_of_raw_iron_cooldown;
         return (int) Math.max(ConfigConstructor.heap_of_raw_iron_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20);
@@ -101,15 +88,5 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_heap_of_raw_iron;
-    }
-
-    @Override
-    public float getBaseDragonBonus(ItemStack stack) {
-        return ConfigConstructor.heap_of_raw_iron_dragons_scourge_bonus;
-    }
-
-    @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getDragonBonus(target, baseAttackDamage, damageSource);
     }
 }

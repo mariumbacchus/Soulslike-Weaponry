@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.spear;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.TameableEntity;
@@ -16,7 +15,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.abilities.inventorytick.RainBoostsStats;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -25,13 +23,13 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBonus {
+public class DragonslayerSwordspear extends ChargeToUseItem {
 
     private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage, ConfigConstructor.dragonslayer_swordspear_rain_bonus_attack_speed);
 
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL /*TooltipAbilities.THROW_LIGHTNING*/, TooltipAbilities.STORM_STOMP, TooltipAbilities.DRAGONS_SCOURGE);
+        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL /*TooltipAbilities.THROW_LIGHTNING*/, TooltipAbilities.STORM_STOMP);//TooltipAbilities.DRAGONS_SCOURGE ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus;
         this.addAbility(RAIN_BOOSTS_STATS);
     }
 
@@ -97,15 +95,5 @@ public class DragonslayerSwordspear extends ChargeToUseItem implements IDragonBo
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragonslayer_swordspear;
-    }
-
-    @Override
-    public float getBaseDragonBonus(ItemStack stack) {
-        return ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus;
-    }
-
-    @Override
-    public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        return this.getDragonBonus(target, baseAttackDamage, damageSource);
     }
 }

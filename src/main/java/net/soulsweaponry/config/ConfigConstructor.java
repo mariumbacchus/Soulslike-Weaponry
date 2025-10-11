@@ -478,11 +478,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float heap_of_raw_iron_calculated_fall_heal_from_damage_modifier = 0f;
     @Entry public static float dragonbane_damage = 9;
     @Entry public static float dragonbane_attack_speed = 1.6f;
-    @Entry public static float dragonbane_dragons_scourge_bonus = 20f;
-    @Entry public static float dragonbane_chain_lightning_damage_per_level = 6f;
-    @Entry public static float dragonbane_chain_lightning_range_per_enchant_level = 2.25f;
-    @Entry public static boolean dragonbane_chain_lightning_enchant_can_boost = true;
-    @Entry public static String[] dragonbane_chain_lightning_boost_enchant = {"sweeping_edge"};
+    @Entry public static float dragonbane_dragons_scourge_base_bonus = 20f;
+    @Entry public static float dragonbane_dragons_scourge_bonus_per_level = 5f;
+    @Entry public static float dragonbane_chain_lightning_base_damage = 6f;
+    @Entry public static float dragonbane_chain_lightning_bonus_damage_per_level = 4f;
+    @Entry public static float dragonbane_chain_lightning_base_range = 2.5f;
+    @Entry public static float dragonbane_chain_lightning_bonus_range_per_level = 1.3f;
     @Entry public static float dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
     @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;
