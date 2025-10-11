@@ -332,11 +332,15 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bloodlust_damage = 7;
     @Entry public static float bloodlust_attack_speed = 1.6f;
     @Entry public static float bloodlust_bleed_post_hit = 40;
+    @Entry public static float bloodlust_bleed_post_hit_bonus_per_bloodthirsty_amp = 30;
     @Entry public static float bloodlust_ability_self_damage = 4f;
     @Entry public static float bloodlust_ability_self_bleed = 100;
     @Entry public static float bloodlust_ability_strength_amp = 1;
+    @Entry public static float bloodlust_ability_strength_duration = 400;
     @Entry public static float bloodlust_ability_bloodthirsty_amp = 0;
+    @Entry public static float bloodlust_ability_bloodthirsty_duration = 300;
     @Entry public static float bloodlust_bloodloss_in_vicinity_gives_strength_amp = 0;
+    @Entry public static float bloodlust_bloodloss_in_vicinity_gives_strength_duration = 600;
     @Entry public static float bloodthirster_damage = 8;
     @Entry public static float bloodthirster_attack_speed = 1.6f;
     @Entry public static boolean bloodthirster_overshields = true;
@@ -903,7 +907,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0, max=1) public static float bleed_percent_health_damage = 0.1f;
     @Entry public static float bleed_effect_increase_per_amp = 6;
     @Entry public static float bleed_effect_base_increase = 4;
-    @Entry public static float bleed_post_hit_bloodthirsty_effect_increase_mod = 0.75f;
 
     @Entry public static boolean disable_frost_buildup_mechanic_for_all_mobs = false;
     @Entry public static float max_frost_buildup = 200;

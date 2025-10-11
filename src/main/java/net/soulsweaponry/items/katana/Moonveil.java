@@ -15,17 +15,17 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class Moonveil extends ChargeToUseItem implements IBleed {
+public class Moonveil extends ChargeToUseItem {
 
     public Moonveil(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.moonveil_damage, ConfigConstructor.moonveil_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT, TooltipAbilities.BLEED);
+        this.addTooltipAbility(TooltipAbilities.TRANSIENT_MOONLIGHT);//TooltipAbilities.BLEED (int) ConfigConstructor.moonveil_bleed_post_hit
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
-            this.applyBleed(attacker, target);
+            //this.applyBleed(attacker, target);
         }
         return super.postHit(stack, target, attacker);
     }
@@ -69,20 +69,5 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_moonveil;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public int getBleedAmount() {
-        return (int) ConfigConstructor.moonveil_bleed_post_hit;
     }
 }

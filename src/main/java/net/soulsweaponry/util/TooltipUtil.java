@@ -14,7 +14,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
-import net.soulsweaponry.items.katana.IBleed;
 import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
 import net.soulsweaponry.items.spear.GlaiveOfHodir;
@@ -42,25 +41,6 @@ public class TooltipUtil {
     // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
-            case SCENT_OF_BLOOD -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.2").formatted(Formatting.GRAY));
-            }
-            case BLOODLUST -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust").formatted(Formatting.DARK_RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.3").formatted(Formatting.GRAY));
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-            }
-            case BLEED -> {
-                int amount = stack.getItem() instanceof IBleed bleed ? bleed.getBleedAmount() : 0;
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.1", amount).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.3").formatted(Formatting.GRAY));
-            }
             case LIGHTBRINGER -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer").formatted(Formatting.GOLD));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.1").formatted(Formatting.GRAY));

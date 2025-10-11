@@ -176,6 +176,16 @@ public interface IAbility extends ICooldownItem {
      */
     default void onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
+    /**
+     * When a target triggers the bleed buildup (taking massive bleed damage), it sends a signal
+     * out 20x their bounding box size to other entities to call this method if they hold an
+     * {@link IHasAbilities} item.
+     * @param stack held ability item stack
+     * @param target target that bled
+     * @param attacker wielder of the stack
+     */
+    default void onTargetBleedTrigger(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+
     List<Text> getTooltipAbilities(ItemStack stack);
 
     /**
