@@ -1,23 +1,30 @@
 package net.soulsweaponry.items.abilities;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.soulsweaponry.client.registry.KeyBindRegistry;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public interface IHasAbilities extends IConfigDisable {
@@ -190,5 +197,98 @@ public interface IHasAbilities extends IConfigDisable {
         if (!this.isDisabled(stack)) {
             this.getAbilities().forEach(a -> a.inventoryTick(stack, world, entity, slot, selected));
         }
+    }
+
+    /**
+     * Adds all tooltip abilities listed in {@link IAbility#getTooltipAbilities(ItemStack)} to the item tooltip.
+     * Additional lore is also applied if the weapons have it.
+     */
+    default void appendTooltipAbilities(List<Text> tooltip, ItemStack stack) {
+        if (this.isDisabled(stack)) {
+            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        }
+        List<Text> tooltipAbilities = new ArrayList<>();
+        List<Text> lore = new ArrayList<>();
+        this.getAbilities().forEach(ability -> {
+            List<Text> setup = new ArrayList<>();
+            setup.addAll(ability.getTooltipAbilities(stack));
+            setup.addAll(ability.getBonusAbilityTooltip(stack));
+            tooltipAbilities.addAll(setup);
+        });
+        this.getAbilities().forEach(ability -> lore.addAll(ability.getLoreTooltips(stack)));
+        if (stack.getItem() instanceof IHasLore hasLore) {
+            // Lore from items specifically
+            lore.addAll(hasLore.getLore());
+        }
+        if (!tooltipAbilities.isEmpty()) {
+            if (shouldShowInfo()) {
+                tooltip.addAll(tooltipAbilities);
+            } else {
+                addShowInfoText(tooltip);
+            }
+        }
+        if (!lore.isEmpty()) {
+            if (shouldShowLore()) {
+                tooltip.addAll(lore);
+            } else {
+                addShowLoreText(tooltip);
+            }
+        }
+    }
+
+    /**
+     * @return Whether the info button is being held when hovering an item, button is ALT if Epic Fight mod
+     * is installed or SHIFT otherwise by default, can be changed in controls settings.
+     */
+    static boolean shouldShowInfo() {
+        if (ClientConfig.always_show_item_tooltip) {
+            return true;
+        }
+        if (KeyBindRegistry.showItemTooltip.isUnbound()) {
+            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+            return epicFight ? Screen.hasAltDown() : Screen.hasShiftDown();
+        }
+        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemTooltip).getBoundKey().getCode());
+    }
+
+    static boolean shouldShowLore() {
+        if (ClientConfig.always_show_item_lore) {
+            return true;
+        }
+        if (KeyBindRegistry.showItemLore.isUnbound()) {
+            return Screen.hasControlDown();
+        }
+        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemLore).getBoundKey().getCode());
+    }
+
+    static Text getShowInfoKeyText() {
+        if (KeyBindRegistry.showItemTooltip.isUnbound()) {
+            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
+            return epicFight ? Text.translatable("key.keyboard.left.alt") : Text.translatable("key.keyboard.left.shift");
+        }
+        return KeyBindRegistry.showItemTooltip.getBoundKeyLocalizedText();
+    }
+
+    static Text getShowLoreKeyText() {
+        if (KeyBindRegistry.showItemLore.isUnbound()) {
+            return Text.translatable("key.keyboard.left.control");
+        }
+        return KeyBindRegistry.showItemLore.getBoundKeyLocalizedText();
+    }
+
+    static MutableText formatKeybindText(Text input) {
+        MutableText text = input.copy();
+        String upper = text.getString().toUpperCase(Locale.ROOT);
+        return Text.literal(upper).formatted(Formatting.YELLOW);
+    }
+
+    static void addShowInfoText(List<Text> tooltip) {
+        MutableText keyText = formatKeybindText(getShowInfoKeyText());
+        tooltip.add(Text.translatable("tooltip.soulsweapons.show_item_info", keyText));
+    }
+
+    static void addShowLoreText(List<Text> tooltip) {
+        MutableText keyText = formatKeybindText(getShowLoreKeyText());
+        tooltip.add(Text.translatable("tooltip.soulsweapons.show_item_lore", keyText));
     }
 }

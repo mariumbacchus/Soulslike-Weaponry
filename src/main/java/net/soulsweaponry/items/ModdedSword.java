@@ -108,10 +108,8 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if (this.isDisabled(stack)) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
-        }
-        IAbility.appendTooltipAbilities(this.getAbilities(), tooltip, stack);
+        this.appendTooltipAbilities(tooltip, stack);
+
         this.appendTooltipAbilities(stack, context, tooltip, type);//TODO remove when removing ITooltipInfo
         super.appendTooltip(stack, context, tooltip, type);
     }

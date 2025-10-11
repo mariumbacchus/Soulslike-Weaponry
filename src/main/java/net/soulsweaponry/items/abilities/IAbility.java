@@ -1,8 +1,5 @@
 package net.soulsweaponry.items.abilities;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -10,22 +7,15 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.items.ICooldownItem;
-import net.soulsweaponry.mixin.KeyBindingAccessor;
-import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * TODO
@@ -195,93 +185,11 @@ public interface IAbility extends ICooldownItem {
         return List.of();
     }
 
+    /**
+     * Override this when you want to add lore tooltips which are specific to the ability instead
+     * of item. If item specific, make the item implement {@link IHasLore} instead.
+     */
     default List<Text> getLoreTooltips(ItemStack stack) {
         return List.of();
-    }
-
-    /**
-     * Adds all tooltip abilities listed in {@link #getTooltipAbilities(ItemStack)} to the
-     * item tooltip. {@link WeaponUtil} handles the displaying of {@link TooltipAbilities}.
-     */
-    static void appendTooltipAbilities(List<IAbility> abilities, List<Text> tooltip, ItemStack stack) {
-        List<Text> tooltipAbilities = new ArrayList<>();
-        List<Text> lore = new ArrayList<>();
-        abilities.forEach(ability -> {
-            List<Text> setup = new ArrayList<>();
-            setup.addAll(ability.getTooltipAbilities(stack));
-            setup.addAll(ability.getBonusAbilityTooltip(stack));
-            tooltipAbilities.addAll(setup);
-        });
-        abilities.forEach(ability -> lore.addAll(ability.getLoreTooltips(stack)));
-        if (!tooltipAbilities.isEmpty()) {
-            if (shouldShowInfo()) {
-                tooltip.addAll(tooltipAbilities);
-            } else {
-                addShowInfoText(tooltip);
-            }
-        }
-        if (!lore.isEmpty()) {
-            if (shouldShowLore()) {
-                tooltip.addAll(lore);
-            } else {
-                addShowLoreText(tooltip);
-            }
-        }
-    }
-
-    /**
-     * @return Whether the info button is being held when hovering an item, button is ALT if Epic Fight mod
-     * is installed or SHIFT otherwise by default, can be changed in controls settings.
-     */
-    static boolean shouldShowInfo() {
-        if (ClientConfig.always_show_item_tooltip) {
-            return true;
-        }
-        if (KeyBindRegistry.showItemTooltip.isUnbound()) {
-            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
-            return epicFight ? Screen.hasAltDown() : Screen.hasShiftDown();
-        }
-        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemTooltip).getBoundKey().getCode());
-    }
-
-    static boolean shouldShowLore() {
-        if (ClientConfig.always_show_item_lore) {
-            return true;
-        }
-        if (KeyBindRegistry.showItemLore.isUnbound()) {
-            return Screen.hasControlDown();
-        }
-        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((KeyBindingAccessor)KeyBindRegistry.showItemLore).getBoundKey().getCode());
-    }
-
-    static Text getShowInfoKeyText() {
-        if (KeyBindRegistry.showItemTooltip.isUnbound()) {
-            boolean epicFight = WeaponUtil.isModLoaded("epicfight");
-            return epicFight ? Text.translatable("key.keyboard.left.alt") : Text.translatable("key.keyboard.left.shift");
-        }
-        return KeyBindRegistry.showItemTooltip.getBoundKeyLocalizedText();
-    }
-
-    static Text getShowLoreKeyText() {
-        if (KeyBindRegistry.showItemLore.isUnbound()) {
-            return Text.translatable("key.keyboard.left.control");
-        }
-        return KeyBindRegistry.showItemLore.getBoundKeyLocalizedText();
-    }
-
-    static MutableText formatKeybindText(Text input) {
-        MutableText text = input.copy();
-        String upper = text.getString().toUpperCase(Locale.ROOT);
-        return Text.literal(upper).formatted(Formatting.YELLOW);
-    }
-
-    static void addShowInfoText(List<Text> tooltip) {
-        MutableText keyText = formatKeybindText(getShowInfoKeyText());
-        tooltip.add(Text.translatable("tooltip.soulsweapons.show_item_info", keyText));
-    }
-
-    static void addShowLoreText(List<Text> tooltip) {
-        MutableText keyText = formatKeybindText(getShowLoreKeyText());
-        tooltip.add(Text.translatable("tooltip.soulsweapons.show_item_lore", keyText));
     }
 }

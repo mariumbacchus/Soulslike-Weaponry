@@ -10,6 +10,7 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.IHasLore;
 import net.soulsweaponry.items.abilities.abilitykeybind.Unbreakable;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.items.abilities.stoppedusing.Obliterate;
@@ -23,7 +24,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class Nightfall extends UltraHeavyWeapon implements GeoItem {
+public class Nightfall extends UltraHeavyWeapon implements GeoItem, IHasLore {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
@@ -89,16 +90,16 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
     }
 
     @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[] {
-                Text.translatable("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
-        };
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_nightfall;
     }
 
     @Override
-    public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_nightfall;
+    public List<Text> getLore() {
+        return List.of(
+                Text.translatable("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
+        );
     }
 }
