@@ -35,7 +35,7 @@ public class Supernova extends UltraHeavyWeapon {
             (int) ConfigConstructor.supernova_ability_min_cooldown, (int) ConfigConstructor.supernova_ability_cooldown, (int) ConfigConstructor.supernova_ability_reduced_cooldown_per_level
     );
 
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.supernova_calculated_fall_base_radius,
             ConfigConstructor.supernova_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.supernova_calculated_fall_target_launch_modifier,
@@ -61,17 +61,12 @@ public class Supernova extends UltraHeavyWeapon {
     );
 
     public Supernova(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.supernova_damage, ConfigConstructor.supernova_attack_speed, settings, (int) ConfigConstructor.supernova_posture_loss);
+        super(toolMaterial, (int) ConfigConstructor.supernova_damage, ConfigConstructor.supernova_attack_speed, settings, (int) ConfigConstructor.supernova_posture_loss, ATTRIBUTES);
         this.addAbility(FIRETHORNS, MOLTEN_EDGE, ARMOR_BREAKER, FLAMEBURST);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_supernova;
-    }
-
-    @Override
-    public DetonateGroundAttributes getDetonateGroundAttributes() {
-        return this.attributes;
     }
 }

@@ -35,7 +35,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     private static final StatusEffectInstance[] CALCULATED_FALL_EFFECTS = new StatusEffectInstance[] {
             new StatusEffectInstance(StatusEffects.WITHER, 140, 1)
     };
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.heap_of_raw_iron_calculated_fall_base_radius,
             ConfigConstructor.heap_of_raw_iron_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.heap_of_raw_iron_calculated_fall_target_launch_modifier,
@@ -54,7 +54,7 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     );
 
     public DragonslayerSwordBerserk(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, (int) ConfigConstructor.heap_of_raw_iron_posture_loss);
+        super(toolMaterial, (int) ConfigConstructor.heap_of_raw_iron_damage, ConfigConstructor.heap_of_raw_iron_attack_speed, settings, (int) ConfigConstructor.heap_of_raw_iron_posture_loss, ATTRIBUTES);
         this.addTooltipAbility(TooltipAbilities.RAGE, TooltipAbilities.DRAGONS_SCOURGE);
     }
 
@@ -111,10 +111,5 @@ public class DragonslayerSwordBerserk extends UltraHeavyWeapon implements IKeybi
     @Override
     public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
         return this.getDragonBonus(target, baseAttackDamage, damageSource);
-    }
-
-    @Override
-    public DetonateGroundAttributes getDetonateGroundAttributes() {
-        return this.attributes;
     }
 }

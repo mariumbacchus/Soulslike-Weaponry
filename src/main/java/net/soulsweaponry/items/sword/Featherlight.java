@@ -25,7 +25,7 @@ public class Featherlight extends UltraHeavyWeapon {
             new StatusEffectInstance(EffectRegistry.BLIGHT, 200, 4),
             new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
     };
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.featherlight_calculated_fall_base_radius,
             ConfigConstructor.featherlight_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.featherlight_calculated_fall_target_launch_modifier,
@@ -44,7 +44,7 @@ public class Featherlight extends UltraHeavyWeapon {
     );
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss);
+        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss, ATTRIBUTES);
         this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
     }
 
@@ -60,10 +60,5 @@ public class Featherlight extends UltraHeavyWeapon {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_featherlight;
-    }
-
-    @Override
-    public DetonateGroundAttributes getDetonateGroundAttributes() {
-        return this.attributes;
     }
 }

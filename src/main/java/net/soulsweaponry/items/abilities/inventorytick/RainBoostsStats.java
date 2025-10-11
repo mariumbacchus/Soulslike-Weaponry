@@ -29,7 +29,7 @@ public record RainBoostsStats(float bonusAttackDamage, float bonusAttackSpeed) i
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
-                Text.translatable("tooltip.soulsweapons.weatherborn").formatted(Formatting.DARK_AQUA),
+                Text.translatable("tooltip.soulsweapons.weatherborn").formatted(Formatting.BLUE),
                 Text.translatable("tooltip.soulsweapons.weatherborn.description.1").formatted(Formatting.GRAY)
         );
     }

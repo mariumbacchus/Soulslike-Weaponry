@@ -13,7 +13,7 @@ import java.util.List;
 public record FireThorns(float chance, float damage, int fireSeconds) implements IAbility {
 
     @Override
-    public void onUserDamaged(DamageSource source, float amount, LivingEntity user, LivingEntity attacker) {
+    public void onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {
         if (user.getRandom().nextFloat() < this.chance) {
             attacker.damage(DamageSourceRegistry.create(user.getWorld(), DamageSourceRegistry.PLAYER_FIRE, user), this.damage);
             attacker.setOnFireFor(this.fireSeconds);

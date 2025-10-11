@@ -88,14 +88,35 @@ public class LivingEntityMixin {
         }
         if (source.getAttacker() instanceof LivingEntity attacker) {
             for (Hand hand : Hand.values()) {
-                ItemStack stack = entity.getStackInHand(hand);
-                if (stack.getItem() instanceof IHasAbilities has) {
-                    has.getAbilities().forEach(a -> a.onUserDamaged(source, amount, entity, attacker));
+                ItemStack userStack = entity.getStackInHand(hand);
+                ItemStack attackerStack = attacker.getStackInHand(hand);
+                if (userStack.getItem() instanceof IHasAbilities has && !has.isDisabled(userStack)) {
+                    has.getAbilities().forEach(a -> a.onUserDamaged(source, amount, userStack, entity, attacker));
+                }
+                if (attackerStack.getItem() instanceof IHasAbilities has && !has.isDisabled(attackerStack)) {
+                    has.getAbilities().forEach(a -> a.onTargetDamaged(source, amount, attackerStack, entity, attacker));
                 }
             }
             // Do lightning-thorns when having Stormveil effect
             if (entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
                 ElectricCherry.EFFECT_INSTANCE.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
+            }
+        }
+    }
+
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    public void interceptOnDeath(DamageSource damageSource, CallbackInfo info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (damageSource.getAttacker() instanceof LivingEntity attacker) {
+            for (Hand hand : Hand.values()) {
+                ItemStack userStack = entity.getStackInHand(hand);
+                ItemStack attackerStack = attacker.getStackInHand(hand);
+                if (userStack.getItem() instanceof IHasAbilities has && !has.isDisabled(userStack)) {
+                    has.getAbilities().forEach(a -> a.onUserDeath(damageSource, userStack, entity, attacker));
+                }
+                if (attackerStack.getItem() instanceof IHasAbilities has && !has.isDisabled(attackerStack)) {
+                    has.getAbilities().forEach(a -> a.onTargetDeath(damageSource, attackerStack, entity, attacker));
+                }
             }
         }
     }

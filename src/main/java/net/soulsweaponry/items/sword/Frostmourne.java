@@ -17,7 +17,7 @@ import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.RimeSpectre;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.items.ISummonAllies;
+import net.soulsweaponry.items.abilities.ISummonAlliesAbility;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -28,7 +28,7 @@ import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.UUID;
 
-public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
+public class Frostmourne extends SoulHarvestingItem {
 
     private static final Permafrost PERMAFROST = new Permafrost(
             (int) ConfigConstructor.frostmourne_frost_buildup_post_hit,
@@ -50,7 +50,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
-        if (this.getSouls(stack) >= 5 && !world.isClient && this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())) {
+        if (this.getSouls(stack) >= 5 && !world.isClient /*&& this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())*/) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
             BlockPos on = BlockPos.ofFloored(vecBlocksAway);
             Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT, world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE, world);
@@ -59,7 +59,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
             if (entity instanceof RimeSpectre) entity.addVelocity(0, 0.1f, 0);
             entity.setTamed(true, false);
             world.spawnEntity(entity);
-            this.saveSummonUuid(user, entity.getUuid());
+            //this.saveSummonUuid(user, entity.getUuid());
             this.addAmount(stack, -5);
             world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
             ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
@@ -68,7 +68,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
         return TypedActionResult.fail(stack);
     }
 
-    @Override
+    /*@Override
     public int getMaxSummons() {
         return (int) ConfigConstructor.frostmourne_summoned_allies_cap;
     }
@@ -81,7 +81,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
-    }
+    }*/
 
     @Override
     public boolean isDisabled(ItemStack stack) {

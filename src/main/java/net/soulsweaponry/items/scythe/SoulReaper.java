@@ -18,7 +18,7 @@ import net.soulsweaponry.entity.mobs.SoulReaperGhost;
 import net.soulsweaponry.entity.mobs.Soulmass;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.items.ISummonAllies;
+import net.soulsweaponry.items.abilities.ISummonAlliesAbility;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -34,7 +34,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAllies {
+public class SoulReaper extends SoulHarvestingItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
@@ -53,7 +53,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
         int power = this.getSouls(stack);
         if (player.isCreative()) power = player.getRandom().nextBetween(5, 50);
         if (power != 0) {
-            if (power >= 3 && !world.isClient && this.canSummonEntity((ServerWorld) world, player, this.getSummonsListId())) {
+            if (power >= 3 && !world.isClient /* && this.canSummonEntity((ServerWorld) world, player, this.getSummonsListId())*/) {
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
                 ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
                 world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
@@ -62,21 +62,21 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.saveSummonUuid(player, entity.getUuid());
+                    //this.saveSummonUuid(player, entity.getUuid());
                     if (!player.isCreative()) this.addAmount(stack, -3);
                 } else if (player.isSneaking() || power < 30) {
                     Forlorn entity = new Forlorn(EntityRegistry.FORLORN, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.saveSummonUuid(player, entity.getUuid());
+                    //this.saveSummonUuid(player, entity.getUuid());
                     if (!player.isCreative()) this.addAmount(stack, -10);
                 } else {
                     Soulmass entity = new Soulmass(EntityRegistry.SOULMASS, world);
                     entity.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
                     entity.setOwner(player);
                     world.spawnEntity(entity);
-                    this.saveSummonUuid(player, entity.getUuid());
+                    //this.saveSummonUuid(player, entity.getUuid());
                     if (!player.isCreative()) this.addAmount(stack, -30);
                 }
 
@@ -135,7 +135,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
         });
     }
 
-    @Override
+   /* @Override TODO use these when adding abilities
     public int getMaxSummons() {
         return (int) ConfigConstructor.soul_reaper_summoned_allies_cap;
     }
@@ -148,20 +148,10 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem, ISummonAl
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
         SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
-    }
+    }*/
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_reaper;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

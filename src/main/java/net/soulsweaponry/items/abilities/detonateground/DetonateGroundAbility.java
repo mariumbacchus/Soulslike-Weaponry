@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.IAbility;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public record DetonateGroundAbility(DetonateGroundAttributes detonateGroundAttributes) implements IAbility, IDetonateGround {
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
+    public @NotNull DetonateGroundAttributes getDetonationAttributes() {
         return this.detonateGroundAttributes;
     }
 
@@ -24,10 +25,7 @@ public record DetonateGroundAbility(DetonateGroundAttributes detonateGroundAttri
         return List.of(
                 Text.translatable("tooltip.soulsweapons.meteor_strike").formatted(Formatting.DARK_RED),
                 Text.translatable("tooltip.soulsweapons.meteor_strike.1").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.meteor_strike.2").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.meteor_strike.3").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.meteor_strike.4").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.meteor_strike.5").formatted(Formatting.GRAY)
+                Text.translatable("tooltip.soulsweapons.meteor_strike.2").formatted(Formatting.GRAY)
         );
     }
 }

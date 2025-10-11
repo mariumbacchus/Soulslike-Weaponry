@@ -148,7 +148,12 @@ public interface IAbility extends ICooldownItem {
     /**
      * Called when the user is damaged when wielding this item.
      */
-    default void onUserDamaged(DamageSource source, float amount, LivingEntity user, LivingEntity attacker) {}
+    default void onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {}
+
+    /**
+     * Called whenever the user dies.
+     */
+    default void onUserDeath(DamageSource damageSource, ItemStack stack, LivingEntity user, LivingEntity attacker) {}
 
     /**
      * Called every tick the item is in the users inventory.
@@ -170,6 +175,16 @@ public interface IAbility extends ICooldownItem {
      * @param player client player
      */
     default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Called whenever an entity dies and the last damage source was the attacker.
+     */
+    default void onTargetDeath(DamageSource damageSource, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+
+    /**
+     * Called when the target is damaged by the user of the item having this ability.
+     */
+    default void onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
     List<Text> getTooltipAbilities(ItemStack stack);
 

@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.darkin_blade_calculated_fall_base_radius,
             ConfigConstructor.darkin_blade_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.darkin_blade_calculated_fall_target_launch_modifier,
@@ -46,7 +46,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     );
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss);
+        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss, ATTRIBUTES);
         this.addTooltipAbility(TooltipAbilities.OMNIVAMP, TooltipAbilities.SWORD_SLAM);
     }
 
@@ -136,10 +136,5 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_blade;
-    }
-
-    @Override
-    public DetonateGroundAttributes getDetonateGroundAttributes() {
-        return this.attributes;
     }
 }

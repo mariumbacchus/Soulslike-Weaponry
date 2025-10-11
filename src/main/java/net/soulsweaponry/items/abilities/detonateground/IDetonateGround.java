@@ -24,6 +24,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -100,6 +101,7 @@ public interface IDetonateGround {
      * <p>
      * Override this to return the proper parameters.
      */
+    @NotNull
     default DetonateGroundAttributes getDetonationAttributes() {
         SoulsWeaponry.LOGGER.error("Missing override of getDetonationAttributes() in IDetonateGround! Defaulting to Comet Spears' explosion.");
         return CometSpear.METEOR_STRIKE_ATTRIBUTES;

@@ -7,12 +7,10 @@ import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 
 public abstract class UltraHeavyWeapon extends ChargeToUseItem {
 
-    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int postureLossPostHit) {
+    public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int postureLossPostHit, DetonateGroundAttributes detonateGroundAttributes) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
         UltraHeavy heavyAbility = new UltraHeavy(postureLossPostHit, 200, 1);
-        DetonateGroundAbility detonateGroundAbility = new DetonateGroundAbility(this.getDetonateGroundAttributes());
+        DetonateGroundAbility detonateGroundAbility = new DetonateGroundAbility(detonateGroundAttributes);
         this.addAbility(heavyAbility, detonateGroundAbility);
     }
-
-    public abstract DetonateGroundAttributes getDetonateGroundAttributes();
 }
