@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.LeviathanAxeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ModdedAxe;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowLeviathanAxe;
 import software.bernie.geckolib.animatable.GeoItem;

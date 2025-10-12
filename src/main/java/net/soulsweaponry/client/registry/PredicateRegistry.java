@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.items.sword.Sting;
 import net.soulsweaponry.registry.EffectRegistry;

@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;

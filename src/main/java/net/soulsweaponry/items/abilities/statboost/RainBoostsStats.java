@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.abilities.inventorytick;
+package net.soulsweaponry.items.abilities.statboost;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;

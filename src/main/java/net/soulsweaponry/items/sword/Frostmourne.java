@@ -39,7 +39,7 @@ public class Frostmourne extends SoulHarvestingItem {
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE);
+        //this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE);
         this.addAbility(PERMAFROST);
     }
 
@@ -50,7 +50,7 @@ public class Frostmourne extends SoulHarvestingItem {
             this.notifyDisabled(user);
             return TypedActionResult.fail(stack);
         }
-        if (this.getSouls(stack) >= 5 && !world.isClient /*&& this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())*/) {
+        if (/*this.getSouls(stack) >= 5 &&*/ !world.isClient /*&& this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())*/) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
             BlockPos on = BlockPos.ofFloored(vecBlocksAway);
             Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT, world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE, world);
@@ -60,7 +60,7 @@ public class Frostmourne extends SoulHarvestingItem {
             entity.setTamed(true, false);
             world.spawnEntity(entity);
             //this.saveSummonUuid(user, entity.getUuid());
-            this.addAmount(stack, -5);
+            //this.addAmount(stack, -5);
             world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
             ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
             return TypedActionResult.success(stack, true);

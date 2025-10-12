@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.List;

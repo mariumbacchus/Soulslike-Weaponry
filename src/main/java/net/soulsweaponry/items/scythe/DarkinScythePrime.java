@@ -6,19 +6,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.UmbralTrespassItem;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.use.UmbralTrespass;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class DarkinScythePrime extends UmbralTrespassItem {
+public class DarkinScythePrime extends ModdedSword {
+
+    private static final UmbralTrespass UMBRAL_TRESPASS = new UmbralTrespass(
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_damage,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_damage_per_level,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_enchant_damage_modifier,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_min_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_reduced_cooldown_per_level,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_heal_modifier,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_ticks_before_dismount,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_percent_max_health_damage
+    );
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings, (int) ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
+        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.OMNIVAMP);
+        this.addAbility(UMBRAL_TRESPASS);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        //TODO make ability off of this, also make Omnivamp ability actually heal the player off of any ability somehow instead of hardcoding to one ability (maybe on target damaged?)
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
@@ -38,31 +53,5 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkin_scythe_prime;
-    }
-
-    @Override
-    public float getAbilityDamage() {
-        return ConfigConstructor.darkin_scythe_prime_ability_damage;
-    }
-
-    @Override
-    public int getAbilityCooldown(ItemStack stack) {
-        return (int) Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, ConfigConstructor.darkin_scythe_prime_ability_cooldown
-                - this.getReduceCooldownEnchantLevel(stack) * 25);
-    }
-
-    @Override
-    public boolean shouldAbilityHeal() {
-        return true;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown_ids;
     }
 }

@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.abilities;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -45,6 +45,10 @@ public interface ICooldownItem {
         } else {
             user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"));
         }
+    }
+
+    default boolean isCoolingDown(PlayerEntity user, ItemStack stack) {
+        return user.getItemCooldownManager().isCoolingDown(stack.getItem());
     }
 
     //TODO remove these under (are just for testing since i cant launch without them since all other items use these methods)

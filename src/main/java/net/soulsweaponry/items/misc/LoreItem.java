@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;

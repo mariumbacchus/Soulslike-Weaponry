@@ -14,7 +14,10 @@ public interface ISummonAlliesAbility extends IAbility {
 
     int getMaxSummons();
     String getSummonsListId();
-    void saveSummonUuid(LivingEntity user, UUID summonUuid);
+
+    default void saveSummonUuid(LivingEntity user, UUID summonUuid) {
+        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+    }
 
     default boolean canSummonEntity(ServerWorld world, LivingEntity user, String listId) {
         List<UUID> toRemove = new ArrayList<>();

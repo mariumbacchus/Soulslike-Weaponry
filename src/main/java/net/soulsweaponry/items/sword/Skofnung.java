@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.SkofnungStone;
+import net.soulsweaponry.items.misc.SkofnungStone;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;

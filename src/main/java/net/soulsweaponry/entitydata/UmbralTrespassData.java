@@ -12,7 +12,8 @@ public class UmbralTrespassData {
     public static final String DAMAGE_RIDING_ID = "should_damage_riding";
     public static final String UMBRAL_DAMAGE_ID = "umbral_trespass_damage";
     public static final String COOLDOWN_ID = "umbral_trespass_cooldown";
-    public static final String HEAL_ID = "umbral_trespass_should_heal";
+    public static final String HEAL_ID = "umbral_trespass_heal_mod";
+    public static final String MAX_HEALTH_DAMAGE_ID = "umbral_trespass_max_health_damage";
 
     public static boolean shouldDamageRiding(LivingEntity entity) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
@@ -30,13 +31,14 @@ public class UmbralTrespassData {
         }
     }
 
-    public static void setOtherStats(LivingEntity entity, float damage, int cooldown, boolean shouldHeal) {
+    public static void setOtherStats(LivingEntity entity, float damage, int cooldown, float healMod, double maxHealthBonus) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
         nbt.putFloat(UMBRAL_DAMAGE_ID, damage);
         nbt.putInt(COOLDOWN_ID, cooldown);
-        nbt.putBoolean(HEAL_ID, shouldHeal);
+        nbt.putFloat(HEAL_ID, healMod);
+        nbt.putDouble(MAX_HEALTH_DAMAGE_ID, maxHealthBonus);
         if (entity instanceof ServerPlayerEntity) {
-            syncOtherStats(damage, cooldown, shouldHeal, (ServerPlayerEntity) entity);
+            syncOtherStats(damage, cooldown, healMod, maxHealthBonus, (ServerPlayerEntity) entity);
         }
     }
 
@@ -56,19 +58,27 @@ public class UmbralTrespassData {
         return nbt.getInt(COOLDOWN_ID);
     }
 
-    public static boolean shouldAbilityHeal(LivingEntity entity) {
+    public static float getHealModifier(LivingEntity entity) {
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
         if (!nbt.contains(HEAL_ID)) {
-            nbt.putBoolean(HEAL_ID, false);
+            nbt.putFloat(HEAL_ID, 0f);
         }
-        return nbt.getBoolean(HEAL_ID);
+        return nbt.getFloat(HEAL_ID);
+    }
+
+    public static double getMaxHealthDamageBonus(LivingEntity entity) {
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+        if (!nbt.contains(MAX_HEALTH_DAMAGE_ID)) {
+            nbt.putDouble(MAX_HEALTH_DAMAGE_ID, 0f);
+        }
+        return nbt.getDouble(MAX_HEALTH_DAMAGE_ID);
     }
 
     public static void syncDamageRidingData(boolean bl, ServerPlayerEntity entity) {
         ServerPlayNetworking.send(entity, new ShouldDamageRidingSyncS2C(bl));
     }
 
-    public static void syncOtherStats(float damage, int cooldown, boolean shouldHeal, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new UTDamageCooldownSyncS2C(damage, cooldown, shouldHeal));
+    public static void syncOtherStats(float damage, int cooldown, float healMod, double maxHealthBonus, ServerPlayerEntity entity) {
+        ServerPlayNetworking.send(entity, new UTDamageCooldownSyncS2C(damage, cooldown, healMod, maxHealthBonus));
     }
 }

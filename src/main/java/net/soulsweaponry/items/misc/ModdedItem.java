@@ -1,18 +1,19 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -21,25 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem, ITooltipInfo, IHasAbilities {
+public abstract class ModdedItem extends Item implements IConfigDisable, ITooltipInfo, IHasAbilities {
 
-    protected final float attackSpeed;
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>(); // TODO this can be merged into IAbility with own method calls in that child class, replace list with ability list instead
     protected final List<IAbility> abilities = new ArrayList<>();
-    private final float attackDamage;
 
-    public ModdedAxe(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
-        super(toolMaterial, settings.attributeModifiers(AxeItem.createAttributeModifiers(toolMaterial, attackDamage, - (4f - ingameAttackSpeed))));
-        this.attackSpeed = - (4f - ingameAttackSpeed);
-        this.attackDamage = attackDamage;
-    }
-
-    public float getAttackSpeed() {
-        return attackSpeed;
-    }
-
-    public float getAttackDamage() {
-        return attackDamage;
+    public ModdedItem(Settings settings) {
+        super(settings);
     }
 
     @Override
@@ -95,7 +84,7 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         this.appendTooltipAbilities(tooltip, stack);
 
-        this.appendTooltipAbilities(stack, context, tooltip, type);//TODO remove when removing ITooltipInfo
+        this.appendTooltipAbilities(stack, context, tooltip, type); //TODO remove when removing ITooltipInfo
         super.appendTooltip(stack, context, tooltip, type);
     }
 

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.abilities.inventorytick.RainBoostsStats;
+import net.soulsweaponry.items.abilities.statboost.RainBoostsStats;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.TooltipAbilities;

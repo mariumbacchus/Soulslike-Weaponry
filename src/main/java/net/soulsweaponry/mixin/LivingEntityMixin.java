@@ -146,10 +146,11 @@ public class LivingEntityMixin {
         if (!thisEntity.getWorld().isClient && entity instanceof LivingEntity target && thisEntity instanceof PlayerEntity player) {
             if (UmbralTrespassData.shouldDamageRiding(player)) {
                 float damage = UmbralTrespassData.getAbilityDamage(player);
-                boolean shouldHeal = UmbralTrespassData.shouldAbilityHeal(player);
-                if (shouldHeal) {
-                    damage += target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage / 100f);
-                    float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
+                float healMod = UmbralTrespassData.getHealModifier(player);
+                double maxDamageBonus = UmbralTrespassData.getMaxHealthDamageBonus(player);
+                if (healMod > 0) {
+                    damage += (float) (target.getMaxHealth() * maxDamageBonus);
+                    float healing = damage * healMod;
                     player.heal(healing);
                 }
                 player.removeStatusEffect(StatusEffects.INVISIBILITY);

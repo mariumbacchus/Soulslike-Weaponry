@@ -2,7 +2,6 @@ package net.soulsweaponry.api.trickweapon;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -13,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
@@ -105,15 +105,7 @@ public class TrickWeaponUtil {
             return null;
         }
         ItemStack outStack = item.getDefaultStack();
-        var defaultAttrs = outStack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        outStack.applyComponentsFrom(heldStack.getComponents());
-        // Don't keep the old stack's damage attributes
-        if (defaultAttrs != null) {
-            outStack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, defaultAttrs);
-        } else {
-            outStack.remove(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        }
-        outStack.setCount(heldStack.getCount());
+        WeaponUtil.copyOverItemComponents(heldStack, outStack);
         outStack.set(ComponentRegistry.MAPPED_TRICK_WEAPON, Registries.ITEM.getId(heldStack.getItem()).toString());
         return outStack;
     }

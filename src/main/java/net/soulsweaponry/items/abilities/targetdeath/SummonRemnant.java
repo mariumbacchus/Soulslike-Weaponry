@@ -10,8 +10,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
-import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.items.abilities.ISummonAlliesAbility;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -20,7 +18,6 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public record SummonRemnant(boolean allowNonUndeadChance, double summonChance, int maxSummons, String summonListId) implements ISummonAlliesAbility {
 
@@ -59,10 +56,5 @@ public record SummonRemnant(boolean allowNonUndeadChance, double summonChance, i
     @Override
     public String getSummonsListId() {
         return this.summonListId;
-    }
-
-    @Override
-    public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
     }
 }

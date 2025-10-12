@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.CustomBow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
@@ -11,6 +11,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.ICooldownItem;
+import net.soulsweaponry.items.IShootModProjectile;
+import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;

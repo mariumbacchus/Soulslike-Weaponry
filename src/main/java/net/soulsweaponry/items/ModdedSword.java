@@ -14,6 +14,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.ICooldownItem;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.util.TooltipAbilities;
 

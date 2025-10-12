@@ -16,7 +16,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.items.ICooldownItem;
+import net.soulsweaponry.items.abilities.ICooldownItem;
 import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.util.TooltipAbilities;

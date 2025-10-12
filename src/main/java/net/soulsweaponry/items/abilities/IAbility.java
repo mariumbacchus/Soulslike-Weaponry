@@ -12,7 +12,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.items.ICooldownItem;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;

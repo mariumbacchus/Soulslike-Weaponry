@@ -8,9 +8,9 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 
 /**
- * Packet for determining the effects upon exiting Umbral Trespass ability used in {@link net.soulsweaponry.items.UmbralTrespassItem}.
+ * Packet for determining the effects upon exiting Umbral Trespass ability used in {@link net.soulsweaponry.items.abilities.use.UmbralTrespass}.
  */
-public record UTDamageCooldownSyncS2C(float damage, int cooldown, boolean heal) implements CustomPayload {
+public record UTDamageCooldownSyncS2C(float damage, int cooldown, float heal, double maxHealthBonus) implements CustomPayload {
 
     public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "umbral_trespass_damage_cooldown_sync");
     public static final Id<UTDamageCooldownSyncS2C> TYPE = new Id<>(ID);
@@ -18,7 +18,8 @@ public record UTDamageCooldownSyncS2C(float damage, int cooldown, boolean heal) 
             PacketCodec.tuple(
                     PacketCodecs.FLOAT, UTDamageCooldownSyncS2C::damage,
                     PacketCodecs.INTEGER, UTDamageCooldownSyncS2C::cooldown,
-                    PacketCodecs.BOOL, UTDamageCooldownSyncS2C::heal,
+                    PacketCodecs.FLOAT, UTDamageCooldownSyncS2C::heal,
+                    PacketCodecs.DOUBLE, UTDamageCooldownSyncS2C::maxHealthBonus,
                     UTDamageCooldownSyncS2C::new
             );
 

@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
 import net.soulsweaponry.items.IPostureLossItem;
-import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 import net.soulsweaponry.util.TooltipAbilities;
 

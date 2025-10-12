@@ -51,6 +51,25 @@ public class WeaponUtil {
     }
 
     /**
+     * Copy over default item stack components such as enchants, damage or stack size.
+     * Also copies over {@link ComponentRegistry#ITEM_UPGRADE_LEVEL} and bonus damage/speed
+     * attributes gotten from it.
+     * Mainly used in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil} and
+     * {@link net.soulsweaponry.items.abilities.targetdeath.SoulHarvestTransform}.
+     * @param prevStack previous stack to copy from
+     * @param newStack new stack to copy to from the prev stack
+     */
+    public static void copyOverItemComponents(ItemStack prevStack, ItemStack newStack) {
+        int lvl = WeaponUtil.getUpgradeLevel(prevStack);
+        float nextDamage = WeaponUtil.getBaseAttackDamage(newStack);
+        float nextAttackSpeed = WeaponUtil.getBaseAttackSpeed(newStack);
+        newStack.applyComponentsFrom(prevStack.getComponents());
+        WeaponUtil.modifyStackAttributes(newStack, nextDamage, nextAttackSpeed);
+        newStack.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, lvl);
+        newStack.setCount(prevStack.getCount());
+    }
+
+    /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
     @Deprecated
