@@ -24,6 +24,7 @@
   - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants
 - Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
 - Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config
+  - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

@@ -92,15 +92,15 @@ public record SoulReleasePowerBased(int maxSummons, NavigableMap<Integer, Entity
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             var maxHealth = living.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
             if (maxHealth != null) {
-                double newMax = living.getMaxHealth() + (this.bonusHealthPerPower + this.bonusHealthIncreasePerLvl * lvl) * power;
-                newMax = Math.min(this.maxBonusHealth, newMax);
+                double newMax = power * (this.bonusHealthPerPower + this.bonusHealthIncreasePerLvl * lvl);
+                newMax = living.getMaxHealth() + Math.min(this.maxBonusHealth, newMax);
                 maxHealth.setBaseValue(newMax);
                 living.setHealth((float) newMax);
             }
             var atk = living.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
             if (atk != null) {
-                double newDmg = atk.getValue() + (this.bonusAttackPerPower + this.bonusAttackIncreasePerLvl * lvl) * power;
-                newDmg = Math.min(this.maxBonusAttack, newDmg);
+                double newDmg = power * (this.bonusAttackPerPower + this.bonusAttackIncreasePerLvl * lvl);
+                newDmg = atk.getValue() + Math.min(this.maxBonusAttack, newDmg);
                 atk.setBaseValue(newDmg);
             }
         }
