@@ -793,6 +793,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float soul_reaper_damage = 11;
     @Entry public static float soul_reaper_attack_speed = 1f;
     @Entry public static float soul_reaper_summoned_allies_cap = 50;
+    @Entry public static float soul_reaper_summon_bonus_health_per_soul = 1f;
+    @Entry public static float soul_reaper_summon_bonus_health_per_soul_addition_per_level = 0.2f;
+    @Entry public static float soul_reaper_summon_max_bonus_health = 50f;
+    @Entry public static float soul_reaper_summon_bonus_attack_damage_per_soul = 0.1f;
+    @Entry public static float soul_reaper_summon_bonus_attack_damage_per_soul_addition_per_level = 0.05f;
+    @Entry public static float soul_reaper_summon_max_bonus_attack_damage = 15f;
     @Entry public static float sting_damage = 6;
     @Entry public static float sting_attack_speed = 1.6f;
     @Entry public static float sting_bonus_arthropod_damage = 4f;

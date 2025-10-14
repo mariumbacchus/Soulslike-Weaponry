@@ -23,6 +23,7 @@
   - Added REI compatability for this system too
   - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants
 - Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
+- Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
