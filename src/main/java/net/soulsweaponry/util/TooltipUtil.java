@@ -164,19 +164,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall").formatted(Formatting.AQUA, Formatting.BOLD));
                 for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));
             }
-            case LIFE_STEAL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_steal").formatted(Formatting.DARK_RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_steal_description").formatted(Formatting.GRAY));
-            }
-            case OMNIVAMP -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.omnivamp").formatted(Formatting.DARK_RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.omnivamp_description").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_steal_description").formatted(Formatting.GRAY));
-            }
-            case OVERHEAL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.overheal").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.overheal_description").formatted(Formatting.GRAY));
-            }
             case SWORD_SLAM -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sword_slam").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sword_slam_description").formatted(Formatting.GRAY));

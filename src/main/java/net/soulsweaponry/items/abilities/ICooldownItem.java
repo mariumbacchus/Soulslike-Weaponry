@@ -31,10 +31,18 @@ public interface ICooldownItem {
      * Applies the {@link EffectRegistry#COOLDOWN} effect on the player.
      */
     default void applyEffectCooldown(PlayerEntity player, int cooldown) {
+        this.applyEffectCooldown(player, cooldown, true);
+    }
+
+    /**
+     * Applies the {@link EffectRegistry#COOLDOWN} effect on the player.
+     */
+    default void applyEffectCooldown(PlayerEntity player, int cooldown, boolean showParticles) {
         if (!player.isCreative()) {
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0, false, showParticles));
         }
     }
+
 
     default void notifyCooldown(LivingEntity user) {
         if (!ConfigConstructor.inform_player_about_cooldown_effect) {
@@ -49,6 +57,10 @@ public interface ICooldownItem {
 
     default boolean isCoolingDown(PlayerEntity user, ItemStack stack) {
         return user.getItemCooldownManager().isCoolingDown(stack.getItem());
+    }
+
+    default boolean hasCooldownEffect(PlayerEntity user) {
+        return user.hasStatusEffect(EffectRegistry.COOLDOWN);
     }
 
     //TODO remove these under (are just for testing since i cant launch without them since all other items use these methods)

@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.targetdamaged.Omnivamp;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -44,28 +45,18 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             (target, user, fallDistance) -> {},
             (user, fallDistance, stack) -> {}
     );
+    private static final Omnivamp OMNIVAMP = new Omnivamp(
+            ConfigConstructor.darkin_blade_omnivamp_base_heal,
+            ConfigConstructor.darkin_blade_omnivamp_bonus_heal_per_level,
+            (int) ConfigConstructor.darkin_blade_omnivamp_min_cooldown,
+            (int) ConfigConstructor.darkin_blade_omnivamp_cooldown,
+            (int) ConfigConstructor.darkin_blade_omnivamp_reduced_cooldown_per_level
+    );
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss, ATTRIBUTES);
-        this.addTooltipAbility(TooltipAbilities.OMNIVAMP, TooltipAbilities.SWORD_SLAM);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (attacker instanceof PlayerEntity player) {
-            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
-                float healing = ConfigConstructor.lifesteal_item_base_healing;
-                if (ConfigConstructor.lifesteal_item_heal_scales) {
-                    healing += MathHelper.ceil(((float)WeaponUtil.getEnchantDamageBonus(stack))/2);
-                }
-                attacker.heal(healing);
-            }
-        }
-        return super.postHit(stack, target, attacker);
+        this.addTooltipAbility(TooltipAbilities.SWORD_SLAM);
+        this.addAbility(OMNIVAMP);
     }
 
     @Override
@@ -86,16 +77,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
             this.applyItemCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
         }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.darkin_blade_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.darkin_blade_ability_enchant_reduces_cooldown_ids;
     }
 
     protected int getScaledCooldown(ItemStack stack) {

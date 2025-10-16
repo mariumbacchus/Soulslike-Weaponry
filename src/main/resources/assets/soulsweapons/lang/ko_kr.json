@@ -413,13 +413,13 @@
     "tooltip.soulsweapons.blazing_blade_description_2": "이는 §6발화§r 레벨에 따라 조정됩니다.",
 
     "tooltip.soulsweapons.life_steal": "생명 흡수",
-    "tooltip.soulsweapons.life_steal_description": "- 아이템이 쿨다운 상태가 아닐 때마다, 매 타격 시 §c회복§r합니다.",
+    "tooltip.soulsweapons.life_steal.1": "- 아이템이 쿨다운 상태가 아닐 때마다, 매 타격 시 §c회복§r합니다.",
 
     "tooltip.soulsweapons.overheal": "과잉 회복",
-    "tooltip.soulsweapons.overheal_description": "- 체력이 가득 찰 때, 회복 대신 §e흡수§r를 얻습니다.",
+    "tooltip.soulsweapons.overheal.1": "- 체력이 가득 찰 때, 회복 대신 §e흡수§r를 얻습니다.",
 
     "tooltip.soulsweapons.omnivamp": "옴니뱀프",
-    "tooltip.soulsweapons.omnivamp_description": "- 무기의 능력으로 몬스터를 타격할 때마다 §c회복§r합니다.",
+    "tooltip.soulsweapons.omnivamp.1": "- Attacks & abilities §cheal§r you when not on cooldown",
 
     "tooltip.soulsweapons.sword_slam": "검의 대멸",
     "tooltip.soulsweapons.sword_slam_description": "- 지면을 발사하고 부숩니다.",

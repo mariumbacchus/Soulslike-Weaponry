@@ -1,15 +1,11 @@
 package net.soulsweaponry.items.scythe;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.targetdamaged.Omnivamp;
 import net.soulsweaponry.items.abilities.use.UmbralTrespass;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 
 public class DarkinScythePrime extends ModdedSword {
 
@@ -24,30 +20,17 @@ public class DarkinScythePrime extends ModdedSword {
             (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_ticks_before_dismount,
             ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_percent_max_health_damage
     );
+    private static final Omnivamp OMNIVAMP = new Omnivamp(
+            ConfigConstructor.darkin_scythe_prime_omnivamp_base_heal,
+            ConfigConstructor.darkin_scythe_prime_omnivamp_bonus_heal_per_level,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_min_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_reduced_cooldown_per_level
+    );
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.OMNIVAMP);
-        this.addAbility(UMBRAL_TRESPASS);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        //TODO make ability off of this, also make Omnivamp ability actually heal the player off of any ability somehow instead of hardcoding to one ability (maybe on target damaged?)
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (attacker instanceof PlayerEntity player) {
-            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
-                float healing = ConfigConstructor.lifesteal_item_base_healing;
-                if (ConfigConstructor.lifesteal_item_heal_scales) {
-                    healing += MathHelper.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
-                }
-                attacker.heal(healing);
-            }
-        }
-        return super.postHit(stack, target, attacker);
+        this.addAbility(UMBRAL_TRESPASS, OMNIVAMP);
     }
 
     @Override
