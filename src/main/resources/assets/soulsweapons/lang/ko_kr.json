@@ -454,10 +454,10 @@
     "tooltip.soulsweapons.rage_description": "- 능력 단축키를 눌러 §4피의 갈망§r 효과와 §c힘§r을 얻습니다.",
 
     "tooltip.soulsweapons.lightning_call": "Lightning Call",
-    "tooltip.soulsweapons.lightning_call.description.1": "- Summon §eLightning§r on all nearby mobs",
+    "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
 
     "tooltip.soulsweapons.storm_stomp": "폭풍 발구르기",
-    "tooltip.soulsweapons.storm_stomp_description": "- §e번개§r에 맞지 않은 대상을 밀쳐냅니다.",
+    "tooltip.soulsweapons.storm_stomp.1": "- §e번개§r에 맞지 않은 대상을 밀쳐냅니다.",
 
     "tooltip.soulsweapons.double_edged": "양날의 검",
     "tooltip.soulsweapons.double_edged_description": "",
@@ -572,8 +572,8 @@
     "tooltip.soulsweapons.weatherborn.description.1": "- §9비§r가 올 때, 이 무기가 강화됩니다.",
 
     "tooltip.soulsweapons.mjolnir_throw": "신성한 도구",
-    "tooltip.soulsweapons.mjolnir_throw.description.1": "- 적에게 무기를 던지면",
-    "tooltip.soulsweapons.mjolnir_throw.description.2": "하늘이 맑을 때 그들에게 번개를 소환합니다.",
+    "tooltip.soulsweapons.mjolnir_throw.1": "- 적에게 무기를 던지면",
+    "tooltip.soulsweapons.mjolnir_throw.2": "하늘이 맑을 때 그들에게 번개를 소환합니다.",
 
     "tooltip.soulsweapons.freyr_sword": "빛의 칼",
     "tooltip.soulsweapons.freyr_sword_description_1": "- Use to summon the §bSword of Freyr§r to fight",
@@ -898,6 +898,9 @@
     "tooltip.soulsweapons.meteor_strike": "Meteor Strike",
     "tooltip.soulsweapons.meteor_strike.1": "- Land with §fCalculated Fall§r to nullify fall damage",
     "tooltip.soulsweapons.meteor_strike.2": "and create an explosion scaling with fall distance",
+    "tooltip.soulsweapons.throw_dragonslayer_swordspear": "Falling Bolt",
+    "tooltip.soulsweapons.throw_dragonslayer_swordspear.1": "- Throw the weapon at enemies, summoning",
+    "tooltip.soulsweapons.throw_dragonslayer_swordspear.2": "lightning on them if the skies are clear",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "희귀한 형태의 영혼으로, 멸종된 것으로 여겨집니다.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "어두우면서도 균형 잡힌 색조는",

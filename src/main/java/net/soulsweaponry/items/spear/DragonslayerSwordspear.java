@@ -1,95 +1,40 @@
 package net.soulsweaponry.items.spear;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.DragonslayerSwordspearEntity;
 import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.abilities.abilitykeybind.LightningCall;
+import net.soulsweaponry.items.abilities.bonusdamage.DragonBonus;
 import net.soulsweaponry.items.abilities.statboost.RainBoostsStats;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
-
-import java.util.List;
+import net.soulsweaponry.items.abilities.stoppedusing.ThrowDragonslayerSwordspear;
 
 public class DragonslayerSwordspear extends ChargeToUseItem {
 
     private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage, ConfigConstructor.dragonslayer_swordspear_rain_bonus_attack_speed);
+    private static final DragonBonus DRAGON_BONUS = new DragonBonus(ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus, ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus_per_level);
+    private static final ThrowDragonslayerSwordspear THROW_DRAGONSLAYER_SWORDSPEAR = new ThrowDragonslayerSwordspear(
+            5f, (int) ConfigConstructor.dragonslayer_swordspear_throw_min_cooldown,
+            (int) ConfigConstructor.dragonslayer_swordspear_throw_cooldown,
+            (int) ConfigConstructor.dragonslayer_swordspear_throw_reduced_cooldown_per_level,
+            ConfigConstructor.dragonslayer_swordspear_throw_cooldown_modifier_when_raining
+    );
+    private static final LightningCall LIGHTNING_CALL = new LightningCall(
+            ConfigConstructor.dragonslayer_swordspear_lightning_call_block_radius,
+            (int) ConfigConstructor.dragonslayer_swordspear_lightning_call_lightning_amount,
+            ConfigConstructor.dragonslayer_swordspear_lightning_call_bonus_lightning_amount_per_level,
+            ConfigConstructor.dragonslayer_swordspear_storm_stomp_damage,
+            ConfigConstructor.dragonslayer_swordspear_storm_stomp_bonus_damage_per_level,
+            ConfigConstructor.dragonslayer_swordspear_storm_stomp_knockback,
+            (int) ConfigConstructor.dragonslayer_swordspear_lightning_call_min_cooldown,
+            (int) ConfigConstructor.dragonslayer_swordspear_lightning_call_ability_cooldown,
+            (int) ConfigConstructor.dragonslayer_swordspear_lightning_call_reduced_cooldown_per_level,
+            ConfigConstructor.dragonslayer_swordspear_lightning_call_cooldown_modifier_when_raining
+    );
 
     public DragonslayerSwordspear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragonslayer_swordspear_damage, ConfigConstructor.dragonslayer_swordspear_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.LIGHTNING_CALL /*TooltipAbilities.THROW_LIGHTNING*/, TooltipAbilities.STORM_STOMP);//TooltipAbilities.DRAGONS_SCOURGE ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus;
-        this.addAbility(RAIN_BOOSTS_STATS);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
-            if (i >= 10) {
-                if (stack != user.getOffHandStack()) {
-                    stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
-                    DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
-                    entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
-                    entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-                    world.spawnEntity(entity);
-                    world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    this.applyItemCooldown(playerEntity, this.getScaledCooldownThrow(world, stack));
-                } else {
-                    stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
-                    user.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 5));
-                    user.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0));
-                    Box chunkBox = new Box(user.getX() - 10, user.getY() - 5, user.getZ() - 10, user.getX() + 10, user.getY() + 5, user.getZ() + 10);
-                    List<Entity> nearbyEntities = world.getOtherEntities(user, chunkBox);
-                    //Entity["EntityKey"/number?, l = "ClientLevel", x, y, z] and so on... Includes items too!
-                    for (Entity nearbyEntity : nearbyEntities) {
-                        if (nearbyEntity instanceof LivingEntity target) {
-                            if (nearbyEntity instanceof TameableEntity tamed && tamed.isTamed()) {
-                                continue;
-                            }
-                            if (world.isSkyVisible(target.getBlockPos())) {
-                                for (i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
-                                    LightningEntity entity = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
-                                    entity.setPos(target.getX(), target.getY(), target.getZ());
-                                    world.spawnEntity(entity);
-                                }
-                            } else {
-                                double x = target.getX() - user.getX();
-                                double z = target.getX() - user.getX();
-                                target.takeKnockback(5F, -x, -z);
-                                target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.dragonslayer_swordspear_ability_damage);
-                                if (!world.isClient) {
-                                    ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
-                                }
-                            }
-                            world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
-                        }
-                    }
-                    this.applyItemCooldown(playerEntity, this.getScaledCooldownAbility(world, stack));
-                }
-            }
-        }
-    }
-
-    protected int getScaledCooldownAbility(World world, ItemStack stack) {
-        float base = ConfigConstructor.dragonslayer_swordspear_ability_cooldown;
-        return (int) Math.max(ConfigConstructor.dragonslayer_swordspear_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 20 / (world.isRaining() ? 2f : 1f));
-    }
-
-    protected int getScaledCooldownThrow(World world, ItemStack stack) {
-        float base = ConfigConstructor.dragonslayer_swordspear_throw_cooldown;
-        return (int) Math.max(ConfigConstructor.dragonslayer_swordspear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 10 / (world.isRaining() ? 2f : 1f));
+        this.addAbility(DRAGON_BONUS, RAIN_BOOSTS_STATS, THROW_DRAGONSLAYER_SWORDSPEAR, LIGHTNING_CALL);
     }
 
     @Override

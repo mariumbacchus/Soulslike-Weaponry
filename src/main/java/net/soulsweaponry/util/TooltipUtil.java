@@ -189,14 +189,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
                 //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
-            case LIGHTNING_CALL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_call").formatted(Formatting.YELLOW));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightning_call.description.1").formatted(Formatting.GRAY));
-            }
-            case STORM_STOMP -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.storm_stomp_description").formatted(Formatting.GRAY));
-            }
             case DRAGON_STAFF -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.dragon_staff").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.dragon_staff_description_1").formatted(Formatting.GRAY));

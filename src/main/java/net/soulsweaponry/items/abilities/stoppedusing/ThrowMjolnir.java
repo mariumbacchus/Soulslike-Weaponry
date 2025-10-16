@@ -37,8 +37,8 @@ public record ThrowMjolnir(float baseVelocity, float bonusVelocityPerLvl) implem
     public List<Text> getTooltipAbilities(ItemStack stack) {
         List<Text> tooltip = new ArrayList<>();
         tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD));
-        tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw.description.1").formatted(Formatting.GRAY));
-        tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw.description.2").formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw.1").formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.mjolnir_throw.2").formatted(Formatting.GRAY));
         ThrowLeviathanAxe.appendReturningTooltip(tooltip);
         return tooltip;
     }
