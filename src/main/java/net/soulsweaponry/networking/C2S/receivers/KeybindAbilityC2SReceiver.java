@@ -43,17 +43,13 @@ public class KeybindAbilityC2SReceiver {
             //TODO remove above
             for (ItemStack armorStack : player.getArmorItems()) {
                 if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                    if (!abilityItem.isDisabled(armorStack)) {
-                        abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityServer(serverWorld, armorStack, player));
-                    }
+                    abilityItem.useKeybindAbilityServer(serverWorld, armorStack, player);
                 }
             }
             for (Hand hand : Hand.values()) {
                 ItemStack stack = player.getStackInHand(hand);
                 if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                    if (!abilityItem.isDisabled(stack)) {
-                        abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityServer(serverWorld, stack, player));
-                    }
+                    abilityItem.useKeybindAbilityServer(serverWorld, stack, player);
                 }
             }
         });

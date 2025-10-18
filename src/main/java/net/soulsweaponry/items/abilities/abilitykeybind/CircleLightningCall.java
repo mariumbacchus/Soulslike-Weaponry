@@ -25,7 +25,7 @@ public record CircleLightningCall(float baseSmashDamage, float bonusSmashDamageP
                                   float enchantBonusSmashDamageMultiplier, int lightningCircleAmount,
                                   int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IKeybindAbility {
 
-    @Override
+    @Override //TODO add cooldown check and test
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         Box box = player.getBoundingBox().expand(3);

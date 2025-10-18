@@ -651,15 +651,8 @@
     "tooltip.soulsweapons.righteous.description.1": "- Does increased damage against §fUndead§r.",
     "tooltip.soulsweapons.righteous.description.2": "Scales with Upgrade Level, current bonus: %s",
 
-    "tooltip.soulsweapons.detonate_spears": "드라우프니르의 비명",
-    "tooltip.soulsweapons.detonate_spears_description_1": "- 손에 들고 능력 단축키를 눌러 지면을 가격하여",
-    "tooltip.soulsweapons.detonate_spears_description_2": "주변의 모든 몬스터에 피해를 주고,",
-    "tooltip.soulsweapons.detonate_spears_description_3": "이전에 던진 모든 §6드라우프니르 창§r을 폭발력으로 폭발시킵니다.",
-    "tooltip.soulsweapons.detonate_spears_description_4": "폭발력 수준이 2를 초과하면, 주변의 모든 대상이",
-    "tooltip.soulsweapons.detonate_spears_description_5": "§3약화§r에 걸리게 됩니다.",
-    "tooltip.soulsweapons.detonate_spears_description_6": "- 웅크리고 단축키를 누르면 플레이어 주변의 하늘에서",
-    "tooltip.soulsweapons.detonate_spears_description_7": "8개의 §6드라우프니르 창§r을 소환합니다.",
     "tooltip.soulsweapons.keybind_ability": "능력 단축키: ",
+    "tooltip.soulsweapons.sneaking_keybind_ability": "While sneaking Ability Keybind: ",
 
     "tooltip.soulsweapons.moonfall": "달의 낙하",
     "tooltip.soulsweapons.moonfall_description_1": "- 무기를 충전한 후 땅을 내리쳐,",
@@ -901,6 +894,18 @@
     "tooltip.soulsweapons.throw_dragonslayer_swordspear": "Falling Bolt",
     "tooltip.soulsweapons.throw_dragonslayer_swordspear.1": "- Throw the weapon at enemies, summoning",
     "tooltip.soulsweapons.throw_dragonslayer_swordspear.2": "lightning on them if the skies are clear",
+
+    "tooltip.soulsweapons.spear_arsenal": "Spear Arsenal",
+    "tooltip.soulsweapons.spear_arsenal.1": "- Use to throw, thrown spears will remain for a while",
+
+    "tooltip.soulsweapons.draupnirs_wail": "Draupnir's Wail",
+    "tooltip.soulsweapons.draupnirs_wail.1": "- Strike the ground around you, damaging nearby mobs",
+    "tooltip.soulsweapons.draupnirs_wail.2": "- All §6Draupnir Spears§r you've summoned will explode",
+    "tooltip.soulsweapons.draupnirs_wail.3": "with explosion power %s",
+    "tooltip.soulsweapons.draupnirs_wail.4": "- At power >= 2, targets hit gain §3Weakness§r",
+
+    "tooltip.soulsweapons.draupnirs_call": "Draupnir's Call",
+    "tooltip.soulsweapons.draupnirs_call.1": "- Summon %s §6Draupnir Spears§r from the sky around you",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "희귀한 형태의 영혼으로, 멸종된 것으로 여겨집니다.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "어두우면서도 균형 잡힌 색조는",

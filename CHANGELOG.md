@@ -21,10 +21,11 @@
   - These bonuses are added as recipes with the type `"soulsweapons:smithing_item_upgrade"`, therefore making it possible to create own stat files for specific items or overwrite old ones
   - Items can be upgraded max 5 times, but can be changed in config
   - Added REI compatability for this system too
-  - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants
+  - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants, therefore, config lines previously dictating what enchants made the weapons scale have been removed and replaced with _per_level instead
 - Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
 - Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config
   - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
+- Overhauled the ability system on the legendary weapons. Also moved away from off-hand ability triggers since Better Combat doesn't allow off-handing heavy weapons. Many abilities have therefore changed to be either triggered when sneaking or with the keybind ability trigger
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

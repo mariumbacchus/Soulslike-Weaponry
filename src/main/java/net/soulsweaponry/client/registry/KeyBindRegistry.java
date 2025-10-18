@@ -114,21 +114,13 @@ public class KeyBindRegistry {
                     //TODO remove above
                     for (ItemStack armorStack : player.getArmorItems()) {
                         if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                            if (abilityItem.isDisabled(armorStack)) {
-                                abilityItem.notifyDisabled(player);
-                            } else {
-                                abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityClient(client.world, armorStack, player));
-                            }
+                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
                         }
                     }
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                            if (abilityItem.isDisabled(stack)) {
-                                abilityItem.notifyDisabled(player);
-                            } else {
-                                abilityItem.getAbilities().forEach(a -> a.useKeybindAbilityClient(client.world, stack, player));
-                            }
+                            abilityItem.useKeybindAbilityClient(client.world, stack, player);
                         }
                     }
                 }

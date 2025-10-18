@@ -14,8 +14,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
-import net.soulsweaponry.items.scythe.DarkinScythePre;
-import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
 import net.soulsweaponry.items.spear.GlaiveOfHodir;
 import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
@@ -25,7 +23,6 @@ import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class TooltipUtil {
@@ -203,18 +200,6 @@ public class TooltipUtil {
             case NIGHT_PROWLER -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.night_prowler").formatted(Formatting.DARK_AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.night_prowler_description").formatted(Formatting.GRAY));
-            }
-            case DETONATE_SPEARS -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears").formatted(Formatting.RED));
-                for (int i = 1; i <= 5; i++) {
-                    if (i == 3) tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).append(Text.literal(String.valueOf(
-                                    ConfigConstructor.draupnir_spear_detonate_power + ((float) WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) / 2.5f)))
-                            .formatted(Formatting.WHITE)).formatted(Formatting.GRAY));
-                    else tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_" + i).formatted(Formatting.GRAY));
-                }
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-                tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_6").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.detonate_spears_description_7").formatted(Formatting.GRAY));
             }
             case FEATHERLIGHT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE));

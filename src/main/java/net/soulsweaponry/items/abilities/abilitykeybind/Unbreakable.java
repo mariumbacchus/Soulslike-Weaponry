@@ -20,7 +20,7 @@ public record Unbreakable(
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (!this.isCoolingDown(player, stack)) {
             this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownShield(stack));
             stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, this.effectsDuration, this.absorptionAmp));

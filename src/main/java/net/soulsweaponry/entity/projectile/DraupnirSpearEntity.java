@@ -1,13 +1,10 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -15,13 +12,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -39,21 +34,6 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
 
     public DraupnirSpearEntity(World world, LivingEntity owner, ItemStack weaponStack) {
         super(EntityRegistry.DRAUPNIR_SPEAR_TYPE, owner, world, weaponStack, weaponStack);
-    }
-
-    public void detonate() {
-        if (this.getOwner() != null && this.getBlockPos() != null && !getWorld().isClient) {
-            float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) WeaponUtil.getLevel(asItemStack(), Enchantments.SHARPNESS) / 2.5f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.TRIGGER);
-            if (power > 2f) {
-                for (Entity entity : getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
-                    if (entity instanceof LivingEntity living) {
-                        living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 100, MathHelper.floor(power - 2)));
-                    }
-                }
-            }
-            this.remove(RemovalReason.DISCARDED);
-        }
     }
 
     @Override

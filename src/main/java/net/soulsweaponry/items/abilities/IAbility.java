@@ -56,7 +56,8 @@ public interface IAbility extends ICooldownItem {
     /**
      * Called when {@link #isChargeToUse()} returns {@code true} and only if the item is in offhand.
      * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
-     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed. Try turning it into a keybind or sneaking ability instead.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed.
+     * Try turning it into a keybind or sneaking ability instead.
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
@@ -93,7 +94,8 @@ public interface IAbility extends ICooldownItem {
     /**
      * Called when {@link #isChargeToUse()} returns {@code false} and the item is in offhand.
      * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
-     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed. Try turning it into a keybind or sneaking ability instead.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed.
+     * Try turning it into a keybind or sneaking ability instead.
      * @param world world
      * @param user user
      * @param hand hand used
@@ -117,8 +119,8 @@ public interface IAbility extends ICooldownItem {
     default boolean isChargeToUse() { return false; }
 
     /**
-     * If true, both {@link #use(World, PlayerEntity, Hand, ItemStack)} and {@link #onStoppedUsing(ItemStack, World, LivingEntity, int)}
-     * will be called even if the user is sneaking.
+     * If true, all "sneaking" methods will be called instead of the regular ones, such as {@link #use(World, PlayerEntity, Hand, ItemStack)}
+     * and {@link #onStoppedUsing(ItemStack, World, LivingEntity, int)}.
      * <p>
      * This way, if no ability returns true, regular use methods are called, meaning those are the
      * only abilities that exist on the item and should still trigger, preventing nothing from happening at all.
@@ -151,6 +153,7 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility}.
+     * Will not be called if {@link #isSneakAbility()} returns {@code true}.
      * @param world server world
      * @param stack item stack
      * @param player (server) player
@@ -158,12 +161,55 @@ public interface IAbility extends ICooldownItem {
     default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
 
     /**
+     * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the player is sneaking.
+     * Will only be called if {@link #isSneakAbility()} returns {@code true}.
+     * @param world server world
+     * @param stack item stack
+     * @param player (server) player
+     */
+    default void sneakingUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the item is in offhand.
+     * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed.
+     * Try turning it into a keybind or sneaking ability instead.
+     * @param world server world
+     * @param stack item stack
+     * @param player (server) player
+     */
+    @Deprecated
+    default void offhandUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
      * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility}.
+     * Will not be called if {@link #isSneakAbility()} returns {@code true}.
      * @param world client world
      * @param stack item stack
      * @param player client player
      */
     default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the player is sneaking.
+     * Will only be called if {@link #isSneakAbility()} returns {@code true}.
+     * @param world client world
+     * @param stack item stack
+     * @param player client player
+     */
+    default void sneakingUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the item is in offhand.
+     * Remember to override {@link #isOffhandAbility()} to return {@code true} when overriding this.
+     * @deprecated This should be avoided since many weapons can't be equipped in offhand with Better Combat installed.
+     * Try turning it into a keybind or sneaking ability instead.
+     * @param world client world
+     * @param stack item stack
+     * @param player client player
+     */
+    @Deprecated
+    default void offhandUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
 
     /**
      * Called whenever an entity dies and the last damage source was the attacker.

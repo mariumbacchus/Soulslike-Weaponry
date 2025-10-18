@@ -3,12 +3,14 @@ package net.soulsweaponry.items.abilities;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
@@ -197,6 +199,44 @@ public interface IHasAbilities extends IConfigDisable {
         if (!this.isDisabled(stack)) {
             this.getAbilities().forEach(a -> a.inventoryTick(stack, world, entity, slot, selected));
         }
+    }
+
+    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled(stack)) {
+            this.notifyDisabled(player);
+        }
+        boolean sneaking = player.isSneaking();
+        boolean hasSneakAbility = this.hasSneakToUseAbility();
+        boolean offhand = player.getOffHandStack().isOf(stack.getItem());//TODO test this
+        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
+        this.getAbilities().forEach(a -> {
+            if (hasSneakAbility && sneaking) {
+                a.sneakingUseKeybindAbilityClient(world, stack, player);
+            } else if (hasOffhandAbility && offhand) {
+                a.offhandUseKeybindAbilityClient(world, stack, player);
+            } else {
+                a.useKeybindAbilityClient(world, stack, player);
+            }
+        });
+    }
+
+    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled(stack)) {
+            return; // Disabled item notification is given on client side
+        }
+        boolean sneaking = player.isSneaking();
+        boolean hasSneakAbility = this.hasSneakToUseAbility();
+        boolean offhand = player.getOffHandStack().isOf(stack.getItem());//TODO test this
+        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
+        this.getAbilities().forEach(a -> {
+            if (hasSneakAbility && sneaking) {
+                a.sneakingUseKeybindAbilityServer(world, stack, player);
+            } else if (hasOffhandAbility && offhand) {
+                a.offhandUseKeybindAbilityServer(world, stack, player);
+            } else {
+                a.useKeybindAbilityServer(world, stack, player);
+            }
+        });
     }
 
     /**

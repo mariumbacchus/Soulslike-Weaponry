@@ -6,6 +6,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.soulsweaponry.SoulsWeaponry;
 
@@ -19,11 +20,9 @@ public class ComponentRegistry {
     public static final ComponentType<Boolean> EMPOWERED = register("empowered", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
     public static final ComponentType<Integer> CHARGE = register("charge", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     // UUID is saved and processed as a string
-    public static final ComponentType<UUID> SAVED_UUID = register("saved_uuid", builder ->
-            builder.codec(Codec.STRING.xmap(UUID::fromString, UUID::toString))
-                    .packetCodec(PacketCodecs.STRING.xmap(UUID::fromString, UUID::toString).mapBuf(buf -> buf)));
-    public static final ComponentType<List<Integer>> INT_LIST = register("int_list", builder ->
-                    builder.codec(Codec.list(Codec.INT)).packetCodec(PacketCodecs.registryCodec(Codec.list(Codec.INT))));
+
+    public static final ComponentType<UUID> SAVED_UUID = register("saved_uuid", b ->
+            b.codec(Uuids.CODEC).packetCodec(Uuids.PACKET_CODEC));
     public static final ComponentType<BlockPos> SAVED_BLOCK_POS = register("saved_block_pos", builder -> builder.codec(BlockPos.CODEC).packetCodec(BlockPos.PACKET_CODEC));
     public static final ComponentType<Boolean> INVISIBLE = register("invisible", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
     public static final ComponentType<String> MAPPED_TRICK_WEAPON = register("mapped_trick_weapon", builder -> builder.codec(Codec.STRING).packetCodec(PacketCodecs.STRING));
@@ -36,6 +35,9 @@ public class ComponentRegistry {
     public static final ComponentType<Integer> SOULS_HARVESTED = register("souls_harvested", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> RED_SOULS = register("red_souls", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> BLUE_SOULS = register("blue_souls", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<List<UUID>> SAVED_ENTITY_UUID_LIST = register("saved_entity_uuid_list", b ->
+            b.codec(Codec.list(Uuids.CODEC))
+                    .packetCodec(PacketCodecs.registryCodec(Codec.list(Uuids.CODEC))));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),
