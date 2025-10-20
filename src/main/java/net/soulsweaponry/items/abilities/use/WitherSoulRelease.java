@@ -43,9 +43,9 @@ public class WitherSoulRelease implements ISoulHarvest {
                 entity.setOwner(user);
                 if (this.isCritical(stack)) {
                     entity.setCharged(true);
-                    stack.set(ComponentRegistry.AMOUNT_USED, 1);
+                    stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1);
                 } else {
-                    stack.set(ComponentRegistry.AMOUNT_USED, 1 + Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0));
+                    stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1 + Optional.ofNullable(stack.get(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER)).orElse(0));
                 }
                 entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
                 world.spawnEntity(entity);
@@ -83,8 +83,8 @@ public class WitherSoulRelease implements ISoulHarvest {
     }
 
     private boolean isCritical(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElseGet(() -> {
-            stack.set(ComponentRegistry.AMOUNT_USED, 1);
+        return Optional.ofNullable(stack.get(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER)).orElseGet(() -> {
+            stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1);
             return 1;
         }) >= 3;
     }

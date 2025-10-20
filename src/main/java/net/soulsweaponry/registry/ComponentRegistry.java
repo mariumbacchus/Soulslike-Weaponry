@@ -16,7 +16,6 @@ import java.util.function.UnaryOperator;
 
 public class ComponentRegistry {
     //TODO when making it possible to add whatever ability to any weapon, make sure to no longer use the same components for the same abilities! (unless that's the point)
-    public static final ComponentType<Integer> AMOUNT_USED = register("amount_used", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Boolean> EMPOWERED = register("empowered", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
     public static final ComponentType<Integer> CHARGE = register("charge", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     // UUID is saved and processed as a string
@@ -38,6 +37,10 @@ public class ComponentRegistry {
     public static final ComponentType<List<UUID>> SAVED_ENTITY_UUID_LIST = register("saved_entity_uuid_list", b ->
             b.codec(Codec.list(Uuids.CODEC))
                     .packetCodec(PacketCodecs.registryCodec(Codec.list(Uuids.CODEC))));
+    public static final ComponentType<Integer> BLADE_DANCE_POST_HIT_COUNTER = register("blade_dance_post_hit_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> WITHER_SOUL_RELEASE_COUNTER = register("wither_soul_release_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> KRAKEN_SLAYER_SHOTS_COUNTER = register("kraken_slayer_shots_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> SKOFNUNG_EMPOWERED_STRIKES = register("skofnung_empowered_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),

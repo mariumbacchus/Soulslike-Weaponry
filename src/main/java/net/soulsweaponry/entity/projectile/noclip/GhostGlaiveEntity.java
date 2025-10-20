@@ -16,6 +16,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private int postureLoss = (int) ConfigConstructor.glaive_of_hodir_projectile_posture_loss;
 
     public GhostGlaiveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -41,7 +42,7 @@ public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity
 
     @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        PostureData.addPostureLoss(target, (int) ConfigConstructor.glaive_of_hodir_projectile_posture_loss);
+        PostureData.addPostureLoss(target, this.postureLoss);
     }
 
     @Override
@@ -52,5 +53,13 @@ public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
+    }
+
+    public void setPostureLoss(int postureLoss) {
+        this.postureLoss = postureLoss;
+    }
+
+    public int getPostureLoss() {
+        return this.postureLoss;
     }
 }

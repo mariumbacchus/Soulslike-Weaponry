@@ -39,8 +39,7 @@ public record ExplodeSavedEntities(double userExplosionRadius, float baseDamage,
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.hasCooldownEffect(player)) {
-            this.notifyCooldown(player);
+        if (this.isCoolingDown(player, stack)) {
             return;
         }
         Box box = player.getBoundingBox().expand(this.userExplosionRadius);

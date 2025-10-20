@@ -609,21 +609,29 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean galeforce_dash_enchant_reduces_cooldown = false;
     @Entry public static String[] galeforce_dash_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static boolean galeforce_can_apply_arrow_effects = true;
+
     @Entry public static float glaive_of_hodir_damage = 8;
     @Entry public static float glaive_of_hodir_attack_speed = 1.3f;
-    @Entry public static float glaive_of_hodir_bonus_damage_per_stack = 0.8f;
-    @Entry public static float glaive_of_hodir_bonus_attack_speed_per_stack = 0.1f;
-    @Entry public static float glaive_of_hodir_max_stacks = 5;
-    @Entry public static float glaive_of_hodir_add_effects_cooldown = 200;
-    @Entry public static float glaive_of_hodir_effects_duration = 220;
-    @Entry public static float glaive_of_hodir_resistance_amplifier = 2;
-    @Entry public static float glaive_of_hodir_absorption_amplifier = 3;
-    @Entry public static boolean glaive_of_hodir_enchant_reduces_cooldown = true;
-    @Entry public static String[] glaive_of_hodir_enchant_reduces_cooldown_ids = {"damage"};
+    @Entry public static float glaive_of_hodir_blade_dance_bonus_damage_per_amp = 0.8f;
+    @Entry public static float glaive_of_hodir_blade_dance_bonus_attack_speed_per_amp = 0.1f;
+    @Entry public static float glaive_of_hodir_blade_dance_max_amp = 4;
+    @Entry public static float glaive_of_hodir_blade_dance_max_amp_effects_cooldown = 200;
+    @Entry public static float glaive_of_hodir_blade_dance_max_amp_effects_min_cooldown = 140;
+    @Entry public static float glaive_of_hodir_blade_dance_max_amp_effects_reduced_cooldown_per_level = 10;
+
+    @Entry public static float glaive_of_hodir_blade_dance_resistance_duration = 220;
+    @Entry public static float glaive_of_hodir_blade_dance_absorption_duration = 220;
+    @Entry public static float glaive_of_hodir_blade_dance_resistance_amplifier = 1;
+    @Entry public static float glaive_of_hodir_blade_dance_absorption_amplifier = 2;
+
     @Entry public static float glaive_of_hodir_projectile_damage = 7f;
+    @Entry public static float glaive_of_hodir_projectile_bonus_damage_per_level = 1.5f;
+    @Entry public static float glaive_of_hodir_projectile_posture_loss = 125;
+    @Entry public static float glaive_of_hodir_projectile_max_age = 10;
     @Entry public static float glaive_of_hodir_projectile_cooldown = 160;
     @Entry public static float glaive_of_hodir_projectile_min_cooldown = 80;
-    @Entry public static float glaive_of_hodir_projectile_posture_loss = 125;
+    @Entry public static float glaive_of_hodir_projectile_reduced_cooldown_per_level = 12;
+
     @Entry public static float rageblade_damage = 7;
     @Entry public static float rageblade_attack_speed = 1.6f;
     @Entry public static boolean rageblade_haste_cap = true;

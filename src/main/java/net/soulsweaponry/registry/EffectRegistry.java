@@ -56,7 +56,7 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> GHOSTLY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191), "ghostly");
     public static final RegistryEntry<StatusEffect> CHUNGUS_TONIC_EFFECT = registerEffect(new ChungusTonic(), "chungus_tonic_effect");
     public static final RegistryEntry<StatusEffect> FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
-    public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
+    public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDanceEffect(), "blade_dance");
     public static final RegistryEntry<StatusEffect> STORMVEIL = registerEffect(new Stormveil(), "stormveil");
     public static final RegistryEntry<StatusEffect> POTENCY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094), "potency");
 

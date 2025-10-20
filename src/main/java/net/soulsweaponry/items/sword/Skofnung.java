@@ -66,12 +66,12 @@ public class Skofnung extends ModdedSword {
     }
 
     public static boolean isEmpowered(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) > 0 && !ConfigConstructor.disable_use_skofnung;
+        return Optional.ofNullable(stack.get(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES)).orElse(0) > 0 && !ConfigConstructor.disable_use_skofnung;
     }
 
     public static Integer empAttacksLeft(ItemStack stack) {
         if (isEmpowered(stack)) {
-            return Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0);
+            return Optional.ofNullable(stack.get(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES)).orElse(0);
         } else {
             return 0;
         }
@@ -79,8 +79,8 @@ public class Skofnung extends ModdedSword {
 
     private void reduceEmpowered(ItemStack stack, World world, LivingEntity attacker) {
         if (isEmpowered(stack)) {
-            stack.set(ComponentRegistry.AMOUNT_USED, Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(1) - 1);
-            if (Optional.ofNullable(stack.get(ComponentRegistry.AMOUNT_USED)).orElse(0) <= 0) {
+            stack.set(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES, Optional.ofNullable(stack.get(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES)).orElse(1) - 1);
+            if (Optional.ofNullable(stack.get(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES)).orElse(0) <= 0) {
                 world.playSound(null, attacker.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, .75f, 1f);
             }
         }
@@ -89,15 +89,5 @@ public class Skofnung extends ModdedSword {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_skofnung;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

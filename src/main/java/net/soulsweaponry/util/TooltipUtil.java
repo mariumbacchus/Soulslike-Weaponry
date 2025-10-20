@@ -401,25 +401,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.frost_moon.4").formatted(Formatting.GRAY));
                 //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
-            case GLAIVE_DANCE -> {
-                int maxStacks = stack.getItem() instanceof GlaiveOfHodir item ? item.getMaxStacks() : 5;
-                int cooldown = stack.getItem() instanceof GlaiveOfHodir item ? item.getMaxStacksCooldown() : 200;
-                tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance").formatted(Formatting.GOLD));
-                for (int i = 1; i <= 4; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance." + i).formatted(Formatting.GRAY));
-                }
-                tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.5", maxStacks).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.6", MathHelper.floor(cooldown / 20f)).formatted(Formatting.GRAY));
-                if (!WeaponUtil.isFightModLoaded()) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.glaive_dance.7").formatted(Formatting.GRAY));
-                }
-            }
-            case GHOST_GLAIVE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_glaive").formatted(Formatting.YELLOW));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_glaive.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_glaive.2", ConfigConstructor.glaive_of_hodir_projectile_posture_loss).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.ghost_glaive.3").formatted(Formatting.GRAY));
-            }
             case SONIC_BOOM -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom.1").formatted(Formatting.GRAY));

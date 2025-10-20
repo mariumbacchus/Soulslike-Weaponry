@@ -39,7 +39,7 @@ public class SkofnungStone extends ModdedItem {
         for (Hand offHand : Hand.values()) {
             ItemStack swordStack = user.getStackInHand(offHand);
             if (swordStack.getItem() instanceof Skofnung) {
-                swordStack.set(ComponentRegistry.AMOUNT_USED, (int) ConfigConstructor.skofnung_stone_additional_empowered_strikes);
+                swordStack.set(ComponentRegistry.SKOFNUNG_EMPOWERED_STRIKES, (int) ConfigConstructor.skofnung_stone_additional_empowered_strikes);
                 shouldDamage = true;
                 world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                 world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, .5f, .5f);

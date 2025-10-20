@@ -31,19 +31,19 @@ public class KrakenSlayer extends ModdedBow {
     }
 
     public static PersistentProjectileEntity getKrakenSlayerProjectile(World world, ItemStack bowStack, LivingEntity shooter, double damage, float trueDamage) {
-        Integer firedShots = bowStack.get(ComponentRegistry.AMOUNT_USED);
+        Integer firedShots = bowStack.get(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER);
         if (firedShots != null) {
             if (firedShots >= 2) {
                 TrueDamageArrow projectile = new TrueDamageArrow(world, shooter, Items.ARROW.getDefaultStack(), bowStack);
                 projectile.setTrueDamage(trueDamage);
                 projectile.setDamage(damage);
-                bowStack.set(ComponentRegistry.AMOUNT_USED, 0);
+                bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, 0);
                 return projectile;
             } else {
-                bowStack.set(ComponentRegistry.AMOUNT_USED, firedShots + 1);
+                bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, firedShots + 1);
             }
         } else {
-            bowStack.set(ComponentRegistry.AMOUNT_USED, 1);
+            bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, 1);
         }
         return null;
     }
@@ -51,16 +51,6 @@ public class KrakenSlayer extends ModdedBow {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_bow;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 
     @Override
