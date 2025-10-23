@@ -239,6 +239,45 @@ public interface IHasAbilities extends IConfigDisable {
         });
     }
 
+    default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        if (this.isDisabled(stack)) {
+            return ActionResult.FAIL;
+        }
+        boolean sawSuccess = false;
+        boolean sawConsume = false;
+        boolean sawConsumePartial = false;
+        boolean sawSuccessNoItemUsed = false;
+        boolean sawFail = false;
+
+        for (var a : this.getAbilities()) {
+            ActionResult result = a.useOnEntity(stack, user, entity, hand);
+            switch (result) {
+                case SUCCESS -> sawSuccess = true;
+                case CONSUME -> sawConsume = true;
+                case CONSUME_PARTIAL -> sawConsumePartial = true;
+                case SUCCESS_NO_ITEM_USED -> sawSuccessNoItemUsed = true;
+                case FAIL -> sawFail = true;
+                case PASS -> {}
+            }
+        }
+        if (sawSuccess) {
+            return ActionResult.SUCCESS;
+        }
+        if (sawConsume) {
+            return ActionResult.CONSUME;
+        }
+        if (sawSuccessNoItemUsed) {
+            return ActionResult.SUCCESS_NO_ITEM_USED;
+        }
+        if (sawConsumePartial) {
+            return ActionResult.CONSUME_PARTIAL;
+        }
+        if (sawFail) {
+            return ActionResult.FAIL;
+        }
+        return ActionResult.PASS;
+    }
+
     /**
      * Adds all tooltip abilities listed in {@link IAbility#getTooltipAbilities(ItemStack)} to the item tooltip.
      * Additional lore is also applied if the weapons have it.
@@ -259,6 +298,10 @@ public interface IHasAbilities extends IConfigDisable {
         if (stack.getItem() instanceof IHasLore hasLore) {
             // Lore from items specifically
             lore.addAll(hasLore.getLore());
+        }
+        if (stack.getItem() instanceof IItemSpecificTooltip iItemSpecificTooltip) {
+            // Info specific items have, such as Chungus Staff reminding you it can only be traded to get, not crafted
+            tooltipAbilities.addAll(iItemSpecificTooltip.getItemSpecificTooltip());
         }
         if (!tooltipAbilities.isEmpty()) {
             if (shouldShowInfo()) {

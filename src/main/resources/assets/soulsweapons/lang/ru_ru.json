@@ -677,14 +677,22 @@
     "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- Исцеляйтесь, когда сущность умирает рядом с вами",
     "tooltip.soulsweapons.transparent": "Transparent",
     "tooltip.soulsweapons.transparent.1": "- Use to turn the weapon invisible for others",
+
     "tooltip.soulsweapons.chungus_infused": "Chungus Infused",
     "tooltip.soulsweapons.chungus_infused.1": "- Gain §aChungus Tonic§r effect when the item is in your",
     "tooltip.soulsweapons.chungus_infused.2": "inventory, preventing §fModerately Sized Chunguses§r from",
     "tooltip.soulsweapons.chungus_infused.3": "attacking you (given they aren't in aggressive state)",
-    "tooltip.soulsweapons.chungus_infused.4": "- Use to give yourself §bSpeed III§r and §eHaste III§r",
-    "tooltip.soulsweapons.chungus_infused.5": "- Use on a §fModerately Sized Chungus§r to tame it, making",
-    "tooltip.soulsweapons.chungus_infused.6": "it fight for you and your life",
-    "tooltip.soulsweapons.chungus_infused.7": "Acquired through chungus bartering",
+    "tooltip.soulsweapons.chungus_infused.4": "- Use ability keybind to give yourself §bSpeed III§r and §eHaste III§r",
+
+    "tooltip.soulsweapons.chungus_whisperer": "Chungus Whisperer",
+    "tooltip.soulsweapons.chungus_whisperer.1": "- Use on a §fModerately Sized Chungus§r to tame it, making",
+    "tooltip.soulsweapons.chungus_whisperer.2": "it fight for you and your life",
+
+    "tooltip.soulsweapons.chungus_explosion": "Chungsplosion",
+    "tooltip.soulsweapons.chungus_explosion.1": "- Use to shoot out a charged Chungus head that goes",
+    "tooltip.soulsweapons.chungus_explosion.2": "through walls and detonates after %s ticks",
+    "tooltip.soulsweapons.chungus_staff.1": "Acquired through chungus bartering",
+
     "tooltip.soulsweapons.frost_moon": "Frost Moon",
     "tooltip.soulsweapons.frost_moon.1": "- Use ability keybind to give yourself §3Frost Moon§r effect,",
     "tooltip.soulsweapons.frost_moon.2": "making you immune to freezing and powdered snow",

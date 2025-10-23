@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -76,6 +77,11 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
+    }
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        return IHasAbilities.super.useOnEntity(stack, user, entity, hand);
     }
 
     // TODO everything under needs to be changed/merged with IAbility

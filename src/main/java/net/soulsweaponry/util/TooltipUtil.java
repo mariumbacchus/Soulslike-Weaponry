@@ -14,7 +14,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
-import net.soulsweaponry.items.spear.GlaiveOfHodir;
 import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.ArmorRegistry;
@@ -23,7 +22,6 @@ import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class TooltipUtil {
 
@@ -382,16 +380,6 @@ public class TooltipUtil {
             case TRANSPARENT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent.1").formatted(Formatting.GRAY));
-            }
-            case CHUNGUS_INFUSED -> {
-                int id = new Random().nextInt(0, 16);
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused").formatted(Formatting.byColorIndex(id)));
-                for (int i = 1; i <= 7; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused." + i).formatted(Formatting.GRAY));
-                }
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused.8", ConfigConstructor.chungus_staff_ticks_before_explosion).formatted(Formatting.GRAY));
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chungus_infused.9").formatted(Formatting.DARK_GRAY));
             }
             case FROST_MOON -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.frost_moon").formatted(Formatting.WHITE));

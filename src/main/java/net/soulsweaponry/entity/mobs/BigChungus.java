@@ -43,7 +43,6 @@ import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;
@@ -324,14 +323,6 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             if (!player.isCreative()) {
                 stack.decrement(1);
             }
-            return ActionResult.SUCCESS;
-        }
-        if (stack.isOf(WeaponRegistry.CHUNGUS_STAFF) && !((IConfigDisable)stack.getItem()).isDisabled(stack) && !this.isAggressive() && !this.isTamed()) {
-            this.setTamed(true, false);
-            this.setOwner(player);
-            this.setTarget(null);
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
-            this.navigation.stop();
             return ActionResult.SUCCESS;
         }
         if (this.isTamed() && this.isOwner(player) && this.getTradeTicks() == 0) {

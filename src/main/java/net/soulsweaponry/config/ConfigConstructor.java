@@ -369,13 +369,20 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bluemoon_shortsword_projectile_min_cooldown = 10;
     @Entry public static boolean bluemoon_shortsword_enchant_reduces_cooldown = false;
     @Entry public static String[] bluemoon_shortsword_enchant_reduces_cooldown_ids = {"damage"};
+
     @Entry public static float chungus_staff_damage = 9;
     @Entry public static float chungus_staff_attack_speed = 1.1f;
-    @Entry public static float chungus_staff_ticks_before_explosion = 15;
-    @Entry public static float chungus_staff_use_cooldown = 5;
-    @Entry public static float chungus_staff_ability_cooldown = 2400;
-    @Entry public static boolean chungus_staff_enchant_reduces_cooldown = true;
-    @Entry public static String[] chungus_staff_enchant_reduces_cooldown_ids = {"damage"};
+    @Entry public static double chungus_staff_chungsplosion_projectile_speed = 1.5;
+    @Entry public static float chungus_staff_chungsplosion_ticks_before_explosion = 15;
+    @Entry public static float chungus_staff_chungsplosion_cooldown = 5;
+    @Entry public static float chungus_staff_buff_haste_duration = 1200;
+    @Entry public static float chungus_staff_buff_haste_amp = 2;
+    @Entry public static float chungus_staff_buff_speed_duration = 1200;
+    @Entry public static float chungus_staff_buff_speed_amp = 2;
+    @Entry public static float chungus_staff_buff_ability_min_cooldown = 1400;
+    @Entry public static float chungus_staff_buff_ability_cooldown = 2400;
+    @Entry public static float chungus_staff_buff_ability_reduced_cooldown_per_level = 160;
+
     @Entry public static float comet_spear_damage = 8;
     @Entry public static float comet_spear_attack_speed = 1.4f;
     @Entry public static float comet_spear_projectile_damage = 8.0f;

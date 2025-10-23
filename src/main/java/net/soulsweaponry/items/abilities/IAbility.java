@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -230,6 +231,10 @@ public interface IAbility extends ICooldownItem {
      * @param attacker wielder of the stack
      */
     default void onTargetBleedTrigger(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+
+    default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        return ActionResult.PASS;
+    }
 
     List<Text> getTooltipAbilities(ItemStack stack);
 
