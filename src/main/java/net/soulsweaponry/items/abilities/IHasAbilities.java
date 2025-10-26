@@ -163,19 +163,19 @@ public interface IHasAbilities extends IConfigDisable {
 
     default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         boolean sneaking = user.isSneaking();
-        boolean hasSneakAbility = this.hasSneakToUseAbility();
-        boolean offhand = user.getOffHandStack().isOf(stack.getItem());//TODO test this
-        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
+        boolean offhand = user.getOffHandStack().isOf(stack.getItem());// TODO still test this
         int fixedTicks = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
-        this.getAbilities().forEach(a -> {
-            if (hasSneakAbility && sneaking) {
+        for (IAbility a : this.getAbilities()) {
+            if (sneaking && a.isSneakAbility()) {//TODO may need to do this (add continue lines) to other methods later
                 a.sneakingOnStoppedUsing(stack, world, user, fixedTicks);
-            } else if (hasOffhandAbility && offhand) {
-                a.offhandOnStoppedUsing(stack, world, user, fixedTicks);
-            } else {
-                a.onStoppedUsing(stack, world, user, fixedTicks);
+                continue;
             }
-        });
+            if (offhand && a.isOffhandAbility()) {
+                a.offhandOnStoppedUsing(stack, world, user, fixedTicks);
+                continue;
+            }
+            a.onStoppedUsing(stack, world, user, fixedTicks);
+        }
     }
 
     default float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
@@ -315,18 +315,18 @@ public interface IHasAbilities extends IConfigDisable {
 
     default void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         boolean sneaking = user.isSneaking();
-        boolean hasSneakAbility = this.hasSneakToUseAbility();
-        boolean offhand = user.getOffHandStack().isOf(stack.getItem());//TODO test this
-        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
-        this.getAbilities().forEach(a -> {
-            if (hasSneakAbility && sneaking) {
+        boolean offhand = user.getOffHandStack().isOf(stack.getItem());
+        for (IAbility a : this.getAbilities()) {
+            if (sneaking && a.isSneakAbility()) {
                 a.sneakingUsageTick(world, user, stack, remainingUseTicks);
-            } else if (hasOffhandAbility && offhand) {
-                a.offhandUsageTick(world, user, stack, remainingUseTicks);
-            } else {
-                a.usageTick(world, user, stack, remainingUseTicks);
+                continue;
             }
-        });
+            if (offhand && a.isOffhandAbility()) {
+                a.offhandUsageTick(world, user, stack, remainingUseTicks);
+                continue;
+            }
+            a.usageTick(world, user, stack, remainingUseTicks);
+        }
     }
 
     default ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
