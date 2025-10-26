@@ -476,14 +476,13 @@
     "tooltip.soulsweapons.moonlight_attack_description_3": "발사체의 발사 속도가 증가합니다.",
     "tooltip.soulsweapons.pure_moonlight_description": "- 3개의 §3달빛 광선§r을 여러 방향으로 소환합니다.",
 
-    "tooltip.soulsweapons.dragon_staff": "정화된 안개",
-    "tooltip.soulsweapons.dragon_staff_description_1": "- §5정화된 용의 안개§r을 생성하는 발사체를 발사합니다.",
-    "tooltip.soulsweapons.dragon_staff_description_2": "이 안개는 적에게 피해를 주고, 플레이어를 치유합니다",
+    "tooltip.soulsweapons.purified_mist": "정화된 안개",
+    "tooltip.soulsweapons.purified_mist.1": "- §5정화된 용의 안개§r을 생성하는 발사체를 발사합니다.",
+    "tooltip.soulsweapons.purified_mist.2": "이 안개는 적에게 피해를 주고, 플레이어를 치유합니다",
 
     "tooltip.soulsweapons.vengeful_fog": "활발한 안개",
-    "tooltip.soulsweapons.vengeful_fog_description_1": "- 웅크리고 사용할 때 안개를 집중시켜 뿌리며,",
-    "tooltip.soulsweapons.vengeful_fog_description_2": "몬스터에게 피해를 주고",
-    "tooltip.soulsweapons.vengeful_fog_description_3": "§5정화된§r §5용의 안개§r 효과를 적용합니다.",
+    "tooltip.soulsweapons.vengeful_fog.1": "- Using spews out concentrated mist, damaging",
+    "tooltip.soulsweapons.vengeful_fog.2": "and applying §5Purified Dragon Mist§r on mobs",
 
     "tooltip.soulsweapons.wabbajack": "지옥의 주방",
     "tooltip.soulsweapons.wabbajack_description": "- 무작위 효과를 가진 무작위 발사체를 소환합니다.",

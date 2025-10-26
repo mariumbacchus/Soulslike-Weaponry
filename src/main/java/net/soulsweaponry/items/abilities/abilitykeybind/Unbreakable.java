@@ -8,8 +8,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public record Unbreakable(
 ) implements IKeybindAbility {
 
     @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (!this.isCoolingDown(player, stack)) {
             this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownShield(stack));
             stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));

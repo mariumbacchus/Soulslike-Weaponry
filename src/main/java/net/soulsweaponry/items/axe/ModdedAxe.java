@@ -98,6 +98,16 @@ public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICool
         return IHasAbilities.super.useOnEntity(stack, user, entity, hand);
     }
 
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        return IHasAbilities.super.finishUsing(stack, world, user);
+    }
+
+    @Override
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        IHasAbilities.super.usageTick(world, user, stack, remainingUseTicks);
+    }
+
     // TODO everything under needs to be changed/merged with IAbility
 
     @Override

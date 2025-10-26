@@ -14,10 +14,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.soulsweaponry.entity.projectile.noclip.WarmupLightningEntity;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public record CircleLightningCall(float baseSmashDamage, float bonusSmashDamageP
                                   int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IKeybindAbility {
 
     @Override //TODO add cooldown check and test
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         Box box = player.getBoundingBox().expand(3);
         List<Entity> entities = world.getOtherEntities(player, box);
@@ -58,7 +60,7 @@ public record CircleLightningCall(float baseSmashDamage, float bonusSmashDamageP
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         double d = player.getRandom().nextGaussian() * 0.05D;
         double e = player.getRandom().nextGaussian() * 0.05D;
         for (int j = 0; j < 200; ++j) {

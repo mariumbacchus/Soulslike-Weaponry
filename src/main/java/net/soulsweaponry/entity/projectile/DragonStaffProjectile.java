@@ -5,9 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.DragonFireballEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -20,26 +18,26 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
 public class DragonStaffProjectile extends DragonFireballEntity {
 
-    private ItemStack stack;
     private float radius = 2f;
+    private int maxAge = 100;
+    private int duration = 200;
+    private float radiusGrowth = 1f;
+    private int effectDuration = 50;
+    private int effectAmp = (int) ConfigConstructor.dragon_staff_projectile_cloud_effect_amp;
 
     public DragonStaffProjectile(EntityType<? extends DragonStaffProjectile> entityType, World world) {
         super(entityType, world);
-        this.stack = new ItemStack(WeaponRegistry.DRAGON_STAFF);
     }
 
-    public DragonStaffProjectile(World world, LivingEntity user, ItemStack stack) {
+    public DragonStaffProjectile(World world, LivingEntity user) {
         super(EntityRegistry.DRAGON_STAFF_PROJECTILE, world);
         this.setOwner(user);
         this.setRotation(user.getYaw(), user.getPitch());
-        this.stack = stack;
     }
 
     @Override
@@ -66,10 +64,10 @@ public class DragonStaffProjectile extends DragonFireballEntity {
                 areaEffectCloudEntity.setOwner((LivingEntity)entity);
             }
             areaEffectCloudEntity.setParticleType(ParticleTypes.DRAGON_BREATH);
-            areaEffectCloudEntity.setRadius(this.radius + (float) WeaponUtil.getEnchantDamageBonus(this.stack)/2.5f);
-            areaEffectCloudEntity.setDuration(200 + WeaponUtil.getEnchantDamageBonus(this.stack) * 20);
-            areaEffectCloudEntity.setRadiusGrowth((3.0f - areaEffectCloudEntity.getRadius() + (float) WeaponUtil.getEnchantDamageBonus(this.stack)/2.5f) / (float)areaEffectCloudEntity.getDuration());
-            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 50, (int) ConfigConstructor.dragon_staff_aura_strength));
+            areaEffectCloudEntity.setRadius(this.radius);
+            areaEffectCloudEntity.setDuration(this.duration);
+            areaEffectCloudEntity.setRadiusGrowth(this.radiusGrowth / (float) areaEffectCloudEntity.getDuration());
+            areaEffectCloudEntity.addEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, this.effectDuration, this.effectAmp));
             if (!list.isEmpty()) {
                 for (LivingEntity livingEntity : list) {
                     double d = this.squaredDistanceTo(livingEntity);
@@ -84,47 +82,69 @@ public class DragonStaffProjectile extends DragonFireballEntity {
         }
     }
 
-    public void setRadius(float radius) {
+    public void setCloudRadius(float radius) {
         this.radius = radius;
+    }
+
+    public void setProjectileMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+    }
+
+    public void setCloudDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setEffectAmp(int effectAmp) {
+        this.effectAmp = effectAmp;
+    }
+
+    public void setEffectDuration(int effectDuration) {
+        this.effectDuration = effectDuration;
+    }
+
+    public void setCloudRadiusGrowth(float radiusGrowth) {
+        this.radiusGrowth = radiusGrowth;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.age >= 100) {
+        if (this.age > this.maxAge) {
             this.detonate();
         }
-    }
-
-    protected void setStack(ItemStack stack) {
-        if (!stack.isEmpty()) {
-            this.stack = stack;
-        } else {
-            this.stack = this.getDefaultItemStack();
-        }
-    }
-
-    protected ItemStack getDefaultItemStack() {
-        return WeaponRegistry.DRAGON_STAFF.getDefaultStack();
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("item", NbtElement.COMPOUND_TYPE)) {
-            this.setStack(ItemStack.fromNbt(this.getRegistryManager(), nbt.getCompound("item")).orElse(this.getDefaultItemStack()));
-        } else {
-            this.setStack(this.getDefaultItemStack());
-        }
         if (nbt.contains("sphereRadius")) {
             this.radius = nbt.getFloat("sphereRadius");
+        }
+        if (nbt.contains("projectileMaxAge")) {
+            this.maxAge = nbt.getInt("projectileMaxAge");
+        }
+        if (nbt.contains("cloudDuration")) {
+            this.duration = nbt.getInt("cloudDuration");
+        }
+        if (nbt.contains("cloudRadiusGrowth")) {
+            this.radius = nbt.getFloat("cloudRadiusGrowth");
+        }
+        if (nbt.contains("effectDuration")) {
+            this.effectDuration = nbt.getInt("effectDuration");
+        }
+        if (nbt.contains("effectAmp")) {
+            this.effectAmp = nbt.getInt("effectAmp");
         }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("item", this.stack.encode(this.getRegistryManager()));
         nbt.putFloat("sphereRadius", this.radius);
+        nbt.putInt("projectileMaxAge", this.maxAge);
+        nbt.putInt("cloudDuration", this.duration);
+        nbt.putFloat("cloudRadiusGrowth", this.radiusGrowth);
+        nbt.putInt("effectDuration", this.effectDuration);
+        nbt.putInt("effectAmp", this.effectAmp);
     }
 }

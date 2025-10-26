@@ -11,9 +11,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -48,11 +50,11 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
-    default void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+    default void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {}
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code true} and only if the item is in offhand.
@@ -158,8 +160,9 @@ public interface IAbility extends ICooldownItem {
      * @param world server world
      * @param stack item stack
      * @param player (server) player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
-    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the player is sneaking.
@@ -167,8 +170,9 @@ public interface IAbility extends ICooldownItem {
      * @param world server world
      * @param stack item stack
      * @param player (server) player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
-    default void sneakingUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+    default void sneakingUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Server side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the item is in offhand.
@@ -178,9 +182,10 @@ public interface IAbility extends ICooldownItem {
      * @param world server world
      * @param stack item stack
      * @param player (server) player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
     @Deprecated
-    default void offhandUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
+    default void offhandUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility}.
@@ -188,8 +193,9 @@ public interface IAbility extends ICooldownItem {
      * @param world client world
      * @param stack item stack
      * @param player client player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
-    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the player is sneaking.
@@ -197,8 +203,9 @@ public interface IAbility extends ICooldownItem {
      * @param world client world
      * @param stack item stack
      * @param player client player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
-    default void sneakingUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+    default void sneakingUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Client side effects when pressing the {@link KeyBindRegistry#keybindAbility} and the item is in offhand.
@@ -208,9 +215,10 @@ public interface IAbility extends ICooldownItem {
      * @param world client world
      * @param stack item stack
      * @param player client player
+     * @param hand hand, might be null if the method was called from for example an armor slot
      */
     @Deprecated
-    default void offhandUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+    default void offhandUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
      * Called whenever an entity dies and the last damage source was the attacker.
@@ -234,6 +242,68 @@ public interface IAbility extends ICooldownItem {
 
     default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         return ActionResult.PASS;
+    }
+
+    default ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        return stack;
+    }
+
+    /**
+     * Called each tick when the player uses the item.
+     * @param world world
+     * @param user living entity user
+     * @param stack item stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    default void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {}
+
+    /**
+     * Called each tick when sneaking and {@link #isSneakAbility()} returns true.
+     * @param world world
+     * @param user living entity user
+     * @param stack item stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    default void sneakingUsageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {}
+
+    /**
+     * Called each tick when in offhand and {@link #isOffhandAbility()} returns true.
+     * @deprecated Avoid calling this due to Better Combat not allowing certain items to be in offhand.
+     * @param world world
+     * @param user living entity user
+     * @param stack item stack
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
+     *                          to call it again
+     */
+    @Deprecated
+    default void offhandUsageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {}
+
+    /**
+     * Override to give a custom max ues time. Returns -1 by default, meaning the item will
+     * default to 72000 ticks if the item has any charge to use ability, else 0.
+     * This is calculated inside {@link IHasAbilities}
+     */
+    default int getMaxUseTime(ItemStack stack, LivingEntity user) {
+        return -1;
+    }
+
+    /**
+     * What animation to show when holding the item.
+     */
+    default UseAction getUseAction() {
+        return UseAction.NONE;
+    }
+
+    /**
+     * Determine the use action priority, highest wins.
+     */
+    default int useActionPriority() {
+        return 0;
     }
 
     List<Text> getTooltipAbilities(ItemStack stack);

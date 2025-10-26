@@ -526,16 +526,33 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonslayer_swordspear_lightning_call_min_cooldown = 80;
     @Entry public static float dragonslayer_swordspear_lightning_call_reduced_cooldown_per_level = 35;
     @Entry public static float dragonslayer_swordspear_lightning_call_cooldown_modifier_when_raining = 0.5f;
+
     @Entry public static float dragon_staff_damage = 8;
     @Entry public static float dragon_staff_attack_speed = 1.2f;
-    @Entry public static float dragon_staff_aura_strength = 1;
+    @Entry public static float dragon_staff_projectile_max_age = 100;
+    @Entry public static float dragon_staff_projectile_cloud_base_radius = 2f;
+    @Entry public static float dragon_staff_projectile_cloud_bonus_radius_per_level = 0.5f;
+    @Entry public static float dragon_staff_projectile_cloud_duration = 200;
+    @Entry public static float dragon_staff_projectile_cloud_bonus_duration_per_level = 20;
+    @Entry public static float dragon_staff_projectile_cloud_radius_growth = 1f;
+    @Entry public static float dragon_staff_projectile_cloud_bonus_radius_growth_per_level = 0.2f;
+    @Entry public static float dragon_staff_projectile_cloud_effect_duration = 50;
+    @Entry public static float dragon_staff_projectile_cloud_effect_amp = 1;
+    @Entry public static float dragon_staff_projectile_cooldown = 200;
+    @Entry public static float dragon_staff_projectile_min_cooldown = 20;
+    @Entry public static float dragon_staff_projectile_reduced_cooldown_per_level = 10;
+
     @Entry public static float dragon_staff_vigorous_fog_damage_and_heal = 2;
+    @Entry public static float dragon_staff_vigorous_fog_bonus_damage_and_heal_per_level = 1;
+    @Entry public static float dragon_staff_vigorous_fog_mist_effect_duration = 100;
+    @Entry public static float dragon_staff_vigorous_fog_mist_effect_amp = 1;
     @Entry public static boolean dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others = true;
-    @Entry public static float dragon_staff_cooldown = 100;
-    @Entry public static float dragon_staff_min_cooldown = 10;
-    @Entry public static boolean dragon_staff_enchant_reduces_cooldown = true;
-    @Entry public static String[] dragon_staff_enchant_reduces_cooldown_ids = {"damage"};
-    @Entry public static float dragon_staff_use_time = 100;
+    @Entry public static float dragon_staff_vigorous_fog_cooldown = 100;
+    @Entry public static float dragon_staff_vigorous_fog_min_cooldown = 10;
+    @Entry public static float dragon_staff_vigorous_fog_reduced_cooldown_per_level = 10;
+    @Entry public static float dragon_staff_vigorous_fog_max_use_time = 100;
+    @Entry public static float dragon_staff_vigorous_fog_bonus_max_use_time_per_level = 20;
+
     @Entry public static float draugr_damage_at_night = 11;
     @Entry public static float draugr_attack_speed = 1.6f;
 

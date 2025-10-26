@@ -114,13 +114,13 @@ public class KeyBindRegistry {
                     //TODO remove above
                     for (ItemStack armorStack : player.getArmorItems()) {
                         if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
+                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player, null);
                         }
                     }
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, stack, player);
+                            abilityItem.useKeybindAbilityClient(client.world, stack, player, hand);
                         }
                     }
                 }

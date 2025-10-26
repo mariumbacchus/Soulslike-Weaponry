@@ -13,17 +13,19 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public record BloodlustAbility(float selfDamage, int selfBleed, int bloodthirstyDuration, int bloodthirstyAmp, int strengthDuration, int strengthAmp) implements IKeybindAbility {
 
     @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         player.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.BLEED), this.selfDamage);
         BleedData.addBleed(player, this.selfBleed);
         stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
@@ -33,7 +35,7 @@ public record BloodlustAbility(float selfDamage, int selfBleed, int bloodthirsty
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         for (int i = 0; i < 30; i++) {
             world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.getDefaultState()),
                     player.getParticleX(1), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1), 0, 0, 0);

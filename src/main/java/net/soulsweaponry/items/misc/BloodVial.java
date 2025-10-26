@@ -1,4 +1,4 @@
-package net.soulsweaponry.items.potion;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;

@@ -18,7 +18,6 @@ import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.misc.*;
-import net.soulsweaponry.items.potion.*;
 import net.soulsweaponry.util.RecipeHandler;
 
 import java.util.HashSet;

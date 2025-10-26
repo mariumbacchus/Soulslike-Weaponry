@@ -5,8 +5,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.util.WeaponUtil;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public record BasicKeybindAbility(
 ) implements IKeybindAbility {
 
     @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.hasCooldownEffect(player)) {
             this.notifyCooldown(player);
             return;
@@ -41,7 +43,7 @@ public record BasicKeybindAbility(
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.hasCooldownEffect(player)) {
             return;
         }

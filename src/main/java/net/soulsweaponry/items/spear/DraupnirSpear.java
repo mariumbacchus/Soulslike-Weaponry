@@ -49,7 +49,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem {
             (int) ConfigConstructor.draupnir_spear_explode_spears_min_cooldown,
             (int) ConfigConstructor.draupnir_spear_explode_spears_cooldown,
             (int) ConfigConstructor.draupnir_spear_explode_spears_reduced_cooldown_per_level
-    );
+    ); //TODO throwing when crouching doesnt work for some reason
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);

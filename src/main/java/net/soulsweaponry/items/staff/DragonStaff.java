@@ -1,143 +1,49 @@
 package net.soulsweaponry.items.staff;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Tameable;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.abilities.usagetick.DragonMist;
+import net.soulsweaponry.items.abilities.abilitykeybind.ShootDragonProjectile;
 
 public class DragonStaff extends ModdedSword {
 
+    private static final ShootDragonProjectile SHOOT_DRAGON_PROJECTILE = new ShootDragonProjectile(
+            1.5f,
+            (int) ConfigConstructor.dragon_staff_projectile_max_age,
+            ConfigConstructor.dragon_staff_projectile_cloud_base_radius,
+            ConfigConstructor.dragon_staff_projectile_cloud_bonus_radius_per_level,
+            (int) ConfigConstructor.dragon_staff_projectile_cloud_duration,
+            (int) ConfigConstructor.dragon_staff_projectile_cloud_bonus_duration_per_level,
+            ConfigConstructor.dragon_staff_projectile_cloud_radius_growth,
+            ConfigConstructor.dragon_staff_projectile_cloud_bonus_radius_growth_per_level,
+            (int) ConfigConstructor.dragon_staff_projectile_cloud_effect_duration,
+            (int) ConfigConstructor.dragon_staff_projectile_cloud_effect_amp,
+            (int) ConfigConstructor.dragon_staff_projectile_min_cooldown,
+            (int) ConfigConstructor.dragon_staff_projectile_cooldown,
+            (int) ConfigConstructor.dragon_staff_projectile_reduced_cooldown_per_level
+    );
+    private static final DragonMist DRAGON_MIST = new DragonMist(
+            ConfigConstructor.dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others,
+            ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal,
+            ConfigConstructor.dragon_staff_vigorous_fog_bonus_damage_and_heal_per_level,
+            (int)ConfigConstructor.dragon_staff_vigorous_fog_mist_effect_duration,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_mist_effect_amp,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_max_use_time,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_bonus_max_use_time_per_level,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_min_cooldown,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_cooldown,
+            (int) ConfigConstructor.dragon_staff_vigorous_fog_reduced_cooldown_per_level
+    );
+
     public DragonStaff(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dragon_staff_damage, ConfigConstructor.dragon_staff_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.DRAGON_STAFF, TooltipAbilities.VENGEFUL_FOG);
-    }
-
-    @Override
-    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if (user.isSneaking() && remainingUseTicks > 0) {
-            Vec3d pov = user.getRotationVector();
-            Vec3d particleSpawn = pov.multiply(1);
-            Vec3d area = pov.multiply(10).add(user.getPos());
-            Vec3i on = new Vec3i((int) area.getX(), (int) area.getY(), (int) area.getZ());
-            boolean healTamed = ConfigConstructor.dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others;
-            for (Entity entity : world.getOtherEntities(user, new Box(user.getPos().add(0, 2, 0), new BlockPos(on).toCenterPos()))) {
-                if (entity instanceof LivingEntity living) {
-                    // Heal tamed entities with an owner, including those not owned by the user if config is true
-                    if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || healTamed)) {
-                        living.heal(ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
-                    } else {
-                        living.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
-                    }
-                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, 100, (int) ConfigConstructor.dragon_staff_aura_strength));
-                }
-            }
-            if (world.isClient) {
-                for (int k = 0; k < 10; k++) {
-                    world.addParticle(ParticleRegistry.PURPLE_FLAME, true, particleSpawn.add(user.getPos()).getX(), particleSpawn.add(user.getPos()).getY() + 1.5F, particleSpawn.add(user.getPos()).getZ(), pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
-                    world.addParticle(ParticleTypes.DRAGON_BREATH, true, particleSpawn.add(user.getPos()).getX(), particleSpawn.add(user.getPos()).getY() + 1.5F, particleSpawn.add(user.getPos()).getZ(), pov.x + user.getRandom().nextDouble() - .25, pov.y + user.getRandom().nextDouble() - .5, pov.z + user.getRandom().nextDouble() - .25);
-                }
-            }
-        } else {
-            user.stopUsingItem();
-            super.usageTick(world, user, stack, remainingUseTicks);
-        }
-    }
-
-    @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        this.stop(user, stack);
-        return super.finishUsing(stack, world, user);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        this.stop(user, stack);
-        super.onStoppedUsing(stack, world, user, remainingUseTicks);
-    }
-
-    private void stop(LivingEntity user, ItemStack stack) {
-        if (user instanceof PlayerEntity player) {
-            this.applyItemCooldown(player, this.getCooldown(stack));
-            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
-        }
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (this.isDisabled(itemStack)) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(itemStack);
-        }
-        if (!user.isSneaking()) {
-            if (!user.isCreative()) user.getItemCooldownManager().set(this, this.getCooldown(itemStack)*2);
-            world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL, 0.5f, 2/(world.getRandom().nextFloat() * 0.4F + 0.8F));
-            if (!world.isClient) {
-                DragonStaffProjectile fireball = new DragonStaffProjectile(world, user, itemStack);
-                fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
-                fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
-                world.spawnEntity(fireball);
-                itemStack.damage(1, user, WeaponUtil.getActiveHandSlot(user));
-            }
-            return TypedActionResult.success(itemStack, world.isClient());
-        } else {
-            if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-                return TypedActionResult.fail(itemStack);
-            } else {
-                user.setCurrentHand(hand);
-                return TypedActionResult.consume(itemStack);
-            }
-        }
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
-    }
-
-    @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        return (int) (ConfigConstructor.dragon_staff_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 20);
-    }
-
-    private int getCooldown(ItemStack stack) {
-        return (int) Math.max(ConfigConstructor.dragon_staff_min_cooldown, ConfigConstructor.dragon_staff_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
+        this.addAbility(SHOOT_DRAGON_PROJECTILE, DRAGON_MIST);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dragon_staff;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.dragon_staff_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.dragon_staff_enchant_reduces_cooldown_ids;
     }
 }

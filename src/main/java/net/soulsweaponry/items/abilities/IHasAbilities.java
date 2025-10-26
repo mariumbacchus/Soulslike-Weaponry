@@ -23,11 +23,9 @@ import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public interface IHasAbilities extends IConfigDisable {
     // TODO implement into all the abstract item classes (axes, bows, etc.) and use this to build the new ability system off of
@@ -109,7 +107,7 @@ public interface IHasAbilities extends IConfigDisable {
                 return TypedActionResult.fail(itemStack);
             } else {
                 user.setCurrentHand(hand);
-                return TypedActionResult.success(itemStack);
+                return TypedActionResult.consume(itemStack);
             }
         } else {
             // Presence-based hierarchy, do success if any ability returned success, do consume next if no success and so on...
@@ -188,10 +186,46 @@ public interface IHasAbilities extends IConfigDisable {
     }
 
     default UseAction getUseAction(ItemStack stack) {
+        UseAction best = UseAction.NONE;
+        int bestPrio = Integer.MIN_VALUE;
+
+        for (IAbility a : getAbilities()) {
+            if (a.isSneakAbility() || a.isOffhandAbility()) {
+                continue;
+            }
+            UseAction hint = a.getUseAction();
+            int pr = a.useActionPriority();
+            if (hint != UseAction.NONE && pr > bestPrio) {
+                best = hint;
+                bestPrio = pr;
+            }
+        }
+        if (best != UseAction.NONE) {
+            return best;
+        }
         return this.hasChargeToUseAbility() ? UseAction.SPEAR : UseAction.NONE;
     }
 
     default int getMaxUseTime(ItemStack stack, LivingEntity user) {
+        boolean sneaking = user.isSneaking();
+        boolean offhand = user.getOffHandStack().isOf(stack.getItem());
+
+        List<IAbility> subset = this.getAbilities().stream()
+                .filter(a -> {
+                    if (sneaking && this.hasSneakToUseAbility()) return a.isSneakAbility();
+                    if (offhand && this.hasOffhandToUseAbility()) return a.isOffhandAbility();
+                    return !a.isSneakAbility() && !a.isOffhandAbility();
+                })
+                .toList();
+
+        OptionalInt maxUse = subset.stream()
+                .mapToInt(a -> a.getMaxUseTime(stack, user))
+                .filter(v -> v >= 0)  // ignore default -1
+                .max();
+
+        if (maxUse.isPresent()) {
+            return maxUse.getAsInt();
+        }
         return this.hasChargeToUseAbility() ? 72000 : 0;
     }
 
@@ -201,9 +235,10 @@ public interface IHasAbilities extends IConfigDisable {
         }
     }
 
-    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
+            return;
         }
         boolean sneaking = player.isSneaking();
         boolean hasSneakAbility = this.hasSneakToUseAbility();
@@ -211,16 +246,16 @@ public interface IHasAbilities extends IConfigDisable {
         boolean hasOffhandAbility = this.hasOffhandToUseAbility();
         this.getAbilities().forEach(a -> {
             if (hasSneakAbility && sneaking) {
-                a.sneakingUseKeybindAbilityClient(world, stack, player);
+                a.sneakingUseKeybindAbilityClient(world, stack, player, hand);
             } else if (hasOffhandAbility && offhand) {
-                a.offhandUseKeybindAbilityClient(world, stack, player);
+                a.offhandUseKeybindAbilityClient(world, stack, player, hand);
             } else {
-                a.useKeybindAbilityClient(world, stack, player);
+                a.useKeybindAbilityClient(world, stack, player, hand);
             }
         });
     }
 
-    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.isDisabled(stack)) {
             return; // Disabled item notification is given on client side
         }
@@ -230,11 +265,11 @@ public interface IHasAbilities extends IConfigDisable {
         boolean hasOffhandAbility = this.hasOffhandToUseAbility();
         this.getAbilities().forEach(a -> {
             if (hasSneakAbility && sneaking) {
-                a.sneakingUseKeybindAbilityServer(world, stack, player);
+                a.sneakingUseKeybindAbilityServer(world, stack, player, hand);
             } else if (hasOffhandAbility && offhand) {
-                a.offhandUseKeybindAbilityServer(world, stack, player);
+                a.offhandUseKeybindAbilityServer(world, stack, player, hand);
             } else {
-                a.useKeybindAbilityServer(world, stack, player);
+                a.useKeybindAbilityServer(world, stack, player, hand);
             }
         });
     }
@@ -276,6 +311,30 @@ public interface IHasAbilities extends IConfigDisable {
             return ActionResult.FAIL;
         }
         return ActionResult.PASS;
+    }
+
+    default void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        boolean sneaking = user.isSneaking();
+        boolean hasSneakAbility = this.hasSneakToUseAbility();
+        boolean offhand = user.getOffHandStack().isOf(stack.getItem());//TODO test this
+        boolean hasOffhandAbility = this.hasOffhandToUseAbility();
+        this.getAbilities().forEach(a -> {
+            if (hasSneakAbility && sneaking) {
+                a.sneakingUsageTick(world, user, stack, remainingUseTicks);
+            } else if (hasOffhandAbility && offhand) {
+                a.offhandUsageTick(world, user, stack, remainingUseTicks);
+            } else {
+                a.usageTick(world, user, stack, remainingUseTicks);
+            }
+        });
+    }
+
+    default ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        if (this.isDisabled(stack)) {
+            return stack;
+        }
+        this.getAbilities().forEach(a -> a.finishUsing(stack, world, user));
+        return stack;
     }
 
     /**

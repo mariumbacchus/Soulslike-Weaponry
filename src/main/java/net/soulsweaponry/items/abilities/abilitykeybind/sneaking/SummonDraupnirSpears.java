@@ -9,18 +9,20 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
 import net.soulsweaponry.items.abilities.abilitykeybind.ExplodeSavedEntities;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public record SummonDraupnirSpears(float rangeOut, int spearAmount, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements ISneakKeybindAbility {
 
     @Override
-    public void sneakingUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+    public void sneakingUseKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.hasCooldownEffect(player)) {
             this.notifyCooldown(player);
             return;

@@ -48,7 +48,7 @@ public class WitheredWabbajack extends ModdedSword {
             if (entity instanceof ProjectileEntity projectile) {
                 projectile.setOwner(user);
                 if (entity instanceof DragonStaffProjectile dragonStaffProjectile) {
-                    dragonStaffProjectile.setRadius(2f + user.getRandom().nextFloat() * WeaponUtil.getLuckFactor(user));
+                    dragonStaffProjectile.setCloudRadius(2f + user.getRandom().nextFloat() * WeaponUtil.getLuckFactor(user));
                 }
                 projectile.setPos(user.getX(), user.getEyeY(), user.getZ());
                 if (entity instanceof GrowingFireball ball) {
