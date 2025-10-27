@@ -18,8 +18,8 @@ import java.util.List;
 public record ThrowMjolnir(float baseVelocity, float bonusVelocityPerLvl) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity player && remainingUseTicks >= 10) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
+        if (user instanceof PlayerEntity player && ticksUsed >= 10) {
             MjolnirProjectile projectile = new MjolnirProjectile(world, player, stack);
             projectile.saveOnPlayer(player);
             projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, this.baseVelocity + WeaponUtil.getUpgradeLevel(stack) * this.bonusVelocityPerLvl, 1.0f);

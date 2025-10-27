@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.effect;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -26,23 +27,21 @@ public class VeilOfFire extends StatusEffect {
 
     @Override
     public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
-        for (LivingEntity target : entity.getWorld().getNonSpectatingEntities(LivingEntity.class, entity.getBoundingBox().expand(1.5D))) {
+        for (Entity target : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(1.5D))) {
             target.damage(entity.getDamageSources().inFire(), 2f + amplifier);
             target.setOnFireFor(2 + amplifier);
         }
         if (entity.getWorld().isClient) {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 5; i++) {
                 entity.getWorld().addParticle(ParticleTypes.FLAME, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }
         }
         if (entity instanceof PlayerEntity player) {
             if (!player.isCreative()) {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 60, 0));
-                entity.setOnFireFor(3);
             }
         } else {
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 60, 0));
-            entity.setOnFireFor(3);
         }
         return true;
     }

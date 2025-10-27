@@ -38,11 +38,11 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
-    default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+    default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {}
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code true} and the user is sneaking.
@@ -64,12 +64,12 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
     @Deprecated
-    default void offhandOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+    default void offhandOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {}
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code false}.

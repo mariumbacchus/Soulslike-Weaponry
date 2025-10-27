@@ -9,7 +9,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
-import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -23,9 +22,9 @@ public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPer
 ) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 if (!world.isClient) {
                     int level = WeaponUtil.getUpgradeLevel(stack);
                     float radius = this.moltenMetalBaseRadius + this.moltenMetalRadiusPerLvl * level;

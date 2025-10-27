@@ -19,9 +19,9 @@ import java.util.List;
 public record MoonveilVertical(float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements ISneakChargeToUse {
 
     @Override
-    public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, 15);
                 entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);

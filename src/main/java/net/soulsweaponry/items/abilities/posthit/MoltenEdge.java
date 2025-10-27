@@ -8,6 +8,11 @@ import net.soulsweaponry.items.abilities.IAbility;
 
 import java.util.List;
 
+/**
+ * Chance to inflict fire aspect post hit.
+ * @param chance
+ * @param fireSeconds
+ */
 public record MoltenEdge(float chance, int fireSeconds) implements IAbility {
 
     @Override

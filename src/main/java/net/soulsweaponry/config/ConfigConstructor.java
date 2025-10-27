@@ -469,18 +469,60 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_projectile_damage = 7f;
     @Entry public static float dark_moon_greatsword_projectile_permafrost_base_amplifier = 0;
     @Entry public static float dark_moon_greatsword_projectile_permafrost_base_duration = 200;
+
     @Entry public static float dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;
-    @Entry public static float dawnbreaker_ability_damage = 10.0f;
-    @Entry(min=0,max=1) public static double dawnbreaker_ability_percent_chance_addition = 0.0D;
-    @Entry public static boolean dawnbreaker_affect_all_entities = false;
+    @Entry public static float dawnbreaker_post_hit_base_fire_seconds = 4f;
+    @Entry public static float dawnbreaker_post_hit_bonus_fire_seconds_per_level = 1f;
+    @Entry public static float dawnbreaker_post_hit_bonus_fire_seconds_per_fire_aspect_level = 2f;
+
+    @Entry public static float dawnbreaker_post_hit_base_retribution_amp = 1;
+    @Entry public static float dawnbreaker_post_hit_bonus_retribution_amp_per_level = 0.4f;
+    @Entry public static boolean dawnbreaker_explosion_affect_all_entities = false;
+    @Entry(min=0,max=1) public static double dawnbreaker_explosion_percent_chance_addition = 0.0D;
+    @Entry public static float dawnbreaker_explosion_range = 10.0f;
+    @Entry public static float dawnbreaker_explosion_base_fire_seconds = 4;
+    @Entry public static float dawnbreaker_explosion_bonus_fire_seconds_per_level = 1.5f;
+    @Entry public static float dawnbreaker_explosion_base_damage = 10.0f;
+    @Entry public static float dawnbreaker_explosion_bonus_damage_per_level = 4f;
+    @Entry public static float dawnbreaker_explosion_fear_duration = 80;
+
     @Entry public static float empowered_dawnbreaker_damage = 10;
     @Entry public static float empowered_dawnbreaker_attack_speed = 1.2f;
-    @Entry public static float empowered_dawnbreaker_ability_damage = 15f;
-    @Entry public static float empowered_dawnbreaker_ability_cooldown = 180;
-    @Entry public static float empowered_dawnbreaker_ability_min_cooldown = 100;
-    @Entry public static boolean empowered_dawnbreaker_ability_enchant_reduces_cooldown = false;
-    @Entry public static String[] empowered_dawnbreaker_ability_enchant_reduces_cooldown_ids = {"fire_aspect"};
+    @Entry public static float empowered_dawnbreaker_post_hit_base_fire_seconds = 4f;
+    @Entry public static float empowered_dawnbreaker_post_hit_bonus_fire_seconds_per_level = 1f;
+    @Entry public static float empowered_dawnbreaker_post_hit_bonus_fire_seconds_per_fire_aspect_level = 2f;
+
+    @Entry public static float empowered_dawnbreaker_chaos_storm_damage = 15f;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_bonus_damage_per_level = 3f;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_fire_resistance_duration = 300;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_pillar_spawn_range = 12;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_pillars_amount = 20;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_bonus_pillars_per_level = 3;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_pillar_size = 1.5f;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_cooldown = 180;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_min_cooldown = 100;
+    @Entry public static float empowered_dawnbreaker_chaos_storm_reduced_cooldown_per_level = 40;
+
+    @Entry public static float empowered_dawnbreaker_post_hit_base_retribution_amp = 1;
+    @Entry public static float empowered_dawnbreaker_post_hit_bonus_retribution_amp_per_level = 0.4f;
+    @Entry public static boolean empowered_dawnbreaker_explosion_affect_all_entities = false;
+    @Entry(min=0,max=1) public static double empowered_dawnbreaker_explosion_percent_chance_addition = 0.0D;
+    @Entry public static float empowered_dawnbreaker_explosion_range = 10.0f;
+    @Entry public static float empowered_dawnbreaker_explosion_base_fire_seconds = 4;
+    @Entry public static float empowered_dawnbreaker_explosion_bonus_fire_seconds_per_level = 1.5f;
+    @Entry public static float empowered_dawnbreaker_explosion_base_damage = 15f;
+    @Entry public static float empowered_dawnbreaker_explosion_bonus_damage_per_level = 6f;
+    @Entry public static float empowered_dawnbreaker_explosion_fear_duration = 100;
+
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_duration = 200;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_bonus_duration_per_level = 20;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_amp = 0;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_bonus_amp_per_level = 0.6f;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_cooldown = 180;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_min_cooldown = 100;
+    @Entry public static float empowered_dawnbreaker_veil_of_fire_reduced_cooldown_per_level = 40;
+
     @Entry public static float heap_of_raw_iron_damage = 10;
     @Entry public static float heap_of_raw_iron_attack_speed = 1f;
     @Entry public static float heap_of_raw_iron_posture_loss = 30;
@@ -714,9 +756,14 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float leviathan_axe_projectile_frost_buildup_on_collision = 50;
     @Entry public static float leviathan_axe_projectile_damage = 7f;
     @Entry public static double leviathan_axe_return_speed = 4D;
+
     @Entry public static float lich_bane_damage = 7;
     @Entry public static float lich_bane_attack_speed = 1.6f;
     @Entry public static float lich_bane_bonus_magic_damage = 2f;
+    @Entry public static float lich_bane_post_hit_base_fire_seconds = 4f;
+    @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_level = 1f;
+    @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level = 2f;
+
     @Entry public static float ludwigs_holy_greatsword_damage = 8;
     @Entry public static float ludwigs_holy_greatsword_attack_speed = 1.2f;
     @Entry public static float ludwigs_holy_greatsword_righteous_base_undead_bonus_damage = 2f;

@@ -17,9 +17,9 @@ import java.util.List;
 public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity playerEntity) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 int level = WeaponUtil.getUpgradeLevel(stack);
                 stack.damage(2, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 this.applyItemCooldown(stack.getItem(), playerEntity,

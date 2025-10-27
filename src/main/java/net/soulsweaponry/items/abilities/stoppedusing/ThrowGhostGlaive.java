@@ -19,9 +19,9 @@ public record ThrowGhostGlaive(float projectileDamage, float bonusDamagePerLvl,
 ) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity playerEntity) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 GhostGlaiveEntity entity = new GhostGlaiveEntity(world, playerEntity, this.maxProjectileAge);
                 entity.setDamage(this.projectileDamage + WeaponUtil.getUpgradeLevel(stack) * this.bonusDamagePerLvl);

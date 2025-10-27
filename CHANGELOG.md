@@ -27,6 +27,7 @@
   - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
 - Overhauled the ability system on the legendary weapons. Also moved away from off-hand ability triggers since Better Combat doesn't allow off-handing heavy weapons. Many abilities have therefore changed to be either triggered when sneaking or with the keybind ability trigger
 - Dragon Staff has reduced cooldown based on the time used
+- Veil of Fire effect no longer sets the user on fire
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

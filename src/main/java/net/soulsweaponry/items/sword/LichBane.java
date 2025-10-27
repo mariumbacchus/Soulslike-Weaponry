@@ -6,15 +6,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.posthit.BlazingBlade;
 import net.soulsweaponry.mixin.LivingEntityInvoker;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class LichBane extends ModdedSword {
 
+    private static final BlazingBlade BLAZING_BLADE = new BlazingBlade(
+            ConfigConstructor.lich_bane_post_hit_base_fire_seconds,
+            ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_level,
+            ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level
+    );
+
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE, TooltipAbilities.BLAZING_BLADE);
+        this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE);//TODO
+        this.addAbility(BLAZING_BLADE);
     }
 
     @Override
@@ -25,7 +33,6 @@ public class LichBane extends ModdedSword {
         if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
             ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
         }
-        target.setOnFireFor(4 + 3 * WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT));
         return super.postHit(stack, target, attacker);
     }
 
@@ -36,15 +43,5 @@ public class LichBane extends ModdedSword {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_lich_bane;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

@@ -27,9 +27,9 @@ public record Obliterate(
 ) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            if (remainingUseTicks >= 10 && world instanceof ServerWorld serverWorld) {
+            if (ticksUsed >= 10 && world instanceof ServerWorld serverWorld) {
                 this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());

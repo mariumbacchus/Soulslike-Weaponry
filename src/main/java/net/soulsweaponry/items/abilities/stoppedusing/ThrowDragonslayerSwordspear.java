@@ -17,9 +17,9 @@ import java.util.List;
 public record ThrowDragonslayerSwordspear(float speed, int minCooldown, int cooldown, int reducedCooldownPerLvl, float rainingCooldownMod) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity playerEntity) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 DragonslayerSwordspearEntity entity = new DragonslayerSwordspearEntity(world, playerEntity, stack);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.speed, 1.0F);

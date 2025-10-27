@@ -19,9 +19,9 @@ import java.util.List;
 public record ThrowLeviathanAxe(float baseSpeed, float speedPerLvl) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity playerEntity) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
                 entity.saveOnPlayer(playerEntity);

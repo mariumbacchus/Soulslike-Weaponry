@@ -169,16 +169,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.doom_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.doom_description_3").formatted(Formatting.GRAY));
             }
-            case BLAZING_BLADE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.blazing_blade_description_2").formatted(Formatting.GRAY));
-            }
-            case DAWNBREAKER -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution").formatted(Formatting.DARK_PURPLE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.meridias_retribution_description_2").formatted(Formatting.GRAY));
-            }
             case RAGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.rage").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.rage_description").formatted(Formatting.GRAY));
@@ -301,18 +291,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_3").formatted(Formatting.GRAY));
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-            }
-            case CHAOS_STORM -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_storm_description_2").formatted(Formatting.GRAY));
-            }
-            case VEIL_OF_FIRE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire").formatted(Formatting.GOLD).formatted(Formatting.BOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.veil_of_fire_description_3").formatted(Formatting.GRAY));
                 //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case BLIGHT -> {

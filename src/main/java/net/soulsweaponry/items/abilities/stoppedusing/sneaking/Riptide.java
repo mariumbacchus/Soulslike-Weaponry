@@ -45,9 +45,9 @@ public record Riptide(
     }
 
     @Override
-    public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity playerEntity) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 int level = WeaponUtil.getUpgradeLevel(stack);
                 WeaponUtil.launchTarget(user, this.launchPower + level * this.bonusPowerPerLvl, false);
                 playerEntity.useRiptide(20, this.collisionDamage, stack);

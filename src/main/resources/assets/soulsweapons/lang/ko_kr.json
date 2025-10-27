@@ -409,8 +409,8 @@
     "tooltip.soulsweapons.magic_damage_description_4": "현재 추가된 §9마법 피해§r: ",
 
     "tooltip.soulsweapons.blazing_blade": "타오르는 검",
-    "tooltip.soulsweapons.blazing_blade_description_1": "- 몬스터를 더 오랜 시간 동안 불태우며,",
-    "tooltip.soulsweapons.blazing_blade_description_2": "이는 §6발화§r 레벨에 따라 조정됩니다.",
+    "tooltip.soulsweapons.blazing_blade.1": "- Set mobs on fire for longer, increased",
+    "tooltip.soulsweapons.blazing_blade.2": "with §6Fire Aspect§r level.",
 
     "tooltip.soulsweapons.life_steal": "생명 흡수",
     "tooltip.soulsweapons.life_steal.1": "- 아이템이 쿨다운 상태가 아닐 때마다, 매 타격 시 §c회복§r합니다.",
@@ -499,8 +499,8 @@
     "tooltip.soulsweapons.galeforce_description_6": "",
 
     "tooltip.soulsweapons.meridias_retribution": "메리디아의 응징",
-    "tooltip.soulsweapons.meridias_retribution_description_1": "- §5언데드§r를 처치하면 폭발이 발생하여",
-    "tooltip.soulsweapons.meridias_retribution_description_2": "근처의 §5언데드§r에게 피해를 주고, 공포를 주며 불태웁니다.",
+    "tooltip.soulsweapons.meridias_retribution.1": "- §5언데드§r를 처치하면 폭발이 발생하여",
+    "tooltip.soulsweapons.meridias_retribution.2": "근처의 §5언데드§r에게 피해를 주고, 공포를 주며 불태웁니다.",
 
     "tooltip.soulsweapons.soul_trap": "영혼의 덫",
     "tooltip.soulsweapons.soul_trap_description": "- 몬스터를 처치하면 그들의 영혼을 수확합니다.",
@@ -685,13 +685,13 @@
     "tooltip.soulsweapons.nights_edge_description_3": "§d밤의 가장자리§r의 원을 소환합니다.",
 
     "tooltip.soulsweapons.chaos_storm": "혼돈의 폭풍",
-    "tooltip.soulsweapons.chaos_storm_description_1": "- 검을 충전하여 주변에 무작위로",
-    "tooltip.soulsweapons.chaos_storm_description_2": "§c화염 기둥§r을 발산합니다.",
+    "tooltip.soulsweapons.chaos_storm.1": "- 검을 충전하여 주변에 무작위로",
+    "tooltip.soulsweapons.chaos_storm.2": "§c화염 기둥§r을 발산합니다.",
 
     "tooltip.soulsweapons.veil_of_fire": "불의 장막",
-    "tooltip.soulsweapons.veil_of_fire_description_1": "- 능력 단축키를 눌러 §d메리디아의 응징§r을 발동시키고,",
-    "tooltip.soulsweapons.veil_of_fire_description_2": "자신에게 §6화염의 장막§r 효과를 적용하여",
-    "tooltip.soulsweapons.veil_of_fire_description_3": "주변의 몬스터에게 지속적으로 화염 피해를 입힙니다.",
+    "tooltip.soulsweapons.veil_of_fire.1": "- 능력 단축키를 눌러 §d메리디아의 응징§r을 발동시키고,",
+    "tooltip.soulsweapons.veil_of_fire.2": "자신에게 §6화염의 장막§r 효과를 적용하여",
+    "tooltip.soulsweapons.veil_of_fire.3": "주변의 몬스터에게 지속적으로 화염 피해를 입힙니다.",
 
     "tooltip.soulsweapons.blight": "오염",
     "tooltip.soulsweapons.blight_description_1": "- 타격 후 §d오염§r을 적용하며,",

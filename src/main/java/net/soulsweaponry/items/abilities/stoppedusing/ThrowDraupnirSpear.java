@@ -18,8 +18,8 @@ import java.util.List;
 public record ThrowDraupnirSpear(float projectileSpeed, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IChargeToUse {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity && !this.isCoolingDown(playerEntity, stack) && remainingUseTicks >= 10) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
+        if (user instanceof PlayerEntity playerEntity && !this.isCoolingDown(playerEntity, stack) && ticksUsed >= 10) {
             DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
             entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.projectileSpeed, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;

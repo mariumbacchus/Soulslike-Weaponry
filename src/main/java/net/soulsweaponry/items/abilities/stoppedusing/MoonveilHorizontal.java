@@ -20,9 +20,9 @@ import java.util.List;
 public record MoonveilHorizontal(float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IAbility {
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
-            if (remainingUseTicks >= 10) {
+            if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 MoonveilWave entity = new MoonveilWave(world, user, 6);
                 entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
