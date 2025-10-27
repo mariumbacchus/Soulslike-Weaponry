@@ -970,8 +970,24 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean whirligig_sawblade_enchant_reduces_cooldown = true;
     @Entry public static String[] whirligig_sawblade_enchant_reduces_cooldown_ids = {"damage"};
     @Entry public static float whirligig_sawblade_use_time = 100;
+
     @Entry public static float withered_wabbajack_damage = 8;
     @Entry public static float withered_wabbajack_attack_speed = 1.2f;
+    @Entry public static float withered_wabbajack_base_luck_factor = 0f;
+    @Entry public static float withered_wabbajack_bonus_luck_factor_per_level = 0.4f;
+    @Entry public static float withered_wabbajack_projectile_speed = 1.5f;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_power_bound = 75;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_power_luck_mod = 5;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_power_luck_factor_mod = 5;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_amp_bound = 3;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_amp_luck_mod = 1;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_amp_luck_factor_mod = 0.5f;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_duration_bound = 300;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_duration_luck_mod = 50;
+    @Entry public static float withered_wabbajack_projectile_entity_hit_effect_duration_luck_factor_mod = 50;
+    @Entry public static float withered_wabbajack_projectile_collision_power_bound = 10;
+    @Entry public static float withered_wabbajack_projectile_collision_power_luck_mod = 1;
+    @Entry public static float withered_wabbajack_projectile_collision_power_luck_factor_mod = 1;
 
     @Entry public static boolean calculated_fall_hits_immune_entities = false;
     @Entry public static boolean ultra_heavy_haste_when_strength = true;

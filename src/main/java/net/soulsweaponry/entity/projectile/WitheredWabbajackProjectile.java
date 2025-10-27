@@ -43,6 +43,16 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     private static final List<LuckChosenObject<CollisionEffect>> COLLISIONS = new ArrayList<>();
     private static final List<LuckChosenObject<EntityHitEffect>> ENTITY_EFFECTS = new ArrayList<>();
 
+    // Default values
+    public EntityHitAttributes entityHitAttributes = new EntityHitAttributes(
+            75, 5, 5,
+            3, 1, 0.5f,
+            300, 50, 50
+    );
+    public CollisionAttributes collisionAttributes = new CollisionAttributes(
+            10, 1, 1
+    );
+
     public WitheredWabbajackProjectile(EntityType<? extends WitheredWabbajackProjectile> entityType, World world) {
         super(entityType, world);
     }
@@ -76,9 +86,12 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
-                int power = this.getBound(75 , 5, user) + WeaponUtil.getLuckFactor(user) * 5;
-                int amplifier = this.getBound(3 , 1, user) + WeaponUtil.getLuckFactor(user)/2;
-                int duration = this.getBound(300 , 50, user) + WeaponUtil.getLuckFactor(user) * 50;
+                int power = (int) (this.getBound(this.entityHitAttributes.powerBound , this.entityHitAttributes.powerLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.powerLuckFactorMod);
+                int amplifier = (int) (this.getBound(this.entityHitAttributes.ampBound , this.entityHitAttributes.ampLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.ampLuckFactorMod);
+                int duration = (int) (this.getBound(this.entityHitAttributes.durationBound , this.entityHitAttributes.durationLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.durationLuckFactorMod);
                 switch (this.getRandomEntityHitEffect(user)) {
                     case RANDOM_EFFECT_TARGET ->
                             target.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(true), duration, amplifier));
@@ -148,7 +161,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     private void randomCollisionEffect(LivingEntity user) {
-        int power = this.getBound(10 , 1, user) + WeaponUtil.getLuckFactor(user);
+        int power = (int) (this.getBound(this.collisionAttributes.powerBound , this.collisionAttributes.powerLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.collisionAttributes.powerLuckFactorMod);
         boolean unluckyAf = this.getBound(100 , 10, user) == 1;
         if (unluckyAf) {
             boolean isWarden = this.random.nextBoolean();
@@ -282,6 +296,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         return list;
     }
 
+    public void setEntityHitAttributes(EntityHitAttributes entityHitAttributes) {
+        this.entityHitAttributes = entityHitAttributes;
+    }
+
+    public void setCollisionAttributes(CollisionAttributes collisionAttributes) {
+        this.collisionAttributes = collisionAttributes;
+    }
+
     static {
         ENTITIES.add(new LuckChosenObject<>(EntityType.CREEPER, WeaponUtil.LuckType.BAD));
         ENTITIES.add(new LuckChosenObject<>(EntityType.ZOMBIE, WeaponUtil.LuckType.BAD));
@@ -329,4 +351,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     enum EntityHitEffect {
         RANDOM_EFFECT_TARGET, RANDOM_EFFECT_USER, DROP_ARMOR, RANDOM_DAMAGE, LAUNCH, CHUNGUS_TONIC
     }
+
+    public record EntityHitAttributes(
+            int powerBound, int powerLuckMod, float powerLuckFactorMod,
+            int ampBound, int ampLuckMod, float ampLuckFactorMod,
+            int durationBound, int durationLuckMod, float durationLuckFactorMod
+    ) {}
+
+    public record CollisionAttributes(
+            int powerBound, int powerLuckMod, float powerLuckFactorMod
+    ) {}
 }
