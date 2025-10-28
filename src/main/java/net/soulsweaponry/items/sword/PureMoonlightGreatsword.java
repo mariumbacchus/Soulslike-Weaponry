@@ -1,54 +1,24 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.abilities.stoppedusing.ShootMoonlight;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
 
+    private static final ShootMoonlight SHOOT_MOONLIGHT = new ShootMoonlight(
+            (int) ConfigConstructor.pure_moonlight_greatsword_projectile_amount,
+            ConfigConstructor.pure_moonlight_greatsword_bonus_projectile_amount_per_level,
+            ConfigConstructor.pure_moonlight_greatsword_projectile_velocity,
+            ConfigConstructor.pure_moonlight_greatsword_projectile_damage,
+            ConfigConstructor.pure_moonlight_greatsword_projectile_bonus_damage_per_level
+    );
+
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.TRIPLE_MOONLIGHT);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
-            if (i >= 10) {
-                if (!world.isClient) {
-                    stack.damage(5, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
-                    for (int j = -1; j < 2; j++) {
-                        MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
-                        entity.setAgeAndPoints(30, 75, (byte) 4);
-                        entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw() + j*5, 0.0F, 1.5F, 1.0F);
-                        entity.setDamage(ConfigConstructor.pure_moonlight_greatsword_projectile_damage);
-                        world.spawnEntity(entity);
-                    }
-                    world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
+        this.addAbility(SHOOT_MOONLIGHT);
     }
 
     @Override

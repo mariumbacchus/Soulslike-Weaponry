@@ -135,30 +135,6 @@ public class TooltipUtil {
                     }
                 }
             }
-            case CHARGE -> {
-                IChargeNeeded item = (IChargeNeeded)stack.getItem();
-                String current = MathHelper.floor((float) item.getCharge(stack) / (float) item.getMaxCharge() * 100) + "%";
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge").formatted(Formatting.DARK_AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_description_2").formatted(Formatting.DARK_GRAY).append(Text.literal(current + " | " + item.getAddedCharge(stack)).formatted(Formatting.AQUA)));
-            }
-            case CHARGE_BONUS_DAMAGE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_bonus_damage").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.charge_bonus_damage_1").formatted(Formatting.GRAY));
-            }
-            case NEED_CHARGE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.need_charge").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.need_charge_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.need_charge_description_2").formatted(Formatting.GRAY));
-            }
-            case LUNAR_HERALD_NO_CHARGE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_no_charge_1").formatted(Formatting.DARK_GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_no_charge_2").formatted(Formatting.DARK_GRAY));
-            }
-            case MOONFALL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall").formatted(Formatting.AQUA, Formatting.BOLD));
-                for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));
-            }
             case SWORD_SLAM -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sword_slam").formatted(Formatting.DARK_PURPLE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.sword_slam_description").formatted(Formatting.GRAY));
@@ -217,28 +193,11 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_4").formatted(Formatting.GRAY).append(Text.literal(
                         String.valueOf(ConfigConstructor.lich_bane_bonus_magic_damage + WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT))).formatted(Formatting.DARK_AQUA)));
             }
-            case MOONLIGHT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_description").formatted(Formatting.GRAY));
-                if (stack.getItem() instanceof BluemoonGreatsword) {
-                    addAbilityTooltip(TooltipAbilities.LUNAR_HERALD_NO_CHARGE, stack, tooltip);
-                }
-            }
-            case MOONLIGHT_ATTACK -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_attack_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_attack_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_attack_description_3").formatted(Formatting.GRAY));
-            }
             case LUNAR_HERALD -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_description_1").formatted(Formatting.GRAY)
                         .append(KeyBindRegistry.effectShootMoonlight.getBoundKeyLocalizedText()));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_description_2").formatted(Formatting.GRAY));
-            }
-            case TRIPLE_MOONLIGHT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.pure_moonlight_description").formatted(Formatting.GRAY));
             }
             case DISABLE_HEAL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.disable_heal").formatted(Formatting.BOLD));

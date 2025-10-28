@@ -21,10 +21,24 @@ public interface ICooldownItem {
     }
 
     /**
+     * Applies item cooldown as long as the player is not in creative mode.
+     */
+    default void applyItemCooldown(ItemStack stack, PlayerEntity player, int cooldown) {
+        this.applyItemCooldown(stack.getItem(), player, cooldown);
+    }
+
+    /**
      * Will still apply cooldown regardless if the player is creative or not.
      */
     default void applyItemCooldownNoCheck(Item item, PlayerEntity player, int cooldown) {
         player.getItemCooldownManager().set(item, cooldown);
+    }
+
+    /**
+     * Will still apply cooldown regardless if the player is creative or not.
+     */
+    default void applyItemCooldownNoCheck(ItemStack item, PlayerEntity player, int cooldown) {
+        this.applyItemCooldownNoCheck(item.getItem(), player, cooldown);
     }
 
     /**

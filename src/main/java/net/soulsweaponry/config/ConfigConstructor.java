@@ -341,6 +341,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bloodlust_ability_bloodthirsty_duration = 300;
     @Entry public static float bloodlust_bloodloss_in_vicinity_gives_strength_amp = 0;
     @Entry public static float bloodlust_bloodloss_in_vicinity_gives_strength_duration = 600;
+
     @Entry public static float bloodthirster_damage = 8;
     @Entry public static float bloodthirster_attack_speed = 1.6f;
     @Entry public static float bloodthirster_life_steal_base_heal = 2f;
@@ -355,20 +356,28 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bloodthirster_overheal_cooldown = 60;
     @Entry public static float bloodthirster_overheal_min_cooldown = 10;
     @Entry public static float bloodthirster_overheal_reduced_cooldown_per_level = 10;
+
     @Entry public static float bluemoon_greatsword_damage = 8;
     @Entry public static float bluemoon_greatsword_attack_speed = 1.2f;
-    @Entry public static float bluemoon_greatsword_charge_needed = 8;
-    @Entry public static float bluemoon_greatsword_charge_added_post_hit = 1;
+    @Entry public static float bluemoon_greatsword_essence_needed = 8;
+    @Entry public static float bluemoon_greatsword_essence_added_post_hit = 1;
+    @Entry public static float bluemoon_greatsword_bonus_essence_added_post_hit_per_level = 2;
+    @Entry public static float bluemoon_greatsword_projectile_amount = 1;
+    @Entry public static float bluemoon_greatsword_bonus_projectile_amount_per_level = 0.4f;
     @Entry public static float bluemoon_greatsword_projectile_damage = 8.0f;
+    @Entry public static float bluemoon_greatsword_projectile_bonus_damage_per_level = 2.0f;
     @Entry public static float bluemoon_greatsword_projectile_velocity = 1.5f;
+
     @Entry public static float bluemoon_shortsword_damage = 7;
     @Entry public static float bluemoon_shortsword_attack_speed = 1.6f;
-    @Entry public static float bluemoon_shortsword_projectile_damage = 3.0f;
     @Entry public static float bluemoon_shortsword_projectile_velocity = 1.5f;
+    @Entry public static float bluemoon_shortsword_projectile_damage = 3.0f;
+    @Entry public static float bluemoon_shortsword_projectile_bonus_damage_per_level = 2.0f;
+    @Entry public static float bluemoon_shortsword_projectile_bonus_damage_per_moon_herald_amp = 2.0f;
     @Entry public static float bluemoon_shortsword_projectile_cooldown = 120;
     @Entry public static float bluemoon_shortsword_projectile_min_cooldown = 10;
-    @Entry public static boolean bluemoon_shortsword_enchant_reduces_cooldown = false;
-    @Entry public static String[] bluemoon_shortsword_enchant_reduces_cooldown_ids = {"damage"};
+    @Entry public static float bluemoon_shortsword_projectile_reduced_cooldown_per_level = 10;
+    @Entry public static float bluemoon_shortsword_projectile_cooldown_with_lunar_herald_effect = 5;
 
     @Entry public static float chungus_staff_damage = 9;
     @Entry public static float chungus_staff_attack_speed = 1.1f;
@@ -701,23 +710,37 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float rageblade_damage = 7;
     @Entry public static float rageblade_attack_speed = 1.6f;
     @Entry public static boolean rageblade_haste_cap = true;
+
     @Entry public static float holy_moonlight_greatsword_damage = 10;
     @Entry public static float holy_moonlight_greatsword_attack_speed = 1.2f;
     @Entry public static float holy_moonlight_greatsword_righteous_base_undead_bonus_damage = 2f;
     @Entry public static float holy_moonlight_greatsword_righteous_undead_bonus_damage_per_level = 0.5f;
-    @Entry public static float holy_moonlight_ability_charge_needed = 50;
-    @Entry public static float holy_moonlight_greatsword_charge_added_post_hit = 3;
-    @Entry public static float holy_moonlight_ability_damage = 20f;
-    @Entry public static float holy_moonlight_ability_knockup = 0.3f;
-    @Entry public static float holy_moonlight_ability_cooldown = 150;
-    @Entry public static float holy_moonlight_ability_min_cooldown = 60;
-    @Entry public static float holy_moonlight_ruptures_amount = 8;
+    @Entry public static float holy_moonlight_greatsword_essence_added_post_hit = 3;
+    @Entry public static float holy_moonlight_greatsword_bonus_essence_added_post_hit_per_level = 3;
+    @Entry public static float holy_moonlight_ability_essence_needed = 50;
+
+    @Entry public static float holy_moonlight_moonfall_ruptures_amount = 8;
+    @Entry public static float holy_moonlight_moonfall_bonus_ruptures_amount_per_level = 1;
+    @Entry public static float holy_moonlight_moonfall_rupture_radius = 1.85f;
+    @Entry public static float holy_moonlight_moonfall_damage = 20f;
+    @Entry public static float holy_moonlight_moonfall_bonus_damage_per_level = 4f;
+    @Entry public static float holy_moonlight_moonfall_bonus_damage_enchant_mod = 2f;
+    @Entry public static float holy_moonlight_moonfall_knockup = 0.3f;
+    @Entry public static float holy_moonlight_moonfall_bonus_knockup_per_level = 0.1f;
+    @Entry public static float holy_moonlight_moonfall_min_cooldown = 60;
+    @Entry public static float holy_moonlight_moonfall_cooldown = 150;
+    @Entry public static float holy_moonlight_moonfall_reduced_cooldown_per_level = 30;
+    @Entry public static float holy_moonlight_moonfall_reduced_cooldown_per_moon_herald_effect_amp = 20;
+
     @Entry public static float holy_moonlight_sword_damage = 7;
     @Entry public static float holy_moonlight_sword_attack_speed = 1.6f;
     @Entry public static float holy_moonlight_sword_righteous_base_undead_bonus_damage = 2f;
     @Entry public static float holy_moonlight_sword_righteous_undead_bonus_damage_per_level = 0.5f;
     @Entry public static float holy_moonlight_sword_max_bonus_damage = 2;
-    @Entry public static float holy_moonlight_sword_charge_added_post_hit = 1;
+    @Entry public static float holy_moonlight_sword_max_bonus_attack_speed = 0;
+    @Entry public static float holy_moonlight_sword_essence_added_post_hit = 1;
+    @Entry public static float holy_moonlight_sword_bonus_essence_added_post_hit_per_level = 2;
+
     @Entry public static float kirkhammer_damage = 9;
     @Entry public static float kirkhammer_attack_speed = 1f;
     @Entry public static float kirkhammer_posture_loss = 40;
@@ -804,21 +827,43 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_riptide_min_cooldown = 60;
     @Entry public static float mjolnir_riptide_reduced_cooldown_per_level = 30;
     @Entry public static double mjolnir_return_speed = 4D;
+
     @Entry public static float moonlight_greatsword_damage = 9;
     @Entry public static float moonlight_greatsword_attack_speed = 1.2f;
+    @Entry public static float moonlight_greatsword_projectile_amount = 1;
+    @Entry public static float moonlight_greatsword_bonus_projectile_amount_per_level = 0.4f;
     @Entry public static float moonlight_greatsword_projectile_damage = 8.0f;
+    @Entry public static float moonlight_greatsword_projectile_bonus_damage_per_level = 2f;
     @Entry public static float moonlight_greatsword_projectile_velocity = 1.5f;
+
     @Entry public static float pure_moonlight_greatsword_damage = 11;
     @Entry public static float pure_moonlight_greatsword_attack_speed = 1.2f;
+    @Entry public static float pure_moonlight_greatsword_projectile_amount = 3;
+    @Entry public static float pure_moonlight_greatsword_bonus_projectile_amount_per_level = 0.8f;
     @Entry public static float pure_moonlight_greatsword_projectile_damage = 9.0f;
+    @Entry public static float pure_moonlight_greatsword_projectile_bonus_damage_per_level = 3f;
+    @Entry public static float pure_moonlight_greatsword_projectile_velocity = 1.5f;
+
     @Entry public static float moonlight_shortsword_damage = 8;
     @Entry public static float moonlight_shortsword_attack_speed = 1.6f;
-    @Entry public static float moonlight_shortsword_projectile_damage = 3.0f;
     @Entry public static float moonlight_shortsword_projectile_velocity = 1.5f;
+    @Entry public static float moonlight_shortsword_projectile_damage = 3.0f;
+    @Entry public static float moonlight_shortsword_projectile_bonus_damage_per_level = 2.0f;
+    @Entry public static float moonlight_shortsword_projectile_bonus_damage_per_moon_herald_amp = 2.0f;
+    @Entry public static float moonlight_shortsword_projectile_min_cooldown = 5;
     @Entry public static float moonlight_shortsword_projectile_cooldown = 13;
-    @Entry public static float moonstone_ring_projectile_cooldown = 5;
+    @Entry public static float moonlight_shortsword_projectile_reduced_cooldown_per_level = 1.5f;
+    @Entry public static float moonlight_shortsword_projectile_cooldown_with_lunar_herald_effect = 5;
+
     @Entry public static float moonstone_ring_lunar_herald_base_amplifier = 0;
+    @Entry public static float moonstone_ring_lunar_herald_bonus_amp_per_level = 1;
     @Entry public static float moonstone_ring_lunar_herald_duration = 600;
+    @Entry public static float moonstone_ring_lunar_herald_bonus_duration_per_level = 600;//TODO might make it as a permanent effect instead
+    @Entry public static float moonstone_ring_lunar_herald_projectile_cooldown = 5;
+    @Entry public static float moonstone_ring_lunar_herald_projectile_velocity = 1.5f;
+    @Entry public static float moonstone_ring_lunar_herald_projectile_damage = 3.0f;
+    @Entry public static float moonstone_ring_lunar_herald_projectile_bonus_damage_per_moon_herald_amp = 2.0f;
+
     @Entry public static float moonveil_damage = 9;
     @Entry public static float moonveil_attack_speed = 1.6f;
     @Entry public static float moonveil_wave_base_damage = 8f;

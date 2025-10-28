@@ -1,31 +1,29 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.IHasLore;
+import net.soulsweaponry.items.abilities.stoppedusing.ShootMoonlight;
 
-public class MoonlightGreatsword extends ChargeToUseItem {
+import java.util.List;
+
+public class MoonlightGreatsword extends ModdedSword implements IHasLore {
+
+    private static final ShootMoonlight SHOOT_MOONLIGHT = new ShootMoonlight(
+            (int) ConfigConstructor.moonlight_greatsword_projectile_amount,
+            ConfigConstructor.moonlight_greatsword_bonus_projectile_amount_per_level,
+            ConfigConstructor.moonlight_greatsword_projectile_velocity,
+            ConfigConstructor.moonlight_greatsword_projectile_damage,
+            ConfigConstructor.moonlight_greatsword_projectile_bonus_damage_per_level
+    );
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        this(toolMaterial, (int) ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
-    }
-
-    public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
-        this.addTooltipAbility(TooltipAbilities.MOONLIGHT);
+        super(toolMaterial, (int) ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
+        this.addAbility(SHOOT_MOONLIGHT);
     }
 
     @Override
@@ -34,52 +32,11 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
-            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
-            if (i >= 10) {
-                stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
-
-                MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, world, user, stack);
-                entity.setAgeAndPoints(30, 150, (byte) 4);
-                //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.getProjectileVelocity(), 1.0F);
-                entity.setDamage(this.getProjectileDamage());
-                world.spawnEntity(entity);
-                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                if (this instanceof BluemoonGreatsword) {
-                    if (!playerEntity.isCreative()) {
-                        stack.set(ComponentRegistry.CHARGE, 0);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[] {
+    public List<Text> getLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_3").formatted(Formatting.DARK_GRAY)
-        };
-    }
-
-    public float getProjectileDamage() {
-        return ConfigConstructor.moonlight_greatsword_projectile_damage;
-    }
-
-    public float getProjectileVelocity() {
-        return ConfigConstructor.moonlight_greatsword_projectile_velocity;
+        );
     }
 }

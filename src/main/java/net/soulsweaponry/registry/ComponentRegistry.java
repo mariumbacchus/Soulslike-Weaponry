@@ -17,9 +17,6 @@ import java.util.function.UnaryOperator;
 public class ComponentRegistry {
     //TODO when making it possible to add whatever ability to any weapon, make sure to no longer use the same components for the same abilities! (unless that's the point)
     public static final ComponentType<Boolean> EMPOWERED = register("empowered", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
-    public static final ComponentType<Integer> CHARGE = register("charge", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    // UUID is saved and processed as a string
-
     public static final ComponentType<UUID> SAVED_UUID = register("saved_uuid", b ->
             b.codec(Uuids.CODEC).packetCodec(Uuids.PACKET_CODEC));
     public static final ComponentType<BlockPos> SAVED_BLOCK_POS = register("saved_block_pos", builder -> builder.codec(BlockPos.CODEC).packetCodec(BlockPos.PACKET_CODEC));
@@ -41,6 +38,7 @@ public class ComponentRegistry {
     public static final ComponentType<Integer> WITHER_SOUL_RELEASE_COUNTER = register("wither_soul_release_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> KRAKEN_SLAYER_SHOTS_COUNTER = register("kraken_slayer_shots_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> SKOFNUNG_EMPOWERED_STRIKES = register("skofnung_empowered_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> ESSENCE = register("essence", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),

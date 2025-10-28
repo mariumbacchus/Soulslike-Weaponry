@@ -18,6 +18,7 @@ public class PacketRegistry {
         PayloadTypeRegistry.playC2S().register(SwitchTrickWeaponC2S.TYPE, SwitchTrickWeaponC2S.CODEC);
         PayloadTypeRegistry.playC2S().register(ParryC2S.TYPE, ParryC2S.CODEC);
         PayloadTypeRegistry.playC2S().register(ReturnThrownWeaponC2S.TYPE, ReturnThrownWeaponC2S.CODEC);
+        PayloadTypeRegistry.playC2S().register(AttackClickC2S.TYPE, AttackClickC2S.CODEC);
 
         // Packet ids used for debugging in dev environment only
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

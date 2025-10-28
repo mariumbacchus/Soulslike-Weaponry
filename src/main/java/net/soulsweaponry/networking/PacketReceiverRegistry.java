@@ -20,6 +20,7 @@ public class PacketReceiverRegistry {
         ServerPlayNetworking.registerGlobalReceiver(ParryC2S.TYPE, ParryC2SReceiver::receive);
         ServerPlayNetworking.registerGlobalReceiver(DamagingBoxC2S.TYPE, DamagingBoxC2SReceiver::receive);
         ServerPlayNetworking.registerGlobalReceiver(ReturnThrownWeaponC2S.TYPE, ReturnThrownWeaponC2SReceiver::receive);
+        ServerPlayNetworking.registerGlobalReceiver(AttackClickC2S.TYPE, AttackClickC2SReceiver::receive);
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             ServerPlayNetworking.registerGlobalReceiver(KillNearbyEntitiesC2S.TYPE, KillNearbyEntitiesC2SReceiver::receive);

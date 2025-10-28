@@ -121,7 +121,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
+    protected void onEntityHit(EntityHitResult entityHitResult) {//TODO take a deeper look into damage balancing here
         if (entityHitResult.getEntity() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
             DamageSource damageSource = this.getDamageSources().arrow(this, this.getOwner());
             float bonus = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), living, damageSource, 0);

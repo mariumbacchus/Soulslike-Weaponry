@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class HolyMoonlightPillar extends DamagingWarmupEntity implements GeoEntity {
 
-    private float knockUp = ConfigConstructor.holy_moonlight_ability_knockup;
+    private float knockUp = ConfigConstructor.holy_moonlight_moonfall_knockup;
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {

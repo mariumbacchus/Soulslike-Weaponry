@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.IHasEssence;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.items.sword.Sting;
@@ -19,6 +21,8 @@ import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.Optional;
 
 public class PredicateRegistry {
     
@@ -54,9 +58,9 @@ public class PredicateRegistry {
         PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRIME, "bettercombat");
         PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER, "epicfight");
 
-        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
-        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
-        PredicateRegistry.registerCharged(WeaponRegistry.BLUEMOON_GREATSWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.BLUEMOON_GREATSWORD);
 
         PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_SWORD);
         PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_GLAIVE);
@@ -162,9 +166,10 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(item , Identifier.of(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
     }
 
-    protected static void registerCharged(Item item) {
+    protected static void registerMaxEssence(Item item) {
         ModelPredicateProviderRegistry.register(item, Identifier.of("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (((IChargeNeeded)item).isCharged(itemStack)) {
+            Optional<IHasEssence> op = IHasAbilities.getAbility(itemStack, IHasEssence.class);
+            if (op.isPresent() && op.get().hasMaxEssence(itemStack)) {
                 return 1.0f;
             }
             return 0.0f;

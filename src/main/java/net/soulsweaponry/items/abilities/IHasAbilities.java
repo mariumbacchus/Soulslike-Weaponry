@@ -18,10 +18,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,6 +86,10 @@ public interface IHasAbilities extends IConfigDisable {
         return true;
     }
 
+    default boolean essenceNeeded(ItemStack stack, PlayerEntity player) {
+        return this.getAbilities().stream().anyMatch(a -> a.preventUsePredicate(stack, player));
+    }
+
     default TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
@@ -99,11 +101,7 @@ public interface IHasAbilities extends IConfigDisable {
                 return TypedActionResult.fail(itemStack);
             } else if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
                 return TypedActionResult.fail(itemStack);
-            } else if (this instanceof IChargeNeeded charge //TODO change this up later when adding charge needed ability
-                    && !charge.isCharged(itemStack)
-                    && !user.isCreative()
-                    && charge.acceptsMoonHeraldEffect(itemStack)
-                    && !user.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
+            } else if (this.essenceNeeded(itemStack, user)) {
                 return TypedActionResult.fail(itemStack);
             } else {
                 user.setCurrentHand(hand);
@@ -272,6 +270,22 @@ public interface IHasAbilities extends IConfigDisable {
                 a.useKeybindAbilityServer(world, stack, player, hand);
             }
         });
+    }
+
+    default void onAttackClickClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled(stack)) {
+            return;
+        }
+        // Can add sneaking versions of this later
+        this.getAbilities().forEach(a -> a.onAttackClickClient(world, stack, player));
+    }
+
+    default void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
+        if (this.isDisabled(stack)) {
+            return;
+        }
+        // Can add sneaking versions of this later
+        this.getAbilities().forEach(a -> a.onAttackClickServer(world, stack, player));
     }
 
     default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {

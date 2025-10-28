@@ -14,6 +14,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
+import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -249,6 +250,17 @@ public interface IAbility extends ICooldownItem {
     }
 
     /**
+     * If true, makes the {@link #use(World, PlayerEntity, Hand, ItemStack)}
+     * call return {@code TypedActionResult.fail(itemStack)} and therefore cancel.
+     * <p>
+     * Can be overwritten to for example prevent use() call if {@link EssenceNeeded}
+     * returns insufficient essence amount, so the ability can't be used.
+     */
+    default boolean preventUsePredicate(ItemStack stack, PlayerEntity user) {
+        return false;
+    }
+
+    /**
      * Called each tick when the player uses the item.
      * @param world world
      * @param user living entity user
@@ -282,6 +294,24 @@ public interface IAbility extends ICooldownItem {
      */
     @Deprecated
     default void offhandUsageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {}
+
+    /**
+     * Called when the player presses the attack button (usually left click).
+     * The hand will always be the main hand (unless an obscure mod changes this).
+     * @param world client world
+     * @param stack stack
+     * @param player client player
+     */
+    default void onAttackClickClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
+
+    /**
+     * Called when the player presses the attack button (usually left click).
+     * The hand will always be the main hand (unless an obscure mod changes this).
+     * @param world server world
+     * @param stack stack
+     * @param player server player
+     */
+    default void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
 
     /**
      * Override to give a custom max ues time. Returns -1 by default, meaning the item will
