@@ -694,8 +694,9 @@
   "tooltip.soulsweapons.frost_moon": "Luna de Escarcha",
   "tooltip.soulsweapons.frost_moon.1": "- Usa la tecla de habilidad para darte el efecto §3Luna de Escarcha§r,",
   "tooltip.soulsweapons.frost_moon.2": "haciéndote inmune a la congelación y la nieve en polvo",
-  "tooltip.soulsweapons.frost_moon.3": "- Mientras tengas el efecto §3Luna de Escarcha§r, usa la espada grande",
-  "tooltip.soulsweapons.frost_moon.4": "para disparar §3Rayos de luz de luna§r que aplican §bPermafrost§r",
+  "tooltip.soulsweapons.frost_moon_needed": "Frostbound",
+  "tooltip.soulsweapons.frost_moon_needed.1": "- User must have §3Frost Moon§r effect to use abilities",
+
   "tooltip.soulsweapons.blade_dance": "Blade Dance",
   "tooltip.soulsweapons.blade_dance.1": "- Atacar entidades otorga acumulaciones de §fDanza de Espadas§r",
   "tooltip.soulsweapons.blade_dance.2": "- Ser golpeado §creduce§r acumulaciones de §fDanza de Espadas§r en 1",

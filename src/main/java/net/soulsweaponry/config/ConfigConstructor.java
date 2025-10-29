@@ -483,19 +483,28 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean darkmoon_longbow_enchant_reduces_cooldown = true;
     @Entry public static String[] darkmoon_longbow_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static boolean darkmoon_longbow_can_apply_arrow_effects = true;
+
     @Entry public static float dark_moon_greatsword_damage = 10;
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_amplifier = 0;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_amp_per_level = 1f;
     @Entry public static float dark_moon_greatsword_post_hit_permafrost_base_duration = 100;
     @Entry public static float dark_moon_greatsword_frost_buildup_post_hit = 60;
-    @Entry public static float dark_moon_greatsword_frost_moon_base_duration = 400;
-    @Entry public static float dark_moon_greatsword_frost_moon_base_amplifier = 0;
+    @Entry public static float dark_moon_greatsword_frost_moon_duration = 400;
+    @Entry public static float dark_moon_greatsword_frost_moon_amp = 0;
     @Entry public static float dark_moon_greatsword_frost_moon_cooldown = 700;
     @Entry public static float dark_moon_greatsword_frost_moon_min_cooldown = 300;
+    @Entry public static float dark_moon_greatsword_frost_moon_reduced_cooldown_per_level = 60;
+
+    @Entry public static float dark_moon_greatsword_projectile_amount = 1;
+    @Entry public static float dark_moon_greatsword_bonus_projectile_amount_per_level = 0;
+    @Entry public static float dark_moon_greatsword_projectile_speed = 1.5f;
     @Entry public static float dark_moon_greatsword_projectile_damage = 7f;
-    @Entry public static float dark_moon_greatsword_projectile_permafrost_base_amplifier = 0;
-    @Entry public static float dark_moon_greatsword_projectile_permafrost_base_duration = 200;
+    @Entry public static float dark_moon_greatsword_projectile_bonus_damage_per_level = 2.5f;
+    @Entry public static float dark_moon_greatsword_projectile_permafrost_amp = 0;
+    @Entry public static float dark_moon_greatsword_projectile_permafrost_bonus_amp_per_level = 1;
+    @Entry public static float dark_moon_greatsword_projectile_permafrost_duration = 200;
+    @Entry public static float dark_moon_greatsword_projectile_permafrost_bonus_duration_per_level = 20;
 
     @Entry public static float dawnbreaker_damage = 8;
     @Entry public static float dawnbreaker_attack_speed = 1.6f;

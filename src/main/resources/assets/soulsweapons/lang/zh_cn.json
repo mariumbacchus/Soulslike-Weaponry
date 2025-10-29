@@ -693,8 +693,9 @@
     "tooltip.soulsweapons.frost_moon": "Frost Moon",
     "tooltip.soulsweapons.frost_moon.1": "- Use ability keybind to give yourself §3Frost Moon§r effect,",
     "tooltip.soulsweapons.frost_moon.2": "making you immune to freezing and powdered snow",
-    "tooltip.soulsweapons.frost_moon.3": "- While having §3Frost Moon§r effect, use the greatsword",
-    "tooltip.soulsweapons.frost_moon.4": "to shoot out §3Moonlight Beams§r that apply §bPermafrost§r",
+    "tooltip.soulsweapons.frost_moon_needed": "Frostbound",
+    "tooltip.soulsweapons.frost_moon_needed.1": "- User must have §3Frost Moon§r effect to use abilities",
+
     "tooltip.soulsweapons.blade_dance": "Blade Dance",
     "tooltip.soulsweapons.blade_dance.1": "- Attacking entities grants stacks of §fBlade Dance§r",
     "tooltip.soulsweapons.blade_dance.2": "- Getting hit §creduces§r stacks of §fBlade Dance§r by 1",
