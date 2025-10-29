@@ -410,14 +410,16 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_calculated_fall_target_launch_modifier = 0.0125f;
     @Entry public static float comet_spear_calculated_fall_target_max_launch_power = 1.1f;
     @Entry public static float comet_spear_calculated_fall_heal_from_damage_modifier = 0f;
+
     @Entry public static float crucible_sword_normal_damage = 9;
     @Entry public static float crucible_sword_attack_speed = 1.6f;
-    @Entry public static float crucible_sword_empowered_damage = 30;
-    @Entry public static float crucible_sword_empowered_cooldown = 300;
+    @Entry public static float crucible_sword_empowered_bonus_damage = 21;
+    @Entry public static float crucible_sword_empowered_bonus_damage_per_level = 3;
     @Entry public static float crucible_sword_empowered_min_cooldown = 100;
-    @Entry public static float crucible_sword_empowered_cooldown_modifier_in_nether = 0.4f;
-    @Entry public static boolean crucible_sword_enchant_reduces_cooldown = true;
-    @Entry public static String[] crucible_sword_enchant_reduces_cooldown_ids = {"damage"};
+    @Entry public static float crucible_sword_empowered_cooldown = 300;
+    @Entry public static float crucible_sword_empowered_reduced_cooldown_per_level = 40;
+    @Entry public static float crucible_sword_empowered_cooldown_modifier_in_ultrawarm_dimension = 0.4f;
+
     @Entry public static float darkin_blade_damage = 11;
     @Entry public static float darkin_blade_attack_speed = 1f;
     @Entry public static float darkin_blade_posture_loss = 30;

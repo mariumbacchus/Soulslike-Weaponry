@@ -609,9 +609,9 @@
     "tooltip.soulsweapons.featherlight_description_2": "동시에 대형 대검의 장점을 얻을 수 있습니다.",
 
     "tooltip.soulsweapons.doom": "원시 지옥 에너지",
-    "tooltip.soulsweapons.doom_description_1": "- 다음 공격에 막대한 피해를 입히며,",
-    "tooltip.soulsweapons.doom_description_2": "이후 쿨다운 상태에 들어갑니다.",
-    "tooltip.soulsweapons.doom_description_3": "- Cooldown is reduced in the Nether",
+    "tooltip.soulsweapons.doom.1": "- Has massive attack damage for the next strike",
+    "tooltip.soulsweapons.doom.2": "- Cooldown is reduced in ultra-warm dimensions",
+    "tooltip.soulsweapons.doom.3": "such as the Nether",
 
     "tooltip.soulsweapons.transformation": "내면의 갈등",
     "tooltip.soulsweapons.transformation.1": "- 몬스터를 처치하면 그들의 영혼을 수확하며,",
