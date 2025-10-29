@@ -28,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.armor.ChaosRobes;
 import net.soulsweaponry.registry.*;
@@ -77,11 +77,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.chaos_monarch_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.chaos_monarch_armor)
+        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.chaos_monarch_armor)
         .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
@@ -160,7 +160,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.chaos_monarch_xp;
+        return (int) BossConfig.chaos_monarch_xp;
     }
 
     @Override
@@ -174,7 +174,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
                 }
             }
         }
-        if (ConfigConstructor.chaos_monarch_wither_ground) {
+        if (BossConfig.chaos_monarch_wither_ground) {
             this.turnBlocks(this.getWorld(), this.getBlockPos());
         }
     }
@@ -263,22 +263,22 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.chaos_monarch_disables_shields;
+        return BossConfig.chaos_monarch_disables_shields;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.chaos_monarch_is_fire_immune;
+        return BossConfig.chaos_monarch_is_fire_immune;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return ConfigConstructor.chaos_monarch_has_inverted_heal_and_harm;
+        return BossConfig.chaos_monarch_has_inverted_heal_and_harm;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.chaos_monarch_status_effect_blacklist;
+        return BossConfig.chaos_monarch_status_effect_blacklist;
     }
 
     @Override

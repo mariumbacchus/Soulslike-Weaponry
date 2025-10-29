@@ -13,7 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -66,7 +66,7 @@ public class NightSkull extends ModPersistentProjectile implements GeoEntity {
 
     @Override
     public boolean isGlowing() {
-        return ConfigConstructor.night_prowler_eclipse_skulls_glow;
+        return BossConfig.night_prowler_eclipse_skulls_glow;
     }
 
     private void detonate() {

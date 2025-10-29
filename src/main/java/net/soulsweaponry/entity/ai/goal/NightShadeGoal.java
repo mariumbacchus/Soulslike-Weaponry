@@ -12,7 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
@@ -59,7 +59,7 @@ public class NightShadeGoal extends Goal {
 
     private void reset(float cooldownModifier) {
         this.attackStatus = 0;
-        this.attackCooldown = (int) Math.floor(ConfigConstructor.frenzied_shade_cooldown * cooldownModifier);
+        this.attackCooldown = (int) Math.floor(BossConfig.frenzied_shade_cooldown * cooldownModifier);
     }
 
     private void damageTarget(LivingEntity target, float damage) {
@@ -68,7 +68,7 @@ public class NightShadeGoal extends Goal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
+        return damage * BossConfig.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
     }
 
     private void randomAttack(LivingEntity target) {

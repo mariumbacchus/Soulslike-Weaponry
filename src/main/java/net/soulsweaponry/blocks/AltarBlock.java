@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
@@ -36,7 +36,7 @@ public class AltarBlock extends SpawnBossBlock {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
             entity.setSpawning(true);
-            boolean bl =spawnEntity(world, pos, player, entity, ConfigConstructor.returning_knight_disable_respawn);
+            boolean bl =spawnEntity(world, pos, player, entity, BossConfig.returning_knight_disable_respawn);
             if (bl) {
                 if (!player.getAbilities().creativeMode) {
                     itemStack.decrement(1);
@@ -46,11 +46,11 @@ public class AltarBlock extends SpawnBossBlock {
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, ConfigConstructor.old_champions_remains_disable_respawn);
+            return spawnEntity(world, pos, player, entity, BossConfig.old_champions_remains_disable_respawn);
         } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
             Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT, world);
             entity.setSpawning(true);
-            boolean bl = spawnEntity(world, pos, player, entity, ConfigConstructor.fallen_icon_disable_respawn);
+            boolean bl = spawnEntity(world, pos, player, entity, BossConfig.fallen_icon_disable_respawn);
             if (bl) {
                 if (!player.getAbilities().creativeMode) {
                     itemStack.decrement(1);

@@ -16,7 +16,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.entity.mobs.WarmthEntity;
@@ -285,12 +285,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (timer == 0) {
                 partner.setFlying(!partner.isFlying());
                 this.boss.setFlying(!this.boss.isFlying());
-                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             } else if (partner.isFlying() == this.boss.isFlying()) {
                 boolean bl = this.boss.getRandom().nextBoolean();
                 this.boss.setFlying(bl);
                 partner.setFlying(!bl);
-                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             }
         }
     }
@@ -330,9 +330,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackCooldown = MathHelper.floor((double)attackCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.day_stalker_cooldown_modifier_phase_2 : BossConfig.day_stalker_cooldown_modifier_phase_1));
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_special_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_special_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.day_stalker_special_cooldown_modifier_phase_2 : BossConfig.day_stalker_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
             this.boss.setChaseTarget(true);
@@ -343,7 +343,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.day_stalker_damage_modifier;
+        return damage * BossConfig.day_stalker_damage_modifier;
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {

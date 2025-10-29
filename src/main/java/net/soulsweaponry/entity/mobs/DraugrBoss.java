@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -100,11 +100,11 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.old_champions_remains_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.old_champions_remains_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.old_champions_remains_armor);
+        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.old_champions_remains_armor);
     }
 
     @Override
@@ -258,8 +258,8 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
             } else {
                 this.setSameWeaponCount(0);
             }
-            if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
-                double x = this.getSameWeaponCount() - (ConfigConstructor.old_champions_remains_hits_before_growing_resistant -
+            if (this.getSameWeaponCount() >= BossConfig.old_champions_remains_hits_before_growing_resistant) {
+                double x = this.getSameWeaponCount() - (BossConfig.old_champions_remains_hits_before_growing_resistant -
                         this.getSameWeaponCount() > 0 ? 1 : 0);
                 amount = (float) (amount * Math.pow((1f / 1.07f), x));
             }
@@ -288,7 +288,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 this.projectileCount--;
             }
         } else {
-            this.projectileCount = (int) ConfigConstructor.old_champions_remains_max_projectile_hits_before_immune;
+            this.projectileCount = (int) BossConfig.old_champions_remains_max_projectile_hits_before_immune;
         }
         return super.damage(source, amount);
     }
@@ -301,7 +301,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.old_champions_remains_xp;
+        return (int) BossConfig.old_champions_remains_xp;
     }
 
     @Override
@@ -324,17 +324,17 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return ConfigConstructor.old_champions_remains_has_inverted_heal_and_harm;
+        return BossConfig.old_champions_remains_has_inverted_heal_and_harm;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.old_champions_remains_status_effect_blacklist;
+        return BossConfig.old_champions_remains_status_effect_blacklist;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.old_champions_remains_is_fire_immune;
+        return BossConfig.old_champions_remains_is_fire_immune;
     }
 
     @Override
@@ -374,7 +374,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.old_champions_remains_disables_shields && this.shouldDisableShield || ConfigConstructor.old_champions_remains_disables_shields_all_attacks;
+        return BossConfig.old_champions_remains_disables_shields && this.shouldDisableShield || BossConfig.old_champions_remains_disables_shields_all_attacks;
     }
 
     public void updateDisableShield(boolean bl) {
@@ -396,7 +396,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     }
   
     protected SoundEvent getHurtSound(DamageSource source) {
-        if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
+        if (this.getSameWeaponCount() >= BossConfig.old_champions_remains_hits_before_growing_resistant) {
             return SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR;
         } else {
             return SoundEvents.ENTITY_WITHER_SKELETON_HURT;

@@ -11,7 +11,7 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -35,8 +35,8 @@ public class Forlorn extends Remnant {
     public static DefaultAttributeContainer.Builder createForlornAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.forlorn_health)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.forlorn_bonus_armor)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.forlorn_health)
+        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.forlorn_bonus_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

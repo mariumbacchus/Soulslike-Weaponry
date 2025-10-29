@@ -22,7 +22,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.projectile.NightSkull;
 import net.soulsweaponry.entity.projectile.noclip.*;
 import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
@@ -288,9 +288,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackCooldown = MathHelper.floor((double)attackCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.night_prowler_cooldown_modifier_phase_2 : ConfigConstructor.night_prowler_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_cooldown_modifier_phase_2 : BossConfig.night_prowler_cooldown_modifier_phase_1));
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.night_prowler_special_cooldown_modifier_phase_2 : ConfigConstructor.night_prowler_special_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_special_cooldown_modifier_phase_2 : BossConfig.night_prowler_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(NightProwler.Attacks.IDLE);
             this.boss.setChaseTarget(true);
@@ -305,7 +305,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return (damage + this.bonusDmg) * ConfigConstructor.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
+        return (damage + this.bonusDmg) * BossConfig.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {
@@ -373,7 +373,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.boss.isFlying() && this.attackStatus == stopFlying && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
             this.boss.setFlying(false);
             partner.setFlying(true);
-            partner.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+            partner.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             this.boss.setVelocity(0, -2f, 0);
         }
         if (!this.hasExploded && this.attackStatus >= min && this.attackStatus <= max && this.boss.isOnGround()) {
@@ -768,7 +768,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                     skull.setOwner(this.boss);
                     this.boss.getWorld().spawnEntity(skull);
                     if (target.isDead() && target.deathTime < 2) {
-                        this.boss.heal(ConfigConstructor.night_prowler_eclipse_healing);
+                        this.boss.heal(BossConfig.night_prowler_eclipse_healing);
                         DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);
                         spiral.setPosition(target.getPos());
                         this.boss.getWorld().spawnEntity(spiral);

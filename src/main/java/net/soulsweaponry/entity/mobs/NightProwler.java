@@ -27,7 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -306,27 +306,27 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.night_prowler_is_fire_immune;
+        return BossConfig.night_prowler_is_fire_immune;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return ConfigConstructor.night_prowler_has_inverted_heal_and_harm;
+        return BossConfig.night_prowler_has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.night_prowler_disables_shields;
+        return BossConfig.night_prowler_disables_shields;
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.night_prowler_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.night_prowler_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.night_prowler_armor)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.night_prowler_armor)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
     }
 
@@ -350,7 +350,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.night_prowler_xp;
+        return (int) BossConfig.night_prowler_xp;
     }
 
     @Override
@@ -424,7 +424,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             return false;
         }
         if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
-                && this.random.nextDouble() < ConfigConstructor.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 1.5f : 1)
+                && this.random.nextDouble() < BossConfig.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 1.5f : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
             if (this.squaredDistanceTo(attacker) > 250D) {
                 double x = attacker.getX() + this.random.nextInt(12) - 6;
@@ -440,9 +440,9 @@ public class NightProwler extends BossEntity implements GeoEntity {
             }
         }
         if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && !this.isProjectileWhitelisted(source)
-                && this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+                && this.getHealth() < this.getMaxHealth() * BossConfig.night_prowler_projectile_heal_below_percent_health) {
             this.playSound(SoundEvents.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
-            this.heal(ConfigConstructor.night_prowler_projectile_heal_amount);
+            this.heal(BossConfig.night_prowler_projectile_heal_amount);
             return false;
         }
         if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
@@ -572,7 +572,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public void tickMovement() {
         super.tickMovement();
         if (this.getWorld().isClient) {
-            if (this.getHealth() < this.getMaxHealth() * ConfigConstructor.night_prowler_projectile_heal_below_percent_health) {
+            if (this.getHealth() < this.getMaxHealth() * BossConfig.night_prowler_projectile_heal_below_percent_health) {
                 for (int i = 0; i < 2; i++) {
                     this.getWorld().addParticle(ParticleRegistry.DAZZLING_PARTICLE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
                 }
@@ -676,11 +676,11 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.night_prowler_projectile_immunity_whitelist;
+        return BossConfig.night_prowler_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.night_prowler_status_effect_blacklist;
+        return BossConfig.night_prowler_status_effect_blacklist;
     }
 }

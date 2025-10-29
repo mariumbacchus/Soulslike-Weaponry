@@ -29,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -107,11 +108,11 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.returning_knight_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.returning_knight_armor);
+        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.returning_knight_armor);
     }
 
     @Override
@@ -276,27 +277,27 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.returning_knight_projectile_immunity_whitelist;
+        return BossConfig.returning_knight_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.returning_knight_status_effect_blacklist;
+        return BossConfig.returning_knight_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.returning_knight_disables_shields;
+        return BossConfig.returning_knight_disables_shields;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return ConfigConstructor.returning_knight_has_inverted_heal_and_harm;
+        return BossConfig.returning_knight_has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.returning_knight_is_fire_immune;
+        return BossConfig.returning_knight_is_fire_immune;
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -310,7 +311,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.returning_knight_xp;
+        return (int) BossConfig.returning_knight_xp;
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -42,6 +43,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     private static final TrackedData<Integer> EFFECT_AMPLIFIER = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> APPLIED_EFFECT_ID = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.STRING);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private float enchantBonusDamageMod = ConfigConstructor.moonlight_shortsword_projectile_bonus_enchant_damage_mod;//TODO make into variable that ShootMoonlight abilities call and change
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -121,11 +123,12 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {//TODO take a deeper look into damage balancing here
+    protected void onEntityHit(EntityHitResult entityHitResult) {
         if (entityHitResult.getEntity() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
             DamageSource damageSource = this.getDamageSources().arrow(this, this.getOwner());
             float bonus = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), living, damageSource, 0);
-            this.setDamage(this.getDamage() + (bonus >= 5 ? bonus * 0.7f : bonus));
+            //TODO the bonus line is already calculated in super.onEnityHit, check with sout with and without line and with and without enchants
+            this.setDamage(this.getDamage() + bonus * this.enchantBonusDamageMod);
         }
         super.onEntityHit(entityHitResult);
         if (this.getAppliedEffectTicks() > 0 && this.getAppliedEffectId().isEmpty() && entityHitResult.getEntity() != null) {
