@@ -23,7 +23,12 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.mjolnir_rain_bonus_damage, ConfigConstructor.mjolnir_rain_bonus_attack_speed);
     private static final Riptide RIPTIDE = new Riptide(
-            5f, 1f, 15f,
+            ConfigConstructor.mjolnir_riptide_launch_power,
+            ConfigConstructor.mjolnir_riptide_bonus_launch_power_per_level,
+            ConfigConstructor.mjolnir_riptide_collision_damage,
+            (int) ConfigConstructor.mjolnir_riptide_calculated_fall_duration,
+            (int) ConfigConstructor.mjolnir_riptide_calculated_fall_amp,
+            ConfigConstructor.mjolnir_riptide_calculated_fall_bonus_amp_per_level,
             (int) ConfigConstructor.mjolnir_riptide_min_cooldown,
             (int) ConfigConstructor.mjolnir_riptide_cooldown,
             (int) ConfigConstructor.mjolnir_riptide_reduced_cooldown_per_level,

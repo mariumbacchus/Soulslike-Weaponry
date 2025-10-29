@@ -395,13 +395,20 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float comet_spear_damage = 8;
     @Entry public static float comet_spear_attack_speed = 1.4f;
     @Entry public static float comet_spear_projectile_damage = 8.0f;
-    @Entry public static float comet_spear_skyfall_ability_damage = 10;
-    @Entry public static float comet_spear_skyfall_ability_cooldown = 400;
-    @Entry public static float comet_spear_skyfall_ability_min_cooldown = 200;
-    @Entry public static float comet_spear_skyfall_ability_reduced_cooldown_per_level = 20;
+    @Entry public static float comet_spear_riptide_launch_power = 5;
+    @Entry public static float comet_spear_riptide_bonus_launch_power_per_level = 1;
+    @Entry public static float comet_spear_riptide_collision_damage = 15;
+    @Entry public static float comet_spear_riptide_calculated_fall_amp = 10;
+    @Entry public static float comet_spear_riptide_calculated_fall_bonus_amp_per_level = 1;
+    @Entry public static float comet_spear_riptide_calculated_fall_duration = 600;
+    @Entry public static float comet_spear_riptide_cooldown = 400;
+    @Entry public static float comet_spear_riptide_min_cooldown = 200;
+    @Entry public static float comet_spear_riptide_reduced_cooldown_per_level = 20;
+
     @Entry public static float comet_spear_throw_ability_cooldown = 25;
     @Entry public static float comet_spear_throw_ability_min_cooldown = 0;
     @Entry public static float comet_spear_throw_ability_reduced_cooldown_per_level = 5;
+
     @Entry public static float comet_spear_calculated_fall_base_radius = 0f;
     @Entry public static float comet_spear_calculated_fall_height_increase_radius_modifier = 2f;
     @Entry public static float comet_spear_calculated_fall_max_radius = 100f;
@@ -428,9 +435,17 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_blade_omnivamp_cooldown = 50;
     @Entry public static float darkin_blade_omnivamp_min_cooldown = 10;
     @Entry public static float darkin_blade_omnivamp_reduced_cooldown_per_level = 8;
-    @Entry public static float darkin_blade_ability_damage = 12;
-    @Entry public static float darkin_blade_ability_cooldown = 150;
-    @Entry public static float darkin_blade_ability_min_cooldown = 40;
+
+    @Entry public static float darkin_blade_sword_leap_damage = 12;
+    @Entry public static float darkin_blade_sword_leap_bonus_damage_per_level = 2;
+    @Entry public static float darkin_blade_sword_leap_calculated_fall_duration = 600;
+    @Entry public static float darkin_blade_sword_leap_y_velocity = 1;
+    @Entry public static float darkin_blade_sword_leap_cooldown = 150;
+    @Entry public static float darkin_blade_sword_leap_min_cooldown = 40;
+    @Entry public static float darkin_blade_sword_leap_reduced_cooldown_per_level = 15;
+    @Entry public static float darkin_blade_sword_leap_cooldown_mod_fully_charged = 0.75f;
+    @Entry public static float darkin_blade_sword_leap_cooldown_mod_not_fully_charged = 1f;
+
     @Entry public static float darkin_blade_calculated_fall_base_radius = 3f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_radius_modifier = 1.75f;
     @Entry public static float darkin_blade_calculated_fall_target_launch_modifier = 0.04f;
@@ -439,6 +454,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_blade_calculated_fall_max_damage = 100f;
     @Entry public static float darkin_blade_calculated_fall_height_increase_damage_modifier = 0.2f;
     @Entry public static float darkin_blade_calculated_fall_heal_from_damage_modifier = 0.1f;
+
     @Entry public static float darkin_scythe_damage = 9;
     @Entry public static float darkin_scythe_attack_speed = 1f;
     @Entry public static float darkin_scythe_bonus_damage = 3;
@@ -825,6 +841,13 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_lightning_smash_cooldown = 200;
     @Entry public static float mjolnir_lightning_smash_min_cooldown = 60;
     @Entry public static float mjolnir_lightning_smash_reduced_cooldown_per_level = 30;
+
+    @Entry public static float mjolnir_riptide_launch_power = 5;
+    @Entry public static float mjolnir_riptide_bonus_launch_power_per_level = 1;
+    @Entry public static float mjolnir_riptide_collision_damage = 15;
+    @Entry public static float mjolnir_riptide_calculated_fall_amp = 0;
+    @Entry public static float mjolnir_riptide_calculated_fall_bonus_amp_per_level = 0;
+    @Entry public static float mjolnir_riptide_calculated_fall_duration = 0;
     @Entry public static float mjolnir_riptide_cooldown = 300;
     @Entry public static float mjolnir_riptide_min_cooldown = 60;
     @Entry public static float mjolnir_riptide_reduced_cooldown_per_level = 30;

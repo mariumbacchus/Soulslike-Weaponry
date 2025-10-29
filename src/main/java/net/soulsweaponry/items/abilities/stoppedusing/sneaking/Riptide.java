@@ -32,17 +32,13 @@ import java.util.function.BiPredicate;
  */
 public record Riptide(
         float launchPower, float bonusPowerPerLvl, float collisionDamage,
-        int calculatedFallDuration, int calculatedFallAmp,
+        int calculatedFallDuration, int calculatedFallAmp, float bonusAmpPerLvl,
         int minCooldown, int cooldown, int reducedCooldownPerLvl,
         Condition<World, LivingEntity> shouldApplyCooldown
 ) implements ISneakChargeToUse {
 
     public static final Condition<World, LivingEntity> ALWAYS_COOLDOWN = Condition.of(Text.literal(""), ((world, user) -> true));
     public static final Condition<World, LivingEntity> RAINING = Condition.of(Text.translatable("tooltip.soulsweapons.riptide.raining"), (world, user) -> !world.isClient && !world.isRaining());
-
-    public Riptide(float launchPower, float bonusPowerPerLvl, float collisionDamage, int minCooldown, int cooldown, int reducedCooldownPerLvl, Condition<World, LivingEntity> shouldApplyCooldown) {
-        this(launchPower, bonusPowerPerLvl, collisionDamage, 0, 0, minCooldown, cooldown, reducedCooldownPerLvl, shouldApplyCooldown);
-    }
 
     @Override
     public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
@@ -55,9 +51,9 @@ public record Riptide(
                 if (playerEntity.isOnGround()) {
                     playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
                 }
-                if (this.calculatedFallAmp > 0) {
+                if (this.calculatedFallDuration > 0) {
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, this.calculatedFallDuration, this.calculatedFallAmp));
+                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, this.calculatedFallDuration, (int) (this.calculatedFallAmp + this.bonusAmpPerLvl * level)));
                 }
                 if (this.shouldApplyCooldown.test(world, user)) {
                     this.applyItemCooldown(stack.getItem(), playerEntity, Math.max(this.minCooldown, this.cooldown - level * this.reducedCooldownPerLvl));

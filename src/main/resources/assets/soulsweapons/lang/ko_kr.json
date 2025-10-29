@@ -421,8 +421,10 @@
     "tooltip.soulsweapons.omnivamp": "옴니뱀프",
     "tooltip.soulsweapons.omnivamp.1": "- Attacks & abilities §cheal§r you when not on cooldown",
 
-    "tooltip.soulsweapons.sword_slam": "검의 대멸",
-    "tooltip.soulsweapons.sword_slam_description": "- 지면을 발사하고 부숩니다.",
+    "tooltip.soulsweapons.sword_leap": "Sword Decimation",
+    "tooltip.soulsweapons.sword_leap.1": "- Use to leap and gain §fCalculated Fall§r effect,",
+    "tooltip.soulsweapons.sword_leap.2": "covering your landing and triggering §6Meteor Strike§r",
+    "tooltip.soulsweapons.sword_leap.3": "- Not fully charging triggers a weak explosion instead",
 
     "tooltip.soulsweapons.flame_enraged": "유일한 기회",
     "tooltip.soulsweapons.flame_enraged_description": "- §c불§r에 타고 있을 때 §4힘§r을 얻음.",

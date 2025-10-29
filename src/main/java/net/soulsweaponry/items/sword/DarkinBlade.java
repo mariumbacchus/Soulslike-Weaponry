@@ -1,25 +1,16 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.stoppedusing.SwordLeap;
 import net.soulsweaponry.items.abilities.targetdamaged.Omnivamp;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -45,6 +36,17 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
             (target, user, fallDistance) -> {},
             (user, fallDistance, stack) -> {}
     );
+    private static final SwordLeap SWORD_LEAP = new SwordLeap(
+            ConfigConstructor.darkin_blade_sword_leap_damage,
+            ConfigConstructor.darkin_blade_sword_leap_bonus_damage_per_level,
+            (int) ConfigConstructor.darkin_blade_sword_leap_calculated_fall_duration,
+            ConfigConstructor.darkin_blade_sword_leap_y_velocity,
+            (int) ConfigConstructor.darkin_blade_sword_leap_min_cooldown,
+            (int) ConfigConstructor.darkin_blade_sword_leap_cooldown,
+            (int) ConfigConstructor.darkin_blade_sword_leap_reduced_cooldown_per_level,
+            ConfigConstructor.darkin_blade_sword_leap_cooldown_mod_fully_charged,
+            ConfigConstructor.darkin_blade_sword_leap_cooldown_mod_not_fully_charged
+    );
     private static final Omnivamp OMNIVAMP = new Omnivamp(
             ConfigConstructor.darkin_blade_omnivamp_base_heal,
             ConfigConstructor.darkin_blade_omnivamp_bonus_heal_per_level,
@@ -55,33 +57,7 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss, ATTRIBUTES);
-        this.addTooltipAbility(TooltipAbilities.SWORD_SLAM);
-        this.addAbility(OMNIVAMP);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity player) {
-            float cooldownMod = 1f;
-            int i = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
-            if (i >= 10) {
-                Vec3d rotation = player.getRotationVector().multiply(1f);
-                player.addVelocity(rotation.getX(), 1, rotation.getZ());
-                world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
-                cooldownMod = 0.75f;
-                //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 600, (int) ConfigConstructor.darkin_blade_ability_damage));
-            } else {
-                //this.detonateGroundEffect(user, (int) ConfigConstructor.darkin_blade_ability_damage, 0, world, stack);TODO
-            }
-            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
-            this.applyItemCooldown(player, MathHelper.floor(this.getScaledCooldown(stack) * cooldownMod));
-        }
-    }
-
-    protected int getScaledCooldown(ItemStack stack) {
-        int base = (int) ConfigConstructor.darkin_blade_ability_cooldown;
-        return (int) Math.max(ConfigConstructor.darkin_blade_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 15);
+        this.addAbility(SWORD_LEAP, OMNIVAMP);
     }
 
     private PlayState predicate(AnimationState<?> event){

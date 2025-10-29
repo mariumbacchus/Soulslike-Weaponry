@@ -45,11 +45,15 @@ public class CometSpear extends ChargeToUseItem implements GeoItem {
             (int) ConfigConstructor.comet_spear_throw_ability_reduced_cooldown_per_level
     );
     private static final Riptide RIPTIDE = new Riptide(
-            5f, 1f, 15f, 600,
-            (int) ConfigConstructor.comet_spear_skyfall_ability_damage,
-            (int) ConfigConstructor.comet_spear_skyfall_ability_min_cooldown,
-            (int) ConfigConstructor.comet_spear_skyfall_ability_cooldown,
-            (int) ConfigConstructor.comet_spear_skyfall_ability_reduced_cooldown_per_level,
+            ConfigConstructor.comet_spear_riptide_launch_power,
+            ConfigConstructor.comet_spear_riptide_bonus_launch_power_per_level,
+            ConfigConstructor.comet_spear_riptide_collision_damage,
+            (int) ConfigConstructor.comet_spear_riptide_calculated_fall_duration,
+            (int) ConfigConstructor.comet_spear_riptide_calculated_fall_amp,
+            ConfigConstructor.comet_spear_riptide_calculated_fall_bonus_amp_per_level,
+            (int) ConfigConstructor.comet_spear_riptide_min_cooldown,
+            (int) ConfigConstructor.comet_spear_riptide_cooldown,
+            (int) ConfigConstructor.comet_spear_riptide_reduced_cooldown_per_level,
             Riptide.ALWAYS_COOLDOWN
     );
 
