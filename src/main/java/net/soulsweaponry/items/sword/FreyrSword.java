@@ -1,67 +1,28 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
-import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.use.SummonFreyrSword;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.UUID;
 import java.util.function.Consumer;
 
 public class FreyrSword extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final SummonFreyrSword SUMMON_FREYR_SWORD = new SummonFreyrSword();
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SUMMON_WEAPON);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(stack);
-        }
-        FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
-        UUID uuid = entity.getUuid();
-        UUID prevUuid = FreyrSwordSummonData.getSummonUuid(user);
-        if (world instanceof ServerWorld serverWorld) {
-            if (prevUuid == null) {
-                FreyrSwordSummonData.setSummonUuid(user, uuid);
-                prevUuid = uuid;
-            }
-            Entity sword = serverWorld.getEntity(prevUuid);
-            if (sword instanceof FreyrSwordEntity) {
-                return TypedActionResult.fail(stack);
-            } else {
-                user.getInventory().removeOne(stack);
-                entity.setPos(user.getX(), user.getY(), user.getZ());
-                user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1f, 1f);
-                entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
-                world.spawnEntity(entity);
-            }
-            FreyrSwordSummonData.setSummonUuid(user, uuid);
-        }
-        return TypedActionResult.success(stack);
+        this.addAbility(SUMMON_FREYR_SWORD);
     }
 
     @Override
@@ -90,15 +51,5 @@ public class FreyrSword extends ModdedSword implements GeoItem {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_sword_of_freyr;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

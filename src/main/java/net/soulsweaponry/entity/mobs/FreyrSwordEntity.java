@@ -103,7 +103,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     @Override
     public boolean isTeammate(Entity other) {
         // Don't attack players if friendly fire is off
-        if (!ConfigConstructor.sword_of_freyr_friendly_fire && other instanceof PlayerEntity) {
+        if (!ConfigConstructor.sword_of_freyr_entity_friendly_fire && other instanceof PlayerEntity) {
             return true;
         }
         if (other instanceof Tameable tameableOther) {
@@ -264,8 +264,8 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return PathAwareEntity.createLivingAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.sword_of_freyr_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.sword_of_freyr_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.sword_of_freyr_entity_health)
+                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.sword_of_freyr_entity_armor)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, ConfigConstructor.sword_of_freyr_damage);
     }
 

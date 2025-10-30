@@ -1,9 +1,9 @@
 package net.soulsweaponry.entity.ai.goal;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -79,27 +79,23 @@ public class FreyrSwordGoal extends Goal {
         Vec3d vecTarget = this.entity.getRotationVector().add(target.getPos());
         this.entity.updatePosition(vecTarget.getX(), vecTarget.getY(), vecTarget.getZ());
         this.entity.setAnimationAttacking(true);
-        for (double[] hitFrame : this.hitFrames) {
-            if (this.attackTicks == hitFrame[0]) {
-                //target.damage(DamageSource.mobProjectile(this.entity, this.entity.getOwner()), this.entity.getAttackDamage(this.entity.getOwner()))
-                if (target.damage(DamageSourceRegistry.create(this.entity.getWorld(), DamageSourceRegistry.FREYR_SWORD, this.entity, this.entity.getOwner()), (float) (this.getAttackDamage(target) * hitFrame[1]))) {
-                    int fire;
-                    if ((fire = WeaponUtil.getLevel(this.entity.getStack(), Enchantments.FIRE_ASPECT)) > 0) {
-                        target.setOnFireFor(fire * 4);//TODO implement a way to automatically apply enchant effects instead of hardcoding like this
-                    }
-                    if (!world.isClient) {
+        DamageSource source = DamageSourceRegistry.create(this.entity.getWorld(), DamageSourceRegistry.FREYR_SWORD, this.entity, this.entity.getOwner());
+        if (this.entity.getWorld() instanceof ServerWorld serverWorld) {
+            for (double[] hitFrame : this.hitFrames) {
+                if (this.attackTicks == hitFrame[0]) {
+                    if (target.damage(source, (float) (this.getAttackDamage(serverWorld, target) * hitFrame[1]))) {
+                        EnchantmentHelper.onTargetDamaged(serverWorld, target, source, this.entity.getStack());
                         ParticleHandler.singleParticle(this.entity.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
-                    } else {
-                        world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
+                        world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, .8f, 1f);
                     }
-                    world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, .8f, 1f);
                 }
             }
         }
     }
 
-    public float getAttackDamage(LivingEntity target) {
-        return target != null && this.entity.getWorld() instanceof ServerWorld serverWorld ? (ConfigConstructor.sword_of_freyr_damage +
-                EnchantmentHelper.getDamage(serverWorld, this.entity.getStack(), target, this.entity.getDamageSources().mobAttack(this.entity), 0)) : ConfigConstructor.sword_of_freyr_damage;
+    public float getAttackDamage(ServerWorld world, LivingEntity target) {
+        return ConfigConstructor.sword_of_freyr_damage + ConfigConstructor.sword_of_freyr_entity_bonus_damage_per_level
+                * WeaponUtil.getUpgradeLevel(this.entity.getStack()) + ConfigConstructor.sword_of_freyr_entity_bonus_enchant_damage_mod
+                * EnchantmentHelper.getDamage(world, this.entity.getStack(), target, this.entity.getDamageSources().mobAttack(this.entity), 0);
     }
 }

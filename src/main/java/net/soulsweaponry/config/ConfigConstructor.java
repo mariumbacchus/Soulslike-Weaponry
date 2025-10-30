@@ -1057,9 +1057,11 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float supernova_calculated_fall_height_increase_ripples_modifier = 0.16f;
     @Entry public static float sword_of_freyr_damage = 7;
     @Entry public static float sword_of_freyr_attack_speed = 1.6f;
-    @Entry public static boolean sword_of_freyr_friendly_fire = true;
-    @Entry public static double sword_of_freyr_health = 50D;
-    @Entry public static double sword_of_freyr_armor = 10D;
+    @Entry public static float sword_of_freyr_entity_bonus_damage_per_level = 2;
+    @Entry public static float sword_of_freyr_entity_bonus_enchant_damage_mod = 1;
+    @Entry public static boolean sword_of_freyr_entity_friendly_fire = true;
+    @Entry public static double sword_of_freyr_entity_health = 50D;
+    @Entry public static double sword_of_freyr_entity_armor = 10D;
     //@Entry public static float sword_of_freyr_animation_speed = 1.0f;
     @Entry public static float sword_of_the_nightlord_damage = 10;
     @Entry public static float sword_of_the_nightlord_attack_speed = 1.2f;
