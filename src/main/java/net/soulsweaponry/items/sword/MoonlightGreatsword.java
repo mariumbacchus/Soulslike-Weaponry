@@ -6,12 +6,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.IHasLore;
 import net.soulsweaponry.items.abilities.stoppedusing.ShootMoonlight;
 
 import java.util.List;
 
-public class MoonlightGreatsword extends ModdedSword implements IHasLore {
+public class MoonlightGreatsword extends ModdedSword {
 
     private static final ShootMoonlight SHOOT_MOONLIGHT = new ShootMoonlight(
             (int) ConfigConstructor.moonlight_greatsword_projectile_amount,
@@ -32,7 +31,7 @@ public class MoonlightGreatsword extends ModdedSword implements IHasLore {
     }
 
     @Override
-    public List<Text> getLore() {
+    public List<Text> getItemLore() {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.moonlight_greatsword.part_2").formatted(Formatting.DARK_GRAY),

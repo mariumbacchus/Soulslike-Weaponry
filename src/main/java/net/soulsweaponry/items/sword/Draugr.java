@@ -1,29 +1,32 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.abilities.statboost.BasicStatBoost;
+
+import java.util.List;
 
 public class Draugr extends ModdedSword {
 
-    public Draugr(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, 1, ConfigConstructor.draugr_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.NIGHT_PROWLER);
-    }
+    private static final BasicStatBoost NIGHT_BONUS = new BasicStatBoost(
+            ((stack, world, entity, slot, selected) -> world.getDimension().hasSkyLight() && world.isNight()),
+            ConfigConstructor.draugr_bonus_damage_at_night,
+            ConfigConstructor.draugr_bonus_damage_per_level_at_night,
+            ConfigConstructor.draugr_bonus_attack_speed_at_night,
+            ConfigConstructor.draugr_bonus_attack_speed_per_level_at_night,
+            List.of(
+                    Text.translatable("tooltip.soulsweapons.night_prowler").formatted(Formatting.DARK_AQUA),
+                    Text.translatable("tooltip.soulsweapons.night_prowler.1").formatted(Formatting.GRAY)
+            )
+    );
 
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (this.isDisabled(stack) || world.isClient) return;
-        float damage = world.getDimension().hasSkyLight() && world.isNight() ? ConfigConstructor.draugr_damage_at_night : this.getAttackDamage();
-        WeaponUtil.modifyStackAttributes(stack, damage - 1, this.getAttackSpeed());
+    public Draugr(ToolMaterial toolMaterial, Settings settings) {
+        super(toolMaterial, (int) ConfigConstructor.draugr_normal_damage, ConfigConstructor.draugr_attack_speed, settings);
+        this.addAbility(NIGHT_BONUS);
     }
 
     @Override
@@ -32,19 +35,9 @@ public class Draugr extends ModdedSword {
     }
 
     @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[] {
+    public List<Text> getAdditionalItemTooltips() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.draugr_info.part_1").formatted(Formatting.DARK_GRAY)
-        };
+        );
     }
 }

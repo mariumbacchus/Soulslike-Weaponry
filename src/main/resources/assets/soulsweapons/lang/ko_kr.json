@@ -465,7 +465,7 @@
     "tooltip.soulsweapons.double_edged_description": "",
 
     "tooltip.soulsweapons.night_prowler": "밤의 추적자",
-    "tooltip.soulsweapons.night_prowler_description": "- §1밤§1 동안 막대한 §9공격 피해§r를 입힙니다.",
+    "tooltip.soulsweapons.night_prowler.1": "- §1밤§1 동안 막대한 §9공격 피해§r를 입힙니다.",
 
     "tooltip.soulsweapons.sawblade": "톱날",
     "tooltip.soulsweapons.sawblade_description_1": "- 앞의 대상을 대규모로 파괴합니다.",

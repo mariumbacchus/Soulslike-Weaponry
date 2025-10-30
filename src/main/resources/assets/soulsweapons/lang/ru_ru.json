@@ -447,7 +447,7 @@
     "tooltip.soulsweapons.double_edged": "Обоюдоострый",
     "tooltip.soulsweapons.double_edged_description": "",
     "tooltip.soulsweapons.night_prowler": "Ночной Сталкер",
-    "tooltip.soulsweapons.night_prowler_description": "- Массивный §9Урон от Атаки§r в течение §1Ночи§1.",
+    "tooltip.soulsweapons.night_prowler.1": "- Массивный §9Урон от Атаки§r в течение §1Ночи§1.",
     "tooltip.soulsweapons.sawblade": "Рвать и Терзать",
     "tooltip.soulsweapons.sawblade_description_1": "- Use to decimate targets ahead.",
     "tooltip.soulsweapons.sawblade_description_2": "- Make targets hit §cBleed§r.",

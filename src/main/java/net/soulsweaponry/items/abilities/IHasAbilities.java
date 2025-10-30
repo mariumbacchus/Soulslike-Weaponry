@@ -368,14 +368,10 @@ public interface IHasAbilities extends IConfigDisable {
             tooltipAbilities.addAll(setup);
         });
         this.getAbilities().forEach(ability -> lore.addAll(ability.getLoreTooltips(stack)));
-        if (stack.getItem() instanceof IHasLore hasLore) {
-            // Lore from items specifically
-            lore.addAll(hasLore.getLore());
-        }
-        if (stack.getItem() instanceof IItemSpecificTooltip iItemSpecificTooltip) {
-            // Info specific items have, such as Chungus Staff reminding you it can only be traded to get, not crafted
-            tooltipAbilities.addAll(iItemSpecificTooltip.getItemSpecificTooltip());
-        }
+        // Lore from items specifically
+        lore.addAll(this.getItemLore());
+        // Info specific items have, such as Chungus Staff reminding you it can only be traded to get, not crafted
+        tooltipAbilities.addAll(this.getAdditionalItemTooltips());
         if (!tooltipAbilities.isEmpty()) {
             if (shouldShowInfo()) {
                 tooltip.addAll(tooltipAbilities);
@@ -390,6 +386,14 @@ public interface IHasAbilities extends IConfigDisable {
                 addShowLoreText(tooltip);
             }
         }
+    }
+
+    default List<Text> getItemLore() {
+        return List.of();
+    }
+
+    default List<Text> getAdditionalItemTooltips() {
+        return List.of();
     }
 
     /**

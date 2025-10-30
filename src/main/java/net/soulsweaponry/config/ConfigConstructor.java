@@ -640,8 +640,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragon_staff_vigorous_fog_max_use_time = 100;
     @Entry public static float dragon_staff_vigorous_fog_bonus_max_use_time_per_level = 20;
 
-    @Entry public static float draugr_damage_at_night = 11;
+    @Entry public static float draugr_normal_damage = 1;
+    @Entry public static float draugr_bonus_damage_at_night = 10;
+    @Entry public static float draugr_bonus_damage_per_level_at_night = 0.5f;
     @Entry public static float draugr_attack_speed = 1.6f;
+    @Entry public static float draugr_bonus_attack_speed_at_night = 0;
+    @Entry public static float draugr_bonus_attack_speed_per_level_at_night = 0;
 
     @Entry public static float draupnir_spear_damage = 8;
     @Entry public static float draupnir_spear_attack_speed = 1.4f;

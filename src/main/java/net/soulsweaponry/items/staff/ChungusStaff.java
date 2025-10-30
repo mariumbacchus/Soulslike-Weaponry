@@ -9,7 +9,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.IItemSpecificTooltip;
 import net.soulsweaponry.items.abilities.abilitykeybind.BasicKeybindAbility;
 import net.soulsweaponry.items.abilities.inventorytick.BasicInventoryTickAbility;
 import net.soulsweaponry.items.abilities.use.ShootChungusHeads;
@@ -18,7 +17,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 
 import java.util.List;
 
-public class ChungusStaff extends ModdedSword implements IItemSpecificTooltip {
+public class ChungusStaff extends ModdedSword {
 
     private static final BasicInventoryTickAbility CHUNGUS_TONIC_EFFECT = new BasicInventoryTickAbility(
             (stack, world, entity, slot, equipped) -> entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 120, 0, true, false)),
@@ -72,7 +71,7 @@ public class ChungusStaff extends ModdedSword implements IItemSpecificTooltip {
     }
 
     @Override
-    public List<Text> getItemSpecificTooltip() {
+    public List<Text> getAdditionalItemTooltips() {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.chungus_staff.1").formatted(Formatting.DARK_GRAY)
         );

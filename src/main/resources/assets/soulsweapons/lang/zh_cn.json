@@ -446,7 +446,7 @@
     "tooltip.soulsweapons.double_edged": "双刃",
     "tooltip.soulsweapons.double_edged_description": "",
     "tooltip.soulsweapons.night_prowler": "夜行者",
-    "tooltip.soulsweapons.night_prowler_description": "- 在§1夜晚§1造成§9额外伤害§r",
+    "tooltip.soulsweapons.night_prowler.1": "- 在§1夜晚§1造成§9额外伤害§r",
     "tooltip.soulsweapons.sawblade": "撕裂",
     "tooltip.soulsweapons.sawblade_description_1": "- Use to decimate targets ahead.",
     "tooltip.soulsweapons.sawblade_description_2": "- Make targets hit §cBleed§r.",

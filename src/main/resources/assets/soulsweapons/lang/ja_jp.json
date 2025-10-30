@@ -447,7 +447,7 @@
     "tooltip.soulsweapons.double_edged": "両刃",
     "tooltip.soulsweapons.double_edged_description": "",
     "tooltip.soulsweapons.night_prowler": "ナイトストーカー",
-    "tooltip.soulsweapons.night_prowler_description": "- §1夜§1に大きな§9攻撃ダメージ§r。",
+    "tooltip.soulsweapons.night_prowler.1": "- §1夜§1に大きな§9攻撃ダメージ§r。",
     "tooltip.soulsweapons.sawblade": "リップ・アンド・ティア",
     "tooltip.soulsweapons.sawblade_description_1": "- 前方のターゲットを間引きするために使用します。",
     "tooltip.soulsweapons.sawblade_description_2": "- ターゲットを§cBleed§r にヒットさせます。",
