@@ -607,8 +607,7 @@
     "tooltip.soulsweapons.bane_of_arthropods_description_2": "현재 추가 피해량: ",
 
     "tooltip.soulsweapons.featherlight": "섬세한 드래곤글라스",
-    "tooltip.soulsweapons.featherlight_description_1": "- 새겨진 룬이 무기를 빛나게 하여 높은 공격 속도를 제공하며,",
-    "tooltip.soulsweapons.featherlight_description_2": "동시에 대형 대검의 장점을 얻을 수 있습니다.",
+    "tooltip.soulsweapons.featherlight.1": "- Inscribed runes grants the weapon high attack speed",
 
     "tooltip.soulsweapons.doom": "원시 지옥 에너지",
     "tooltip.soulsweapons.doom.1": "- Has massive attack damage for the next strike",

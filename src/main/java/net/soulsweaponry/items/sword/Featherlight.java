@@ -1,22 +1,20 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
-import net.soulsweaponry.util.TooltipAbilities;
 
+import java.util.List;
 import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
@@ -42,19 +40,15 @@ public class Featherlight extends UltraHeavyWeapon {
             },
             (user, fallDistance, stack) -> {}
     );
+    private static final BasicInfoAbility LIGHT_WEAPON = new BasicInfoAbility(List.of(
+            Text.translatable("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE),
+            Text.translatable("tooltip.soulsweapons.featherlight.1").formatted(Formatting.GRAY)
+    ));
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss, ATTRIBUTES);
-        this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return TypedActionResult.fail(user.getStackInHand(hand));
+        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ?
+                1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss, ATTRIBUTES);
+        this.addAbility(LIGHT_WEAPON);
     }
 
     @Override
