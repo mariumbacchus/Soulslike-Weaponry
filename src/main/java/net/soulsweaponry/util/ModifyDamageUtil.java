@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,18 +7,15 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
-import net.soulsweaponry.items.ILifeGuard;
 import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -80,37 +76,20 @@ public class ModifyDamageUtil {
             float trueDamage = projectile.getTrueDamage();
             newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
         }
-        // Inflict percent of damage to held ILifeGuard item instead of damage to the user (not stackable)
         for (Hand hand : Hand.values()) {
             ItemStack stack = entity.getStackInHand(hand);
-            if (stack.getItem() instanceof ILifeGuard guard) {
-                float damage = Math.max(0, (float) (newAmount * (1D - guard.getLifeGuardPercent(stack))));
-                int rounded = Math.round(newAmount);
-                newAmount = damage;
-                int j = Math.min(rounded, 10);
-                for (int i = 0; i < j; i++) {
-                    ParticleHandler.singleParticle(entity.getWorld(), ParticleTypes.SOUL, entity.getParticleX(1f), entity.getRandomBodyY(), entity.getParticleZ(1f), 0, 0, 0);
+            if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+                for (IAbility ability : hasAbilities.getAbilities()) {
+                    newAmount = ability.modifyUserDamageTaken(entity, newAmount, source, stack, hand);
                 }
-                entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE.value(), SoundCategory.PLAYERS, 1f, 1f);
-                // Chance to save the player if it's holding ILifeGuard item
-                if (entity.getHealth() - newAmount < 0 && !entity.getWorld().isClient && guard.getLifeSaveChance(stack) < entity.getRandom().nextDouble()) {
-                    ParticleHandler.particleSphereList(entity.getWorld(), 500, entity.getX(), entity.getY(), entity.getZ(), 0.4f, ParticleTypes.SCULK_SOUL, ParticleTypes.SMOKE);
-                    entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1f, 1f);
-                    for (Entity entity1 : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(2.5D))) {
-                        if (entity1 instanceof LivingEntity living) {
-                            living.damage(entity.getDamageSources().explosion(entity, entity), guard.getLifeSaveExplosionDamage(stack));
-                            double x = entity.getX() - living.getX();
-                            double z = entity.getZ() - living.getZ();
-                            living.takeKnockback(guard.getLifeSaveExplosionKnockback(stack), x, z);
-                        }
+            }
+            if (source.getAttacker() instanceof LivingEntity attacker) {
+                ItemStack stackAttacker = attacker.getStackInHand(hand);
+                if (stackAttacker.getItem() instanceof IHasAbilities hasAbilities) {
+                    for (IAbility ability : hasAbilities.getAbilities()) {
+                        newAmount = ability.modifyTargetDamageTaken(entity, newAmount, source, stack, attacker, hand);
                     }
-                    newAmount = 0f;
-                    rounded += guard.getLifeSaveStackDamage(stack);
                 }
-                if (rounded > 0) {
-                    stack.damage(rounded, entity, LivingEntity.getSlotForHand(hand));
-                }
-                break;
             }
         }
         return newAmount;

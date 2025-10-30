@@ -14,6 +14,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -142,11 +143,16 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Called when the user is damaged when wielding this item.
+     * @return whether the target should take damage in the end or not
      */
-    default void onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {}
+    default boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {
+        return true;
+    }
 
     /**
-     * Called whenever the user dies.
+     * Called whenever the user dies, this means the user is already dead and
+     * cannot be revived, use {@link #onUserDamaged(DamageSource, float, ItemStack, LivingEntity, LivingEntity)}
+     * if you want to revive the user.
      */
     default void onUserDeath(DamageSource damageSource, ItemStack stack, LivingEntity user, LivingEntity attacker) {}
 
@@ -222,14 +228,20 @@ public interface IAbility extends ICooldownItem {
     default void offhandUseKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {}
 
     /**
-     * Called whenever an entity dies and the last damage source was the attacker.
+     * Called whenever an entity dies and the last damage source was the attacker,
+     * this means the target is already dead and cannot be revived,
+     * use {@link #onTargetDamaged(DamageSource, float, ItemStack, LivingEntity, LivingEntity)}
+     * if you want to revive the target.
      */
     default void onTargetDeath(DamageSource damageSource, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
     /**
      * Called when the target is damaged by the user of the item having this ability.
+     * @return whether the target should take damage in the end or not
      */
-    default void onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+    default boolean onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return true;
+    }
 
     /**
      * When a target triggers the bleed buildup (taking massive bleed damage), it sends a signal
@@ -241,10 +253,16 @@ public interface IAbility extends ICooldownItem {
      */
     default void onTargetBleedTrigger(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
+    /**
+     * Called when the user interacts with an entity with the item with this ability.
+     */
     default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         return ActionResult.PASS;
     }
 
+    /**
+     * Called when the user finishes using the item.
+     */
     default ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         return stack;
     }
@@ -314,6 +332,24 @@ public interface IAbility extends ICooldownItem {
     default void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
 
     /**
+     * Called at the end of the {@link LivingEntity#damage(DamageSource, float)} method.
+     * Use to modify the users damage taken, either increase, decrease or nullify.
+     * @return the modified {@param damageTaken} value
+     */
+    default float modifyUserDamageTaken(LivingEntity user, float damageTaken, DamageSource source, ItemStack stack, Hand hand) {
+        return damageTaken;
+    }
+
+    /**
+     * Called at the end of the {@link LivingEntity#damage(DamageSource, float)} method.
+     * Use to modify the targets damage taken, either increase, decrease or nullify.
+     * @return the modified {@param damageTaken} value
+     */
+    default float modifyTargetDamageTaken(LivingEntity target, float damageTaken, DamageSource source, ItemStack stack, LivingEntity attacker, Hand hand) {
+        return damageTaken;
+    }
+
+    /**
      * Override to give a custom max ues time. Returns -1 by default, meaning the item will
      * default to 72000 ticks if the item has any charge to use ability, else 0.
      * This is calculated inside {@link IHasAbilities}
@@ -347,9 +383,18 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Override this when you want to add lore tooltips which are specific to the ability instead
-     * of item. If item specific, make the item implement {@link IHasLore} instead.
+     * of item. If item specific, override {@link IHasAbilities#getItemLore()} on the item instead.
      */
     default List<Text> getLoreTooltips(ItemStack stack) {
         return List.of();
+    }
+
+    /**
+     * Notify the player that it is out of range for the ability to trigger if config value allows it.
+     */
+    default void notifyRange(PlayerEntity player) {
+        if (ConfigConstructor.inform_player_about_out_of_range) {
+            player.sendMessage(Text.translatable("soulsweapons.weapon.out_of_range"), true);
+        }
     }
 }

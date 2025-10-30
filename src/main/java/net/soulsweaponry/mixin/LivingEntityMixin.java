@@ -17,6 +17,7 @@ import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
+import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
@@ -73,7 +74,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "damage", at = @At("TAIL"))
+    @Inject(method = "damage", at = @At("TAIL"), cancellable = true)
     public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         // Remove stacks of Blade Dance when taking damage
@@ -87,15 +88,27 @@ public class LivingEntityMixin {
             }
         }
         if (source.getAttacker() instanceof LivingEntity attacker) {
+            boolean anyFalse = false;
             for (Hand hand : Hand.values()) {
                 ItemStack userStack = entity.getStackInHand(hand);
                 ItemStack attackerStack = attacker.getStackInHand(hand);
-                if (userStack.getItem() instanceof IHasAbilities has && !has.isDisabled(userStack)) {
-                    has.getAbilities().forEach(a -> a.onUserDamaged(source, amount, userStack, entity, attacker));
+                if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, userStack, entity, attacker)) {
+                            anyFalse = true;
+                        }
+                    }
                 }
-                if (attackerStack.getItem() instanceof IHasAbilities has && !has.isDisabled(attackerStack)) {
-                    has.getAbilities().forEach(a -> a.onTargetDamaged(source, amount, attackerStack, entity, attacker));
+                if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
+                    for (IAbility a : hasAtk.getAbilities()) {
+                        if (!a.onTargetDamaged(source, amount, attackerStack, entity, attacker)) {
+                            anyFalse = true;
+                        }
+                    }
                 }
+            }
+            if (anyFalse) {
+                info.setReturnValue(false);
             }
             // Do lightning-thorns when having Stormveil effect
             if (entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {

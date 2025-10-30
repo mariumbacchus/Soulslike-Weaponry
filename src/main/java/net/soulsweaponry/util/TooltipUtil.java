@@ -36,14 +36,6 @@ public class TooltipUtil {
     // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
-            case LIGHTBRINGER -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.4").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.5").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            }
             case SET_BONUS -> {
                 if (stack.getItem() instanceof SetBonusArmor armor) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
@@ -279,22 +271,6 @@ public class TooltipUtil {
             case TRANSPARENT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent.1").formatted(Formatting.GRAY));
-            }
-            case SONIC_BOOM -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom.2", String.format("%.1f", ConfigConstructor.excalibur_sonic_boom_max_range)).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.sonic_boom.3", String.format("%.1f", ConfigConstructor.excalibur_sonic_boom_target_search_range)).formatted(Formatting.GRAY));
-            }
-            case LIFE_GUARD -> {
-                ILifeGuard item = (ILifeGuard) stack.getItem();
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.1", String.format("%.1f", item.getLifeGuardPercent(stack) * 100) + "%").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.4", String.format("%.1f", item.getLifeSaveChance(stack) * 100) + "%").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.5").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.life_guard.6", item.getLifeSaveStackDamage(stack)).formatted(Formatting.DARK_GRAY));
             }
             case GUN_ITEM -> {
                 if (stack.getItem() instanceof GunItem gun) {
