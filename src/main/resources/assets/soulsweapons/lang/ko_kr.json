@@ -453,7 +453,7 @@
     "tooltip.soulsweapons.infinity_description": "- 던져도 아이템이 사라지지 않습니다.",
 
     "tooltip.soulsweapons.rage": "분노",
-    "tooltip.soulsweapons.rage_description": "- 능력 단축키를 눌러 §4피의 갈망§r 효과와 §c힘§r을 얻습니다.",
+    "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
 
     "tooltip.soulsweapons.lightning_call": "Lightning Call",
     "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",

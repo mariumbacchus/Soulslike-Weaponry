@@ -439,7 +439,7 @@
     "tooltip.soulsweapons.infinity": "Infinity",
     "tooltip.soulsweapons.infinity_description": "- Item is not lost when thrown.",
     "tooltip.soulsweapons.rage": "Rage",
-    "tooltip.soulsweapons.rage_description": "- Press ability keybind to gain §4Bloodthirsty§r effect and §cStrength§r.",
+    "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
     "tooltip.soulsweapons.lightning_call": "Lightning Call",
     "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
     "tooltip.soulsweapons.storm_stomp": "Storm Stomp",

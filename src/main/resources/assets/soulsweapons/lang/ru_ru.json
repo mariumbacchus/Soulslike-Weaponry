@@ -439,7 +439,7 @@
     "tooltip.soulsweapons.infinity": "Бесконечность",
     "tooltip.soulsweapons.infinity_description": "- Предмет не теряется при броске.",
     "tooltip.soulsweapons.rage": "Гнев",
-    "tooltip.soulsweapons.rage_description": "- Используй предмет для получения эффекта §4Кровожадный§r.",
+    "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
     "tooltip.soulsweapons.lightning_call": "Lightning Call",
     "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
     "tooltip.soulsweapons.storm_stomp": "Буря",

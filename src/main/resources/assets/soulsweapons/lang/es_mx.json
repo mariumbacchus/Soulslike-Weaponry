@@ -439,7 +439,7 @@
   "tooltip.soulsweapons.infinity": "Infinito",
   "tooltip.soulsweapons.infinity_description": "- El objeto no se pierde cuando se lanza.",
   "tooltip.soulsweapons.rage": "Rabia",
-  "tooltip.soulsweapons.rage_description": "- Presiona la tecla de habilidad para obtener el efecto §4Sediento de sangre§r y §cFuerza§r.",
+  "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
   "tooltip.soulsweapons.lightning_call": "Lightning Call",
   "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
   "tooltip.soulsweapons.storm_stomp": "Pisotón de tormenta",

@@ -439,7 +439,7 @@
     "tooltip.soulsweapons.infinity": "無限",
     "tooltip.soulsweapons.infinity_description": "- 投げてもアイテムは失われません。",
     "tooltip.soulsweapons.rage": "怒り",
-    "tooltip.soulsweapons.rage_description": "- アビリティ キーバインドを押すと、§4Bloodthirsty§r 効果と §c攻撃力上昇§r が得られます。",
+    "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
     "tooltip.soulsweapons.lightning_call": "Lightning Call",
     "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
     "tooltip.soulsweapons.storm_stomp": "ストームストンプ",

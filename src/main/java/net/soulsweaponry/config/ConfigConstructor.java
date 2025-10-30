@@ -563,10 +563,19 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float heap_of_raw_iron_attack_speed = 1f;
     @Entry public static float heap_of_raw_iron_posture_loss = 30;
     @Entry public static float heap_of_raw_iron_dragons_scourge_bonus = 3f;
-    @Entry public static float heap_of_raw_iron_cooldown = 200;
-    @Entry public static float heap_of_raw_iron_min_cooldown = 40;
-    @Entry public static boolean heap_of_raw_iron_enchant_reduces_cooldown = false;
-    @Entry public static String[] heap_of_raw_iron_enchant_reduces_cooldown_ids = {"unbreaking"};
+    @Entry public static float heap_of_raw_iron_dragons_scourge_bonus_per_level = 2f;
+    @Entry public static float heap_of_raw_iron_rage_bloodthristy_duration = 200;
+    @Entry public static float heap_of_raw_iron_rage_bloodthristy_bonus_duration_per_lvl = 20;
+    @Entry public static float heap_of_raw_iron_rage_bloodthristy_amp = 0;
+    @Entry public static float heap_of_raw_iron_rage_bloodthristy_bonus_amp_per_lvl = 0.5f;
+    @Entry public static float heap_of_raw_iron_rage_strenth_duration = 200;
+    @Entry public static float heap_of_raw_iron_rage_strenth_bonus_duration_per_lvl = 20;
+    @Entry public static float heap_of_raw_iron_rage_strenth_amp = 0;
+    @Entry public static float heap_of_raw_iron_rage_strenth_bonus_amp_per_lvl = 0.4f;
+    @Entry public static float heap_of_raw_iron_rage_cooldown = 200;
+    @Entry public static float heap_of_raw_iron_rage_min_cooldown = 40;
+    @Entry public static float heap_of_raw_iron_rage_reduced_cooldown_per_level = 20;
+
     @Entry public static float heap_of_raw_iron_calculated_fall_base_radius = 2.5f;
     @Entry public static float heap_of_raw_iron_calculated_fall_height_increase_radius_modifier = 1.6f;
     @Entry public static float heap_of_raw_iron_calculated_fall_target_launch_modifier = 0.03f;

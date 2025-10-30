@@ -41,7 +41,7 @@ public class WeaponRegistry {
     public static ToolItem WHIRLIGIG_SAWBLADE = new WhirligigSawblade(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem DRAGONSLAYER_SWORDSPEAR = new DragonslayerSwordspear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem GUINSOOS_RAGEBLADE = new GuinsoosRageblade(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
-    public static ToolItem GUTS_SWORD = new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.EPIC));
+    public static ToolItem GUTS_SWORD = new HeapOfRawIron(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));

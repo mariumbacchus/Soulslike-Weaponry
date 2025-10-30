@@ -437,7 +437,7 @@
   "tooltip.soulsweapons.infinity": "Vô Hạn",
   "tooltip.soulsweapons.infinity_description": "- Vật phẩm không bị mất khi ném.",
   "tooltip.soulsweapons.rage": "Thịnh Nộ",
-  "tooltip.soulsweapons.rage_description": "- Nhấn phím khả năng để nhận hiệu ứng §4Khát Máu§r và §cSức Mạnh§r.",
+  "tooltip.soulsweapons.rage.1": "- Gain §4Bloodthirsty§r and §cStrength§r effects",
   "tooltip.soulsweapons.lightning_call": "Lightning Call",
   "tooltip.soulsweapons.lightning_call.1": "- Summon §eLightning§r on all nearby mobs",
   "tooltip.soulsweapons.storm_stomp": "Dậm Bão",
