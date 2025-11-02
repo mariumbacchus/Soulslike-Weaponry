@@ -68,15 +68,7 @@ public class Frostmourne extends SoulHarvestingItem {
         return TypedActionResult.fail(stack);
     }
 
-    /*@Override
-    public int getMaxSummons() {
-        return (int) ConfigConstructor.frostmourne_summoned_allies_cap;
-    }
-
-    @Override
-    public String getSummonsListId() {
-        return "FrostmourneSummons";
-    }
+    /*
 
     @Override
     public void saveSummonUuid(LivingEntity user, UUID summonUuid) {

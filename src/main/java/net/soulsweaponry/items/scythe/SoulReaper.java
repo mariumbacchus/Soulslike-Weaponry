@@ -25,6 +25,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
     private static final NavigableMap<Integer, EntityType<?>> THRESHOLDS = new TreeMap<>();
     private static final SoulReleasePowerBased SOUL_RELEASE = new SoulReleasePowerBased(
             (int) ConfigConstructor.soul_reaper_summoned_allies_cap,
+            "SoulReaperSummons",
             THRESHOLDS,
             ConfigConstructor.soul_reaper_summon_bonus_health_per_soul, ConfigConstructor.soul_reaper_summon_bonus_health_per_soul_addition_per_level,
             ConfigConstructor.soul_reaper_summon_max_bonus_health,

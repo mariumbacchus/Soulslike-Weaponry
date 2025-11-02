@@ -45,7 +45,7 @@ import java.util.*;
  * @param bonusAttackIncreasePerLvl added to {@code bonusAttackPerPower} before the bonus attack per soul calculation, is based on weapon level
  * @param maxBonusAttack max bonus attack damage the summon can get
  */
-public record SoulReleasePowerBased(int maxSummons, NavigableMap<Integer, EntityType<?>> entityPowerMap,
+public record SoulReleasePowerBased(int maxSummons, String summonListId, NavigableMap<Integer, EntityType<?>> entityPowerMap,
                                     float bonusHealthPerPower, float bonusHealthIncreasePerLvl, float maxBonusHealth,
                                     float bonusAttackPerPower, float bonusAttackIncreasePerLvl, float maxBonusAttack
 ) implements ISoulHarvest, ISummonAlliesAbility {
@@ -141,6 +141,6 @@ public record SoulReleasePowerBased(int maxSummons, NavigableMap<Integer, Entity
 
     @Override
     public String getSummonsListId() {
-        return "SoulReaperSummons";
+        return this.summonListId;
     }
 }
