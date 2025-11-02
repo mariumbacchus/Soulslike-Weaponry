@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.abilitykeybind.ExplodeSavedEntities;
 import net.soulsweaponry.items.abilities.abilitykeybind.sneaking.SummonDraupnirSpears;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowDraupnirSpear;
@@ -17,7 +17,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class DraupnirSpear extends ChargeToUseItem implements GeoItem {
+public class DraupnirSpear extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final ThrowDraupnirSpear THROW_DRAUPNIR_SPEAR = new ThrowDraupnirSpear(
@@ -49,7 +49,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem {
             (int) ConfigConstructor.draupnir_spear_explode_spears_min_cooldown,
             (int) ConfigConstructor.draupnir_spear_explode_spears_cooldown,
             (int) ConfigConstructor.draupnir_spear_explode_spears_reduced_cooldown_per_level
-    ); //TODO throwing when crouching doesnt work for some reason
+    );
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);

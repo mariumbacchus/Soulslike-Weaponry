@@ -19,8 +19,9 @@ public class Omnivamp extends LifeSteal {
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
     @Override
-    public void onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {
         this.checkAndHeal(stack, attacker);
+        return true;
     }
 
     @Override

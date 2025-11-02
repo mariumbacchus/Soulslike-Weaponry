@@ -720,13 +720,22 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float featherlight_calculated_fall_max_damage = 100f;
     @Entry public static float featherlight_calculated_fall_height_increase_damage_modifier = 0.2f;
     @Entry public static float featherlight_calculated_fall_heal_from_damage_modifier = 0f;
+
     @Entry public static float frostmourne_damage = 11;
     @Entry public static float frostmourne_attack_speed = 1.6f;
     @Entry public static float frostmourne_summoned_allies_cap = 50;
+    @Entry public static float frostmourne_summon_soul_cost = 5;
+    @Entry public static float frostmourne_summon_bonus_health_per_soul = 1f;
+    @Entry public static float frostmourne_summon_bonus_health_per_soul_addition_per_level = 0.2f;
+    @Entry public static float frostmourne_summon_max_bonus_health = 50f;
+    @Entry public static float frostmourne_summon_bonus_attack_damage_per_soul = 0.1f;
+    @Entry public static float frostmourne_summon_bonus_attack_damage_per_soul_addition_per_level = 0.05f;
+    @Entry public static float frostmourne_summon_max_bonus_attack_damage = 15f;
     @Entry public static float frostmourne_frost_buildup_post_hit = 40;
     @Entry public static float frostmourne_frost_post_hit_permafrost_base_duration = 160;
     @Entry public static float frostmourne_frost_post_hit_permafrost_base_amplifier = 0;
     @Entry public static float frostmourne_frost_post_hit_permafrost_amp_per_level = 1f;
+
     @Entry public static float galeforce_damage = 10;
     @Entry public static float galeforce_bonus_velocity = 0.25f;
     @Entry public static float galeforce_ability_velocity = 3f;
@@ -1011,6 +1020,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float skofnung_empowered_bleed_effect_duration = 200;
     @Entry public static float skofnung_empowered_bleed_effect_amp = 0;
     @Entry public static float skofnung_empowered_bleed_post_hit = 60;
+
     @Entry public static float soul_reaper_damage = 11;
     @Entry public static float soul_reaper_attack_speed = 1f;
     @Entry public static float soul_reaper_summoned_allies_cap = 50;
@@ -1020,6 +1030,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float soul_reaper_summon_bonus_attack_damage_per_soul = 0.1f;
     @Entry public static float soul_reaper_summon_bonus_attack_damage_per_soul_addition_per_level = 0.05f;
     @Entry public static float soul_reaper_summon_max_bonus_attack_damage = 15f;
+
     @Entry public static float sting_damage = 6;
     @Entry public static float sting_attack_speed = 1.6f;
     @Entry public static float sting_bonus_arthropod_damage = 4f;

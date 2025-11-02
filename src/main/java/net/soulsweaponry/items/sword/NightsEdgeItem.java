@@ -11,14 +11,14 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.NightsEdge;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class NightsEdgeItem extends ChargeToUseItem implements IKeybindAbility {
+public class NightsEdgeItem extends ModdedSword implements IKeybindAbility {
 
     public NightsEdgeItem(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.nights_edge_weapon_damage, ConfigConstructor.nights_edge_weapon_attack_speed, settings);

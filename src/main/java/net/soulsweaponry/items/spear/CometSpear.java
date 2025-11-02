@@ -7,7 +7,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.renderer.item.CometSpearItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.abilities.stoppedusing.sneaking.Riptide;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowCometSpear;
@@ -21,7 +21,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CometSpear extends ChargeToUseItem implements GeoItem {
+public class CometSpear extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public static final DetonateGroundAttributes METEOR_STRIKE_ATTRIBUTES = new DetonateGroundAttributes(

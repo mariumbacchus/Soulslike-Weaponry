@@ -10,7 +10,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -27,7 +26,7 @@ public record LightBringer(
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof LivingEntity living && living.age % 20 == 0 && selected) { //TODO test if selected is main hand or just hovering item in inventory
+        if (entity instanceof LivingEntity living && living.age % 20 == 0 && selected) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             for (RegistryEntry<StatusEffect> effect : REMOVABLE_EFFECTS) {
                 if (living.hasStatusEffect(effect)) {

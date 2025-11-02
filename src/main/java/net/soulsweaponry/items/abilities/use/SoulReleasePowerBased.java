@@ -3,7 +3,6 @@ package net.soulsweaponry.items.abilities.use;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,7 +18,6 @@ import net.soulsweaponry.items.abilities.targetdeath.ISoulHarvest;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -72,7 +70,7 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
             if (e instanceof TameableEntity t) {
                 t.setOwner(player);
             }
-            this.updateStats(e, power, stack);
+            this.updateStats(e, power, stack, this.bonusHealthPerPower, this.bonusHealthIncreasePerLvl, this.maxBonusHealth, this.bonusAttackPerPower, this.bonusAttackIncreasePerLvl, this.maxBonusAttack);
             world.spawnEntity(e);
             this.saveSummonUuid(player, e.getUuid());
             if (!player.isCreative()) {
@@ -81,29 +79,6 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
         }
         stack.damage(3, player, LivingEntity.getSlotForHand(hand));
         return TypedActionResult.success(stack, true);
-    }
-
-    /**
-     * Increases the {@link EntityAttributes#GENERIC_MAX_HEALTH} and {@link EntityAttributes#GENERIC_ATTACK_DAMAGE}
-     * based on {@code power} (souls).
-     */
-    private void updateStats(Entity entity, int power, ItemStack stack) {
-        if (entity instanceof LivingEntity living) {
-            int lvl = WeaponUtil.getUpgradeLevel(stack);
-            var maxHealth = living.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-            if (maxHealth != null) {
-                double newMax = power * (this.bonusHealthPerPower + this.bonusHealthIncreasePerLvl * lvl);
-                newMax = living.getMaxHealth() + Math.min(this.maxBonusHealth, newMax);
-                maxHealth.setBaseValue(newMax);
-                living.setHealth((float) newMax);
-            }
-            var atk = living.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-            if (atk != null) {
-                double newDmg = power * (this.bonusAttackPerPower + this.bonusAttackIncreasePerLvl * lvl);
-                newDmg = atk.getValue() + Math.min(this.maxBonusAttack, newDmg);
-                atk.setBaseValue(newDmg);
-            }
-        }
     }
 
     /**
@@ -129,8 +104,8 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.soul_release").formatted(Formatting.DARK_BLUE),
-                Text.translatable("tooltip.soulsweapons.soul_release_description_1").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.soul_release_description_2").formatted(Formatting.GRAY)
+                Text.translatable("tooltip.soulsweapons.soul_release.1").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.soul_release.2").formatted(Formatting.GRAY)
         );
     }
 

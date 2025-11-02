@@ -62,7 +62,7 @@ public record LifeGuard(
     }
 
     public double getReducedDamagePercent(int itemLvl) {
-        return this.reducedDamagePercent - this.bonusReducedDmgPercentPerLvl * itemLvl;
+        return this.reducedDamagePercent + this.bonusReducedDmgPercentPerLvl * itemLvl;
     }
 
     public double getLifeSaveChance(int itemLvl) {

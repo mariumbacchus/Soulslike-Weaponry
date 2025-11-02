@@ -33,60 +33,79 @@ public record SonicBoom(
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
-        if (user instanceof PlayerEntity player && !this.isCoolingDown(player, stack) && world instanceof ServerWorld serverWorld) {
-            if (ticksUsed >= 10) {
-                int lvl = WeaponUtil.getUpgradeLevel(stack);
-                float searchRange = this.getSearchRange(lvl);
-                float maxRange = this.getMaxRange(lvl);
-                float queryRadius = Math.max(searchRange, maxRange);
-                Box queryBox = user.getBoundingBox().expand(queryRadius);
+        if (!(user instanceof PlayerEntity player) || this.isCoolingDown(player, stack) || !(world instanceof ServerWorld serverWorld) || ticksUsed < 10) {
+            return;
+        }
 
-                Predicate<LivingEntity> nonTeammate = e -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity);
-                TargetPredicate targetPredicate = TargetPredicate.createNonAttackable()
-                        .setBaseMaxDistance(searchRange)
-                        .ignoreVisibility()
-                        .setPredicate(nonTeammate);
+        int lvl = WeaponUtil.getUpgradeLevel(stack);
+        float searchRange = this.getSearchRange(lvl);
+        float maxRange    = this.getMaxRange(lvl);
+        float queryRadius = Math.max(searchRange, maxRange);
+        Box queryBox = user.getBoundingBox().expand(queryRadius);
 
-                LivingEntity current = user.getAttacking();
-                boolean withinRange = user.distanceTo(current) <= maxRange;
-                LivingEntity target;
-                if (current != null && nonTeammate.test(current) && withinRange) {
-                    target = current;
-                } else {
-                    target = world.getClosestEntity(LivingEntity.class, targetPredicate, user, user.getX(), user.getY(), user.getZ(), queryBox);
-                }
+        Predicate<LivingEntity> nonTeammate = e -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity);
+        TargetPredicate targetPredicate = TargetPredicate.createNonAttackable()
+                .setBaseMaxDistance(searchRange)
+                .ignoreVisibility()
+                .setPredicate(nonTeammate);
 
-                if (target != null) {
-                    if (!withinRange) {
-                        this.fail(world, player);
-                        return;
-                    }
-                    float damage = this.damage + this.bonusDamagePerLvl * lvl + this.bonusEnchantDamageMod
-                            * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0);
-                    float knockback = this.knockbackPowerMod + this.bonusKnockbackModPerLvl * lvl;
-                    world.sendEntityStatus(user, EntityStatuses.SONIC_BOOM);
-                    Vec3d vec3d = user.getPos().add(0.0, 1.6F, 0.0);
-                    Vec3d vec3d2 = target.getEyePos().subtract(vec3d);
-                    Vec3d vec3d3 = vec3d2.normalize();
-                    for (int i = 1; i < MathHelper.floor(vec3d2.length()) + 7; i++) {
-                        Vec3d vec3d4 = vec3d.add(vec3d3.multiply(i));
-                        ((ServerWorld)world).spawnParticles(ParticleTypes.SONIC_BOOM, vec3d4.x, vec3d4.y, vec3d4.z, 1, 0.0, 0.0, 0.0, 0.0);
-                    }
-                    world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 3.0F, 1.0F);
-                    target.damage(world.getDamageSources().sonicBoom(user), damage);
-                    user.onAttacking(target);
-                    double d = 0.5 * (1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
-                    double e = 2.5 * (1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
-                    Vec3d vec = new Vec3d(vec3d3.getX() * e, vec3d3.getY() * d, vec3d3.getZ() * e).multiply(knockback);
-                    target.addVelocity(vec);
-                    stack.damage(2, player, WeaponUtil.getActiveHandSlot(player));
-                    this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
-                } else {
-                    this.fail(world, player);
-                }
+        // Prefer current attack target if valid & within maxRange
+        LivingEntity target = null;
+        LivingEntity current = user.getAttacking();
+        if (current != null && nonTeammate.test(current)) {
+            double maxRangeSq = maxRange * maxRange;
+            if (user.squaredDistanceTo(current) <= maxRangeSq) {
+                target = current;
             }
         }
+        if (target == null) {
+            target = world.getClosestEntity(LivingEntity.class, targetPredicate, user,
+                    user.getX(), user.getY(), user.getZ(), queryBox);
+        }
+
+        if (target == null) {
+            this.fail(world, player);
+            return;
+        }
+
+        // Final range check against the actual target
+        if (user.squaredDistanceTo(target) > (maxRange * maxRange)) {
+            this.fail(world, player);
+            return;
+        }
+
+        float damage = this.damage + this.bonusDamagePerLvl * lvl
+                + this.bonusEnchantDamageMod * EnchantmentHelper.getDamage(serverWorld, stack, target,
+                world.getDamageSources().playerAttack(player), 0);
+
+        float knockback = this.knockbackPowerMod + this.bonusKnockbackModPerLvl * lvl;
+
+        world.sendEntityStatus(user, EntityStatuses.SONIC_BOOM);
+
+        Vec3d from = user.getPos().add(0.0, 1.6F, 0.0);
+        Vec3d to   = target.getEyePos();
+        Vec3d dir  = to.subtract(from).normalize();
+
+        double length = from.distanceTo(to);
+        for (int i = 1; i < MathHelper.floor(length) + 7; i++) {
+            Vec3d p = from.add(dir.multiply(i));
+            serverWorld.spawnParticles(ParticleTypes.SONIC_BOOM, p.x, p.y, p.z, 1, 0, 0, 0, 0);
+        }
+        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 3.0F, 1.0F);
+
+        target.damage(world.getDamageSources().sonicBoom(user), damage);
+        user.onAttacking(target);
+
+        double kbResist = target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+        double vy = 0.5 * (1.0 - kbResist);
+        double vxz = 2.5 * (1.0 - kbResist);
+        Vec3d kb = new Vec3d(dir.x * vxz, dir.y * vy, dir.z * vxz).multiply(knockback);
+        target.addVelocity(kb);
+
+        stack.damage(2, player, WeaponUtil.getActiveHandSlot(player));
+        this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
     }
+
 
     public float getMaxRange(int lvl) {
         return this.maxTargetRange + this.bonusMaxRangePerLvl * lvl;

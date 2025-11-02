@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.abilitykeybind.CircleLightningCall;
 import net.soulsweaponry.items.abilities.statboost.RainBoostsStats;
 import net.soulsweaponry.items.abilities.stoppedusing.sneaking.Riptide;
@@ -18,7 +18,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class Mjolnir extends ChargeToUseItem implements GeoItem {
+public class Mjolnir extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.mjolnir_rain_bonus_damage, ConfigConstructor.mjolnir_rain_bonus_attack_speed);

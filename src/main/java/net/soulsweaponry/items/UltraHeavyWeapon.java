@@ -5,7 +5,7 @@ import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAbility;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 
-public abstract class UltraHeavyWeapon extends ChargeToUseItem {
+public abstract class UltraHeavyWeapon extends ModdedSword {
 
     public UltraHeavyWeapon(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, int postureLossPostHit, DetonateGroundAttributes detonateGroundAttributes) {
         super(toolMaterial, attackDamage, attackSpeed, settings);

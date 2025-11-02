@@ -21,10 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * TODO
- * Build upon this when needed, remember to actually call each method when adding them!
- */
 public interface IAbility extends ICooldownItem {
 
     default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}

@@ -3,13 +3,13 @@ package net.soulsweaponry.items.spear;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.abilitykeybind.LightningCall;
 import net.soulsweaponry.items.abilities.bonusdamage.DragonBonus;
 import net.soulsweaponry.items.abilities.statboost.RainBoostsStats;
 import net.soulsweaponry.items.abilities.stoppedusing.ThrowDragonslayerSwordspear;
 
-public class DragonslayerSwordspear extends ChargeToUseItem {
+public class DragonslayerSwordspear extends ModdedSword {
 
     private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.dragonslayer_swordspear_rain_bonus_damage, ConfigConstructor.dragonslayer_swordspear_rain_bonus_attack_speed);
     private static final DragonBonus DRAGON_BONUS = new DragonBonus(ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus, ConfigConstructor.dragonslayer_swordspear_dragons_scourge_bonus_per_level);

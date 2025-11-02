@@ -10,14 +10,14 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
-public class MasterSword extends ChargeToUseItem {
+public class MasterSword extends ModdedSword {
 
     private static final UndeadBonus UNDEAD_BONUS = new UndeadBonus(ConfigConstructor.master_sword_righteous_base_undead_bonus_damage, ConfigConstructor.master_sword_righteous_undead_bonus_damage_per_level);
 

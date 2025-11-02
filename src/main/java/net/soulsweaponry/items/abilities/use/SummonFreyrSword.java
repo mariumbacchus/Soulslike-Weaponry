@@ -38,12 +38,12 @@ public class SummonFreyrSword implements IAbility {
             } else {
                 user.getInventory().removeOne(stack);
                 entity.setPos(user.getX(), user.getY(), user.getZ());
-                user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1f, 1f);
                 entity.setStationaryPos(FreyrSwordEntity.NULLISH_POS);
                 world.spawnEntity(entity);
             }
             FreyrSwordSummonData.setSummonUuid(user, uuid);
         }
+        user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1f, 1f);
         return TypedActionResult.success(stack);
     }
 

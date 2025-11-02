@@ -3,12 +3,12 @@ package net.soulsweaponry.items.katana;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ChargeToUseItem;
+import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.posthit.Bleed;
 import net.soulsweaponry.items.abilities.stoppedusing.MoonveilHorizontal;
 import net.soulsweaponry.items.abilities.stoppedusing.sneaking.MoonveilVertical;
 
-public class Moonveil extends ChargeToUseItem {
+public class Moonveil extends ModdedSword {
 
     private static final Bleed BLEED = new Bleed((int) ConfigConstructor.moonveil_bleed_post_hit, ConfigConstructor.moonveil_bleed_post_hit_bonus_per_bloodthirsty_amp);
     private static final MoonveilHorizontal MOONVEIL_HORIZONTAL = new MoonveilHorizontal(
