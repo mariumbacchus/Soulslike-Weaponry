@@ -296,6 +296,7 @@
     "effect.soulsweapons.blade_dance": "Blade Dance",
     "effect.soulsweapons.stormveil": "Stormveil",
     "effect.soulsweapons.potency": "Potency",
+    "effect.soulsweapons.soul_of_cinder": "Soul of Cinder",
 
     "item.minecraft.potion.effect.warding": "마법 방어의 물약",
     "item.minecraft.splash_potion.effect.warding": "투척용 마법 방어의 물약",
@@ -426,14 +427,14 @@
     "tooltip.soulsweapons.sword_leap.2": "covering your landing and triggering §6Meteor Strike§r",
     "tooltip.soulsweapons.sword_leap.3": "- Not fully charging triggers a weak explosion instead",
 
-    "tooltip.soulsweapons.flame_enraged": "유일한 기회",
-    "tooltip.soulsweapons.flame_enraged_description": "- §c불§r에 타고 있을 때 §4힘§r을 얻음.",
+    "tooltip.soulsweapons.soul_of_cinder": "유일한 기회",
+    "tooltip.soulsweapons.soul_of_cinder.1": "- Gain §4Soul of Cinder§r effect when on §cFire§r, boosting damage",
 
     "tooltip.soulsweapons.fury": "분노",
-    "tooltip.soulsweapons.fury_description": "- 타격 후 점점 더 많은 §6성급함§r을 얻습니다.",
+    "tooltip.soulsweapons.fury.1": "- Gain progressively more %s post hit",
 
-    "tooltip.soulsweapons.haste": "너는 내 것",
-    "tooltip.soulsweapons.haste_description": "- §9휘몰아치는 칼날§r이 §6성급함§r 최대치를 증가시킵니다.",
+    "tooltip.soulsweapons.fury_cap": "너는 내 것",
+    "tooltip.soulsweapons.fury_cap.1": "- §9Item level§r increases %s amplifier cap",
 
     "tooltip.soulsweapons.ghost_summoner": "무덤의 자식들",
     "tooltip.soulsweapons.ghost_summoner.description.1": "- 언데드를 처치할 때 §3유령§r 동료를 소환할 수 있습니다.",

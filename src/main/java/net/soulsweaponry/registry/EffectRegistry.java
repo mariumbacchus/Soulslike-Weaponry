@@ -59,6 +59,14 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> BLADE_DANCE = registerEffect(new BladeDanceEffect(), "blade_dance");
     public static final RegistryEntry<StatusEffect> STORMVEIL = registerEffect(new Stormveil(), "stormveil");
     public static final RegistryEntry<StatusEffect> POTENCY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094), "potency");
+    public static final RegistryEntry<StatusEffect> SOUL_OF_CINDER = registerEffect(
+            new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xcc3300)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            Identifier.of(SoulsWeaponry.ModId, "effect.soul_of_cinder"), 2.0,
+                            EntityAttributeModifier.Operation.ADD_VALUE
+                    ), "soul_of_cinder"
+    );
 
     public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");

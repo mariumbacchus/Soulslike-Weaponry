@@ -131,18 +131,6 @@ public class TooltipUtil {
                 addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
                 //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
-            case FURY -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.fury").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.fury_description").formatted(Formatting.GRAY));
-            }
-            case HASTE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.haste").formatted(Formatting.YELLOW));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.haste_description").formatted(Formatting.GRAY));
-            }
-            case FLAME_ENRAGED -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flame_enraged").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.flame_enraged_description").formatted(Formatting.GRAY));
-            }
             case MAGIC_DAMAGE -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.magic_damage_description_1").formatted(Formatting.GRAY));

@@ -33,6 +33,7 @@
 - Dragon Staff has reduced cooldown based on the time used
 - Veil of Fire effect no longer sets the user on fire
 - Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
+- Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

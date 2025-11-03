@@ -772,7 +772,16 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float rageblade_damage = 7;
     @Entry public static float rageblade_attack_speed = 1.6f;
-    @Entry public static boolean rageblade_haste_cap = true;
+    @Entry public static String rageblade_fury_status_effect_id = "minecraft:haste";
+    @Entry public static float rageblade_fury_start_amp = 0;
+    @Entry public static float rageblade_fury_bonus_amp_post_hit = 1;
+    @Entry public static float rageblade_fury_bonus_amp_post_hit_per_level = 0.4f;
+    @Entry public static float rageblade_fury_max_amp = 3;
+    @Entry public static float rageblade_fury_bonus_max_amp_per_level = 0.8f;
+    @Entry public static float rageblade_soul_of_cinder_duration = 200;
+    @Entry public static float rageblade_soul_of_cinder_bonus_duration_per_lvl = 40;
+    @Entry public static float rageblade_soul_of_cinder_amp = 3;
+    @Entry public static float rageblade_soul_of_cinder_bonus_amp_per_lvl = 0.6f;
 
     @Entry public static float holy_moonlight_greatsword_damage = 10;
     @Entry public static float holy_moonlight_greatsword_attack_speed = 1.2f;
