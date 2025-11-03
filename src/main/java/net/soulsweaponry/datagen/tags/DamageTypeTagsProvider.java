@@ -27,5 +27,11 @@ public class DamageTypeTagsProvider extends FabricTagProvider<DamageType> {
 
         this.getOrCreateTagBuilder(DamageTypeTags.IS_FIRE)
                 .addOptional(DamageSourceRegistry.PLAYER_FIRE);
+
+        this.getOrCreateTagBuilder(DamageTypeTags.BYPASSES_COOLDOWN).addOptional(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN);
+        this.getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR).addOptional(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN);
+        this.getOrCreateTagBuilder(DamageTypeTags.NO_KNOCKBACK).addOptional(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN);
+        this.getOrCreateTagBuilder(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).addOptional(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN);
+        this.getOrCreateTagBuilder(DamageTypeTags.WITCH_RESISTANT_TO).addOptional(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN);
     }
 }

@@ -854,7 +854,9 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float lich_bane_damage = 7;
     @Entry public static float lich_bane_attack_speed = 1.6f;
-    @Entry public static float lich_bane_bonus_magic_damage = 2f;
+    @Entry public static float lich_bane_spellblade_bonus_magic_damage = 2f;
+    @Entry public static float lich_bane_spellblade_bonus_magic_damage_per_level = 0.5f;
+    @Entry public static float lich_bane_spellblade_target_is_player_mod = 0.5f;
     @Entry public static float lich_bane_post_hit_base_fire_seconds = 4f;
     @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_level = 1f;
     @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level = 2f;

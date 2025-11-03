@@ -34,6 +34,7 @@
 - Veil of Fire effect no longer sets the user on fire
 - Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
 - Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade
+- Lich Bane now always deal the bonus magic damage, regardless of % health left
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

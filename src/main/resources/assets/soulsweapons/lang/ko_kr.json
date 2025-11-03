@@ -403,11 +403,9 @@
     "tooltip.soulsweapons.show_item_lore": "Hold [%s] for Lore",
     "tooltip.soulsweapons.disabled": "§4비활성화됨§r",
 
-    "tooltip.soulsweapons.magic_damage": "주문검",
-    "tooltip.soulsweapons.magic_damage_description_1": "- 적의 체력이 §c33% 이상§r일 때, ",
-    "tooltip.soulsweapons.magic_damage_description_2": "갑옷을 관통하는 §9마법 피해§r를",
-    "tooltip.soulsweapons.magic_damage_description_3": "§6발화§r 레벨에 따라 추가로 가합니다.",
-    "tooltip.soulsweapons.magic_damage_description_4": "현재 추가된 §9마법 피해§r: ",
+    "tooltip.soulsweapons.spellblade": "Spellblade",
+    "tooltip.soulsweapons.spellblade.1": "- Deal additional %s §9Magic Damage§r, penetrating armor",
+    "tooltip.soulsweapons.spellblade.2": "Reduced to %s against players",
 
     "tooltip.soulsweapons.blazing_blade": "타오르는 검",
     "tooltip.soulsweapons.blazing_blade.1": "- Set mobs on fire for longer, increased",

@@ -1,15 +1,11 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.posthit.BlazingBlade;
-import net.soulsweaponry.mixin.LivingEntityInvoker;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.abilities.posthit.BonusMagicDamage;
 
 public class LichBane extends ModdedSword {
 
@@ -18,26 +14,15 @@ public class LichBane extends ModdedSword {
             ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_level,
             ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level
     );
+    private static final BonusMagicDamage BONUS_MAGIC_DAMAGE = new BonusMagicDamage(
+            ConfigConstructor.lich_bane_spellblade_bonus_magic_damage,
+            ConfigConstructor.lich_bane_spellblade_bonus_magic_damage_per_level,
+            ConfigConstructor.lich_bane_spellblade_target_is_player_mod
+    );
 
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE);//TODO
-        this.addAbility(BLAZING_BLADE);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
-            ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
-    public float getBonusMagicDamage(ItemStack stack) {
-        return ConfigConstructor.lich_bane_bonus_magic_damage + WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT);
+        this.addAbility(BLAZING_BLADE, BONUS_MAGIC_DAMAGE);
     }
 
     @Override

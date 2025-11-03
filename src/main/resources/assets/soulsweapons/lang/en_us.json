@@ -403,14 +403,15 @@
     "tooltip.soulsweapons.show_item_info": "Hold [%s] for Info",
     "tooltip.soulsweapons.show_item_lore": "Hold [%s] for Lore",
     "tooltip.soulsweapons.disabled": "§4Disabled§r",
-    "tooltip.soulsweapons.magic_damage": "Spellblade",
-    "tooltip.soulsweapons.magic_damage_description_1": "- While the target has over §c33% Health§r, deal",
-    "tooltip.soulsweapons.magic_damage_description_2": "bonus §9Magic Damage§r based on §6Fire Aspect§r",
-    "tooltip.soulsweapons.magic_damage_description_3": "level that penetrates armor.",
-    "tooltip.soulsweapons.magic_damage_description_4": "Current bonus §9Magic Damage§r post hit: ",
+
+    "tooltip.soulsweapons.spellblade": "Spellblade",
+    "tooltip.soulsweapons.spellblade.1": "- Deal additional %s §9Magic Damage§r, penetrating armor",
+    "tooltip.soulsweapons.spellblade.2": "Reduced to %s against players",
+
     "tooltip.soulsweapons.blazing_blade": "Blazing Blade",
     "tooltip.soulsweapons.blazing_blade.1": "- Set mobs on fire for longer, increased",
     "tooltip.soulsweapons.blazing_blade.2": "with §6Fire Aspect§r level.",
+
     "tooltip.soulsweapons.life_steal": "Life Steal",
     "tooltip.soulsweapons.life_steal.1": "- §cHeal§r every hit if item is not on cooldown",
     "tooltip.soulsweapons.overheal": "Overheal",
