@@ -24,6 +24,7 @@ public class ComponentRegistry {
     public static final ComponentType<String> MAPPED_TRICK_WEAPON = register("mapped_trick_weapon", builder -> builder.codec(Codec.STRING).packetCodec(PacketCodecs.STRING));
     public static final ComponentType<Integer> POST_HIT_EFFECT_ID = register("post_hit_effect_id", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Float> GUN_BONUS_DAMAGE = register("gun_bonus_damage", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
+    public static final ComponentType<Integer> KRAKEN_SLAYER_SHOTS_COUNTER = register("kraken_slayer_shots_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
 
     // These are the components now created to have uniquely for each ability so no conflict happens in the future where 2 abilities use the same component
     public static final ComponentType<Integer> ITEM_UPGRADE_LEVEL = register("item_upgrade_level", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
@@ -36,8 +37,7 @@ public class ComponentRegistry {
                     .packetCodec(PacketCodecs.registryCodec(Codec.list(Uuids.CODEC))));
     public static final ComponentType<Integer> BLADE_DANCE_POST_HIT_COUNTER = register("blade_dance_post_hit_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> WITHER_SOUL_RELEASE_COUNTER = register("wither_soul_release_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    public static final ComponentType<Integer> KRAKEN_SLAYER_SHOTS_COUNTER = register("kraken_slayer_shots_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    public static final ComponentType<Integer> SKOFNUNG_EMPOWERED_STRIKES = register("skofnung_empowered_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
+    public static final ComponentType<Integer> SHARPENED_STRIKES = register("sharpened_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> ESSENCE = register("essence", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {

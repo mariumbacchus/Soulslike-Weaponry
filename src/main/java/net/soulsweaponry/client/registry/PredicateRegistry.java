@@ -13,6 +13,8 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.IHasEssence;
+import net.soulsweaponry.items.abilities.ISharpened;
+import net.soulsweaponry.items.abilities.statboost.Sharpened;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.items.sword.Sting;
@@ -87,7 +89,7 @@ public class PredicateRegistry {
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, Identifier.of("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
-                boolean emp = Skofnung.isEmpowered(itemStack);
+                boolean emp = ISharpened.isEmpowered(itemStack);
                 if (emp) {
                     return 1.0F;
                 }

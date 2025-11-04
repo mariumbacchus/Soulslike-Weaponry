@@ -1060,14 +1060,22 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float simons_bowblade_projectile_righteous_undead_bonus_damage_per_level = 0.5f;
     @Entry public static float simons_bowblade_projectile_posture_loss = 30;
     @Entry public static boolean simons_bowblade_projectile_can_apply_arrow_effects = true;
+
     @Entry public static float skofnung_damage = 8;
     @Entry public static float skofnung_attack_speed = 1.6f;
-    @Entry public static float skofnung_bonus_damage = 2;
+    @Entry public static float skofnung_sharpened_bonus_damage = 2;
+    @Entry public static float skofnung_sharpened_bonus_damage_per_level = 0.6f;
+    @Entry public static float skofnung_sharpened_bonus_attack_speed = 0;
+    @Entry public static float skofnung_sharpened_bonus_attack_speed_per_level = 0.05f;
+    @Entry public static float skofnung_sharpened_bleed_post_hit = 60;
+    @Entry public static float skofnung_sharpened_bonus_bleed_post_hit_per_level = 5;
+    @Entry public static float skofnung_sharpened_bleed_effect_duration = 200;
+    @Entry public static float skofnung_sharpened_bleed_effect_bonus_duration_per_level = 20;
+    @Entry public static float skofnung_sharpened_bleed_effect_amp = 0;
+    @Entry public static float skofnung_sharpened_bleed_effect_bonus_amp_per_level = 0;
+    @Entry public static float skofnung_sharpened_max_empowered_strikes = 16;
     @Entry public static float skofnung_disable_heal_duration = 100;
-    @Entry public static float skofnung_stone_additional_empowered_strikes = 8;
-    @Entry public static float skofnung_empowered_bleed_effect_duration = 200;
-    @Entry public static float skofnung_empowered_bleed_effect_amp = 0;
-    @Entry public static float skofnung_empowered_bleed_post_hit = 60;
+    @Entry public static float skofnung_disable_heal_bonus_duration_per_level = 40;
 
     @Entry public static float soul_reaper_damage = 11;
     @Entry public static float soul_reaper_attack_speed = 1f;

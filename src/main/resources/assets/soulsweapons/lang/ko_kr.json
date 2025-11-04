@@ -552,18 +552,20 @@
     "tooltip.soulsweapons.heavy_throw_description": "- 도끼를 던져 맞은 모든 몬스터를 §b영구동토§r 상태로 만듭니다.",
 
     "tooltip.soulsweapons.disable_heal": "천 개의 상처",
-    "tooltip.soulsweapons.disable_heal_description_1": "- 타격 후 §5저주받은 상처§r을 입혀,",
-    "tooltip.soulsweapons.disable_heal_description_2": "대상이 해당 시간 동안 치유되지 않도록 만듭니다.",
+    "tooltip.soulsweapons.disable_heal.1": "- 타격 후 §5저주받은 상처§r을 입혀,",
+    "tooltip.soulsweapons.disable_heal.2": "대상이 해당 시간 동안 치유되지 않도록 만듭니다.",
 
-    "tooltip.soulsweapons.skofnung_stone": "스톤샤드",
-    "tooltip.soulsweapons.skofnung_stone_description_1": "- 이를 사용하면 §5유해§r 효과가 제거되며,",
-    "tooltip.soulsweapons.skofnung_stone_description_2": "손에 있는 경우 §f스코프눙§r의 능력이 강화됩니다.",
-    "tooltip.soulsweapons.empowered": "강화된 공격 횟수: ",
+    "tooltip.soulsweapons.cleanse": "Stoneshard",
+    "tooltip.soulsweapons.cleanse.1": "- Use to remove all §5Harmful§r effects",
 
-    "tooltip.soulsweapons.sharpen": "초자연적 날카로움",
-    "tooltip.soulsweapons.sharpen_description_1": "- 이 검을 손에 들고 §5스코프눙의 돌§r을 사용하면",
-    "tooltip.soulsweapons.sharpen_description_2": "이 무기가 강화됩니다. 그러면 공격 피해가 증가하고",
-    "tooltip.soulsweapons.sharpen_description_3": "타격 후 §c출혈§r 효과가 추가됩니다.",
+    "tooltip.soulsweapons.sharpen_item": "Whetstone",
+    "tooltip.soulsweapons.sharpen_item.1": "- Use to sharpen items in other hand if possible",
+    "tooltip.soulsweapons.sharpen_item.2": "Only some abilities accept this, like Supernatural Sharpness",
+
+    "tooltip.soulsweapons.sharpen": "Supernatural Sharpness",
+    "tooltip.soulsweapons.sharpen.1": "- Can be sharpened by certain items, like §5Skofnung Stone§r",
+    "tooltip.soulsweapons.sharpen.2": "- Gain bonus stats when sharpened and §cBleed§r post hit",
+    "tooltip.soulsweapons.sharpen.3": "Empowered strikes left: %s",
 
     "tooltip.soulsweapons.mjolnir_lightning_call.description.1": "- Smash the ground and call forth §eLightning§r ",
     "tooltip.soulsweapons.mjolnir_lightning_call.description.2": "that spreads outwards",
