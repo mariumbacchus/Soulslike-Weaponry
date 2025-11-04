@@ -78,9 +78,8 @@ public record NightsEdgeAbility(
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.nights_edge").formatted(Formatting.DARK_PURPLE),
-                Text.translatable("tooltip.soulsweapons.nights_edge.1").formatted(Formatting.GRAY),//TODO can maybe clean up translations better
-                Text.translatable("tooltip.soulsweapons.nights_edge.2").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.nights_edge.3").formatted(Formatting.GRAY)
+                Text.translatable("tooltip.soulsweapons.nights_edge.1").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.nights_edge.2").formatted(Formatting.GRAY)
         );
     }
 }

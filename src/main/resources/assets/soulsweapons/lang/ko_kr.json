@@ -676,9 +676,8 @@
     "tooltip.soulsweapons.max_health_needed.1": "- This can only be used at full health",
 
     "tooltip.soulsweapons.nights_edge": "§c밤§r의 §3끝§r",
-    "tooltip.soulsweapons.nights_edge.1": "- §d밤의 가장자리§r의 선을 소환합니다.",
-    "tooltip.soulsweapons.nights_edge.2": "- 단축키를 눌러 자신 주위에",
-    "tooltip.soulsweapons.nights_edge.3": "§d밤의 가장자리§r의 원을 소환합니다.",
+    "tooltip.soulsweapons.nights_edge.1": "- Use to summon a line of §dEdges of Night§r",
+    "tooltip.soulsweapons.nights_edge.2": "- Summon circles of §dEdges of Night§r around you",
 
     "tooltip.soulsweapons.chaos_storm": "혼돈의 폭풍",
     "tooltip.soulsweapons.chaos_storm.1": "- 검을 충전하여 주변에 무작위로",
