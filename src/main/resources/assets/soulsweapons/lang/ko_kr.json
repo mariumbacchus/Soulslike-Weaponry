@@ -676,9 +676,9 @@
     "tooltip.soulsweapons.max_health_needed.1": "- This can only be used at full health",
 
     "tooltip.soulsweapons.nights_edge": "§c밤§r의 §3끝§r",
-    "tooltip.soulsweapons.nights_edge_description_1": "- §d밤의 가장자리§r의 선을 소환합니다.",
-    "tooltip.soulsweapons.nights_edge_description_2": "- 단축키를 눌러 자신 주위에",
-    "tooltip.soulsweapons.nights_edge_description_3": "§d밤의 가장자리§r의 원을 소환합니다.",
+    "tooltip.soulsweapons.nights_edge.1": "- §d밤의 가장자리§r의 선을 소환합니다.",
+    "tooltip.soulsweapons.nights_edge.2": "- 단축키를 눌러 자신 주위에",
+    "tooltip.soulsweapons.nights_edge.3": "§d밤의 가장자리§r의 원을 소환합니다.",
 
     "tooltip.soulsweapons.chaos_storm": "혼돈의 폭풍",
     "tooltip.soulsweapons.chaos_storm.1": "- 검을 충전하여 주변에 무작위로",
@@ -689,13 +689,10 @@
     "tooltip.soulsweapons.veil_of_fire.2": "자신에게 §6화염의 장막§r 효과를 적용하여",
     "tooltip.soulsweapons.veil_of_fire.3": "주변의 몬스터에게 지속적으로 화염 피해를 입힙니다.",
 
-    "tooltip.soulsweapons.blight": "오염",
-    "tooltip.soulsweapons.blight_description_1": "- 타격 후 §d오염§r을 적용하며,",
-    "tooltip.soulsweapons.blight_description_2": "증폭기는 각 타격마다 §f1§r씩 증가합니다.",
-    "tooltip.soulsweapons.blight_description_3": "증폭기 레벨이 10을 초과하면 §f부패§r도 적용됩니다.",
-    "tooltip.soulsweapons.blight_description_4": "- §d오염§r은 대상의 갑옷 양에 따라",
-    "tooltip.soulsweapons.blight_description_5": "피해를 퍼센트로 증가시킵니다.",
-    "tooltip.soulsweapons.blight_description_6": "추가 피해량 % = (ln(증폭기) * 갑옷 / 6) * 10",
+    "tooltip.soulsweapons.tainted_edge": "Tainted Edge",
+    "tooltip.soulsweapons.tainted_edge.1": "- Apply progressively more %s post hit",
+    "tooltip.soulsweapons.blight.1": "- At %s amp over %d, apply %f too",
+    "tooltip.soulsweapons.blight.2": "- §dBlight§r increases damage taken in percent based on armor",
 
     "tooltip.soulsweapons.fast_pull": "빠른 발사",
     "tooltip.soulsweapons.fast_pull_1": "- 이 무기의 당기는 속도가 증가합니다.",

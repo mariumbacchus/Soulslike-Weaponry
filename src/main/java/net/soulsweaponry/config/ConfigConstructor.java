@@ -778,6 +778,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float rageblade_fury_bonus_amp_post_hit_per_level = 0.4f;
     @Entry public static float rageblade_fury_max_amp = 3;
     @Entry public static float rageblade_fury_bonus_max_amp_per_level = 0.8f;
+
+    @Entry public static float rageblade_fury_duration = 60;
+    @Entry public static float rageblade_fury_bonus_duration_per_level = 10;
     @Entry public static float rageblade_soul_of_cinder_duration = 200;
     @Entry public static float rageblade_soul_of_cinder_bonus_duration_per_lvl = 40;
     @Entry public static float rageblade_soul_of_cinder_amp = 3;
@@ -966,6 +969,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float moonveil_vertical_reduced_cooldown_per_level = 10;
     @Entry public static float moonveil_bleed_post_hit = 25;
     @Entry public static float moonveil_bleed_post_hit_bonus_per_bloodthirsty_amp = 20;
+
     @Entry public static float nightfall_damage = 11;
     @Entry public static float nightfall_attack_speed = 1f;
     @Entry public static float nightfall_posture_loss = 40;
@@ -985,6 +989,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean nightfall_allow_non_undead_to_maybe_be_summoned = false;
     @Entry public static float nightfall_summoned_allies_cap = 50;
     @Entry(min=0, max=1) public static double nightfall_summon_chance = 0.3D;
+
     @Entry public static float nightfall_calculated_fall_base_radius = 3f;
     @Entry public static float nightfall_calculated_fall_height_increase_radius_modifier = 1.5f;
     @Entry public static float nightfall_calculated_fall_target_launch_modifier = 0.045f;
@@ -993,13 +998,38 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float nightfall_calculated_fall_max_damage = 100f;
     @Entry public static float nightfall_calculated_fall_height_increase_damage_modifier = 0.2f;
     @Entry public static float nightfall_calculated_fall_heal_from_damage_modifier = 0f;
+
     @Entry public static float nights_edge_weapon_damage = 10;
     @Entry public static float nights_edge_weapon_attack_speed = 1.2f;
-    @Entry public static float nights_edge_ability_cooldown = 120;
+
+    @Entry public static float nights_edge_ability_ripple_amount = 3;
+    @Entry public static float nights_edge_ability_ripple_bonus_amount_per_level = 0.6f;
+    @Entry public static float nights_edge_ability_ripple_damage = 10f;
+    @Entry public static float nights_edge_ability_ripple_bonus_damage_per_level = 2;
+    @Entry public static float nights_edge_ability_line_amount = 10;
+    @Entry public static float nights_edge_ability_line_bonus_amount_per_level = 2;
+    @Entry public static float nights_edge_ability_line_damage = 10f;
+    @Entry public static float nights_edge_ability_line_bonus_damage_per_level = 2;
+
     @Entry public static float nights_edge_ability_min_cooldown = 40;
-    @Entry public static boolean nights_edge_enchant_reduces_cooldown = false;
-    @Entry public static String[] nights_edge_enchant_reduces_cooldown_ids = {"damage"};
-    @Entry public static float nights_edge_ability_damage = 10f;
+    @Entry public static float nights_edge_ability_cooldown = 120;
+    @Entry public static float nights_edge_ability_reduced_cooldown_per_level = 8;
+
+    @Entry public static String nights_edge_tainted_edge_status_effect_id = "soulsweapons:blight";
+    @Entry public static float nights_edge_tainted_edge_start_amp = 0;
+    @Entry public static float nights_edge_tainted_edge_bonus_amp_post_hit = 1;
+    @Entry public static float nights_edge_tainted_edge_bonus_amp_post_hit_per_level = 0.4f;
+    @Entry public static float nights_edge_tainted_edge_max_amp = 255;
+    @Entry public static float nights_edge_tainted_edge_bonus_max_amp_per_level = 0;
+    @Entry public static float nights_edge_tainted_edge_duration = 60;
+    @Entry public static float nights_edge_tainted_edge_bonus_duration_per_level = 10;
+    @Entry public static float nights_edge_tainted_edge_status_effect_amp_needed_for_bonus_effect = 10;
+    @Entry public static String nights_edge_tainted_edge_bonus_effect = "soulsweapons:decay";
+    @Entry public static float nights_edge_tainted_edge_bonus_effect_amp = 0;
+    @Entry public static float nights_edge_tainted_edge_bonus_effect_bonus_amp_per_level = 0.4f;
+    @Entry public static float nights_edge_tainted_edge_bonus_effect_duration = 80;
+    @Entry public static float nights_edge_tainted_edge_bonus_effect_bonus_duration_per_level = 20;
+
     @Entry public static float shadow_assassin_scythe_shadow_step_bonus_damage = 2f;
     @Entry public static float shadow_assassin_scythe_shadow_step_bonus_damage_per_shadow_step_amp = 0.5f;
     @Entry public static float shadow_assassin_scythe_attack_speed = 1f;
@@ -1018,6 +1048,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float shadow_assassin_scythe_ummbral_trespass_heal_modifier = 0f;
     @Entry public static float shadow_assassin_scythe_umbral_trespass_ticks_before_dismount = 120;
     @Entry(min=0,max=1) public static double shadow_assassin_scythe_umbral_trespass_bonus_percent_max_health_damage = 0f;
+
     @Entry public static float simons_blade_damage = 6;
     @Entry public static float simons_blade_attack_speed = 1.6f;
     @Entry public static float simons_blade_righteous_base_undead_bonus_damage = 3f;

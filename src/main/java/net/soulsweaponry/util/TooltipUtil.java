@@ -178,20 +178,6 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_3").formatted(Formatting.GRAY));
             }
-            case NIGHTS_EDGE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge").formatted(Formatting.DARK_PURPLE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.nights_edge_description_3").formatted(Formatting.GRAY));
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-            }
-            case BLIGHT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.blight").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.BOLD));
-                for (int i = 1; i <= 5; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.blight_description_" + i).formatted(Formatting.GRAY));
-                }
-                tooltip.add(Text.translatable("tooltip.soulsweapons.blight_description_6").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
-            }
             case FAST_PULL -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));

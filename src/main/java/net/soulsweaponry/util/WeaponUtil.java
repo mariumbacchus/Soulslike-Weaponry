@@ -13,6 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -31,10 +33,7 @@ import net.soulsweaponry.registry.EnchantRegistry;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static net.minecraft.item.Item.BASE_ATTACK_DAMAGE_MODIFIER_ID;
@@ -229,6 +228,21 @@ public class WeaponUtil {
             i = stack.getItem().getMaxUseTime(stack, user) - remainingUseTicks;
         }
         return i;
+    }
+
+    public static RegistryEntry<StatusEffect> parseStatusEffectId(String statusEffectId) {
+        RegistryEntry<StatusEffect> defaultEntry = StatusEffects.HASTE;
+        if (statusEffectId == null || statusEffectId.isBlank()) {
+            return defaultEntry;
+        }
+        Identifier directId = Identifier.tryParse(statusEffectId.toLowerCase(Locale.ROOT));
+        if (directId != null) {
+            StatusEffect eff = Registries.STATUS_EFFECT.get(directId);
+            if (eff != null) {
+                return Registries.STATUS_EFFECT.getEntry(eff);
+            }
+        }
+        return defaultEntry;
     }
 
     /**

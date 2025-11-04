@@ -70,14 +70,4 @@ public class NightlordsSword extends ModdedSword {
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_sword_of_the_nightlord;
     }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
-    }
 }

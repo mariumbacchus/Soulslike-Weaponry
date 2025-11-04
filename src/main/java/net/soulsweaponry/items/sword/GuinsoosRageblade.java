@@ -5,17 +5,19 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.inventorytick.SoulOfCinder;
-import net.soulsweaponry.items.abilities.posthit.EffectPostHit;
+import net.soulsweaponry.items.abilities.posthit.EffectAttacker;
 
 public class GuinsoosRageblade extends ModdedSword {
 
-    private static final EffectPostHit HASTE_POST_HIT = new EffectPostHit(
+    private static final EffectAttacker HASTE_POST_HIT = new EffectAttacker(
             ConfigConstructor.rageblade_fury_status_effect_id,
             (int) ConfigConstructor.rageblade_fury_start_amp,
             (int) ConfigConstructor.rageblade_fury_bonus_amp_post_hit,
             ConfigConstructor.rageblade_fury_bonus_amp_post_hit_per_level,
             (int) ConfigConstructor.rageblade_fury_max_amp,
-            ConfigConstructor.rageblade_fury_bonus_max_amp_per_level
+            ConfigConstructor.rageblade_fury_bonus_max_amp_per_level,
+            (int) ConfigConstructor.rageblade_fury_duration,
+            (int) ConfigConstructor.rageblade_fury_bonus_duration_per_level
     );
     private static final SoulOfCinder SOUL_OF_CINDER = new SoulOfCinder(
             (int) ConfigConstructor.rageblade_soul_of_cinder_duration,
