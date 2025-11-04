@@ -672,8 +672,8 @@
     "tooltip.soulsweapons.parry_description_3": "opponent that tries to damage you.",
 
     "tooltip.soulsweapons.skyward_strikes": "하늘을 향한 일격",
-    "tooltip.soulsweapons.skyward_strikes_description_1": "- 체력이 가득할 때, 사용하여",
-    "tooltip.soulsweapons.skyward_strikes_description_2": "강력한 §3달빛 광선§r을 발사합니다.",
+    "tooltip.soulsweapons.max_health_needed": "Pristine Form",
+    "tooltip.soulsweapons.max_health_needed.1": "- This can only be used at full health",
 
     "tooltip.soulsweapons.nights_edge": "§c밤§r의 §3끝§r",
     "tooltip.soulsweapons.nights_edge_description_1": "- §d밤의 가장자리§r의 선을 소환합니다.",

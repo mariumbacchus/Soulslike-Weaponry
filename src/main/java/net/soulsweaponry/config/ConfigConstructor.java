@@ -865,11 +865,17 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float ludwigs_holy_greatsword_attack_speed = 1.2f;
     @Entry public static float ludwigs_holy_greatsword_righteous_base_undead_bonus_damage = 2f;
     @Entry public static float ludwigs_holy_greatsword_righteous_undead_bonus_damage_per_level = 0.5f;
+
     @Entry public static float master_sword_damage = 8;
     @Entry public static float master_sword_attack_speed = 1.6f;
     @Entry public static float master_sword_righteous_base_undead_bonus_damage = 2f;
     @Entry public static float master_sword_righteous_undead_bonus_damage_per_level = 0.5f;
+    @Entry public static float master_sword_projectile_amount = 1;
+    @Entry public static float master_sword_bonus_projectile_amount_per_level = 0.4f;
     @Entry public static float master_sword_projectile_damage = 11.0f;
+    @Entry public static float master_sword_projectile_bonus_damage_per_level = 3f;
+    @Entry public static float master_sword_projectile_velocity = 1.5f;
+
     @Entry public static float mehrunes_razor_damage = 6f;
     @Entry public static float mehrunes_razor_attack_speed = 2f;
     @Entry(min=0) public static double mehrunes_razor_posture_break_crit_hit_percent_bonus = 1.0;
