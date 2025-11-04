@@ -8,12 +8,12 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public class EffectAttacker extends ApplyEffect {
+public class StackingEffectAttacker extends ApplyStackingEffect {
 
-    public EffectAttacker(String statusEffectId, int startAmp,
-                          int bonusAmpPostHit, float bonusAmpPostHitPerLvl,
-                          int maxAmp, float bonusMaxAmpPerLvl,
-                          int duration, int bonusDurationPerLvl
+    public StackingEffectAttacker(String statusEffectId, int startAmp,
+                                  int bonusAmpPostHit, float bonusAmpPostHitPerLvl,
+                                  int maxAmp, float bonusMaxAmpPerLvl,
+                                  int duration, int bonusDurationPerLvl
     ) {
         super(false, statusEffectId, startAmp, bonusAmpPostHit,
                 bonusAmpPostHitPerLvl, maxAmp, bonusMaxAmpPerLvl, duration, bonusDurationPerLvl

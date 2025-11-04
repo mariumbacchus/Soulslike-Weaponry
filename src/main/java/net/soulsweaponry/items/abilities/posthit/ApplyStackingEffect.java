@@ -13,7 +13,7 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
-public class ApplyEffect implements IAbility {
+public class ApplyStackingEffect implements IAbility {
 
     public final boolean applyOnTarget;
     public final String statusEffectId;
@@ -25,10 +25,10 @@ public class ApplyEffect implements IAbility {
     public final int duration;
     public final int bonusDurationPerLvl;
 
-    public ApplyEffect(boolean applyOnTarget, String statusEffectId, int startAmp,
-                       int bonusAmpPostHit, float bonusAmpPostHitPerLvl,
-                       int maxAmp, float bonusMaxAmpPerLvl,
-                       int duration, int bonusDurationPerLvl
+    public ApplyStackingEffect(boolean applyOnTarget, String statusEffectId, int startAmp,
+                               int bonusAmpPostHit, float bonusAmpPostHitPerLvl,
+                               int maxAmp, float bonusMaxAmpPerLvl,
+                               int duration, int bonusDurationPerLvl
     ) {
         this.applyOnTarget = applyOnTarget;
         this.statusEffectId = statusEffectId;

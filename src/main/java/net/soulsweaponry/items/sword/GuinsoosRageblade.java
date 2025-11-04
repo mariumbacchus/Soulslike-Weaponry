@@ -5,11 +5,11 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.inventorytick.SoulOfCinder;
-import net.soulsweaponry.items.abilities.posthit.EffectAttacker;
+import net.soulsweaponry.items.abilities.posthit.StackingEffectAttacker;
 
 public class GuinsoosRageblade extends ModdedSword {
 
-    private static final EffectAttacker HASTE_POST_HIT = new EffectAttacker(
+    private static final StackingEffectAttacker HASTE_POST_HIT = new StackingEffectAttacker(
             ConfigConstructor.rageblade_fury_status_effect_id,
             (int) ConfigConstructor.rageblade_fury_start_amp,
             (int) ConfigConstructor.rageblade_fury_bonus_amp_post_hit,

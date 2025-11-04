@@ -14,7 +14,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Blight extends ApplyEffect {
+public class Blight extends ApplyStackingEffect {
 
     public final int ampNeededForExtraEffect;
     public final String extraEffectId;
