@@ -171,6 +171,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_tonitrus = false;
     @Entry public static boolean disable_use_bloodlust = false;
     @Entry public static boolean disable_use_sword_of_the_nightlord = false;
+    @Entry public static boolean disable_use_sting = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
@@ -1089,7 +1090,9 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float sting_damage = 6;
     @Entry public static float sting_attack_speed = 1.6f;
-    @Entry public static float sting_bonus_arthropod_damage = 4f;
+    @Entry public static float sting_spiders_bane_bonus_arthropod_damage = 4f;
+    @Entry public static float sting_spiders_bane_bonus_arthropod_damage_per_level = 1f;
+
     @Entry public static float supernova_damage = 11f;
     @Entry public static float supernova_attack_speed = 1f;
     @Entry public static float supernova_posture_loss = 35;

@@ -599,11 +599,10 @@
     "tooltip.soulsweapons.arkenplate.mirror.2": "모든 적대적인 발사체를 튕겨냅니다.",
 
     "tooltip.soulsweapons.luminate": "광휘",
-    "tooltip.soulsweapons.luminate_description": "- 주변에 적대적인 존재가 있을 때, 빛이 납니다.",
+    "tooltip.soulsweapons.luminate.1": "- 주변에 적대적인 존재가 있을 때, 빛이 납니다.",
 
-    "tooltip.soulsweapons.bane_of_arthropods": "거미의 저주",
-    "tooltip.soulsweapons.bane_of_arthropods_description_1": "- §3절지동물§r에 대해 자연적으로 증가된 피해.",
-    "tooltip.soulsweapons.bane_of_arthropods_description_2": "현재 추가 피해량: ",
+    "tooltip.soulsweapons.spiders_bane": "Spider's Bane",
+    "tooltip.soulsweapons.spiders_bane.1": "- Deal %s bonus damage against §3Arthropods§r",
 
     "tooltip.soulsweapons.featherlight": "섬세한 드래곤글라스",
     "tooltip.soulsweapons.featherlight.1": "- Inscribed runes grants the weapon high attack speed",

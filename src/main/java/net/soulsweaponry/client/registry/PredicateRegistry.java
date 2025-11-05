@@ -14,10 +14,9 @@ import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.IHasEssence;
 import net.soulsweaponry.items.abilities.ISharpened;
-import net.soulsweaponry.items.abilities.statboost.Sharpened;
+import net.soulsweaponry.items.abilities.inventorytick.Luminate;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
-import net.soulsweaponry.items.sword.Sting;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -99,9 +98,9 @@ public class PredicateRegistry {
 
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.STING, Identifier.of("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.getItem() instanceof Sting) {
-                boolean emp = ((Sting) itemStack.getItem()).isActive(itemStack);
-                if (emp) {
+            if (itemStack.getItem() instanceof IHasAbilities hasAbilities) {
+                Optional<Luminate> op = hasAbilities.findAbility(Luminate.class);
+                if (op.isPresent() && op.get().isActive(itemStack)) {
                     return 1.0F;
                 }
             }
