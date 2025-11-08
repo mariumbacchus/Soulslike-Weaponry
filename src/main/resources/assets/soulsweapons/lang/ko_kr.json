@@ -467,8 +467,8 @@
     "tooltip.soulsweapons.night_prowler.1": "- §1밤§1 동안 막대한 §9공격 피해§r를 입힙니다.",
 
     "tooltip.soulsweapons.sawblade": "톱날",
-    "tooltip.soulsweapons.sawblade_description_1": "- 앞의 대상을 대규모로 파괴합니다.",
-    "tooltip.soulsweapons.sawblade_description_2": "- 타격된 대상을 §c출혈§r 상태로 만듭니다.",
+    "tooltip.soulsweapons.sawblade.1": "- 앞의 대상을 대규모로 파괴합니다.",
+    "tooltip.soulsweapons.sawblade.2": "- 타격된 대상을 §c출혈§r 상태로 만듭니다.",
 
     "tooltip.soulsweapons.moonlight": "월광",
     "tooltip.soulsweapons.moonlight.1": "- Use to shoot %s §3Moonlight Beams§r.",

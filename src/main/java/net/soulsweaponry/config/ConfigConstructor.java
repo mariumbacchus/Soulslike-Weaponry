@@ -1185,17 +1185,26 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float translucent_glaive_attack_speed = 1.4f;
     @Entry public static float translucent_double_edged_greatsword_damage = 8;
     @Entry public static float translucent_double_edged_greatsword_attack_speed = 1.2f;
+
     @Entry public static float whirligig_sawblade_damage = 8;
     @Entry public static float whirligig_sawblade_attack_speed = 1.6f;
+    @Entry public static float whirligig_sawblade_ability_range = 5;
+    @Entry public static float whirligig_sawblade_ability_expansion = 1.0f;
     @Entry public static float whirligig_sawblade_ability_damage = 5.0f;
+    @Entry public static float whirligig_sawblade_ability_bonus_damage_per_level = 1f;
+    @Entry public static float whirligig_sawblade_ability_enchant_bonus_damage_mod = 1f;
+    @Entry public static float whirligig_sawblade_knockback = 0.25f;
     @Entry public static float whirligig_sawblade_bleed_added = 25;
+    @Entry public static float whirligig_sawblade_bonus_bleed_per_level = 5;
     @Entry public static float whirligig_sawblade_bleed_effect_duration = 160;
+    @Entry public static float whirligig_sawblade_bleed_effect_bonus_duration_per_level = 20;
     @Entry public static float whirligig_sawblade_bleed_effect_amp = 0;
-    @Entry public static float whirligig_sawblade_cooldown = 100;
-    @Entry public static float whirligig_sawblade_min_cooldown = 10;
-    @Entry public static boolean whirligig_sawblade_enchant_reduces_cooldown = true;
-    @Entry public static String[] whirligig_sawblade_enchant_reduces_cooldown_ids = {"damage"};
+    @Entry public static float whirligig_sawblade_bleed_effect_bonus_amp_per_level = 0.4f;
     @Entry public static float whirligig_sawblade_use_time = 100;
+    @Entry public static float whirligig_sawblade_bonus_use_time_per_level = 20;
+    @Entry public static float whirligig_sawblade_min_cooldown = 10;
+    @Entry public static float whirligig_sawblade_cooldown = 100;
+    @Entry public static float whirligig_sawblade_reduced_cooldown_per_level = 10;
 
     @Entry public static float withered_wabbajack_damage = 8;
     @Entry public static float withered_wabbajack_attack_speed = 1.2f;

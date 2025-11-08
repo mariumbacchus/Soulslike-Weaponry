@@ -30,7 +30,7 @@
 - Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config
   - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
 - Overhauled the ability system on the legendary weapons. Also moved away from off-hand ability triggers since Better Combat doesn't allow off-handing heavy weapons. Many abilities have therefore changed to be either triggered when sneaking or with the keybind ability trigger
-- Dragon Staff has reduced cooldown based on the time used
+- Dragon Staff and Whirligig Sawblade has reduced cooldown based on the time used
 - Veil of Fire effect no longer sets the user on fire
 - Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
 - Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade

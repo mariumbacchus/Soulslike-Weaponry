@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Tameable;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
@@ -15,7 +14,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.abilities.stoppedusing.IChargeToUse;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -26,7 +24,7 @@ import java.util.List;
 public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, float bonusDamagePerLvl,
                          int mistEffectDuration, int mistEffectAmp, int maxUseTime, int bonusMaxUseTimePerLvl,
                          int minCooldown, int cooldown, int reducedCooldownPerLvl
-) implements IChargeToUse {
+) implements IChargeUsageTicks {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
@@ -74,24 +72,6 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        this.stop(user, stack, 0);
-        return stack;
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        this.stop(user, stack, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
-    }
-
-    private void stop(LivingEntity user, ItemStack stack, int ticksUsed) {
-        if (user instanceof PlayerEntity player) {
-            this.applyItemCooldown(stack.getItem(), player, this.getCooldown(stack, ticksUsed));
-            stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
-        }
-    }
-
-    @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return this.maxUseTime + WeaponUtil.getUpgradeLevel(stack) * this.bonusMaxUseTimePerLvl;
     }
@@ -101,12 +81,7 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
         return UseAction.BOW;
     }
 
-    @Override
-    public int useActionPriority() {
-        return 100;
-    }
-
-    private int getCooldown(ItemStack stack, int ticksUsed) {
+    public int getCooldown(ItemStack stack, int ticksUsed) {
         return Math.max(this.minCooldown, this.cooldown
                 - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl
                 - ticksUsed);
