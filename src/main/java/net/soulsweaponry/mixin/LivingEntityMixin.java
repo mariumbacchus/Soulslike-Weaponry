@@ -2,6 +2,7 @@ package net.soulsweaponry.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -17,6 +18,7 @@ import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -89,6 +91,15 @@ public class LivingEntityMixin {
         }
         if (source.getAttacker() instanceof LivingEntity attacker) {
             boolean anyFalse = false;
+            for (ItemStack armorStack : entity.getArmorItems()) {
+                if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, armorStack, entity, attacker)) {
+                            anyFalse = true;
+                        }
+                    }
+                }
+            }
             for (Hand hand : Hand.values()) {
                 ItemStack userStack = entity.getStackInHand(hand);
                 ItemStack attackerStack = attacker.getStackInHand(hand);
@@ -194,6 +205,43 @@ public class LivingEntityMixin {
         if (ConfigConstructor.ultra_heavy_disables_shields && IHasAbilities.getAbility(entity.getMainHandStack(), UltraHeavy.class).isPresent()) {
             info.setReturnValue(true);
             info.cancel();
+        }
+    }
+
+    @Inject(method = "canHaveStatusEffect", at = @At("HEAD"), cancellable = true)
+    private void canHaveStatusEffect(StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        for (ItemStack stack : entity.getArmorItems()) {
+            this.declineEffect(stack, entity, effect, info);
+        }
+        for (Hand hand : Hand.values()) {
+            this.declineEffect(entity.getStackInHand(hand), entity, effect, info);
+        }
+    }
+
+    @Unique
+    private void declineEffect(ItemStack stack, LivingEntity entity, StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
+        if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
+            return;
+        }
+        if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+            hasAbilities.getAbilities().forEach(ability -> {
+                if (ability.getStatusEffectsImmuneTo().contains(effect.getEffectType())) {
+                    info.setReturnValue(false);
+                    ability.onStatusEffectDeclined(entity, effect, stack);
+                }
+            });
+        }
+    }
+
+    @Inject(method = "onEquipStack", at = @At("HEAD"))
+    private void onEquipStack(EquipmentSlot slot, ItemStack oldStack, ItemStack newStack, CallbackInfo info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (newStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(newStack)) {
+            return;
+        }
+        if (newStack.getItem() instanceof IHasAbilities abilities) {
+            abilities.getAbilities().forEach(a -> a.onEquipStack(entity, slot, oldStack, newStack));
         }
     }
 }

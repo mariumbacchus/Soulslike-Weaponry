@@ -21,11 +21,6 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        return false;
-    }
-
-    @Override
     protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {
         if (player.getWorld().isClient) return;
         for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {
@@ -65,16 +60,6 @@ public class ForlornArmor extends SetBonusArmor {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_armor;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
     }
 
     @Override

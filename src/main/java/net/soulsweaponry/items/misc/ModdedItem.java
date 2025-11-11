@@ -38,11 +38,6 @@ public abstract class ModdedItem extends Item implements IConfigDisable, IToolti
     }
 
     @Override
-    public void addAbility(IAbility... abilities) {
-        Collections.addAll(this.abilities, abilities);
-    }
-
-    @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean vanilla = super.postHit(stack, target, attacker);
         boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);

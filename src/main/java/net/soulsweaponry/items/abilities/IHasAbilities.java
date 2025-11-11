@@ -4,7 +4,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +31,10 @@ import java.util.*;
 public interface IHasAbilities extends IConfigDisable {
     // TODO implement into all the abstract item classes (axes, bows, etc.) and use this to build the new ability system off of
     List<IAbility> getAbilities();
-    void addAbility(IAbility... abilities);
+
+    default void addAbility(IAbility... abilities) {
+        Collections.addAll(this.getAbilities(), abilities);
+    }
 
     default <T extends IAbility> Optional<T> findAbility(Class<T> type) {
         for (IAbility a : getAbilities()) {
@@ -86,7 +92,7 @@ public interface IHasAbilities extends IConfigDisable {
         return true;
     }
 
-    default boolean essenceNeeded(ItemStack stack, PlayerEntity player) {
+    default boolean preventUse(ItemStack stack, PlayerEntity player) {
         return this.getAbilities().stream().anyMatch(a -> a.preventUsePredicate(stack, player));
     }
 
@@ -101,7 +107,7 @@ public interface IHasAbilities extends IConfigDisable {
                 return TypedActionResult.fail(itemStack);
             } else if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
                 return TypedActionResult.fail(itemStack);
-            } else if (this.essenceNeeded(itemStack, user)) {
+            } else if (this.preventUse(itemStack, user)) {
                 return TypedActionResult.fail(itemStack);
             } else {
                 user.setCurrentHand(hand);
@@ -165,7 +171,7 @@ public interface IHasAbilities extends IConfigDisable {
         int fixedTicks = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
         for (IAbility a : this.getAbilities()) {
             if (sneaking && a.isSneakAbility()) {//TODO may need to do this (add continue lines) to other methods later
-                a.sneakingOnStoppedUsing(stack, world, user, fixedTicks);
+                a.sneakingOnStoppedUsing(stack, world, user, fixedTicks);// TODO things now call both normal and sneaking so example mjolnir throws a s well as flies, FIX!!
                 continue;
             }
             if (offhand && a.isOffhandAbility()) {
@@ -228,6 +234,9 @@ public interface IHasAbilities extends IConfigDisable {
     }
 
     default void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if (entity instanceof PlayerEntity player && this.preventUse(stack, player)) {
+            return;
+        }
         if (!this.isDisabled(stack)) {
             this.getAbilities().forEach(a -> a.inventoryTick(stack, world, entity, slot, selected));
         }
@@ -236,6 +245,9 @@ public interface IHasAbilities extends IConfigDisable {
     default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.isDisabled(stack)) {
             this.notifyDisabled(player);
+            return;
+        }
+        if (this.preventUse(stack, player)) {
             return;
         }
         boolean sneaking = player.isSneaking();
@@ -254,7 +266,7 @@ public interface IHasAbilities extends IConfigDisable {
     }
 
     default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        if (this.isDisabled(stack)) {
+        if (this.isDisabled(stack) || this.preventUse(stack, player)) {
             return; // Disabled item notification is given on client side
         }
         boolean sneaking = player.isSneaking();
@@ -289,7 +301,7 @@ public interface IHasAbilities extends IConfigDisable {
     }
 
     default ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if (this.isDisabled(stack)) {
+        if (this.isDisabled(stack) || this.preventUse(stack, user)) {
             return ActionResult.FAIL;
         }
         boolean sawSuccess = false;
@@ -349,6 +361,21 @@ public interface IHasAbilities extends IConfigDisable {
         }
         this.getAbilities().forEach(a -> a.finishUsing(stack, world, user));
         return stack;
+    }
+
+    /**
+     * Used in armor items only.
+     * @param vanillaBuilder the vanilla attributes to add custom ones to
+     * @param equipmentSlot equipment slot the armor item is meant for
+     * @return builder with the additional attributes
+     */
+    default AttributeModifiersComponent.Builder applyArmorAttributeModifiers(AttributeModifiersComponent vanillaBuilder, EquipmentSlot equipmentSlot) {
+        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanillaBuilder);
+        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(equipmentSlot);
+        this.getAbilities().forEach(ability -> {
+            ability.addArmorAttributeModifiers(builder, equipmentSlot, slot);
+        });
+        return builder;
     }
 
     /**

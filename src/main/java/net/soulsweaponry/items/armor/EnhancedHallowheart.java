@@ -16,17 +16,19 @@ import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animation.*;
 
+import java.util.List;
+
 public class EnhancedHallowheart extends Hallowheart {
 
     public EnhancedHallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.UNBURNABLE, TooltipAbilities.EXALT);
+        //this.addTooltipAbility(TooltipAbilities.UNBURNABLE, TooltipAbilities.EXALT);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
+        if (entity instanceof PlayerEntity player) {//this.isSlotActive(player, EquipmentSlot.CHEST)
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0, false, false));
             if (player.isOnFire() && player.age % 30 == 0) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0, false, false));
@@ -41,19 +43,19 @@ public class EnhancedHallowheart extends Hallowheart {
         }
     }
 
-    @Override
+    /*@Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST);
-    }
+    }*/
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[] {
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.withered_chest.lore.enhanced.1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.withered_chest.lore.enhanced.2").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.withered_chest.lore.enhanced.3").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.enhanced.3").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override

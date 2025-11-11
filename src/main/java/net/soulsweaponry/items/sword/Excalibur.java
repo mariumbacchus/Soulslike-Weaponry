@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.inventorytick.LightBringer;
+import net.soulsweaponry.items.abilities.immunity.LightBringer;
 import net.soulsweaponry.items.abilities.stoppedusing.SonicBoom;
 import net.soulsweaponry.items.abilities.userdamaged.LifeGuard;
 

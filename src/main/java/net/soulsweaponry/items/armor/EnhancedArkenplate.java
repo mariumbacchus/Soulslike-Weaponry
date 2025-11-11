@@ -19,29 +19,30 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class EnhancedArkenplate extends Arkenplate {
 
     public EnhancedArkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.MIRROR);
+        //this.addTooltipAbility(TooltipAbilities.MIRROR);
     }
 
-    @Override
+    /*@Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.isOf(ArmorRegistry.ENHANCED_ARKENPLATE);
-    }
+    }*/
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.arkenplate_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.arkenplate_lore_4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override

@@ -304,18 +304,31 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float[] withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
 
     @Entry public static boolean chaos_cape_wither_ground = true;
+
     @Entry public static float chaos_crown_luck_given = 1;
-    @Entry public static float chaos_crown_flip_effect_cooldown = 300;
+    @Entry public static float chaos_crown_flip_effect_duration_mod = 0.33f;
+    @Entry public static float chaos_crown_flip_effect_amp_mod = 0.5f;
     @Entry public static float chaos_crown_flip_effect_min_cooldown = 100;
-    @Entry public static boolean chaos_crown_flip_effect_enchant_reduces_cooldown = false;
-    @Entry public static String[] chaos_crown_flip_effect_enchant_reduces_cooldown_ids = {"unbreaking"};
-    @Entry public static float arkenplate_shockwave_cooldown = 200;
-    @Entry public static float arkenplate_shockwave_min_cooldown = 80;
-    @Entry public static boolean arkenplate_shockwave_enchant_reduces_cooldown = false;
-    @Entry public static String[] arkenplate_shockwave_enchant_reduces_cooldown_ids = {"unbreaking"};
-    @Entry public static float arkenplate_shockwave_knockback = 2f;
-    @Entry public static float arkenplate_shockwave_damage = 6f;
+    @Entry public static float chaos_crown_flip_effect_cooldown = 300;
+    @Entry public static float chaos_crown_flip_effect_reduced_cooldown_per_level = 40;
+
+    @Entry(min=0,max=1) public static float arkenplate_aftershock_activate_percent_health_threshold = 0.5f;
+    @Entry public static float arkenplate_aftershock_knockback = 1f;
+    @Entry public static float arkenplate_aftershock_bonus_knockback_per_level = 0.5f;
+    @Entry public static float arkenplate_aftershock_damage = 6f;
+    @Entry public static float arkenplate_aftershock_bonus_damage_per_level = 2f;
+    @Entry public static float arkenplate_aftershock_expansion_radius = 5f;
+    @Entry public static float arkenplate_aftershock_min_cooldown = 60;
+    @Entry public static float arkenplate_aftershock_cooldown = 160;
+    @Entry public static float arkenplate_aftershock_reduced_cooldown_per_level = 20;
+    @Entry(min=0,max=1) public static float arkenplate_unbreakable_activate_percent_threshold = 0.5f;
+    @Entry public static float arkenplate_unbreakable_resistance_amp = 1;
+    @Entry public static float arkenplate_unbreakable_resistance_bonus_amp_per_level = 0.3f;
+    @Entry public static float arkenplate_unbreakable_magic_resistance_amp = 1;
+    @Entry public static float arkenplate_unbreakable_magic_resistance_bonus_amp_per_level = 0.4f;
+
     @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.5f;
+
     @Entry public static float forlorn_set_bonus_range = 6f;
     @Entry public static float forlorn_set_bonus_heal = 2f;
     @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_1 = 0.5f;

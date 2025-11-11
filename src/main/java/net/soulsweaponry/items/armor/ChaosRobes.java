@@ -34,6 +34,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ChaosRobes extends ModdedArmor implements GeoItem {
@@ -45,7 +46,7 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
 
     public ChaosRobes(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.CORRUPT_GROUND);
+        //this.addTooltipAbility(TooltipAbilities.CORRUPT_GROUND);
         this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK);
         this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT);
 
@@ -60,7 +61,7 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
+        if (entity instanceof PlayerEntity player) {//&& this.isSlotActive(player, EquipmentSlot.CHEST)
             if (ConfigConstructor.chaos_cape_wither_ground) {
                 this.turnBlocks(player, world, player.getBlockPos(), 0);
             }
@@ -110,13 +111,13 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.chaos_robes_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.chaos_robes_lore_4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     private PlayState predicate(AnimationState<?> event) {
@@ -124,11 +125,11 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
         return PlayState.CONTINUE;
     }
 
-    @Override
+    /*@Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof ChaosRobes;
-    }
+    }*/
 
     @Override
     public boolean isDisabled(ItemStack stack) {

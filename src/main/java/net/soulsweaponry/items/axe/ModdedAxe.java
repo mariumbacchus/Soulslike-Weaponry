@@ -27,33 +27,16 @@ import java.util.List;
 
 public abstract class ModdedAxe extends AxeItem implements IConfigDisable, ICooldownItem, ITooltipInfo, IHasAbilities {
 
-    protected final float attackSpeed;
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>(); // TODO this can be merged into IAbility with own method calls in that child class, replace list with ability list instead
     protected final List<IAbility> abilities = new ArrayList<>();
-    private final float attackDamage;
 
     public ModdedAxe(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, settings.attributeModifiers(AxeItem.createAttributeModifiers(toolMaterial, attackDamage, - (4f - ingameAttackSpeed))));
-        this.attackSpeed = - (4f - ingameAttackSpeed);
-        this.attackDamage = attackDamage;
-    }
-
-    public float getAttackSpeed() {
-        return attackSpeed;
-    }
-
-    public float getAttackDamage() {
-        return attackDamage;
     }
 
     @Override
     public List<IAbility> getAbilities() {
         return this.abilities;
-    }
-
-    @Override
-    public void addAbility(IAbility... abilities) {
-        Collections.addAll(this.abilities, abilities);
     }
 
     @Override

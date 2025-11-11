@@ -15,7 +15,7 @@ public abstract class SetBonusArmor extends ModdedArmor {
 
     public SetBonusArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
         super(material, slot, settings);
-        this.addTooltipAbility(TooltipAbilities.SET_BONUS);
+        //this.addTooltipAbility(TooltipAbilities.SET_BONUS);
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ChaosHelmet extends ChaosCrown {
@@ -38,13 +39,13 @@ public class ChaosHelmet extends ChaosCrown {
     }
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override

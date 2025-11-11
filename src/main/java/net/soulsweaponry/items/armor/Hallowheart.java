@@ -30,6 +30,7 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility {
@@ -38,13 +39,13 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
 
     public Hallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.UNCEASING, TooltipAbilities.INFECTIOUS);
+        //this.addTooltipAbility(TooltipAbilities.UNCEASING, TooltipAbilities.INFECTIOUS);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
+        if (entity instanceof PlayerEntity player) {//this.isSlotActive(player, EquipmentSlot.CHEST)
             if (player.hasStatusEffect(StatusEffects.WITHER)) {
                 player.removeStatusEffect(StatusEffects.WITHER);
             }
@@ -62,13 +63,13 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[] {
-            Text.translatable("tooltip.soulsweapons.withered_chest.lore.1").formatted(Formatting.DARK_GRAY),
-            Text.translatable("tooltip.soulsweapons.withered_chest.lore.2").formatted(Formatting.DARK_GRAY),
-            Text.translatable("tooltip.soulsweapons.withered_chest.lore.3").formatted(Formatting.DARK_GRAY),
-            Text.translatable("tooltip.soulsweapons.withered_chest.lore.4").formatted(Formatting.DARK_GRAY),
-        };
+    public List<Text> getItemLore() {
+        return List.of(
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.1").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.2").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.3").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override
@@ -79,25 +80,15 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
         return PlayState.CONTINUE;
     }
 
-    @Override
+  /*  @Override
     public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
         ItemStack stack = player.getEquippedStack(slot);
         return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof Hallowheart;
-    }
+    }*/
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_hallowheart;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_ids;
     }
 
     @Override

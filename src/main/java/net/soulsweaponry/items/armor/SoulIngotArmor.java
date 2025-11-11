@@ -18,11 +18,6 @@ public class SoulIngotArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        return false;
-    }
-
-    @Override
     protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {}
 
     @Override
@@ -55,16 +50,6 @@ public class SoulIngotArmor extends SetBonusArmor {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_ingot_armor;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
     }
 
     @Override

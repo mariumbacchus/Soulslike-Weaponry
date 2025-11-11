@@ -1,30 +1,53 @@
 package net.soulsweaponry.items.abilities;
 
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.text.Texts;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface IAbility extends ICooldownItem {
 
+    /**
+     * Called when the player readies his main hand (scrolling to/selecting the slot the item is in)
+     */
     default void onMainHandEquip(PlayerEntity player, ItemStack stack) {}
+
+    /**
+     * Called when equipping/inserting the item in a slot, such as putting it in the armor slot or switching from
+     * offhand to main-hand. This is NOT called when scrolling to/selecting the item and readying it
+     * in the main-hand, {@link #onMainHandEquip(PlayerEntity, ItemStack)} is called instead.
+     * @param entity owner of the items
+     * @param slot equipment slot inserted in
+     * @param oldStack old stack that was in the slot
+     * @param newStack the new item inserted in the slot (which calls this method)
+     */
+    default void onEquipStack(LivingEntity entity, EquipmentSlot slot, ItemStack oldStack, ItemStack newStack) {}
+
     default void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
+
     default float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) { return 0f; }
 
     /**
@@ -138,7 +161,7 @@ public interface IAbility extends ICooldownItem {
     default boolean isOffhandAbility() { return false; }
 
     /**
-     * Called when the user is damaged when wielding this item.
+     * Called when the user is damaged when this item is equipped.
      * @return whether the target should take damage in the end or not
      */
     default boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {
@@ -264,8 +287,13 @@ public interface IAbility extends ICooldownItem {
     }
 
     /**
-     * If true, makes the {@link #use(World, PlayerEntity, Hand, ItemStack)}
-     * call return {@code TypedActionResult.fail(itemStack)} and therefore cancel.
+     * If true, <b>prevents</b> any usage ability call, namely the calls:
+     * <li> {@link IHasAbilities#use(World, PlayerEntity, Hand)}
+     * <li> {@link IHasAbilities#onStoppedUsing(ItemStack, World, LivingEntity, int)}
+     * <li> {@link IHasAbilities#inventoryTick(ItemStack, World, Entity, int, boolean)}
+     * <li> {@link IHasAbilities#useKeybindAbilityClient(ClientWorld, ItemStack, PlayerEntity, Hand)}
+     * <li> {@link IHasAbilities#useKeybindAbilityServer(ServerWorld, ItemStack, PlayerEntity, Hand)}
+     * <li> {@link IHasAbilities#useOnEntity(ItemStack, PlayerEntity, LivingEntity, Hand)}
      * <p>
      * Can be overwritten to for example prevent use() call if {@link EssenceNeeded}
      * returns insufficient essence amount, so the ability can't be used.
@@ -368,6 +396,29 @@ public interface IAbility extends ICooldownItem {
         return 0;
     }
 
+    /**
+     * Used in armor items only.
+     * @param builder the builder to add attributes to, should have vanilla components before passing in
+     * @param equipmentSlot equipment slot the armor item is meant for
+     * @param attributeModifierSlot attribute modifier slot the item will apply to
+     */
+    default void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {}
+
+    /**
+     * @return set of status effects the wielder cannot gain at all (trying to apply returns false and fails)
+     */
+    default Set<RegistryEntry<StatusEffect>> getStatusEffectsImmuneTo() {
+        return Set.of();
+    }
+
+    /**
+     * Called when {@link LivingEntity#canHaveStatusEffect(StatusEffectInstance)} returns false because the
+     * effect was inside the {@link #getStatusEffectsImmuneTo()} list.
+     * @param entity entity that got the effect
+     * @param declinedEffectInstance the declined status effect instance
+     */
+    default void onStatusEffectDeclined(LivingEntity entity, StatusEffectInstance declinedEffectInstance, ItemStack stack) {}
+
     List<Text> getTooltipAbilities(ItemStack stack);
 
     /**
@@ -392,5 +443,26 @@ public interface IAbility extends ICooldownItem {
         if (ConfigConstructor.inform_player_about_out_of_range) {
             player.sendMessage(Text.translatable("soulsweapons.weapon.out_of_range"), true);
         }
+    }
+
+    default Text getLocalizedEffectInstanceNames(List<StatusEffectInstance> effects) {
+        if (effects == null || effects.isEmpty()) {
+            return Text.empty();
+        }
+        var entries = effects.stream()
+                .map(StatusEffectInstance::getEffectType)
+                .toList();
+        return getLocalizedEffectNames(entries);
+    }
+
+    default Text getLocalizedEffectNames(Collection<RegistryEntry<StatusEffect>> effects) {
+        if (effects == null || effects.isEmpty()) {
+            return Text.empty();
+        }
+        var effectNames = effects.stream()
+                .map(eff -> Text.translatable(eff.value().getTranslationKey())
+                        .formatted(Formatting.DARK_GREEN))
+                .toList();
+        return Texts.join(effectNames, Text.literal(", ").formatted(Formatting.GRAY));
     }
 }
