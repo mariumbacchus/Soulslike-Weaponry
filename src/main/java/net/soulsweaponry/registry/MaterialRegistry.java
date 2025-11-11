@@ -23,10 +23,20 @@ public class MaterialRegistry {
             createMapWithArray(ConfigConstructor.chaos_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "chaos_armor"))), 4.0f, 0.2f));
+    public static final RegistryEntry<ArmorMaterial> ENHANCED_CHAOS_ARMOR = registerArmorMaterial("enhanced_chaos_armor", () -> new ArmorMaterial(
+            createMapWithArray(ConfigConstructor.enhanced_chaos_armor_armor_points),
+            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
+            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_chaos_armor"))), 4.0f, 0.2f));
+
     public static final RegistryEntry<ArmorMaterial> WITHERED_ARMOR = registerArmorMaterial("withered_armor", () -> new ArmorMaterial(
             createMapWithArray(ConfigConstructor.withered_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "withered_armor"))), 4.0f, 0.2f));
+    public static final RegistryEntry<ArmorMaterial> ENHANCED_WITHERED_ARMOR = registerArmorMaterial("enhanced_withered_armor", () -> new ArmorMaterial(
+            createMapWithArray(ConfigConstructor.enhanced_withered_armor_armor_points),
+            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
+            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_withered_armor"))), 4.0f, 0.2f));
+
     public static final RegistryEntry<ArmorMaterial> CHAOS_SET = registerArmorMaterial("chaos_set", () -> new ArmorMaterial(
             createMapWithArray(ConfigConstructor.chaos_set_armor_points),
             10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE),

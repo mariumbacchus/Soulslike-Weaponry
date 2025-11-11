@@ -11,9 +11,9 @@ public class ArmorRegistry {
     public static final Item CHAOS_CROWN = new ChaosCrown(MaterialRegistry.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(37)));
     public static final Item CHAOS_HELMET = new ChaosHelmet(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(55)));
     public static final Item ARKENPLATE = new Arkenplate(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(55)));
-    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
+    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(MaterialRegistry.ENHANCED_CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
     public static final Item WITHERED_CHEST = new Hallowheart(MaterialRegistry.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(55)));
-    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(MaterialRegistry.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
+    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(MaterialRegistry.ENHANCED_WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
     public static final Item CHAOS_ROBES = new ChaosRobes(MaterialRegistry.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(37)));
 
     public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(34)));

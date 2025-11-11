@@ -174,6 +174,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_sting = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
+    @Entry public static boolean disable_use_enhanced_arkenplate = false;
     @Entry public static boolean disable_use_chaos_crown = false;
     @Entry public static boolean disable_use_chaos_robes = false;
     @Entry public static boolean disable_use_hallowheart = false;
@@ -273,6 +274,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float[] chaos_armor_bleed_buildup_resistances = {40, 70, 100, 60};
     @Entry public static float[] chaos_armor_bleed_damage_resistances = {30, 50, 60, 40};
 
+    @Entry public static float[] enhanced_chaos_armor_armor_points = {4, 7, 10, 5};
+    @Entry public static float[] enhanced_chaos_armor_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] enhanced_chaos_armor_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] enhanced_chaos_armor_bleed_buildup_resistances = {40, 70, 100, 60};
+    @Entry public static float[] enhanced_chaos_armor_bleed_damage_resistances = {30, 50, 60, 40};
+
     @Entry public static float[] chaos_set_armor_points = {2, 3, 4, 1};
     @Entry public static float[] chaos_set_base_posture_increase = {0, 0, 0, 0};
     @Entry public static float[] chaos_set_posture_buildup_resistances = {0, 0, 0, 0};
@@ -303,6 +310,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float[] withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
     @Entry public static float[] withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
 
+    @Entry public static float[] enhanced_withered_armor_armor_points = {4, 7, 10, 5};
+    @Entry public static float[] enhanced_withered_armor_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] enhanced_withered_armor_posture_buildup_resistances = {10, 20, 25, 15};
+    @Entry public static float[] enhanced_withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
+    @Entry public static float[] enhanced_withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
+
     @Entry public static boolean chaos_cape_wither_ground = true;
 
     @Entry public static float chaos_crown_luck_given = 1;
@@ -313,6 +326,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float chaos_crown_flip_effect_reduced_cooldown_per_level = 40;
 
     @Entry(min=0,max=1) public static float arkenplate_aftershock_activate_percent_health_threshold = 0.5f;
+    @Entry(min=0,max=1) public static float arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level = 0.05f;
     @Entry public static float arkenplate_aftershock_knockback = 1f;
     @Entry public static float arkenplate_aftershock_bonus_knockback_per_level = 0.5f;
     @Entry public static float arkenplate_aftershock_damage = 6f;
@@ -322,12 +336,32 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float arkenplate_aftershock_cooldown = 160;
     @Entry public static float arkenplate_aftershock_reduced_cooldown_per_level = 20;
     @Entry(min=0,max=1) public static float arkenplate_unbreakable_activate_percent_threshold = 0.5f;
+    @Entry(min=0,max=1) public static float arkenplate_unbreakable_activate_bonus_percent_threshold_per_level = 0.05f;
     @Entry public static float arkenplate_unbreakable_resistance_amp = 1;
     @Entry public static float arkenplate_unbreakable_resistance_bonus_amp_per_level = 0.3f;
     @Entry public static float arkenplate_unbreakable_magic_resistance_amp = 1;
     @Entry public static float arkenplate_unbreakable_magic_resistance_bonus_amp_per_level = 0.4f;
 
-    @Entry(min=0,max=1) public static float arkenplate_mirror_trigger_percent = 0.5f;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_aftershock_activate_percent_health_threshold = 0.5f;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level = 0.05f;
+    @Entry public static float enhanced_arkenplate_aftershock_knockback = 1.5f;
+    @Entry public static float enhanced_arkenplate_aftershock_bonus_knockback_per_level = 0.6f;
+    @Entry public static float enhanced_arkenplate_aftershock_damage = 7f;
+    @Entry public static float enhanced_arkenplate_aftershock_bonus_damage_per_level = 3f;
+    @Entry public static float enhanced_arkenplate_aftershock_expansion_radius = 5f;
+    @Entry public static float enhanced_arkenplate_aftershock_min_cooldown = 50;
+    @Entry public static float enhanced_arkenplate_aftershock_cooldown = 160;
+    @Entry public static float enhanced_arkenplate_aftershock_reduced_cooldown_per_level = 30;
+    @Entry public static float enhanced_arkenplate_aftershock_weakness_duration = 160;
+    @Entry public static float enhanced_arkenplate_aftershock_weakness_amp = 2;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_unbreakable_activate_percent_threshold = 0.5f;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_unbreakable_activate_bonus_percent_threshold_per_level = 0.05f;
+    @Entry public static float enhanced_arkenplate_unbreakable_resistance_amp = 1;
+    @Entry public static float enhanced_arkenplate_unbreakable_resistance_bonus_amp_per_level = 0.3f;
+    @Entry public static float enhanced_arkenplate_unbreakable_magic_resistance_amp = 1;
+    @Entry public static float enhanced_arkenplate_unbreakable_magic_resistance_bonus_amp_per_level = 0.4f;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_trigger_percent = 0.5f;
+    @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_bonus_trigger_percent_per_level = 0.05f;
 
     @Entry public static float forlorn_set_bonus_range = 6f;
     @Entry public static float forlorn_set_bonus_heal = 2f;

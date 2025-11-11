@@ -87,17 +87,6 @@ public class PlayerEntityMixin {
                 info.setReturnValue(false);
             }
         }
-        // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
-                && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
-            Vec3d playerPos = player.getPos();
-            Vec3d projectilePos = projectile.getPos();
-            Vec3d projectileMotion = projectile.getVelocity();
-            Vec3d reflectionVector = this.calculateReflectionVector(playerPos, projectilePos, projectileMotion);
-            // Reflect the projectile back
-            projectile.setVelocity(reflectionVector);
-            info.setReturnValue(false);
-        }
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH) && !stack.isEmpty()
                 && (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ArmorRegistry.WITHERED_CHEST))) {
@@ -117,12 +106,6 @@ public class PlayerEntityMixin {
             }
             player.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1f, 1f);
         }
-    }
-
-    @Unique
-    private Vec3d calculateReflectionVector(Vec3d playerPos, Vec3d projectilePos, Vec3d projectileMotion) {
-        Vec3d vectorToPlayer = playerPos.subtract(projectilePos).normalize();
-        return projectileMotion.subtract(vectorToPlayer.multiply(projectileMotion.dotProduct(vectorToPlayer) * 2.0D));
     }
 
     @Inject(method = "attack", at = @At("HEAD"))

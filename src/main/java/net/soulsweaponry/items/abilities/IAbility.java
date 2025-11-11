@@ -164,7 +164,7 @@ public interface IAbility extends ICooldownItem {
      * Called when the user is damaged when this item is equipped.
      * @return whether the target should take damage in the end or not
      */
-    default boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user, LivingEntity attacker) {
+    default boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user) {
         return true;
     }
 
@@ -249,7 +249,7 @@ public interface IAbility extends ICooldownItem {
     /**
      * Called whenever an entity dies and the last damage source was the attacker,
      * this means the target is already dead and cannot be revived,
-     * use {@link #onTargetDamaged(DamageSource, float, ItemStack, LivingEntity, LivingEntity)}
+     * use {@link #onTargetDamaged(DamageSource, float, ItemStack, LivingEntity)}
      * if you want to revive the target.
      */
     default void onTargetDeath(DamageSource damageSource, ItemStack stack, LivingEntity target, LivingEntity attacker) {}
@@ -258,7 +258,7 @@ public interface IAbility extends ICooldownItem {
      * Called when the target is damaged by the user of the item having this ability.
      * @return whether the target should take damage in the end or not
      */
-    default boolean onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    default boolean onTargetDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity target) {
         return true;
     }
 

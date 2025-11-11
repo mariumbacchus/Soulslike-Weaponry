@@ -589,9 +589,8 @@
     "tooltip.soulsweapons.aftershock.1": "- Explode upon taking damage under §c%s Health§r",
     "tooltip.soulsweapons.aftershock.2": "- Mobs hit are affected with %s",
 
-    "tooltip.soulsweapons.arkenplate.mirror": "미러",
-    "tooltip.soulsweapons.arkenplate.mirror.1": "- 체력이 감소하면",
-    "tooltip.soulsweapons.arkenplate.mirror.2": "모든 적대적인 발사체를 튕겨냅니다.",
+    "tooltip.soulsweapons.mirror": "미러",
+    "tooltip.soulsweapons.mirror.1": "- Bounce off projectiles under %s Health ",
 
     "tooltip.soulsweapons.luminate": "광휘",
     "tooltip.soulsweapons.luminate.1": "- 주변에 적대적인 존재가 있을 때, 빛이 납니다.",

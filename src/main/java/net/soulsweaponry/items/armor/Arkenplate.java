@@ -3,8 +3,6 @@ package net.soulsweaponry.items.armor;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -29,6 +27,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final HalfHealthResistances UNBREAKABLE = new HalfHealthResistances(
             ConfigConstructor.arkenplate_unbreakable_activate_percent_threshold,
+            ConfigConstructor.arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
             (int) ConfigConstructor.arkenplate_unbreakable_resistance_amp,
             ConfigConstructor.arkenplate_unbreakable_resistance_bonus_amp_per_level,
             (int) ConfigConstructor.arkenplate_unbreakable_magic_resistance_amp,
@@ -36,6 +35,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
     );
     private static final Aftershock AFTERSHOCK = new Aftershock(
             ConfigConstructor.arkenplate_aftershock_activate_percent_health_threshold,
+            ConfigConstructor.arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
             ConfigConstructor.arkenplate_aftershock_knockback,
             ConfigConstructor.arkenplate_aftershock_bonus_knockback_per_level,
             ConfigConstructor.arkenplate_aftershock_damage,
@@ -45,10 +45,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
             (int) ConfigConstructor.arkenplate_aftershock_min_cooldown,
             (int) ConfigConstructor.arkenplate_aftershock_cooldown,
             (int) ConfigConstructor.arkenplate_aftershock_reduced_cooldown_per_level,
-            List.of(
-                    new StatusEffectInstance(StatusEffects.WEAKNESS, 160, 2),//TODO weakness is only meant for enhanced arkenplate
-                    new StatusEffectInstance(StatusEffects.STRENGTH, 160, 2)//TODO only for testing
-            )
+            List.of()
     );
 
     public Arkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {

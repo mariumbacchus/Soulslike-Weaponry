@@ -22,20 +22,27 @@ import java.util.List;
  * @param magicResistAmp
  * @param magicResistAmpPerLvl
  */
-public record HalfHealthResistances(float activeThreshold, int resistanceAmp, float resistanceAmpPerLvl, int magicResistAmp, float magicResistAmpPerLvl) implements IAbility {
+public record HalfHealthResistances(
+        float activeThreshold, float bonusActivateThresholdPerLvl,
+        int resistanceAmp, float resistanceAmpPerLvl, int magicResistAmp, float magicResistAmpPerLvl
+) implements IAbility {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity player && player.getHealth() <= player.getMaxHealth() * this.activeThreshold) {
-            int lvl = WeaponUtil.getUpgradeLevel(stack);
+        int lvl = WeaponUtil.getUpgradeLevel(stack);
+        if (entity instanceof PlayerEntity player && player.getHealth() <= player.getMaxHealth() * this.getThreshold(lvl)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, (int) (this.resistanceAmp + this.resistanceAmpPerLvl * lvl), false, false));
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, (int) (this.magicResistAmp + this.magicResistAmpPerLvl * lvl), false, false));
         }
     }
 
+    public float getThreshold(int lvl) {
+        return this.activeThreshold + this.bonusActivateThresholdPerLvl * lvl;
+    }
+
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
-        MutableText health = Text.of(String.format("%.0f", this.activeThreshold * 100) + "%").copy();
+        MutableText health = Text.of(String.format("%.0f", this.getThreshold(WeaponUtil.getUpgradeLevel(stack)) * 100) + "%").copy();
         return List.of(
                 Text.translatable("tooltip.soulsweapons.unbreakable_effect").formatted(Formatting.AQUA),
                 Text.translatable("tooltip.soulsweapons.unbreakable_effect.1", health.formatted(Formatting.RED)).formatted(Formatting.GRAY)

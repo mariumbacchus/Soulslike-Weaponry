@@ -74,9 +74,47 @@ public class LivingEntityMixin {
                 entity.removeStatusEffect(EffectRegistry.FREEZING);
             }
         }
+        boolean anyFalse = false;
+        for (ItemStack armorStack : entity.getArmorItems()) {
+            if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
+                for (IAbility a : hasUser.getAbilities()) {
+                    if (!a.onUserDamaged(source, amount, armorStack, entity)) {
+                        anyFalse = true;
+                    }
+                }
+            }
+        }
+        for (Hand hand : Hand.values()) {
+            ItemStack userStack = entity.getStackInHand(hand);
+            if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
+                for (IAbility a : hasUser.getAbilities()) {
+                    if (!a.onUserDamaged(source, amount, userStack, entity)) {
+                        anyFalse = true;
+                    }
+                }
+            }
+            if (source.getAttacker() instanceof LivingEntity attacker) {
+                ItemStack attackerStack = attacker.getStackInHand(hand);
+                if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
+                    for (IAbility a : hasAtk.getAbilities()) {
+                        if (!a.onTargetDamaged(source, amount, attackerStack, entity)) {
+                            anyFalse = true;
+                        }
+                    }
+                }
+            }
+        }
+        // Do lightning-thorns when having Stormveil effect
+        if (entity.hasStatusEffect(EffectRegistry.STORMVEIL) && source.getAttacker() instanceof LivingEntity attacker) {
+            ElectricCherry.EFFECT_INSTANCE.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
+        }
+        if (anyFalse) {
+            info.setReturnValue(false);
+            info.cancel();
+        }
     }
 
-    @Inject(method = "damage", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "damage", at = @At("TAIL"))
     public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         // Remove stacks of Blade Dance when taking damage
@@ -87,43 +125,6 @@ public class LivingEntityMixin {
             amp--;
             if (amp >= 0) {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, duration, amp));
-            }
-        }
-        if (source.getAttacker() instanceof LivingEntity attacker) {
-            boolean anyFalse = false;
-            for (ItemStack armorStack : entity.getArmorItems()) {
-                if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
-                    for (IAbility a : hasUser.getAbilities()) {
-                        if (!a.onUserDamaged(source, amount, armorStack, entity, attacker)) {
-                            anyFalse = true;
-                        }
-                    }
-                }
-            }
-            for (Hand hand : Hand.values()) {
-                ItemStack userStack = entity.getStackInHand(hand);
-                ItemStack attackerStack = attacker.getStackInHand(hand);
-                if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
-                    for (IAbility a : hasUser.getAbilities()) {
-                        if (!a.onUserDamaged(source, amount, userStack, entity, attacker)) {
-                            anyFalse = true;
-                        }
-                    }
-                }
-                if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
-                    for (IAbility a : hasAtk.getAbilities()) {
-                        if (!a.onTargetDamaged(source, amount, attackerStack, entity, attacker)) {
-                            anyFalse = true;
-                        }
-                    }
-                }
-            }
-            if (anyFalse) {
-                info.setReturnValue(false);
-            }
-            // Do lightning-thorns when having Stormveil effect
-            if (entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
-                ElectricCherry.EFFECT_INSTANCE.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
             }
         }
     }
