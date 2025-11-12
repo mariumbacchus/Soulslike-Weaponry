@@ -30,7 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
-import net.soulsweaponry.items.armor.ChaosRobes;
+import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -38,12 +38,19 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+
 public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
+    public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
+            (int) BossConfig.chaos_monarch_wither_ground_range,
+            0, 3, 0,
+            List.of(new StatusEffectInstance(StatusEffects.WITHER, 80, 1))
+    );
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
         super(entityType, world, Color.PURPLE);
@@ -195,8 +202,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
-        ChaosRobes cape = (ChaosRobes) ArmorRegistry.CHAOS_ROBES;
-        cape.turnBlocks(this, world, blockPos, 3);
+        CORRUPT_GROUND.turnBlocks(this, world, blockPos, ArmorRegistry.CHAOS_ROBES.getDefaultStack());
     }
 
     private void particleExplosion(ParticleEffect[] particles, float sizeModifier) {

@@ -39,6 +39,7 @@ public class ComponentRegistry {
     public static final ComponentType<Integer> SHARPENED_STRIKES = register("sharpened_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> ESSENCE = register("essence", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Boolean> LUMINATE = register("luminate", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
+    public static final ComponentType<Boolean> IS_CORRUPT_ACTIVE = register("is_corrupt_active", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(SoulsWeaponry.ModId, name),

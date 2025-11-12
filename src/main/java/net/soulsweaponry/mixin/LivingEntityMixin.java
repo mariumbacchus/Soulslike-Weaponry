@@ -18,7 +18,6 @@ import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.events.LivingEntityTickCallback;
-import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -222,26 +221,25 @@ public class LivingEntityMixin {
 
     @Unique
     private void declineEffect(ItemStack stack, LivingEntity entity, StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
-        if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
-            return;
-        }
-        if (stack.getItem() instanceof IHasAbilities hasAbilities) {
-            hasAbilities.getAbilities().forEach(ability -> {
+        if (stack.getItem() instanceof IHasAbilities hasAbilities && !hasAbilities.isDisabled(stack)) {
+            boolean apply = true;
+            for (IAbility ability : hasAbilities.getAbilities()) {
                 if (ability.getStatusEffectsImmuneTo().contains(effect.getEffectType())) {
-                    info.setReturnValue(false);
+                    apply = false;
                     ability.onStatusEffectDeclined(entity, effect, stack);
                 }
-            });
+            }
+            if (!apply) {
+                info.setReturnValue(false);
+                info.cancel();
+            }
         }
     }
 
     @Inject(method = "onEquipStack", at = @At("HEAD"))
     private void onEquipStack(EquipmentSlot slot, ItemStack oldStack, ItemStack newStack, CallbackInfo info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
-        if (newStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(newStack)) {
-            return;
-        }
-        if (newStack.getItem() instanceof IHasAbilities abilities) {
+        if (newStack.getItem() instanceof IHasAbilities abilities && !abilities.isDisabled(newStack)) {
             abilities.getAbilities().forEach(a -> a.onEquipStack(entity, slot, oldStack, newStack));
         }
     }

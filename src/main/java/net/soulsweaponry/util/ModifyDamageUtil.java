@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
@@ -16,7 +15,6 @@ import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
-import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -33,10 +31,21 @@ public class ModifyDamageUtil {
      * @return new damage amount to be taken
      */
     public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
-        if (entity.hasStatusEffect(EffectRegistry.DECAY) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_HELMET)) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
-            float amountAdded = newAmount * ((amplifier + 1)*.2f);
-            newAmount += amountAdded;
+        if (entity.hasStatusEffect(EffectRegistry.DECAY)) {
+            boolean immune = true;
+            for (ItemStack stack : entity.getArmorItems()) {
+                immune = isDecayImmune(stack);
+            }
+            if (!immune) {
+                for (ItemStack stack : entity.getHandItems()) {
+                    immune = isDecayImmune(stack);
+                }
+            }
+            if (!immune) {
+                int amplifier = entity.getStatusEffect(EffectRegistry.DECAY).getAmplifier();
+                float amountAdded = newAmount * ((amplifier + 1) * 0.2f);
+                newAmount += amountAdded;
+            }
         }
         if ((source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
@@ -93,5 +102,13 @@ public class ModifyDamageUtil {
             }
         }
         return newAmount;
+    }
+
+    private static boolean isDecayImmune(ItemStack stack) {
+        boolean immune = false;
+        if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+            immune = hasAbilities.getAbilities().stream().anyMatch(a -> a.getStatusEffectsImmuneTo().contains(EffectRegistry.DECAY));
+        }
+        return immune;
     }
 }

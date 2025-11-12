@@ -316,7 +316,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float[] enhanced_withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
     @Entry public static float[] enhanced_withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
 
-    @Entry public static boolean chaos_cape_wither_ground = true;
+    @Entry public static float chaos_cape_corrupt_ground_range = 3;
+    @Entry public static float chaos_cape_corrupt_ground_range_per_level = 1;
+    @Entry public static float chaos_cape_corrupt_ground_status_effect_range = 3;
+    @Entry public static float chaos_cape_corrupt_ground_status_effect_range_per_level = 1;
+    @Entry public static float chaos_cape_corrupt_ground_status_effect_wither_duration = 80;
+    @Entry public static float chaos_cape_corrupt_ground_status_effect_wither_amp = 1;
 
     @Entry public static float chaos_crown_luck_given = 1;
     @Entry public static float chaos_crown_flip_effect_duration_mod = 0.33f;

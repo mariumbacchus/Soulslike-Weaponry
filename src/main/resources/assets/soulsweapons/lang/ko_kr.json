@@ -533,11 +533,11 @@
     "tooltip.soulsweapons.effect_reversal.2": "with reduced duration and amplifier",
     "tooltip.soulsweapons.effect_reversal.3": "Default effect if no opposite is found is regen",
 
-    "tooltip.soulsweapons.chaos_robes": "부패",
-    "tooltip.soulsweapons.chaos_robes_description_1": "- 장착하면 가까운 풀과 흙 블록을",
-    "tooltip.soulsweapons.chaos_robes_description_2": "짧은 시간 동안 §5시듦§r 상태로 만듭니다.",
-    "tooltip.soulsweapons.chaos_robes_description_3": "- 2초마다 주변의 비플레이어 개체에",
-    "tooltip.soulsweapons.chaos_robes_description_4": "§5시듦§r를 적용합니다.",
+    "tooltip.soulsweapons.corrupt_ground": "부패",
+    "tooltip.soulsweapons.corrupt_ground.1": "- Toggle to §5Wither§r all nearby Grass",
+    "tooltip.soulsweapons.corrupt_ground.2": "and Dirt blocks for a short duration",
+    "tooltip.soulsweapons.corrupt_ground.3": "- Every 2 seconds, apply §5Wither§r to",
+    "tooltip.soulsweapons.corrupt_ground.4": "nearby non-player entities",
 
     "tooltip.soulsweapons.freeze": "서리 룬",
     "tooltip.soulsweapons.freeze_description": "- Apply §b%s Frost Buildup§r and §bPermafrost§r effect post hit.",

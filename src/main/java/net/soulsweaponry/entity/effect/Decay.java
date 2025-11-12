@@ -27,8 +27,7 @@ public class Decay extends StatusEffect {
                 ItemStack stack = entity.getEquippedStack(slot);
                 stack.damage(amplifier + 1, player, slot);
             }
-            return true;
         }
-        return false;
+        return true;
     }
 }

@@ -32,8 +32,8 @@ public class WitheredBlock extends Block {
 
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 40, 0));
+        if (entity instanceof LivingEntity living) {
+            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, 40, 0));
         }
         super.onSteppedOn(world, pos, state, entity);
     }

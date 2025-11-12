@@ -41,7 +41,11 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
     );
     private static final EffectImmunity DECAY_IMMUNITY = new EffectImmunity(
             Set.of(EffectRegistry.DECAY),
-            (entity, declinedEffect, stack) -> entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, declinedEffect.getAmplifier()))
+            (entity, declinedEffect, stack) -> {
+                if (entity.age % 20 == 0) {
+                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, declinedEffect.getAmplifier()));
+                }
+            }
     );
 
     public ChaosCrown(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {

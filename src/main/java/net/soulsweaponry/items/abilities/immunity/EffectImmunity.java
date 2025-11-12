@@ -25,6 +25,7 @@ public class EffectImmunity implements IAbility {
     private final List<StatusEffectCategory> categoriesImmuneTo;
     private final Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo;
     private final TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined;
+    private boolean hasPositiveEffects = true;
 
     public EffectImmunity(List<StatusEffectCategory> categoriesImmuneTo, Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo, TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined) {
         this.categoriesImmuneTo = categoriesImmuneTo;
@@ -38,10 +39,12 @@ public class EffectImmunity implements IAbility {
 
     public EffectImmunity(Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo) {
         this(List.of(), statusEffectsImmuneTo, (entity, effect, stack) -> {});
+        this.hasPositiveEffects = false;
     }
 
     public EffectImmunity(List<StatusEffectCategory> categoriesImmuneTo) {
         this(categoriesImmuneTo, Set.of(), (entity, effect, stack) -> {});
+        this.hasPositiveEffects = false;
     }
 
     @Override
@@ -86,12 +89,18 @@ public class EffectImmunity implements IAbility {
         }
     }
 
+    public void setHasPositiveEffects(boolean hasPositiveEffects) {
+        this.hasPositiveEffects = hasPositiveEffects;
+    }
+
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
-        return List.of(
-                Text.translatable("tooltip.soulsweapons.cleansing_artifact").formatted(Formatting.DARK_RED),
-                Text.translatable("tooltip.soulsweapons.cleansing_artifact.1", this.getLocalizedEffectNames(this.statusEffectsImmuneTo)).formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.cleansing_artifact.2").formatted(Formatting.GRAY)
-        );
+        List<Text> tooltip = new ArrayList<>();
+        tooltip.add(Text.translatable("tooltip.soulsweapons.cleansing_artifact").formatted(Formatting.DARK_RED));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.cleansing_artifact.1", this.getLocalizedEffectNames(this.statusEffectsImmuneTo)).formatted(Formatting.GRAY));
+        if (this.hasPositiveEffects) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.cleansing_artifact.2").formatted(Formatting.GRAY));
+        }
+        return tooltip;
     }
 }

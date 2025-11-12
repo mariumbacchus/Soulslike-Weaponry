@@ -35,6 +35,11 @@
 - Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
 - Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade
 - Lich Bane now always deal the bonus magic damage, regardless of % health left
+- Changed Cape of Chaos
+  - Ability keybind toggles whether the ground should be withered or not
+  - The wither effect no longer applies to allies of the user
+  - Removed config line chaos_cape_wither_ground in favor of the "disable use" one for the item
+- Fixed bug preventing mobs from having the Decay effect
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow

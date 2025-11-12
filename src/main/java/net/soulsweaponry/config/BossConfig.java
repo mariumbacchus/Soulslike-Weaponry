@@ -94,6 +94,7 @@ public class BossConfig extends MidnightConfig {
     @Entry(min = 0) public static float chaos_monarch_damage_modifier = 1f;
     @Entry(min = 0) public static float chaos_monarch_xp = 500;
     @Entry public static boolean chaos_monarch_wither_ground = true;
+    @Entry public static float chaos_monarch_wither_ground_range = 6;
     @Entry public static boolean chaos_monarch_disables_shields = true;
     @Entry public static boolean chaos_monarch_is_fire_immune = true;
     @Entry public static boolean chaos_monarch_has_inverted_heal_and_harm = true;

@@ -71,13 +71,6 @@ public class TooltipUtil {
                 }
                 //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
-            case CORRUPT_GROUND -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
-            }
             case TRICK_WEAPON -> {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {
