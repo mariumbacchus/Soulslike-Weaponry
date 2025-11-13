@@ -67,6 +67,19 @@ public class EffectRegistry {
                             EntityAttributeModifier.Operation.ADD_VALUE
                     ), "soul_of_cinder"
     );
+    public static final RegistryEntry<StatusEffect> EXALTED = registerEffect(
+            new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xff0000)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            Identifier.of(SoulsWeaponry.ModId, "effect.exalted.strength"), 1.5f,
+                            EntityAttributeModifier.Operation.ADD_VALUE
+                    ).addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_SPEED,
+                            Identifier.of(SoulsWeaponry.ModId, "effect.exalted.haste"), 0.1F,
+                            EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    )
+            , "exalted"
+    );
 
     public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");

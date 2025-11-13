@@ -178,6 +178,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_chaos_crown = false;
     @Entry public static boolean disable_use_chaos_robes = false;
     @Entry public static boolean disable_use_hallowheart = false;
+    @Entry public static boolean disable_use_enhanced_hallowheart = false;
     @Entry public static boolean disable_use_soul_ingot_armor = false;
     @Entry public static boolean disable_use_soul_robes_armor = false;
     @Entry public static boolean disable_use_forlorn_armor = false;
@@ -370,17 +371,49 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float forlorn_set_bonus_range = 6f;
     @Entry public static float forlorn_set_bonus_heal = 2f;
-    @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_1 = 0.5f;
-    @Entry(min=0,max=1) public static float withered_chest_strength_trigger_percent_2 = 0.25f;
-    @Entry public static float withered_chest_ability_cooldown = 500;
-    @Entry public static float withered_chest_ability_min_cooldown = 100;
-    @Entry public static boolean withered_chest_ability_enchant_reduces_cooldown = false;
-    @Entry public static String[] withered_chest_ability_enchant_reduces_cooldown_ids = {"unbreaking"};
-    @Entry public static float withered_chest_apply_wither_duration = 100;
-    @Entry public static float withered_chest_apply_wither_amplifier = 0;
-    @Entry public static float withered_chest_apply_fire_seconds = 6;
-    @Entry public static float withered_chest_life_leach_duration = 400;
-    @Entry public static float withered_chest_life_leach_amplifier = 0;
+
+    @Entry public static float withered_chest_infectious_damage = 1;
+    @Entry public static float withered_chest_infectious_damage_per_level = 1;
+    @Entry public static float withered_chest_infectious_knockback = 0.5f;
+    @Entry public static float withered_chest_infectious_knockback_per_level = 0;
+    @Entry public static float withered_chest_infectious_apply_wither_duration = 100;
+    @Entry public static float withered_chest_infectious_apply_wither_duration_per_level = 20;
+    @Entry public static float withered_chest_infectious_apply_wither_amplifier = 0;
+    @Entry public static float withered_chest_infectious_apply_wither_amplifier_per_level = 0.4f;
+    @Entry public static float withered_chest_infectious_apply_fire_seconds = 0;
+    @Entry public static float withered_chest_infectious_apply_fire_seconds_per_level = 0;
+    @Entry public static float withered_chest_unceasing_life_leach_duration = 400;
+    @Entry public static float withered_chest_unceasing_life_leach_duration_per_level = 40;
+    @Entry public static float withered_chest_unceasing_life_leach_amplifier = 0;
+    @Entry public static float withered_chest_unceasing_life_leach_amplifier_per_level = 0.4f;
+    @Entry public static float withered_chest_unceasing_min_cooldown = 100;
+    @Entry public static float withered_chest_unceasing_cooldown = 500;
+    @Entry public static float withered_chest_unceasing_reduced_cooldown_per_level = 60;
+
+    @Entry public static float enhanced_withered_chest_infectious_damage = 1;
+    @Entry public static float enhanced_withered_chest_infectious_damage_per_level = 1;
+    @Entry public static float enhanced_withered_chest_infectious_knockback = 0.5f;
+    @Entry public static float enhanced_withered_chest_infectious_knockback_per_level = 0;
+    @Entry public static float enhanced_withered_chest_infectious_apply_wither_duration = 100;
+    @Entry public static float enhanced_withered_chest_infectious_apply_wither_duration_per_level = 20;
+    @Entry public static float enhanced_withered_chest_infectious_apply_wither_amplifier = 0;
+    @Entry public static float enhanced_withered_chest_infectious_apply_wither_amplifier_per_level = 0.4f;
+    @Entry public static float enhanced_withered_chest_infectious_apply_fire_seconds = 6;
+    @Entry public static float enhanced_withered_chest_infectious_apply_fire_seconds_per_level = 1;
+
+    @Entry public static float enhanced_withered_chest_unceasing_life_leach_duration = 400;
+    @Entry public static float enhanced_withered_chest_unceasing_life_leach_duration_per_level = 40;
+    @Entry public static float enhanced_withered_chest_unceasing_life_leach_amplifier = 0;
+    @Entry public static float enhanced_withered_chest_unceasing_life_leach_amplifier_per_level = 0.4f;
+    @Entry public static float enhanced_withered_chest_unceasing_min_cooldown = 100;
+    @Entry public static float enhanced_withered_chest_unceasing_cooldown = 500;
+    @Entry public static float enhanced_withered_chest_unceasing_reduced_cooldown_per_level = 60;
+
+    @Entry public static float enhanced_withered_chest_exalt_amp_per_missing_health_percent = 0.05f;
+    @Entry public static float enhanced_withered_chest_exalt_amp_per_missing_health_percent_bonus_per_level = 0.01f;
+    @Entry public static float enhanced_withered_chest_exalt_amp_max = 4;
+    @Entry public static float enhanced_withered_chest_exalt_amp_max_increase_per_level = 0.4f;
+    @Entry public static float enhanced_withered_chest_exalt_duration = 20;
 
     @Entry public static float bloodlust_damage = 7;
     @Entry public static float bloodlust_attack_speed = 1.6f;

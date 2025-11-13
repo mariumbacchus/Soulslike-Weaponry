@@ -45,32 +45,6 @@ public class TooltipUtil {
                     tooltip.addAll(Arrays.asList(armor.getFullSetAbilities()));
                 }
             }
-            case EXALT -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.4").formatted(Formatting.DARK_GRAY));
-            }
-            case UNBURNABLE -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune.1").formatted(Formatting.GRAY));
-            }
-            case INFECTIOUS -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
-                if (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.3").formatted(Formatting.GRAY));
-                }
-            }
-            case UNCEASING -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing").formatted(Formatting.DARK_PURPLE));
-                for (int i = 1; i <= 4; i++) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
-                }
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
-            }
             case TRICK_WEAPON -> {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {

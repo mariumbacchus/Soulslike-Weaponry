@@ -28,7 +28,7 @@ public class LifeLeach extends StatusEffect {
     public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         LivingEntity target = entity.getAttacking();
         if (entity.getWorld().isClient) {
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 6; i++) {
                 entity.getWorld().addParticle(ParticleRegistry.DARK_STAR, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }
         }

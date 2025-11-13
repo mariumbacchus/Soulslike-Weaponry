@@ -170,7 +170,7 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Called whenever the user dies, this means the user is already dead and
-     * cannot be revived, use {@link #onUserDamaged(DamageSource, float, ItemStack, LivingEntity, LivingEntity)}
+     * cannot be revived, use {@link #onUserDamaged(DamageSource, float, ItemStack, LivingEntity)}
      * if you want to revive the user.
      */
     default void onUserDeath(DamageSource damageSource, ItemStack stack, LivingEntity user, LivingEntity attacker) {}

@@ -13,19 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -86,25 +82,6 @@ public class PlayerEntityMixin {
                 attacker.takeKnockback(0.4f,  player.getX() - attacker.getX(), player.getZ() - attacker.getZ());
                 info.setReturnValue(false);
             }
-        }
-        ItemStack stack = player.getInventory().getArmorStack(2);
-        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH) && !stack.isEmpty()
-                && (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ArmorRegistry.WITHERED_CHEST))) {
-            double x = player.getX() - attacker.getX();
-            double z = player.getZ() - attacker.getZ();
-            attacker.damage(player.getDamageSources().wither(), 1f);
-            attacker.takeKnockback(0.5f, x, z);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, (int) ConfigConstructor.withered_chest_apply_wither_duration, (int) ConfigConstructor.withered_chest_apply_wither_amplifier));
-            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
-                attacker.setOnFireFor((int) ConfigConstructor.withered_chest_apply_fire_seconds);
-            }
-            if (!player.getWorld().isClient) {
-                for (int i = 0; i < 50; i++) {
-                    ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME, player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
-                            player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f);
-                }
-            }
-            player.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1f, 1f);
         }
     }
 
