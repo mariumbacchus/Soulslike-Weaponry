@@ -735,9 +735,15 @@
     "tooltip.soulsweapons.exalt.2": "- Missing health makes you §cExalted§r, enhancing",
     "tooltip.soulsweapons.exalt.3": "damage & attack speed, scales with missing health",
 
-    "tooltip.soulsweapons.armor.set_bonus": "풀 세트 보너스",
-    "tooltip.soulsweapons.armor.set_bonus.gain_effects": "- 얻는 효과: ",
-    "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- 당신 근처의 생물이 죽을 때마다 치유됩니다.",
+    "tooltip.soulsweapons.set_bonus": "Set Bonus",
+    "tooltip.soulsweapons.set_bonus.1": "- Requires fully equipped set to activate abilities",
+    "tooltip.soulsweapons.set_bonus.2": "Only helmet slot item level gets checked",
+    "tooltip.soulsweapons.set_bonus.3": "Set: %s, %s",
+    "tooltip.soulsweapons.set_bonus.4": "%s, %s",
+
+    "tooltip.soulsweapons.soul_feast": "Soul Feast",
+    "tooltip.soulsweapons.soul_feast.1": "- Heal whenever an entity dies near you",
+
     "tooltip.soulsweapons.epic_fight.crouch_replaces_offhand": "Epic Fight 모드와 함께, 보조 손 대신 앉으면서 사용하세요.",
 
     "tooltip.soulsweapons.transparent": "Transparent",

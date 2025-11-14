@@ -369,8 +369,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_trigger_percent = 0.5f;
     @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_bonus_trigger_percent_per_level = 0.05f;
 
-    @Entry public static float forlorn_set_bonus_range = 6f;
-    @Entry public static float forlorn_set_bonus_heal = 2f;
+    @Entry public static float forlorn_armor_soul_feast_range = 6f;
+    @Entry public static float forlorn_armor_soul_feast_bonus_range_per_level = 1f;
+    @Entry public static float forlorn_armor_soul_feast_heal = 2f;
+    @Entry public static float forlorn_armor_soul_feast_bonus_heal_per_level = 0.5f;
 
     @Entry public static float withered_chest_infectious_damage = 1;
     @Entry public static float withered_chest_infectious_damage_per_level = 1;

@@ -666,9 +666,15 @@
     "tooltip.soulsweapons.exalt.2": "- Missing health makes you §cExalted§r, enhancing",
     "tooltip.soulsweapons.exalt.3": "damage & attack speed, scales with missing health",
 
-    "tooltip.soulsweapons.armor.set_bonus": "Full Set Bonus",
-    "tooltip.soulsweapons.armor.set_bonus.gain_effects": "- Gain ",
-    "tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal": "- Heal whenever an entity dies near you",
+    "tooltip.soulsweapons.set_bonus": "Set Bonus",
+    "tooltip.soulsweapons.set_bonus.1": "- Requires fully equipped set to activate abilities",
+    "tooltip.soulsweapons.set_bonus.2": "Only helmet slot item level gets checked",
+    "tooltip.soulsweapons.set_bonus.3": "Set: %s, %s",
+    "tooltip.soulsweapons.set_bonus.4": "%s, %s",
+
+    "tooltip.soulsweapons.soul_feast": "Soul Feast",
+    "tooltip.soulsweapons.soul_feast.1": "- Heal whenever an entity dies near you",
+
     "tooltip.soulsweapons.transparent": "Transparent",
     "tooltip.soulsweapons.transparent.1": "- Use to turn the weapon invisible for others",
 

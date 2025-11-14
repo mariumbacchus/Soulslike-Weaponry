@@ -36,15 +36,6 @@ public class TooltipUtil {
     // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
-            case SET_BONUS -> {
-                if (stack.getItem() instanceof SetBonusArmor armor) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
-                    for (StatusEffectInstance effect : armor.getFullSetEffects()) {
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().value().getName()).formatted(Formatting.GRAY));
-                    }
-                    tooltip.addAll(Arrays.asList(armor.getFullSetAbilities()));
-                }
-            }
             case TRICK_WEAPON -> {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {

@@ -22,7 +22,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collection;
 import java.util.List;
