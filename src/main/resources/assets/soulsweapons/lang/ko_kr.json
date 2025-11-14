@@ -744,6 +744,9 @@
     "tooltip.soulsweapons.soul_feast": "Soul Feast",
     "tooltip.soulsweapons.soul_feast.1": "- Heal whenever an entity dies near you",
 
+    "tooltip.soulsweapons.fortified": "Fortified",
+    "tooltip.soulsweapons.fortified.1": "- Gain continuous %s",
+
     "tooltip.soulsweapons.epic_fight.crouch_replaces_offhand": "Epic Fight 모드와 함께, 보조 손 대신 앉으면서 사용하세요.",
 
     "tooltip.soulsweapons.transparent": "Transparent",

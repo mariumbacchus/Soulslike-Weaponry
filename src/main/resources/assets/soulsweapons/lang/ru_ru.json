@@ -669,6 +669,9 @@
     "tooltip.soulsweapons.soul_feast": "Soul Feast",
     "tooltip.soulsweapons.soul_feast.1": "- Heal whenever an entity dies near you",
 
+    "tooltip.soulsweapons.fortified": "Fortified",
+    "tooltip.soulsweapons.fortified.1": "- Gain continuous %s",
+
     "tooltip.soulsweapons.transparent": "Transparent",
     "tooltip.soulsweapons.transparent.1": "- Use to turn the weapon invisible for others",
 

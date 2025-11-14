@@ -2,12 +2,8 @@ package net.soulsweaponry.items.armor;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
@@ -18,16 +14,11 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.ICooldownItem;
-import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.armorattributes.BleedResistance;
 import net.soulsweaponry.items.abilities.armorattributes.PostureResistance;
-import net.soulsweaponry.registry.AttributeRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, ICooldownItem, IHasAbilities {

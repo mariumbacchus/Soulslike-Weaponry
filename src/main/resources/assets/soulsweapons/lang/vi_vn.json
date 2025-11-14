@@ -667,6 +667,9 @@
   "tooltip.soulsweapons.soul_feast": "Soul Feast",
   "tooltip.soulsweapons.soul_feast.1": "- Heal whenever an entity dies near you",
 
+  "tooltip.soulsweapons.fortified": "Fortified",
+  "tooltip.soulsweapons.fortified.1": "- Gain continuous %s",
+
   "tooltip.soulsweapons.transparent": "Trong Suốt",
   "tooltip.soulsweapons.transparent.1": "- Sử dụng để làm vũ khí vô hình đối với người khác",
 

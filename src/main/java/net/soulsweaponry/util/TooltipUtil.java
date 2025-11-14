@@ -1,7 +1,6 @@
 package net.soulsweaponry.util;
 
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
@@ -12,15 +11,10 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
-import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
-import net.soulsweaponry.items.sword.BluemoonGreatsword;
-import net.soulsweaponry.items.sword.Skofnung;
-import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TooltipUtil {

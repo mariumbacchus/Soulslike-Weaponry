@@ -374,6 +374,16 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float forlorn_armor_soul_feast_heal = 2f;
     @Entry public static float forlorn_armor_soul_feast_bonus_heal_per_level = 0.5f;
 
+    @Entry public static float soul_ingot_armor_fortified_resistance_duration = 40;
+    @Entry public static float soul_ingot_armor_fortified_resistance_amp = 0;
+    @Entry public static float soul_ingot_armor_fortified_resistance_amp_per_level = 0.2f;
+
+    @Entry public static float soul_robes_armor_fortified_magic_resistance_duration = 40;
+    @Entry public static float soul_robes_armor_fortified_magic_resistance_amp = 3;
+    @Entry public static float soul_robes_armor_fortified_magic_resistance_amp_per_level = 0.2f;
+    @Entry public static float soul_robes_armor_fortified_night_vision_duration = 400;
+    @Entry public static float soul_robes_armor_fortified_night_vision_amp = 0;
+
     @Entry public static float withered_chest_infectious_damage = 1;
     @Entry public static float withered_chest_infectious_damage_per_level = 1;
     @Entry public static float withered_chest_infectious_knockback = 0.5f;
