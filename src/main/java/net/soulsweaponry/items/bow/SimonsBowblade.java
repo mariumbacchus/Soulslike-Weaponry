@@ -20,7 +20,7 @@ public class SimonsBowblade extends ModdedBow implements IPostureLossItem {
                 ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
                 repairIngredientSupplier);
         UndeadBonus undeadBonus = new UndeadBonus(ConfigConstructor.simons_bowblade_projectile_righteous_base_undead_bonus_damage, ConfigConstructor.simons_bowblade_projectile_righteous_undead_bonus_damage_per_level);
-        this.addTooltipAbility(TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
+        //this.addTooltipAbility(TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
         //this.addAbility(undeadBonus); TODO make bows and crossbows implement IHasAbilities
     }
 
@@ -29,7 +29,6 @@ public class SimonsBowblade extends ModdedBow implements IPostureLossItem {
         return ConfigConstructor.disable_use_simons_bowblade;
     }
 
-    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         SilverArrow arrow = new SilverArrow(shooter, world, arrowStack, bowStack);
         //arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + WeaponUtil.getLevel(bowStack, Enchantments.FIRE_ASPECT));TODO implement when bows implement IHasAbilities

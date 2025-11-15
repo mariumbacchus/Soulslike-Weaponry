@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, IShootModProjectile, ICooldownItem, ITooltipInfo {
+public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, ICooldownItem {
 
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
@@ -48,21 +48,18 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, context, tooltip, type);
+        //this.appendTooltipAbilities(stack, context, tooltip, type);
         super.appendTooltip(stack, context, tooltip, type);
     }
 
-    @Override
     public List<TooltipAbilities> getTooltipAbilities() {
         return this.tooltipAbilities;
     }
 
-    @Override
     public void addTooltipAbility(TooltipAbilities... abilities) {
         Collections.addAll(this.tooltipAbilities, abilities);
     }
-
-    @Override
+    
     public Text[] getAdditionalTooltips() {
         return new Text[0];
     }

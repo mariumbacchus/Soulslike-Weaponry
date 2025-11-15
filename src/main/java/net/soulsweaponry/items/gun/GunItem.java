@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.gun;
 
-import net.fabric_extras.ranged_weapon.api.EntityAttributes_RangedWeapon;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.tooltip.TooltipType;
@@ -25,26 +24,24 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
 // NOTE: Remember to add the item to ConventionalItemTags.BOW_TOOLS or something like that to make UseAction.BOW animation work
-public abstract class GunItem extends RangedWeaponItem implements IConfigDisable, ITooltipInfo {
+public abstract class GunItem extends RangedWeaponItem implements IConfigDisable {
 
     protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public GunItem(Settings settings) {
         super(settings);
-        this.addTooltipAbility(TooltipAbilities.GUN_ITEM);
+        //this.addTooltipAbility(TooltipAbilities.GUN_ITEM);TODO
     }
     
     @Override
@@ -258,23 +255,7 @@ public abstract class GunItem extends RangedWeaponItem implements IConfigDisable
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }
-        this.appendTooltipAbilities(stack, context, tooltip, type);
         super.appendTooltip(stack, context, tooltip, type);
-    }
-
-    @Override
-    public List<TooltipAbilities> getTooltipAbilities() {
-        return this.tooltipAbilities;
-    }
-
-    @Override
-    public void addTooltipAbility(TooltipAbilities... abilities) {
-        Collections.addAll(this.tooltipAbilities, abilities);
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
     }
 
     @Override

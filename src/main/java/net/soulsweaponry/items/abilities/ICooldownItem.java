@@ -76,36 +76,4 @@ public interface ICooldownItem {
     default boolean hasCooldownEffect(PlayerEntity user) {
         return user.hasStatusEffect(EffectRegistry.COOLDOWN);
     }
-
-    //TODO remove these under (are just for testing since i cant launch without them since all other items use these methods)
-    @Deprecated
-    default boolean canEnchantReduceCooldown(ItemStack stack) {return false; }
-    @Deprecated
-    default String[] getReduceCooldownEnchantIds(ItemStack stack) {return new String[]{""};}
-
-    @Deprecated
-    default int getReduceCooldownEnchantLevel(ItemStack stack) {
-        return 0;
-    }
-
-    @Deprecated
-    default int getReduceLifeStealCooldownEnchantLevel(ItemStack stack) {
-        return 0;
-    }
-
-    @Deprecated
-    default int getMaxLevel(String[] ids, ItemStack stack) {
-        return 0;
-    }
-
-    @Deprecated
-    default int getReducedCooldownEnchantLevel(ItemStack stack, String enchantId) {
-        return 0;
-    }
-
-    @Deprecated
-    default void applyItemCooldown(PlayerEntity player, int cooldown) {}
-
-    @Deprecated
-    default void applyItemCooldownNoCheck(PlayerEntity player, int cooldown) {}
 }

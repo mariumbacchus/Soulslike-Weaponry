@@ -17,7 +17,7 @@ public class TranslucentWeapon extends ModdedSword {
 
     public TranslucentWeapon(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, ingameAttackSpeed, settings);
-        this.tooltipAbilities.add(TooltipAbilities.TRANSPARENT);
+        //this.tooltipAbilities.add(TooltipAbilities.TRANSPARENT); TODO
     }
 
     @Override
@@ -41,15 +41,5 @@ public class TranslucentWeapon extends ModdedSword {
 
     public static boolean isInvisible(ItemStack stack) {
         return Optional.ofNullable(stack.get(ComponentRegistry.INVISIBLE)).orElse(false);
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

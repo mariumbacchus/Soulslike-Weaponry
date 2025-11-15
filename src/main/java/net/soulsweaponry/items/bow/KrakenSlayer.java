@@ -22,10 +22,9 @@ public class KrakenSlayer extends ModdedBow {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_pull_time_ticks,
                 ConfigConstructor.kraken_slayer_damage, ConfigConstructor.kraken_slayer_bonus_velocity),
                 repairIngredientSupplier);
-        this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
+        //this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);TODO
     }
 
-    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         return getKrakenSlayerProjectile(world, bowStack, shooter, originalArrow.getDamage(), ConfigConstructor.kraken_slayer_bonus_true_damage + WeaponUtil.getLevel(bowStack, Enchantments.POWER));
     }

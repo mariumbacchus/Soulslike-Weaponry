@@ -29,7 +29,7 @@ public class MoonstoneRing extends ModdedItem {
 
     public MoonstoneRing(Settings settings) {
         super(settings);
-        this.addTooltipAbility(TooltipAbilities.LUNAR_HERALD);
+        //this.addTooltipAbility(TooltipAbilities.LUNAR_HERALD);TODO
     }
 
     //TODO turn the effect into a permanent buff instead that can be in bubble slot?

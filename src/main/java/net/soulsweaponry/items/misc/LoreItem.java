@@ -37,7 +37,7 @@ public class LoreItem extends ModdedItem {
         }
         return tooltips;
     }
-
+/* TODO
     @Override
     public Text[] getAdditionalTooltips() {
         return this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
@@ -46,7 +46,7 @@ public class LoreItem extends ModdedItem {
     @Override
     public Text[] getLoreTooltips() {
         return !this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
-    }
+    }*/
 
     @Override
     public boolean isDisabled(ItemStack stack) {

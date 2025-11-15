@@ -572,15 +572,18 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_scythe_prime_omnivamp_cooldown = 50;
     @Entry public static float darkin_scythe_prime_omnivamp_min_cooldown = 10;
     @Entry public static float darkin_scythe_prime_omnivamp_reduced_cooldown_per_level = 8;
+
     @Entry public static float darkmoon_longbow_damage = 9;
     @Entry public static float darkmoon_longbow_bonus_velocity = 0f;
     @Entry public static float darkmoon_longbow_pull_time_ticks = 25;
-    @Entry public static double darkmoon_longbow_ability_damage = 13D;
-    @Entry public static float darkmoon_longbow_ability_cooldown_ticks = 150;
-    @Entry public static float darkmoon_longbow_ability_min_cooldown_ticks = 60;
-    @Entry public static boolean darkmoon_longbow_enchant_reduces_cooldown = true;
-    @Entry public static String[] darkmoon_longbow_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static boolean darkmoon_longbow_can_apply_arrow_effects = true;
+
+    @Entry public static float darkmoon_longbow_arrow_storm_damage = 13;
+    @Entry public static float darkmoon_longbow_arrow_storm_bonus_damage_per_level = 2.5f;
+    @Entry public static float darkmoon_longbow_arrow_storm_min_cooldown = 60;
+    @Entry public static float darkmoon_longbow_arrow_storm_cooldown = 150;
+    @Entry public static float darkmoon_longbow_arrow_storm_reduced_cooldown_per_level = 30;
+
 
     @Entry public static float dark_moon_greatsword_damage = 10;
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
@@ -836,15 +839,25 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float galeforce_damage = 10;
     @Entry public static float galeforce_bonus_velocity = 0.25f;
-    @Entry public static float galeforce_ability_velocity = 3f;
     @Entry public static float galeforce_pull_time_ticks = 20;
-    @Entry public static float galeforce_speed_effect_duration_ticks = 50;
-    @Entry public static float galeforce_speed_effect_amplifier = 4;
-    @Entry public static float galeforce_dash_cooldown = 80;
-    @Entry public static float galeforce_dash_min_cooldown = 20;
-    @Entry public static boolean galeforce_dash_enchant_reduces_cooldown = false;
-    @Entry public static String[] galeforce_dash_enchant_reduces_cooldown_ids = {"unbreaking"};
     @Entry public static boolean galeforce_can_apply_arrow_effects = true;
+
+    @Entry public static float galeforce_cloudburst_damage = 10f;
+    @Entry public static float galeforce_cloudburst_bonus_damage_per_level = 2f;
+    @Entry public static float galeforce_cloudburst_velocity = 3f;
+    @Entry public static float galeforce_cloudburst_bonus_velocity_per_level = 0;
+    @Entry public static float galeforce_cloudburst_speed_duration = 60;
+    @Entry public static float galeforce_cloudburst_speed_bonus_duration_per_level = 10;
+    @Entry public static float galeforce_cloudburst_speed_amp = 2;
+    @Entry public static float galeforce_cloudburst_speed_bonus_amp_per_level = 0.4f;
+    @Entry public static float galeforce_cloudburst_min_cooldown = 20;
+    @Entry public static float galeforce_cloudburst_cooldown = 80;
+    @Entry public static float galeforce_cloudburst_reduced_cooldown_per_level = 8;
+
+    @Entry public static float galeforce_gale_arrows_speed_duration = 50;
+    @Entry public static float galeforce_gale_arrows_speed_bonus_duration_per_level = 8;
+    @Entry public static float galeforce_gale_arrows_speed_amp = 2;
+    @Entry public static float galeforce_gale_arrows_speed_bonus_amp_per_level = 0.4f;
 
     @Entry public static float glaive_of_hodir_damage = 8;
     @Entry public static float glaive_of_hodir_attack_speed = 1.3f;

@@ -15,17 +15,13 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.items.abilities.ICooldownItem;
 import net.soulsweaponry.items.abilities.IHasAbilities;
-import net.soulsweaponry.util.TooltipAbilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public abstract class ModdedSword extends SwordItem implements IConfigDisable, ICooldownItem, ITooltipInfo, IHasAbilities {
+public abstract class ModdedSword extends SwordItem implements IHasAbilities {
 
-    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>(); // TODO this can be merged into IAbility with own method calls in that child class, replace list with ability list instead
     protected final List<IAbility> abilities = new ArrayList<>();
 
     public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
@@ -89,28 +85,9 @@ public abstract class ModdedSword extends SwordItem implements IConfigDisable, I
         IHasAbilities.super.usageTick(world, user, stack, remainingUseTicks);
     }
 
-    // TODO everything under needs to be changed/merged with IAbility
-
-    @Override
-    public List<TooltipAbilities> getTooltipAbilities() {
-        return this.tooltipAbilities;
-    }
-
-    @Override
-    public void addTooltipAbility(TooltipAbilities... abilities) {
-        Collections.addAll(this.tooltipAbilities, abilities);
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         this.appendTooltipAbilities(tooltip, stack);
-
-        this.appendTooltipAbilities(stack, context, tooltip, type);//TODO remove when removing ITooltipInfo
         super.appendTooltip(stack, context, tooltip, type);
     }
 }

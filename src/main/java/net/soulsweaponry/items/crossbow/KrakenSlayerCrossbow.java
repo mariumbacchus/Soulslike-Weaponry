@@ -19,10 +19,9 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
                 ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_bonus_velocity),
                 repairIngredientSupplier);
-        this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
+        //this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
     }
 
-    @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         float bonus =  WeaponUtil.getLevel(bowStack, Enchantments.QUICK_CHARGE) / 4f;
         PersistentProjectileEntity newProjectile = KrakenSlayer.getKrakenSlayerProjectile(world, bowStack, shooter, originalArrow.getDamage() + bonus, ConfigConstructor.kraken_slayer_bonus_true_damage);
@@ -33,15 +32,5 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_crossbow;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

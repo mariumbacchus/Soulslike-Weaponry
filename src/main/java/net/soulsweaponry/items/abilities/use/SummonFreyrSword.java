@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entitydata.FreyrSwordSummonData;
-import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,8 +52,8 @@ public class SummonFreyrSword implements IAbility {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.summon_weapon").formatted(Formatting.AQUA),
                 Text.translatable("tooltip.soulsweapons.summon_weapon.1").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.summon_weapon.2", ITooltipInfo.formatKeybindText(KeyBindRegistry.returnFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.summon_weapon.3", ITooltipInfo.formatKeybindText(KeyBindRegistry.stationaryFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.summon_weapon.2", IHasAbilities.formatKeybindText(KeyBindRegistry.returnFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.summon_weapon.3", IHasAbilities.formatKeybindText(KeyBindRegistry.stationaryFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.summon_weapon.4").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.summon_weapon.5").formatted(Formatting.DARK_GRAY)
         );

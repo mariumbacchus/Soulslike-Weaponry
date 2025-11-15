@@ -11,6 +11,7 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -18,13 +19,6 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import java.util.List;
 
 public class TooltipUtil {
-
-    public static void addTooltip(List<Text> tooltip, String id, Formatting formatting, int lines) {
-        tooltip.add(Text.translatable("tooltip.soulsweapons." + id).formatted(formatting));
-        for (int i = 1; i <= lines; i++) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons." + id + "_description_" + i).formatted(Formatting.GRAY));
-        }
-    }
 
     // TODO man i love technical debt its so fun yippie
     // TODO Wow this is getting long... gotta fix that...
@@ -34,7 +28,7 @@ public class TooltipUtil {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {
                     Item item = stack.getItem();
-                    if (ITooltipInfo.shouldShowInfo()) {
+                    /*if (ITooltipInfo.shouldShowInfo()) { TODO
                         Text text = TrickWeaponUtil.getMappedItemName(stack);
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
@@ -44,12 +38,8 @@ public class TooltipUtil {
                         }
                     } else if (!(item instanceof ITooltipInfo)) {
                         ITooltipInfo.addShowInfoText(tooltip);
-                    }
+                    }*/
                 }
-            }
-            case GALEFORCE -> {
-                addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case LUNAR_HERALD -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
@@ -59,17 +49,9 @@ public class TooltipUtil {
             }
             case PARRY -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.parry.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1", IHasAbilities.formatKeybindText(KeyBindRegistry.parry.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_3").formatted(Formatting.GRAY));
-            }
-            case FAST_PULL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.fast_pull_1").formatted(Formatting.GRAY));
-            }
-            case SLOW_PULL -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.slow_pull_1").formatted(Formatting.GRAY));
             }
             case THIRD_SHOT -> {
                 float bonus = 0f;
@@ -87,17 +69,6 @@ public class TooltipUtil {
                 if (stack.isOf(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.third_shot_4").formatted(Formatting.GRAY));
                 }
-            }
-            case MOONLIGHT_ARROW -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_arrow").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_arrow_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.moonlight_arrow_2").formatted(Formatting.GRAY));
-            }
-            case ARROW_STORM -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm").formatted(Formatting.DARK_PURPLE));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.arrow_storm_2").formatted(Formatting.GRAY));
-                //addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
             }
             case TRANSPARENT -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.transparent").formatted(Formatting.AQUA));

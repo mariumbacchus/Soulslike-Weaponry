@@ -491,13 +491,13 @@
     "tooltip.soulsweapons.lucky": "행운의 굴림",
     "tooltip.soulsweapons.lucky_description_1": "- §aLuck§r attribute increases chances for better rolls.",
 
-    "tooltip.soulsweapons.galeforce": "구름 폭풍",
-    "tooltip.soulsweapons.galeforce_description_1": "- 발사 후 §f속도§r를 부여합니다.",
-    "tooltip.soulsweapons.galeforce_description_2": "- 능력 단축키를 눌러 방향으로 §f대시§r하며,",
-    "tooltip.soulsweapons.galeforce_description_3": "플레이어가 마지막으로 공격한 대상을 향해 화살을 쏘고,",
-    "tooltip.soulsweapons.galeforce_description_4": "대상의 누락된 체력에 따라 최대 §c100%§r 더 많은 피해를 입힙니다.",
-    "tooltip.soulsweapons.galeforce_description_5": "만약 대상이 없으면, 앞쪽으로 화살을 쏩니다.",
-    "tooltip.soulsweapons.galeforce_description_6": "",
+    "tooltip.soulsweapons.gale_arrows": "Gale Arrows",
+    "tooltip.soulsweapons.gale_arrows.1": "- Grants §fSpeed§r after firing",
+    "tooltip.soulsweapons.cloudburst": "Cloudburst",
+    "tooltip.soulsweapons.cloudburst.1": "- §fDash§r a direction, firing an arrow at",
+    "tooltip.soulsweapons.cloudburst.2": "your last attacked target, dealing more",
+    "tooltip.soulsweapons.cloudburst.3": "damage based on missing health",
+    "tooltip.soulsweapons.cloudburst.4": "Shoots arrow in front if no target is present",
 
     "tooltip.soulsweapons.meridias_retribution": "메리디아의 응징",
     "tooltip.soulsweapons.meridias_retribution.1": "- §5언데드§r를 처치하면 폭발이 발생하여",
@@ -689,13 +689,10 @@
     "tooltip.soulsweapons.blight.1": "- At %s amp over %d, apply %f too",
     "tooltip.soulsweapons.blight.2": "- §dBlight§r increases damage taken in percent based on armor",
 
-    "tooltip.soulsweapons.fast_pull": "빠른 발사",
-    "tooltip.soulsweapons.fast_pull_1": "- 이 무기의 당기는 속도가 증가합니다.",
-    "tooltip.soulsweapons.fast_pull_2": "- 당기는 속도가 다음과 같이 증가합니다: ",
-
-    "tooltip.soulsweapons.slow_pull": "중량 운반",
-    "tooltip.soulsweapons.slow_pull_1": "- 이 무기의 발사 속도가 감소합니다.",
-    "tooltip.soulsweapons.slow_pull_2": "- 발사 속도가 이 무기에서 감소합니다. ",
+    "tooltip.soulsweapons.fast_pull": "Swift Draw",
+    "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
+    "tooltip.soulsweapons.slow_pull": "Heavy Haul",
+    "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
 
     "tooltip.soulsweapons.third_shot": "내려치기",
     "tooltip.soulsweapons.third_shot_1": "- 매 §b3번째§r 발사마다 강화되어",
@@ -704,12 +701,11 @@
     "tooltip.soulsweapons.third_shot_4": "- 빠른 장착은 발사체 피해를 증가시킵니다.",
 
     "tooltip.soulsweapons.moonlight_arrow": "달빛 화살통",
-    "tooltip.soulsweapons.moonlight_arrow_1": "- §3달빛 화살§r을 발사하여 순수한 §3마법 피해§r를 입히며,",
-    "tooltip.soulsweapons.moonlight_arrow_2": "§f관통§r하여 대상을 관통합니다.",
+    "tooltip.soulsweapons.moonlight_arrow.1": "- §3달빛 화살§r을 발사하여 순수한 §3마법 피해§r를 입히며,",
+    "tooltip.soulsweapons.moonlight_arrow.2": "§f관통§r하여 대상을 관통합니다.",
 
     "tooltip.soulsweapons.arrow_storm": "화살 폭풍",
-    "tooltip.soulsweapons.arrow_storm_1": "- 폭풍 구름을 소환하여",
-    "tooltip.soulsweapons.arrow_storm_2": "작은 §3달빛 화살§r의 연속 발사를 비오듯 내립니다.",
+    "tooltip.soulsweapons.arrow_storm.1": "- Summon a cloud that rains down §3Moonlight Arrows§r",
 
     "tooltip.soulsweapons.gun_posture_loss": "투사체당 자세 손실: ",
     "tooltip.soulsweapons.gun_posture_loss_on_players": "플레이어에게는 %s만 적용됩니다.",

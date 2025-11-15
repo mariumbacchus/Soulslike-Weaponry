@@ -6,9 +6,6 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ITooltipInfo;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.TooltipUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,11 +19,11 @@ public class ShieldItemMixin {
     @Inject(method = "appendTooltip", at = @At("TAIL"))
     protected void interceptTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo info) {
         if (ConfigConstructor.enable_shield_parry) {
-            if (ITooltipInfo.shouldShowInfo()) {
+            /*if (ITooltipInfo.shouldShowInfo()) { TODOO
                 TooltipUtil.addAbilityTooltip(TooltipAbilities.PARRY, stack, tooltip);
             } else {
-                ITooltipInfo.addShowInfoText(tooltip);
-            }
+                //ITooltipInfo.addShowInfoText(tooltip);
+            }*/
         }
     }
 }

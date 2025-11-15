@@ -11,9 +11,7 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.items.abilities.ICooldownItem;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.armorattributes.BleedResistance;
 import net.soulsweaponry.items.abilities.armorattributes.PostureResistance;
@@ -21,7 +19,7 @@ import net.soulsweaponry.items.abilities.armorattributes.PostureResistance;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ModdedArmor extends ArmorItem implements IConfigDisable, ICooldownItem, IHasAbilities {
+public abstract class ModdedArmor extends ArmorItem implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
