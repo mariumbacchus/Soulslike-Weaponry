@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.abilities;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

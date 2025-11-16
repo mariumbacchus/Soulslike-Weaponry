@@ -11,7 +11,7 @@ import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public abstract class SpawnBossBlock extends Block implements IConfigDisable {

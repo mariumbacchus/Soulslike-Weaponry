@@ -2,8 +2,6 @@ package net.soulsweaponry.items.crossbow;
 
 import net.fabric_extras.ranged_weapon.api.CustomCrossbow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -12,7 +10,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -59,36 +56,18 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
         return super.use(world, user, hand);
     }
 
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        boolean vanilla = super.postHit(stack, target, attacker);
-        boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);
-        return vanilla || abilities;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return IHasAbilities.super.getUseAction(stack);
+    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
+        return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         this.appendTooltipAbilities(tooltip, stack);
-        // Crossbows overwrite the traditional appendTooltip without using super so this from the mixin is needed
         TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
         int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
         if (lvl > 0) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
         }
         super.appendTooltip(stack, context, tooltip, type);
-    }
-
-    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
-        return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
     }
 }

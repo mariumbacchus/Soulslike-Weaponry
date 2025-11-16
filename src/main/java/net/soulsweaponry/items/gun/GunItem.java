@@ -23,7 +23,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
-import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipAbilities;

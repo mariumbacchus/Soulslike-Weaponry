@@ -10,7 +10,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
-import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.networking.C2S.packets.SwitchTrickWeaponC2S;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;

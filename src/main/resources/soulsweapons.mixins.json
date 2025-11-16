@@ -12,6 +12,7 @@
     "GlassBottleMixin",
     "ItemMixin",
     "LivingEntityMixin",
+    "MiningToolItemMixin",
     "ModelInvoker",
     "PersistentProjectileEntityAccessor",
     "PersistentProjectileEntityInvoker",
@@ -19,6 +20,7 @@
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "ServerPlayNetworkHandlerMixin",
+    "SwordItemMixin",
     "WitherEntityMixin"
   ],
   "client": [

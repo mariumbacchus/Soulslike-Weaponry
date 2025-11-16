@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;

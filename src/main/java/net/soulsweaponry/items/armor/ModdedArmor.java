@@ -3,14 +3,9 @@ package net.soulsweaponry.items.armor;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.armorattributes.BleedResistance;
@@ -36,17 +31,6 @@ public abstract class ModdedArmor extends ArmorItem implements IHasAbilities {
     }
 
     private final Supplier<AttributeModifiersComponent> attributeModifiers = Suppliers.memoize(() -> this.applyArmorAttributeModifiers(super.getAttributeModifiers(), this.type.getEquipmentSlot()).build());
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        this.appendTooltipAbilities(tooltip, stack);
-        super.appendTooltip(stack, context, tooltip, type);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
-    }
 
     @Override
     public AttributeModifiersComponent getAttributeModifiers() {

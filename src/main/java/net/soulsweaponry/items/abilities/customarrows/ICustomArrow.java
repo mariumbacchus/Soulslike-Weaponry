@@ -32,4 +32,9 @@ public interface ICustomArrow extends IAbility {
     default UseAction getUseAction() {
         return UseAction.BOW;
     }
+
+    @Override
+    default boolean isChargeToUse() {
+        return true;
+    }
 }

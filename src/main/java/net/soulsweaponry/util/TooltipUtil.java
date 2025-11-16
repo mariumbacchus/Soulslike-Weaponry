@@ -1,6 +1,5 @@
 package net.soulsweaponry.util;
 
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
@@ -10,36 +9,28 @@ import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 
 import java.util.List;
 
 public class TooltipUtil {
 
-    // TODO man i love technical debt its so fun yippie
-    // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {
-                /*ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
-                if (mappedStack != null) {
+                Text text = TrickWeaponUtil.getMappedItemName(stack);
+                if (text != null) {
                     Item item = stack.getItem();
-                    /*if (ITooltipInfo.shouldShowInfo()) { TODO
-                        Text text = TrickWeaponUtil.getMappedItemName(stack);
+                    if (IHasAbilities.shouldShowInfo()) {
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
-                        if (text != null) {
-                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                                    .append(text).formatted(Formatting.WHITE));
-                        }
-                    } else if (!(item instanceof ITooltipInfo)) {
-                        ITooltipInfo.addShowInfoText(tooltip);
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon.1", IHasAbilities.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon.2", text.copy().formatted(Formatting.WHITE)).formatted(Formatting.DARK_GRAY));
+                    } else if (!(item instanceof IHasAbilities)) {
+                        IHasAbilities.addShowInfoText(tooltip);
                     }
-                }*/
+                }
             }
             case LUNAR_HERALD -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
