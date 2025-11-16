@@ -74,12 +74,6 @@ public class TooltipUtil {
                     }
                 }
             }
-            case PROJECTILE_POSTURE_LOSS -> {
-                if (stack.getItem() instanceof IPostureLossItem postureLoss) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss").formatted(Formatting.LIGHT_PURPLE));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.projectile_posture_loss.1", postureLoss.getPostureLoss()).formatted(Formatting.GRAY));
-                }
-            }
         }
     }
 }

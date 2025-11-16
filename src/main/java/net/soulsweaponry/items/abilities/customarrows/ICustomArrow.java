@@ -3,6 +3,7 @@ package net.soulsweaponry.items.abilities.customarrows;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 
@@ -26,4 +27,9 @@ public interface ICustomArrow extends IAbility {
      * @return new custom projectile instance, null if no custom one is used
      */
     PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow);
+
+    @Override
+    default UseAction getUseAction() {
+        return UseAction.BOW;
+    }
 }

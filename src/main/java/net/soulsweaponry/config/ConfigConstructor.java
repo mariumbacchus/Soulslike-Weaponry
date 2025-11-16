@@ -1177,13 +1177,15 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float simons_blade_attack_speed = 1.6f;
     @Entry public static float simons_blade_righteous_base_undead_bonus_damage = 3f;
     @Entry public static float simons_blade_righteous_undead_bonus_damage_per_level = 0.5f;
+
     @Entry public static float simons_bowblade_projectile_damage = 6;
     @Entry public static float simons_bowblade_bonus_velocity = 0f;
     @Entry public static float simons_bowblade_pull_time_ticks = 25;
-    @Entry public static float simons_bowblade_projectile_righteous_base_undead_bonus_damage = 4f;
-    @Entry public static float simons_bowblade_projectile_righteous_undead_bonus_damage_per_level = 0.5f;
-    @Entry public static float simons_bowblade_projectile_posture_loss = 30;
-    @Entry public static boolean simons_bowblade_projectile_can_apply_arrow_effects = true;
+    @Entry public static float simons_bowblade_silver_arrows_base_undead_bonus_damage = 4f;
+    @Entry public static float simons_bowblade_silver_arrows_undead_bonus_damage_per_level = 0.5f;
+    @Entry public static float simons_bowblade_silver_arrows_posture_loss = 30;
+    @Entry public static float simons_bowblade_silver_arrows_bonus_posture_loss_per_level = 6;
+    @Entry public static boolean simons_bowblade_silver_arrows_can_apply_arrow_effects = true;
 
     @Entry public static float skofnung_damage = 8;
     @Entry public static float skofnung_attack_speed = 1.6f;

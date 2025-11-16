@@ -77,6 +77,6 @@ public class SilverArrow extends ModArrow implements IPostureLossProjectile {
 
     @Override
     public boolean canHaveArrowEffects() {
-        return ConfigConstructor.simons_bowblade_projectile_can_apply_arrow_effects;
+        return ConfigConstructor.simons_bowblade_silver_arrows_can_apply_arrow_effects;
     }
 }

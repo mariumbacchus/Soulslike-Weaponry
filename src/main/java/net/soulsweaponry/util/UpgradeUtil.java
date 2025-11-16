@@ -115,4 +115,6 @@ public class UpgradeUtil {
     public static void setOrReplaceRangedHasteUpgrade(ItemStack stack, float totalMultiplier) {
         addOrReplaceUpgradeModifier(stack, EntityAttributes_RangedWeapon.HASTE.entry, AttributeModifierSlot.MAINHAND, UPGRADE_RANGED_HASTE_ID, totalMultiplier, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
     }
+
+    //TODO trickweapons keep their original upgrades, maybe make it switch between upgrades? from melee to ranged and so on?
 }
