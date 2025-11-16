@@ -695,10 +695,9 @@
     "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
 
     "tooltip.soulsweapons.third_shot": "내려치기",
-    "tooltip.soulsweapons.third_shot_1": "- 매 §b3번째§r 발사마다 강화되어",
-    "tooltip.soulsweapons.third_shot_2": "추가적인 진짜 피해를 입힙니다.",
-    "tooltip.soulsweapons.third_shot_3": "진짜 피해는 다른 플레이어에게는 다음과 같이 감소합니다.",
-    "tooltip.soulsweapons.third_shot_4": "- 빠른 장착은 발사체 피해를 증가시킵니다.",
+    "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+    "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+    "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
 
     "tooltip.soulsweapons.moonlight_arrow": "달빛 화살통",
     "tooltip.soulsweapons.moonlight_arrow.1": "- §3달빛 화살§r을 발사하여 순수한 §3마법 피해§r를 입히며,",

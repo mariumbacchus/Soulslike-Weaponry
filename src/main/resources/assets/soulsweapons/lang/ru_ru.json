@@ -627,11 +627,12 @@
     "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
     "tooltip.soulsweapons.slow_pull": "Heavy Haul",
     "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
+
     "tooltip.soulsweapons.third_shot": "Сбить с Ног",
-    "tooltip.soulsweapons.third_shot_1": "- Каждый §b3-й§r выстрел усилен, нанося",
-    "tooltip.soulsweapons.third_shot_2": " бонусный истинный урон.",
-    "tooltip.soulsweapons.third_shot_3": "Истинный урон снижается против других игроков на ",
-    "tooltip.soulsweapons.third_shot_4": "- Быстрая Зарядка увеличивает урон от снарядов.",
+    "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+    "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+    "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
+
     "tooltip.soulsweapons.moonlight_arrow": "Колчан Лунного Света",
     "tooltip.soulsweapons.moonlight_arrow.1": "- Стреляет §3Стрелами Лунного Света§r, которые наносят чистый",
     "tooltip.soulsweapons.moonlight_arrow.2": "§3Магический Урон§r и §fПронизывают§r цели.",

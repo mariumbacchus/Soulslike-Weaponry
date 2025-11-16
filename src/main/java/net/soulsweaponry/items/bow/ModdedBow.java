@@ -13,6 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -65,6 +66,11 @@ public abstract class ModdedBow extends CustomBow implements IHasAbilities {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return IHasAbilities.super.getUseAction(stack);
     }
 
     @Override

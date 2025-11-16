@@ -627,11 +627,12 @@
     "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
     "tooltip.soulsweapons.slow_pull": "Heavy Haul",
     "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
+
     "tooltip.soulsweapons.third_shot": "ブリング・イット・ダウン",
-    "tooltip.soulsweapons.third_shot_1": "- §b3発目§r ショットはすべて強化され、",
-    "tooltip.soulsweapons.third_shot_2": " 追加のTrueダメージを与える。",
-    "tooltip.soulsweapons.third_shot_3": "他のプレイヤーに対する実際のダメージは次のように減少します ",
-    "tooltip.soulsweapons.third_shot_4": "- クイックチャージは発射物のダメージを増加させます。",
+    "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+    "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+    "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
+
     "tooltip.soulsweapons.moonlight_arrow": "ムーンライト・クイヴァー",
     "tooltip.soulsweapons.moonlight_arrow.1": "- 純粋な§3魔法ダメージ§rと§3貫通ダメージ§rを",
     "tooltip.soulsweapons.moonlight_arrow.2": "与える §3月光矢§rを放つ。",

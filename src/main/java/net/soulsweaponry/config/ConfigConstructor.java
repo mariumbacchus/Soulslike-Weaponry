@@ -68,7 +68,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_frostmourne = false;
     @Entry public static boolean disable_recipe_nights_edge = false;
     @Entry public static boolean disable_recipe_empowered_dawnbreaker = false;
-    @Entry public static boolean disable_recipe_kraken_slayer_bow = true;
+    @Entry public static boolean disable_recipe_kraken_slayer_bow = false;
     @Entry public static boolean disable_recipe_kraken_slayer_crossbow = false;
     @Entry public static boolean disable_recipe_darkmoon_longbow = false;
     @Entry public static boolean disable_recipe_translucent_sword = false;
@@ -944,16 +944,29 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kirkhammer_silver_sword_attack_speed = 1.6f;
     @Entry public static float kirkhammer_silver_sword_righteous_base_undead_bonus_damage = 2f;
     @Entry public static float kirkhammer_silver_sword_righteous_undead_bonus_damage_per_level = 0.5f;
-    @Entry public static float kraken_slayer_damage = 7;
+
+    @Entry public static float kraken_slayer_bow_damage = 7;
+    @Entry public static float kraken_slayer_bow_bonus_velocity = 0f;
+    @Entry public static float kraken_slayer_bow_pull_time_ticks = 10;
     @Entry public static String kraken_slayer_bow_use_animation = "SPEAR";
-    @Entry public static float kraken_slayer_bonus_velocity = 0f;
-    @Entry public static float kraken_slayer_pull_time_ticks = 10;
+    @Entry public static float kraken_slayer_bow_true_damage = 4f;
+    @Entry public static float kraken_slayer_bow_bonus_true_damage_per_level = 1.5f;
+    @Entry public static float kraken_slayer_bow_stacks_per_shot = 1;
+    @Entry public static float kraken_slayer_bow_bonus_stacks_per_shot_per_level = 0.2f;
+    @Entry public static float kraken_slayer_bow_max_stacks_until_true_damage = 3;
+
     @Entry public static float kraken_slayer_crossbow_damage = 9;
     @Entry public static float kraken_slayer_crossbow_bonus_velocity = 0f;
     @Entry public static float kraken_slayer_crossbow_pull_time_ticks = 15;
-    @Entry public static float kraken_slayer_bonus_true_damage = 4f;
-    @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
+    @Entry public static float kraken_slayer_crossbow_true_damage = 4f;
+    @Entry public static float kraken_slayer_crossbow_bonus_true_damage_per_level = 1.5f;
+    @Entry public static float kraken_slayer_crossbow_stacks_per_shot = 1;
+    @Entry public static float kraken_slayer_crossbow_bonus_stacks_per_shot_per_level = 0.2f;
+    @Entry public static float kraken_slayer_crossbow_max_stacks_until_true_damage = 3;
+
     @Entry public static boolean kraken_slayer_can_apply_arrow_effects = true;
+    @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
+
     @Entry public static float leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;
     @Entry public static float leviathan_axe_frost_buildup_post_hit = 50;

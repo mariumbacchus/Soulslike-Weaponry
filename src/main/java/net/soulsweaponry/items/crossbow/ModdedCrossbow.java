@@ -2,36 +2,52 @@ package net.soulsweaponry.items.crossbow;
 
 import net.fabric_extras.ranged_weapon.api.CustomCrossbow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.*;
-import net.soulsweaponry.items.abilities.ICooldownItem;
+import net.soulsweaponry.items.abilities.BasicInfoAbility;
+import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.bow.ModdedBow;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.TooltipUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDisable, ICooldownItem {
+public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbilities {
 
-    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<IAbility> abilities = new ArrayList<>();
 
     public ModdedCrossbow(Settings settings, RangedConfig rangedConfig, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, rangedConfig, repairIngredientSupplier);
+        List<Text> list = new ArrayList<>();
+        BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
+        String pullBonus = String.format("%.2f", rangedConfig.pull_time_bonus());
+        if (rangedConfig.pull_time_bonus() > 0) {
+            list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
+            list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullBonus).formatted(Formatting.GRAY));
+        } else if (rangedConfig.pull_time_bonus() < 0) {
+            list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
+            list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullBonus).formatted(Formatting.GRAY));
+        }
+        this.addAbility(pullSpeedAbility);
     }
 
     @Override
-    public Predicate<ItemStack> getHeldProjectiles() {
-        return BOW_PROJECTILES;
+    public List<IAbility> getAbilities() {
+        return this.abilities;
     }
 
     @Override
@@ -44,24 +60,32 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IConfigDi
     }
 
     @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        boolean vanilla = super.postHit(stack, target, attacker);
+        boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);
+        return vanilla || abilities;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return IHasAbilities.super.getUseAction(stack);
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if (this.isDisabled(stack)) {
-            tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
+        this.appendTooltipAbilities(tooltip, stack);
+        // Crossbows overwrite the traditional appendTooltip without using super so this from the mixin is needed
+        TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
+        int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        if (lvl > 0) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
         }
-        //this.appendTooltipAbilities(stack, context, tooltip, type);
         super.appendTooltip(stack, context, tooltip, type);
-    }
-
-    public List<TooltipAbilities> getTooltipAbilities() {
-        return this.tooltipAbilities;
-    }
-
-    public void addTooltipAbility(TooltipAbilities... abilities) {
-        Collections.addAll(this.tooltipAbilities, abilities);
-    }
-    
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
     }
 
     public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {

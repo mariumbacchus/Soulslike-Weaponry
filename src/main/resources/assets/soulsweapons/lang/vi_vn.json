@@ -625,11 +625,12 @@
   "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
   "tooltip.soulsweapons.slow_pull": "Heavy Haul",
   "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
+
   "tooltip.soulsweapons.third_shot": "Hạ Gục Nó",
-  "tooltip.soulsweapons.third_shot_1": "- Mỗi phát bắn §bthứ 3§r được cường hóa, gây",
-  "tooltip.soulsweapons.third_shot_2": " thêm sát thương chuẩn.",
-  "tooltip.soulsweapons.third_shot_3": "Sát thương chuẩn bị giảm đối với người chơi khác đi ",
-  "tooltip.soulsweapons.third_shot_4": "- Sạc Nhanh tăng sát thương đạn.",
+  "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+  "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+  "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
+
   "tooltip.soulsweapons.moonlight_arrow": "Tên Ánh Trăng",
   "tooltip.soulsweapons.moonlight_arrow.1": "- Bắn ra §3Tên Ánh Trăng§r gây hoàn toàn",
   "tooltip.soulsweapons.moonlight_arrow.2": "§3Sát Thương Phép§r và §fXuyên§r qua mục tiêu.",

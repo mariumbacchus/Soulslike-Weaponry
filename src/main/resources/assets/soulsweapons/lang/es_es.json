@@ -627,11 +627,12 @@
   "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
   "tooltip.soulsweapons.slow_pull": "Heavy Haul",
   "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
+
   "tooltip.soulsweapons.third_shot": "¡Bájala!",
-  "tooltip.soulsweapons.third_shot_1": "- Cada §b3er§r disparo está potenciado, infligiendo",
-  "tooltip.soulsweapons.third_shot_2": "daño verdadero adicional.",
-  "tooltip.soulsweapons.third_shot_3": "El daño verdadero se reduce contra otros jugadores en ",
-  "tooltip.soulsweapons.third_shot_4": "- La carga rápida aumenta el daño del proyectil.",
+  "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+  "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+  "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
+
   "tooltip.soulsweapons.moonlight_arrow": "Aljaba de luz de luna",
   "tooltip.soulsweapons.moonlight_arrow.1": "- Dispara §3Flechas de luz de luna§r que infligen puramente",
   "tooltip.soulsweapons.moonlight_arrow.2": "§3Daño mágico§r y §fAtraviesan§r objetivos.",

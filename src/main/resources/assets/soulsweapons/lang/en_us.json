@@ -634,11 +634,12 @@
     "tooltip.soulsweapons.fast_pull.1": "- Pull time is reduced by %s seconds",
     "tooltip.soulsweapons.slow_pull": "Heavy Haul",
     "tooltip.soulsweapons.slow_pull.1": "- Pull time is increased by %s seconds",
+
     "tooltip.soulsweapons.third_shot": "Bring It Down",
-    "tooltip.soulsweapons.third_shot_1": "- Every §b3rd§r shot is empowered, dealing",
-    "tooltip.soulsweapons.third_shot_2": " bonus true damage.",
-    "tooltip.soulsweapons.third_shot_3": "True damage is reduced against other players by ",
-    "tooltip.soulsweapons.third_shot_4": "- Quick Charge increases projectile damage.",
+    "tooltip.soulsweapons.third_shot.1": "- Each shot adds %s stack(s), at §b%s§r stacks",
+    "tooltip.soulsweapons.third_shot.2": "next shot deals bonus %s true damage",
+    "tooltip.soulsweapons.third_shot.3": "True damage is reduced against players by %s",
+
     "tooltip.soulsweapons.moonlight_arrow": "Moonlight Quiver",
     "tooltip.soulsweapons.moonlight_arrow.1": "- Fires §3Moonlight Arrows§r that deal purely",
     "tooltip.soulsweapons.moonlight_arrow.2": "§3Magic Damage§r and §fPierce§r targets.",

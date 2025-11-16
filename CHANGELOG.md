@@ -40,6 +40,8 @@
   - The wither effect no longer applies to allies of the user
   - Removed config line chaos_cape_wither_ground in favor of the "disable use" one for the item
 - Fixed bug preventing mobs from having the Decay effect
+- Kraken Slayer Crossbow no longer scales off of Quick Charge due to the new upgrade system
+- Enabled crafting for the Kraken Slayer Bow
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
