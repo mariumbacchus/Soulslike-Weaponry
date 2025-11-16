@@ -3,9 +3,7 @@ package net.soulsweaponry.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -16,7 +14,6 @@ import net.minecraft.recipe.input.SmithingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.RecipeSerializerRegistry;
 import net.soulsweaponry.util.UpgradeUtil;
@@ -51,35 +48,14 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
     public ItemStack craft(SmithingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         ItemStack out = input.base().copy();
         int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        int nextLevel = Math.min(prev + 1, 5);
+        int nextLevel = Math.min(prev + 1, (int) ConfigConstructor.item_upgrading_max_level);
         applyUpgrades(out, nextLevel);
         return out;
     }
 
     public void applyUpgrades(ItemStack out, int nextLevel) {
         out.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, nextLevel);
-        float primary = this.primaryBonus() * nextLevel;
-        float secondary = this.secondaryBonus() * nextLevel;
-        switch (out.getItem()) {
-            case ArmorItem armor -> {
-                UpgradeUtil.setOrReplaceArmorUpgrade(out, armor, primary);
-                UpgradeUtil.setOrReplaceArmorToughnessUpgrade(out, armor, secondary);
-            }
-            case RangedWeaponItem ranged -> {
-                if (ranged instanceof GunItem) {
-                    out.set(ComponentRegistry.GUN_BONUS_DAMAGE, primary); // Calculated inside the weapon instead of attribute
-                } else {
-                    UpgradeUtil.setOrReplaceRangedDamageUpgrade(out, primary); // +% projectile damage
-                    UpgradeUtil.setOrReplaceRangedHasteUpgrade(out, secondary); // +% draw speed
-                }
-            }
-            default -> {
-                UpgradeUtil.setOrReplaceDamageUpgrade(out, primary);
-                if (secondary > 0) {
-                    UpgradeUtil.setOrReplaceAttackSpeedUpgrade(out, secondary);
-                }
-            }
-        }
+        UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(out, nextLevel, this.primaryBonus(), this.secondaryBonus());
     }
 
     /**

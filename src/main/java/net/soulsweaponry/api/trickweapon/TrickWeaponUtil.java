@@ -10,6 +10,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -99,13 +100,13 @@ public class TrickWeaponUtil {
     }
 
     @Nullable
-    public static ItemStack getMappedStack(ItemStack heldStack) {
+    public static ItemStack getMappedStack(World world, ItemStack heldStack) {
         Item item = getMappedItem(heldStack);
         if (item == null) {
             return null;
         }
         ItemStack outStack = item.getDefaultStack();
-        WeaponUtil.copyOverItemComponents(heldStack, outStack);
+        WeaponUtil.copyOverItemComponents(world, heldStack, outStack);
         outStack.set(ComponentRegistry.MAPPED_TRICK_WEAPON, Registries.ITEM.getId(heldStack.getItem()).toString());
         return outStack;
     }

@@ -25,7 +25,7 @@ public class TooltipUtil {
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
             case TRICK_WEAPON -> {
-                ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
+                /*ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {
                     Item item = stack.getItem();
                     /*if (ITooltipInfo.shouldShowInfo()) { TODO
@@ -38,8 +38,8 @@ public class TooltipUtil {
                         }
                     } else if (!(item instanceof ITooltipInfo)) {
                         ITooltipInfo.addShowInfoText(tooltip);
-                    }*/
-                }
+                    }
+                }*/
             }
             case LUNAR_HERALD -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));

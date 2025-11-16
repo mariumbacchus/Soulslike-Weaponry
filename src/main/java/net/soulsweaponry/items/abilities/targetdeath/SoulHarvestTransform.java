@@ -75,7 +75,7 @@ public class SoulHarvestTransform extends SoulHarvest {
                     item = this.blueWeapon.get();
                 }
                 ItemStack newStack = new ItemStack(item);
-                WeaponUtil.copyOverItemComponents(stack, newStack);
+                WeaponUtil.copyOverItemComponents(world, stack, newStack);
                 player.getInventory().removeStack(slot);
                 player.getInventory().insertStack(slot, newStack);
             }

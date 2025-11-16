@@ -28,6 +28,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -58,7 +59,7 @@ public class WeaponUtil {
      * @param prevStack previous stack to copy from
      * @param newStack new stack to copy to from the prev stack
      */
-    public static void copyOverItemComponents(ItemStack prevStack, ItemStack newStack) {
+    public static void copyOverItemComponents(World world, ItemStack prevStack, ItemStack newStack) {
         int lvl = WeaponUtil.getUpgradeLevel(prevStack);
         float nextDamage = WeaponUtil.getBaseAttackDamage(newStack);
         float nextAttackSpeed = WeaponUtil.getBaseAttackSpeed(newStack);
@@ -66,6 +67,15 @@ public class WeaponUtil {
         WeaponUtil.modifyStackAttributes(newStack, nextDamage, nextAttackSpeed);
         newStack.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, lvl);
         newStack.setCount(prevStack.getCount());
+
+        // Rebuild the upgrade level bonuses based on the new item type (so ranged bonuses for bows instead of melee, etc.)
+        // Ignore if no upgrade recipe is found and keep old attributes
+        ItemUpgradeRecipe recipe = UpgradeUtil.findItemUpgradeRecipeForBase(world, newStack);
+        if (recipe != null) {
+            float primaryPerLevel = recipe.primaryBonus();
+            float secondaryPerLevel = recipe.secondaryBonus();
+            UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(newStack, lvl, primaryPerLevel, secondaryPerLevel);
+        }
     }
 
     /**
