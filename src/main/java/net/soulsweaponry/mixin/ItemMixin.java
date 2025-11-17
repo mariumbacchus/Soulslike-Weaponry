@@ -25,6 +25,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Covers ability implementation for all items.
+ * <p>
+ * Some items override methods from Item class, like SwordItem with postHit method, therefore
+ * some additional mixins are made to ensure abilities are still called. RangedWeaponItem
+ * for example also overrides onStoppedUsing and use methods, so abilities aren't called there.
+ * <p>
+ * This is the case for items like
+ * <li> {@link net.minecraft.item.MiningToolItem} </li>
+ * <li> {@link net.minecraft.item.MaceItem} </li>
+ * <li> {@link net.minecraft.item.TridentItem} </li>
+ * <li> {@link net.minecraft.item.RangedWeaponItem} </li>
+ * <li> {@link net.minecraft.item.BowItem} </li>
+ * <li> {@link net.minecraft.item.CrossbowItem} </li>
+ * <li> and more... so keep that in mind! </li>
+ * <p>
+ * So far, only these mixins are made to address this problem, since some items with abilities extending
+ * those classes are being used. There are no items nor abilities extending MaceItem so no mixin is made
+ * for that yet.
+ * <li> {@link MiningToolItemMixin} (postHit) </li>
+ * <li> {@link SwordItemMixin} (postHit) </li>
+ */
 @Mixin(Item.class)
 public class ItemMixin implements IHasAbilities {
 
@@ -46,22 +68,6 @@ public class ItemMixin implements IHasAbilities {
         }
     }
 
-    /**
-     * Some items override methods from Item class, like SwordItem with postHit method, therefore
-     * some additional mixins are made to ensure abilities are still called.
-     * <p>
-     * This is the case for items like
-     * <li> {@link net.minecraft.item.MiningToolItem} </li>
-     * <li> {@link net.minecraft.item.MaceItem} </li>
-     * <li> {@link net.minecraft.item.TridentItem} </li>
-     * <li> and more... so keep that in mind! </li>
-     * <p>
-     * So far, only these mixins are made to address this problem, since some items with abilities extending
-     * those classes are being used. There are no items nor abilities extending MaceItem so no mixin is made
-     * for that yet.
-     * <li> {@link MiningToolItemMixin} </li>
-     * <li> {@link SwordItemMixin} </li>
-     */
     @Inject(method = "postHit", at = @At("RETURN"), cancellable = true)
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker, CallbackInfoReturnable<Boolean> info) {
         if (this.getAbilities().isEmpty()) {

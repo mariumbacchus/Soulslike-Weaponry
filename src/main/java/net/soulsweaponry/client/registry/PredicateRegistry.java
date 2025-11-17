@@ -10,11 +10,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.IHasEssence;
 import net.soulsweaponry.items.abilities.ISharpened;
 import net.soulsweaponry.items.abilities.inventorytick.Luminate;
+import net.soulsweaponry.items.abilities.use.InvisibleItem;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -178,7 +178,7 @@ public class PredicateRegistry {
     }
 
     public static void registerTranslucentAbility(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> TranslucentWeapon.isInvisible(itemStack) ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(item, Identifier.of("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> InvisibleItem.isInvisible(itemStack) ? 1f : 0f);
     }
 
     /*protected static void registerCrossbowCharged(Item item) {
