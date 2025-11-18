@@ -15,9 +15,6 @@ import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.bow.ModdedBow;
-import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.TooltipUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +59,7 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        this.appendTooltipAbilities(tooltip, stack);
-        TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
-        int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        if (lvl > 0) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
-        }
+        this.appendTooltipAbilities(stack, tooltip);
         super.appendTooltip(stack, context, tooltip, type);
     }
 }

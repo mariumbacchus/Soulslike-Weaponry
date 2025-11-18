@@ -1413,9 +1413,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float tether_enchant_min_activation_range_per_level = 3f;
 
     @Entry public static boolean enable_shield_parry = true;
+    @Entry public static float shield_parry_min_cooldown = 10;
     @Entry public static float shield_parry_cooldown = 40;
-    @Entry(min=2) public static float shield_parry_max_animation_frames = 10;
+    @Entry public static float shield_parry_reduced_cooldown_per_level = 4;
     @Entry(min=2) public static float shield_parry_frames = 3;
+    @Entry(min=2) public static float shield_parry_bonus_frames_per_level = 0.4f;
+    @Entry(min=2) public static float shield_parry_max_animation_frames = 10;
 
     @Entry public static boolean chungus_tonic_can_change_entities = true;
     @Entry public static float chungus_tonic_ticks_until_chungified = 300;

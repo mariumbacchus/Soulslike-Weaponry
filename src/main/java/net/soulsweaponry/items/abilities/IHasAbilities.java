@@ -11,8 +11,10 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -22,6 +24,9 @@ import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
+import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -377,11 +382,20 @@ public interface IHasAbilities extends IConfigDisable {
         return builder;
     }
 
+    default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {
+        this.applyTooltipAbilities(tooltip, stack);
+        TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
+        int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        if (lvl > 0) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
+        }
+    }
+
     /**
      * Adds all tooltip abilities listed in {@link IAbility#getTooltipAbilities(ItemStack)} to the item tooltip.
      * Additional lore is also applied if the weapons have it.
      */
-    default void appendTooltipAbilities(List<Text> tooltip, ItemStack stack) {
+    default void applyTooltipAbilities(List<Text> tooltip, ItemStack stack) {
         if (this.isDisabled(stack)) {
             tooltip.add(Text.translatableWithFallback("tooltip.soulsweapons.disabled","Disabled"));
         }

@@ -13,7 +13,8 @@ public class ParrySyncS2CReceiver {
         if (client == null || client.player == null) {
             return;
         }
-        int lvl = payload.parryFrame();
-        ((IEntityDataSaver) client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, lvl);
+        ((IEntityDataSaver) client.player).getPersistentData().putInt(ParryData.PARRY_TICKS_ID, payload.parryTick());
+        ((IEntityDataSaver) client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, payload.parryFrames());
+        ((IEntityDataSaver) client.player).getPersistentData().putInt(ParryData.MAX_PARRY_TICKS_ID, payload.maxTicks());
     }
 }

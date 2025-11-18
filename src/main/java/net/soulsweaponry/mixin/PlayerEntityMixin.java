@@ -67,8 +67,9 @@ public class PlayerEntityMixin {
         if (player.hasStatusEffect(EffectRegistry.GHOSTLY)) {
             info.setReturnValue(false);
         }
-        int frames = ParryData.getParryFrames(player);
-        if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
+        int parryTicks = ParryData.getParryTicks(player);
+        int parryFrames = ParryData.getParryFrames(player);
+        if (parryTicks >= 1 && parryTicks <= parryFrames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
             player.getWorld().sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
             if (source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity) {
                 info.setReturnValue(false);

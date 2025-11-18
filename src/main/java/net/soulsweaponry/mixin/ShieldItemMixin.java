@@ -6,7 +6,10 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.otherkeybind.Parry;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,16 +17,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ShieldItem.class)
-public class ShieldItemMixin {
+public abstract class ShieldItemMixin implements IHasAbilities {
+
+    @Unique
+    private static final Parry PARRY = new Parry(
+            (int) ConfigConstructor.shield_parry_frames,
+            ConfigConstructor.shield_parry_bonus_frames_per_level,
+            (int) ConfigConstructor.shield_parry_max_animation_frames,
+            (int) ConfigConstructor.shield_parry_min_cooldown,
+            (int) ConfigConstructor.shield_parry_cooldown,
+            (int) ConfigConstructor.shield_parry_reduced_cooldown_per_level
+    );
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void shield$init(Item.Settings settings, CallbackInfo info) {
+        if (ConfigConstructor.enable_shield_parry) {
+            this.addAbility(PARRY);
+        }
+    }
 
     @Inject(method = "appendTooltip", at = @At("TAIL"))
     protected void interceptTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo info) {
         if (ConfigConstructor.enable_shield_parry) {
-            /*if (ITooltipInfo.shouldShowInfo()) { TODOO
-                TooltipUtil.addAbilityTooltip(TooltipAbilities.PARRY, stack, tooltip);
-            } else {
-                //ITooltipInfo.addShowInfoText(tooltip);
-            }*/
+            this.appendTooltipAbilities(stack, tooltip);
         }
     }
 }

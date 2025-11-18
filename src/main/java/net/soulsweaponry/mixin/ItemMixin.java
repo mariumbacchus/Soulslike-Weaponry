@@ -60,12 +60,7 @@ public class ItemMixin implements IHasAbilities {
 
     @Inject(method = "appendTooltip", at = @At("HEAD"))
     public void interceptAppendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo info) {
-        this.appendTooltipAbilities(tooltip, stack);
-        TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
-        int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        if (lvl > 0) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
-        }
+        this.appendTooltipAbilities(stack, tooltip);
     }
 
     @Inject(method = "postHit", at = @At("RETURN"), cancellable = true)
