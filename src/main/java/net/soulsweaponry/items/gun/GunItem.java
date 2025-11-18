@@ -5,6 +5,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.tooltip.TooltipType;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +27,6 @@ import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import java.util.function.Predicate;
 // NOTE: Remember to add the item to ConventionalItemTags.BOW_TOOLS or something like that to make UseAction.BOW animation work
 public abstract class GunItem extends RangedWeaponItem implements IConfigDisable {
 
-    protected final List<TooltipAbilities> tooltipAbilities = new ArrayList<>();
+    protected final List<TooltipUtil.TooltipAbilities> tooltipAbilities = new ArrayList<>();
 
     public GunItem(Settings settings) {
         super(settings);

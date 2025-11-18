@@ -11,10 +11,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -25,7 +23,6 @@ import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ComponentRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public interface IHasAbilities extends IConfigDisable {
-    // TODO implement into all the abstract item classes (axes, bows, etc.) and use this to build the new ability system off of
+
     List<IAbility> getAbilities();
 
     default void addAbility(IAbility... abilities) {
@@ -384,7 +381,7 @@ public interface IHasAbilities extends IConfigDisable {
 
     default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {
         this.applyTooltipAbilities(tooltip, stack);
-        TooltipUtil.addAbilityTooltip(TooltipAbilities.TRICK_WEAPON, stack, tooltip);
+        TooltipUtil.addAbilityTooltip(TooltipUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
         int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
         if (lvl > 0) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));

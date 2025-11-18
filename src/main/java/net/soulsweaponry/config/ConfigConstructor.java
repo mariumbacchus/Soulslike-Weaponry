@@ -1073,11 +1073,12 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float moonstone_ring_lunar_herald_base_amplifier = 0;
     @Entry public static float moonstone_ring_lunar_herald_bonus_amp_per_level = 1;
     @Entry public static float moonstone_ring_lunar_herald_duration = 600;
-    @Entry public static float moonstone_ring_lunar_herald_bonus_duration_per_level = 600;//TODO might make it as a permanent effect instead
-    @Entry public static float moonstone_ring_lunar_herald_projectile_cooldown = 5;
+    @Entry public static float moonstone_ring_lunar_herald_bonus_duration_per_level = 75;
+    @Entry public static float moonstone_ring_lunar_herald_projectile_cooldown_when_keybind = 5;
     @Entry public static float moonstone_ring_lunar_herald_projectile_velocity = 1.5f;
     @Entry public static float moonstone_ring_lunar_herald_projectile_damage = 3.0f;
     @Entry public static float moonstone_ring_lunar_herald_projectile_bonus_damage_per_moon_herald_amp = 2.0f;
+    @Entry public static float moonstone_ring_lunar_herald_projectile_cooldown_when_held = 10;
 
     @Entry public static float moonveil_damage = 9;
     @Entry public static float moonveil_attack_speed = 1.6f;

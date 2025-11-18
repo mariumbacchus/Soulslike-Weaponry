@@ -32,12 +32,6 @@ public class TooltipUtil {
                     }
                 }
             }
-            case LUNAR_HERALD -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald").formatted(Formatting.AQUA));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_description_1").formatted(Formatting.GRAY)
-                        .append(KeyBindRegistry.effectShootMoonlight.getBoundKeyLocalizedText()));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.lunar_herald_description_2").formatted(Formatting.GRAY));
-            }
             case GUN_ITEM -> {
                 if (stack.getItem() instanceof GunItem gun) {
                     float bonus = stack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f);
@@ -56,5 +50,9 @@ public class TooltipUtil {
                 }
             }
         }
+    }
+
+    public enum TooltipAbilities {
+        TRICK_WEAPON, GUN_ITEM
     }
 }
