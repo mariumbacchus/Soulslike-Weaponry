@@ -6,6 +6,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoreItem extends ModdedItem {
 
     private final int linesOfLore;
@@ -26,27 +29,23 @@ public class LoreItem extends ModdedItem {
         return id.getPath();
     }
 
-    public boolean isInfo() {
-        return isInfo;
-    }
-
-    public Text[] getInfo() {
-        Text[] tooltips = new Text[linesOfLore];
+    public List<Text> getInfo() {
+        List<Text> tooltips = new ArrayList<>(linesOfLore);
         for (int i = 1; i <= linesOfLore; i++) {
-            tooltips[i - 1] = Text.translatable("tooltip.soulsweapons." + getIdName() + ".part_" + i).formatted(Formatting.DARK_GRAY);
+            tooltips.add(Text.translatable("tooltip.soulsweapons." + getIdName() + ".part_" + i).formatted(Formatting.DARK_GRAY));
         }
         return tooltips;
     }
-/* TODO
+
     @Override
-    public Text[] getAdditionalTooltips() {
-        return this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
+    public List<Text> getItemLore() {
+        return !this.isInfo && !this.getInfo().isEmpty() ? this.getInfo() : List.of();
     }
 
     @Override
-    public Text[] getLoreTooltips() {
-        return !this.isInfo() && this.getInfo().length > 0 ? this.getInfo() : super.getAdditionalTooltips();
-    }*/
+    public List<Text> getAdditionalItemTooltips() {
+        return this.isInfo && !this.getInfo().isEmpty() ? this.getInfo() : List.of();
+    }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
