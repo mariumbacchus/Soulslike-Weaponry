@@ -28,7 +28,6 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
             if (ticks >= 1) {
                 this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
                 float added = (1f / (float) maxTicks) / 6f;
-                //float added = (1f / (float) maxTicks) * animationProgress; // TODO test
                 this.parryProgress = Math.min(this.parryProgress + added, 1f);
                 ModelPart modelPart = model.leftArm;
                 float f = parryProgress;

@@ -30,7 +30,6 @@ public class HeldItemRendererMixin {
         if (ticks >= 1) {
             this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
             float added = (1f / (float) maxTicks) / 6f;
-            //float added = (1f / (float) maxTicks) * tickDelta; TODO test
             this.parryProgress = Math.min(this.parryProgress + added, 1f);
 
             float h;
