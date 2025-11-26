@@ -1,8 +1,5 @@
 {
   "values": [
-    "#minecraft:shovels",
-    "#minecraft:hoes",
-    "#minecraft:pickaxes",
     "#c:tools/melee_weapon"
   ]
 }

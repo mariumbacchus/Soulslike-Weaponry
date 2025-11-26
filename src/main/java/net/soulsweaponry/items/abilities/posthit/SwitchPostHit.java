@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public final class SwitchPostHit implements IAbility {
-
+    //TODO add deal magic damage post hit also
     private final float bonusAgainstEffect;
     private final int baseBleed, bleedDuration, bleedAmp;
     private final int poisonDuration, poisonAmp;

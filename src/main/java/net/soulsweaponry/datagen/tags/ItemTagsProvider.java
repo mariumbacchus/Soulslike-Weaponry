@@ -159,9 +159,6 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ItemRegistry.FALLEN_ICON_DISC);
 
         this.getOrCreateTagBuilder(ModTags.Items.MELEE_ITEM_UPGRADABLES)
-                .addTag(ItemTags.SHOVELS)
-                .addTag(ItemTags.HOES)
-                .addTag(ItemTags.PICKAXES)
                 .addTag(ConventionalItemTags.MELEE_WEAPON_TOOLS);
 
         this.getOrCreateTagBuilder(ModTags.Items.RANGED_ITEM_UPGRADABLES)

@@ -32,7 +32,7 @@ public record Permafrost(int frostApplied, int permafrostDuration, int permafros
         FrostData.addFrost(target, this.frostApplied);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.permafrostDuration, (int) (this.permafrostBaseAmp + this.permafrostAmpPerLvl * level)));
     }
-
+    //TODO add more parameters and stuff to abilities for things such as bounding box of the ice explosion
     public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier) {
         iceExplosion(world, pos, affectedEntity, baseAoeDamage, amplifier, 0f);
     }

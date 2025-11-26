@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
@@ -28,6 +29,7 @@ public class UpgradeUtil {
     private static final Identifier UPGRADE_ATTACK_SPEED_ID = Identifier.of(SoulsWeaponry.ModId, "upgrade.attack_speed");
     private static final Identifier UPGRADE_RANGED_DAMAGE_ID = Identifier.of(SoulsWeaponry.ModId, "upgrade.ranged.damage");
     private static final Identifier UPGRADE_RANGED_HASTE_ID  = Identifier.of(SoulsWeaponry.ModId, "upgrade.ranged.haste");
+    private static final Identifier UPGRADE_MINING_EFFICIENCY_ID  = Identifier.of(SoulsWeaponry.ModId, "upgrade.mining.efficiency");
 
     private static Identifier armorUpgradeId(String slotName) {
         return Identifier.of(SoulsWeaponry.ModId, "upgrade.armor." + slotName);
@@ -75,19 +77,23 @@ public class UpgradeUtil {
                 UpgradeUtil.setOrReplaceArmorToughnessUpgrade(stack, armor, secondary);
             }
             case RangedWeaponItem ranged -> {
-                if (ranged instanceof GunItem) {
+                if (ranged instanceof GunItem) {//TODO look into removing need for bullets at certain level
                     stack.set(ComponentRegistry.GUN_BONUS_DAMAGE, primary); // Calculated inside the weapon instead of attribute
                 } else {
                     UpgradeUtil.setOrReplaceRangedDamageUpgrade(stack, primary); // +% projectile damage
                     UpgradeUtil.setOrReplaceRangedHasteUpgrade(stack, secondary); // +% draw speed
                 }
             }
+            case MiningToolItem miningToolItem -> {
+                UpgradeUtil.setOrReplaceDamageUpgrade(stack, primary);
+                UpgradeUtil.setOrReplaceMiningEfficiencyUpgrade(stack, secondary);
+            }
             default -> {
                 UpgradeUtil.setOrReplaceDamageUpgrade(stack, primary);
                 if (secondary > 0) {
                     UpgradeUtil.setOrReplaceAttackSpeedUpgrade(stack, secondary);
                 }
-            }
+            }//TODO for mining items increase mining speed by 1 instead of attack speed
         }
     }
 
@@ -144,6 +150,14 @@ public class UpgradeUtil {
      */
     public static void setOrReplaceDamageUpgrade(ItemStack stack, float total) {
         addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ATTACK_DAMAGE, AttributeModifierSlot.MAINHAND, UPGRADE_DAMAGE_ID, total);
+    }
+
+    /**
+     * Tool/weapon path: cumulative +MINING_EFFICIENCY (MAINHAND).
+     * 'total' should already be (perLevelBonus * level).
+     */
+    public static void setOrReplaceMiningEfficiencyUpgrade(ItemStack stack, float total) {
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.PLAYER_MINING_EFFICIENCY, AttributeModifierSlot.MAINHAND, UPGRADE_MINING_EFFICIENCY_ID, total);
     }
 
     /**

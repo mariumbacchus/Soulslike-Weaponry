@@ -19,7 +19,7 @@ import static net.minecraft.data.server.recipe.RecipeProvider.conditionsFromItem
 public class UpgradeRecipes {
 
     public static void generateRecipes(RecipeExporter recipeExporter) {
-        // Upgrading recipes
+        // General upgrading recipes
         createUpgrade(recipeExporter, ModTags.Items.MELEE_ITEM_UPGRADABLES, 1f, 0.05f);
         createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f);
 
@@ -34,6 +34,12 @@ public class UpgradeRecipes {
         createUpgrade(recipeExporter, GunRegistry.HUNTER_CANNON, 3, 0f);
         createUpgrade(recipeExporter, GunRegistry.BLUNDERBUSS, 1.5f, 0f);
         createUpgrade(recipeExporter, GunRegistry.HUNTER_PISTOL, 1, 0f);
+
+        // Mining items
+        createUpgrade(recipeExporter, ItemTags.SHOVELS, 1f, 5);
+        createUpgrade(recipeExporter, ItemTags.AXES, 1.25f, 5);
+        createUpgrade(recipeExporter, ItemTags.PICKAXES, 1f, 5);
+        createUpgrade(recipeExporter, ItemTags.HOES, 1f, 5);
     }
 
     public static void createUpgrade(RecipeExporter recipeExporter, TagKey<Item> tag, float primaryBonus, float secondaryBonus) {

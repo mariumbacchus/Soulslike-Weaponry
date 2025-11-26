@@ -28,7 +28,7 @@ public class ItemStackTooltipMixin {
 
     /**
      * Makes this mod's custom attributes a different color. This is because a new row of attributes would
-     * be added instead of adding to existing lines, like instead of +2 and +3 being +5, it would be 2 seperate
+     * be added instead of adding to existing lines, like instead of +2 and +3 resulting in a single +5, it would be 2 separate
      * rows of +2 and +3 with the same generic name, so to make the distinction clearer the color is different.
      */
     @Inject(method = "appendAttributeModifierTooltip", at = @At("HEAD"), cancellable = true)
