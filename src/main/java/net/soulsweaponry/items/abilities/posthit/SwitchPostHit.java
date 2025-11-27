@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public final class SwitchPostHit implements IAbility {
-    //TODO add deal magic damage post hit also
+
     private final float bonusAgainstEffect;
     private final int baseBleed, bleedDuration, bleedAmp;
     private final int poisonDuration, poisonAmp;
@@ -36,6 +36,7 @@ public final class SwitchPostHit implements IAbility {
     private final int slowAmp, weakAmp, fatigueAmp;
     private final int decayDuration, decayAmp;
     private final int blightDuration, blightAmp;
+    private final BonusMagicDamage magicDamageAbility;
 
     private static final Random RAND = new Random();
 
@@ -64,6 +65,7 @@ public final class SwitchPostHit implements IAbility {
         this.decayAmp = b.decayAmp;
         this.blightDuration = b.blightDuration;
         this.blightAmp = b.blightAmp;
+        this.magicDamageAbility = new BonusMagicDamage(b.bonusMagicDamage, b.bonusMagicDmgPerLvl, b.magicDamageTargetIsPlayerMod);
     }
 
     @Override
@@ -107,6 +109,9 @@ public final class SwitchPostHit implements IAbility {
             case DECAY -> {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, this.decayDuration, this.decayAmp));
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, this.blightDuration, this.blightAmp));
+            }
+            case MAGIC_DAMAGE -> {
+                this.magicDamageAbility.postHit(stack, target, attacker);
             }
             default -> {}
         }
@@ -154,7 +159,7 @@ public final class SwitchPostHit implements IAbility {
     enum PostHitEffect {
         EMPTY(0x8a8a8a), BLEED(0x820505), POISON(0x00e31e),
         CHAIN_LIGHTNING(0x47edff), WITHER(0x1c1c1c), FREEZE(0xb0d5ff),
-        FIRE(0xff9100), CRIPPLE(0x8f71b0), DECAY(0x8800ff);
+        FIRE(0xff9100), CRIPPLE(0x8f71b0), DECAY(0x8800ff), MAGIC_DAMAGE(0x40ffd9);
 
         private final int color;
         PostHitEffect(int color) { this.color = color; }
@@ -183,6 +188,7 @@ public final class SwitchPostHit implements IAbility {
         private int slowAmp, weakAmp, fatigueAmp;
         private int decayDuration, decayAmp;
         private int blightDuration, blightAmp;
+        private float bonusMagicDamage, bonusMagicDmgPerLvl, magicDamageTargetIsPlayerMod;
 
         public Builder bonusAgainstEffect(float v) {
             this.bonusAgainstEffect = v; return this;
@@ -248,6 +254,13 @@ public final class SwitchPostHit implements IAbility {
         public Builder blight(int duration, int amp) {
             this.blightDuration = duration;
             this.blightAmp = amp;
+            return this;
+        }
+
+        public Builder magicDamage(float bonusMagicDamage, float bonusMagicDmgPerLvl, float magicDamageTargetIsPlayerMod) {
+            this.bonusMagicDamage = bonusMagicDamage;
+            this.bonusMagicDmgPerLvl = bonusMagicDmgPerLvl;
+            this.magicDamageTargetIsPlayerMod = magicDamageTargetIsPlayerMod;
             return this;
         }
 

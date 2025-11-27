@@ -14,6 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.EchoDamageData;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
@@ -125,6 +126,10 @@ public class LivingEntityMixin {
             if (amp >= 0) {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, duration, amp));
             }
+        }
+        // Store damage taken if the entity has Echo effect
+        if (entity.hasStatusEffect(EffectRegistry.ECHO)) {
+            EchoDamageData.addEchoDamage(entity, amount);
         }
     }
 

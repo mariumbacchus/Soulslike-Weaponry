@@ -4,7 +4,7 @@
 
 ### Additions
 - Added Sword of the Nightlord
-  - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), and lastly blight & decay
+  - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), magic damage, and lastly blight & decay
   - Attacking targets having either one of these effects deals bonus damage
   - Switching to this weapon gives you the Potency effect, making certain weapons (like this one) deal bonus damage for a few seconds
 - Added Frost Buildup mechanic & entity stats
@@ -31,7 +31,7 @@
   - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
 - Overhauled the ability system on the legendary weapons. Also moved away from off-hand ability triggers since Better Combat doesn't allow off-handing heavy weapons. Many abilities have therefore changed to be either triggered when sneaking or with the keybind ability trigger
 - Dragon Staff and Whirligig Sawblade has reduced cooldown based on the time used
-- Veil of Fire effect no longer sets the user on fire
+- Veil of Fire effect no longer sets the user on fire (since it was kinda irritating to have constant fire on the HUD)
 - Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
 - Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade
 - Lich Bane now always deal the bonus magic damage, regardless of % health left
@@ -39,14 +39,18 @@
   - Ability keybind toggles whether the ground should be withered or not
   - The wither effect no longer applies to allies of the user
   - Removed config line chaos_cape_wither_ground in favor of the "disable use" one for the item
-- Fixed bug preventing mobs from having the Decay effect
 - Kraken Slayer Crossbow no longer scales off of Quick Charge due to the new upgrade system
 - Enabled crafting for the Kraken Slayer Bow
+- Added Echo effect, damage taken with it is saved then done back upon removal of it (damage is not applied if removed via commands or other abilities like via the Skofnung Stone)
+- Added Resonance ability to Lich Bane, apply Echo effect post hit as long as the entity neither has it from before and the item is not on cooldown
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
 - Fixed a bug causing weapons with dynamically changing attack damage and speed (i.e. Draugr during nightime, Mjølnir when raining, etc.) to have other attributes removed (like range from Better Combat)
 - Fixed a bug causing Mehrunes Razor to deal less bonus missing health damage
+- Fixed bugs preventing Rime Spectre from taking magic damage
+- Rime Spectre emerges from the ground when not attacking anything
+- Fixed bug preventing mobs from having the Decay effect
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items

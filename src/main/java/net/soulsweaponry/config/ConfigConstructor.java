@@ -987,6 +987,15 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float lich_bane_post_hit_base_fire_seconds = 4f;
     @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_level = 1f;
     @Entry public static float lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level = 2f;
+    @Entry public static float lich_bane_echo_duration = 40;
+    @Entry public static float lich_bane_echo_duration_per_level = 6;
+    @Entry public static float lich_bane_echo_amp = 0;
+    @Entry public static float lich_bane_echo_amp_per_level = 0;
+    @Entry public static float lich_bane_echo_saved_damage_taken_mod = 0.5f;
+    @Entry public static float lich_bane_echo_saved_damage_taken_bonus_added_to_mod_per_level = 0.1f;
+    @Entry public static float lich_bane_echo_min_cooldown = 60;
+    @Entry public static float lich_bane_echo_cooldown = 140;
+    @Entry public static float lich_bane_echo_reduced_cooldown_per_level = 20;
 
     @Entry public static float ludwigs_holy_greatsword_damage = 8;
     @Entry public static float ludwigs_holy_greatsword_attack_speed = 1.2f;
@@ -1287,6 +1296,9 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float sword_of_the_nightlord_decay_amp = 0;
     @Entry public static float sword_of_the_nightlord_blight_duration = 200;
     @Entry public static float sword_of_the_nightlord_blight_amp = 3;
+    @Entry public static float sword_of_the_nightlord_spellblade_bonus_magic_damage = 2f;
+    @Entry public static float sword_of_the_nightlord_spellblade_bonus_magic_damage_per_level = 0.5f;
+    @Entry public static float sword_of_the_nightlord_spellblade_target_is_player_mod = 0.5f;
 
     @Entry public static float tonitrus_damage = 6;
     @Entry public static float tonitrus_attack_speed = 1.4f;

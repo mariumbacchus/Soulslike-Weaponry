@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
@@ -20,12 +21,15 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -60,6 +64,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
         this.goalSelector.add(2, new SitGoal(this));
         this.goalSelector.add(3, new RimeSpectreGoal(this));
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 5.0F));
+        this.goalSelector.add(7, new Emerge());
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
@@ -75,10 +80,15 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (source.isOf(DamageTypes.FREEZE)) return false;
-        if (source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) {
+        if (source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC) || source.isOf(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN)) {
             return super.damage(source, amount);
         }
         return super.damage(source, amount * 0.1f);
+    }
+
+    @Override
+    public boolean canFreeze() {
+        return false;
     }
 
     @Override
@@ -338,6 +348,29 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
                 this.mob.setShootingParticle(false);
                 this.mob.setShooting(false);
             }
+        }
+    }
+
+    class Emerge extends Goal {
+        @Override
+        public boolean canStart() {
+            return RimeSpectre.this.getTarget() == null;
+        }
+
+        @Override
+        public void tick() {
+            if (RimeSpectre.this.getTarget() == null && this.isInsideWall()) {
+                RimeSpectre.this.setVelocity(0, 0.1f, 0);
+            }
+        }
+
+        private boolean isInsideWall() {
+            float f = RimeSpectre.this.getDimensions(EntityPose.STANDING).width() * 0.8f;
+            Box box = Box.of(RimeSpectre.this.getEyePos(), f, 1.0E-6, f);
+            return BlockPos.stream(box).anyMatch(pos -> {
+                BlockState blockState = RimeSpectre.this.getWorld().getBlockState(pos);
+                return !blockState.isAir() && blockState.shouldSuffocate(RimeSpectre.this.getWorld(), pos) && VoxelShapes.matchesAnywhere(blockState.getCollisionShape(RimeSpectre.this.getWorld(), pos).offset(pos.getX(), pos.getY(), pos.getZ()), VoxelShapes.cuboid(box), BooleanBiFunction.AND);
+            });
         }
     }
 

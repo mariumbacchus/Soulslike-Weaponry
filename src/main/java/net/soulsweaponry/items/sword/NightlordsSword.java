@@ -53,6 +53,11 @@ public class NightlordsSword extends ModdedSword {
                             (int) ConfigConstructor.sword_of_the_nightlord_blight_duration,
                             (int) ConfigConstructor.sword_of_the_nightlord_blight_amp
                     )
+                    .magicDamage(
+                            ConfigConstructor.sword_of_the_nightlord_spellblade_bonus_magic_damage,
+                            ConfigConstructor.sword_of_the_nightlord_spellblade_bonus_magic_damage_per_level,
+                            ConfigConstructor.sword_of_the_nightlord_spellblade_target_is_player_mod
+                    )
                     .build();
 
     /**
