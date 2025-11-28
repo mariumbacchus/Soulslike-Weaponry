@@ -81,7 +81,6 @@ public class WeaponUtil {
     /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
-    @Deprecated
     public static int getEnchantDamageBonus(ItemStack stack) {
         return getHighestEnchantInTag(stack, EnchantmentTags.DAMAGE_EXCLUSIVE_SET);
     }
@@ -92,7 +91,6 @@ public class WeaponUtil {
      * will return the highest level of sharpness, smite or whatever damage enchant the item
      * has.
      */
-    @Deprecated
     public static int getHighestEnchantInTag(ItemStack stack, TagKey<Enchantment> tag) {
         return EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries().stream()
                 .filter(e -> e.getKey().isIn(tag))
@@ -102,12 +100,9 @@ public class WeaponUtil {
     }
 
     /**
-     * Gets the level of a specific enchant based on the RegistryKey for simplicity
-     * TODO alternatively, look at what has been done in ICooldownItem to get level of the enchant, maybe replace this with that
+     * Gets the level of a specific enchant based on the RegistryKey for simplicity.
      */
-    @Deprecated
     public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
-        // TODO remove this when making enchants builtin into silver bullets
         Boolean disable = EnchantRegistry.DISABLED_ENCHANTMENTS.get(enchantKey);
         if (ConfigConstructor.disable_all_enchantments || (disable != null && disable)) {
             return 0;
