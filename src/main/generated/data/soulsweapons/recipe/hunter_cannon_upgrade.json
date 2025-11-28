@@ -6,7 +6,7 @@
   "base": {
     "item": "soulsweapons:hunter_cannon"
   },
-  "primaryBonus": 3.0,
+  "primaryBonus": 6.0,
   "secondaryBonus": 0.0,
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"

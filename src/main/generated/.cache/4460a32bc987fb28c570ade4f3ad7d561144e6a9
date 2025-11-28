@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-26T19:11:28.9781599	Marium's Soulslike Weaponry/soulsweapons Dynamic Registries
+// 1.21.1	2025-11-28T13:45:55.9978452	Marium's Soulslike Weaponry/soulsweapons Dynamic Registries
 c8fd1d8e9eb2ca46adac6f8b2a3dae14cee7427f data\soulsweapons\damage_type\freyr_sword.json
 b3bf9ef13d70d41bbb238c9182a3487400d107ad data\soulsweapons\enchantment\chain_lightning.json
 b0002ab3be9157b280851f2b0eaa25384c8c85c5 data\soulsweapons\damage_type\player_lightning.json
@@ -8,9 +8,9 @@ b0002ab3be9157b280851f2b0eaa25384c8c85c5 data\soulsweapons\damage_type\player_li
 59ec873f6e69612bd4d0a2d9578334efa6a04377 data\soulsweapons\enchantment\tether.json
 ed14fea115ef81a0188714f7ac1ec90c11a2deb9 data\soulsweapons\enchantment\phantom_trace.json
 eaf28d84f9da368774890f4f053932c884554cc6 data\soulsweapons\damage_type\obliterated.json
-ce270f3cb39d03dd71f1b1513ef28d6774f2fd8e data\soulsweapons\enchantment\fast_hands.json
-efa9ce5142ee69d6366c16eb11849cefd5b1451d data\soulsweapons\enchantment\stagger.json
 8aef8f5bd9210f81068329a4acdc7d16b69c7799 data\soulsweapons\enchantment\ethereal.json
+efa9ce5142ee69d6366c16eb11849cefd5b1451d data\soulsweapons\enchantment\stagger.json
+ce270f3cb39d03dd71f1b1513ef28d6774f2fd8e data\soulsweapons\enchantment\fast_hands.json
 f818344fe43690916d868d438fae3be2df27c94e data\soulsweapons\damage_type\shadow_orb.json
 aa80bbf8f1314852e24b980f0f1b090bc206a190 data\soulsweapons\damage_type\magic_damage_bypass_cooldown.json
 3be1c484ce646417c8a6307cd354913d0d5ef3f1 data\soulsweapons\damage_type\player_fire.json

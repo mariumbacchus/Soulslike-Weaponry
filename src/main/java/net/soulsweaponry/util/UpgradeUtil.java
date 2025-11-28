@@ -77,7 +77,7 @@ public class UpgradeUtil {
                 UpgradeUtil.setOrReplaceArmorToughnessUpgrade(stack, armor, secondary);
             }
             case RangedWeaponItem ranged -> {
-                if (ranged instanceof GunItem) {//TODO look into removing need for bullets at certain level
+                if (ranged instanceof GunItem) {
                     stack.set(ComponentRegistry.GUN_BONUS_DAMAGE, primary); // Calculated inside the weapon instead of attribute
                 } else {
                     UpgradeUtil.setOrReplaceRangedDamageUpgrade(stack, primary); // +% projectile damage
@@ -93,7 +93,7 @@ public class UpgradeUtil {
                 if (secondary > 0) {
                     UpgradeUtil.setOrReplaceAttackSpeedUpgrade(stack, secondary);
                 }
-            }//TODO for mining items increase mining speed by 1 instead of attack speed
+            }
         }
     }
 

@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public interface IAbility extends ICooldownItem {
 
@@ -393,6 +394,14 @@ public interface IAbility extends ICooldownItem {
      */
     default int useActionPriority() {
         return 0;
+    }
+
+    /**
+     * Called in {@link net.minecraft.item.RangedWeaponItem} items. Override to make the ranged item need
+     * certain items, such as Silver Bullets for the {@link net.soulsweaponry.items.gun.GunItem} abilities.
+     */
+    default Predicate<ItemStack> getProjectiles() {
+        return null;
     }
 
     /**

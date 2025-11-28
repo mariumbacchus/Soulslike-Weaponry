@@ -4,7 +4,6 @@ import net.fabric_extras.ranged_weapon.api.CustomCrossbow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -55,11 +54,5 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
 
     public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
         return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        this.appendTooltipAbilities(stack, tooltip);
-        super.appendTooltip(stack, context, tooltip, type);
     }
 }

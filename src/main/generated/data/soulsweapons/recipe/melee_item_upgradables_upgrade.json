@@ -6,6 +6,7 @@
   "base": {
     "tag": "soulsweapons:melee_item_upgradables"
   },
+  "fallback": true,
   "primaryBonus": 1.0,
   "secondaryBonus": 0.05,
   "template": {

@@ -6,6 +6,7 @@
   "base": {
     "tag": "minecraft:shovels"
   },
+  "fallback": true,
   "primaryBonus": 1.0,
   "secondaryBonus": 5.0,
   "template": {

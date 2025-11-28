@@ -6,6 +6,7 @@
   "base": {
     "tag": "minecraft:chest_armor"
   },
+  "fallback": true,
   "primaryBonus": 1.0,
   "secondaryBonus": 0.6,
   "template": {

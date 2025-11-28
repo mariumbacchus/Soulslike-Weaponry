@@ -6,6 +6,7 @@
   "base": {
     "tag": "soulsweapons:ranged_item_upgradables"
   },
+  "fallback": true,
   "primaryBonus": 0.4,
   "secondaryBonus": 0.1,
   "template": {

@@ -6,6 +6,7 @@
   "base": {
     "tag": "minecraft:leg_armor"
   },
+  "fallback": true,
   "primaryBonus": 0.8,
   "secondaryBonus": 0.6,
   "template": {

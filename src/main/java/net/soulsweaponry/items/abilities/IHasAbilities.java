@@ -23,11 +23,13 @@ import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public interface IHasAbilities extends IConfigDisable {
 
@@ -377,6 +379,19 @@ public interface IHasAbilities extends IConfigDisable {
             ability.addArmorAttributeModifiers(builder, equipmentSlot, slot);
         });
         return builder;
+    }
+
+    /**
+     * Mainly used in {@link net.minecraft.item.RangedWeaponItem} items.
+     * Will pick out the first ability overriding the predicate to not return null.
+     * Normally used for Silver Bullet abilities used for Gun items.
+     */
+    default Predicate<ItemStack> getProjectiles() {
+        return this.getAbilities().stream()
+                .map(IAbility::getProjectiles)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse((stack) -> stack.isOf(ItemRegistry.SILVER_BULLET));
     }
 
     default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {

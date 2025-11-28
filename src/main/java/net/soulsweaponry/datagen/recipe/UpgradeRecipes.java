@@ -20,30 +20,37 @@ public class UpgradeRecipes {
 
     public static void generateRecipes(RecipeExporter recipeExporter) {
         // General upgrading recipes
-        createUpgrade(recipeExporter, ModTags.Items.MELEE_ITEM_UPGRADABLES, 1f, 0.05f);
-        createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f);
+        createUpgrade(recipeExporter, ModTags.Items.MELEE_ITEM_UPGRADABLES, 1f, 0.05f, true);
+        createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f, true);
 
         // Armor items (head to feet via tags)
-        createUpgrade(recipeExporter, ItemTags.HEAD_ARMOR, 0.6f, 0.6f);
-        createUpgrade(recipeExporter, ItemTags.CHEST_ARMOR, 1f, 0.6f);
-        createUpgrade(recipeExporter, ItemTags.LEG_ARMOR, 0.8f, 0.6f);
-        createUpgrade(recipeExporter, ItemTags.FOOT_ARMOR, 0.6f, 0.6f);
+        createUpgrade(recipeExporter, ItemTags.HEAD_ARMOR, 0.6f, 0.6f, true);
+        createUpgrade(recipeExporter, ItemTags.CHEST_ARMOR, 1f, 0.6f, true);
+        createUpgrade(recipeExporter, ItemTags.LEG_ARMOR, 0.8f, 0.6f, true);
+        createUpgrade(recipeExporter, ItemTags.FOOT_ARMOR, 0.6f, 0.6f, true);
 
         // Guns
-        createUpgrade(recipeExporter, GunRegistry.GATLING_GUN, 0.4f, 0f);
-        createUpgrade(recipeExporter, GunRegistry.HUNTER_CANNON, 3, 0f);
-        createUpgrade(recipeExporter, GunRegistry.BLUNDERBUSS, 1.5f, 0f);
-        createUpgrade(recipeExporter, GunRegistry.HUNTER_PISTOL, 1, 0f);
+        createUpgrade(recipeExporter, GunRegistry.GATLING_GUN, 1, 0f);
+        createUpgrade(recipeExporter, GunRegistry.HUNTER_CANNON, 6, 0f);
+        createUpgrade(recipeExporter, GunRegistry.BLUNDERBUSS, 3.5f, 0f);
+        createUpgrade(recipeExporter, GunRegistry.HUNTER_PISTOL, 2.5f, 0f);
 
         // Mining items
-        createUpgrade(recipeExporter, ItemTags.SHOVELS, 1f, 5);
-        createUpgrade(recipeExporter, ItemTags.AXES, 1.25f, 5);
-        createUpgrade(recipeExporter, ItemTags.PICKAXES, 1f, 5);
-        createUpgrade(recipeExporter, ItemTags.HOES, 1f, 5);
+        createUpgrade(recipeExporter, ItemTags.SHOVELS, 1f, 5, true);
+        createUpgrade(recipeExporter, ItemTags.AXES, 1.25f, 5, true);
+        createUpgrade(recipeExporter, ItemTags.PICKAXES, 1f, 5, true);
+        createUpgrade(recipeExporter, ItemTags.HOES, 1f, 5, true);
     }
 
-    public static void createUpgrade(RecipeExporter recipeExporter, TagKey<Item> tag, float primaryBonus, float secondaryBonus) {
-        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
+    /**
+     * Create tag recipe. Tag recipes should be marked with fallback = true so that other recipes meant for that item
+     * with fallback = false will be prioritized.
+     * <p></p>
+     * An example of this is with the Gatling Gun item, it is within the RANGED_ITEM_UPGRADABLES tag, but it should
+     * prioritize using the upgrade json file meant for itself rather than always defaulting to the tag recipe.
+     */
+    public static void createUpgrade(RecipeExporter recipeExporter, TagKey<Item> tag, float primaryBonus, float secondaryBonus, boolean fallback) {
+        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus, fallback)
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(Items.STICK).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, tag.id().getPath() + "_upgrade"));

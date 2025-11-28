@@ -81,6 +81,7 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
         return UseAction.BOW;
     }
 
+    @Override
     public int getCooldown(ItemStack stack, int ticksUsed) {
         return Math.max(this.minCooldown, this.cooldown
                 - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl

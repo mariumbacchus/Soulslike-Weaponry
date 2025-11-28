@@ -6,7 +6,7 @@
   "base": {
     "item": "soulsweapons:gatling_gun"
   },
-  "primaryBonus": 0.4,
+  "primaryBonus": 1.0,
   "secondaryBonus": 0.0,
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"

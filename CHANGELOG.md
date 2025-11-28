@@ -21,10 +21,12 @@
   - These bonuses are added as recipes with the type `"soulsweapons:smithing_item_upgrade"`, therefore making it possible to create own stat files for specific items or overwrite old ones
   - Items can be upgraded max 5 times, but can be changed in config
   - Added REI compatability for this system too
+  - The bonuses depend on the item, for example bows and crossbows get ranged damage and draw speed, mining tools get mining efficiency and attack damage, armor gains armor and armor toughness, and so on... (default is just damage and attack speed for other items)
   - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants, therefore, config lines previously dictating what enchants made the weapons scale have been removed and replaced with _per_level instead
   - Many weapons have new bonuses based on the upgrade level, such as:
     - Moonlight Greatsword (and pure variant) shoot more projectiles based on upgrade level (3-7), and so does Bluemoon and the Master Sword
     - Holy Moonlight Greatsword have more pillars summoned based on level
+    - Guns now gain infinity at upgrade level above 2
     - and more!
 - Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
 - Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config

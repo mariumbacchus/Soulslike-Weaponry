@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-26T19:11:28.9791627	Marium's Soulslike Weaponry/Tags for minecraft:item
+// 1.21.1	2025-11-28T13:45:55.9978452	Marium's Soulslike Weaponry/Tags for minecraft:item
 86d10b7465ad76de26963f203b796c8b71945582 data\minecraft\tags\item\swords.json
 e0ab947b7898fa46fae7b9f8f8a16737c789e67c data\minecraft\tags\item\foot_armor.json
 9dc46d5cdf58b0392e68eab4464b172801dce69a data\minecraft\tags\item\pickaxes.json
@@ -23,8 +23,8 @@ d44ed630af0e3fcac7cad20d2bb1d21e76a6e2fd data\minecraft\tags\item\leg_armor.json
 7da12b4fe370ee15447fbc295fa046dd94a425d2 data\c\tags\item\tools\bow.json
 d55fe98220c4ec80d0a7ea4a5ba3522b0a5d69ed data\soulsweapons\tags\item\duo_boss_souls.json
 f46aba0909a8283e786371a9bda8b69dfe63e0a2 data\soulsweapons\tags\item\enchantable\gun.json
-888c4396921414040fd437eba85c735a6c283b14 data\soulsweapons\tags\item\summonable_weapons.json
 c4f5989768507af2dae2143181f2edd71e140ef8 data\c\tags\item\lost_soul.json
+888c4396921414040fd437eba85c735a6c283b14 data\soulsweapons\tags\item\summonable_weapons.json
 e6d7be94acb15c4e70212dcf15f3596af46b8eb9 data\minecraft\tags\item\enchantable\bow.json
 88e5e0c75fae23e636db015c56c2279aa1a18a3a data\soulsweapons\tags\item\upgradable_moonlight_swords.json
 ab7583e904bf80aebb3269797c08f48d3357ba4c data\minecraft\tags\item\hoes.json

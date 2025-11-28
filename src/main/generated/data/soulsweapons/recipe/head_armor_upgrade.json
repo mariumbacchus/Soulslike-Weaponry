@@ -6,6 +6,7 @@
   "base": {
     "tag": "minecraft:head_armor"
   },
+  "fallback": true,
   "primaryBonus": 0.6,
   "secondaryBonus": 0.6,
   "template": {
