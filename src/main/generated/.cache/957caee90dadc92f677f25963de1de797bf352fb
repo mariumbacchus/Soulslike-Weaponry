@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-28T13:45:56.0064885	Marium's Soulslike Weaponry/minecraft:entity Loot Table
+// 1.21.1	2025-11-28T20:44:54.3338095	Marium's Soulslike Weaponry/minecraft:entity Loot Table
 73a8cc12937143b2e1c9501b81a93390f85cc8e4 data\soulsweapons\loot_table\entities\soulmass.json
 d3e857923f4e2715ed6c1d6818d4008daa57ae3d data\soulsweapons\loot_table\entities\night_prowler.json
 72dbf6946a348ac5c2000dc262f53c52cdddbf1c data\soulsweapons\loot_table\entities\warmth_entity.json
@@ -8,8 +8,8 @@ fc7bed79fe47c974178438c1beec1e8cac607959 data\soulsweapons\loot_table\entities\c
 ad8d768c9d55b282e300d6dacbe9f2b0b7802c53 data\soulsweapons\loot_table\entities\rime_spectre.json
 d728477b893dda2bbc16893f22f7a5936721ac9f data\soulsweapons\loot_table\entities\night_shade.json
 c29f93389952bb468f4cb3b275ab8f0d8ba3ab40 data\soulsweapons\loot_table\entities\frost_giant.json
-ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_table\entities\moonknight.json
 949cc4a2cd62985ab389e01a2992732fd7c1c105 data\soulsweapons\loot_table\entities\withered_demon.json
+ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_table\entities\moonknight.json
 be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_table\entities\returning_knight.json
 bb067d9e00792672a68fe601c3a8498bd6780e7e data\soulsweapons\loot_table\entities\day_stalker.json
 04a04e9e1b0f8ec3981924f1e5a4825c14ca97dc data\soulsweapons\loot_table\entities\big_chungus.json

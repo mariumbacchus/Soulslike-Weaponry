@@ -1,0 +1,48 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:fast_hands",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:stagger",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:visceral",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:tether",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:ricochet",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:phantom_trace",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:frostsilver",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:blight_carrier",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:chain_lightning",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:explosive_rounds",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:ethereal",
+      "required": false
+    }
+  ]
+}

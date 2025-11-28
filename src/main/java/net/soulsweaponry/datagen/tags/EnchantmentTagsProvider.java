@@ -18,6 +18,19 @@ public class EnchantmentTagsProvider extends FabricTagProvider.EnchantmentTagPro
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+        this.getOrCreateTagBuilder(EnchantmentTags.IN_ENCHANTING_TABLE)
+                .addOptional(EnchantRegistry.FAST_HANDS)
+                .addOptional(EnchantRegistry.STAGGER)
+                .addOptional(EnchantRegistry.VISCERAL)
+                .addOptional(EnchantRegistry.TETHER)
+                .addOptional(EnchantRegistry.RICOCHET)
+                .addOptional(EnchantRegistry.PHANTOM_TRACE)
+                .addOptional(EnchantRegistry.FROSTSILVER)
+                .addOptional(EnchantRegistry.BLIGHT_CARRIER)
+                .addOptional(EnchantRegistry.CHAIN_LIGHTNING)
+                .addOptional(EnchantRegistry.EXPLOSIVE_ROUNDS)
+                .addOptional(EnchantRegistry.ETHEREAL);
+
         this.getOrCreateTagBuilder(EnchantmentTags.CURSE)
                 .addOptional(EnchantRegistry.MISFIRE_CURSE);
 

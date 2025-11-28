@@ -40,7 +40,6 @@ public class EnchantRegistry {
     public static void bootstrap(Registerable<Enchantment> registerable) {
         RegistryEntryLookup<Enchantment> enchantments = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);
         RegistryEntryLookup<Item> itemLookup = registerable.getRegistryLookup(RegistryKeys.ITEM);
-        // TODO I guess I could make custom enchant-trigger files for each gun enchant one day like how they exist for punch & power
         registerable.register(FAST_HANDS, Enchantment.builder(
                         Enchantment.definition(
                                 itemLookup.getOrThrow(ModTags.Items.GUN_ENCHANTABLE),
@@ -187,7 +186,6 @@ public class EnchantRegistry {
     }
 
     public static void init() {
-        // TODO replace with disabling directly in the enchant class when those are made
         DISABLED_ENCHANTMENTS.put(FAST_HANDS, ConfigConstructor.disable_enchantment_fast_hands);
         DISABLED_ENCHANTMENTS.put(VISCERAL, ConfigConstructor.disable_enchantment_posture_breaker);
         DISABLED_ENCHANTMENTS.put(STAGGER, ConfigConstructor.disable_enchantment_stagger);
