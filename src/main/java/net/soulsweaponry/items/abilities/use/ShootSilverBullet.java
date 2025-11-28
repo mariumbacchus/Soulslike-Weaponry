@@ -299,16 +299,20 @@ public class ShootSilverBullet implements IAbility {
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         MutableText damage = Text.literal(String.format("%.1f", (this.damage + bonus)));
         MutableText postureLoss = Text.literal(String.valueOf(this.getPostureLoss(stack)));
+        MutableText cooldown = Text.literal(String.valueOf(this.getCooldown(stack)));
         if (bonus > 0) {
             damage.formatted(Formatting.BLUE);
         }
         if (this.getPostureLoss(stack) > this.postureLoss) {
             postureLoss.formatted(Formatting.BLUE);
         }
+        if (this.getCooldown(stack) < this.cooldown) {
+            cooldown.formatted(Formatting.BLUE);
+        }
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(postureLoss).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").formatted(Formatting.GRAY).append(damage));
-        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(this.getCooldown(stack)))).formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(cooldown).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(this.bulletsNeeded))).formatted(Formatting.GRAY));
         if (lvl >= this.levelToUnlockInfinity) {
             tooltip.add(Text.translatable("enchantment.minecraft.infinity").formatted(Formatting.BLUE));
