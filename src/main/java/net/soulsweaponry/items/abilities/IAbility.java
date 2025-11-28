@@ -161,6 +161,15 @@ public interface IAbility extends ICooldownItem {
     default boolean isOffhandAbility() { return false; }
 
     /**
+     * @return true if this ability should react to the keybind.
+     * Used so the dispatcher can tell which abilities are keybind-based,
+     * and which sneaking abilities are unrelated (like sneaking charge/use).
+     */
+    default boolean isKeybindAbility() {
+        return false;
+    }
+
+    /**
      * Called when the user is damaged when this item is equipped.
      * @return whether the target should take damage in the end or not
      */

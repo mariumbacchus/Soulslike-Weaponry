@@ -11,6 +11,11 @@ import java.util.List;
 public interface IKeybindAbility extends IAbility {
 
     @Override
+    default boolean isKeybindAbility() {
+        return true;
+    }
+
+    @Override
     default List<Text> getBonusAbilityTooltip(ItemStack stack) {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.keybind_ability").formatted(Formatting.DARK_GRAY)

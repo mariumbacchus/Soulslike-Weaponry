@@ -102,7 +102,6 @@ public class ShootSilverBullet implements IAbility {
         }
     }
 
-    // TODO instead of all of these get enchant level calls, replace with the new enchant system that applies to silver bullets
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
         if (WeaponUtil.getLevel(gunStack, EnchantRegistry.MISFIRE_CURSE) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
