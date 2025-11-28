@@ -18,7 +18,8 @@ public class DarkinScythePrime extends ModdedSword {
             (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_reduced_cooldown_per_level,
             ConfigConstructor.darkin_scythe_prime_umbral_trespass_heal_modifier,
             (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_ticks_before_dismount,
-            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_percent_max_health_damage
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_percent_max_health_damage,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_max_range_from_target
     );
     private static final Omnivamp OMNIVAMP = new Omnivamp(
             ConfigConstructor.darkin_scythe_prime_omnivamp_base_heal,

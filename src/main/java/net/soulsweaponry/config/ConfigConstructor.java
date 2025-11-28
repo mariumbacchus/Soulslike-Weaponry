@@ -567,6 +567,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_scythe_prime_umbral_trespass_reduced_cooldown_per_level = 25;
     @Entry public static float darkin_scythe_prime_umbral_trespass_heal_modifier = 0.25f;
     @Entry public static float darkin_scythe_prime_umbral_trespass_ticks_before_dismount = 80;
+    @Entry public static float darkin_scythe_prime_umbral_trespass_max_range_from_target = 200f;
     @Entry public static float darkin_scythe_prime_omnivamp_base_heal = 4f;
     @Entry public static float darkin_scythe_prime_omnivamp_bonus_heal_per_level = 0.5f;
     @Entry public static float darkin_scythe_prime_omnivamp_cooldown = 50;
@@ -1036,6 +1037,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float mjolnir_lightning_bonus_smash_damage_per_level = 1f;
     @Entry public static float mjolnir_lightning_enchant_bonus_smash_damage_multiplier = 2f;
     @Entry public static float mjolnir_lightning_circle_amount = 3;
+    @Entry public static float mjolnir_lightning_amount_per_circle = 12;
+    @Entry public static float mjolnir_lightning_range_between_circles = 5;
     @Entry public static float mjolnir_lightning_smash_cooldown = 200;
     @Entry public static float mjolnir_lightning_smash_min_cooldown = 60;
     @Entry public static float mjolnir_lightning_smash_reduced_cooldown_per_level = 30;
@@ -1091,11 +1094,13 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float moonveil_damage = 9;
     @Entry public static float moonveil_attack_speed = 1.6f;
+    @Entry public static float moonveil_wave_projectile_max_age = 6;
     @Entry public static float moonveil_wave_base_damage = 8f;
     @Entry public static float moonveil_wave_bonus_damage_per_level = 2.5f;
     @Entry public static float moonveil_wave_cooldown = 30;
     @Entry public static float moonveil_wave_min_cooldown = 0;
     @Entry public static float moonveil_wave_reduced_cooldown_per_level = 10;
+    @Entry public static float moonveil_vertical_projectile_max_age = 15;
     @Entry public static float moonveil_vertical_base_damage = 12f;
     @Entry public static float moonveil_vertical_bonus_damage_per_level = 3f;
     @Entry public static float moonveil_vertical_cooldown = 30;
@@ -1117,6 +1122,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float nightfall_obliterate_bonus_damage_per_level = 2.0f;
     @Entry public static float nightfall_obliterate_enchant_bonus_damage_modifier = 2.0f;
     @Entry public static float nightfall_obliterate_y_velocity_launch_power = 0.5f;
+    @Entry public static double nightfall_obliterate_aoe_expansion = 3;
+    @Entry public static double nightfall_obliterate_range_outwards = 3;
     @Entry public static float nightfall_obliterate_cooldown = 300;
     @Entry public static float nightfall_obliterate_min_cooldown = 80;
     @Entry public static float nightfall_obliterate_reduced_cooldown_per_level = 50;
@@ -1182,6 +1189,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float shadow_assassin_scythe_ummbral_trespass_heal_modifier = 0f;
     @Entry public static float shadow_assassin_scythe_umbral_trespass_ticks_before_dismount = 120;
     @Entry(min=0,max=1) public static double shadow_assassin_scythe_umbral_trespass_bonus_percent_max_health_damage = 0f;
+    @Entry public static float shadow_assassin_scythe_umbral_trespass_max_range_from_target = 200f;
 
     @Entry public static float simons_blade_damage = 6;
     @Entry public static float simons_blade_attack_speed = 1.6f;
@@ -1240,6 +1248,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float supernova_flame_pillar_base_damage = 10f;
     @Entry public static float supernova_flame_pillar_damage_per_level = 2f;
     @Entry public static float supernova_ability_flame_pillar_amount = 5f;
+    @Entry public static float supernova_ability_flame_pillar_radius = 1.85f;
+    @Entry public static float supernova_ability_flame_pillar_bonus_radius_per_level = 0.3f;
     @Entry public static float supernova_molten_metal_shield_damage = 100f;
     @Entry public static float supernova_molten_metal_fire_seconds = 4f;
     @Entry public static float supernova_molten_metal_max_age_ticks = 160f;
@@ -1398,6 +1408,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frost_reduction_interval = 4;
     @Entry public static float frost_base_damage = 4f;
     @Entry(min=0, max=1) public static float frost_percent_health_damage = 0.15f;
+    @Entry public static double frost_explosion_range = 1.25;
     @Entry public static float frost_permafrost_spread_effect_amp = 2;
     @Entry public static float permafrost_effect_base_frost_buildup = 1;
     @Entry public static float permafrost_effect_buildup_per_amp = 1;

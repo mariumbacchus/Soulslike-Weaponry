@@ -40,6 +40,8 @@ public class Mjolnir extends ModdedSword implements GeoItem {
             ConfigConstructor.mjolnir_lightning_bonus_smash_damage_per_level,
             ConfigConstructor.mjolnir_lightning_enchant_bonus_smash_damage_multiplier,
             (int) ConfigConstructor.mjolnir_lightning_circle_amount,
+            (int) ConfigConstructor.mjolnir_lightning_amount_per_circle,
+            ConfigConstructor.mjolnir_lightning_range_between_circles,
             (int) ConfigConstructor.mjolnir_lightning_smash_min_cooldown,
             (int) ConfigConstructor.mjolnir_lightning_smash_cooldown,
             (int) ConfigConstructor.mjolnir_lightning_smash_reduced_cooldown_per_level

@@ -16,14 +16,14 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public record MoonveilVertical(float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements ISneakChargeToUse {
+public record MoonveilVertical(int maxAge, float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements ISneakChargeToUse {
 
     @Override
     public void sneakingOnStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
             if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
-                MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, 15);
+                MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, this.maxAge);
                 entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
                 entity.setAreaParticleCount((byte) 10);
                 entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);

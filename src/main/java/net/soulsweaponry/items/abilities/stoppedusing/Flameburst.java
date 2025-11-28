@@ -15,7 +15,7 @@ import java.util.List;
 
 public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPerLvl,
                          float moltenMetalBaseDamage, float moltenMetalDamagePerLvl,
-                         int flamePillarAmount,
+                         int flamePillarAmount, float spacingModifier,
                          float flamePillarBaseRadius, float flamePillarRadiusPerLvl,
                          float flamePillarBaseDamage, float flamePillarDamagePerLvl,
                          int minCooldown, int cooldown, int reducedCooldownPerLvl
@@ -29,7 +29,7 @@ public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPer
                     int level = WeaponUtil.getUpgradeLevel(stack);
                     float radius = this.moltenMetalBaseRadius + this.moltenMetalRadiusPerLvl * level;
                     float damage = this.moltenMetalBaseDamage + this.moltenMetalDamagePerLvl * level;
-                    WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), 4, this.flamePillarAmount, 1.75f,
+                    WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), 4, this.flamePillarAmount, this.spacingModifier,
                             (Vec3d position, Integer warmup, Float yaw) -> {
                                 FlamePillar pillar = new FlamePillar(world, user, this.flamePillarBaseRadius + this.flamePillarRadiusPerLvl * level, warmup, DamagingWarmupEntityEvents.SPAWN_MOLTEN_METAL);
                                 pillar.setYaw(yaw);

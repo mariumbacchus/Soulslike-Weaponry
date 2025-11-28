@@ -17,14 +17,14 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public record MoonveilHorizontal(float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IAbility {
+public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IAbility {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
             if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
-                MoonveilWave entity = new MoonveilWave(world, user, 6);
+                MoonveilWave entity = new MoonveilWave(world, user, this.maxAge);
                 entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
                 entity.setAreaParticleCount((byte) 15);
                 entity.setDespawnParticleCount(40);

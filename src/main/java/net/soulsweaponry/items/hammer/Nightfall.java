@@ -51,6 +51,8 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
             ConfigConstructor.nightfall_obliterate_bonus_damage_per_level,
             ConfigConstructor.nightfall_obliterate_enchant_bonus_damage_modifier,
             ConfigConstructor.nightfall_obliterate_y_velocity_launch_power,
+            ConfigConstructor.nightfall_obliterate_aoe_expansion,
+            ConfigConstructor.nightfall_obliterate_range_outwards,
             (int) ConfigConstructor.nightfall_obliterate_min_cooldown,
             (int) ConfigConstructor.nightfall_obliterate_cooldown,
             (int) ConfigConstructor.nightfall_obliterate_reduced_cooldown_per_level

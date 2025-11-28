@@ -23,9 +23,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public record CircleLightningCall(float baseSmashDamage, float bonusSmashDamagePerLvl,
-                                  float enchantBonusSmashDamageMultiplier, int lightningCircleAmount,
-                                  int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IKeybindAbility {
+public record CircleLightningCall(
+        float baseSmashDamage, float bonusSmashDamagePerLvl, float enchantBonusSmashDamageMultiplier,
+        int lightningCircleAmount, float lightningPerCircle, float rangeBetweenCircles,
+        int minCooldown, int cooldown, int reducedCooldownPerLvl
+) implements IKeybindAbility {
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
@@ -44,9 +46,10 @@ public record CircleLightningCall(float baseSmashDamage, float bonusSmashDamageP
             }
         }
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.PLAYERS, .75f, 1f);
+        float thetaStep = 360f / this.lightningPerCircle;
         for (int i = 1; i < this.lightningCircleAmount + 1; i++) {
-            int r = 5 * i;
-            for (int theta = 0; theta < 360; theta += 30) {
+            float r = this.rangeBetweenCircles * i;
+            for (float theta = 0; theta < 360; theta += thetaStep) {
                 double x0 = player.getX();
                 double z0 = player.getZ();
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);

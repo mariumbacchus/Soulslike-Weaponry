@@ -30,7 +30,8 @@ public class Supernova extends UltraHeavyWeapon {
     private static final Flameburst FLAMEBURST = new Flameburst(
             ConfigConstructor.supernova_molten_metal_base_radius, ConfigConstructor.supernova_molten_metal_radius_per_level,
             ConfigConstructor.supernova_molten_metal_base_damage, ConfigConstructor.supernova_molten_metal_damage_per_level,
-            (int) ConfigConstructor.supernova_ability_flame_pillar_amount, 1.85f,0.3f,
+            (int) ConfigConstructor.supernova_ability_flame_pillar_amount, 1.75f,
+            ConfigConstructor.supernova_ability_flame_pillar_radius, ConfigConstructor.supernova_ability_flame_pillar_bonus_radius_per_level,
             ConfigConstructor.supernova_flame_pillar_base_damage, ConfigConstructor.supernova_flame_pillar_damage_per_level,
             (int) ConfigConstructor.supernova_ability_min_cooldown, (int) ConfigConstructor.supernova_ability_cooldown, (int) ConfigConstructor.supernova_ability_reduced_cooldown_per_level
     );

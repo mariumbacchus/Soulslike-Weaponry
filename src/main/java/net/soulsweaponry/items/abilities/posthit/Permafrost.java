@@ -32,16 +32,16 @@ public record Permafrost(int frostApplied, int permafrostDuration, int permafros
         FrostData.addFrost(target, this.frostApplied);
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.permafrostDuration, (int) (this.permafrostBaseAmp + this.permafrostAmpPerLvl * level)));
     }
-    //TODO add more parameters and stuff to abilities for things such as bounding box of the ice explosion
+
     public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier) {
-        iceExplosion(world, pos, affectedEntity, baseAoeDamage, amplifier, 0f);
+        iceExplosion(world, pos, affectedEntity, baseAoeDamage, amplifier, 0f, 1.25f);
     }
 
-    public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier, float percentHealthDamage) {
+    public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier, float percentHealthDamage, double expansion) {
         if (world instanceof ServerWorld serverWorld) {
             UUID uuid = FrostData.getFrostSource(affectedEntity);
             Entity attacker = serverWorld.getEntity(uuid);
-            Box box = new Box(pos).expand(1.25D);
+            Box box = new Box(pos).expand(expansion);
             List<Entity> entities = world.getOtherEntities(attacker, box);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity livingEntity) {

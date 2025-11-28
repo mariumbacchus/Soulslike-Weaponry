@@ -18,7 +18,8 @@ public class ShadowAssassinScythe extends ModdedSword {
             (int) ConfigConstructor.shadow_assassin_scythe_umbral_trespass_reduced_cooldown_per_level,
             ConfigConstructor.shadow_assassin_scythe_ummbral_trespass_heal_modifier,
             (int) ConfigConstructor.shadow_assassin_scythe_umbral_trespass_ticks_before_dismount,
-            ConfigConstructor.shadow_assassin_scythe_umbral_trespass_bonus_percent_max_health_damage
+            ConfigConstructor.shadow_assassin_scythe_umbral_trespass_bonus_percent_max_health_damage,
+            ConfigConstructor.shadow_assassin_scythe_umbral_trespass_max_range_from_target
     );
     private static final ShadowStep SHADOW_STEP = new ShadowStep(
             ConfigConstructor.shadow_assassin_scythe_shadow_step_bonus_damage,

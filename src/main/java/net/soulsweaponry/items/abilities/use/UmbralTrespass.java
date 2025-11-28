@@ -25,7 +25,7 @@ import java.util.List;
 
 public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bonusEnchantDamageModifier,
                              int minCooldown, int cooldown, int reducedCooldownPerLvl,
-                             float healMod, int ticksBeforeDismount, double maxHealthBonusDamage) implements IAbility {
+                             float healMod, int ticksBeforeDismount, double maxHealthBonusDamage, float maxRange) implements IAbility {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
@@ -33,7 +33,7 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
             this.notifyCooldown(user);
             return TypedActionResult.fail(stack);
         }
-        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < 200D && world instanceof ServerWorld serverWorld) {
+        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < this.maxRange && world instanceof ServerWorld serverWorld) {
             LivingEntity target = user.getAttacking();
             if (user.startRiding(target, true)) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);

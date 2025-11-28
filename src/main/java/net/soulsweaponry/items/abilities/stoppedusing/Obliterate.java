@@ -22,7 +22,8 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.List;
 
 public record Obliterate(
-        float baseDamage, float bonusDamagePerLvl, float enchantBonusModifier, float yVelocity,
+        float baseDamage, float bonusDamagePerLvl, float enchantBonusModifier,
+        float yVelocity, double aoeExpansion, double rangeOutwards,
         int minCooldown, int cooldown, int reducedCooldownPerLvl
 ) implements IChargeToUse {
 
@@ -32,9 +33,9 @@ public record Obliterate(
             if (ticksUsed >= 10 && world instanceof ServerWorld serverWorld) {
                 this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
-                Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
+                Vec3d vecBlocksAway = player.getRotationVector().multiply(this.rangeOutwards).add(player.getPos());
                 BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int) user.getY(), (int) vecBlocksAway.z);
-                Box aoe = new Box(targetArea).expand(3);
+                Box aoe = new Box(targetArea).expand(this.aoeExpansion);
                 List<Entity> entities = world.getOtherEntities(player, aoe);
                 float power = this.baseDamage + WeaponUtil.getUpgradeLevel(stack) * this.bonusDamagePerLvl;
                 for (Entity entity : entities) {

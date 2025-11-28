@@ -12,11 +12,11 @@ public class Moonveil extends ModdedSword {
 
     private static final Bleed BLEED = new Bleed((int) ConfigConstructor.moonveil_bleed_post_hit, ConfigConstructor.moonveil_bleed_post_hit_bonus_per_bloodthirsty_amp);
     private static final MoonveilHorizontal MOONVEIL_HORIZONTAL = new MoonveilHorizontal(
-            ConfigConstructor.moonveil_wave_base_damage, ConfigConstructor.moonveil_wave_bonus_damage_per_level,
+            (int) ConfigConstructor.moonveil_wave_projectile_max_age, ConfigConstructor.moonveil_wave_base_damage, ConfigConstructor.moonveil_wave_bonus_damage_per_level,
             (int) ConfigConstructor.moonveil_wave_min_cooldown, (int) ConfigConstructor.moonveil_wave_cooldown, (int) ConfigConstructor.moonveil_wave_reduced_cooldown_per_level
     );
     private static final MoonveilVertical MOONVEIL_VERTICAL = new MoonveilVertical(
-            ConfigConstructor.moonveil_vertical_base_damage, ConfigConstructor.moonveil_vertical_bonus_damage_per_level,
+            (int) ConfigConstructor.moonveil_vertical_projectile_max_age, ConfigConstructor.moonveil_vertical_base_damage, ConfigConstructor.moonveil_vertical_bonus_damage_per_level,
             (int) ConfigConstructor.moonveil_vertical_min_cooldown, (int) ConfigConstructor.moonveil_vertical_cooldown, (int) ConfigConstructor.moonveil_vertical_reduced_cooldown_per_level
     );
 
