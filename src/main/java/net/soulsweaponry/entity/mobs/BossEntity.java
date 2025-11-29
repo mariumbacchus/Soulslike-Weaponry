@@ -12,6 +12,8 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -235,8 +237,41 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      * should damage the boss or not.
      */
     public boolean isProjectileWhitelisted(Entity entity) {
-        Identifier attackerId = EntityType.getId(entity.getType());
-        return List.of(this.getWhitelistedProjectiles()).contains(attackerId.getPath());
+        Identifier projectileId = EntityType.getId(entity.getType());
+        if (projectileId == null) {
+            return false;
+        }
+
+        EntityType<?> type = entity.getType();
+        for (String raw : this.getWhitelistedProjectiles()) {
+            if (raw == null || raw.isEmpty()) {
+                continue;
+            }
+
+            String s = raw.trim();
+            // Tag form, i.e: "#minecraft:arrows" or "#soulsweapons:something"
+            if (s.startsWith("#")) {
+                String tagStr = s.substring(1); // drop '#'
+                Identifier tagId = tagStr.contains(":")
+                        ? Identifier.of(tagStr)
+                        : Identifier.of(projectileId.getNamespace(), tagStr);
+                TagKey<EntityType<?>> tagKey = TagKey.of(RegistryKeys.ENTITY_TYPE, tagId);
+                if (type.getRegistryEntry().isIn(tagKey)) {
+                    return true;
+                }
+                continue;
+            }
+
+            // Normal ID form, i.e: "arrow", "minecraft:arrow", "big_moonlight_projectile", "soulsweapons:big_moonlight_projectile"
+            Identifier whitelistId = s.contains(":")
+                    ? Identifier.of(s) // full ID given
+                    : Identifier.of(projectileId.getNamespace(), s); // use projectile's namespace by default
+
+            if (whitelistId.equals(projectileId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
