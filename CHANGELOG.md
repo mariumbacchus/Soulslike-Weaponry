@@ -53,6 +53,8 @@
 - Fixed bugs preventing Rime Spectre from taking magic damage
 - Rime Spectre emerges from the ground when not attacking anything
 - Fixed bug preventing mobs from having the Decay effect
+- Fixed a bug causing config line for projectile immunity for some bosses to not recognize full namespace
+  - It now recognizes tags, full and only part of namespaces, such as "#minecraft:arrows" for tags and regular namespaces like "soulsweapons:moonlight_projectile" and "moonlight_projectile" will work
 
 # 1.3.2
 - Fixed bug preventing mobs from dropping items
