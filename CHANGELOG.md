@@ -1,6 +1,10 @@
 # Changelog
 
 # 1.4
+Most of this update has been refactoring the code so that any weapon in the future can have any ability if compatible. This is in preparation for a system
+kind of like "Ashes of War" from Elden Ring, where you can add the abilities you want to different weapons (if compatible). 
+This also means there might be new bugs with certain weapons I failed to catch, so do report them if you find any.
+Due to this restructuring, there aren't that many new additions compared to older big updates, except for the new upgrading system I hope you'll enjoy!
 
 ### Additions
 - Added Sword of the Nightlord
