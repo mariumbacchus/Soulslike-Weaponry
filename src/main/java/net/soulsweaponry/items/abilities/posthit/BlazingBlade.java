@@ -1,10 +1,12 @@
 package net.soulsweaponry.items.abilities.posthit;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.soulsweaponry.compat.PrometheusCompat;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -14,9 +16,17 @@ public record BlazingBlade(float baseFireSeconds, float bonusSecondsPerLvl, floa
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        target.setOnFireFor(this.baseFireSeconds
-                + this.bonusSecondsPerLvl * WeaponUtil.getUpgradeLevel(stack)
-                + this.fireAspectLvlBonus * WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT));
+        int time = (int) (this.baseFireSeconds + this.bonusSecondsPerLvl * WeaponUtil.getUpgradeLevel(stack));
+        if (FabricLoader.getInstance().isModLoaded("soul_fire_d")) {
+            int soulFireLvl = PrometheusCompat.getSoulFireAspect(stack, attacker.getRegistryManager());
+            if (soulFireLvl > 0) {
+                time += (int) (this.fireAspectLvlBonus * soulFireLvl);
+                PrometheusCompat.igniteSoulFire(target, time);
+                return;
+            }
+        }
+        time += (int) (this.fireAspectLvlBonus * WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT));
+        target.setOnFireFor(time);
     }
 
     @Override

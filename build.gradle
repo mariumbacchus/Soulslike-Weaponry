@@ -44,6 +44,17 @@ repositories {
 			includeGroup 'maven.modrinth'
 		}
 	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Crystal Nest"
+				url = "https://maven.crystalnest.it"
+			}
+		}
+		filter {
+			includeGroup "it.crystalnest"
+		}
+	}
 }
 
 dependencies {
@@ -79,6 +90,7 @@ dependencies {
 	// Compile time only
 	modCompileOnly 'curse.maven:controllable-317269:6277376'
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+	modCompileOnly "it.crystalnest:prometheus-fabric:$prometheus_minecraft_version-$prometheus_version"
 	//modCompileOnly 'maven.modrinth:create-fabric:0.5.1-j-build.1631+mc1.20.1' //NB: fabric 1.21.1 version not out yet as of typing this
 }
 
@@ -113,7 +125,9 @@ processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand([
+				"version": project.version
+		])
 	}
 }
 

@@ -45,6 +45,7 @@
 - Enabled crafting for the Kraken Slayer Bow
 - Added Echo effect, damage taken with it is saved then done back upon removal of it (damage is not applied if removed via commands or other abilities like via the Skofnung Stone)
 - Added Resonance ability to Lich Bane, apply Echo effect post hit as long as the entity neither has it from before and the item is not on cooldown
+- Added compatability with Soul Fire'd mod, Blazing Blade ability now scales off of Soul Fire Aspect and applies Soul Fire if the weapon has the enchantment
 
 ### Bugfixes
 - Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
