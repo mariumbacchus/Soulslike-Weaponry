@@ -1,19 +1,18 @@
 <p style="text-align: center;">
     <img src="https://i.imgur.com/IYq2Xse.png" alt="Logo"/>
 </p>
+
 Welcome to Soulslike Weaponry, a mod that started with me wondering how fun it would be to add the Moonlight Greatsword to Minecraft, which turned out to be a bigger project than I anticipated.
 
-The mod adds 60+ legendary weapons and plenty of new armor sets, all with new and unique abilities! You can test them
-out against the new challenging boss fights which will reward you with Lord Souls, the items you need to create most of the weapons.
-If you ever felt like the weapons Minecraft provides aren’t enough and want cool new boss fights, then this mod is for you.
+The mod adds 60+ legendary weapons and plenty of new armor sets, all with new and unique abilities! You can test them out against the new challenging boss fights which will reward you with Lord Souls, the items you need to create most of the weapons. If you ever felt like the weapons Minecraft provides aren’t enough and want cool new boss fights, then this mod is for you.
 
-The wiki here may not be up-to-date, but the mod supports recipe mods like Roughly Enough Items, so I suggest installing
-that while you're at it. **You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry)
-or [Modrinth](https://modrinth.com/mod/mariums-soulslike-weaponry), any other place is not safe.**
+The wiki here may not be up-to-date, but the mod supports recipe mods like Roughly Enough Items, so I suggest installing that while you're at it. **You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mariums-soulslike-weaponry) or [Modrinth](https://modrinth.com/mod/mariums-soulslike-weaponry), any other place is not safe.**
 
 The mod is highly configurable, you can always edit boss & weapon attributes, such as damage, cooldowns, and so on.
 The config folder is named `soulsweapons` and will contain all the config files you need, with the main one being `soulsweapons.json`.
+
 ---
+
 # Other features
 
 ## Upgrading System
@@ -21,13 +20,14 @@ As of version 1.4, the mod adds **Twinkling Titanite**. This item can be used to
 inside the **Smithing Table** to upgrade your item. This will add a bonus attribute based on the item type, such as damage & 
 attack speed for melee weapons, pull time & range damage for bows/crossbows, mining efficiency for mining tools, and 
 armor values for armor. It will also boost the existing abilities on your legendary weapon!
-<div style="text-align: center;"><img src="https://i.imgur.com/YL7NJer.png" alt="Upgrade Gear Example"/></div>
-The max upgrade level is 5 by default. This can be changed in the config, but be aware that the weapons are balanced
-around the max level being 5, so some number changes may be needed if you feel like changing this value.
 
-The upgrading stats are based off of new recipes with the `_upgrade` after the name that has the type `soulsweapons:smithing_item_upgrade`,
-so you can easily make datapacks if you want to change the values.
-These files are in the recipe folder and contain the info for the recipe itself as well as the values added to the weapon per level. 
+<p style="text-align: center;">
+    <img src="https://i.imgur.com/YL7NJer.png" alt="Upgrade Gear Example"/>
+</p>
+
+The max upgrade level is 5 by default. This can be changed in the config, but be aware that the weapons are balanced around the max level being 5, so some number changes may be needed if you feel like changing this value.
+
+The upgrading stats are based off of new recipes with the `_upgrade` after the name that has the type `soulsweapons:smithing_item_upgrade`, so you can easily make datapacks if you want to change the values. These files are in the recipe folder and contain the info for the recipe itself as well as the values added to the weapon per level. 
 An example is the `axes_upgrade.json` recipe:
 ```
 {
