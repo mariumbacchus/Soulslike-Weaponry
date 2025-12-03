@@ -4,18 +4,28 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class WeaponUtil {
 
@@ -48,6 +58,16 @@ public class WeaponUtil {
             list.add(t);
         }
         return list;
+    }
+
+    public static int getChargeTime(ItemStack stack, int remainingUseTicks) {
+        int i;
+        if (WeaponUtil.isModLoaded("epicfight")) {
+            i = Integer.MAX_VALUE - remainingUseTicks;
+        } else {
+            i = stack.getItem().getMaxUseTime(stack) - remainingUseTicks;
+        }
+        return i;
     }
 
     /**
@@ -181,5 +201,86 @@ public class WeaponUtil {
 
     public enum LuckType {
         GOOD, NEUTRAL, BAD
+    }
+
+    /**
+     * Helper method to launch a target the way it is facing, used mostly
+     * by items using Riptide effect such as Comet Spear or Mjölnir.
+     * Keep in mind that the world must be client side to apply movement!
+     * @param target target to launch
+     */
+    public static void launchTarget(LivingEntity target, float launchPower, boolean reverse) {
+        float f = target.getYaw();
+        float g = target.getPitch();
+        float rad = 0.017453292F; // pi / 180
+        float h = -MathHelper.sin(f * rad) * MathHelper.cos(g * rad);
+        float k = -MathHelper.sin(g * rad);
+        float l = MathHelper.cos(f * rad) * MathHelper.cos(g * rad);
+        float m = MathHelper.sqrt(h * h + k * k + l * l);
+        float n = 3.0F * (launchPower / 4.0F);
+        h *= n / m;
+        k *= n / m;
+        l *= n / m;
+        if (reverse) {
+            h = -h;
+            k = -k;
+            l = -l;
+        }
+        target.addVelocity(h, k, l);
+    }
+
+    /**
+     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float amount) {
+        // Don't display attributes with 0
+        if (amount == 0) {
+            return null;
+        }
+        // e.g. "soulsweapons:bleed_buildup:HEAD"
+        String seed = String.format("soulsweapons:%s:%s",
+                attr.getTranslationKey(), slot.getName().toUpperCase());
+        UUID uuid = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8));
+        return new EntityAttributeModifier(
+                uuid,
+                attr.getTranslationKey() + " " + slot.getName(),
+                amount,
+                EntityAttributeModifier.Operation.ADDITION
+        );
+    }
+
+    /**
+     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * This takes in an array of doubles that is used to map the values to the armor equipment slot (head to feet).
+     * No values beyond the 4th (3) index will be used.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float[] perSlotValues) {
+        // Minecraft has feet at index 0 so just follow that pattern
+        int idx = switch (slot) {
+            case HEAD -> 3;
+            case CHEST -> 2;
+            case LEGS -> 1;
+            case FEET -> 0;
+            default -> throw new IllegalArgumentException("Unexpected slot " + slot);
+        };
+        double amount = perSlotValues[idx];
+        return makeAttribute(attr, slot, (float) amount);
+    }
+
+    /**
+     * Returns a list of all the entity types within an array of identifiers as strings, i.e. "minecraft:chicken".
+     * Defaults to minecraft:entity if only the entity name/id was written, so if only "chicken" was
+     * mentioned, it would return "minecraft:chicken".
+     */
+    public static List<EntityType<?>> getEntityListOffArray(String[] array) {
+        Set<String> stringSet = Set.of(array);
+        return stringSet.stream().map((str) -> {
+            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
+            return ForgeRegistries.ENTITY_TYPES.getValue(entityId);
+        }).collect(Collectors.toList());
     }
 }

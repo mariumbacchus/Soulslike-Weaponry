@@ -6,6 +6,21 @@ public class LuckChosenObject<T> {
     private final WeaponUtil.LuckType luckType;
     private int luckFactor;
 
+    /**
+     * @param object the object
+     * @param luckType luck type to determine whether luckFactor should be increased or decreased
+     * @param luckFactor start weight (normally at 10)
+     */
+    public LuckChosenObject(T object, WeaponUtil.LuckType luckType, int luckFactor) {
+        this.object = object;
+        this.luckType = luckType;
+        this.luckFactor = luckFactor;
+    }
+
+    /**
+     * @param object the object
+     * @param luckType luck type to determine whether luckFactor should be increased or decreased
+     */
     public LuckChosenObject(T object, WeaponUtil.LuckType luckType) {
         this.object = object;
         this.luckType = luckType;

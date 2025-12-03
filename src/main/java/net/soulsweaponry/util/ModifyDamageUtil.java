@@ -5,8 +5,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -15,12 +15,19 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
+import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.IDragonBonus;
 import net.soulsweaponry.items.ILifeGuard;
+import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.sword.MehrunesRazor;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModifyDamageUtil {
 
@@ -33,10 +40,37 @@ public class ModifyDamageUtil {
      * @return new damage amount to be taken
      */
     public static float modifyDamageTakenTail(LivingEntity entity, float newAmount, DamageSource source) {
-        if (entity.getType().isIn(ModTags.Entities.DRAGONS) && source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().getItem() instanceof IDragonBonus dragonBonus) {
-            newAmount += dragonBonus.getDragonBonus(player.getMainHandStack());
+        if (source.getAttacker() instanceof LivingEntity attacker) {
+            List<ItemStack> stacks = new ArrayList<>();
+            stacks.add(attacker.getMainHandStack());
+            if (WeaponUtil.isFightModLoaded()) {
+                stacks.add(attacker.getOffHandStack());
+            }
+            for (ItemStack heldStack : stacks) {
+                Item item = heldStack.getItem();
+                // Bonus damage to dragons
+                if (entity.getType().isIn(ModTags.Entities.DRAGONS) &&
+                        item instanceof IDragonBonus dragonBonus &&
+                        !(item instanceof IConfigDisable configDisable && configDisable.isDisabled(heldStack))) {
+
+                    newAmount += dragonBonus.getDragonBonus(heldStack);
+                }
+                // Mehrunes’ Razor missing health bonus
+                if (item instanceof MehrunesRazor) {
+                    float ratio = entity.getMaxHealth() >= ConfigConstructor.mehrunes_razor_missing_health_trigger_cap ? ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap : ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap;
+                    if (attacker.getRandom().nextDouble() <= ratio) {
+                        double missing = entity.getMaxHealth() - entity.getHealth();
+                        float bonus = (float) Math.min(
+                                missing * ConfigConstructor.mehrunes_razor_missing_health_modifier
+                                        * (entity instanceof PlayerEntity ? ConfigConstructor.mehrunes_razor_missing_health_modifier_against_players : 1f),
+                                ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage
+                        );
+                        newAmount += bonus;
+                    }
+                }
+            }
         }
-        if (entity.hasStatusEffect(EffectRegistry.DECAY.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET.get())) {
+        if (entity.hasStatusEffect(EffectRegistry.DECAY.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET.get())) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY.get()).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
             newAmount += amountAdded;
@@ -48,19 +82,21 @@ public class ModifyDamageUtil {
         }
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get()) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK.get()).getAmplifier();
-            float baseAdded = entity instanceof PlayerEntity ? 3f : 8f;
+            float baseAdded = entity instanceof PlayerEntity ? ConfigConstructor.posture_break_player_damage_per_amp : ConfigConstructor.posture_break_damage_per_amp;
             float totalAdded = baseAdded * (amplifier + 1);
             newAmount += totalAdded;
+            newAmount += ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
             entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.HOSTILE, .5f, 1f);
             entity.removeStatusEffect(EffectRegistry.POSTURE_BREAK.get());
-            if (entity.hasStatusEffect(StatusEffects.SLOWNESS) && entity.getStatusEffect(StatusEffects.SLOWNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.SLOWNESS);
-            if (entity.hasStatusEffect(StatusEffects.WEAKNESS) && entity.getStatusEffect(StatusEffects.WEAKNESS).getDuration() < 100) entity.removeStatusEffect(StatusEffects.WEAKNESS);
-            if (entity.hasStatusEffect(StatusEffects.MINING_FATIGUE) && entity.getStatusEffect(StatusEffects.MINING_FATIGUE).getDuration() < 100) entity.removeStatusEffect(StatusEffects.MINING_FATIGUE);
+            if (entity.hasStatusEffect(EffectRegistry.FREEZING.get())) {
+                LeviathanAxe.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity.getAttacker(), entity.getStatusEffect(EffectRegistry.FREEZING.get()).getAmplifier());
+                entity.removeStatusEffect(EffectRegistry.FREEZING.get());
+            }
         }
         if (entity.hasStatusEffect(EffectRegistry.BLIGHT.get()) && entity.getArmor() > 0) {
             int amplifier = entity.getStatusEffect(EffectRegistry.BLIGHT.get()).getAmplifier() + 1; // ln(0) does not end well!
             int armorValue = entity.getArmor();
-            // Original value increases in % based on f(x) = (ln(x) * y) / 8, where x is the amplifier level, y is the armor of the target.
+            // Original value increases in % based on f(x) = (ln(x) * y) / 6, where x is the amplifier level, y is the armor of the target.
             float increase = (float) (newAmount * (((Math.log(amplifier) * armorValue) / 6f) / 10f));
             newAmount += increase;
         }

@@ -2,6 +2,7 @@ package net.soulsweaponry.util;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -11,16 +12,19 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.*;
-import net.soulsweaponry.items.armor.ChaosSet;
-import net.soulsweaponry.items.armor.WitheredArmor;
+import net.soulsweaponry.items.armor.SetBonusArmor;
 import net.soulsweaponry.items.gun.GunItem;
+import net.soulsweaponry.items.katana.IBleed;
 import net.soulsweaponry.items.scythe.DarkinScythePre;
 import net.soulsweaponry.items.scythe.ShadowAssassinScythe;
 import net.soulsweaponry.items.spear.GlaiveOfHodir;
 import net.soulsweaponry.items.sword.BluemoonGreatsword;
 import net.soulsweaponry.items.sword.Skofnung;
+import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -35,8 +39,147 @@ public class TooltipUtil {
         }
     }
 
+    // TODO Wow this is getting long... gotta fix that...
     public static void addAbilityTooltip(TooltipAbilities ability, ItemStack stack, List<Text> tooltip) {
         switch (ability) {
+            case SCENT_OF_BLOOD -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.scent_of_blood.2").formatted(Formatting.GRAY));
+            }
+            case BLOODLUST -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bloodlust.3").formatted(Formatting.GRAY));
+                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
+            case BLEED -> {
+                int amount = stack.getItem() instanceof IBleed bleed ? bleed.getBleedAmount() : 0;
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed").formatted(Formatting.RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.1", amount).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.bleed.3").formatted(Formatting.GRAY));
+            }
+            case STORMVEIL -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil").formatted(Formatting.AQUA));
+                for (int i = 1; i <= 8; i++) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.stormveil." + i).formatted(Formatting.GRAY));
+                }
+            }
+            case LIGHTBRINGER -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer").formatted(Formatting.GOLD));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.4").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.lightbringer.5").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+            }
+            case FINAL_WOUNDS -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds").formatted(Formatting.DARK_PURPLE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.1", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.2", ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.3", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_missing_health_trigger_cap).formatted(Formatting.DARK_GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.4", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.final_wounds.5", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_kill_trigger_cap).formatted(Formatting.DARK_GRAY));
+            }
+            case ARMOR_BREAKER -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.armor_breaker.1").formatted(Formatting.GRAY));
+            }
+            case MOLTEN_EDGE -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge").formatted(Formatting.GOLD));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.molten_edge.1").formatted(Formatting.GRAY));
+            }
+            case FLAMEBURST -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst").formatted(Formatting.RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.flameburst.3").formatted(Formatting.GRAY));
+            }
+            case FIRETHORNS -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.firethorns.2").formatted(Formatting.GRAY));
+            }
+            case CHAIN_LIGHTNING -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning").formatted(Formatting.AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chain_lightning.1").formatted(Formatting.GRAY));
+            }
+            case SET_BONUS -> {
+                if (stack.getItem() instanceof SetBonusArmor armor) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
+                    for (StatusEffectInstance effect : armor.getFullSetEffects()) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
+                    }
+                    tooltip.addAll(Arrays.asList(armor.getFullSetAbilities()));
+                }
+            }
+            case EXALT -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt").formatted(Formatting.RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.exalt.4").formatted(Formatting.DARK_GRAY));
+            }
+            case UNBURNABLE -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune").formatted(Formatting.GOLD));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.fire_immune.1").formatted(Formatting.GRAY));
+            }
+            case INFECTIOUS -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
+                if (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.3").formatted(Formatting.GRAY));
+                }
+            }
+            case UNCEASING -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing").formatted(Formatting.DARK_PURPLE));
+                for (int i = 1; i <= 4; i++) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.unceasing." + i).formatted(Formatting.GRAY));
+                }
+                addAbilityTooltip(TooltipAbilities.KEYBIND_ABILITY, stack, tooltip);
+            }
+            case CORRUPT_GROUND -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes").formatted(Formatting.WHITE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_robes_description_4").formatted(Formatting.GRAY));
+            }
+            case MIRROR -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror").formatted(Formatting.DARK_PURPLE));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.1").formatted(Formatting.GRAY).append(Text.literal((int)(ConfigConstructor.arkenplate_mirror_trigger_percent * 100f) + "%").formatted(Formatting.RED)));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.mirror.2").formatted(Formatting.GRAY));
+            }
+            case AFTERSHOCK -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock").formatted(Formatting.DARK_GREEN));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
+                if (stack.isOf(ArmorRegistry.ENHANCED_ARKENPLATE)) {
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
+                }
+            }
+            case UNBREAKABLE -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate").formatted(Formatting.AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate_description_2").formatted(Formatting.GRAY));
+            }
+            case EMPEROR -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown").formatted(Formatting.DARK_RED));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.chaos_crown_description_3", ConfigConstructor.chaos_crown_luck_given).formatted(Formatting.GRAY));
+            }
+            case EFFECT_REVERSAL -> {
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal").formatted(Formatting.DARK_AQUA));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_3").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.reversal_4").formatted(Formatting.DARK_GRAY));
+            }
             case TRICK_WEAPON -> {
                 ItemStack mappedStack = TrickWeaponUtil.getMappedStack(stack);
                 if (mappedStack != null) {
@@ -44,19 +187,13 @@ public class TooltipUtil {
                     if (ITooltipInfo.shouldShowInfo()) {
                         Text text = TrickWeaponUtil.getMappedItemName(stack);
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1").formatted(Formatting.GRAY));
-                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
-                                .append(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText()));
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                         if (text != null) {
-                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_3").formatted(Formatting.DARK_GRAY)
+                            tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon_description_2").formatted(Formatting.DARK_GRAY)
                                     .append(text).formatted(Formatting.WHITE));
                         }
-                    } else if (!(item instanceof ITooltipInfo || item instanceof ChaosSet || item instanceof WitheredArmor || (item instanceof LoreItem lore && lore.isInfo()))) { //TODO remove the hardcode check for armor items when those items are cleaned up
-                        if (WeaponUtil.isModLoaded("epicfight")) {
-                            tooltip.add(Text.translatable("tooltip.soulsweapons.alt"));
-                        } else {
-                            tooltip.add(Text.translatable("tooltip.soulsweapons.shift"));
-                        }
+                    } else if (!(item instanceof ITooltipInfo)) {
+                        ITooltipInfo.addShowInfoText(tooltip);
                     }
                 }
             }
@@ -93,14 +230,19 @@ public class TooltipUtil {
                 for (int i = 1; i <= 3; i++) tooltip.add(Text.translatable("tooltip.soulsweapons.moonfall_description_" + i).formatted(Formatting.GRAY));
             }
             case HEAVY -> {
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_4", String.format("%.1f", ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant)).formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
-                if (ConfigConstructor.ultra_heavy_disables_shields) {
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_6").formatted(Formatting.GRAY));
+                if (stack.getItem() instanceof IUltraHeavy heavy) {
+                    int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
+                    postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
+                    postureLoss *= EnchantmentHelper.getLevel(EnchantRegistry.STAGGER, stack);
+                    postureLoss += heavy.getPostureLoss();
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon").formatted(Formatting.RED));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_1").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_2").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_3").formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_4", postureLoss).formatted(Formatting.GRAY));
+                    if (ConfigConstructor.ultra_heavy_disables_shields) {
+                        tooltip.add(Text.translatable("tooltip.soulsweapons.heavy_weapon_description_5").formatted(Formatting.GRAY));
+                    }
                 }
             }
             case LIFE_STEAL -> {
@@ -250,15 +392,12 @@ public class TooltipUtil {
             case SUMMON_WEAPON -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword").formatted(Formatting.AQUA));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_1").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_2").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_2", ITooltipInfo.formatKeybindText(KeyBindRegistry.returnFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_4").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_5").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_description_4", ITooltipInfo.formatKeybindText(KeyBindRegistry.stationaryFreyrSword.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_1").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_2").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_3").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_4").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.freyr_sword_note_5").formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
             }
             case GALEFORCE -> {
                 addTooltip(tooltip, "galeforce", Formatting.AQUA, 6);
@@ -406,11 +545,9 @@ public class TooltipUtil {
             }
             case PARRY -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry").formatted(Formatting.GOLD));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_1", ITooltipInfo.formatKeybindText(KeyBindRegistry.parry.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_3").formatted(Formatting.GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_4").formatted(Formatting.DARK_GRAY));
-                tooltip.add(Text.translatable("tooltip.soulsweapons.parry_description_5").formatted(Formatting.DARK_GRAY));
             }
             case SKYWARD_STRIKES -> {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.skyward_strikes").formatted(Formatting.AQUA));
@@ -551,7 +688,7 @@ public class TooltipUtil {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").append(Text.literal(String.format("%.1f", gun.getBulletDamage(stack)))).formatted(Formatting.GRAY));
                     tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(Text.literal(String.valueOf(gun.getCooldown(stack)))).formatted(Formatting.GRAY));
-                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(gun.bulletsNeeded()))).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(gun.getBulletsNeeded(stack)))).formatted(Formatting.GRAY));
                     if (gun.getMaxUseTime(stack) != 0) {
                         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(gun.getMaxUseTime(stack)))).formatted(Formatting.GRAY));
                     }
