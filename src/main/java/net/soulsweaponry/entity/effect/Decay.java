@@ -8,7 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ArmorRegistry;
 
 public class Decay extends StatusEffect {
 
@@ -26,11 +26,11 @@ public class Decay extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity) {
-            if (!entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(slots[0]).isOf(ItemRegistry.CHAOS_HELMET.get())) {
+            if (!entity.getEquippedStack(slots[0]).isOf(ArmorRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(slots[0]).isOf(ArmorRegistry.CHAOS_HELMET.get())) {
                 PlayerEntity player = ((PlayerEntity)entity);
                 for (EquipmentSlot slot : slots) {
                     ItemStack stack = player.getEquippedStack(slot);
-                    if (!stack.isOf(ItemRegistry.CHAOS_ROBES.get())) {
+                    if (!stack.isOf(ArmorRegistry.CHAOS_ROBES.get())) {
                         stack.damage(amplifier + 1, player, (p) -> p.sendEquipmentBreakStatus(slot));
                     }
                 }

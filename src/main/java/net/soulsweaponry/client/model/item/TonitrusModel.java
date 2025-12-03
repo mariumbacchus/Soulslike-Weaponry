@@ -26,7 +26,7 @@ public class TonitrusModel extends GeoModel<Tonitrus> {
     @Override
     public Identifier getTextureResource(Tonitrus object) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null && player.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+        if (player != null && player.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
             return GLOW;
         }
         return BASE;

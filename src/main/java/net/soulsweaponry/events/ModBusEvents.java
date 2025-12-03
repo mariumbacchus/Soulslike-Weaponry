@@ -1,11 +1,13 @@
 package net.soulsweaponry.events;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.resource.ResourcePackSource;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.text.Text;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -15,10 +17,19 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.NightsEdge;
 import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusEvents {
+
+    @SubscribeEvent
+    public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+        event.add(EntityType.PLAYER, AttributeRegistry.POSTURE_BUILDUP_RESISTANCE.get());
+        event.add(EntityType.PLAYER, AttributeRegistry.BASE_POSTURE_INCREASE.get());
+        event.add(EntityType.PLAYER, AttributeRegistry.BLEED_BUILDUP_RESISTANCE.get());
+        event.add(EntityType.PLAYER, AttributeRegistry.BLEED_DAMAGE_RESISTANCE.get());
+    }
 
     @SubscribeEvent
     public static void addEntityAttributes(EntityAttributeCreationEvent event) {
@@ -68,6 +79,11 @@ public class ModBusEvents {
             var packFACompat = ResourcePackProfile.create("builtin/fresh_animations_compat", Text.literal("Fresh Animations Compat."), false,
                     (path) -> new PathPackResources(path, true, pathFACompat), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
             event.addRepositorySource((packConsumer) -> packConsumer.accept(packFACompat));
+
+            var pathGOW = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/enhanced_gow");
+            var packGOW = ResourcePackProfile.create("builtin/enhanced_gow", Text.literal("Szombie's 3D GOW Weapons"), true,
+                    (path) -> new PathPackResources(path, true, pathGOW), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(packGOW));
         }
     }
 

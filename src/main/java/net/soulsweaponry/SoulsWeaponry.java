@@ -1,6 +1,5 @@
 package net.soulsweaponry;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
@@ -15,6 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
+import net.soulsweaponry.config.ChungusTonicWhitelist;
+import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
@@ -24,6 +25,7 @@ import net.soulsweaponry.items.staff.WitheredWabbajack;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.GeckoLib;
 
 import java.util.ArrayList;
@@ -32,19 +34,27 @@ import java.util.List;
 @Mod(SoulsWeaponry.ModId)
 public class SoulsWeaponry {
 
+    //TODO:
+    // Fix forge specific issues on github
+
     public static final String ModId = "soulsweapons";
-    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String CONFIG_FOLDER = "soulsweapons/";
+    public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
     public static final List<RegistryObject<? extends Item>> ITEM_GROUP_LIST = new ArrayList<>();
 
     public SoulsWeaponry() {
-        // Forge config is loaded after all other registration, meaning it's useless in my case.
-        // ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "soulsweapons-common-forge.toml");
-        MidnightConfig.init(ModId, ConfigConstructor.class);
+        long start = System.currentTimeMillis();
+        MidnightConfig.init(CONFIG_FOLDER + ModId, ConfigConstructor.class);
+        MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
+        LOGGER.info("Config initialized!");
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         GeckoLib.initialize();
+        LOGGER.info("Successfully initialized Geckolib!");
 
+        AttributeRegistry.register(eventBus);
         ItemGroupRegistry.register(eventBus);
         SoundRegistry.register(eventBus);
         ParticleRegistry.register(eventBus);
@@ -64,6 +74,9 @@ public class SoulsWeaponry {
         eventBus.addListener(this::setup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        long end = System.currentTimeMillis();
+        LOGGER.info("Initializing done, time taken: " + (end - start) + "ms");
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -74,10 +87,7 @@ public class SoulsWeaponry {
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.GLOWSTONE_DUST, EffectRegistry.STRONG_WARDING.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.REDSTONE, EffectRegistry.LONG_WARDING.get()));
-
-            BrewingRecipeRegistry.addRecipe(Ingredient.ofItems(Items.POTION), Ingredient.ofItems(ItemRegistry.CHUNGUS_EMERALD.get()), ItemRegistry.CHUNGUS_TONIC_POTION.get().getDefaultStack());
-            BrewingRecipeRegistry.addRecipe(Ingredient.ofItems(ItemRegistry.CHUNGUS_TONIC_POTION.get()), Ingredient.ofItems(BlockRegistry.CHUNGUS_EMERALD_BLOCK.get().asItem()), ItemRegistry.CHUNGUS_TONIC_SPLASH.get().getDefaultStack());
-            BrewingRecipeRegistry.addRecipe(Ingredient.ofItems(ItemRegistry.CHUNGUS_TONIC_SPLASH.get()), Ingredient.ofItems(Items.DRAGON_BREATH), ItemRegistry.CHUNGUS_TONIC_LINGERING.get().getDefaultStack());
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, ItemRegistry.CHUNGUS_EMERALD.get(), EffectRegistry.CHUNGUS_TONIC_POTION.get()));
 
             SpawnRestriction.register(EntityRegistry.WITHERED_DEMON.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
             SpawnRestriction.register(EntityRegistry.BIG_CHUNGUS.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BigChungus::canSpawnInDark);
@@ -87,7 +97,4 @@ public class SoulsWeaponry {
             WitheredWabbajack.initProjectileList();
         });
     }
-
-    //TODO:
-    // Fix forge specific issues on github
 }

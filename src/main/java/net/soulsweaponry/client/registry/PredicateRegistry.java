@@ -9,10 +9,12 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.sword.Skofnung;
 import net.soulsweaponry.items.sword.Sting;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -105,7 +107,7 @@ public class PredicateRegistry {
     }
 
     private static void registerChungusPotion(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("chungus_tonic"), (itemStack, clientWorld, livingEntity, seed) -> PotionUtil.getPotion(itemStack).equals(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(item, new Identifier("chungus_tonic"), (itemStack, clientWorld, livingEntity, seed) -> PotionUtil.getPotion(itemStack).equals(EffectRegistry.CHUNGUS_TONIC_POTION.get()) ? 1f : 0f);
     }
 
     protected static void registerPrime(Item item, ModelPredicateProvider predicate) {

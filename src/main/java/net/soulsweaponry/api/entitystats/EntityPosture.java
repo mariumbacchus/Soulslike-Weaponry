@@ -44,7 +44,7 @@ public class EntityPosture {
                 base = Math.round(stats.base_posture_unit);
             }
         }
-        var inst = entity.getAttributeInstance(AttributeRegistry.BASE_POSTURE_INCREASE);
+        var inst = entity.getAttributeInstance(AttributeRegistry.BASE_POSTURE_INCREASE.get());
         double bonus = inst != null ? inst.getValue() : 0f;
         base += (int) bonus;
         EntityDimensions dimensions = entity.getDimensions(entity.getPose());
@@ -85,7 +85,7 @@ public class EntityPosture {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.posture_loss_buildup_resistance)
                 .orElse(ConfigConstructor.base_posture_buildup_resistance_unless_overridden);
-        var inst = entity.getAttributeInstance(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE);
+        var inst = entity.getAttributeInstance(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE.get());
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
     }

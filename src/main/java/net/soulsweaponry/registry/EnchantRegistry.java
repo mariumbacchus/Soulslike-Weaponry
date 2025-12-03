@@ -24,6 +24,11 @@ public class EnchantRegistry {
     public static final Enchantment EXPLOSIVE_ROUNDS = new ExplosiveEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment CHAIN_LIGHTNING = new ChainLightningEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
     public static final Enchantment MISFIRE_CURSE = new MisfireCurseEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment BLIGHT_CARRIER = new BlightCarrierEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment FROSTSILVER = new FrostsilverEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
+    public static final Enchantment PHANTOM_TRACE = new PhantomTraceEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
+    public static final Enchantment TETHER = new TetherEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND);
+    public static final Enchantment RICOCHET = new RicochetEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND);
 
     static {
         if (!ConfigConstructor.disable_all_enchantments) {
@@ -34,6 +39,11 @@ public class EnchantRegistry {
             if (!ConfigConstructor.disable_enchantment_explosive_rounds) ENCHANTS.register("explosive_rounds", () -> EXPLOSIVE_ROUNDS);
             if (!ConfigConstructor.disable_enchantment_chain_lightning) ENCHANTS.register("chain_lightning", () -> CHAIN_LIGHTNING);
             if (!ConfigConstructor.disable_enchantment_misfire_curse) ENCHANTS.register("misfire_curse", () -> MISFIRE_CURSE);
+            if (!ConfigConstructor.disable_enchantment_blight_carrier) ENCHANTS.register("blight_carrier", () -> BLIGHT_CARRIER);
+            if (!ConfigConstructor.disable_enchantment_frostsilver) ENCHANTS.register("frostsilver", () -> FROSTSILVER);
+            if (!ConfigConstructor.disable_enchantment_phantom_trace) ENCHANTS.register("phantom_trace", () -> PHANTOM_TRACE);
+            if (!ConfigConstructor.disable_enchantment_tether) ENCHANTS.register("tether", () -> TETHER);
+            if (!ConfigConstructor.disable_enchantment_ricochet) ENCHANTS.register("ricochet", () -> RICOCHET);
         }
     }
 

@@ -3,9 +3,15 @@ package net.soulsweaponry.events;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -15,6 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
@@ -25,7 +32,9 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId)
+import static net.soulsweaponry.registry.EffectRegistry.randomVibrantRGBA;
+
+@Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
 //    @SubscribeEvent
@@ -40,6 +49,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         TrickWeaponUtil.loadMappings(event.getServer());
+        EntityStatsUtil.register(); //TODO make sure this works
     }
 
     @SubscribeEvent
@@ -94,6 +104,32 @@ public class ModEvents {
             PostureData.setPosture(entity, 0);
         } else if (posture > 0 && entity.age % 4 == 0) {
             PostureData.reducePosture(entity, 1);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRightClickItem(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
+        PlayerEntity player = event.getEntity();
+        World level = event.getLevel();
+        Hand hand = event.getHand();
+        ItemStack stack = event.getItemStack();
+
+        if (!stack.isOf(Items.POTION)
+                && !stack.isOf(Items.SPLASH_POTION)
+                && !stack.isOf(Items.LINGERING_POTION)
+                && !stack.isOf(Items.TIPPED_ARROW)) {
+            return;
+        }
+
+        Potion potion = PotionUtil.getPotion(stack);
+        if (potion == null || !potion.equals(EffectRegistry.CHUNGUS_TONIC_POTION.get())) {
+            return;
+        }
+
+        if (!level.isClient) {
+            ItemStack updated = stack.copy();
+            updated.getOrCreateNbt().putInt("CustomPotionColor", randomVibrantRGBA());
+            player.setStackInHand(hand, updated);
         }
     }
 }

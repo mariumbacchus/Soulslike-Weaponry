@@ -1,6 +1,7 @@
 package net.soulsweaponry.registry;
 
 import com.google.common.collect.Lists;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.TntEntity;
@@ -96,6 +97,8 @@ public class EntityRegistry {
     public static final RegistryObject<EntityType<FrozenLightning>> FROZEN_LIGHTNING = registerEntity("frozen_lightning", () -> EntityType.Builder.<FrozenLightning>create(FrozenLightning::new, SpawnGroup.MISC).setDimensions(2f, 5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(20).build("frozen_lightning"));
     public static final RegistryObject<EntityType<SilverArrow>> SILVER_ARROW = registerEntity("silver_arrow", () -> EntityType.Builder.<SilverArrow>create(SilverArrow::new, SpawnGroup.MISC).setDimensions(0.5f, 0.5f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(20).build("silver_arrow"));
     public static final RegistryObject<EntityType<TntEntity>> CHUNGUS_HEAD = registerEntity("chungus_head", () -> EntityType.Builder.<TntEntity>create(TntEntity::new, SpawnGroup.MISC).setDimensions(1f, 1f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(20).build("chungus_head"));
+    public static final RegistryObject<EntityType<AirCombustion>> AIR_COMBUSTION = registerEntity("air_combustion", EntityType.Builder.<AirCombustion>create(SpawnGroup.MISC, AirCombustion::new).setDimensions(EntityDimensions.changing(1f, 1f)).trackRangeChunks(16).trackedUpdateRate(20).build());
+    public static final RegistryObject<EntityType<MoltenMetal>> MOLTEN_METAL = registerEntity("molten_metal", EntityType.Builder.<MoltenMetal>create(SpawnGroup.MISC, MoltenMetal::new).setDimensions(EntityDimensions.changing(1f, 0.3f)).trackRangeChunks(16).trackedUpdateRate(20).build());
 
     public static <E extends EntityType<? extends MobEntity>> RegistryObject<E> registerWithSpawnEgg(String id, Supplier<E> entity, int primaryColor, int secondaryColor) {
         RegistryObject<E> returnable = registerEntity(id, entity);
