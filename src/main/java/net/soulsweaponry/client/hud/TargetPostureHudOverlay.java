@@ -10,8 +10,8 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.client.entitydata.ClientTargetPostureData;
 import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.entitydata.TargetPostureData;
 import net.soulsweaponry.mixin.BossBarHudAccessor;
 
 import java.util.Map;
@@ -29,8 +29,8 @@ public class TargetPostureHudOverlay implements HudRenderCallback {
             int height = client.getWindow().getScaledHeight();
             int barX = width / 2 - 91;
             if (client.player != null && !client.player.isDead()) {
-                int posture = TargetPostureData.getTargetPosture(client.player);
-                float posturePerPixel = TargetPostureData.getTargetsMaxPosture(client.player) / (float) 182;
+                int posture = ClientTargetPostureData.getTargetPosture();
+                float posturePerPixel = ClientTargetPostureData.getMaxPosture() / (float) 182;
                 int pixelOffset = MathHelper.floor((float) posture / posturePerPixel);
                 if (posture > 0) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -38,7 +38,7 @@ public class TargetPostureHudOverlay implements HudRenderCallback {
 
                     BossBarHud bossHud = MinecraftClient.getInstance().inGameHud.getBossBarHud();
                     Map<UUID, ClientBossBar> bars = ((BossBarHudAccessor)bossHud).getBossBars();
-                    String name = TargetPostureData.getTargetName(client.player);
+                    String name = ClientTargetPostureData.getName();
                     int initialBarY = 12;
                     final int SLOT_HEIGHT = 19;
                     int maxY = height / 3;

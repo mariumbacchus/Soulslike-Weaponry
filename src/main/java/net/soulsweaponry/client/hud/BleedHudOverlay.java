@@ -5,8 +5,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.api.entitystats.EntityBleed;
+import net.soulsweaponry.client.entitydata.ClientBleedData;
 import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.entitydata.BleedData;
 
 public class BleedHudOverlay extends EffectHudOverlay {
 
@@ -19,14 +19,14 @@ public class BleedHudOverlay extends EffectHudOverlay {
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int bleed = BleedData.getBleed(player);
+        int bleed = ClientBleedData.getBleed();
         float bleedPerPixel = EntityBleed.getMaxBleed(player) / (float) 182;
         return MathHelper.floor((float) bleed / bleedPerPixel);
     }
 
     @Override
     public boolean shouldShow(ClientPlayerEntity player) {
-        int bleed = BleedData.getBleed(player);
+        int bleed = ClientBleedData.getBleed();
         return bleed > 0 && !ClientConfig.disable_player_bleed_hud && !EntityBleed.isBleedDisabled(player);
     }
 }

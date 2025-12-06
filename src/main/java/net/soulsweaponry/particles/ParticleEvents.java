@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ParticleEvents {
 
-    // NOTE: Some packets/ids from fabric have been/needs to be moved to other classes since they can be called more easily by their own over there. Those being:
+    // NOTE: Some packets/ids from fabric have been to be moved to other classes since they can be called more easily by their own over there. Those being:
     // DEATH_EXPLOSION_PACKET_ID -> can easily call ParticleHandler.particleSphereList in respective classes with right params
     // RANDOM_EXPLOSION_PACKET_ID -> WitheredWabbajackProjectile since it can easily call ParticleHandler.particleSphere with its own getRandomParticle() method
     // BIG_TELEPORT_ID -> ChaosMonarchGoal, can easily call ParticleHandler.particleSphere with the right parameters
@@ -27,7 +27,7 @@ public class ParticleEvents {
     // DRAGON_BREATH_EXPLOSION_PACKET -> ChaosMonarchGoal, can easily call ParticleHandler.particleSphere with the right parameters
     // SNOW_PARTICLES_ID -> Freezing effect, can easily call the default server.sendParticle method with the right off-set parameters, kinda pointless though since it can call client level
     // ICE_PARTICLES_ID -> can easily call the default ParticleHandler.particleSphere method with the right params in respective classes
-    // MOONLIGHT_PARTICLES_ID -> MoonlightProjectile, can easily call ParticleHandler.particleSphere with right params
+    // MOONLIGHT_PARTICLES_ID -> is not needed
     // SWORD_SWIPE_ID -> can be called in respective classes using default serverLevel.sendParticle with right off-set params
     // UMBRAL_TRESPASS_ID -> now that positions are doubles, it is identical to the SOUL_FLAME_SMALL_OUTBURST_MAP
     // CLAW_PARTICLES_ID -> should be reworked into curving lines and may be implemented with simple serverLevel.sendParticle
@@ -62,6 +62,7 @@ public class ParticleEvents {
     public static final HashMap<ParticleEffect, Vec3d> ICE_SMASH_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> BLACKFLAME_SNAKE_PARTICLE_MAP = Maps.newHashMap();
     public static final HashMap<ParticleEffect, Vec3d> FLAME_RUPTURE_MAP = Maps.newHashMap();
+    public static final HashMap<ParticleEffect, Vec3d> CORE_BEAM_EXPLOSION_MAP = Maps.newHashMap();
 
     public static final List<ParticleEffect> DARK_EXPLOSION_LIST = List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.SMOKE, ParticleTypes.POOF);
 
@@ -131,11 +132,10 @@ public class ParticleEvents {
         FLAME_RUPTURE_MAP.put(ParticleTypes.FLAME, new Vec3d(4, 0.5f, 4));
         FLAME_RUPTURE_MAP.put(ParticleTypes.WAX_ON, new Vec3d(0.1f, 0.01f, 0.1f));
         FLAME_RUPTURE_MAP.put(ParticleTypes.SMALL_FLAME, new Vec3d(4, 0.5f, 4));
-    }
 
-    public static void dawnbreakerEvent(World world, double x, double y, double z, float sizeMod) {
-        ParticleHandler.particleOutburstMap(world, 200, x, y + .1f, z, ParticleEvents.DAWNBREAKER_MAP, sizeMod);
-        ParticleHandler.particleSphere(world, 1000, x, y + .1f, z, ParticleTypes.FLAME, sizeMod);
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleRegistry.DAZZLING_PARTICLE.get(), new Vec3d(1, 1, 1));
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleRegistry.NIGHTFALL_PARTICLE.get(), new Vec3d(1, 1, 1));
+        CORE_BEAM_EXPLOSION_MAP.put(ParticleTypes.CLOUD, new Vec3d(1.25, 1.25, 1.25));
     }
 
     public static void mjolnirLeviathanAxeCollision(World world, double x, double y, double z) {
@@ -155,7 +155,8 @@ public class ParticleEvents {
         Vec3d vec = new Vec3d(3, 3, 3);
         map.put(ParticleTypes.LARGE_SMOKE, vec);
         map.put(ParticleTypes.FLAME, vec);
-        ParticleHandler.particleOutburstMap(world, 100, x, y, z, map, 1f);
+        map.put(ParticleTypes.SMALL_FLAME, vec);
+        ParticleHandler.particleOutburstMap(world, 150, x, y, z, map, 1f);
         ParticleHandler.flashParticle(world, x, y, z, new ParticleHandler.RGB(201, 64, 0), 1);
     }
 }

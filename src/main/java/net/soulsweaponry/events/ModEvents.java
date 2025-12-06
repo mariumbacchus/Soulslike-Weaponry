@@ -26,7 +26,7 @@ import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
-import net.soulsweaponry.entitydata.posture.PostureData;
+import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 

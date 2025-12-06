@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.posture.PostureData;
+import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -37,7 +37,7 @@ public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity
 
     @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        PostureData.addPosture(target, ConfigConstructor.glaive_of_hodir_projectile_posture_loss);
+        PostureData.addPostureLoss(target, (int) ConfigConstructor.glaive_of_hodir_projectile_posture_loss);
     }
 
     @Override

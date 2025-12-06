@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.posture.PostureData;
+import net.soulsweaponry.entitydata.PostureData;
 
 public interface IPostureLossProjectile {
 
@@ -17,7 +17,7 @@ public interface IPostureLossProjectile {
             if (target instanceof PlayerEntity) {
                 posture = MathHelper.floor((float) posture * ConfigConstructor.silver_bullet_posture_loss_on_player_modifier);
             }
-            PostureData.addPosture(target, posture);
+            PostureData.addPostureLoss(target, posture);
         }
     }
 }

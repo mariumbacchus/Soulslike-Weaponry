@@ -25,14 +25,14 @@ public class PostureHudOverlay extends EffectHudOverlay {
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int posture = PostureData.getPosture(player);
+        int posture = ClientPostureData.getPosture();
         float posturePerPixel = EntityPosture.getMaxPostureLoss(player) / (float) 182;
         return MathHelper.floor((float) posture / posturePerPixel);
     }
 
     @Override
     public boolean shouldShow(ClientPlayerEntity player) {
-        int posture = PostureData.getPosture(player);
+        int posture = ClientPostureData.getPosture();
         return posture > 0 && !ClientConfig.disable_player_posture_hud;
     }
 

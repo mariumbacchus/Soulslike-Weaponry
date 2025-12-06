@@ -59,8 +59,7 @@ public class KeyBindRegistry {
         event.register(KeyBindRegistry.showItemTooltip);
         event.register(KeyBindRegistry.showItemLore);
 
-        if (FMLLoader.isProduction()) {
-            //TODO test
+        if (!FMLLoader.isProduction()) {
             killNearbyEntities = registerKeyboard("kill_nearby_entities", GLFW.GLFW_KEY_K);
             giveResistance = registerKeyboard("give_or_clear_resistance", GLFW.GLFW_KEY_J);
         }
@@ -112,7 +111,7 @@ public class KeyBindRegistry {
             } catch (Exception ignored) {}
         }
         boolean effect = effectShootMoonlight.isPressed();
-        boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();// TODO Cant seem to test this since the game crashes whenever I try to load the controllable mod for some reason, but hopefully it works
+        boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
         boolean controller = false;
         if (WeaponUtil.isModLoaded("controllable")) {
             controller = ButtonBindings.ATTACK.isButtonPressed();
@@ -142,12 +141,12 @@ public class KeyBindRegistry {
         while (returnThrownWeapon.wasPressed()) {
             ModMessages.sendToServer(new ReturnThrownWeaponC2S());
         }
-        if (FMLLoader.isProduction()) {
+        if (!FMLLoader.isProduction()) {
             while (killNearbyEntities.wasPressed()) {
-                ModMessages.sendToServer(new KillNearbyEntitiesC2S());//TODO create
+                ModMessages.sendToServer(new KillNearbyEntitiesC2S());
             }
             while (giveResistance.wasPressed()) {
-                ModMessages.sendToServer(new GiveResistanceC2S());//TODO create
+                ModMessages.sendToServer(new GiveResistanceC2S());
             }
         }
     }

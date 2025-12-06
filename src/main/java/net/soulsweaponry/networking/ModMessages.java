@@ -2,6 +2,7 @@ package net.soulsweaponry.networking;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -34,6 +35,10 @@ public class ModMessages {
         net.messageBuilder(ReturnThrownWeaponC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(ReturnThrownWeaponC2S::new).encoder(ReturnThrownWeaponC2S::toBytes).consumerMainThread(ReturnThrownWeaponC2S::handle).add();
         net.messageBuilder(StationaryFreyrSwordC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(StationaryFreyrSwordC2S::new).encoder(StationaryFreyrSwordC2S::toBytes).consumerMainThread(StationaryFreyrSwordC2S::handle).add();
         net.messageBuilder(SwitchTrickWeaponC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(SwitchTrickWeaponC2S::new).encoder(SwitchTrickWeaponC2S::toBytes).consumerMainThread(SwitchTrickWeaponC2S::handle).add();
+        if (!FMLLoader.isProduction()) {
+            net.messageBuilder(KillNearbyEntitiesC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(KillNearbyEntitiesC2S::new).encoder(KillNearbyEntitiesC2S::toBytes).consumerMainThread(KillNearbyEntitiesC2S::handle).add();
+            net.messageBuilder(GiveResistanceC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(GiveResistanceC2S::new).encoder(GiveResistanceC2S::toBytes).consumerMainThread(GiveResistanceC2S::handle).add();
+        }
 
         net.messageBuilder(ParticleOutburstS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ParticleOutburstS2C::new).encoder(ParticleOutburstS2C::toBytes).consumerMainThread(ParticleOutburstS2C::handle).add();
         net.messageBuilder(ParticleSphereS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ParticleSphereS2C::new).encoder(ParticleSphereS2C::toBytes).consumerMainThread(ParticleSphereS2C::handle).add();
@@ -47,6 +52,9 @@ public class ModMessages {
         net.messageBuilder(ReturningProjectileDataSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ReturningProjectileDataSyncS2C::new).encoder(ReturningProjectileDataSyncS2C::toBytes).consumerMainThread(ReturningProjectileDataSyncS2C::handle).add();
         net.messageBuilder(StopBossMusicS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(StopBossMusicS2C::new).encoder(StopBossMusicS2C::toBytes).consumerMainThread(StopBossMusicS2C::handle).add();
         net.messageBuilder(ChainLightningS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ChainLightningS2C::new).encoder(ChainLightningS2C::toBytes).consumerMainThread(ChainLightningS2C::handle).add();
+        net.messageBuilder(TargetPostureSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(TargetPostureSyncS2C::new).encoder(TargetPostureSyncS2C::toBytes).consumerMainThread(TargetPostureSyncS2C::handle).add();
+        net.messageBuilder(MaxPostureSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(MaxPostureSyncS2C::new).encoder(MaxPostureSyncS2C::toBytes).consumerMainThread(MaxPostureSyncS2C::handle).add();
+        net.messageBuilder(BleedSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(BleedSyncS2C::new).encoder(BleedSyncS2C::toBytes).consumerMainThread(BleedSyncS2C::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
