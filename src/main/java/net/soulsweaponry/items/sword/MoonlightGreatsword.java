@@ -15,11 +15,12 @@ import net.soulsweaponry.items.IChargeNeeded;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class MoonlightGreatsword extends ChargeToUseItem {
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        this(toolMaterial, ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
+        this(toolMaterial, (int) ConfigConstructor.moonlight_greatsword_damage, ConfigConstructor.moonlight_greatsword_attack_speed, settings);
     }
 
     public MoonlightGreatsword(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
@@ -35,14 +36,14 @@ public class MoonlightGreatsword extends ChargeToUseItem {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
 
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), world, user, stack);
                 entity.setAgeAndPoints(30, 150, 4);
                 //float damage = (float) user.getAttributes().getValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
+                entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.getProjectileVelocity(), 1.0F);
                 entity.setDamage(this.getProjectileDamage());
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
@@ -81,5 +82,9 @@ public class MoonlightGreatsword extends ChargeToUseItem {
 
     public float getProjectileDamage() {
         return ConfigConstructor.moonlight_greatsword_projectile_damage;
+    }
+
+    public float getProjectileVelocity() {
+        return ConfigConstructor.moonlight_greatsword_projectile_velocity;
     }
 }

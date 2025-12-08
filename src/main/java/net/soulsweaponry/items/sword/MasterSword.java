@@ -15,18 +15,19 @@ import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class MasterSword extends ChargeToUseItem implements IUndeadBonus {
 
     public MasterSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.master_sword_damage, ConfigConstructor.master_sword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SKYWARD_STRIKES, TooltipAbilities.RIGHTEOUS);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(1, playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), world, user, stack);

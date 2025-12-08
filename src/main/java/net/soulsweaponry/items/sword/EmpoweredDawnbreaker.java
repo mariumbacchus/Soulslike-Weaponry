@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +17,6 @@ import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
@@ -37,14 +35,14 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.CHAOS_STORM, TooltipAbilities.VEIL_OF_FIRE);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 this.summonFlamePillars(world, stack, user);
@@ -65,8 +63,8 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     protected int getScaledCooldown(ItemStack stack) {
-        int base = ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
-        return Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
+        int base = (int) ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
+        return (int) Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
     }
 
     private void summonFlamePillars(World world, ItemStack stack, LivingEntity user) {
@@ -81,12 +79,9 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
                 BlockPos pos = new BlockPos(x, y, z);
                 for (BlockPos listPos : list) {
                     if (listPos != pos) {
-                        FlamePillar pillar = new FlamePillar(EntityRegistry.FLAME_PILLAR.get(), world);
+                        FlamePillar pillar = new FlamePillar(world, user, 1.5f, i * 2, DamagingWarmupEntityEvents.SPAWN_FIRE);
                         pillar.setDamage(ConfigConstructor.empowered_dawnbreaker_ability_damage + WeaponUtil.getEnchantDamageBonus(stack) * 2);
                         pillar.setPos(x, y, z);
-                        pillar.setRadius(1.5f);
-                        pillar.setOwner(user);
-                        pillar.setWarmup(i * 2);
                         world.spawnEntity(pillar);
                         i++;
                     }
@@ -124,7 +119,7 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
     }
 
     @Override

@@ -15,6 +15,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -25,7 +26,7 @@ import java.util.List;
 public class WhirligigSawblade extends ChargeToUseItem {
 
     public WhirligigSawblade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.whirligig_sawblade_damage, ConfigConstructor.whirligig_sawblade_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SAWBLADE);
     }
 
@@ -36,7 +37,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10;
+        return (int) (ConfigConstructor.whirligig_sawblade_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 10);
     }
 
     @Override
@@ -50,7 +51,8 @@ public class WhirligigSawblade extends ChargeToUseItem {
                     if (target.damage(world.getDamageSources().mobAttack(user), ConfigConstructor.whirligig_sawblade_ability_damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(1F, 0, 0);
-                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), 100, 0));
+                        BleedData.addBleed(target, (int) ConfigConstructor.whirligig_sawblade_bleed_added);
+                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), (int) ConfigConstructor.whirligig_sawblade_bleed_effect_duration, (int) ConfigConstructor.whirligig_sawblade_bleed_effect_amp));
                     }
                     world.addParticle(ParticleTypes.SWEEP_ATTACK, true, target.getX(), target.getY() + 1F, target.getZ(), target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5, target.getRandom().nextInt(10) - 5);
                 }
@@ -89,7 +91,7 @@ public class WhirligigSawblade extends ChargeToUseItem {
     }
 
     private int getCooldown(ItemStack stack) {
-        return Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
+        return (int) Math.max(ConfigConstructor.whirligig_sawblade_min_cooldown, ConfigConstructor.whirligig_sawblade_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
     }
 
     @Override

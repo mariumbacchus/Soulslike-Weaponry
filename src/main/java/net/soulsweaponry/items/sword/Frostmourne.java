@@ -33,7 +33,7 @@ import java.util.UUID;
 public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE, TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST);
     }
 
@@ -74,7 +74,7 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
 
     @Override
     public int getMaxSummons() {
-        return ConfigConstructor.frostmourne_summoned_allies_cap;
+        return (int) ConfigConstructor.frostmourne_summoned_allies_cap;
     }
 
     @Override

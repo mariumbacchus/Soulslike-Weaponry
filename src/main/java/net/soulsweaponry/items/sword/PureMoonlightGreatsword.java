@@ -12,18 +12,19 @@ import net.soulsweaponry.items.ChargeToUseItem;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 
 public class PureMoonlightGreatsword extends ChargeToUseItem {
 
     public PureMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.pure_moonlight_greatsword_damage, ConfigConstructor.pure_moonlight_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.TRIPLE_MOONLIGHT);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 if (!world.isClient) {
                     stack.damage(5, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));

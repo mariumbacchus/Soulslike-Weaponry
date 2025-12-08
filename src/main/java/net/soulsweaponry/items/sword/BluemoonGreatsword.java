@@ -11,7 +11,7 @@ import net.soulsweaponry.util.TooltipAbilities;
 public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
 
     public BluemoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.bluemoon_greatsword_damage, ConfigConstructor.bluemoon_greatsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.bluemoon_greatsword_damage, ConfigConstructor.bluemoon_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.CHARGE);
     }
 
@@ -31,12 +31,12 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
 
     @Override
     public int getMaxCharge() {
-        return ConfigConstructor.bluemoon_greatsword_charge_needed;
+        return (int) ConfigConstructor.bluemoon_greatsword_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        return ConfigConstructor.bluemoon_greatsword_charge_added_post_hit;
+        return (int) ConfigConstructor.bluemoon_greatsword_charge_added_post_hit;
     }
 
     @Override
@@ -57,5 +57,10 @@ public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNe
     @Override
     public float getProjectileDamage() {
         return ConfigConstructor.bluemoon_greatsword_projectile_damage;
+    }
+
+    @Override
+    public float getProjectileVelocity() {
+        return ConfigConstructor.bluemoon_greatsword_projectile_velocity;
     }
 }

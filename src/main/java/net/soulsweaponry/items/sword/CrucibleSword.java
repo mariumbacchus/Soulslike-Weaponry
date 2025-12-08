@@ -22,7 +22,7 @@ public class CrucibleSword extends ModdedSword {
     private static final String EMP = "empowered";
 
     public CrucibleSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.crucible_sword_normal_damage, ConfigConstructor.crucible_sword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.crucible_sword_normal_damage, ConfigConstructor.crucible_sword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.DOOM);
     }
 

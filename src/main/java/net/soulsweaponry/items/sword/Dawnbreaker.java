@@ -21,7 +21,7 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public Dawnbreaker(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
     }
 
     @Override
@@ -31,6 +31,16 @@ public class Dawnbreaker extends AbstractDawnbreaker {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
+
+    @Override
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return null;
+    }
 
     @Override
     public boolean isFireproof() {
@@ -59,15 +69,5 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dawnbreaker;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

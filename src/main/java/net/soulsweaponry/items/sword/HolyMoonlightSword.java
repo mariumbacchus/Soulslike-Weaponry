@@ -18,7 +18,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,false,
+        super(toolMaterial, (int) ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,
                 ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_holy_moonlight_sword, ConfigConstructor.disable_use_holy_moonlight_sword);
         this.addTooltipAbility(TooltipAbilities.CHARGE, TooltipAbilities.CHARGE_BONUS_DAMAGE);
     }
@@ -33,8 +33,8 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     private float getBonusDamage(ItemStack stack) {
         if (this.isDisabled(stack)) return 0;
-        float per = (float) this.getCharge(stack) / (float) ConfigConstructor.holy_moonlight_ability_charge_needed;
-        return (float) ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
+        float per = (float) this.getCharge(stack) / ConfigConstructor.holy_moonlight_ability_charge_needed;
+        return ConfigConstructor.holy_moonlight_sword_max_bonus_damage * per;
     }
 
     @Override
@@ -53,13 +53,13 @@ public class HolyMoonlightSword extends TrickWeapon implements IChargeNeeded {
 
     @Override
     public int getMaxCharge() {
-        return ConfigConstructor.holy_moonlight_ability_charge_needed;
+        return (int) ConfigConstructor.holy_moonlight_ability_charge_needed;
     }
 
     @Override
     public int getAddedCharge(ItemStack stack) {
-        int base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
-        return base + WeaponUtil.getEnchantDamageBonus(stack);
+        float base = ConfigConstructor.holy_moonlight_sword_charge_added_post_hit;
+        return (int) (base + WeaponUtil.getEnchantDamageBonus(stack));
     }
 
     @Override

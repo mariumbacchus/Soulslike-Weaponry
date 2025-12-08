@@ -16,6 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.SkofnungStone;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -33,7 +34,7 @@ public class Skofnung extends ModdedSword {
      * The empowering of the sword is coded in the {@link SkofnungStone} class.
      */
     public Skofnung(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.DISABLE_HEAL, TooltipAbilities.SHARPEN, TooltipAbilities.IS_SHARPENED);
     }
 
@@ -42,10 +43,11 @@ public class Skofnung extends ModdedSword {
         if (this.isDisabled(stack)) {
             return super.postHit(stack, target, attacker);
         }
-        int duration = ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40);
+        int duration = (int) (ConfigConstructor.skofnung_disable_heal_duration + (WeaponUtil.getEnchantDamageBonus(stack) * 40));
         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL.get(), duration, 0));
         if (isEmpowered(stack)) {
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), 80, 0));
+            BleedData.addBleed(target, (int) ConfigConstructor.skofnung_empowered_bleed_post_hit);
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), (int) ConfigConstructor.skofnung_empowered_bleed_effect_duration, (int) ConfigConstructor.skofnung_empowered_bleed_effect_amp));
             if (attacker instanceof PlayerEntity player) {
                 if (!player.getItemCooldownManager().isCoolingDown(this)) {
                     this.reduceEmpowered(stack, player.getWorld(), attacker);

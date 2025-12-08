@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -26,15 +25,15 @@ import net.soulsweaponry.util.WeaponUtil;
 public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbility {
 
     public DarkMoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.dark_moon_greatsword_damage, ConfigConstructor.dark_moon_greatsword_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.dark_moon_greatsword_damage, ConfigConstructor.dark_moon_greatsword_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST, TooltipAbilities.FROST_MOON);
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_duration,
-                    ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack)));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), (int) ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_duration,
+                    (int) (ConfigConstructor.dark_moon_greatsword_post_hit_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack))));
         }
         return super.postHit(stack, target, attacker);
     }
@@ -42,15 +41,15 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(1, playerEntity, (p) -> p.sendToolBreakStatus(user.getActiveHand()));
-                int duration = ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_duration;
-                int amp = ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack);
+                int duration = (int) ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_duration;
+                int amp = (int) (ConfigConstructor.dark_moon_greatsword_projectile_permafrost_base_amplifier + WeaponUtil.getEnchantDamageBonus(stack));
                 MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.DARK_MOON_PROJECTILE.get(), world, user, stack);
                 entity.setAppliedStatusEffect(EffectRegistry.FREEZING.get());
                 entity.setEffectAmplifier(amp);
-                entity.setAppliedEffectTicks(duration);
+                entity.setAppliedEffectDuration(duration);
                 entity.setAgeAndPoints(30, 150, 4);
                 entity.setAreaParticleCount(8);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 1.5F, 1.0F);
@@ -95,17 +94,17 @@ public class DarkMoonGreatsword extends ChargeToUseItem implements IKeybindAbili
             return;
         }
         stack.damage(1, player, (p) -> p.sendToolBreakStatus(player.getActiveHand()));
-        int duration = ConfigConstructor.dark_moon_greatsword_frost_moon_base_duration;
-        int amp = ConfigConstructor.dark_moon_greatsword_frost_moon_base_amplifier;
-        int cooldown = ConfigConstructor.dark_moon_greatsword_frost_moon_cooldown;
-        cooldown = Math.max(ConfigConstructor.dark_moon_greatsword_frost_moon_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 60);
+        int duration = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_base_duration;
+        int amp = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_base_amplifier;
+        int cooldown = (int) ConfigConstructor.dark_moon_greatsword_frost_moon_cooldown;
+        cooldown = (int) Math.max(ConfigConstructor.dark_moon_greatsword_frost_moon_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 60);
         this.applyEffectCooldown(player, cooldown);
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.FROST_MOON.get(), duration, amp));
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, player.getSoundCategory(), 1f, 1f);
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
 
     }
 }

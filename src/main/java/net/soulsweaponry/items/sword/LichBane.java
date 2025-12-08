@@ -13,7 +13,7 @@ import net.soulsweaponry.util.TooltipAbilities;
 public class LichBane extends ModdedSword {
 
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE, TooltipAbilities.BLAZING_BLADE);
     }
 

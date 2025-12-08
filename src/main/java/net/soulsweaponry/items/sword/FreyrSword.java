@@ -31,7 +31,7 @@ public class FreyrSword extends ModdedSword implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.SUMMON_WEAPON);
     }
 
