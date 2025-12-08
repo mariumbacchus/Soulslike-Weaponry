@@ -6,7 +6,7 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.util.TooltipAbilities;
 
-public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUltraHeavy {
+public abstract class UltraHeavyWeapon extends ChargeToUseItem implements IUltraHeavy, IDetonateGround {
 
     private final boolean isHeavy;
 
@@ -25,6 +25,7 @@ public abstract class UltraHeavyWeapon extends DetonateGroundItem implements IUl
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!this.isDisabled(stack)) {
             this.gainStrength(attacker);
+            this.applyPostureLoss(target);
         }
         return super.postHit(stack, target, attacker);
     }

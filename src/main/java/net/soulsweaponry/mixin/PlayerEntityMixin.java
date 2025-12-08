@@ -19,12 +19,9 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,7 +36,7 @@ public class PlayerEntityMixin {
 
     @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
     public void interceptFallDamage(float fallDistance, float damageMultiplier, DamageSource source, CallbackInfoReturnable<Boolean> info) {
-        if (DetonateGroundItem.triggerCalculateFall(((PlayerEntity)(Object)this), fallDistance, source)) {
+        if (IDetonateGround.triggerCalculateFall(((PlayerEntity)(Object)this), fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }
@@ -90,7 +87,7 @@ public class PlayerEntityMixin {
             }
         }
         // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_ARKENPLATE.get()) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
+        if (player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_ARKENPLATE.get()) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
                 && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
             Vec3d playerPos = player.getPos();
             Vec3d projectilePos = projectile.getPos();
@@ -102,14 +99,14 @@ public class PlayerEntityMixin {
         }
         ItemStack stack = player.getInventory().getArmorStack(2);
         if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH.get()) && !stack.isEmpty()
-                && (stack.isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get()) || stack.isOf(ItemRegistry.WITHERED_CHEST.get()))) {
+                && (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST.get()) || stack.isOf(ArmorRegistry.WITHERED_CHEST.get()))) {
             double x = player.getX() - attacker.getX();
             double z = player.getZ() - attacker.getZ();
             attacker.damage(player.getDamageSources().wither(), 1f);
             attacker.takeKnockback(0.5f, x, z);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, ConfigConstructor.withered_chest_apply_wither_duration, ConfigConstructor.withered_chest_apply_wither_amplifier));
-            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ItemRegistry.ENHANCED_WITHERED_CHEST.get())) {
-                attacker.setOnFireFor(ConfigConstructor.withered_chest_apply_fire_seconds);
+            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, (int) ConfigConstructor.withered_chest_apply_wither_duration, (int) ConfigConstructor.withered_chest_apply_wither_amplifier));
+            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST.get())) {
+                attacker.setOnFireFor((int) ConfigConstructor.withered_chest_apply_fire_seconds);
             }
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {
@@ -139,7 +136,7 @@ public class PlayerEntityMixin {
     // Disable off-hand if ultra heavy weapons is held and config line is enabled
     @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
     public void interceptGetEquippedStackHead(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> info) {
-        if (WeaponUtil.isModLoaded("bettercombat") || WeaponUtil.isModLoaded("epicfight")) {
+        if (WeaponUtil.isFightModLoaded()) {
             return;
         }
         PlayerEntity player = ((PlayerEntity) (Object)this);

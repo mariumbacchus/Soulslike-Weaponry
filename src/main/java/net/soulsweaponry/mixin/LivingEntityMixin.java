@@ -7,15 +7,21 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.DetonateGroundItem;
+import net.soulsweaponry.items.IDetonateGround;
 import net.soulsweaponry.items.IUltraHeavy;
+import net.soulsweaponry.items.abilities.FireThorns;
+import net.soulsweaponry.items.abilities.StormveilThorns;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,8 +53,18 @@ public class LivingEntityMixin {
         return originalAmount;
     }
 
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+    public void interceptDamageHead(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (source.isIn(DamageTypeTags.IS_LIGHTNING) && entity.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
+            entity.heal(ConfigConstructor.tonitrus_stormveil_effect_lightning_damage_heal + entity.getStatusEffect(EffectRegistry.STORMVEIL.get()).getAmplifier());
+            info.setReturnValue(false);
+            info.cancel();
+        }
+    }
+
     @Inject(method = "damage", at = @At("TAIL"))
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         // Remove stacks of Blade Dance when taking damage
         if (info.getReturnValue() && entity.hasStatusEffect(EffectRegistry.BLADE_DANCE.get())) {
@@ -58,6 +74,19 @@ public class LivingEntityMixin {
             amp--;
             if (amp >= 0) {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE.get(), duration, amp));
+            }
+        }
+        if (source.getAttacker() instanceof LivingEntity attacker) {
+            // Do fire-thorns when wielding Supernova
+            for (Hand hand : Hand.values()) {
+                ItemStack stack = entity.getStackInHand(hand);
+                if (stack.isOf(WeaponRegistry.SUPERNOVA.get())) {
+                    FireThorns.trigger(entity, attacker);
+                }
+            }
+            // Do lightning-thorns when having Stormveil effect
+            if (entity.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
+                StormveilThorns.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL.get()).getAmplifier());
             }
         }
     }
@@ -75,7 +104,7 @@ public class LivingEntityMixin {
         //Another interceptFallDamage is made for players in PlayerEntityMixin since it won't trigger if they are in creative
         //from this, but in survival it would trigger twice. This check is therefore needed to prevent the double call.
         LivingEntity entity = ((LivingEntity)(Object)this);
-        if (!(entity instanceof PlayerEntity) && DetonateGroundItem.triggerCalculateFall(entity, fallDistance, source)) {
+        if (!(entity instanceof PlayerEntity) && IDetonateGround.triggerCalculateFall(entity, fallDistance, source)) {
             info.setReturnValue(false);
             info.cancel();
         }

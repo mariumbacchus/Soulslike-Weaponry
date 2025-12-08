@@ -15,17 +15,18 @@
     "ItemMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
+    "ModelInvoker",
     "PlayerEntityMixin",
-    "PotionEntityMixin",
-    "PotionUtilMixin",
     "RecipeManagerMixin",
     "WitherEntityMixin"
   ],
   "client": [
     "BipedEntityModelMixin",
+    "BossBarHudAccessor",
     "BossBarHudMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
+    "KeyBindingAccessor",
     "KeyBindingMixin",
     "RenderPhaseAccessor",
     "ShieldItemMixin"
