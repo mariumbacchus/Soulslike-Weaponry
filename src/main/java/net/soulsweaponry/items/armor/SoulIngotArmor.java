@@ -1,12 +1,12 @@
 package net.soulsweaponry.items.armor;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 
@@ -14,6 +14,16 @@ public class SoulIngotArmor extends SetBonusArmor {
 
     public SoulIngotArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_ingot_set;
+    }
+
+    @Override
+    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
+        return false;
     }
 
     @Override
@@ -40,15 +50,10 @@ public class SoulIngotArmor extends SetBonusArmor {
     }
 
     @Override
-    protected StatusEffectInstance[] getFullSetEffects() {
+    public StatusEffectInstance[] getFullSetEffects() {
         return new StatusEffectInstance[] {
-                new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 0)
+                new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 0, false, false)
         };
-    }
-
-    @Override
-    protected Text[] getCustomTooltips() {
-        return new Text[0];
     }
 
     @Override
@@ -57,7 +62,32 @@ public class SoulIngotArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_soul_ingot_set;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return new String[0];
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.soul_ingot_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.soul_ingot_bleed_damage_resistances;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.soul_ingot_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.soul_ingot_base_posture_increase;
     }
 }

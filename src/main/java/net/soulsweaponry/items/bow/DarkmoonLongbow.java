@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.bow;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -45,7 +44,7 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
 
     @Override
     public int getPullTime() {
-        return ConfigConstructor.darkmoon_longbow_pull_time_ticks;
+        return (int) ConfigConstructor.darkmoon_longbow_pull_time_ticks;
     }
 
     @Override
@@ -60,14 +59,14 @@ public class DarkmoonLongbow extends ModdedBow implements IKeybindAbility {
             entity.setDamage(ConfigConstructor.darkmoon_longbow_ability_damage / 2.6f + power * 1.25f);
             entity.setMaxArrowAge(40);
             world.spawnEntity(entity);
-            this.applyItemCooldown(player, Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
+            this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.darkmoon_longbow_ability_min_cooldown_ticks,
                     ConfigConstructor.darkmoon_longbow_ability_cooldown_ticks - this.getReduceCooldownEnchantLevel(stack) * 30));
             stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         }
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
     }
 
     @Override

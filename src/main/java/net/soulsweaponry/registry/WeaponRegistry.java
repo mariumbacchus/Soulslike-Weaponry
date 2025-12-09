@@ -11,8 +11,7 @@ import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
-import net.soulsweaponry.items.hammer.Mjolnir;
-import net.soulsweaponry.items.hammer.Nightfall;
+import net.soulsweaponry.items.hammer.*;
 import net.soulsweaponry.items.katana.Bloodlust;
 import net.soulsweaponry.items.katana.Dragonbane;
 import net.soulsweaponry.items.katana.Moonveil;
@@ -126,7 +125,7 @@ public class WeaponRegistry {
         DARKIN_SCYTHE_PRE = ItemRegistry.registerLegendaryWeapon("darkin_scythe_pre", () -> new DarkinScythePre(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_darkin_scythe);
         DARKIN_SCYTHE_PRIME = ItemRegistry.registerLegendaryItem("darkin_scythe", () -> new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC))); // Gained by transforming DARKIN_SCYTHE_PRE
         SHADOW_ASSASSIN_SCYTHE = ItemRegistry.registerLegendaryItem("shadow_assassin_scythe", () -> new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC))); // Gained by transforming DARKIN_SCYTHE_PRE
-        KIRKHAMMER = ItemRegistry.registerWeaponItem("kirkhammer", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, new Item.Settings().rarity(Rarity.RARE), 0f, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer), ConfigConstructor.disable_recipe_kirkhammer);
+        KIRKHAMMER = ItemRegistry.registerWeaponItem("kirkhammer", () -> new Kirkhammmer(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_kirkhammer);
         SILVER_SWORD = ItemRegistry.registerItem("silver_sword", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.kirkhammer_silver_sword_damage, ConfigConstructor.kirkhammer_silver_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.kirkhammer_silver_sword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_silver_sword, ConfigConstructor.disable_use_silver_sword)); // Switched to by other trick weapons
         HOLY_GREATSWORD = ItemRegistry.registerWeaponItem("holy_greatsword", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.ludwigs_holy_greatsword_damage,  ConfigConstructor.ludwigs_holy_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.ludwigs_holy_greatsword_righteous_undead_bonus_damage, ConfigConstructor.is_fireproof_ludwigs_holy_blade, ConfigConstructor.disable_use_ludwigs_holy_greatsword), ConfigConstructor.disable_recipe_ludwigs_holy_blade);
         DRAUPNIR_SPEAR = ItemRegistry.registerLegendaryWeapon("draupnir_spear", () -> new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_draupnir_spear);

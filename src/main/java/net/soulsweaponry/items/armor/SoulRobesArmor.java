@@ -1,12 +1,12 @@
 package net.soulsweaponry.items.armor;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -15,6 +15,16 @@ public class SoulRobesArmor extends SetBonusArmor {
 
     public SoulRobesArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_soul_robes_set;
+    }
+
+    @Override
+    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
+        return false;
     }
 
     @Override
@@ -41,16 +51,11 @@ public class SoulRobesArmor extends SetBonusArmor {
     }
 
     @Override
-    protected StatusEffectInstance[] getFullSetEffects() {
+    public StatusEffectInstance[] getFullSetEffects() {
         return new StatusEffectInstance[] {
-                new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0),
-                new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE.get(), 40, 1)
+                new StatusEffectInstance(StatusEffects.NIGHT_VISION, 400, 0, false, false),
+                new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE.get(), 40, 3, false, false)
         };
-    }
-
-    @Override
-    protected Text[] getCustomTooltips() {
-        return new Text[0];
     }
 
     @Override
@@ -59,7 +64,32 @@ public class SoulRobesArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_soul_robes_set;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return new String[0];
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.soul_robes_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.soul_robes_bleed_damage_resistances;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.soul_robes_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.soul_robes_base_posture_increase;
     }
 }

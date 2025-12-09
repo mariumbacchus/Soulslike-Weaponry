@@ -1,0 +1,74 @@
+package net.soulsweaponry.items.armor;
+
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
+import net.soulsweaponry.config.ConfigConstructor;
+import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+
+import java.util.function.Consumer;
+
+public class ChaosHelmet extends ChaosCrown {
+
+    public ChaosHelmet(ArmorMaterial material, Type type, Settings settings) {
+        super(material, type, settings);
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_helmet;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GeoArmorRenderer<?> renderer;
+
+            @Override
+            public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<?> original) {
+                if (this.renderer == null) {
+                    this.renderer = new ChaosArmorRenderer<>();
+                }
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public Text[] getLoreTooltips() {
+        return new Text[]{
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_1").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_2").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_3").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY),
+        };
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.chaos_armor_base_posture_increase;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+    }
+}

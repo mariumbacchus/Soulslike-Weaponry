@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.material;
 
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Items;
@@ -21,14 +20,14 @@ public enum ModArmorMaterials implements ArmorMaterial {
 
     private final String name;
     private final int[] baseDurability;
-    private final int[] protectionAmounts;
+    private final float[] protectionAmounts;
     private final int enchantability;
     private final SoundEvent equipSound;
     private final float toughness;
     private final float knockbackResistance;
     private final Ingredient repairIngredientSupplier;
 
-    ModArmorMaterials(String name, int[] baseDurability, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Ingredient repairIngredientSupplier) {
+    ModArmorMaterials(String name, int[] baseDurability, float[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Ingredient repairIngredientSupplier) {
         this.name = name;
         this.baseDurability = baseDurability;
         this.protectionAmounts = protectionAmounts;
@@ -46,7 +45,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
 
     @Override
     public int getProtection(ArmorItem.Type slot) {
-        return this.protectionAmounts[slot.getEquipmentSlot().getEntitySlotId()];
+        return (int) this.protectionAmounts[slot.getEquipmentSlot().getEntitySlotId()];
     }
 
     @Override

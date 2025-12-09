@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,20 +7,14 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.ITooltipInfo;
 import net.soulsweaponry.util.TooltipAbilities;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public abstract class SetBonusArmor extends ModdedArmor implements ITooltipInfo {
+public abstract class SetBonusArmor extends ModdedArmor {
 
     public SetBonusArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
+        this.addTooltipAbility(TooltipAbilities.SET_BONUS);
     }
 
     @Override
@@ -54,34 +47,20 @@ public abstract class SetBonusArmor extends ModdedArmor implements ITooltipInfo 
     protected abstract Item getMatchingLegs();
     protected abstract Item getMatchingChest();
     protected abstract Item getMatchingHead();
-    protected abstract StatusEffectInstance[] getFullSetEffects();
-    protected abstract Text[] getCustomTooltips();
 
-    @Override
-    public List<TooltipAbilities> getTooltipAbilities() {
-        return List.of();
+    /**
+     * Returns a list of status effects that gets constantly applied to the user
+     * and automatically documented in the tooltip of the item
+     */
+    public StatusEffectInstance[] getFullSetEffects() {
+        return new StatusEffectInstance[0];
     }
 
-    @Override
-    public void addTooltipAbility(TooltipAbilities... abilities) {
-
-    }
-
-    //TODO can still make this cleaner by using ITooltipInfo and TooltipAbilities
-    @Override
-    public Text[] getAdditionalTooltips() {
-        List<Text> tooltip = new ArrayList<>();
-        tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus").formatted(Formatting.AQUA));
-        for (StatusEffectInstance effect : this.getFullSetEffects()) {
-            tooltip.add(Text.translatable("tooltip.soulsweapons.armor.set_bonus.gain_effects").append(effect.getEffectType().getName()).formatted(Formatting.GRAY));
-        }
-        tooltip.addAll(Arrays.asList(this.getCustomTooltips()));
-        return tooltip.toArray(new Text[0]);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        this.appendTooltipAbilities(stack, world, tooltip, context);
+    /**
+     * Returns a list of text describing other abilities the set-bonus has, such as
+     * healing from dying mobs in ForlornArmor's case
+     */
+    public Text[] getFullSetAbilities() {
+        return new Text[0];
     }
 }

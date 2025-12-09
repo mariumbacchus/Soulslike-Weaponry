@@ -48,7 +48,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
 
     @Override
     public int getPullTime() {
-        return ConfigConstructor.simons_bowblade_pull_time_ticks;
+        return (int) ConfigConstructor.simons_bowblade_pull_time_ticks;
     }
 
     @Override
@@ -68,6 +68,6 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
 
     @Override
     public int getPostureLoss() {
-        return ConfigConstructor.simons_bowblade_projectile_posture_loss;
+        return (int) ConfigConstructor.simons_bowblade_projectile_posture_loss;
     }
 }

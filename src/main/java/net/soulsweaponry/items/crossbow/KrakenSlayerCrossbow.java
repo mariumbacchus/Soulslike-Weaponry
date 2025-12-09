@@ -48,7 +48,7 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     @Override
     public int getPullTime() {
-        return ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks;
+        return (int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks;
     }
 
     @Override

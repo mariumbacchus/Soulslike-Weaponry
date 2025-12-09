@@ -66,7 +66,7 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         super.onStoppedUsing(stack, world, user, remainingUseTicks);
         if (user instanceof PlayerEntity playerEntity) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 stack.damage(3, (LivingEntity)playerEntity, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
                 LeviathanAxeEntity entity = new LeviathanAxeEntity(world, user, stack);
@@ -157,15 +157,5 @@ public class LeviathanAxe extends ModdedAxe implements GeoItem {
     @Override
     public String[] getReduceCooldownEnchantIds(ItemStack stack) {
         return null;
-    }
-
-    public int getChargeTime(ItemStack stack, int remainingUseTicks) {
-        int i;
-        if (WeaponUtil.isModLoaded("epicfight")) {
-            i = Integer.MAX_VALUE - remainingUseTicks;
-        } else {
-            i = this.getMaxUseTime(stack) - remainingUseTicks;
-        }
-        return i;
     }
 }

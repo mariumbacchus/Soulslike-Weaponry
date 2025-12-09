@@ -30,7 +30,7 @@ import net.soulsweaponry.util.WeaponUtil;
 public class DragonStaff extends ModdedSword {
 
     public DragonStaff(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.dragon_staff_damage, ConfigConstructor.dragon_staff_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.dragon_staff_damage, ConfigConstructor.dragon_staff_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.DRAGON_STAFF, TooltipAbilities.VENGEFUL_FOG);
     }
 
@@ -50,7 +50,7 @@ public class DragonStaff extends ModdedSword {
                     } else {
                         living.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
                     }
-                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, ConfigConstructor.dragon_staff_aura_strength));
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, (int) ConfigConstructor.dragon_staff_aura_strength));
                 }
             }
             if (world.isClient) {
@@ -99,9 +99,7 @@ public class DragonStaff extends ModdedSword {
                 fireball.setPos(user.getX(), user.getY() + 1.0f, user.getZ());
                 fireball.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 0f);
                 world.spawnEntity(fireball);
-                itemStack.damage(1, user, (p_220045_0_) -> {
-                    p_220045_0_.sendToolBreakStatus(hand);
-                });
+                itemStack.damage(1, user, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(hand));
             }
             return TypedActionResult.success(itemStack, world.isClient());
         } else {
@@ -121,11 +119,11 @@ public class DragonStaff extends ModdedSword {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return ConfigConstructor.dragon_staff_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 20;
+        return (int) (ConfigConstructor.dragon_staff_use_time + WeaponUtil.getEnchantDamageBonus(stack) * 20);
     }
 
     private int getCooldown(ItemStack stack) {
-        return Math.max(ConfigConstructor.dragon_staff_min_cooldown, ConfigConstructor.dragon_staff_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
+        return (int) Math.max(ConfigConstructor.dragon_staff_min_cooldown, ConfigConstructor.dragon_staff_cooldown - this.getReduceCooldownEnchantLevel(stack) * 10);
     }
 
     @Override

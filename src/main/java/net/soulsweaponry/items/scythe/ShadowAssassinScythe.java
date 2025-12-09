@@ -23,10 +23,10 @@ import net.soulsweaponry.util.WeaponUtil;
 public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     private static final String HAS_EFFECT = "has_shadow_step";
-    public static final int TICKS_FOR_BONUS = ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
+    public static final int TICKS_FOR_BONUS = (int) ConfigConstructor.shadow_assassin_scythe_shadow_step_ticks;
 
     public ShadowAssassinScythe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage, ConfigConstructor.shadow_assassin_scythe_attack_speed, settings, ConfigConstructor.shadow_assassin_scythe_ticks_before_dismount);
+        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.shadow_assassin_scythe_attack_speed, settings, (int) ConfigConstructor.shadow_assassin_scythe_ticks_before_dismount);
         this.addTooltipAbility(TooltipAbilities.SHADOW_STEP);
     }
 
@@ -40,7 +40,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
             if (!cooldownManager.isCoolingDown(this)) {
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP.get(), TICKS_FOR_BONUS,
                         MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-                cooldownManager.set(this, ConfigConstructor.shadow_assassin_scythe_shadow_step_cooldown);
+                cooldownManager.set(this, (int) ConfigConstructor.shadow_assassin_scythe_shadow_step_cooldown);
             }
         }
         return super.postHit(stack, target, attacker);
@@ -69,7 +69,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
             attributeModifiers = builder.build();
             return attributeModifiers;
         } else {
-            return super.getAttributeModifiers(slot);
+            return super.getAttributeModifiers(slot, stack);
         }
     }
 
@@ -90,7 +90,7 @@ public class ShadowAssassinScythe extends UmbralTrespassItem {
 
     @Override
     public int getAbilityCooldown(ItemStack stack) {
-        return Math.max(ConfigConstructor.shadow_assassin_scythe_ability_min_cooldown, ConfigConstructor.shadow_assassin_scythe_ability_cooldown
+        return (int) Math.max(ConfigConstructor.shadow_assassin_scythe_ability_min_cooldown, ConfigConstructor.shadow_assassin_scythe_ability_cooldown
                 - this.getReduceCooldownEnchantLevel(stack) * 25);
     }
 

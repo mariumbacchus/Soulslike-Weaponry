@@ -29,7 +29,7 @@ public class MoonstoneRing extends ModdedItem {
             return TypedActionResult.fail(stack);
         }
         if (!user.hasStatusEffect(EffectRegistry.MOON_HERALD.get())) {
-            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD.get(), 600, EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack)));
+            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD.get(), (int) ConfigConstructor.moonstone_ring_lunar_herald_duration, (int) (ConfigConstructor.moonstone_ring_lunar_herald_base_amplifier + EnchantmentHelper.getLevel(Enchantments.UNBREAKING, stack))));
             stack.damage(1, user, e -> e.sendToolBreakStatus(hand));
             world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
             return TypedActionResult.success(stack, world.isClient());

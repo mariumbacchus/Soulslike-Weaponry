@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.spear;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -46,14 +45,14 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     public static final String SPEARS_ID = "thrown_spears_id";
 
     public DraupnirSpear(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.draupnir_spear_damage, ConfigConstructor.draupnir_spear_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.INFINITY, TooltipAbilities.DETONATE_SPEARS);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity && !playerEntity.getItemCooldownManager().isCoolingDown(this)) {
-            int i = this.getChargeTime(stack, remainingUseTicks);
+            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 DraupnirSpearEntity entity = new DraupnirSpearEntity(world, playerEntity, stack);
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5.0F, 1.0F);
@@ -85,18 +84,18 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     protected int getScaledCooldownThrow(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_throw_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
+        int base = (int) ConfigConstructor.draupnir_spear_throw_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_throw_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 5);
     }
 
     protected int getScaledCooldownSummon(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_summon_spears_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_summon_spears_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 20);
+        int base = (int) ConfigConstructor.draupnir_spear_summon_spears_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_summon_spears_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 20);
     }
 
     protected int getScaledCooldownExplode(ItemStack stack) {
-        int base = ConfigConstructor.draupnir_spear_detonate_cooldown;
-        return Math.max(ConfigConstructor.draupnir_spear_detonate_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 7);
+        int base = (int) ConfigConstructor.draupnir_spear_detonate_cooldown;
+        return (int) Math.max(ConfigConstructor.draupnir_spear_detonate_min_cooldown, base - this.getReduceCooldownEnchantLevelAbility(stack) * 7);
     }
 
     private PlayState predicate(AnimationState<?> event){
@@ -199,7 +198,7 @@ public class DraupnirSpear extends ChargeToUseItem implements GeoItem, IKeybindA
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
     }
 
     @Override

@@ -22,7 +22,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -48,28 +47,28 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
     public static final String RAINING = "raining";
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
+        super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
         this.addTooltipAbility(TooltipAbilities.MJOLNIR_LIGHTNING, TooltipAbilities.THROW_LIGHTNING, TooltipAbilities.RETURNING, TooltipAbilities.WEATHERBORN, TooltipAbilities.OFF_HAND_FLIGHT);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        int i = this.getChargeTime(stack, remainingUseTicks);
+        int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
         if (user instanceof PlayerEntity player && i >= 10) {
             int cooldown = 0;
             stack.damage(3, player, p -> p.sendToolBreakStatus(user.getActiveHand()));
             if (player.isSneaking()) {
                 this.smashGround(stack, world, player);
                 this.lightningCall(player, world);
-                cooldown = ConfigConstructor.mjolnir_lightning_smash_cooldown;
+                cooldown = (int) ConfigConstructor.mjolnir_lightning_smash_cooldown;
             } else if (player.getOffHandStack().isOf(this)) {
                 this.riptide(player, world, stack);
-                if (!world.isRaining()) cooldown = ConfigConstructor.mjolnir_riptide_cooldown;
+                if (!world.isRaining()) cooldown = (int) ConfigConstructor.mjolnir_riptide_cooldown;
             } else {
                 this.throwHammer(world, player, stack);
             }
             if (cooldown != 0) {
-                cooldown = Math.max(ConfigConstructor.mjolnir_ability_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 30);
+                cooldown = (int) Math.max(ConfigConstructor.mjolnir_ability_min_cooldown, cooldown - this.getReduceCooldownEnchantLevel(stack) * 30);
             }
             this.applyItemCooldown(player, cooldown);
         }
@@ -100,17 +99,7 @@ public class Mjolnir extends ChargeToUseItem implements GeoItem {
 
     private void riptide(PlayerEntity player, World world, ItemStack stack) {
         float sharpness = WeaponUtil.getEnchantDamageBonus(stack);
-        float f = player.getYaw();
-        float g = player.getPitch();
-        float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-        float k = -MathHelper.sin(g * 0.017453292F);
-        float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-        float m = MathHelper.sqrt(h * h + k * k + l * l);
-        float n = 3.0F * ((5.0F + sharpness) / 4.0F);
-        h *= n / m;
-        k *= n / m;
-        l *= n / m;
-        player.addVelocity(h, k, l);
+        WeaponUtil.launchTarget(player, 5f + sharpness, false);
         player.useRiptide(20);
         if (player.isOnGround()) {
             player.move(MovementType.SELF, new Vec3d(0.0, 1.1999999284744263, 0.0));

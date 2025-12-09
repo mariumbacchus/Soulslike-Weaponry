@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.bow;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -15,7 +14,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.projectile_damage.api.IProjectileWeapon;
@@ -25,6 +23,7 @@ import net.soulsweaponry.items.ModdedBow;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class Galeforce extends ModdedBow implements IKeybindAbility {
@@ -44,20 +43,20 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     @Override
     @Nullable
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        shooter.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
         return new ChargedArrow(world, shooter, false);
     }
 
     @Override
     public int getPullTime() {
-        return ConfigConstructor.galeforce_pull_time_ticks;
+        return (int) ConfigConstructor.galeforce_pull_time_ticks;
     }
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             if (!player.isCreative()) {
-                int cooldown = Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
+                int cooldown = (int) Math.max(ConfigConstructor.galeforce_dash_min_cooldown, ConfigConstructor.galeforce_dash_cooldown - this.getReduceCooldownEnchantLevel(stack) * 8);
                 player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0));
             }
             ItemStack arrowStack = player.getProjectileType(stack);
@@ -77,7 +76,7 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     }
 
     private void shootArrow(ServerWorld world, ItemStack stack, ItemStack arrowStack, PlayerEntity player, @Nullable Vec3d currentTargetPos) {
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, ConfigConstructor.galeforce_speed_effect_duration_ticks, ConfigConstructor.galeforce_speed_effect_amplifier - 1));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, (int) ConfigConstructor.galeforce_speed_effect_duration_ticks, (int) (ConfigConstructor.galeforce_speed_effect_amplifier - 1)));
         ChargedArrow chargedArrow = new ChargedArrow(world, player, true);
         if (chargedArrow.canHaveArrowEffects(arrowStack, stack)) {
             chargedArrow.initFromStack(arrowStack);
@@ -106,19 +105,9 @@ public class Galeforce extends ModdedBow implements IKeybindAbility {
     }
 
     @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, ClientPlayerEntity player) {
+    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
         if (!player.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
-            float f = player.getYaw();
-            float g = player.getPitch();
-            float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float k = -MathHelper.sin(g * 0.017453292F);
-            float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-            float m = MathHelper.sqrt(h * h + k * k + l * l);
-            float n = 3.0F * ((1.0F + 1F) / 4.0F);
-            h *= n / m;
-            k *= n / m;
-            l *= n / m;
-            player.addVelocity(h, k, l);
+            WeaponUtil.launchTarget(player, 2f, false);
         }
     }
 

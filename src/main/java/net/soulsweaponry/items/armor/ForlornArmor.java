@@ -1,10 +1,9 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,8 +15,18 @@ import net.soulsweaponry.util.IAnimatedDeath;
 
 public class ForlornArmor extends SetBonusArmor {
 
-    public ForlornArmor(ArmorMaterial material, ArmorItem.Type slot, Settings settings) {
+    public ForlornArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_forlorn_set;
+    }
+
+    @Override
+    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
+        return false;
     }
 
     @Override
@@ -51,12 +60,7 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    protected StatusEffectInstance[] getFullSetEffects() {
-        return new StatusEffectInstance[0];
-    }
-
-    @Override
-    protected Text[] getCustomTooltips() {
+    public Text[] getFullSetAbilities() {
         return new Text[] {
                 Text.translatable("tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal").formatted(Formatting.GRAY)
         };
@@ -68,7 +72,32 @@ public class ForlornArmor extends SetBonusArmor {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_forlorn_set;
+    public boolean canEnchantReduceCooldown(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
+        return new String[0];
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.forlorn_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.forlorn_armor_bleed_damage_resistances;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.forlorn_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.forlorn_armor_base_posture_increase;
     }
 }
