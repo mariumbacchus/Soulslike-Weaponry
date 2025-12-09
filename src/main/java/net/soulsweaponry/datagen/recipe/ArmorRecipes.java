@@ -124,7 +124,7 @@ public class ArmorRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.CRIMSON_INGOT.get()).build()))
                 .offerTo(consumer);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.ARKENPLATE.get())
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.ARKENPLATE.get())
                 .input('#', Items.IRON_INGOT)
                 .input('n', Items.NETHERITE_INGOT)
                 .input('N', ItemRegistry.ARKENSTONE.get())
@@ -135,7 +135,7 @@ public class ArmorRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.ARKENSTONE.get()).build()))
                 .offerTo(consumer);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.WITHERED_CHEST.get())
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.WITHERED_CHEST.get())
                 .input('#', Items.NETHER_BRICK)
                 .input('n', Items.NETHERITE_INGOT)
                 .input('N', ItemRegistry.WITHERED_DEMON_HEART.get())
@@ -146,8 +146,8 @@ public class ArmorRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.WITHERED_DEMON_HEART.get()).build()))
                 .offerTo(consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ItemRegistry.ARKENPLATE.get()), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get()), ItemRegistry.ENHANCED_ARKENPLATE.get(), ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get(), consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.NETHERITE_HELMET), Ingredient.ofItems(ItemRegistry.CHAOS_CROWN.get()), ItemRegistry.CHAOS_HELMET.get(), ItemRegistry.CHAOS_CROWN.get(), consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ItemRegistry.WITHERED_CHEST.get()), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER.get()), ItemRegistry.ENHANCED_WITHERED_CHEST.get(), ItemRegistry.LORD_SOUL_DAY_STALKER.get(), consumer);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.ARKENPLATE.get()), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get()), ArmorRegistry.ENHANCED_ARKENPLATE.get(), ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get(), consumer);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.NETHERITE_HELMET), Ingredient.ofItems(ArmorRegistry.CHAOS_CROWN.get()), ArmorRegistry.CHAOS_HELMET.get(), ArmorRegistry.CHAOS_CROWN.get(), consumer);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(ArmorRegistry.WITHERED_CHEST.get()), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER.get()), ArmorRegistry.ENHANCED_WITHERED_CHEST.get(), ItemRegistry.LORD_SOUL_DAY_STALKER.get(), consumer);
     }
 }

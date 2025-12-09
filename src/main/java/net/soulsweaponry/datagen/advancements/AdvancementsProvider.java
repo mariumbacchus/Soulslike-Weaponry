@@ -78,18 +78,18 @@ public class AdvancementsProvider implements ForgeAdvancementProvider.Advancemen
                 OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.MOONKNIGHT.get())));
         Advancement decayingKing = this.generateAdvancement(consumer, "end_of_reigns", bloodthirsty, ItemRegistry.WITHERED_DEMON_HEART.get(), AdvancementFrame.CHALLENGE, true, true, false,
                 OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.ACCURSED_LORD_BOSS.get())));
-        Advancement chaosMonarch = this.generateAdvancement(consumer, "ender_of_world_ender", uncertainty, ItemRegistry.CHAOS_CROWN.get(), AdvancementFrame.CHALLENGE, true, true, false,
+        Advancement chaosMonarch = this.generateAdvancement(consumer, "ender_of_world_ender", uncertainty, ArmorRegistry.CHAOS_CROWN.get(), AdvancementFrame.CHALLENGE, true, true, false,
                 OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.CHAOS_MONARCH.get())));
 
         // Armor
-        Advancement arkenplate = this.generateAdvancement(consumer, "arkenplate", returningKnight, ItemRegistry.ARKENPLATE.get(),
-                AdvancementFrame.TASK, true, true, false, ItemRegistry.ARKENPLATE.get());
-        Advancement infusedArkenplate = this.generateAdvancement(consumer, "infused_arkenplate", arkenplate, ItemRegistry.ENHANCED_ARKENPLATE.get(),
-                AdvancementFrame.CHALLENGE, true, true, false, ItemRegistry.ENHANCED_ARKENPLATE.get());
-        Advancement hallowheart = this.generateAdvancement(consumer, "hallowheart", decayingKing, ItemRegistry.WITHERED_CHEST.get(),
-                AdvancementFrame.TASK, true, true, false, ItemRegistry.WITHERED_CHEST.get());
-        Advancement infusedHallowheart = this.generateAdvancement(consumer, "infused_hallowheart", hallowheart, ItemRegistry.ENHANCED_WITHERED_CHEST.get(),
-                AdvancementFrame.CHALLENGE, true, true, false, ItemRegistry.ENHANCED_WITHERED_CHEST.get());
+        Advancement arkenplate = this.generateAdvancement(consumer, "arkenplate", returningKnight, ArmorRegistry.ARKENPLATE.get(),
+                AdvancementFrame.TASK, true, true, false, ArmorRegistry.ARKENPLATE.get());
+        Advancement infusedArkenplate = this.generateAdvancement(consumer, "infused_arkenplate", arkenplate, ArmorRegistry.ENHANCED_ARKENPLATE.get(),
+                AdvancementFrame.CHALLENGE, true, true, false, ArmorRegistry.ENHANCED_ARKENPLATE.get());
+        Advancement hallowheart = this.generateAdvancement(consumer, "hallowheart", decayingKing, ArmorRegistry.WITHERED_CHEST.get(),
+                AdvancementFrame.TASK, true, true, false, ArmorRegistry.WITHERED_CHEST.get());
+        Advancement infusedHallowheart = this.generateAdvancement(consumer, "infused_hallowheart", hallowheart, ArmorRegistry.ENHANCED_WITHERED_CHEST.get(),
+                AdvancementFrame.CHALLENGE, true, true, false, ArmorRegistry.ENHANCED_WITHERED_CHEST.get());
 
         // Guns
         Advancement pistol = this.generateAdvancement(consumer, "hunter_pistol", root, GunRegistry.HUNTER_PISTOL.get(),
