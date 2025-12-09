@@ -25,6 +25,7 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -35,10 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// Only extends WitherSkullEntity to use the renderer of it without other mods crashing due to miss-assigning classes
 public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     private static final List<LuckChosenObject<EntityType<?>>> ENTITIES = new ArrayList<>();
     private static final List<LuckChosenObject<CollisionEffect>> COLLISIONS = new ArrayList<>();
+    private static final List<LuckChosenObject<EntityHitEffect>> ENTITY_EFFECTS = new ArrayList<>();
 
     public WitheredWabbajackProjectile(EntityType<? extends WitheredWabbajackProjectile> entityType, World world) {
         super(entityType, world);
@@ -73,17 +76,15 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
-                Random random = new Random();
-                int rng = random.nextInt(10) + 1;
                 int power = this.getBound(75 , 5, user) + WeaponUtil.getLuckFactor(user) * 5;
                 int amplifier = this.getBound(3 , 1, user) + WeaponUtil.getLuckFactor(user)/2;
                 int duration = this.getBound(300 , 50, user) + WeaponUtil.getLuckFactor(user) * 50;
-                switch (rng) {
-                    case 1, 2, 3 ->
+                switch (this.getRandomEntityHitEffect(user)) {
+                    case RANDOM_EFFECT_TARGET ->
                             target.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(true), duration, amplifier));
-                    case 4, 5 ->
+                    case RANDOM_EFFECT_USER ->
                             user.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(false), duration, amplifier));
-                    case 6 -> {
+                    case DROP_ARMOR -> {
                         boolean luck = this.getBound(20, 1, user) + WeaponUtil.getLuckFactor(user) > 10;
                         LivingEntity living = luck ? target : user;
                         living.getArmorItems().iterator().forEachRemaining(itemStack -> {
@@ -96,7 +97,9 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                             }
                         });
                     }
-                    default -> {
+                    case LAUNCH -> target.addVelocity(0, power * 0.05f, 0);
+                    case CHUNGUS_TONIC -> target.addStatusEffect(new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT.get(), 200, 0));
+                    default -> { // RANDOM_DAMAGE
                         if (power > 50) {
                             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                         }
@@ -260,6 +263,10 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         }
     }
 
+    private EntityHitEffect getRandomEntityHitEffect(LivingEntity user) {
+        return WeaponUtil.getRandomlyChosenObject(user, ENTITY_EFFECTS, false);
+    }
+
     private List<LuckChosenObject<StatusEffect>> getEffectList() {
         List<LuckChosenObject<StatusEffect>> list = new ArrayList<>();
         for (StatusEffect effect : ForgeRegistries.MOB_EFFECTS) {
@@ -305,7 +312,20 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         COLLISIONS.add(new LuckChosenObject<>(CollisionEffect.EXPLOSION, WeaponUtil.LuckType.GOOD));
     }
 
+    static {
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_EFFECT_TARGET, WeaponUtil.LuckType.NEUTRAL, 40));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_EFFECT_USER, WeaponUtil.LuckType.NEUTRAL, 30));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.DROP_ARMOR, WeaponUtil.LuckType.NEUTRAL, 5));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.RANDOM_DAMAGE, WeaponUtil.LuckType.NEUTRAL, 40));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.LAUNCH, WeaponUtil.LuckType.NEUTRAL, 10));
+        ENTITY_EFFECTS.add(new LuckChosenObject<>(EntityHitEffect.CHUNGUS_TONIC, WeaponUtil.LuckType.NEUTRAL, 10));
+    }
+
     enum CollisionEffect {
         LIGHTNING, RANDOM_ENTITY, SPECIFIC_ENTITY, BATS, PARTICLES, DARKNESS, EXPLOSION, CURSE
+    }
+
+    enum EntityHitEffect {
+        RANDOM_EFFECT_TARGET, RANDOM_EFFECT_USER, DROP_ARMOR, RANDOM_DAMAGE, LAUNCH, CHUNGUS_TONIC
     }
 }

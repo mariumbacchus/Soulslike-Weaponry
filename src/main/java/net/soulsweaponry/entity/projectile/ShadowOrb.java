@@ -16,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.NightShade;
-import net.soulsweaponry.items.armor.ChaosSet;
+import net.soulsweaponry.items.armor.ChaosRobes;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
@@ -80,7 +80,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         }
         if (entity instanceof LivingEntity target) {
             for (ItemStack stack : target.getArmorItems()) {
-                if (stack.getItem() instanceof ChaosSet) {
+                if (stack.getItem() instanceof ChaosRobes) {
                     return false;
                 }
             }

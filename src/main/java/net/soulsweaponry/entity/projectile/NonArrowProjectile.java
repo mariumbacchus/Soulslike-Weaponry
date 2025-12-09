@@ -9,8 +9,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -19,9 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
-public abstract class NonArrowProjectile extends PersistentProjectileEntity {
-
-    private ItemStack stackShotFrom;
+public abstract class NonArrowProjectile extends ModPersistentProjectile {
 
     public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -101,31 +97,6 @@ public abstract class NonArrowProjectile extends PersistentProjectileEntity {
                 }
                 this.discard();
             }
-        }
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return this.stackShotFrom;
-    }
-
-    public void setItemStack(ItemStack stackShotFrom) {
-        this.stackShotFrom = stackShotFrom;
-    }
-
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
-            this.stackShotFrom = ItemStack.fromNbt(nbt.getCompound("Stack"));
-        }
-    }
-
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        if (this.stackShotFrom != null) {
-            nbt.put("Stack", this.stackShotFrom.writeNbt(new NbtCompound()));
         }
     }
 }

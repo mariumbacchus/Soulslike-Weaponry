@@ -16,16 +16,15 @@ import java.util.UUID;
 public abstract class DamagingNoClipEntity extends NoClipEntity {
 
     private final Set<UUID> entitiesHit = new HashSet<>();
-    public final int maxAge;
 
     public DamagingNoClipEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.maxAge = 100;
+        this.setMaxAge(100);
     }
 
     public DamagingNoClipEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world, LivingEntity owner, int maxAge) {
         super(entityType, world);
-        this.maxAge = maxAge;
+        this.setMaxAge(maxAge);
         this.setOwner(owner);
     }
 
@@ -54,7 +53,7 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
                 this.entitiesHit.add(living.getUuid());
             }
         }
-        if (this.age > this.maxAge) {
+        if (this.age > this.getMaxAge()) {
             this.discard();
         }
     }
@@ -65,7 +64,7 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
     public abstract void applyDamageEffects(boolean wasHit, LivingEntity target);
 
     public void updateEntityDamage(LivingEntity target) {
-        this.setDamage(this.getDamage() + EnchantmentHelper.getAttackDamage(this.getStack(), target.getGroup()));
+        this.setDamage(this.getDamage() + EnchantmentHelper.getAttackDamage(this.asItemStack(), target.getGroup()));
     }
 
     @Override

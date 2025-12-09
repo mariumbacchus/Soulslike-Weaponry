@@ -30,11 +30,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
-import net.soulsweaponry.items.armor.ChaosSet;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.items.armor.ChaosRobes;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -166,13 +163,8 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isSpawning() {
-        return this.getAttack() == Attack.SPAWN;
-    }
-
-    @Override
     public int getXp() {
-        return ConfigConstructor.chaos_monarch_xp;
+        return (int) ConfigConstructor.chaos_monarch_xp;
     }
 
     @Override
@@ -192,6 +184,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
+    public boolean isSpawning() {
+        return this.getAttack() == Attack.SPAWN;
+    }
+
+    @Override
     public SoundEvent getBossMusic() {
         return null;
     }
@@ -202,7 +199,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
-        ChaosSet cape = (ChaosSet) ItemRegistry.CHAOS_ROBES.get();
+        ChaosRobes cape = (ChaosRobes) ArmorRegistry.CHAOS_ROBES.get();
         cape.turnBlocks(this, world, blockPos, 3);
     }
 

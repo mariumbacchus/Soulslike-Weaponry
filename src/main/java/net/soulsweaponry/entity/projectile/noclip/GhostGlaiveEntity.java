@@ -19,18 +19,22 @@ public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity
 
     public GhostGlaiveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.setAreaParticle(ParticleRegistry.SUN_PARTICLE.get());
+        this.setAreaParticleCount(20);
     }
 
     public GhostGlaiveEntity(World world, LivingEntity owner, int maxAge) {
         super(EntityRegistry.GHOST_GLAIVE_TYPE.get(), world, owner, maxAge);
+        this.setAreaParticle(ParticleRegistry.SUN_PARTICLE.get());
+        this.setAreaParticleCount(20);
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.getWorld().isClient) {
-            for (int i = 0; i < 20; ++i) {
-                this.getWorld().addParticle(ParticleRegistry.SUN_PARTICLE.get(), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
+            for (int i = 0; i < this.getAreaParticleCount(); ++i) {
+                this.getWorld().addParticle(this.getAreaParticle(), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
             }
         }
     }

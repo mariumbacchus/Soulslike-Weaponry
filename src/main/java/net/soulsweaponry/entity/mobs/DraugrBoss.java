@@ -289,7 +289,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 this.projectileCount--;
             }
         } else {
-            this.projectileCount = ConfigConstructor.old_champions_remains_max_projectile_hits_before_immune;
+            this.projectileCount = (int) ConfigConstructor.old_champions_remains_max_projectile_hits_before_immune;
         }
         return super.damage(source, amount);
     }
@@ -302,7 +302,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.old_champions_remains_xp;
+        return (int) ConfigConstructor.old_champions_remains_xp;
     }
 
     @Override

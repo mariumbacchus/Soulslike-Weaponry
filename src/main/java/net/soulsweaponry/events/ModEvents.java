@@ -21,12 +21,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.entitystats.EntityBleed;
+import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.ParryData;
-import net.soulsweaponry.entitydata.ReturningProjectileData;
-import net.soulsweaponry.entitydata.PostureData;
+import net.soulsweaponry.entitydata.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -89,6 +89,11 @@ public class ModEvents {
                 ParryData.addParryFrames(player, 1);
                 player.stopUsingItem();
             }
+            if (player.getAttacking() != null) {
+                TargetPostureData.updateTargetPosture(player, player.getAttacking());
+            } else {
+                TargetPostureData.resetValues(player);
+            }
         }
     }
 
@@ -96,14 +101,24 @@ public class ModEvents {
     public static void onLivingEntityTicks(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         int posture = PostureData.getPosture(entity);
-        if (posture >= ConfigConstructor.max_posture_loss) {
+        int bleed = BleedData.getBleed(entity);
+        if (!EntityPosture.isPostureDisabled(entity) && posture >= EntityPosture.getMaxPostureLoss(entity) && EntityPosture.getMaxPostureLoss(entity) != 0) {
             if (!entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get())) {
                 entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
             }
             entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.POSTURE_BREAK.get(), 60, 1));
             PostureData.setPosture(entity, 0);
-        } else if (posture > 0 && entity.age % 4 == 0) {
-            PostureData.reducePosture(entity, 1);
+        }
+        if (!EntityBleed.isBleedDisabled(entity) && bleed >= EntityBleed.getMaxBleed(entity)) {
+            EntityBleed.triggerBloodLoss(entity);
+        }
+        if (!entity.getWorld().isClient) {
+            if (entity.age % ((int) ConfigConstructor.posture_loss_reduction_interval) == 0 && posture > 0) {
+                PostureData.reducePosture(entity, (int) ConfigConstructor.posture_loss_reduction_amount);
+            }
+            if (entity.age % ((int) ConfigConstructor.bleed_reduction_interval) == 0 && bleed > 0) {
+                BleedData.reduceBleed(entity, (int) ConfigConstructor.bleed_reduction_amount);
+            }
         }
     }
 

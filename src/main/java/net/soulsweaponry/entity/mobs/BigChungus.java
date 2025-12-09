@@ -102,7 +102,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
 
     public boolean checkForMonolith() {
         BlockPos entityPos = this.getBlockPos();
-        int radius = ConfigConstructor.chungus_monolith_radius;
+        int radius = (int) ConfigConstructor.chungus_monolith_radius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (x * x + z * z <= radius * radius) {
@@ -189,6 +189,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             ParticleHandler.particleSphereList(this.getWorld(), 10, this.getX(), this.getY(), this.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.2f);
         }
     }
+
     private void updateStats(float health, int exp) {
         this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(health);
         this.setHealth(health);
@@ -242,6 +243,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     public boolean isAggressive() {
         return this.dataTracker.get(AGGRESSIVE);
     }
+
     public void setAggressive(boolean bl) {
         this.dataTracker.set(AGGRESSIVE, bl);
     }
@@ -359,11 +361,6 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    public EntityView method_48926() {
-        return super.getWorld();
-    }
-
-    @Override
     public boolean isTeammate(Entity other) {
         if (other instanceof Tameable) {
             if (((Tameable)other).getOwner() != null && this.getOwner() != null) {
@@ -373,6 +370,11 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             }
         }
         return super.isTeammate(other);
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return super.getWorld();
     }
 
     public static boolean canSpawnInDark(EntityType<? extends MobEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {

@@ -1,15 +1,10 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -18,14 +13,20 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.Map;
-
 public class FlamePillar extends DamagingWarmupEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
 
     public FlamePillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    public FlamePillar(World world, LivingEntity owner, float radius, int warmup, int eventId) {
+        super(EntityRegistry.FLAME_PILLAR.get(), world);
+        this.setOwner(owner);
+        this.setRadius(radius);
+        this.setWarmup(warmup);
+        this.setEventId(eventId);
     }
 
     @Override
@@ -42,17 +43,6 @@ public class FlamePillar extends DamagingWarmupEntity implements GeoEntity {
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
         if (wasHit) {
             target.addVelocity(0, 0.5f, 0);
-        }
-    }
-
-    @Override
-    public void onTrigger() {
-        if (this.getWorld().getBlockState(this.getBlockPos()).isAir()) {
-            this.getWorld().setBlockState(this.getBlockPos(), Blocks.FIRE.getDefaultState());
-        }
-        if (this.getParticleAmountMod() > 0) {
-            Map<ParticleEffect, Vec3d> map = Map.of(ParticleTypes.WAX_ON, this.getParticleVec(), ParticleTypes.FLAME, this.getParticleVec(), ParticleRegistry.SUN_PARTICLE.get(), this.getParticleVec());
-            ParticleHandler.particleOutburstMap(this.getWorld(), Math.min(30 * (int) this.getParticleAmountMod(), 100), this.getX(), this.getY(), this.getZ(), map, 0.4f);
         }
     }
 

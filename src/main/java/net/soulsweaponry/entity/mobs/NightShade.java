@@ -163,7 +163,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
                 this.setAttackState(AttackStates.IDLE);
             }
         }
-        for(int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 3; ++i) {
             this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
         if (!this.isCopy && !this.hasDuplicated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
@@ -356,7 +356,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public int getXp() {
-        return ConfigConstructor.frenzied_shade_xp;
+        return (int) ConfigConstructor.frenzied_shade_xp;
     }
 
     @Override

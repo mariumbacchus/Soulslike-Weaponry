@@ -7,11 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -26,35 +22,26 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class CometSpearEntity extends PersistentProjectileEntity implements GeoEntity {
+public class CometSpearEntity extends ModPersistentProjectile implements GeoEntity {
 
-    private static final TrackedData<Boolean> ENCHANTED;
-    private ItemStack spearStack;
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private boolean dealtDamage;
 
     public CometSpearEntity(EntityType<? extends CometSpearEntity> entityType, World world) {
         super(entityType, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR.get());
+        this.setItemStack(new ItemStack(WeaponRegistry.COMET_SPEAR.get()));
     }
 
     public CometSpearEntity(World world, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.COMET_SPEAR_ENTITY_TYPE.get(), owner, world);
-        this.spearStack = new ItemStack(WeaponRegistry.COMET_SPEAR.get());
-        this.spearStack = stack.copy();
-        this.dataTracker.set(ENCHANTED, stack.hasGlint());
+        this.setItemStack(stack.copy());
     }
 
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ENCHANTED, false);
-    }
-
+    @Override
     public void tick() {
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
-
         if (this.age > 100) {
             this.remove(RemovalReason.DISCARDED);
         }
@@ -70,16 +57,12 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         return factory;
     }
 
-    @Override
-    protected ItemStack asItemStack() {
-        return this.spearStack.copy();
-    }
-
     @Nullable
     protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
     }
 
+    @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.comet_spear_projectile_damage;
@@ -87,7 +70,7 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
             return;
         }
         if (entity instanceof LivingEntity livingEntity) {
-            f += EnchantmentHelper.getAttackDamage(spearStack, livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
+            f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup()); /* EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.spearStack); */
             float healthPercentLeft = livingEntity.getHealth()/livingEntity.getMaxHealth();
             if (healthPercentLeft < 0.2) {
                 f *= 2;
@@ -120,22 +103,21 @@ public class CometSpearEntity extends PersistentProjectileEntity implements GeoE
         return super.tryPickup(player) || this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
     }
 
+    @Override
     protected SoundEvent getHitSound() {
         return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
     }
 
+    @Override
     public void onPlayerCollision(PlayerEntity player) {
         if (this.isOwner(player) || this.getOwner() == null) {
             super.onPlayerCollision(player);
         }
     }
 
+    @Override
     protected float getDragInWater() {
         return 0.99F;
-    }
-
-    static {
-        ENCHANTED = DataTracker.registerData(CometSpearEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     @Override

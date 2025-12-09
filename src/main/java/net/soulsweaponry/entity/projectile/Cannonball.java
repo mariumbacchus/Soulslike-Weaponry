@@ -27,11 +27,6 @@ public class Cannonball extends SilverBulletEntity implements GeoEntity {
     }
 
     @Override
-    public int getMaxAge() {
-        return 600;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
