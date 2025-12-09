@@ -37,9 +37,9 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
             if (time >= 10) {
                 if (player.isSneaking()) {
                     MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL.get(), world, user, 15);
-                    entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
+                    entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE.get());
                     entity.setAreaParticleCount(10);
-                    entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
+                    entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME.get());
                     entity.setPos(player.getX(), player.getEyeY() - 1f, player.getZ());
                     entity.setDespawnParticleCount(40);
                     entity.setModelRotationX(90);
@@ -50,10 +50,10 @@ public class Moonveil extends ChargeToUseItem implements IBleed {
                     world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_VERTICAL.get(), SoundCategory.PLAYERS, 1f, 1f);
                 } else {
                     MoonveilWave entity = new MoonveilWave(world, user, 6);
-                    entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
+                    entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE.get());
                     entity.setAreaParticleCount(15);
                     entity.setDespawnParticleCount(40);
-                    entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
+                    entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME.get());
                     entity.setPos(player.getX(), player.getEyeY() - 0.3f, player.getZ());
                     entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.0f, 1.0F);
                     entity.setDamage(ConfigConstructor.moonveil_wave_damage + ((float)WeaponUtil.getEnchantDamageBonus(stack) * 0.8f));

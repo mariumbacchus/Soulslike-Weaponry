@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -37,19 +38,14 @@ import static net.soulsweaponry.registry.EffectRegistry.randomVibrantRGBA;
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
-//    @SubscribeEvent
-//    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
-//        if (event.getObject() instanceof PlayerEntity player) {
-//            if (!player.getCapability(PostureDataProvider.POSTURE_DATA).isPresent()) {
-//                event.addCapability(new Identifier(SoulsWeaponry.ModId, "properties"), new PostureDataProvider());
-//            }
-//        }
-//    }
+    @SubscribeEvent
+    public static void onAddReloadListeners(AddReloadListenerEvent event) {
+        event.addListener(new EntityStatsUtil());
+    }
 
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         TrickWeaponUtil.loadMappings(event.getServer());
-        EntityStatsUtil.register(); //TODO make sure this works
     }
 
     @SubscribeEvent

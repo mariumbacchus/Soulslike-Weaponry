@@ -70,7 +70,7 @@ public class ModifyDamageUtil {
                 }
             }
         }
-        if (entity.hasStatusEffect(EffectRegistry.DECAY.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ItemRegistry.CHAOS_HELMET.get())) {
+        if (entity.hasStatusEffect(EffectRegistry.DECAY.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_CROWN.get()) && !entity.getEquippedStack(EquipmentSlot.HEAD).isOf(ArmorRegistry.CHAOS_HELMET.get())) {
             int amplifier = entity.getStatusEffect(EffectRegistry.DECAY.get()).getAmplifier();
             float amountAdded = newAmount * ((amplifier + 1)*.2f);
             newAmount += amountAdded;

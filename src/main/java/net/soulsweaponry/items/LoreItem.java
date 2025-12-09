@@ -27,8 +27,8 @@ public class LoreItem extends ModdedItem {
         this.fireproof = fireproof;
     }
 
-    private String getIdName(ItemStack stack) {
-        Identifier id = ForgeRegistries.ITEMS.getKey(stack.getItem());
+    private String getIdName() {
+        Identifier id = ForgeRegistries.ITEMS.getKey(this);
         return id.getPath();
     }
 

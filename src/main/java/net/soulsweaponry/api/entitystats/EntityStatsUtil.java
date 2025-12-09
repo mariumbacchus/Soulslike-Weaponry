@@ -6,7 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.resource.ResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.soulsweaponry.SoulsWeaponry;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class EntityStatsUtil implements IdentifiableResourceReloadListener {//TODO figure out how forge does data fetching
+public class EntityStatsUtil implements ResourceReloader {
 
     private static final String FOLDER = "entitystats";
     private static final Identifier ID = new Identifier(SoulsWeaponry.ModId, "entity_attributes");
@@ -36,11 +36,6 @@ public class EntityStatsUtil implements IdentifiableResourceReloadListener {//TO
 
     public static Optional<EntityStats> getStats(Entity entity) {
         return getStats(getEntityIdentifier(entity));
-    }
-
-    @Override
-    public Identifier getFabricId() {
-        return ID;
     }
 
     @Override
@@ -69,16 +64,12 @@ public class EntityStatsUtil implements IdentifiableResourceReloadListener {//TO
 
         // Wait for synchronizer then apply on the executor
         return loadFuture.thenComposeAsync(loaded ->
-                        synchronizer.whenPrepared(getFabricId())
+                        synchronizer.whenPrepared(ID)
                                 .thenRunAsync(() -> {
                                     statsMap.clear();
                                     statsMap.putAll(loaded);
                                 }, applyExecutor)
                 , applyExecutor);
-    }
-
-    public static void register() {
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EntityStatsUtil());
     }
 
     /**

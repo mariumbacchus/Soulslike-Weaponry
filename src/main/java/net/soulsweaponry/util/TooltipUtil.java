@@ -130,7 +130,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious").formatted(Formatting.DARK_RED));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.2").formatted(Formatting.GRAY));
-                if (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
+                if (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST.get())) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.withered_armor.infectious.3").formatted(Formatting.GRAY));
                 }
             }
@@ -158,7 +158,7 @@ public class TooltipUtil {
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.1").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.2").formatted(Formatting.GRAY));
                 tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.3").formatted(Formatting.GRAY));
-                if (stack.isOf(ArmorRegistry.ENHANCED_ARKENPLATE)) {
+                if (stack.isOf(ArmorRegistry.ENHANCED_ARKENPLATE.get())) {
                     tooltip.add(Text.translatable("tooltip.soulsweapons.arkenplate.aftershock.4").formatted(Formatting.GRAY));
                 }
             }

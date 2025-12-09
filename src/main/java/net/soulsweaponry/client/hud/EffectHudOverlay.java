@@ -7,32 +7,58 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 
-public abstract class EffectHudOverlay implements HudRenderCallback {
+public abstract class EffectHudOverlay {
 
     private int yOffset = 0;
     public static final int BAR_WIDTH = 182;
     public static final int BAR_HEIGHT = 5;
 
-    @Override
-    public void onHudRender(DrawContext drawContext, float v) {
+    public void render(DrawContext drawContext, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client != null) {
-            int width = client.getWindow().getScaledWidth();
-            int height = client.getWindow().getScaledHeight();
-            int x = width / 2;
-            int y = height;
-            int barY = y / 2 + 10 - this.yOffset;
-            int barX = x / 10;
-            if (client.player != null && !client.player.isDead()) {
-                int pixelOffset = this.getBarPixelOffset(client.player);
-                if (this.shouldShow(client.player)) {
-                    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    // TODO the bars still overflow one frame
-                    drawContext.drawTexture(this.getTexture(), barX - 25, barY - 10, 0, 0, 25, 25, 207 ,25); // Icon
-                    drawContext.drawTexture(this.getTexture(), barX, barY, 25, 10, BAR_WIDTH, BAR_HEIGHT, 207, 25); // Empty
-                    drawContext.drawTexture(this.getTexture(), barX, barY, 25, 15, pixelOffset, BAR_HEIGHT, 207, 25); // Filled
-                }
+        if (client == null) {
+            return;
+        }
+
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight();
+        int x = width / 2;
+        int y = height;
+        int barY = y / 2 + 10 - this.yOffset;
+        int barX = x / 10;
+
+        ClientPlayerEntity player = client.player;
+        if (player != null && !player.isDead()) {
+            int pixelOffset = this.getBarPixelOffset(player);
+            if (this.shouldShow(player)) {
+                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+                // Icon
+                drawContext.drawTexture(
+                        this.getTexture(),
+                        barX - 25, barY - 10,
+                        0, 0,
+                        25, 25,
+                        207, 25
+                );
+
+                // Empty bar
+                drawContext.drawTexture(
+                        this.getTexture(),
+                        barX, barY,
+                        25, 10,
+                        BAR_WIDTH, BAR_HEIGHT,
+                        207, 25
+                );
+
+                // Filled bar
+                drawContext.drawTexture(
+                        this.getTexture(),
+                        barX, barY,
+                        25, 15,
+                        pixelOffset, BAR_HEIGHT,
+                        207, 25
+                );
             }
         }
     }
