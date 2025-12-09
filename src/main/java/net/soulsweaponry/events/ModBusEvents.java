@@ -20,6 +20,8 @@ import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 
+import java.nio.file.Path;
+
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusEvents {
 
@@ -60,30 +62,55 @@ public class ModBusEvents {
     public static void addBuiltinPack(AddPackFindersEvent event) {
         // NOTE: Maybe done differently in other versions, if so see https://github.com/MinecraftForge/MinecraftForge/blob/1.18.x/src/test/java/net/minecraftforge/debug/AddPackFinderEventTest.java
         if (event.getPackType() == ResourceType.CLIENT_RESOURCES) {
-            var resourcePath = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/2d_weapons");
-            var pack = ResourcePackProfile.create("builtin/2d_weapons", Text.literal("2D Weapon Models"), false,
-                    (path) -> new PathPackResources(path, true, resourcePath), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(pack));
+            var modFileInfo = ModList.get().getModFileById(SoulsWeaponry.ModId);
+            if (modFileInfo == null) {
+                SoulsWeaponry.LOGGER.error("Could not find mod file for {}", SoulsWeaponry.ModId);
+                return;
+            }
+            var modFile = modFileInfo.getFile();
 
-            var pathLegacy2D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/legacy_2d");
-            var packLegacy2D = ResourcePackProfile.create("builtin/legacy_2d", Text.literal("Legacy 2D Models"), false,
-                    (path) -> new PathPackResources(path, true, pathLegacy2D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packLegacy2D));
+            addBuiltin(event,
+                    "builtin/2d_weapons",
+                    Text.literal("2D Weapon Models"),
+                    modFile.findResource("resourcepacks/2d_weapons"));
 
-            var pathLegacy3D = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/legacy_3d");
-            var packLegacy3D = ResourcePackProfile.create("builtin/legacy_3d", Text.literal("Legacy 3D Models"), false,
-                    (path) -> new PathPackResources(path, true, pathLegacy3D), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packLegacy3D));
+            addBuiltin(event,
+                    "builtin/legacy_2d",
+                    Text.literal("Legacy 2D Models"),
+                    modFile.findResource("resourcepacks/legacy_2d"));
 
-            var pathFACompat = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/fresh_animations_compat");
-            var packFACompat = ResourcePackProfile.create("builtin/fresh_animations_compat", Text.literal("Fresh Animations Compat."), false,
-                    (path) -> new PathPackResources(path, true, pathFACompat), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packFACompat));
+            addBuiltin(event,
+                    "builtin/legacy_3d",
+                    Text.literal("Legacy 3D Models"),
+                    modFile.findResource("resourcepacks/legacy_3d"));
 
-            var pathGOW = ModList.get().getModFileById(SoulsWeaponry.ModId).getFile().findResource("resourcepacks/enhanced_gow");
-            var packGOW = ResourcePackProfile.create("builtin/enhanced_gow", Text.literal("Szombie's 3D GOW Weapons"), true,
-                    (path) -> new PathPackResources(path, true, pathGOW), ResourceType.CLIENT_RESOURCES, ResourcePackProfile.InsertionPosition.TOP, ResourcePackSource.BUILTIN);
-            event.addRepositorySource((packConsumer) -> packConsumer.accept(packGOW));
+            addBuiltin(event,
+                    "builtin/fresh_animations_compat",
+                    Text.literal("Fresh Animations Compat."),
+                    modFile.findResource("resourcepacks/fresh_animations_compat"));
+
+            addBuiltin(event,
+                    "builtin/enhanced_gow",
+                    Text.literal("Szombie's 3D GOW Weapons"),
+                    modFile.findResource("resourcepacks/enhanced_gow"));
+        }
+    }
+
+    private static void addBuiltin(AddPackFindersEvent event, String id, Text displayName, Path path) {
+        var pack = ResourcePackProfile.create(
+                id,
+                displayName,
+                false,
+                name -> new PathPackResources(name, true, path),
+                event.getPackType(),
+                ResourcePackProfile.InsertionPosition.TOP,
+                ResourcePackSource.BUILTIN
+        );
+
+        if (pack != null) {
+            event.addRepositorySource(consumer -> consumer.accept(pack));
+        } else {
+            SoulsWeaponry.LOGGER.warn("Failed to create builtin resource pack '{}' from path {}", id, path);
         }
     }
 

@@ -592,9 +592,9 @@
     "tooltip.soulsweapons.freyr_sword_note_3": "spot until someone picks it up and bounds to it again.",
 
     "tooltip.soulsweapons.grand_skyfall": "웅장한 하늘의 낙하",
-    "tooltip.soulsweapons.grand_skyfall_description_1": "- 보조 손에 사용하여",
-    "tooltip.soulsweapons.grand_skyfall_description_2": "사용자에게 §3급류§r을 적용한 후, 착지 시 지면을 가격하여",
-    "tooltip.soulsweapons.grand_skyfall_description_3": "낙하 거리에 따라 반경 내 모든 몬스터에 피해를 줍니다.",
+    "tooltip.soulsweapons.grand_skyfall_description_1": "- Use while sneaking to §3Riptide§r the user,",
+    "tooltip.soulsweapons.grand_skyfall_description_2": "then upon landing, smash the ground, damaging",
+    "tooltip.soulsweapons.grand_skyfall_description_3": "all mobs in a radius based on falling distance.",
 
     "tooltip.soulsweapons.arkenplate": "내구성",
     "tooltip.soulsweapons.arkenplate_description_1": "- 사용자의 체력이 §c50%§r 이하일 때,",

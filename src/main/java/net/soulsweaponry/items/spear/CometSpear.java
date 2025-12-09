@@ -59,7 +59,7 @@ public class CometSpear extends ChargeToUseItem implements GeoItem, IDetonateGro
             int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
             if (i >= 10) {
                 float enchant = WeaponUtil.getEnchantDamageBonus(stack);
-                if (stack == user.getOffHandStack()) {
+                if (user.isSneaking()) {
                     WeaponUtil.launchTarget(user, 5f + enchant, false);
                     playerEntity.useRiptide(20);
                     world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);

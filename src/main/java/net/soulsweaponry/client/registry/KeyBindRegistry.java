@@ -62,6 +62,8 @@ public class KeyBindRegistry {
         if (!FMLLoader.isProduction()) {
             killNearbyEntities = registerKeyboard("kill_nearby_entities", GLFW.GLFW_KEY_K);
             giveResistance = registerKeyboard("give_or_clear_resistance", GLFW.GLFW_KEY_J);
+            event.register(KeyBindRegistry.killNearbyEntities);
+            event.register(KeyBindRegistry.giveResistance);
         }
     }
 

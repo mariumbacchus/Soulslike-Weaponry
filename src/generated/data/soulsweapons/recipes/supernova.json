@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:blackstone"
+    },
+    "L": {
+      "item": "minecraft:magma_block"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "O": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "S": {
+      "item": "minecraft:netherite_scrap"
+    }
+  },
+  "pattern": [
+    "LNL",
+    "SOS",
+    " B "
+  ],
+  "result": {
+    "item": "soulsweapons:supernova"
+  },
+  "show_notification": true
+}

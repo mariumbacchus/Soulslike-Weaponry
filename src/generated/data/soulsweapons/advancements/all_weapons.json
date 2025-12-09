@@ -1,6 +1,18 @@
 {
   "parent": "soulsweapons:all_moonlight_weapons",
   "criteria": {
+    "bloodlust": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:bloodlust"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "bloodthirster": {
       "conditions": {
         "items": [
@@ -151,6 +163,18 @@
           {
             "items": [
               "soulsweapons:dragon_staff"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dragonbane": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:dragonbane"
             ]
           }
         ]
@@ -373,6 +397,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mehrunes_razor": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:mehrunes_razor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mjolnir": {
       "conditions": {
         "items": [
@@ -535,6 +571,30 @@
           {
             "items": [
               "soulsweapons:sting"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "supernova": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:supernova"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "tonitrus": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "soulsweapons:tonitrus"
             ]
           }
         ]
@@ -722,6 +782,21 @@
     ],
     [
       "simons_blade"
+    ],
+    [
+      "dragonbane"
+    ],
+    [
+      "supernova"
+    ],
+    [
+      "mehrunes_razor"
+    ],
+    [
+      "tonitrus"
+    ],
+    [
+      "bloodlust"
     ]
   ],
   "sends_telemetry_event": true

@@ -13,6 +13,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.BloodlustRenderer;
@@ -20,6 +21,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
@@ -121,7 +123,7 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
         stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), 300, (int) ConfigConstructor.bloodlust_ability_bloodthirsty_amp));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 400, (int) ConfigConstructor.bloodlust_ability_strength_amp));
-        //world.playSound(null, player.getBlockPos(), SoundEvents.HURT, SoundCategory.PLAYERS, .75f, 1f);//TODO other sound, bleed soundalike?
+        world.playSound(null, player.getBlockPos(), SoundRegistry.BLOOD_LOSS.get(), SoundCategory.PLAYERS, .75f, 1f);
     }
 
     @Override
