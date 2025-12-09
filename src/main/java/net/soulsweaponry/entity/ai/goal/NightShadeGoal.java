@@ -17,7 +17,6 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
-import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -224,7 +223,7 @@ public class NightShadeGoal extends Goal {
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 1.5f, 1f);
             projectile.setDamage(this.getModifiedDamage(25f));
-            projectile.setExplosionExpansion(0.5f);
+            projectile.setDespawnParticleExpansion(0.5f);
             projectile.setAgeAndPoints(30, 150, 10);
             this.boss.getWorld().spawnEntity(projectile);
         }
