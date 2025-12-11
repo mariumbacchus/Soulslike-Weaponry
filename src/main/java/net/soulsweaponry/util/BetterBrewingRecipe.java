@@ -2,44 +2,48 @@ package net.soulsweaponry.util;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
-import net.minecraftforge.common.brewing.IBrewingRecipe;
+import net.minecraft.potion.Potions;
+import net.minecraft.recipe.Ingredient;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.soulsweaponry.mixin.BrewingRecipeRegistryAccessor;
 
-// BetterBrewingRecipe Class by CAS-ual-TY from https://github.com/CAS-ual-TY/Extra-Potions (GPL-3.0 License)
-// https://github.com/CAS-ual-TY/Extra-Potions/blob/main/LICENSE
-// Big thanks to Kaupenjoe for his tutorial series at https://github.com/Tutorials-By-Kaupenjoe/Forge-Tutorial-1.18.1/tree/39-potionRecipes
-public class BetterBrewingRecipe implements IBrewingRecipe {
-    private final Potion input;
-    private final Item ingredient;
-    private final Potion output;
+public class BetterBrewingRecipe {
 
-    public BetterBrewingRecipe(Potion input, Item ingredient, Potion output) {
-        this.input = input;
-        this.ingredient = ingredient;
-        this.output = output;
+    /**
+     * Add a potion recipe via forge hooks. This will not automatically creat throwable ones.
+     * @param inputPotion potion crafting ingredient
+     * @param inputItem item to mix with the potion
+     * @param outputPotion output
+     */
+    public static void addRecipe(Potion inputPotion, Item inputItem, Potion outputPotion) {
+        ItemStack input = PotionUtil.setPotion(new ItemStack(Items.POTION), inputPotion);
+        ItemStack output = PotionUtil.setPotion(new ItemStack(Items.POTION), outputPotion);
+        Ingredient ingredient = Ingredient.ofItems(inputItem);
+        BrewingRecipeRegistry.addRecipe(Ingredient.ofStacks(input), ingredient, output);
     }
 
-    @Override
-    public boolean isInput(ItemStack input) {
-        return PotionUtil.getPotion(input) == this.input;
+    /**
+     * Register potion recipes and automatically creates throwable recipes
+     * (with gunpowder and dragon breath) like in fabric.
+     * @param basePotion potion crafting ingredient
+     * @param ingredient item crafting ingredient
+     * @param resultPotion output
+     */
+    public static void addPotionRecipe(Potion basePotion, Item ingredient, Potion resultPotion) {
+        BrewingRecipeRegistryAccessor.invokeRegisterPotionRecipe(basePotion, ingredient, resultPotion);
     }
 
-    @Override
-    public boolean isIngredient(ItemStack ingredient) {
-        return ingredient.getItem() == this.ingredient;
-    }
-
-    @Override
-    public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
-        if(!this.isInput(input) || !this.isIngredient(ingredient)) {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack itemStack = new ItemStack(input.getItem());
-        itemStack.setNbt(new NbtCompound());
-        PotionUtil.setPotion(itemStack, this.output);
-        return itemStack;
+    /**
+     * Register potion recipes and automatically creates throwable recipes
+     * (with gunpowder and dragon breath) like in fabric.
+     * Input potion is automatically AWKWARD.
+     * @param ingredient item crafting ingredient
+     * @param resultPotion output
+     */
+    public static void addAwkwardRecipe(Item ingredient, Potion resultPotion) {
+        addPotionRecipe(Potions.AWKWARD, ingredient, resultPotion);
     }
 }

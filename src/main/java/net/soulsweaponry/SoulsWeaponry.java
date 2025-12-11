@@ -4,11 +4,8 @@ import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.potion.Potions;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.world.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,9 +30,6 @@ import java.util.List;
 
 @Mod(SoulsWeaponry.ModId)
 public class SoulsWeaponry {
-
-    //TODO:
-    // Fix forge specific issues on github
 
     public static final String ModId = "soulsweapons";
     public static final String CONFIG_FOLDER = "soulsweapons/";
@@ -83,11 +77,11 @@ public class SoulsWeaponry {
         event.enqueueWork(() -> {
             FluidRegistry.registerCauldronBehavior();
 
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.GLOWSTONE_DUST, EffectRegistry.STRONG_WARDING.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(EffectRegistry.WARDING.get(), Items.REDSTONE, EffectRegistry.LONG_WARDING.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, ItemRegistry.CHUNGUS_EMERALD.get(), EffectRegistry.CHUNGUS_TONIC_POTION.get()));
+            BetterBrewingRecipe.addAwkwardRecipe(BlockRegistry.HYDRANGEA.get().asItem(), EffectRegistry.WARDING.get());
+            BetterBrewingRecipe.addAwkwardRecipe(BlockRegistry.OLEANDER.get().asItem(), EffectRegistry.TAINTED_AMBROSIA.get());
+            BetterBrewingRecipe.addPotionRecipe(EffectRegistry.WARDING.get(), Items.GLOWSTONE_DUST, EffectRegistry.STRONG_WARDING.get());
+            BetterBrewingRecipe.addPotionRecipe(EffectRegistry.WARDING.get(), Items.REDSTONE, EffectRegistry.LONG_WARDING.get());
+            BetterBrewingRecipe.addAwkwardRecipe(ItemRegistry.CHUNGUS_EMERALD.get(), EffectRegistry.CHUNGUS_TONIC_POTION.get());
 
             SpawnRestriction.register(EntityRegistry.WITHERED_DEMON.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
             SpawnRestriction.register(EntityRegistry.BIG_CHUNGUS.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BigChungus::canSpawnInDark);

@@ -6,6 +6,7 @@
   "mixins": [
     "ArrowItemMixin",
     "BowItemMixin",
+    "BrewingRecipeRegistryAccessor",
     "CrossbowItemMixin",
     "DamageSourcesMixin",
     "EnchantmentHelperMixin",
