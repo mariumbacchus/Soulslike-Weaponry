@@ -33,3 +33,4 @@ bin/
 run/
 
 changed_files.txt
+ChangedSinceCommit.ps1
