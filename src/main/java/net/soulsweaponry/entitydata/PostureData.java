@@ -1,14 +1,13 @@
 package net.soulsweaponry.entitydata;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.networking.S2C.packets.MaxPostureSyncS2C;
+import net.soulsweaponry.networking.S2C.packets.PostureSyncS2C;
 
 public class PostureData {
 
@@ -18,11 +17,11 @@ public class PostureData {
     public static void addPostureLoss(LivingEntity entity, int amount) {
         if (!EntityPosture.isPostureDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
             int newAmount = EntityPosture.getPostureLoss(entity, amount);
-            addPostureLoss((IEntityDataSaver) entity, newAmount);
+            addPostureLoss((IEntityDataSaver) entity, newAmount, EntityPosture.getMaxPostureLoss(entity));
         }
     }
 
-    private static void addPostureLoss(IEntityDataSaver entity, int amount) {
+    private static void addPostureLoss(IEntityDataSaver entity, int amount, int max) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(POSTURE_ID)) {
             nbt.putInt(POSTURE_ID, 0);
@@ -31,7 +30,7 @@ public class PostureData {
         if (posture < 0) {
             posture = 0;
         } else {
-            posture += amount;
+            posture = Math.min(posture + amount, max);
         }
         nbt.putInt(POSTURE_ID, posture);
         if (entity instanceof ServerPlayerEntity) {
@@ -60,9 +59,7 @@ public class PostureData {
     }
 
     public static void syncData(int data, ServerPlayerEntity entity) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(data);
-        ServerPlayNetworking.send(entity, PacketIds.POSTURE_SYNC, buf);
+        ServerPlayNetworking.send(entity, new PostureSyncS2C(data));
     }
 
     /**
@@ -87,8 +84,6 @@ public class PostureData {
     }
 
     public static void syncMaxPosture(int data, ServerPlayerEntity entity) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(data);
-        ServerPlayNetworking.send(entity, PacketIds.MAX_POSTURE_SYNC, buf);
+        ServerPlayNetworking.send(entity, new MaxPostureSyncS2C(data));
     }
 }

@@ -15,7 +15,7 @@ public abstract class EffectHudOverlay implements HudRenderCallback {
     public static final int BAR_HEIGHT = 5;
 
     @Override
-    public void onHudRender(DrawContext drawContext, float v) {
+    public void onHudRender(DrawContext drawContext, float renderTickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client != null) {
             int width = client.getWindow().getScaledWidth();
@@ -29,16 +29,15 @@ public abstract class EffectHudOverlay implements HudRenderCallback {
                 if (this.shouldShow(client.player)) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    // TODO the bars still overflow one frame
-                    drawContext.drawTexture(this.getTexture(), barX - 25, barY - 10, 0, 0, 25, 25, 207 ,25); // Icon
-                    drawContext.drawTexture(this.getTexture(), barX, barY, 25, 10, BAR_WIDTH, BAR_HEIGHT, 207, 25); // Empty
-                    drawContext.drawTexture(this.getTexture(), barX, barY, 25, 15, pixelOffset, BAR_HEIGHT, 207, 25); // Filled
+                    drawContext.drawTexture(this.getTexture(client.player), barX - 25, barY - 10, 0, 0, 25, 25, 207 ,25); // Icon
+                    drawContext.drawTexture(this.getTexture(client.player), barX, barY, 25, 10, BAR_WIDTH, BAR_HEIGHT, 207, 25); // Empty
+                    drawContext.drawTexture(this.getTexture(client.player), barX, barY, 25, 15, pixelOffset, BAR_HEIGHT, 207, 25); // Filled
                 }
             }
         }
     }
 
-    public abstract Identifier getTexture();
+    public abstract Identifier getTexture(ClientPlayerEntity player);
     public abstract int getBarPixelOffset(ClientPlayerEntity player);
     public abstract boolean shouldShow(ClientPlayerEntity player);
 

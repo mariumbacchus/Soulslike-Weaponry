@@ -6,12 +6,12 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.enchantments.FastHandsEnchantment;
-import net.soulsweaponry.enchantments.VisceralEnchantment;
 import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -48,8 +48,16 @@ public class EnchantmentHelperMixin {
         info.setReturnValue(enchantments);
     }
 
+    @Inject(method = "getEfficiency", at = @At("RETURN"))
+    private static void getEfficiency(LivingEntity entity, CallbackInfoReturnable<Integer> info) {
+        for (Hand hand : Hand.values()) {
+            ItemStack stack = entity.getStackInHand(hand);
+            //TODO get nbt and return addition
+        }
+    }
+
     @ModifyReturnValue(method = "getAttackDamage", at = @At("TAIL"))
-    private static float modifyAttackDamage(float originalDamage, ItemStack stack, EntityGroup group) {
+    private static float modifyAttackDamage(float originalDamage, ItemStack stack, EntityGroup group) { //TODO this needs to call abilities to do more damage
         if (stack.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
             return originalDamage;
         }

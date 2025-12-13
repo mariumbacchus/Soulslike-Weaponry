@@ -18,7 +18,7 @@ public record BlazingBlade(float baseFireSeconds, float bonusSecondsPerLvl, floa
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int time = (int) (this.baseFireSeconds + this.bonusSecondsPerLvl * WeaponUtil.getUpgradeLevel(stack));
         if (FabricLoader.getInstance().isModLoaded("soul_fire_d")) {
-            int soulFireLvl = PrometheusCompat.getSoulFireAspect(stack, attacker.getRegistryManager());
+            int soulFireLvl = PrometheusCompat.getSoulFireAspect(stack);
             if (soulFireLvl > 0) {
                 time += (int) (this.fireAspectLvlBonus * soulFireLvl);
                 PrometheusCompat.igniteSoulFire(target, time);
