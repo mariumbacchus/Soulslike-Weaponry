@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.projectile.noclip;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -59,7 +60,7 @@ public class AbsorbedProjectilesOrb extends NoClipEntity {
                     double g = Math.sqrt(d * d + f * f);
                     EntityType<?> entityType = projectileTypes.get(currentIndex);
                     float damage = projectileDamage.get(currentIndex);
-                    Entity entity = entityType.create(this.getWorld());
+                    Entity entity = entityType.create(this.getWorld(), SpawnReason.MOB_SUMMONED);
                     if (entity instanceof ProjectileEntity projectile) {
                         entity.setPos(this.getX(), this.getEyeY(), this.getZ());
                         projectile.setVelocity(d, e + g * 0.2F, f, 1.6F, 1f);

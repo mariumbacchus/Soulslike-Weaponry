@@ -11,9 +11,9 @@ public class WitheredDemonRenderer extends GeoEntityRenderer<WitheredDemon> {
         super(ctx, new WitheredDemonModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
-    protected float getDeathMaxRotation(WitheredDemon entityLivingBaseIn) {
+    protected float getDeathMaxRotation(WitheredDemon animatable, float partialTick) {
         return 0f;
     }
 }

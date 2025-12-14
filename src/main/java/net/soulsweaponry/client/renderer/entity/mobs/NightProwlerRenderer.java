@@ -10,45 +10,36 @@ import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.mobs.NightProwlerModel;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.NightProwler;
-import net.soulsweaponry.util.CustomDeathHandler;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
+import java.awt.*;
 
-    int[] rgbColorOne = {54, 122, 156};
-    int[] rgbColorTwo = {147, 188, 210};
-    int[] rgbColorThree = {221, 255, 254};
-    int[] rgbColorFour = {235, 185, 232};
-    double[] translation = {0, 3, 0};
+public class NightProwlerRenderer extends GeoEntityRendererDeathLight<NightProwler> {
+
+    public static final Color MUTED_TEAL_BLUE = new Color(54, 122, 156);
+    public static final Color SKY_BLUE = new Color(147, 188, 210);
+    public static final Color ICY_CYAN = new Color(221, 255, 254);
+    public static final Color LAVENDER_PINK = new Color(235, 185, 232);
 
     public NightProwlerRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, new NightProwlerModel());
+        super(ctx, new NightProwlerModel(), MUTED_TEAL_BLUE, SKY_BLUE, ICY_CYAN, LAVENDER_PINK, 3);
         this.shadowRadius = 1F;
     }
-    
-    @Override
-    protected float getDeathMaxRotation(NightProwler entityLivingBaseIn) {
-        return 0f;
-    }
 
     @Override
-    public void render(NightProwler entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
-
+    public void actuallyRender(MatrixStack poseStack, NightProwler entity, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
+        super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
         if (this.shouldRenderPortal(entity)) {
-            stack.push();
-            stack.translate(0, this.getBottomYOffset(), 0);
-            Matrix4f matrix = stack.peek().getPositionMatrix();
-            VertexConsumer vertexConsumer = bufferIn.getBuffer(this.getLayer());
-            float radius = calculatePortalRadius(NightProwlerGoal.PORTAL_RADIUS, entity.getOpenPortalTicks(), partialTicks);
+            poseStack.push();
+            poseStack.translate(0, this.getBottomYOffset(), 0);
+            Matrix4f matrix = poseStack.peek().getPositionMatrix();
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(this.getLayer());
+            float radius = calculatePortalRadius(NightProwlerGoal.PORTAL_RADIUS, entity.getOpenPortalTicks(), partialTick);
             int segments = 32; // more = smoother
             renderCircle(matrix, vertexConsumer, radius, segments);
-            stack.pop();
+            poseStack.pop();
         }
     }
 

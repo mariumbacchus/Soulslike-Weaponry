@@ -14,14 +14,14 @@ public class RimeSpectreRenderer extends GeoEntityRenderer<RimeSpectre> {
         super(ctx, new RimeSpectreModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
-    protected float getDeathMaxRotation(RimeSpectre entityLivingBaseIn) {
+    protected float getDeathMaxRotation(RimeSpectre animatable, float partialTick) {
         return 0f;
     }
 
     @Override
     public RenderLayer getRenderType(RimeSpectre animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
     }
 }

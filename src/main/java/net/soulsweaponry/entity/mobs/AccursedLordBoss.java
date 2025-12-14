@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -28,7 +29,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -119,7 +119,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -139,13 +139,13 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.decaying_king_health)
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-            .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-            .add(EntityAttributes.GENERIC_ARMOR, BossConfig.decaying_king_armor)
-            .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+            .add(EntityAttributes.FOLLOW_RANGE, 60D)
+            .add(EntityAttributes.MAX_HEALTH, BossConfig.decaying_king_health)
+            .add(EntityAttributes.MOVEMENT_SPEED, 0.15D)
+            .add(EntityAttributes.ATTACK_DAMAGE, 20.0D)
+            .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+            .add(EntityAttributes.ARMOR, BossConfig.decaying_king_armor)
+            .add(EntityAttributes.ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -197,12 +197,14 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 Box chunkBox = new Box(this.getBlockPos()).expand(5);
                 List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
-                for (Entity nearbyEntity : nearbyEntities) {
-                    if (nearbyEntity instanceof LivingEntity closestTarget) {
-                        double x = closestTarget.getX() - (this.getX());
-                        double z = closestTarget.getZ() - this.getZ();
-                        closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * BossConfig.decaying_king_damage_modifier);
+                if (this.getWorld() instanceof ServerWorld serverWorld) {
+                    for (Entity nearbyEntity : nearbyEntities) {
+                        if (nearbyEntity instanceof LivingEntity closestTarget) {
+                            double x = closestTarget.getX() - (this.getX());
+                            double z = closestTarget.getZ() - this.getZ();
+                            closestTarget.takeKnockback(10F, -x, -z);
+                            closestTarget.damage(serverWorld, this.getWorld().getDamageSources().mobAttack(this), 50f * BossConfig.decaying_king_damage_modifier);
+                        }
                     }
                 }
                 if (!this.getWorld().isClient) {

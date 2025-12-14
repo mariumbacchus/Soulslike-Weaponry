@@ -6,6 +6,9 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -158,5 +161,12 @@ public class ParticleEvents {
         map.put(ParticleTypes.SMALL_FLAME, vec);
         ParticleHandler.particleOutburstMap(world, 150, x, y, z, map, 1f);
         ParticleHandler.flashParticle(world, x, y, z, 0xc94000, 1);
+    }
+
+    public static void deathExplosionEvent(World world, Vec3d pos, SoundEvent sound, ParticleEffect... particles) {
+        if (!world.isClient) {
+            ParticleHandler.particleSphereList(world, 1000, pos.getX(), pos.getY(), pos.getZ(), 1f, particles);
+        }
+        world.playSound(null, BlockPos.ofFloored(pos), sound, SoundCategory.HOSTILE, 1f, 1f);
     }
 }

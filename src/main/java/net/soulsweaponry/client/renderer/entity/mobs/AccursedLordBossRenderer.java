@@ -1,38 +1,20 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.AccursedLordBossModel;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
-import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss> {
+import java.awt.*;
 
-    int[] rgbColorOne = {247, 94, 94};
-    int[] rgbColorTwo = {140, 1, 1};
-    int[] rgbColorThree = {209, 0, 0};
-    int[] rgbColorFour = {110, 1, 1};
-    double[] translation = {0, 3, 0};
+public class AccursedLordBossRenderer extends GeoEntityRendererDeathLight<AccursedLordBoss> {
+
+    public static final Color LIGHT_RED = new Color(247, 94, 94);
+    public static final Color DARK_CRIMSON = new Color(140, 1, 1);
+    public static final Color CRIMSON = new Color(209, 0, 0);
+    public static final Color DARK_RED = new Color(110, 1, 1);
 
     public AccursedLordBossRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, new AccursedLordBossModel());
+        super(ctx, new AccursedLordBossModel(), LIGHT_RED, DARK_CRIMSON, CRIMSON, DARK_RED, 3);
         this.shadowRadius = 0.7F;
-    }
-    
-    @Override
-    protected float getDeathMaxRotation(AccursedLordBoss entityLivingBaseIn) {
-        return 0f;
-    }
-
-    @Override
-    public void render(AccursedLordBoss entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method, also just make an abstract class of GeoEntityRenderer<?> that
-        // has the custom death light handling by default instead of calling from every boss renderer
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }
 }

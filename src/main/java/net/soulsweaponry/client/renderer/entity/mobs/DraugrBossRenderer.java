@@ -11,9 +11,9 @@ public class DraugrBossRenderer extends GeoEntityRenderer<DraugrBoss> {
         super(ctx, new DraugrBossModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
-    protected float getDeathMaxRotation(DraugrBoss entityLivingBaseIn) {
+    protected float getDeathMaxRotation(DraugrBoss animatable, float partialTick) {
         return 0f;
     }
 }

@@ -14,14 +14,14 @@ public class FrostGiantRenderer extends GeoEntityRenderer<FrostGiant> {
         super(ctx, new FrostGiantModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
-    protected float getDeathMaxRotation(FrostGiant entityLivingBaseIn) {
+    protected float getDeathMaxRotation(FrostGiant animatable, float partialTick) {
         return 0f;
     }
 
     @Override
     public RenderLayer getRenderType(FrostGiant animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
     }
 }

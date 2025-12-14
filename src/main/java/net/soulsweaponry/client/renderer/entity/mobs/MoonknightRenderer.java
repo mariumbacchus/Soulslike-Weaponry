@@ -12,32 +12,26 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
+import java.awt.*;
 
-    int[] rgbColorOne = {254, 200, 203};
-    int[] rgbColorTwo = {254, 254, 218};
-    int[] rgbColorThree = {106, 73, 156};
-    int[] rgbColorFour = {176, 253, 252};
-    double[] translation = {0, 4, 0};
+public class MoonknightRenderer extends GeoEntityRendererDeathLight<Moonknight> {
+
+    public static final Color SOFT_PINK = new Color(254, 200, 203);
+    public static final Color LIGHT_CREAM_YELLOW = new Color(254, 254, 218);
+    public static final Color AMETHYST_PURPLE = new Color(106, 73, 156);
+    public static final Color LIGHT_AQUA = new Color(176, 253, 252);
     public static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
     private int currentTick = -1;
     private static final int FULLBRIGHT_LIGHT = 0xF000F0;
     
     public MoonknightRenderer(Context ctx) {
-        super(ctx, new MoonknightModel());
+        super(ctx, new MoonknightModel(), SOFT_PINK, LIGHT_CREAM_YELLOW, AMETHYST_PURPLE, LIGHT_AQUA, 4);
         this.shadowRadius = 2.5F;
-    }
-
-    @Override
-    protected float getDeathMaxRotation(Moonknight entityLivingBaseIn) {
-        return 0f;
     }
 
     @Override
@@ -46,13 +40,8 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
     }
 
     @Override
-    public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
-
+    public void actuallyRender(MatrixStack poseStack, Moonknight entity, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTicks, int packedLight, int packedOverlay, int renderColor) {
+        super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
         BlockPos blockPos = entity.getBeamLocation();
         if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
             float yOffset = 6f;
@@ -68,18 +57,18 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
             float p = (float)((double)m - entity.getX());
             float q = (float)((double)n - entity.getY());
             float r = (float)((double)o - entity.getZ());
-            stack.translate(p, q, r);
-            renderCoreBeam(-p, -q + yOffset, -r, partialTicks, entity.age, stack, bufferIn, packedLightIn);
+            poseStack.translate(p, q, r);
+            renderCoreBeam(-p, -q + yOffset, -r, partialTicks, entity.age, poseStack, bufferSource);
         }
     }
 
-    private void renderCoreBeam(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers, int packedLight) {
-        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 1.0f, 255, 255, 255, 255);
-        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 0.8f, 200, 200, 255, 200);
-        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, packedLight, 0.4f, 255, 255, 255, 128);
+    private void renderCoreBeam(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers) {
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, 1.0f, 255, 255, 255, 255);
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, 0.8f, 200, 200, 255, 200);
+        renderBeamRing(dx, dy, dz, tickDelta, age, matrices, consumers, 0.4f, 255, 255, 255, 128);
     }
 
-    private static void renderBeamRing(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers, int packedLight, float radiusScale, int r, int g, int b, int a) {
+    private static void renderBeamRing(float dx, float dy, float dz, float tickDelta, int age, MatrixStack matrices, VertexConsumerProvider consumers, float radiusScale, int r, int g, int b, int a) {
         VertexConsumer vb = consumers.getBuffer(CRYSTAL_BEAM_LAYER);
         float xzLen = MathHelper.sqrt(dx*dx + dz*dz);
         float vecLen = MathHelper.sqrt(dx*dx + dy*dy + dz*dz);
