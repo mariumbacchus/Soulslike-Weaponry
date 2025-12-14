@@ -11,6 +11,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -66,7 +67,7 @@ public class AccursedLordGoal extends Goal {
     }
 
     private void damageTarget(LivingEntity target, DamageSource source, float amount) {
-        if (target.damage(source, this.getModifiedDamage(amount))) {
+        if (this.boss.getWorld() instanceof ServerWorld serverWorld && target.damage(serverWorld, source, this.getModifiedDamage(amount))) {
             this.boss.heal(this.getModifiedDamage(amount)/5 + this.boss.getAttackers().size()*2);
         }
     }
@@ -141,7 +142,7 @@ public class AccursedLordGoal extends Goal {
     }
 
     private double getFollowRange() {
-        return this.boss.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
+        return this.boss.getAttributeValue(EntityAttributes.FOLLOW_RANGE);
     }
 
     public void tick() {

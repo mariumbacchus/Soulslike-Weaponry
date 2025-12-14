@@ -3,128 +3,148 @@ package net.soulsweaponry.datagen.recipe;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.util.Identifier;
-import net.soulsweaponry.SoulsWeaponry;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModTags;
 
-import static net.minecraft.data.server.recipe.RecipeProvider.conditionsFromItemPredicates;
+import static net.minecraft.data.server.recipe.RecipeGenerator.conditionsFromItemPredicates;
 
 public class WeaponRecipes {
 
-    public static void generateRecipes(RecipeExporter recipeExporter) {
-        // Regular weapons
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_SWORD)
+    public static void generateRecipes(RegistryEntryLookup<Item> itemLookup, RecipeExporter recipeExporter) {
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_SWORD)
                 .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" # ")
                 .pattern(" # ")
                 .pattern(" X ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.SOUL_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.SOUL_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_GLAIVE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_GLAIVE)
                 .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" #")
                 .pattern("##")
                 .pattern("#X")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.SOUL_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.SOUL_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD)
                 .input('#', ModTags.Items.LOST_SOUL)
                 .input('X', ItemRegistry.SOUL_INGOT)
                 .pattern(" ##")
                 .pattern(" X ")
                 .pattern("## ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.SOUL_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.SOUL_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
 
         // Legendary weapons
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLUEMOON_GREATSWORD)
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.BLUEMOON_GREATSWORD)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('X', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" # ")
                 .pattern("###")
                 .pattern("#X#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.MOONSTONE).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.MOONSTONE).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLUEMOON_SHORTSWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.BLUEMOON_SHORTSWORD)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('X', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" # ")
                 .pattern(" # ")
                 .pattern(" X ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.MOONSTONE).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.MOONSTONE).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLOODTHIRSTER)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.BLOODTHIRSTER)
                 .input('i', Items.IRON_INGOT)
                 .input('S', ItemRegistry.CRIMSON_INGOT)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .pattern("iSi")
                 .pattern("iSi")
                 .pattern(" / ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.CRIMSON_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.CRIMSON_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.COMET_SPEAR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.COMET_SPEAR)
                 .input('#', Items.GOLD_INGOT)
                 .input('G', ModTags.Items.LORD_SOUL)
                 .input('S', ItemRegistry.MOONSTONE)
                 .pattern(" ##")
                 .pattern("SG#")
                 .pattern("#S ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAGON_STAFF)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DRAGON_STAFF)
                 .input('#', Items.BLAZE_ROD)
                 .input('X', Items.DRAGON_HEAD)
                 .pattern("X")
                 .pattern("#")
                 .pattern("#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.BLAZE_ROD).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.BLAZE_ROD).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.GUTS_SWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.GUTS_SWORD)
                 .input('#', Items.IRON_BLOCK)
                 .input('X', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" # ")
                 .pattern("###")
                 .pattern("#X#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.IRON_BLOCK).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.IRON_BLOCK).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAGONSLAYER_SWORDSPEAR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DRAGONSLAYER_SWORDSPEAR)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .input('G', Items.GOLD_INGOT)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" G ")
                 .pattern("GSG")
                 .pattern("G/G")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.GALEFORCE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.GALEFORCE)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('S', Items.STRING)
                 .input('G', ModTags.Items.LORD_SOUL)
                 .pattern(" #S")
                 .pattern("#GS")
                 .pattern(" #S")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.LICH_BANE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.LICH_BANE)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .input('g', Items.DIAMOND)
                 .input('/', Items.BLAZE_ROD)
@@ -132,10 +152,12 @@ public class WeaponRecipes {
                 .pattern("  /")
                 .pattern("gS ")
                 .pattern("Fg ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.NIGHTFALL)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.NIGHTFALL)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .input('X', ModTags.Items.LOST_SOUL)
                 .input('Y', Items.IRON_BLOCK)
@@ -143,80 +165,95 @@ public class WeaponRecipes {
                 .pattern("YYY")
                 .pattern("XSX")
                 .pattern(" # ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.GUINSOOS_RAGEBLADE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.GUINSOOS_RAGEBLADE)
                 .input('/', Items.BLAZE_ROD)
                 .input('g', Items.GOLD_INGOT)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern(" /g")
                 .pattern("/S ")
                 .pattern("/  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SOUL_REAPER)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.SOUL_REAPER)
                 .input('i', ItemRegistry.SOUL_INGOT)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern(" ii")
                 .pattern("S/ ")
                 .pattern(" / ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.FORLORN_SCYTHE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.FORLORN_SCYTHE)
                 .input('i', Items.NETHERITE_SCRAP)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern(" ii")
                 .pattern("S/ ")
                 .pattern(" / ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.WHIRLIGIG_SAWBLADE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.WHIRLIGIG_SAWBLADE)
                 .input('i', Items.IRON_INGOT)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern(" i ")
                 .pattern("iSi")
                 .pattern("/i ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.WITHERED_WABBAJACK)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.WITHERED_WABBAJACK)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('X', Items.WITHER_SKELETON_SKULL)
                 .pattern("X")
                 .pattern("#")
                 .pattern("#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.WITHER_SKELETON_SKULL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.WITHER_SKELETON_SKULL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.LEVIATHAN_AXE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.LEVIATHAN_AXE)
                 .input('#', ItemRegistry.VERGLAS)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern("#S")
                 .pattern("#/")
                 .pattern(" /")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
-                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_left"));
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
+                .offerTo(recipeExporter, "leviathan_axe_left");
 
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.LEVIATHAN_AXE)
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.LEVIATHAN_AXE)
                 .input('#', ItemRegistry.VERGLAS)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('S', ModTags.Items.LORD_SOUL)
                 .pattern("S#")
                 .pattern("/#")
                 .pattern("/ ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
-                .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_right"));
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.MJOLNIR)
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
+                .offerTo(recipeExporter, "leviathan_axe_right");
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.MJOLNIR)
                 .input('#', ConventionalItemTags.WOODEN_RODS)
                 .input('X', Items.IRON_BLOCK)
                 .input('O', ItemRegistry.VERGLAS)
@@ -224,10 +261,12 @@ public class WeaponRecipes {
                 .pattern("XOX")
                 .pattern("XYX")
                 .pattern(" # ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.FREYR_SWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.FREYR_SWORD)
                 .input('#', Items.IRON_INGOT)
                 .input('Y', ItemRegistry.MOONSTONE)
                 .input('X', ItemRegistry.VERGLAS)
@@ -235,67 +274,81 @@ public class WeaponRecipes {
                 .pattern(" X ")
                 .pattern(" Y ")
                 .pattern("#O#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.STING)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.STING)
                 .input('X', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.VERGLAS)
                 .pattern("#")
                 .pattern("#")
                 .pattern("X")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.VERGLAS).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.VERGLAS).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.FEATHERLIGHT)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.FEATHERLIGHT)
                 .input('X', Items.DIAMOND_PICKAXE)
                 .input('#', Items.OBSIDIAN)
                 .input('O', Items.AMETHYST_SHARD)
                 .pattern("#O#")
                 .pattern("#O#")
                 .pattern(" X ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.AMETHYST_SHARD).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.AMETHYST_SHARD).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DARKIN_SCYTHE_PRE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DARKIN_SCYTHE_PRE)
                 .input('X', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.CRIMSON_INGOT)
                 .input('O', ModTags.Items.LORD_SOUL)
                 .pattern(" ##")
                 .pattern("OX ")
                 .pattern(" X ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.KIRKHAMMER)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.KIRKHAMMER)
                 .input('X', Items.IRON_SWORD)
                 .input('#', Items.STONE)
                 .pattern("###")
                 .pattern("###")
                 .pattern(" X ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.IRON_SWORD).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.IRON_SWORD).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.HOLY_GREATSWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.HOLY_GREATSWORD)
                 .input('X', Items.IRON_SWORD)
                 .input('#', Items.IRON_INGOT)
                 .pattern(" # ")
                 .pattern("###")
                 .pattern("#X#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.IRON_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.IRON_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAUPNIR_SPEAR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DRAUPNIR_SPEAR)
                 .input('X', Items.BLAZE_ROD)
                 .input('#', Items.NETHERITE_INGOT)
                 .input('Y', ModTags.Items.LORD_SOUL)
                 .pattern("#")
                 .pattern("Y")
                 .pattern("X")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.FROSTMOURNE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.FROSTMOURNE)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .input('X', ItemRegistry.VERGLAS)
                 .input('D', ItemRegistry.LORD_SOUL_DAY_STALKER)
@@ -303,10 +356,12 @@ public class WeaponRecipes {
                 .pattern(" #X")
                 .pattern("DX#")
                 .pattern("#N ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.NIGHTS_EDGE_ITEM)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.NIGHTS_EDGE_ITEM)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('X', ItemRegistry.MOONSTONE)
                 .input('Y', ItemRegistry.LORD_SOUL_NIGHT_PROWLER)
@@ -314,10 +369,12 @@ public class WeaponRecipes {
                 .pattern(" XX")
                 .pattern("#YX")
                 .pattern("/# ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.LORD_SOUL_NIGHT_PROWLER).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.LORD_SOUL_NIGHT_PROWLER).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER)
                 .input('#', Items.IRON_INGOT)
                 .input('X', Items.GOLD_BLOCK)
                 .input('Y', ModTags.Items.LORD_SOUL)
@@ -325,10 +382,12 @@ public class WeaponRecipes {
                 .pattern("A# ")
                 .pattern("#Y#")
                 .pattern(" #X")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.KRAKEN_SLAYER_CROSSBOW)
                 .input('#', Items.IRON_INGOT)
                 .input('X', Items.GOLD_BLOCK)
                 .input('Y', ModTags.Items.LORD_SOUL)
@@ -336,10 +395,12 @@ public class WeaponRecipes {
                 .pattern("A# ")
                 .pattern("#Y#")
                 .pattern(" #X")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DARKMOON_LONGBOW)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DARKMOON_LONGBOW)
                 .input('#', Items.GOLD_INGOT)
                 .input('Y', ItemRegistry.ESSENCE_OF_EVENTIDE)
                 .input('A', Items.STRING)
@@ -347,20 +408,24 @@ public class WeaponRecipes {
                 .pattern(" #A")
                 .pattern("XYA")
                 .pattern(" #A")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.ESSENCE_OF_EVENTIDE).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.ESSENCE_OF_EVENTIDE).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.CHUNGUS_STAFF)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.CHUNGUS_STAFF)
                 .input('#', Items.BLAZE_ROD)
                 .input('E', ItemRegistry.CHUNGUS_EMERALD)
                 .input('0', Items.EGG)
                 .pattern(" E0")
                 .pattern(" #E")
                 .pattern("#  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.ESSENCE_OF_EVENTIDE).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.CHUNGUS_EMERALD).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DARK_MOON_GREATSWORD)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DARK_MOON_GREATSWORD)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ItemRegistry.VERGLAS)
                 .input('0', ItemRegistry.MOONSTONE)
@@ -368,20 +433,24 @@ public class WeaponRecipes {
                 .pattern(" #0")
                 .pattern("#L#")
                 .pattern("/# ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.GLAIVE_OF_HODIR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.GLAIVE_OF_HODIR)
                 .input('#', Items.GOLD_INGOT)
                 .input('S', ItemRegistry.SOUL_INGOT)
                 .input('X', ModTags.Items.LORD_SOUL)
                 .pattern(" #")
                 .pattern("S#")
                 .pattern("SX")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.EXCALIBUR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.EXCALIBUR)
                 .input('#', Items.ECHO_SHARD)
                 .input('S', Items.GOLD_INGOT)
                 .input('O', ItemRegistry.MOONSTONE)
@@ -389,30 +458,36 @@ public class WeaponRecipes {
                 .pattern(" ##")
                 .pattern("SO#")
                 .pattern("XS ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.MOONVEIL)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.MOONVEIL)
                 .input('#', ItemRegistry.MOONSTONE)
                 .input('O', ModTags.Items.LORD_SOUL)
                 .input('X', Items.IRON_INGOT)
                 .pattern(" ##")
                 .pattern("#O ")
                 .pattern("X  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SIMONS_BOWBLADE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.SIMONS_BOWBLADE)
                 .input('X', Items.IRON_SWORD)
                 .input('#', Items.STRING)
                 .input('S', Items.IRON_INGOT)
                 .pattern(" X#")
                 .pattern("S #")
                 .pattern(" X#")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.IRON_INGOT).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().items(itemLookup, Items.IRON_INGOT).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAGONBANE)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.DRAGONBANE)
                 .input('X', ModTags.Items.DRAGONBANE_MATERIAL)
                 .input('O', ModTags.Items.LORD_SOUL)
                 .input('/', ItemRegistry.SOUL_INGOT)
@@ -420,10 +495,12 @@ public class WeaponRecipes {
                 .pattern(" XX")
                 .pattern("SO ")
                 .pattern("/  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.SUPERNOVA)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.SUPERNOVA)
                 .input('L', Items.MAGMA_BLOCK)
                 .input('N', Items.NETHERITE_INGOT)
                 .input('O', ModTags.Items.LORD_SOUL)
@@ -432,51 +509,141 @@ public class WeaponRecipes {
                 .pattern("LNL")
                 .pattern("SOS")
                 .pattern(" B ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.MEHRUNES_RAZOR)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.MEHRUNES_RAZOR)
                 .input('S', ItemRegistry.SHARD_OF_UNCERTAINTY)
                 .input('N', Items.NETHERITE_INGOT)
                 .input('O', ModTags.Items.LORD_SOUL)
                 .pattern("N")
                 .pattern("O")
                 .pattern("S")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ModTags.Items.LORD_SOUL).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TONITRUS)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.TONITRUS)
                 .input('I', ConventionalItemTags.WOODEN_RODS)
                 .input('#', ConventionalItemTags.IRON_INGOTS)
                 .input('O', Items.SOUL_LANTERN)
                 .pattern(" ##")
                 .pattern(" O#")
                 .pattern("I  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ConventionalItemTags.IRON_INGOTS).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ConventionalItemTags.IRON_INGOTS).build()
+                ))
                 .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLOODLUST)
+
+        ShapedRecipeJsonBuilder.create(itemLookup, RecipeCategory.COMBAT, WeaponRegistry.BLOODLUST)
                 .input('X', ConventionalItemTags.IRON_INGOTS)
                 .input('O', ModTags.Items.DEMON_HEARTS)
                 .input('/', ConventionalItemTags.WOODEN_RODS)
                 .pattern(" XX")
                 .pattern("XO ")
                 .pattern("/  ")
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ConventionalItemTags.IRON_INGOTS).build()))
+                .criterion("has_item", conditionsFromItemPredicates(
+                        ItemPredicate.Builder.create().tag(itemLookup, ConventionalItemTags.IRON_INGOTS).build()
+                ))
                 .offerTo(recipeExporter);
 
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLUEMOON_GREATSWORD), WeaponRegistry.MOONLIGHT_GREATSWORD, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLUEMOON_SHORTSWORD), WeaponRegistry.MOONLIGHT_SHORTSWORD, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.IRON_SWORD), WeaponRegistry.SKOFNUNG, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.fromTag(ModTags.Items.UPGRADABLE_MOONLIGHT_SWORDS), Ingredient.ofItems(ItemRegistry.ESSENCE_OF_LUMINESCENCE), WeaponRegistry.PURE_MOONLIGHT_GREATSWORD, ItemRegistry.ESSENCE_OF_LUMINESCENCE, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.IRON_SWORD), Ingredient.ofItems(ItemRegistry.ESSENCE_OF_EVENTIDE), WeaponRegistry.DRAUGR, ItemRegistry.ESSENCE_OF_EVENTIDE, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.NETHERITE_SWORD), WeaponRegistry.CRUCIBLE_SWORD, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.STING), WeaponRegistry.HOLY_MOONLIGHT_SWORD, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.DIAMOND_SWORD), WeaponRegistry.MASTER_SWORD, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(WeaponRegistry.DAWNBREAKER), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER), WeaponRegistry.EMPOWERED_DAWNBREAKER, ItemRegistry.LORD_SOUL_DAY_STALKER, recipeExporter);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.STONE_SWORD), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER), WeaponRegistry.NIGHTLORDS_SWORD, ItemRegistry.LORD_SOUL_NIGHT_PROWLER, recipeExporter);
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER),
+                WeaponRegistry.DARKIN_BLADE,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(Items.GOLDEN_SWORD),
+                WeaponRegistry.DAWNBREAKER,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(WeaponRegistry.BLUEMOON_GREATSWORD),
+                WeaponRegistry.MOONLIGHT_GREATSWORD,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(WeaponRegistry.BLUEMOON_SHORTSWORD),
+                WeaponRegistry.MOONLIGHT_SHORTSWORD,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(Items.IRON_SWORD),
+                WeaponRegistry.SKOFNUNG,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeCombat(
+                Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                Ingredient.fromTag(itemLookup.getOrThrow(ModTags.Items.UPGRADABLE_MOONLIGHT_SWORDS)),
+                Ingredient.ofItems(ItemRegistry.ESSENCE_OF_LUMINESCENCE),
+                WeaponRegistry.PURE_MOONLIGHT_GREATSWORD,
+                ItemRegistry.ESSENCE_OF_LUMINESCENCE,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeCombat(
+                Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                Ingredient.ofItems(Items.IRON_SWORD),
+                Ingredient.ofItems(ItemRegistry.ESSENCE_OF_EVENTIDE),
+                WeaponRegistry.DRAUGR,
+                ItemRegistry.ESSENCE_OF_EVENTIDE,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(Items.NETHERITE_SWORD),
+                WeaponRegistry.CRUCIBLE_SWORD,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(WeaponRegistry.STING),
+                WeaponRegistry.HOLY_MOONLIGHT_SWORD,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeLordSoulCombat(
+                Ingredient.ofItems(Items.DIAMOND_SWORD),
+                WeaponRegistry.MASTER_SWORD,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeCombat(
+                Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                Ingredient.ofItems(WeaponRegistry.DAWNBREAKER),
+                Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER),
+                WeaponRegistry.EMPOWERED_DAWNBREAKER,
+                ItemRegistry.LORD_SOUL_DAY_STALKER,
+                recipeExporter,
+                itemLookup
+        );
+
+        WeaponRecipeProvider.smithingRecipeCombat(
+                Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                Ingredient.ofItems(Items.STONE_SWORD),
+                Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER),
+                WeaponRegistry.NIGHTLORDS_SWORD,
+                ItemRegistry.LORD_SOUL_NIGHT_PROWLER,
+                recipeExporter,
+                itemLookup
+        );
     }
 }

@@ -52,11 +52,11 @@ public record Aftershock(
     public void damageTarget(LivingEntity target, ItemStack stack, PlayerEntity player, float knocback, float damage) {
         if (player.getWorld() instanceof ServerWorld serverWorld) {
             damage += EnchantmentHelper.getDamage(serverWorld, stack, target, serverWorld.getDamageSources().mobAttack(player), 0) * this.bonusEnchantDamageMod;
+            target.damage(serverWorld, player.getDamageSources().mobAttack(player), damage);
         }
         for (StatusEffectInstance instance : this.targetHitEffects) {
             target.addStatusEffect(new StatusEffectInstance(instance));
         }
-        target.damage(player.getDamageSources().mobAttack(player), damage);
         double x = player.getX() - target.getX();
         double z = player.getZ() - target.getZ();
         target.takeKnockback(knocback, x, z);
