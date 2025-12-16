@@ -8,18 +8,17 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.DamageResistantComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.Unit;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.*;
-import net.soulsweaponry.items.misc.TestItem;
 import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
@@ -50,6 +49,7 @@ public class SoulsWeaponry implements ModInitializer {
         ComponentRegistry.init();
         BlockRegistry.init();
         ItemRegistry.init();
+        FoodRegistry.init();
         FluidRegistry.init();
         FluidRegistry.registerCauldronBehavior();
         EffectRegistry.init();
@@ -88,14 +88,15 @@ public class SoulsWeaponry implements ModInitializer {
             LOGGER.info("Successfully registered built-in Szombie's Enhanced 3D GOW Weapons resourcepack!");
         });
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            ItemRegistry.registerItem(new TestItem(new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
-        }
-
-        DefaultItemComponentEvents.MODIFY.register(context -> context.modify(
-                ItemRegistry.FIREPROOF_ITEMS::contains,
-                (builder, item) -> builder.add(DataComponentTypes.FIRE_RESISTANT, Unit.INSTANCE)
-        ));
+        DefaultItemComponentEvents.MODIFY.register(context -> {
+            context.modify(
+                    ItemRegistry.FIREPROOF_ITEMS::contains,
+                    (builder, item) -> builder.add(
+                            DataComponentTypes.DAMAGE_RESISTANT,
+                            new DamageResistantComponent(DamageTypeTags.IS_FIRE)
+                    )
+            );
+        });
 
         Registry.register(Registries.ITEM_GROUP, Identifier.of(ModId, "general"),
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))

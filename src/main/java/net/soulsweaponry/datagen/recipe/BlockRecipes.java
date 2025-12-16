@@ -9,6 +9,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.soulsweaponry.registry.BlockRegistry;
+import net.soulsweaponry.registry.FoodRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
 
@@ -120,7 +121,7 @@ public class BlockRecipes {
                 .input(ItemRegistry.CRIMSON_INGOT)
                 .input(Items.OBSIDIAN)
                 .criterion("has_item", conditionsFromItemPredicates(
-                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.DEMON_HEART).build()
+                        ItemPredicate.Builder.create().items(itemLookup, FoodRegistry.DEMON_HEART).build()
                 ))
                 .offerTo(recipeExporter);
 

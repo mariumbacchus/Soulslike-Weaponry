@@ -8,10 +8,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.registry.GunRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
+import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.ModTags;
 
 import java.util.ArrayList;
@@ -137,7 +134,7 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .addOptional(Identifier.of("terramity", "lost_soul"));
 
         this.getOrCreateTagBuilder(ModTags.Items.DEMON_HEARTS)
-                .add(ItemRegistry.DEMON_HEART)
+                .add(FoodRegistry.DEMON_HEART)
                 .addOptional(Identifier.of("bewitchment", "demon_heart"));
 
         this.getOrCreateTagBuilder(ModTags.Items.LOST_SOUL_REPAIR)

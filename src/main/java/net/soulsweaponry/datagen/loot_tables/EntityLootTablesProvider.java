@@ -20,6 +20,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.FoodRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
 import java.util.ArrayList;
@@ -152,7 +153,7 @@ public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
                                 .bonusRolls(ConstantLootNumberProvider.create(0.0f))
                                 .conditionally(KilledByPlayerLootCondition.builder())
                                 .with(
-                                        ItemEntry.builder(ItemRegistry.DEMON_HEART)
+                                        ItemEntry.builder(FoodRegistry.DEMON_HEART)
                                                 .apply(SetCountLootFunction.builder(
                                                         UniformLootNumberProvider.create(0.0f, 1.0f)
                                                 ))

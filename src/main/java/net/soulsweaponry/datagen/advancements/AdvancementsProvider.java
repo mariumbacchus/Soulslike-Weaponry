@@ -64,8 +64,8 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 AdvancementFrame.TASK, true, true, false, ItemRegistry.VERGLAS);
         AdvancementEntry uncertainty = this.generateAdvancement(consumer, "uncertainty", root, ItemRegistry.SHARD_OF_UNCERTAINTY,
                 AdvancementFrame.TASK, true, true, false, ItemRegistry.SHARD_OF_UNCERTAINTY);
-        AdvancementEntry demonHeart = this.generateAdvancement(consumer, "demon_heart", root, ItemRegistry.DEMON_HEART,
-                AdvancementFrame.TASK, true, true, false, ItemRegistry.DEMON_HEART);
+        AdvancementEntry demonHeart = this.generateAdvancement(consumer, "demon_heart", root, FoodRegistry.DEMON_HEART,
+                AdvancementFrame.TASK, true, true, false, FoodRegistry.DEMON_HEART);
         AdvancementEntry bloodthirsty = this.generateAdvancement(consumer, "bloodthirsty", demonHeart, WeaponRegistry.BLOODTHIRSTER,
                 AdvancementFrame.TASK, true, true, false,
                 InventoryChangedCriterion.Conditions.items(WeaponRegistry.BLOODTHIRSTER),
