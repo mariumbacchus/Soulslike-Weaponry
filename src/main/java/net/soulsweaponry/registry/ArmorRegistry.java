@@ -8,6 +8,7 @@ import net.soulsweaponry.items.armor.*;
 
 public class ArmorRegistry {
     // TODO there is a big problem now with all armor items so IHasAbilities and IAbility needs changing to fit the attribute changes
+    // TODO regular armor items now also need json files (see https://www.youtube.com/watch?v=W_8RNYYv5IE for more info)
     public static final Item CHAOS_CROWN = new ChaosCrown(MaterialRegistry.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(37)));
     public static final Item CHAOS_HELMET = new ChaosHelmet(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.HELMET.getMaxDamage(55)));
     public static final Item ARKENPLATE = new Arkenplate(MaterialRegistry.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(55)));

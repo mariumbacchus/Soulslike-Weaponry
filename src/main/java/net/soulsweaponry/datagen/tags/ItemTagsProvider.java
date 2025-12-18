@@ -217,5 +217,31 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
 
         this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_FORLORN)
                 .add(ItemRegistry.SOUL_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_IRON_BLOCK_TOOL)
+                .add(Items.IRON_BLOCK);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_LOST_SOUL_TOOL)
+                .add(ItemRegistry.SOUL_INGOT)
+                .addTag(ModTags.Items.LOST_SOUL);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_LOST_SOUL_DURABLE_TOOL)
+                .add(ItemRegistry.SOUL_INGOT)
+                .addTag(ModTags.Items.LOST_SOUL);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_MOONSTONE_OR_VERGLAS_TOOL)
+                .add(ItemRegistry.MOONSTONE)
+                .add(ItemRegistry.VERGLAS);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_CRIMSON_INGOT_TOOL)
+                .add(ItemRegistry.CRIMSON_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_MOONSTONE_TOOL)
+                .add(ItemRegistry.MOONSTONE)
+                .add(ItemRegistry.VERGLAS);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_ECHO_SHARD_TOOL)
+                .add(Items.ECHO_SHARD);
+
     }
 }

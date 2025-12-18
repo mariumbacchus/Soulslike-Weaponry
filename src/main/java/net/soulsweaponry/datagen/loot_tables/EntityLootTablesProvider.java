@@ -186,8 +186,11 @@ public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
     }
 
     public static void registerEntityLootTable(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer, EntityType<?> entityType, LootTable.Builder lootTable) {
-        Identifier lootId = entityType.getLootTableId().getValue();
-        RegistryKey<LootTable> lootKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId);
-        lootTableBiConsumer.accept(lootKey, lootTable);
+        var op = entityType.getLootTableKey();
+        if (op.isPresent()) {
+            Identifier lootId = op.get().getValue();
+            RegistryKey<LootTable> lootKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootId);
+            lootTableBiConsumer.accept(lootKey, lootTable);
+        }
     }
 }

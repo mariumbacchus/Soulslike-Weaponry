@@ -39,7 +39,7 @@ public class ChungusBarterLootTableProvider extends SimpleFabricLootTableProvide
 
     @Override
     public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
-        RegistryWrapper.Impl<Enchantment> impl = this.registryLookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        RegistryWrapper.Impl<Enchantment> impl = this.registryLookup.getOrThrow(RegistryKeys.ENCHANTMENT);
 
         RegistryKey<LootTable> key = RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(SoulsWeaponry.ModId, "gameplay/chungus_bartering"));
         LootPool.Builder pool = LootPool.builder().rolls(ConstantLootNumberProvider.create(1));

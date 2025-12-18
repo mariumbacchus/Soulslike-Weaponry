@@ -18,7 +18,7 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        RegistryWrapper.Impl<Enchantment> impl = this.registryLookup.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 
         addDrop(BlockRegistry.MOONSTONE_ORE, oreDrops(BlockRegistry.MOONSTONE_ORE, ItemRegistry.MOONSTONE));
         addDrop(BlockRegistry.MOONSTONE_ORE_DEEPSLATE, oreDrops(BlockRegistry.MOONSTONE_ORE_DEEPSLATE, ItemRegistry.MOONSTONE));

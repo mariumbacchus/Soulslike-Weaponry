@@ -73,6 +73,15 @@ public class ModTags {
         public static final TagKey<Item> REPAIRS_SOUL_ROBES = createTag("repairs/soul_robes");
         public static final TagKey<Item> REPAIRS_FORLORN = createTag("repairs/forlorn");
 
+        public static final TagKey<Item> REPAIRS_IRON_BLOCK_TOOL = createTag("repairs/iron_block_tool");
+        public static final TagKey<Item> REPAIRS_LOST_SOUL_TOOL = createTag("repairs/lost_soul_tool");
+        public static final TagKey<Item> REPAIRS_LOST_SOUL_DURABLE_TOOL = createTag("repairs/lost_soul_durable_tool");
+        public static final TagKey<Item> REPAIRS_MOONSTONE_OR_VERGLAS_TOOL = createTag("repairs/moonstone_or_verglas_tool");
+        public static final TagKey<Item> REPAIRS_CRIMSON_INGOT_TOOL = createTag("repairs/crimson_ingot_tool");
+        public static final TagKey<Item> REPAIRS_MOONSTONE_TOOL = createTag("repairs/moonstone_tool");
+        public static final TagKey<Item> REPAIRS_ECHO_SHARD_TOOL = createTag("repairs/echo_shard_tool");
+
+
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
         public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
