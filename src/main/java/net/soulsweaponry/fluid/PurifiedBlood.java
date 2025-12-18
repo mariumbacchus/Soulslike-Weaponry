@@ -7,22 +7,17 @@ import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.registry.FluidRegistry;
 
 public abstract class PurifiedBlood extends FlowableFluid {
-
-    @Override
-    protected boolean isInfinite(World world) {
-        return false;
-    }
 
     @Override
     protected void beforeBreakingBlock(WorldAccess world, BlockPos pos, BlockState state) {
@@ -99,12 +94,22 @@ public abstract class PurifiedBlood extends FlowableFluid {
         }
 
         @Override
+        protected boolean isInfinite(ServerWorld world) {
+            return false;
+        }
+
+        @Override
         public int getLevel(FluidState state) {
             return state.get(LEVEL);
         }
     }
 
     public static class Still extends PurifiedBlood {
+
+        @Override
+        protected boolean isInfinite(ServerWorld world) {
+            return false;
+        }
 
         @Override
         public int getLevel(FluidState state) {

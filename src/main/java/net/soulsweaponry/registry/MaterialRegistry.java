@@ -1,76 +1,119 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.util.ModTags;
 
 import java.util.EnumMap;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class MaterialRegistry {
 
-    public static final RegistryEntry<ArmorMaterial> CHAOS_ARMOR = registerArmorMaterial("chaos_armor", () -> new ArmorMaterial(
+    public static final ArmorMaterial CHAOS_ARMOR = new ArmorMaterial(
+            55,
             createMapWithArray(ConfigConstructor.chaos_armor_armor_points),
-            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "chaos_armor"))), 4.0f, 0.2f));
-    public static final RegistryEntry<ArmorMaterial> ENHANCED_CHAOS_ARMOR = registerArmorMaterial("enhanced_chaos_armor", () -> new ArmorMaterial(
+            15,
+            SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            4.0f,
+            0.2f,
+            ModTags.Items.REPAIRS_CHAOS_ARMOR,
+            Identifier.of(SoulsWeaponry.ModId, "chaos_armor")
+    );
+
+    public static final ArmorMaterial ENHANCED_CHAOS_ARMOR = new ArmorMaterial(
+            70,
             createMapWithArray(ConfigConstructor.enhanced_chaos_armor_armor_points),
-            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_chaos_armor"))), 4.0f, 0.2f));
+            15,
+            SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            4.0f,
+            0.2f,
+            ModTags.Items.REPAIRS_ENHANCED_CHAOS_ARMOR,
+            Identifier.of(SoulsWeaponry.ModId, "enhanced_chaos_armor")
+    );
 
-    public static final RegistryEntry<ArmorMaterial> WITHERED_ARMOR = registerArmorMaterial("withered_armor", () -> new ArmorMaterial(
+    public static final ArmorMaterial WITHERED_ARMOR = new ArmorMaterial(
+            55,
             createMapWithArray(ConfigConstructor.withered_armor_armor_points),
-            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "withered_armor"))), 4.0f, 0.2f));
-    public static final RegistryEntry<ArmorMaterial> ENHANCED_WITHERED_ARMOR = registerArmorMaterial("enhanced_withered_armor", () -> new ArmorMaterial(
+            15,
+            SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            4.0f,
+            0.2f,
+            ModTags.Items.REPAIRS_WITHERED_ARMOR,
+            Identifier.of(SoulsWeaponry.ModId, "withered_armor")
+    );
+
+    public static final ArmorMaterial ENHANCED_WITHERED_ARMOR = new ArmorMaterial(
+            70,
             createMapWithArray(ConfigConstructor.enhanced_withered_armor_armor_points),
-            15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_withered_armor"))), 4.0f, 0.2f));
+            15,
+            SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            4.0f,
+            0.2f,
+            ModTags.Items.REPAIRS_ENHANCED_WITHERED_ARMOR,
+            Identifier.of(SoulsWeaponry.ModId, "enhanced_withered_armor")
+    );
 
-    public static final RegistryEntry<ArmorMaterial> CHAOS_SET = registerArmorMaterial("chaos_set", () -> new ArmorMaterial(
+    public static final ArmorMaterial CHAOS_SET = new ArmorMaterial(
+            37,
             createMapWithArray(ConfigConstructor.chaos_set_armor_points),
-            10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "chaos_set"))), 0, 0));
-    public static final RegistryEntry<ArmorMaterial> SOUL_INGOT = registerArmorMaterial("soul_ingot", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.soul_ingot_armor_points),
-            10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "soul_ingot"))), 0, 0));
-    public static final RegistryEntry<ArmorMaterial> SOUL_ROBES = registerArmorMaterial("soul_robes", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.soul_robes_armor_points),
-            30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "soul_robes"))), 0, 0));
-    public static final RegistryEntry<ArmorMaterial> FORLORN_ARMOR = registerArmorMaterial("forlorn", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.forlorn_armor_armor_points),
-            8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
-            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "forlorn"))), 0, 0));
+            10,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
+            0.0f,
+            0.0f,
+            ModTags.Items.REPAIRS_CHAOS_SET,
+            Identifier.of(SoulsWeaponry.ModId, "chaos_set")
+    );
 
-    public static RegistryEntry<ArmorMaterial> registerArmorMaterial(String name, Supplier<ArmorMaterial> material) {
-        return Registry.registerReference(Registries.ARMOR_MATERIAL, Identifier.of(SoulsWeaponry.ModId, name), material.get());
-    }
+    public static final ArmorMaterial SOUL_INGOT = new ArmorMaterial(
+            34,
+            createMapWithArray(ConfigConstructor.soul_ingot_armor_points),
+            10,
+            SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+            0.0f,
+            0.0f,
+            ModTags.Items.REPAIRS_SOUL_INGOT,
+            Identifier.of(SoulsWeaponry.ModId, "soul_ingot")
+    );
+
+    public static final ArmorMaterial SOUL_ROBES = new ArmorMaterial(
+            16,
+            createMapWithArray(ConfigConstructor.soul_robes_armor_points),
+            30,
+            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
+            0.0f,
+            0.0f,
+            ModTags.Items.REPAIRS_SOUL_ROBES,
+            Identifier.of(SoulsWeaponry.ModId, "soul_robes")
+    );
+
+    public static final ArmorMaterial FORLORN_ARMOR = new ArmorMaterial(
+            30,
+            createMapWithArray(ConfigConstructor.forlorn_armor_armor_points),
+            8,
+            SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+            0.0f,
+            0.0f,
+            ModTags.Items.REPAIRS_FORLORN,
+            Identifier.of(SoulsWeaponry.ModId, "forlorn")
+    );
 
     /**
      * Used to apply armor values directly based on the array from the config
      */
-    private static EnumMap<ArmorItem.Type, Integer> createMapWithArray(float[] array) {
+    private static EnumMap<EquipmentType, Integer> createMapWithArray(float[] array) {
         if (array.length != 4) {
             throw new IllegalArgumentException("Armor points array needs to have 4 elements!");
         }
-        return Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-            map.put(ArmorItem.Type.BOOTS, (int) array[0]);
-            map.put(ArmorItem.Type.LEGGINGS, (int) array[1]);
-            map.put(ArmorItem.Type.CHESTPLATE, (int) array[2]);
-            map.put(ArmorItem.Type.HELMET, (int) array[3]);
-            map.put(ArmorItem.Type.BODY, (int) array[2]);
+        return Util.make(new EnumMap<>(EquipmentType.class), map -> {
+            map.put(EquipmentType.BOOTS, (int) array[0]);
+            map.put(EquipmentType.LEGGINGS, (int) array[1]);
+            map.put(EquipmentType.CHESTPLATE, (int) array[2]);
+            map.put(EquipmentType.HELMET, (int) array[3]);
+            map.put(EquipmentType.BODY, (int) array[2]);
             // Note: Type.BODY is for non-humanoid mobs, like horses & wolves, change this
             // hardcoded line in the future if needed.
         });

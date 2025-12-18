@@ -17,8 +17,8 @@ import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.effect.*;
 
@@ -47,7 +47,7 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> SHADOW_STEP = registerEffect(
             new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78)
                     .addAttributeModifier(
-                            EntityAttributes.GENERIC_MOVEMENT_SPEED,
+                            EntityAttributes.MOVEMENT_SPEED,
                             Identifier.of(SoulsWeaponry.ModId, "effect.shadow_step"), 0.30000000298023224,
                             EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                     ), "shadow_step"
@@ -62,7 +62,7 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> SOUL_OF_CINDER = registerEffect(
             new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xcc3300)
                     .addAttributeModifier(
-                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            EntityAttributes.ATTACK_DAMAGE,
                             Identifier.of(SoulsWeaponry.ModId, "effect.soul_of_cinder"), 2.0,
                             EntityAttributeModifier.Operation.ADD_VALUE
                     ), "soul_of_cinder"
@@ -70,11 +70,11 @@ public class EffectRegistry {
     public static final RegistryEntry<StatusEffect> EXALTED = registerEffect(
             new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xff0000)
                     .addAttributeModifier(
-                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            EntityAttributes.ATTACK_DAMAGE,
                             Identifier.of(SoulsWeaponry.ModId, "effect.exalted.strength"), 1.5f,
                             EntityAttributeModifier.Operation.ADD_VALUE
                     ).addAttributeModifier(
-                            EntityAttributes.GENERIC_ATTACK_SPEED,
+                            EntityAttributes.ATTACK_SPEED,
                             Identifier.of(SoulsWeaponry.ModId, "effect.exalted.haste"), 0.1F,
                             EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                     )
@@ -82,18 +82,27 @@ public class EffectRegistry {
     );
     public static final RegistryEntry<StatusEffect> ECHO = registerEffect(new Echo(), "echo");
 
-    public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
-    public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
-    public static final RegistryEntry<Potion> LONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000)), "long_warding");
-    public static final RegistryEntry<Potion> TAINTED_AMBROSIA = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0)), "tainted_ambrosia");
+    public static final RegistryEntry<Potion> WARDING = registerPotion("warding",
+            new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000))
+    );
+    public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion("strong_warding",
+            new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1))
+    );
+    public static final RegistryEntry<Potion> LONG_WARDING = registerPotion("long_warding",
+            new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 8000))
+    );
+    public static final RegistryEntry<Potion> TAINTED_AMBROSIA = registerPotion("tainted_ambrosia",
+            new Potion("tainted_ambrosia", new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, 600, 0))
+    );
     public static final RegistryEntry<Potion> CHUNGUS_TONIC_POTION = registerPotion(
+            "chungus_tonic",
             new Potion(
-                        new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 1000, 0),
-                        new StatusEffectInstance(StatusEffects.HASTE, 1000, 2),
-                        new StatusEffectInstance(StatusEffects.SATURATION, 400, 1)
-                ),
-            "chungus_tonic"
-        );
+                    "chungus_tonic",
+                    new StatusEffectInstance(EffectRegistry.CHUNGUS_TONIC_EFFECT, 1000, 0),
+                    new StatusEffectInstance(StatusEffects.HASTE, 1000, 2),
+                    new StatusEffectInstance(StatusEffects.SATURATION, 400, 1)
+            )
+    );
 
     public static void init() {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
@@ -107,30 +116,30 @@ public class EffectRegistry {
         UseItemCallback.EVENT.register((player, world, hand) -> {
             ItemStack stack = player.getStackInHand(hand);
             if (!stack.isOf(Items.POTION) && !stack.isOf(Items.SPLASH_POTION) && !stack.isOf(Items.LINGERING_POTION) && !stack.isOf(Items.TIPPED_ARROW)) {
-                return TypedActionResult.pass(stack);
+                return ActionResult.PASS;
             }
             PotionContentsComponent contents = stack.get(DataComponentTypes.POTION_CONTENTS);
             if (contents == null || !contents.matches(EffectRegistry.CHUNGUS_TONIC_POTION)) {
-                return TypedActionResult.pass(stack);
+                return ActionResult.PASS;
             }
             if (!world.isClient) {
                 ItemStack updated = stack.copy();
                 updated.set(
                         DataComponentTypes.POTION_CONTENTS,
-                        new PotionContentsComponent(contents.potion(), Optional.of(randomVibrantRGBA()), contents.customEffects())
+                        new PotionContentsComponent(contents.potion(), Optional.of(randomVibrantRGBA()), contents.customEffects(), contents.customName())
                 );
                 player.setStackInHand(hand, updated);
             }
 
-            return TypedActionResult.pass(stack);
+            return ActionResult.PASS;
         });
     }
 
     public static RegistryEntry<StatusEffect> registerEffect(StatusEffect effect, String name) {
-		return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(SoulsWeaponry.ModId, name), effect);
-	}
+        return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(SoulsWeaponry.ModId, name), effect);
+    }
 
-    private static RegistryEntry<Potion> registerPotion(Potion potion, String name) {
+    private static RegistryEntry<Potion> registerPotion(String name, Potion potion) {
         return Registry.registerReference(Registries.POTION, Identifier.of(SoulsWeaponry.ModId, name), potion);
     }
 

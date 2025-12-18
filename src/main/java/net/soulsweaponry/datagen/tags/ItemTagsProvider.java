@@ -188,5 +188,34 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ArmorRegistry.FORLORN_BOOTS)
                 .add(ArmorRegistry.SOUL_INGOT_BOOTS)
                 .add(ArmorRegistry.SOUL_ROBES_BOOTS);
+
+        // Repairs
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_CHAOS_ARMOR)
+                .add(ItemRegistry.MOONSTONE)
+                .add(Items.NETHERITE_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_ENHANCED_CHAOS_ARMOR)
+                .add(ItemRegistry.MOONSTONE)
+                .add(Items.NETHERITE_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_WITHERED_ARMOR)
+                .add(ItemRegistry.CRIMSON_INGOT)
+                .add(Items.NETHERITE_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_ENHANCED_WITHERED_ARMOR)
+                .add(ItemRegistry.CRIMSON_INGOT)
+                .add(Items.NETHERITE_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_CHAOS_SET)
+                .add(ItemRegistry.MOONSTONE);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_SOUL_INGOT)
+                .add(ItemRegistry.SOUL_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_SOUL_ROBES)
+                .add(ItemRegistry.SOUL_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_FORLORN)
+                .add(ItemRegistry.SOUL_INGOT);
     }
 }

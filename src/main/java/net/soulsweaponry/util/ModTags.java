@@ -64,6 +64,15 @@ public class ModTags {
         public static final TagKey<Item> MELEE_ITEM_UPGRADABLES = createTag("melee_item_upgradables");
         public static final TagKey<Item> RANGED_ITEM_UPGRADABLES = createTag("ranged_item_upgradables");
 
+        public static final TagKey<Item> REPAIRS_CHAOS_ARMOR = createTag("repairs/chaos_armor");
+        public static final TagKey<Item> REPAIRS_ENHANCED_CHAOS_ARMOR = createTag("repairs/enhanced_chaos_armor");
+        public static final TagKey<Item> REPAIRS_WITHERED_ARMOR = createTag("repairs/withered_armor");
+        public static final TagKey<Item> REPAIRS_ENHANCED_WITHERED_ARMOR = createTag("repairs/enhanced_withered_armor");
+        public static final TagKey<Item> REPAIRS_CHAOS_SET = createTag("repairs/chaos_set");
+        public static final TagKey<Item> REPAIRS_SOUL_INGOT = createTag("repairs/soul_ingot");
+        public static final TagKey<Item> REPAIRS_SOUL_ROBES = createTag("repairs/soul_robes");
+        public static final TagKey<Item> REPAIRS_FORLORN = createTag("repairs/forlorn");
+
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");
         public static final TagKey<Item> LOST_SOUL = createCommonTag("lost_soul");
