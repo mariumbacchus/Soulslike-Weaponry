@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 
 public class Decay extends StatusEffect {
 
@@ -21,7 +22,7 @@ public class Decay extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity player) {
             for (EquipmentSlot slot : slots) {
                 ItemStack stack = entity.getEquippedStack(slot);

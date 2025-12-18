@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 
@@ -22,7 +23,7 @@ public class Bleed extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         BleedData.addBleed(entity, (int) (ConfigConstructor.bleed_effect_base_increase + (amplifier + 1) * ConfigConstructor.bleed_effect_increase_per_amp));
         return true;
     }

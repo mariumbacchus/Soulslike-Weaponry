@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
@@ -24,7 +25,7 @@ public class Freezing extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         int ticks = entity.getFrozenTicks();
         if (entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entity.hasStatusEffect(EffectRegistry.FROST_MOON)) {
             return false;

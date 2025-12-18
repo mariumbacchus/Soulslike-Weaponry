@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -32,7 +33,7 @@ public class ChungusTonic extends StatusEffect {
         List<EntityType<?>> whitelist = WeaponUtil.getEntityListOffArray(ChungusTonicWhitelist.chungus_tonic_whitelist);
         if (!(entity instanceof PlayerEntity) && DespawnTimerData.getDespawnTicks(entity) == 0 && !entity.getWorld().isClient) {
             EntityType<?> type = whitelist.get(entity.getRandom().nextInt(whitelist.size()));
-            Entity randomEntity = type.create(entity.getWorld());
+            Entity randomEntity = type.create(entity.getWorld(), SpawnReason.CONVERSION);
             if (randomEntity != null) {
                 randomEntity.setPosition(entity.getPos());
                 DespawnTimerData.setDespawnTicks((IEntityDataSaver) randomEntity, 1);

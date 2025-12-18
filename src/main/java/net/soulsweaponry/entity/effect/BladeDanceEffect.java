@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.BladeDance;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -37,8 +38,8 @@ public class BladeDanceEffect extends StatusEffect {
     }
 
     @Override
-    public void onEntityRemoval(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
-        super.onEntityRemoval(entity, amplifier, reason);
+    public void onEntityRemoval(ServerWorld world, LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
+        super.onEntityRemoval(world, entity, amplifier, reason);
         ItemStack mainHandStack = entity.getMainHandStack();
         if (mainHandStack.getItem() instanceof IHasAbilities hasAbilities) {
             Optional<BladeDance> op = hasAbilities.findAbility(BladeDance.class);

@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
@@ -18,12 +19,12 @@ public class Echo extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         float damage = EchoDamageData.getEchoDamage(entity) * ((amplifier * 0.5f) + 1);
         if (damage <= 0) {
             return false;
         }
-        entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN), damage);
+        entity.damage(world, DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN), damage);
         EchoDamageData.setEchoDamage(entity, 0);
 
         entity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.BLOCK_SCULK_SHRIEKER_BREAK, SoundCategory.HOSTILE, 5f, 2f);

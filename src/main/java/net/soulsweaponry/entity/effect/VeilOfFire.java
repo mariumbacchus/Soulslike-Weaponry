@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 
 public class VeilOfFire extends StatusEffect {
 
@@ -26,12 +27,12 @@ public class VeilOfFire extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         for (Entity target : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(1.5D))) {
-            target.damage(entity.getDamageSources().inFire(), 2f + amplifier);
+            target.damage(world, entity.getDamageSources().inFire(), 2f + amplifier);
             target.setOnFireFor(2 + amplifier);
         }
-        if (entity.getWorld().isClient) {
+        if (entity.getWorld().isClient) { //TODO serverworld is passed, this may not work
             for (int i = 0; i < 5; i++) {
                 entity.getWorld().addParticle(ParticleTypes.FLAME, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
             }

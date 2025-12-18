@@ -5,6 +5,7 @@ import net.minecraft.entity.Tameable;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 
 public class HallowedDragonMist extends StatusEffect {
@@ -24,13 +25,13 @@ public class HallowedDragonMist extends StatusEffect {
     }
 
     @Override
-    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity || (entity instanceof Tameable tamed && tamed.getOwner() instanceof PlayerEntity)) {
             if (entity.getHealth() < entity.getMaxHealth()) {
                 entity.heal(amplifier + 1);
             }
         } else {
-            entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.DRAGON_MIST), 2.0F + (float) amplifier);
+            entity.damage(world, DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.DRAGON_MIST), 2.0F + (float) amplifier);
         }
         return true;
     }
