@@ -12,6 +12,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
+import net.soulsweaponry.registry.FoodRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
 
@@ -216,7 +217,7 @@ public class ItemRecipes {
         ShapelessRecipeJsonBuilder.create(itemLookup, RecipeCategory.MISC, ItemRegistry.DEMON_CHUNK)
                 .input(ItemRegistry.MOLTEN_DEMON_HEART, 4)
                 .criterion("has_item", conditionsFromItemPredicates(
-                        ItemPredicate.Builder.create().items(itemLookup, ItemRegistry.DEMON_HEART).build()
+                        ItemPredicate.Builder.create().items(itemLookup, FoodRegistry.DEMON_HEART).build()
                 ))
                 .offerTo(recipeExporter);
 
@@ -289,7 +290,7 @@ public class ItemRecipes {
                 ItemRegistry.CRIMSON_INGOT,
                 0.1f,
                 200,
-                ItemRegistry.DEMON_HEART,
+                FoodRegistry.DEMON_HEART,
                 recipeExporter,
                 itemLookup
         );
