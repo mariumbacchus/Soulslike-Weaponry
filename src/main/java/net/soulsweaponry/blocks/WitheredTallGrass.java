@@ -9,6 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
+import org.jetbrains.annotations.Nullable;
 
 public class WitheredTallGrass extends TallPlantBlock implements Withered {
 
@@ -37,15 +39,15 @@ public class WitheredTallGrass extends TallPlantBlock implements Withered {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (this.canTurn(world, pos, 2)) {
-            this.turnBack(world, pos);
+            this.turnBack(world, pos, wireOrientation);
         }
         DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 
     @Override
-    public void turnBack(World world, BlockPos pos) {
+    public void turnBack(World world, BlockPos pos, @Nullable WireOrientation wireOrientation) {
         TallPlantBlock.placeAt(world, this.getBlockToReturnAs().getDefaultState(), pos, 2);
     }
 

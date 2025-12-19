@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -24,7 +24,7 @@ import net.soulsweaponry.util.ModTags;
 
 public class AltarBlock extends SpawnBossBlock {
 
-    public static final DirectionProperty FACING = FacingBlock.FACING;
+    public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
 
     public AltarBlock(Settings settings) {
         super(settings);

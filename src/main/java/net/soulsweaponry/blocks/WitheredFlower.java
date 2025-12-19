@@ -19,6 +19,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -77,9 +79,9 @@ public class WitheredFlower extends WitherRoseBlock implements Withered {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (this.canTurn(world, pos, 0)) {
-            this.turnBack(world, pos);
+            this.turnBack(world, pos, wireOrientation);
         }
         DebugInfoSender.sendNeighborUpdate(world, pos);
     }

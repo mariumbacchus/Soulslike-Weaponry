@@ -65,9 +65,9 @@ public class CrimsonObsidian extends BlockWithEntity {
 
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (!world.isClient) {
+        if (world instanceof ServerWorld serverWorld) {
             CrimsonObsidianBlockEntity blockEntity = (CrimsonObsidianBlockEntity) world.getBlockEntity(pos);
-            if (blockEntity != null && !entity.getType().isIn(ModTags.Entities.SKELETONS) && entity.damage(world.getDamageSources().hotFloor(), 1.0F)) {
+            if (blockEntity != null && !entity.getType().isIn(ModTags.Entities.SKELETONS) && entity.damage(serverWorld, world.getDamageSources().hotFloor(), 1.0F)) {
                 blockEntity.increaseBloodCount();
             }
         }
@@ -126,7 +126,7 @@ public class CrimsonObsidian extends BlockWithEntity {
     public static boolean canDripThrough(BlockView world, BlockPos pos, BlockState state) {
         if (state.isAir()) {
             return true;
-        } else if (state.isOpaqueFullCube(world, pos)) {
+        } else if (state.isOpaqueFullCube()) {
             return false;
         } else if (!state.getFluidState().isEmpty()) {
             return false;

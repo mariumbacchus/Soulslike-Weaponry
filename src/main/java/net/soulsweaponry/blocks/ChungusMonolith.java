@@ -5,14 +5,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.Direction;
 
 public class ChungusMonolith extends Block {
 
-    public static final DirectionProperty FACING = FacingBlock.FACING;
+    public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
 
     public ChungusMonolith(Settings settings) {
         super(settings);

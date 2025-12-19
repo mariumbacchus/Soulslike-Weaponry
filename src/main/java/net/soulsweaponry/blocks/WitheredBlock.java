@@ -17,7 +17,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import net.soulsweaponry.registry.EffectRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public class WitheredBlock extends Block {
 
@@ -52,7 +54,7 @@ public class WitheredBlock extends Block {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if ((random.nextInt(3) == 0 || this.canTurn(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
+        if ((random.nextInt(3) == 0 || this.canTurn(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity() && this.increaseAge(state, world, pos)) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             for (Direction direction : Direction.values()) {
                 mutable.set(pos, direction);
@@ -71,7 +73,7 @@ public class WitheredBlock extends Block {
             world.setBlockState(pos, state.with(AGE, i + 1), Block.NOTIFY_LISTENERS);
             return false;
         }
-        this.turnBack(world, pos);
+        this.turnBack(world, pos, null);
         return true;
     }
 
@@ -80,11 +82,10 @@ public class WitheredBlock extends Block {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canTurn(world, pos, 2)) {
-            this.turnBack(world, pos);
+            this.turnBack(world, pos, wireOrientation);
         }
-        //super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
         DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 
@@ -104,8 +105,8 @@ public class WitheredBlock extends Block {
         builder.add(AGE);
     }
 
-    protected void turnBack(World world, BlockPos pos) {
+    protected void turnBack(World world, BlockPos pos, @Nullable WireOrientation wireOrientation) {
         world.setBlockState(pos, this.replacedBlock.getDefaultState());
-        world.updateNeighbor(pos, this.replacedBlock, pos);
+        world.updateNeighbor(pos, this.replacedBlock, wireOrientation);
     }
 }

@@ -33,12 +33,12 @@ public class SoulLampBlock extends Block {
         }
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
+    @Override
+    protected ActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (state.get(LIT)) {
             world.setBlockState(pos, state.with(LIT, false), Block.NOTIFY_LISTENERS);
-            if (!player.getAbilities().creativeMode) {
-                player.dropItem(ItemRegistry.LOST_SOUL);
+            if (!player.getAbilities().creativeMode && world instanceof ServerWorld serverWorld) {
+                player.dropItem(serverWorld, ItemRegistry.LOST_SOUL);
             }
             return ActionResult.SUCCESS;
         } else if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
