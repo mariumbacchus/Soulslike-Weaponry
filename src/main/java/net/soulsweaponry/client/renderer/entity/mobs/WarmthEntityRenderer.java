@@ -17,6 +17,6 @@ public class WarmthEntityRenderer extends GeoEntityRenderer<WarmthEntity> {
 
     @Override
     public RenderLayer getRenderType(WarmthEntity animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

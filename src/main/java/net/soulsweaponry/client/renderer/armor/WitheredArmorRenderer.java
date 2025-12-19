@@ -17,6 +17,6 @@ public class WitheredArmorRenderer<T extends Item & GeoItem> extends GeoArmorRen
 
     @Override
     public RenderLayer getRenderType(T animatable, Identifier texture, @Nullable VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

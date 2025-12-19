@@ -23,6 +23,6 @@ public class NightShadeRenderer extends GeoEntityRendererDeathLight<NightShade> 
 
     @Override
     public RenderLayer getRenderType(NightShade animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

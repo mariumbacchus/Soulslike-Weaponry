@@ -23,6 +23,6 @@ public class MoonlightProjectileRenderer extends GeoProjectileRenderer<Moonlight
 
     @Override
     public RenderLayer getRenderType(MoonlightProjectile animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

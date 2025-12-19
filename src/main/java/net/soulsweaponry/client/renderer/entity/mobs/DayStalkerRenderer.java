@@ -22,6 +22,6 @@ public class DayStalkerRenderer extends GeoEntityRendererDeathLight<DayStalker> 
 
     @Override
     public RenderLayer getRenderType(DayStalker animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

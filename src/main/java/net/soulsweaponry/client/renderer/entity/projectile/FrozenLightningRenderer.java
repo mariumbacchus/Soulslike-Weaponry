@@ -1,26 +1,48 @@
 package net.soulsweaponry.client.renderer.entity.projectile;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import net.soulsweaponry.entity.projectile.noclip.FrozenLightning;
 import org.joml.Matrix4f;
 
-public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
+import java.util.List;
+
+@Environment(EnvType.CLIENT)
+public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning, FrozenLightningRenderer.FrozenLightningRenderState> {
 
     public FrozenLightningRenderer(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
 
     @Override
-    public void render(FrozenLightning entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        for (long seed : entity.seeds) {
+    public FrozenLightningRenderState createRenderState() {
+        return new FrozenLightningRenderState();
+    }
+
+    @Override
+    public void updateRenderState(FrozenLightning entity, FrozenLightningRenderState state, float tickDelta) {
+        super.updateRenderState(entity, state, tickDelta);
+        state.seeds = entity.seeds;
+    }
+
+    @Override
+    public void render(FrozenLightningRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        if (state.seeds == null) {
+            return;
+        }
+
+        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getLightning());
+        Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+
+        for (long seed : state.seeds) {
             float[] xCoords = new float[8];
             float[] zCoords = new float[8];
             float currentX = 0.0F;
@@ -30,13 +52,13 @@ public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
             for (int segmentIndex = 7; segmentIndex >= 0; segmentIndex--) {
                 xCoords[segmentIndex] = currentX;
                 zCoords[segmentIndex] = currentZ;
-                currentX += (float) (random.nextInt(11) - 5);
-                currentZ += (float) (random.nextInt(11) - 5);
+                currentX += (float)(random.nextInt(11) - 5);
+                currentZ += (float)(random.nextInt(11) - 5);
             }
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getLightning());
-            Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+
             for (int layer = 0; layer < 4; layer++) {
                 Random layerRandom = Random.create(seed);
+
                 float red;
                 float green;
                 float blue;
@@ -47,8 +69,9 @@ public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
                 } else {
                     red = 0.45F;
                     green = 0.92F;
-                    blue = 1f;
+                    blue = 1.0F;
                 }
+
                 for (int branchDepth = 0; branchDepth < 3; branchDepth++) {
                     int startSegment = 7;
                     int endSegment = 0;
@@ -56,26 +79,30 @@ public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
                         startSegment = 7 - branchDepth;
                         endSegment = startSegment - 2;
                     }
+
                     float prevXOffset = xCoords[startSegment] - currentX;
                     float prevZOffset = zCoords[startSegment] - currentZ;
 
                     for (int segment = startSegment; segment >= endSegment; segment--) {
                         float currentXOffset = prevXOffset;
                         float currentZOffset = prevZOffset;
+
                         if (branchDepth == 0) {
-                            prevXOffset += (float) (layerRandom.nextInt(11) - 5);
-                            prevZOffset += (float) (layerRandom.nextInt(11) - 5);
+                            prevXOffset += (float)(layerRandom.nextInt(11) - 5);
+                            prevZOffset += (float)(layerRandom.nextInt(11) - 5);
                         } else {
-                            prevXOffset += (float) (layerRandom.nextInt(31) - 15);
-                            prevZOffset += (float) (layerRandom.nextInt(31) - 15);
+                            prevXOffset += (float)(layerRandom.nextInt(31) - 15);
+                            prevZOffset += (float)(layerRandom.nextInt(31) - 15);
                         }
-                        float thicknessStart = 0.1F + (float) layer * 0.2F;
+
+                        float thicknessStart = 0.1F + (float)layer * 0.2F;
                         if (branchDepth == 0) {
-                            thicknessStart *= (float) segment * 0.1F + 1.0F;
+                            thicknessStart *= (float)segment * 0.1F + 1.0F;
                         }
-                        float thicknessEnd = 0.1F + (float) layer * 0.2F;
+
+                        float thicknessEnd = 0.1F + (float)layer * 0.2F;
                         if (branchDepth == 0) {
-                            thicknessEnd *= ((float) segment - 1.0F) * 0.1F + 1.0F;
+                            thicknessEnd *= ((float)segment - 1.0F) * 0.1F + 1.0F;
                         }
 
                         drawBranch(positionMatrix, vertexConsumer, prevXOffset, prevZOffset, segment, currentXOffset, currentZOffset,
@@ -94,6 +121,8 @@ public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
                 }
             }
         }
+
+        super.render(state, matrices, vertexConsumers, light);
     }
 
     private static void drawBranch(
@@ -115,15 +144,12 @@ public class FrozenLightningRenderer extends EntityRenderer<FrozenLightning> {
             boolean shiftSouth2
     ) {
         buffer.vertex(matrix, x1 + (shiftEast1 ? offset1 : -offset1), (float)(y * 16), z1 + (shiftSouth1 ? offset1 : -offset1)).color(red, green, blue, 0.3F);
-        buffer.vertex(matrix, x2 + (shiftEast1 ? offset2 : -offset2), (float)((y + 1) * 16), z2 + (shiftSouth1 ? offset2 : -offset2))
-                .color(red, green, blue, 0.3F);
-        buffer.vertex(matrix, x2 + (shiftEast2 ? offset2 : -offset2), (float)((y + 1) * 16), z2 + (shiftSouth2 ? offset2 : -offset2))
-                .color(red, green, blue, 0.3F);
+        buffer.vertex(matrix, x2 + (shiftEast1 ? offset2 : -offset2), (float)((y + 1) * 16), z2 + (shiftSouth1 ? offset2 : -offset2)).color(red, green, blue, 0.3F);
+        buffer.vertex(matrix, x2 + (shiftEast2 ? offset2 : -offset2), (float)((y + 1) * 16), z2 + (shiftSouth2 ? offset2 : -offset2)).color(red, green, blue, 0.3F);
         buffer.vertex(matrix, x1 + (shiftEast2 ? offset1 : -offset1), (float)(y * 16), z1 + (shiftSouth2 ? offset1 : -offset1)).color(red, green, blue, 0.3F);
     }
 
-    @Override
-    public Identifier getTexture(FrozenLightning entity) {
-        return PlayerScreenHandler.BLOCK_ATLAS_TEXTURE;
+    public static class FrozenLightningRenderState extends EntityRenderState {
+        public List<Long> seeds;
     }
 }

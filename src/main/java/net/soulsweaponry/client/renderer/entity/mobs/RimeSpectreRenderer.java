@@ -22,6 +22,6 @@ public class RimeSpectreRenderer extends GeoEntityRenderer<RimeSpectre> {
 
     @Override
     public RenderLayer getRenderType(RimeSpectre animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.projectile.ChaosOrbModel;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -39,7 +40,7 @@ public class ChaosOrbRenderer extends GeoEntityRenderer<ChaosOrbEntity> {
         }
 
         @Override
-        public void render(MatrixStack poseStack, ChaosOrbEntity animatable, BakedGeoModel bakedModel, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        public void render(MatrixStack poseStack, ChaosOrbEntity animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
             RenderLayer orbLayer;
             if (previousLayer != null) {
                 orbLayer = previousLayer;
@@ -51,7 +52,7 @@ public class ChaosOrbRenderer extends GeoEntityRenderer<ChaosOrbEntity> {
                 orbLayer = RenderLayer.getEntityTranslucent(LAYERS[random]);
             }
             this.previousLayer = orbLayer;
-            getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, orbLayer,
+            getRenderer().reRender(getDefaultBakedModel(animatable, this.renderer), poseStack, bufferSource, animatable, orbLayer,
                     bufferSource.getBuffer(orbLayer), partialTick, packedLight, OverlayTexture.DEFAULT_UV,
                     0xFFFFFFFF);
         }

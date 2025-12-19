@@ -6,7 +6,9 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.hammer.Tonitrus;
 import net.soulsweaponry.registry.EffectRegistry;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class TonitrusModel extends GeoModel<Tonitrus> {
 
@@ -14,21 +16,21 @@ public class TonitrusModel extends GeoModel<Tonitrus> {
     private static final Identifier GLOW  = Identifier.of(SoulsWeaponry.ModId, "textures/item/tonitrus_ani.png");
 
     @Override
-    public Identifier getAnimationResource(Tonitrus animatable) {
-        return Identifier.of(SoulsWeaponry.ModId, "animations/tonitrus.animation.json");
-    }
-
-    @Override
-    public Identifier getModelResource(Tonitrus object) {
+    public Identifier getModelResource(Tonitrus tonitrus, @Nullable GeoRenderer<Tonitrus> geoRenderer) {
         return Identifier.of(SoulsWeaponry.ModId, "geo/tonitrus.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(Tonitrus object) {
+    public Identifier getTextureResource(Tonitrus tonitrus, @Nullable GeoRenderer<Tonitrus> geoRenderer) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && player.hasStatusEffect(EffectRegistry.STORMVEIL)) {
             return GLOW;
         }
         return BASE;
+    }
+
+    @Override
+    public Identifier getAnimationResource(Tonitrus animatable) {
+        return Identifier.of(SoulsWeaponry.ModId, "animations/tonitrus.animation.json");
     }
 }

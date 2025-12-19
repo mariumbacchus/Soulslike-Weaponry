@@ -19,7 +19,7 @@ public class MoonveilWaveRenderer extends GeoProjectileRenderer<MoonveilWave> {
 
     @Override
     public RenderLayer getRenderType(MoonveilWave animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
-        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
+        return RenderLayer.getEntityTranslucent(texture);
     }
 
     @Override
