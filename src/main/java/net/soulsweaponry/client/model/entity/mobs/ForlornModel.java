@@ -3,27 +3,26 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
-import net.minecraft.item.Items;
-import net.soulsweaponry.entity.mobs.Forlorn;
+import net.soulsweaponry.client.renderer.entity.mobs.ForlornRenderer;
 
-public class ForlornModel <T extends Forlorn> extends BipedEntityModel<T>{
+public class ForlornModel extends BipedEntityModel<ForlornRenderer.ForlornRenderState> {
 
     public ForlornModel(ModelPart root) {
         super(root);
     }
 
-    public void setAngles(T entity, float f, float g, float h, float i, float j) {
-        super.setAngles((T)entity, f, g, h, i, j);
-        if (entity.getMainHandStack().getItem() == Items.CROSSBOW) {
-            CrossbowPosing.hold(this.rightArm, this.leftArm, head, true);
+    @Override
+    public void setAngles(ForlornRenderer.ForlornRenderState state) {
+        super.setAngles(state);
+
+        if (state.holdingCrossbow) {
+            CrossbowPosing.hold(this.rightArm, this.leftArm, this.head, true);
         }
-        ModelPart var10000;
-        if (entity.isSneaking()) {
+
+        if (state.isInSneakingPose) {
             this.body.pitch = 0.5F;
-            var10000 = this.rightArm;
-            var10000.pitch += 0.4F;
-            var10000 = this.leftArm;
-            var10000.pitch += 0.4F;
+            this.rightArm.pitch += 0.4F;
+            this.leftArm.pitch += 0.4F;
             this.rightLeg.pivotZ = 4.0F;
             this.leftLeg.pivotZ = 4.0F;
             this.rightLeg.pivotY = 12.2F;

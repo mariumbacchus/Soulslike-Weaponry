@@ -72,7 +72,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (tintIndex > 0) {
-                return ColorHelper.Argb.fullAlpha(SwitchPostHit.getModelColor(stack));
+                return ColorHelper.fullAlpha(SwitchPostHit.getModelColor(stack));
             }
             return -1;
         }, WeaponRegistry.NIGHTLORDS_SWORD);

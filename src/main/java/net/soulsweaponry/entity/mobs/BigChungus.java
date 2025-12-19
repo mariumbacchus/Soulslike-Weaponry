@@ -301,8 +301,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
         this.writeInventory(nbt, this.getRegistryManager());
     }
 
-    protected ItemStack addItem(ItemStack stack) {
-        return this.inventory.addStack(stack);
+    protected void addItem(ItemStack stack) {
+        this.inventory.addStack(stack);
     }
 
     @Override
