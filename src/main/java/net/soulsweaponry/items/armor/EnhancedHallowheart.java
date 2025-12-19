@@ -1,13 +1,15 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentModel;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
@@ -18,6 +20,7 @@ import net.soulsweaponry.items.abilities.inventorytick.BasicInventoryTickAbility
 import net.soulsweaponry.items.abilities.inventorytick.Exalt;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.items.abilities.userdamaged.Infectious;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -71,8 +74,13 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
             (int) ConfigConstructor.enhanced_withered_chest_exalt_duration
     );
 
-    public EnhancedHallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
-        super(material, type, settings);
+    public EnhancedHallowheart(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.enhanced_withered_armor_posture_buildup_resistances,
+                ConfigConstructor.enhanced_withered_armor_base_posture_increase,
+                ConfigConstructor.enhanced_withered_armor_bleed_buildup_resistances,
+                ConfigConstructor.enhanced_withered_armor_bleed_damage_resistances
+        ));
         this.addAbility(Equipped.CHEST_SLOT, WITHER_IMMUNITY, LIFE_LEACH, INFECTIOUS, FIRE_RESISTANCE, EXALT);
     }
 
@@ -96,7 +104,7 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
+            public <E extends LivingEntity, S extends BipedEntityRenderState> @NotNull BipedEntityModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, BipedEntityModel<S> original) {
                 if (this.renderer == null) {
                     this.renderer = new WitheredArmorRenderer<Hallowheart>();
                 }
@@ -125,25 +133,5 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.enhanced_withered_armor_base_posture_increase;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.enhanced_withered_armor_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.enhanced_withered_armor_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.enhanced_withered_armor_bleed_damage_resistances;
     }
 }

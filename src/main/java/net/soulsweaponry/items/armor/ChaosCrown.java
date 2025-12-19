@@ -1,22 +1,26 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentModel;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.armorattributes.Luck;
 import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
 import net.soulsweaponry.items.abilities.inventorytick.FlipEffects;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.registry.EffectRegistry;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -48,8 +52,18 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
             }
     );
 
-    public ChaosCrown(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
-        super(material, type, settings);
+    public ChaosCrown(ArmorMaterial material, EquipmentType type, Settings settings, List<IAbility> attributeAbilities) {
+        super(material, type, settings, attributeAbilities);
+        this.addAbility(Equipped.HEAD_SLOT, LUCK, DECAY_IMMUNITY, FLIP_EFFECTS);
+    }
+
+    public ChaosCrown(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.chaos_set_posture_buildup_resistances,
+                ConfigConstructor.chaos_set_base_posture_increase,
+                ConfigConstructor.chaos_set_bleed_buildup_resistances,
+                ConfigConstructor.chaos_set_bleed_damage_resistances
+        ));
         this.addAbility(Equipped.HEAD_SLOT, LUCK, DECAY_IMMUNITY, FLIP_EFFECTS);
     }
 
@@ -74,7 +88,7 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
+            public <E extends LivingEntity, S extends BipedEntityRenderState> @NotNull BipedEntityModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, BipedEntityModel<S> original) {
                 if (this.renderer == null) {
                     this.renderer = new ChaosSetRenderer<ChaosCrown>();
                 }
@@ -89,25 +103,5 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_set_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_set_bleed_damage_resistances;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_set_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_set_base_posture_increase;
     }
 }

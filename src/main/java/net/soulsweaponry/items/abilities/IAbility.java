@@ -11,6 +11,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -102,7 +103,7 @@ public interface IAbility extends ICooldownItem {
      * @param stack stack in the hand used
      * @return the typed action result
      */
-    default TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+    default ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) { return ActionResult.PASS; }
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code false} and the user is sneaking.
@@ -113,7 +114,7 @@ public interface IAbility extends ICooldownItem {
      * @param stack stack in the hand used
      * @return the typed action result
      */
-    default TypedActionResult<ItemStack> sneakingUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+    default ActionResult sneakingUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return ActionResult.PASS; }
 
     /**
      * Called when {@link #isChargeToUse()} returns {@code false} and the item is in offhand.
@@ -127,7 +128,7 @@ public interface IAbility extends ICooldownItem {
      * @return the typed action result
      */
     @Deprecated
-    default TypedActionResult<ItemStack> offhandUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return TypedActionResult.pass(user.getStackInHand(hand)); }
+    default ActionResult offhandUse(World world, PlayerEntity user, Hand hand, ItemStack stack) { return ActionResult.PASS; }
 
     /**
      * NOTE: This must return true if the ability needs to be charged (hold down right click) for a certain time to be
@@ -365,7 +366,7 @@ public interface IAbility extends ICooldownItem {
     default void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {}
 
     /**
-     * Called at the end of the {@link LivingEntity#damage(DamageSource, float)} method.
+     * Called at the end of the {@link LivingEntity#damage(ServerWorld, DamageSource, float)} method.
      * Use to modify the users damage taken, either increase, decrease or nullify.
      * @return the modified {@param damageTaken} value
      */
@@ -374,7 +375,7 @@ public interface IAbility extends ICooldownItem {
     }
 
     /**
-     * Called at the end of the {@link LivingEntity#damage(DamageSource, float)} method.
+     * Called at the end of the {@link LivingEntity#damage(ServerWorld, DamageSource, float)} method.
      * Use to modify the targets damage taken, either increase, decrease or nullify.
      * @return the modified {@param damageTaken} value
      */

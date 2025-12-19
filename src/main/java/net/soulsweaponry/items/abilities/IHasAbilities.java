@@ -13,6 +13,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -99,10 +100,10 @@ public interface IHasAbilities extends IConfigDisable {
         return this.getAbilities().stream().anyMatch(a -> a.preventUsePredicate(stack, player));
     }
 
-    default TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    default ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
-            return TypedActionResult.fail(user.getStackInHand(hand));
+            return ActionResult.FAIL;
         }
 
         ItemStack itemStack = user.getStackInHand(hand);
@@ -139,65 +140,62 @@ public interface IHasAbilities extends IConfigDisable {
         // Charging ability
         if (hasChargeInThisMode) {
             if (ConfigConstructor.prioritize_off_hand_shield_over_weapon && user.getOffHandStack().getItem() instanceof ShieldItem) {
-                return TypedActionResult.fail(itemStack);
+                return ActionResult.FAIL;
             } else if (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) {
-                return TypedActionResult.fail(itemStack);
+                return ActionResult.FAIL;
             } else if (this.preventUse(itemStack, user)) {
-                return TypedActionResult.fail(itemStack);
+                return ActionResult.FAIL;
             } else {
                 user.setCurrentHand(hand);
-                return TypedActionResult.consume(itemStack);
+                return ActionResult.CONSUME;
             }
         }
-
-        // Not charging, just regular use
-        ItemStack out = itemStack;
 
         boolean sawSuccess = false;
         boolean sawConsume = false;
-        boolean sawConsumePartial = false;
-        boolean sawSuccessNoItemUsed = false;
         boolean sawFail = false;
 
+        ItemStack out = itemStack;
+
         for (var a : abilities) {
-            TypedActionResult<ItemStack> r;
+            ActionResult result;
             if (hasSneakAbility && sneaking) {
-                r = a.sneakingUse(world, user, hand, out);
+                result = a.sneakingUse(world, user, hand, out);
             } else if (hasOffhandAbility && offhand) {
-                r = a.offhandUse(world, user, hand, out);
+                result = a.offhandUse(world, user, hand, out);
             } else {
-                r = a.use(world, user, hand, out);
+                result = a.use(world, user, hand, out);
             }
-            out = r.getValue();
-            switch (r.getResult()) {
-                case SUCCESS -> sawSuccess = true;
-                case CONSUME -> sawConsume = true;
-                case CONSUME_PARTIAL -> sawConsumePartial = true;
-                case SUCCESS_NO_ITEM_USED -> sawSuccessNoItemUsed = true;
-                case FAIL -> sawFail = true;
-                case PASS -> {}
+
+            // Carry forward any updated hand stack
+            if (result instanceof ActionResult.Success success) {
+                ItemStack newStack = success.getNewHandStack();
+                if (newStack != null) {
+                    out = newStack;
+                }
+
+                // Distinguish CONSUME vs SUCCESS using SwingSource
+                if (success.swingSource() == ActionResult.SwingSource.NONE) {
+                    sawConsume = true; // matches old CONSUME
+                } else {
+                    sawSuccess = true; // SUCCESS or SUCCESS_SERVER
+                }
+            } else if (result instanceof ActionResult.Fail) {
+                sawFail = true;
             }
         }
 
-        if (sawSuccess) {
-            return TypedActionResult.success(out, world.isClient());
+        if (out != itemStack) {
+            user.setStackInHand(hand, out);
         }
-        if (sawConsume) {
-            return TypedActionResult.consume(out);
-        }
-        if (sawSuccessNoItemUsed) {
-            return new TypedActionResult<>(ActionResult.SUCCESS_NO_ITEM_USED, out);
-        }
-        if (sawConsumePartial) {
-            return new TypedActionResult<>(ActionResult.CONSUME_PARTIAL, out);
-        }
-        if (sawFail) {
-            return TypedActionResult.fail(out);
-        }
-        return TypedActionResult.pass(out);
+        if (sawSuccess) return world.isClient() ? ActionResult.SUCCESS : ActionResult.SUCCESS_SERVER;
+        if (sawConsume) return ActionResult.CONSUME;
+        if (sawFail) return ActionResult.FAIL;
+        return ActionResult.PASS;
     }
 
-    default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    default boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        boolean called = false;
         boolean sneaking = user.isSneaking();
         boolean offhand = user.getOffHandStack().isOf(stack.getItem());
         int fixedTicks = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
@@ -213,6 +211,7 @@ public interface IHasAbilities extends IConfigDisable {
                 // Sneak mode, only sneaking charge abilities fire, everything else is suppressed.
                 if (a.isSneakAbility() && a.isChargeToUse()) {
                     a.sneakingOnStoppedUsing(stack, world, user, fixedTicks);
+                    called = true;
                 }
                 continue;
             }
@@ -221,6 +220,7 @@ public interface IHasAbilities extends IConfigDisable {
                 // Offhand mode, only offhand charge abilities fire.
                 if (a.isOffhandAbility() && a.isChargeToUse()) {
                     a.offhandOnStoppedUsing(stack, world, user, fixedTicks);
+                    called = true;
                 }
                 continue;
             }
@@ -228,8 +228,10 @@ public interface IHasAbilities extends IConfigDisable {
             // Normal mode, only non-sneak, non-offhand abilities handle onStoppedUsing.
             if (!a.isSneakAbility() && !a.isOffhandAbility()) {
                 a.onStoppedUsing(stack, world, user, fixedTicks);
+                called = true;
             }
         }
+        return called;
     }
 
 
@@ -438,34 +440,40 @@ public interface IHasAbilities extends IConfigDisable {
         if (this.isDisabled(stack) || this.preventUse(stack, user)) {
             return ActionResult.FAIL;
         }
-        boolean sawSuccess = false;
-        boolean sawConsume = false;
-        boolean sawConsumePartial = false;
-        boolean sawSuccessNoItemUsed = false;
+        boolean sawSuccess = false; // swing (client/server)
+        boolean sawConsume = false; // accepted, no swing
         boolean sawFail = false;
 
+        ItemStack out = stack;
+
         for (var a : this.getAbilities()) {
-            ActionResult result = a.useOnEntity(stack, user, entity, hand);
-            switch (result) {
-                case SUCCESS -> sawSuccess = true;
-                case CONSUME -> sawConsume = true;
-                case CONSUME_PARTIAL -> sawConsumePartial = true;
-                case SUCCESS_NO_ITEM_USED -> sawSuccessNoItemUsed = true;
-                case FAIL -> sawFail = true;
-                case PASS -> {}
+            ActionResult result = a.useOnEntity(out, user, entity, hand);
+
+            if (result instanceof ActionResult.Success success) {
+                ItemStack newStack = success.getNewHandStack();
+                if (newStack != null) {
+                    out = newStack;
+                }
+
+                if (success.swingSource() == ActionResult.SwingSource.NONE) {
+                    sawConsume = true;
+                } else {
+                    sawSuccess = true;
+                }
+            } else if (result instanceof ActionResult.Fail) {
+                sawFail = true;
             }
         }
+
+        if (out != stack) {
+            user.setStackInHand(hand, out);
+        }
+
         if (sawSuccess) {
-            return ActionResult.SUCCESS;
+            return user.getWorld().isClient() ? ActionResult.SUCCESS : ActionResult.SUCCESS_SERVER;
         }
         if (sawConsume) {
             return ActionResult.CONSUME;
-        }
-        if (sawSuccessNoItemUsed) {
-            return ActionResult.SUCCESS_NO_ITEM_USED;
-        }
-        if (sawConsumePartial) {
-            return ActionResult.CONSUME_PARTIAL;
         }
         if (sawFail) {
             return ActionResult.FAIL;
@@ -512,16 +520,22 @@ public interface IHasAbilities extends IConfigDisable {
 
     /**
      * Used in armor items only.
-     * @param vanillaBuilder the vanilla attributes to add custom ones to
+     * @param vanilla the vanilla attributes to add custom ones to
      * @param equipmentSlot equipment slot the armor item is meant for
+     * @param abilities abilities the item has
      * @return builder with the additional attributes
      */
-    default AttributeModifiersComponent.Builder applyArmorAttributeModifiers(AttributeModifiersComponent vanillaBuilder, EquipmentSlot equipmentSlot) {
-        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanillaBuilder);
+    static AttributeModifiersComponent.Builder applyArmorAttributeModifiers(
+            AttributeModifiersComponent vanilla,
+            EquipmentSlot equipmentSlot,
+            Iterable<IAbility> abilities
+    ) {
+        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanilla);
         AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(equipmentSlot);
-        this.getAbilities().forEach(ability -> {
+
+        for (IAbility ability : abilities) {
             ability.addArmorAttributeModifiers(builder, equipmentSlot, slot);
-        });
+        }
         return builder;
     }
 

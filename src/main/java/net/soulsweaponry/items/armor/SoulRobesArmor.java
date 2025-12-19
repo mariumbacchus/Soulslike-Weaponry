@@ -2,9 +2,9 @@ package net.soulsweaponry.items.armor;
 
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -49,33 +49,18 @@ public class SoulRobesArmor extends ModdedArmor {
             ), 20
     );
 
-    public SoulRobesArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
-        super(material, slot, settings);
+    public SoulRobesArmor(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.soul_robes_posture_buildup_resistances,
+                ConfigConstructor.soul_robes_base_posture_increase,
+                ConfigConstructor.soul_robes_bleed_buildup_resistances,
+                ConfigConstructor.soul_robes_bleed_damage_resistances
+        ));
         this.addAbility(SET_BONUS, MAGIC_RESISTANCE);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_soul_robes_armor;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.soul_robes_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.soul_robes_bleed_damage_resistances;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.soul_robes_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.soul_robes_base_posture_increase;
     }
 }

@@ -1,13 +1,15 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentModel;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
@@ -16,6 +18,7 @@ import net.soulsweaponry.items.abilities.inventorytick.HalfHealthResistances;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.items.abilities.userdamaged.Aftershock;
 import net.soulsweaponry.items.abilities.userdamaged.Mirror;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -61,8 +64,13 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
             ConfigConstructor.enhanced_arkenplate_mirror_bonus_trigger_percent_per_level
     );
 
-    public EnhancedArkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
-        super(material, type, settings);
+    public EnhancedArkenplate(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.enhanced_chaos_armor_posture_buildup_resistances,
+                ConfigConstructor.enhanced_chaos_armor_base_posture_increase,
+                ConfigConstructor.enhanced_chaos_armor_bleed_buildup_resistances,
+                ConfigConstructor.enhanced_chaos_armor_bleed_damage_resistances
+        ));
         this.addAbility(Equipped.CHEST_SLOT, UNBREAKABLE, AFTERSHOCK, MIRROR);
     }
 
@@ -87,7 +95,7 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
+            public <E extends LivingEntity, S extends BipedEntityRenderState> @NotNull BipedEntityModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, BipedEntityModel<S> original) {
                 if (this.renderer == null) {
                     this.renderer = new EChaosArmorRenderer<EnhancedArkenplate>();
                 }
@@ -109,25 +117,5 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
     public PlayState predicate(AnimationState<?> event) {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
         return PlayState.CONTINUE;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.enhanced_chaos_armor_base_posture_increase;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_bleed_damage_resistances;
     }
 }

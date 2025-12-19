@@ -5,13 +5,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -39,14 +39,16 @@ public record Sawblade(
             float damage = this.damage + bonusDamagePerLvl * lvl;
             int duration = this.bleedDuration + this.bleedDurationPerLvl * lvl;
             int amp = (int) (this.bleedAmp + this.bleedAmpPerLvl * lvl);
-            for (Entity nearbyEntity : nearbyEntities) {
-                if (nearbyEntity instanceof LivingEntity target && world instanceof ServerWorld serverWorld) {
-                    if (target.damage(world.getDamageSources().mobAttack(user), damage
-                            + EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().mobAttack(user), 0) * this.bonusEnchantDamageMod)) {
-                        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
-                        target.takeKnockback(this.knockback, 0, 0);
-                        BleedData.addBleed(target, (int) (this.bleed + this.bleedPerLvl * lvl));
-                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, duration, amp));
+            if (world instanceof ServerWorld serverWorld) {
+                for (Entity nearbyEntity : nearbyEntities) {
+                    if (nearbyEntity instanceof LivingEntity target) {
+                        if (target.damage(serverWorld, world.getDamageSources().mobAttack(user), damage
+                                + EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().mobAttack(user), 0) * this.bonusEnchantDamageMod)) {
+                            world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
+                            target.takeKnockback(this.knockback, 0, 0);
+                            BleedData.addBleed(target, (int) (this.bleed + this.bleedPerLvl * lvl));
+                            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, duration, amp));
+                        }
                     }
                 }
             }

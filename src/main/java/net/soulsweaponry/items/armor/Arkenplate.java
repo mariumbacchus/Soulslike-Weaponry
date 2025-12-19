@@ -1,16 +1,19 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentModel;
+import net.minecraft.item.equipment.EquipmentType;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.inventorytick.HalfHealthResistances;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.items.abilities.userdamaged.Aftershock;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -48,8 +51,13 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
             List.of()
     );
 
-    public Arkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
-        super(material, type, settings);
+    public Arkenplate(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.chaos_armor_posture_buildup_resistances,
+                ConfigConstructor.chaos_armor_base_posture_increase,
+                ConfigConstructor.chaos_armor_bleed_buildup_resistances,
+                ConfigConstructor.chaos_armor_bleed_damage_resistances
+        ));
         this.addAbility(Equipped.CHEST_SLOT, UNBREAKABLE, AFTERSHOCK);
     }
 
@@ -64,10 +72,10 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
             private GeoArmorRenderer<?> renderer;
 
             @Override
-            public <T extends LivingEntity> BipedEntityModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable BipedEntityModel<T> original) {
-                if (this.renderer == null) {
+            public <E extends LivingEntity, S extends BipedEntityRenderState> @NotNull BipedEntityModel<?> getGeoArmorRenderer(@Nullable E livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, EquipmentModel.LayerType type, BipedEntityModel<S> original) {
+                if(this.renderer == null)
                     this.renderer = new ChaosArmorRenderer<Arkenplate>();
-                }
+
                 return this.renderer;
             }
         });
@@ -86,25 +94,5 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
     public PlayState predicate(AnimationState<?> event) {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
         return PlayState.CONTINUE;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_armor_base_posture_increase;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
     }
 }

@@ -1,8 +1,8 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentType;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.inventorytick.SoulFeast;
 import net.soulsweaponry.items.abilities.predicate.FullSetEquipped;
@@ -23,33 +23,18 @@ public class ForlornArmor extends ModdedArmor {
             ConfigConstructor.forlorn_armor_soul_feast_bonus_heal_per_level
     );
 
-    public ForlornArmor(RegistryEntry<ArmorMaterial> material, Type slot, Settings settings) {
-        super(material, slot, settings);
+    public ForlornArmor(ArmorMaterial material, EquipmentType type, Settings settings) {
+        super(material, type, settings, applyCustomAttributeAbilities(
+                ConfigConstructor.forlorn_armor_posture_buildup_resistances,
+                ConfigConstructor.forlorn_armor_base_posture_increase,
+                ConfigConstructor.forlorn_armor_bleed_buildup_resistances,
+                ConfigConstructor.forlorn_armor_bleed_damage_resistances
+        ));
         this.addAbility(SET_BONUS, SOUL_FEAST);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_armor;
-    }
-
-    @Override
-    public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.forlorn_armor_bleed_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBleedDamageResistances() {
-        return ConfigConstructor.forlorn_armor_bleed_damage_resistances;
-    }
-
-    @Override
-    public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.forlorn_armor_posture_buildup_resistances;
-    }
-
-    @Override
-    public float[] getBasePostureIncrease() {
-        return ConfigConstructor.forlorn_armor_base_posture_increase;
     }
 }

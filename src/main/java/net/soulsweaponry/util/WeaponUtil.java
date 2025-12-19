@@ -129,7 +129,7 @@ public class WeaponUtil {
 
         for (var e : src.modifiers()) {
             if (e.slot() == AttributeModifierSlot.MAINHAND
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                    && e.attribute().equals(EntityAttributes.ATTACK_DAMAGE)
                     && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
                     && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(e.modifier().id())) {
                 return (float) e.modifier().value();
@@ -145,7 +145,7 @@ public class WeaponUtil {
 
         for (var e : src.modifiers()) {
             if (e.slot() == AttributeModifierSlot.MAINHAND
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
+                    && e.attribute().equals(EntityAttributes.ATTACK_SPEED)
                     && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
                     && BASE_ATTACK_SPEED_MODIFIER_ID.equals(e.modifier().id())) {
                 return (float) e.modifier().value();
@@ -178,11 +178,11 @@ public class WeaponUtil {
             boolean isMainhand = e.slot() == AttributeModifierSlot.MAINHAND;
 
             boolean isBaseDamage = isMainhand
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                    && e.attribute().equals(EntityAttributes.ATTACK_DAMAGE)
                     && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(id);
 
             boolean isBaseSpeed = isMainhand
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
+                    && e.attribute().equals(EntityAttributes.ATTACK_SPEED)
                     && BASE_ATTACK_SPEED_MODIFIER_ID.equals(id);
 
             if (isBaseDamage || isBaseSpeed) continue; // drop those, replace later instead
@@ -192,12 +192,12 @@ public class WeaponUtil {
 
         // re-add the base rows with the dynamic values
         b.add(
-                EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                EntityAttributes.ATTACK_DAMAGE,
                 new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, damage, EntityAttributeModifier.Operation.ADD_VALUE),
                 AttributeModifierSlot.MAINHAND
         );
         b.add(
-                EntityAttributes.GENERIC_ATTACK_SPEED,
+                EntityAttributes.ATTACK_SPEED,
                 new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
                 AttributeModifierSlot.MAINHAND
         );

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "soulsweapons:forlorn"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "soulsweapons:forlorn"
+      }
+    ]
+  }
+}

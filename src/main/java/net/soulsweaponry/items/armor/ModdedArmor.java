@@ -1,28 +1,36 @@
 package net.soulsweaponry.items.armor;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.Item;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentType;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.armorattributes.BleedResistance;
 import net.soulsweaponry.items.abilities.armorattributes.PostureResistance;
+import net.soulsweaponry.util.VanillaArmorAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ModdedArmor extends ArmorItem implements IHasAbilities {
+public abstract class ModdedArmor extends Item implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
+    protected final EquipmentType type;
 
-    public ModdedArmor(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
-        super(material, type, settings);
-        PostureResistance postureResistances = new PostureResistance(this.getPostureBuildupResistances(), this.getBasePostureIncrease());
-        BleedResistance bleedResistances = new BleedResistance(this.getBleedBuildupResistances(), this.getBleedDamageResistances());
-        this.addAbility(postureResistances, bleedResistances);
+    /**
+     * Item Attributes such as armor values or posture resistance is applied statically with
+     * {@link #buildSettings(ArmorMaterial, EquipmentType, Settings, List)} so it is important
+     * to add abilities changing armor attributes within the constructor and not after.
+     * @param material armor material
+     * @param type equipment type/slot
+     * @param settings item settings
+     * @param abilities abilities adding armor attributes should go here
+     */
+    public ModdedArmor(ArmorMaterial material, EquipmentType type, Settings settings, List<IAbility> abilities) {
+        super(buildSettings(material, type, settings, abilities));
+        this.type = type;
+        this.abilities.addAll(abilities);
     }
 
     @Override
@@ -30,43 +38,25 @@ public abstract class ModdedArmor extends ArmorItem implements IHasAbilities {
         return this.abilities;
     }
 
-    private final Supplier<AttributeModifiersComponent> attributeModifiers = Suppliers.memoize(() -> this.applyArmorAttributeModifiers(super.getAttributeModifiers(), this.type.getEquipmentSlot()).build());
-
-    @Override
-    public AttributeModifiersComponent getAttributeModifiers() {
-        return this.attributeModifiers.get();
+    public static Settings buildSettings(
+            ArmorMaterial material,
+            EquipmentType type,
+            Settings settings,
+            List<IAbility> abilities
+    ) {
+        // Vanilla components like stack damage
+        settings = material.applySettings(settings, type);
+        // Basic armor values like toughness
+        AttributeModifiersComponent vanilla = VanillaArmorAttributes.create(material, type);
+        // Ability attributes
+        AttributeModifiersComponent merged = IHasAbilities.applyArmorAttributeModifiers(vanilla, type.getEquipmentSlot(), abilities).build();
+        return settings.attributeModifiers(merged);
     }
 
-    /**
-     * Gets the bleed buildup resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
-     * <p>Override this to give the custom armor different values.</p>
-     */
-    public float[] getBleedBuildupResistances() {
-        return null;
-    }
-
-    /**
-     * Gets the bleed damage resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
-     * <p>Override this to give the custom armor different values.</p>
-     */
-    public float[] getBleedDamageResistances() {
-        return null;
-    }
-
-    /**
-     * Gets the bleed damage resistances for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
-     * <p>Override this to give the custom armor different values.</p>
-     */
-    public float[] getPostureBuildupResistances() {
-        return null;
-    }
-
-    /**
-     * Gets the base posture increase for each armor piece, example: {@code {35, 50, 75, 40}} (feet at index 0).
-     * It is used to increase the max posture of the entity with the attribute.
-     * <p>Override this to give the custom armor different values.</p>
-     */
-    public float[] getBasePostureIncrease() {
-        return null;
+    public static List<IAbility> applyCustomAttributeAbilities(float[] postureBuildupResistances, float[] basePostureIncrease, float[] bleedBuildupResistances, float[] bleedDamageResistances) {
+        List<IAbility> abilities = new ArrayList<>();
+        abilities.add(new PostureResistance(postureBuildupResistances, basePostureIncrease));
+        abilities.add(new BleedResistance(bleedBuildupResistances, bleedDamageResistances));
+        return abilities;
     }
 }

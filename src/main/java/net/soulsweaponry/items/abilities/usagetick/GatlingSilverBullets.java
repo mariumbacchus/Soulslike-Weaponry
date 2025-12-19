@@ -3,13 +3,13 @@ package net.soulsweaponry.items.abilities.usagetick;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.use.ShootSilverBullet;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -89,8 +89,8 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        return TypedActionResult.pass(user.getStackInHand(hand));
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+        return ActionResult.PASS;
     }
 
     @Override

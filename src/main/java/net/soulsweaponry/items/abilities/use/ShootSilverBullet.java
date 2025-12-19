@@ -13,9 +13,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -83,15 +83,15 @@ public class ShootSilverBullet implements IAbility {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         ItemStack bulletStack = this.canShoot(user, stack);
         if (bulletStack != null) {
             this.shootProjectiles(world, user, stack);
             this.spawnShotParticles(world, user, this.particleAmount, this.particleSpread);
             this.postShot(world, user, stack);
-            return TypedActionResult.consume(stack);
+            return ActionResult.CONSUME;
         }
-        return TypedActionResult.fail(stack);
+        return ActionResult.FAIL;
     }
 
     public void shootProjectiles(World world, PlayerEntity user, ItemStack stack) {

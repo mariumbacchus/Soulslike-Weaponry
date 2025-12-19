@@ -5,10 +5,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Tameable;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -40,11 +41,11 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
                     if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || this.healMobsOwnedByOthers)) {
                         living.heal(healOrDamage);
                         if (world.isClient) {
-                            world.addParticle(ParticleTypes.HEART, living.getParticleX(0.5),
+                            world.addParticle(ParticleTypes.HEART, living.getParticleX(0.5),//TODO test
                                     living.getRandomBodyY(), living.getParticleZ(0.5), 0, 0, 0);
                         }
-                    } else {
-                        living.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.DRAGON_MIST, user), healOrDamage);
+                    } else if (world instanceof ServerWorld serverWorld) {
+                        living.damage(serverWorld, DamageSourceRegistry.create(world, DamageSourceRegistry.DRAGON_MIST, user), healOrDamage);
                     }
                     living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST, this.mistEffectDuration, this.mistEffectAmp));
                 }

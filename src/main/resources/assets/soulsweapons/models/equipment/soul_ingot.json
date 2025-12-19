@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "soulsweapons:soul_ingot"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "soulsweapons:soul_ingot"
+      }
+    ]
+  }
+}
