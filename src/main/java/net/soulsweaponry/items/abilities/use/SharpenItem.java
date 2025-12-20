@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class SharpenItem implements IAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         for (Hand offHand : Hand.values()) {
             ItemStack swordStack = user.getStackInHand(offHand);
             if (swordStack.getItem() instanceof IHasAbilities hasAbilities) {
@@ -35,11 +35,11 @@ public class SharpenItem implements IAbility {
                     stack.damage(1, user, LivingEntity.getSlotForHand(hand));
                     world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                     world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.PLAYERS, .5f, 1f);
-                    return TypedActionResult.success(user.getStackInHand(hand));
+                    return ActionResult.SUCCESS.withNewHandStack(user.getStackInHand(hand));
                 }
             }
         }
-        return TypedActionResult.fail(user.getStackInHand(hand));
+        return ActionResult.FAIL;
     }
 
     @Override

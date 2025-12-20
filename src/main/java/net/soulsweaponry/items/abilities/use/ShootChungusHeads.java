@@ -1,12 +1,13 @@
 package net.soulsweaponry.items.abilities.use;
 
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -18,8 +19,8 @@ import java.util.List;
 public record ShootChungusHeads(double speed, int ticksBeforeExplode, int cooldown) implements IAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        TntEntity tnt = EntityRegistry.CHUNGUS_HEAD.create(world);
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+        TntEntity tnt = EntityRegistry.CHUNGUS_HEAD.create(world, SpawnReason.SPAWN_ITEM_USE);
         assert tnt != null;
         tnt.setPos(user.getX(), user.getEyeY() - 0.4f, user.getZ());
         tnt.noClip = true;
@@ -31,9 +32,9 @@ public record ShootChungusHeads(double speed, int ticksBeforeExplode, int cooldo
         tnt.setFuse(this.ticksBeforeExplode);
         tnt.setNoGravity(true);
         world.spawnEntity(tnt);
-        this.applyItemCooldown(stack.getItem(), user, this.cooldown);
+        this.applyItemCooldown(stack, user, this.cooldown);
         stack.damage(3, user, WeaponUtil.getActiveHandSlot(user));
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.soulsweaponry.items.abilities.posthit;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -24,11 +25,14 @@ public record BonusMagicDamage(float bonusMagicDamage, float bonusPerLvl, float 
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (!(attacker.getWorld() instanceof ServerWorld serverWorld)) {
+            return;
+        }
         float dmg = this.getBonusMagicDamage(stack);
         if (target instanceof PlayerEntity) {
             dmg *= this.targetIsPlayerMod;
         }
-        target.damage(DamageSourceRegistry.create(attacker.getWorld(), DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN), dmg);
+        target.damage(serverWorld, DamageSourceRegistry.create(attacker.getWorld(), DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN), dmg);
     }
 
     public float getBonusMagicDamage(ItemStack stack) {

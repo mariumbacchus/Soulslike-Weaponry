@@ -35,7 +35,7 @@ public interface ISummonAlliesAbility extends IAbility {
     }
 
     /**
-     * Increases the {@link EntityAttributes#GENERIC_MAX_HEALTH} and {@link EntityAttributes#GENERIC_ATTACK_DAMAGE}
+     * Increases the {@link EntityAttributes#MAX_HEALTH} and {@link EntityAttributes#ATTACK_DAMAGE}
      * based on {@code power} (souls).
      */
     default void updateStats(Entity entity, int power, ItemStack stack,
@@ -44,14 +44,14 @@ public interface ISummonAlliesAbility extends IAbility {
     ) {
         if (entity instanceof LivingEntity living) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
-            var maxHealth = living.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            var maxHealth = living.getAttributeInstance(EntityAttributes.MAX_HEALTH);
             if (maxHealth != null) {
                 double newMax = power * (bonusHealthPerPower + bonusHealthIncreasePerLvl * lvl);
                 newMax = living.getMaxHealth() + Math.min(maxBonusHealth, newMax);
                 maxHealth.setBaseValue(newMax);
                 living.setHealth((float) newMax);
             }
-            var atk = living.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            var atk = living.getAttributeInstance(EntityAttributes.ATTACK_DAMAGE);
             if (atk != null) {
                 double newDmg = power * (bonusAttackPerPower + bonusAttackIncreasePerLvl * lvl);
                 newDmg = atk.getValue() + Math.min(maxBonusAttack, newDmg);

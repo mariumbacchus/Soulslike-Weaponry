@@ -6,12 +6,12 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -31,14 +31,14 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
         int amp = attacker.hasStatusEffect(EffectRegistry.BLADE_DANCE) ? attacker.getStatusEffect(EffectRegistry.BLADE_DANCE).getAmplifier() + 1 : 0;
         amp = Math.min(amp, this.maxBladeDanceAmp);
         attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, 160, amp));
-        if (!WeaponUtil.isFightModLoaded() && amp == this.maxBladeDanceAmp) {
+        if (!WeaponUtil.isFightModLoaded() && amp == this.maxBladeDanceAmp && attacker.getWorld() instanceof ServerWorld serverWorld) {
             int counter = Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER)).orElse(0);
             stack.set(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER, counter + 1);
             if (Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER)).orElse(0) >= 3) {
-                double damage = attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                double damage = attacker.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
-                        living.damage(attacker.getDamageSources().mobAttack(attacker), (float) damage);
+                        living.damage(serverWorld, attacker.getDamageSources().mobAttack(attacker), (float) damage);
                     }
                 }
                 for (int i = 0; i < 360; i += 30) {
@@ -47,7 +47,7 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
                     double z0 = attacker.getZ();
                     double x = x0 + r * Math.cos(i * Math.PI / 180);
                     double z = z0 + r * Math.sin(i * Math.PI / 180);
-                    ParticleHandler.singleParticle(attacker.getWorld(), ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 0, 0, 0);
+                    serverWorld.spawnParticles(ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 1, 0, 0, 0, 0);
                 }
                 stack.set(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER, 0);
             }

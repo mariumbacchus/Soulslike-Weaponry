@@ -6,6 +6,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -104,10 +105,11 @@ public class DawnbreakerExplosion implements IAbility {
     }
 
     public void dawnbreakerEvent(World world, LivingEntity target, LivingEntity attacker, ItemStack stack) {
-        if (!world.isClient) {
-            ParticleHandler.particleSphere(world, 1000, target.getX(), target.getEyeY() - .25f, target.getZ(), ParticleTypes.FLAME, 1f);
-            ParticleHandler.particleOutburstMap(world, 200, target.getX(), target.getY(), target.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
+        if (!(world instanceof ServerWorld serverWorld)) {
+            return;
         }
+        ParticleHandler.particleSphere(world, 1000, target.getX(), target.getEyeY() - .25f, target.getZ(), ParticleTypes.FLAME, 1f);
+        ParticleHandler.particleOutburstMap(world, 200, target.getX(), target.getY(), target.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
         world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
         Box aoe = target.getBoundingBox().expand(this.explosionRange);
         List<Entity> entities = world.getOtherEntities(target, aoe);
@@ -117,7 +119,7 @@ public class DawnbreakerExplosion implements IAbility {
             if (entity instanceof LivingEntity targetHit && this.shouldAffectEntity(targetHit)) {
                 if (!targetHit.equals(attacker)) {
                     targetHit.setOnFireFor(fireSeconds);
-                    targetHit.damage(world.getDamageSources().explosion(null, attacker),
+                    targetHit.damage(serverWorld, world.getDamageSources().explosion(null, attacker),
                             this.explosionDamage + this.bonusDamagePerLvl * lvl);
                     targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, this.fearEffectDuration, 0));
                 }

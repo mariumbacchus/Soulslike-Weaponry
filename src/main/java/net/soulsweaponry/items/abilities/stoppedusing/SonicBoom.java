@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public record SonicBoom(
         float targetSearchRange, float bonusTargetSearchRangePerLvl,
@@ -43,7 +42,7 @@ public record SonicBoom(
         float queryRadius = Math.max(searchRange, maxRange);
         Box queryBox = user.getBoundingBox().expand(queryRadius);
 
-        Predicate<LivingEntity> nonTeammate = e -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity);
+        TargetPredicate.EntityPredicate nonTeammate = (e, serverWorld1) -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity);
         TargetPredicate targetPredicate = TargetPredicate.createNonAttackable()
                 .setBaseMaxDistance(searchRange)
                 .ignoreVisibility()
@@ -52,14 +51,14 @@ public record SonicBoom(
         // Prefer current attack target if valid & within maxRange
         LivingEntity target = null;
         LivingEntity current = user.getAttacking();
-        if (current != null && nonTeammate.test(current)) {
+        if (current != null && nonTeammate.test(current, serverWorld)) {
             double maxRangeSq = maxRange * maxRange;
             if (user.squaredDistanceTo(current) <= maxRangeSq) {
                 target = current;
             }
         }
         if (target == null) {
-            target = world.getClosestEntity(LivingEntity.class, targetPredicate, user,
+            target = serverWorld.getClosestEntity(LivingEntity.class, targetPredicate, user,
                     user.getX(), user.getY(), user.getZ(), queryBox);
         }
 
@@ -93,10 +92,10 @@ public record SonicBoom(
         }
         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 3.0F, 1.0F);
 
-        target.damage(world.getDamageSources().sonicBoom(user), damage);
+        target.damage(serverWorld, world.getDamageSources().sonicBoom(user), damage);
         user.onAttacking(target);
 
-        double kbResist = target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+        double kbResist = target.getAttributeValue(EntityAttributes.KNOCKBACK_RESISTANCE);
         double vy = 0.5 * (1.0 - kbResist);
         double vxz = 2.5 * (1.0 - kbResist);
         Vec3d kb = new Vec3d(dir.x * vxz, dir.y * vy, dir.z * vxz).multiply(knockback);
@@ -105,7 +104,6 @@ public record SonicBoom(
         stack.damage(2, player, WeaponUtil.getActiveHandSlot(player));
         this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
     }
-
 
     public float getMaxRange(int lvl) {
         return this.maxTargetRange + this.bonusMaxRangePerLvl * lvl;

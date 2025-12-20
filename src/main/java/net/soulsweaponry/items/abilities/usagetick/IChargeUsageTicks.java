@@ -15,7 +15,7 @@ public interface IChargeUsageTicks extends IChargeToUse {
 
     default void stop(LivingEntity user, ItemStack stack, int ticksUsed) {
         if (user instanceof PlayerEntity player) {
-            this.applyItemCooldown(stack.getItem(), player, this.getCooldown(stack, ticksUsed));
+            this.applyItemCooldown(stack, player, this.getCooldown(stack, ticksUsed));
             stack.damage(3, user, WeaponUtil.getActiveHandSlot(player));
         }
     }

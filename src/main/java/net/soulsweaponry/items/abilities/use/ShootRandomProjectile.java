@@ -3,15 +3,16 @@ package net.soulsweaponry.items.abilities.use;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
@@ -34,13 +35,13 @@ public record ShootRandomProjectile(
     private static final List<LuckChosenObject<EntityType<?>>> PROJECTILES = new ArrayList<>();
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        this.applyItemCooldown(stack.getItem(), user, 1);
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+        this.applyItemCooldown(stack, user, 1);
         world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL,
                 0.5f, 2f / (world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClient) {
             EntityType<?> type = this.calculateProjectile(user);
-            Entity entity = type.create(world);
+            Entity entity = type.create(world, SpawnReason.SPAWN_ITEM_USE);
             int luckFactor = (int) (WeaponUtil.getLuckFactor(user) + this.baseLuckFactor
                                 + WeaponUtil.getUpgradeLevel(stack) * this.bonusLuckFactorPerLvl);
             if (entity instanceof ProjectileEntity projectile) {
@@ -70,7 +71,7 @@ public record ShootRandomProjectile(
                 luckChosenEntity.setLuckFactor(10);
             }
         }
-        return TypedActionResult.success(stack, world.isClient());
+        return ActionResult.SUCCESS;
     }
 
     private EntityType<?> calculateProjectile(LivingEntity user) {

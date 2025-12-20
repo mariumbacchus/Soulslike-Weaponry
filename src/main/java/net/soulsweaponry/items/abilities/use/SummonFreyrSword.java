@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
@@ -23,7 +23,7 @@ public class SummonFreyrSword implements IAbility {
 
     //TODO make FreyrSwordEntity more dynamic/open up for damage changes and even model changes
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         FreyrSwordEntity entity = new FreyrSwordEntity(world, user, stack);
         UUID uuid = entity.getUuid();
         UUID prevUuid = FreyrSwordSummonData.getSummonUuid(user);
@@ -34,7 +34,7 @@ public class SummonFreyrSword implements IAbility {
             }
             Entity sword = serverWorld.getEntity(prevUuid);
             if (sword instanceof FreyrSwordEntity) {
-                return TypedActionResult.fail(stack);
+                return ActionResult.FAIL;
             } else {
                 user.getInventory().removeOne(stack);
                 entity.setPos(user.getX(), user.getY(), user.getZ());
@@ -44,7 +44,7 @@ public class SummonFreyrSword implements IAbility {
             FreyrSwordSummonData.setSummonUuid(user, uuid);
         }
         user.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, 1f, 1f);
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 
     @Override

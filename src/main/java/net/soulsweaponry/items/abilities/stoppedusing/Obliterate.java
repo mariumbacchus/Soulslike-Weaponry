@@ -29,9 +29,9 @@ public record Obliterate(
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
-        if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        if (user instanceof PlayerEntity player && !this.isCoolingDown(player, stack)) {
             if (ticksUsed >= 10 && world instanceof ServerWorld serverWorld) {
-                this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownSmash(stack));
+                this.applyItemCooldown(stack, player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(this.rangeOutwards).add(player.getPos());
                 BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int) user.getY(), (int) vecBlocksAway.z);
@@ -40,7 +40,7 @@ public record Obliterate(
                 float power = this.baseDamage + WeaponUtil.getUpgradeLevel(stack) * this.bonusDamagePerLvl;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
+                        entity.damage(serverWorld, DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
                                 power + this.enchantBonusModifier * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0));
                         entity.addVelocity(0, this.yVelocity, 0);
                     }

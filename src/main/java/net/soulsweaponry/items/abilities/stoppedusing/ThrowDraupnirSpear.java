@@ -26,7 +26,7 @@ public record ThrowDraupnirSpear(float projectileSpeed, int minCooldown, int coo
             world.spawnEntity(entity);
             world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
             ExplodeSavedEntities.saveEntityOnItem(stack, entity);
-            this.applyItemCooldown(stack.getItem(), playerEntity, this.getScaledCooldownThrow(stack));
+            this.applyItemCooldown(stack, playerEntity, this.getScaledCooldownThrow(stack));
             stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
         }
     }

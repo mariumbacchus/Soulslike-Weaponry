@@ -3,6 +3,7 @@ package net.soulsweaponry.items.abilities.userdamaged;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -14,8 +15,8 @@ public record FireThorns(float chance, float damage, int fireSeconds) implements
 
     @Override
     public boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity user) {
-        if (source.getAttacker() instanceof LivingEntity attacker && user.getRandom().nextFloat() < this.chance) {
-            attacker.damage(DamageSourceRegistry.create(user.getWorld(), DamageSourceRegistry.PLAYER_FIRE, user), this.damage);
+        if (source.getAttacker() instanceof LivingEntity attacker && attacker.getWorld() instanceof ServerWorld serverWorld && user.getRandom().nextFloat() < this.chance) {
+            attacker.damage(serverWorld, DamageSourceRegistry.create(user.getWorld(), DamageSourceRegistry.PLAYER_FIRE, user), this.damage);
             attacker.setOnFireFor(this.fireSeconds);
         }
         return true;

@@ -35,7 +35,7 @@ public record ShadowStep(float baseBonusDamage, float bonusDamagePerAmp, int sha
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP, this.shadowStepTicks,
                     (int) (this.shadowStepBaseAmp + this.bonusAmpPerLvl * lvl)));
-            this.applyItemCooldown(stack.getItem(), player,
+            this.applyItemCooldown(stack, player,
                     Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }
     }

@@ -4,9 +4,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.registry.ComponentRegistry;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class InvisibleItem implements IAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         Boolean invisible = stack.get(ComponentRegistry.INVISIBLE);
         if (invisible != null) {
             stack.set(ComponentRegistry.INVISIBLE, !invisible);
@@ -26,7 +26,7 @@ public class InvisibleItem implements IAbility {
         }
         this.applyItemCooldown(stack, user, 20);
         user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.75f);
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 
     public static boolean isInvisible(ItemStack stack) {

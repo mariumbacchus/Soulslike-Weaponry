@@ -9,9 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -28,10 +28,10 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
                              float healMod, int ticksBeforeDismount, double maxHealthBonusDamage, float maxRange) implements IAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         if (user.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             this.notifyCooldown(user);
-            return TypedActionResult.fail(stack);
+            return ActionResult.FAIL;
         }
         if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < this.maxRange && world instanceof ServerWorld serverWorld) {
             LivingEntity target = user.getAttacking();
@@ -48,10 +48,10 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
                 }
                 world.playSound(null, user.getBlockPos(), SoundRegistry.UMBRAL_TRESPASS_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
                 ParticleHandler.particleOutburstMap(world, 150, user.getX(), user.getEyeY(), user.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
-                return TypedActionResult.success(stack);
+                return ActionResult.SUCCESS;
             }
         }
-        return TypedActionResult.fail(stack);
+        return ActionResult.FAIL;
     }
 
     @Override

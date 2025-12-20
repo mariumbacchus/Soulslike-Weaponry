@@ -3,14 +3,15 @@ package net.soulsweaponry.items.abilities.use;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.ISummonAlliesAbility;
@@ -20,7 +21,10 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.Objects;
 
 /**
  * Use to spawn entities based on the amount of souls the item has harvested by fetching {@link #getSouls(ItemStack)}.
@@ -49,22 +53,22 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
 ) implements ISoulHarvest, ISummonAlliesAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity player, Hand hand, ItemStack stack) {
         int power = player.isCreative() ? this.entityPowerMap.lastKey() : this.getSouls(stack);
         if (entityPowerMap.isEmpty() || power < entityPowerMap.firstKey()) {
-            return TypedActionResult.fail(stack);
+            return ActionResult.FAIL;
         }
         boolean sneaking = player.isSneaking();
         Map.Entry<Integer, EntityType<?>> chosen = sneaking ? secondBestEntry(power) : bestEntry(power);
         if (chosen == null) {
-            return TypedActionResult.fail(stack);
+            return ActionResult.FAIL;
         }
         EntityType<?> type = chosen.getValue();
         int cost = chosen.getKey();
         Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
         ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
         world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
-        Entity e = type.create(world);
+        Entity e = type.create(world, SpawnReason.SPAWN_ITEM_USE);
         if (e != null) {
             e.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);
             if (e instanceof TameableEntity t) {
@@ -78,7 +82,7 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
             }
         }
         stack.damage(3, player, LivingEntity.getSlotForHand(hand));
-        return TypedActionResult.success(stack, true);
+        return ActionResult.SUCCESS;
     }
 
     /**

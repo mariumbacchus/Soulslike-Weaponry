@@ -3,6 +3,7 @@ package net.soulsweaponry.items.abilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Tameable;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
 public class ChainLightning {
 
     public static void trigger(World world, LivingEntity target, LivingEntity user, float damage, double boxExpansion, Consumer<LivingEntity> targetConsumer) {
-        if (!world.isClient) {
+        if (world instanceof ServerWorld serverWorld) {
             Vec3d toPrimary  = new Vec3d(target.getX(), target.getBodyY(0.5f), target.getZ());
             targetConsumer.accept(target);
 
@@ -31,7 +32,7 @@ public class ChainLightning {
                             || !tameable.getOwner().equals(user)))) {
                 LivingEntity secondary = (LivingEntity)e;
                 world.playSound(null, secondary.getBlockPos(), SoundRegistry.SHOCK, SoundCategory.PLAYERS, 1f, 1f);
-                secondary.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.PLAYER_LIGHTNING, user), damage);
+                secondary.damage(serverWorld, DamageSourceRegistry.create(world, DamageSourceRegistry.PLAYER_LIGHTNING, user), damage);
                 Vec3d toSecondary = new Vec3d(secondary.getX(), secondary.getBodyY(0.5f), secondary.getZ());
                 ParticleHandler.chainLightning(world, toPrimary, toSecondary);
                 targetConsumer.accept(secondary);

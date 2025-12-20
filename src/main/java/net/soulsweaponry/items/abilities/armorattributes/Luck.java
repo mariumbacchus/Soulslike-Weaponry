@@ -16,8 +16,8 @@ public record Luck(float luck) implements IAbility {
 
     @Override
     public void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {
-        EntityAttributeModifier luckMod = WeaponUtil.makeAttribute(EntityAttributes.GENERIC_LUCK, equipmentSlot, this.luck);
-        builder.add(EntityAttributes.GENERIC_LUCK, luckMod, attributeModifierSlot);
+        EntityAttributeModifier luckMod = WeaponUtil.makeAttribute(EntityAttributes.LUCK, equipmentSlot, this.luck);
+        builder.add(EntityAttributes.LUCK, luckMod, attributeModifierSlot);
     }
 
     @Override

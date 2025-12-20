@@ -56,7 +56,7 @@ public record Riptide(
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, this.calculatedFallDuration, (int) (this.calculatedFallAmp + this.bonusAmpPerLvl * level)));
                 }
                 if (this.shouldApplyCooldown.test(world, user)) {
-                    this.applyItemCooldown(stack.getItem(), playerEntity, Math.max(this.minCooldown, this.cooldown - level * this.reducedCooldownPerLvl));
+                    this.applyItemCooldown(stack, playerEntity, Math.max(this.minCooldown, this.cooldown - level * this.reducedCooldownPerLvl));
                 }
                 stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
             }

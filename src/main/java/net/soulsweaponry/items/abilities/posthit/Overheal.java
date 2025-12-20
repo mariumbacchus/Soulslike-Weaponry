@@ -21,7 +21,7 @@ public record Overheal(int baseAbsorptionAmp, float bonusAmpPerLvl, int baseDura
             int duration = (int) (this.baseDuration + this.bonusDurationPerLvl * lvl);
             int amp = (int) (this.baseAbsorptionAmp + this.bonusAmpPerLvl * lvl);
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, duration, amp));
-            this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
+            this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }
     }
 

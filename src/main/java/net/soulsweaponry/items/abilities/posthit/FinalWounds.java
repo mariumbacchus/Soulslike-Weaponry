@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -33,11 +34,11 @@ public record FinalWounds(float killTriggerCap, float killChanceOverCap, float k
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!NO_KILL_ENTITIES.contains(target.getType())) {
+        if (!NO_KILL_ENTITIES.contains(target.getType()) && attacker.getWorld() instanceof ServerWorld serverWorld) {
             double rand = attacker.getRandom().nextDouble();
             float ratio = target.getMaxHealth() >= this.killTriggerCap ? this.killChanceOverCap : this.killChanceUnderCap;
             if (rand <= ratio) {
-                target.kill();
+                target.kill(serverWorld);
             }
         }
     }

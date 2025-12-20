@@ -40,7 +40,7 @@ public record CircleLightningCall(
         for (Entity entity : entities) {
             float damage = this.baseSmashDamage + this.bonusSmashDamagePerLvl * lvl;
             if (entity instanceof LivingEntity living) {
-                entity.damage(world.getDamageSources().mobAttack(player),
+                entity.damage(world, world.getDamageSources().mobAttack(player),
                          damage + this.enchantBonusSmashDamageMultiplier * EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
                 entity.addVelocity(0, .25f, 0);
             }
@@ -61,7 +61,7 @@ public record CircleLightningCall(
                 world.spawnEntity(entity);
             }
         }
-        this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
+        this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
         stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
     }
 

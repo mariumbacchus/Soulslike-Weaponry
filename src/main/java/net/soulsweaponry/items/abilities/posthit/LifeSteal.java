@@ -35,7 +35,7 @@ public class LifeSteal implements IAbility {
         if (attacker instanceof PlayerEntity player && !this.isCoolingDown(player, stack) && attacker.getHealth() < attacker.getMaxHealth()) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             attacker.heal(this.baseHeal + this.bonusHealPerLvl * lvl);
-            this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
+            this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }
     }
 

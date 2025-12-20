@@ -3,7 +3,6 @@ package net.soulsweaponry.items.abilities;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -14,31 +13,17 @@ public interface ICooldownItem {
     /**
      * Applies item cooldown as long as the player is not in creative mode.
      */
-    default void applyItemCooldown(Item item, PlayerEntity player, int cooldown) {
+    default void applyItemCooldown(ItemStack stack, PlayerEntity player, int cooldown) {
         if (!player.isCreative()) {
-            player.getItemCooldownManager().set(item, cooldown);
+            player.getItemCooldownManager().set(stack, cooldown);
         }
     }
 
     /**
-     * Applies item cooldown as long as the player is not in creative mode.
-     */
-    default void applyItemCooldown(ItemStack stack, PlayerEntity player, int cooldown) {
-        this.applyItemCooldown(stack.getItem(), player, cooldown);
-    }
-
-    /**
      * Will still apply cooldown regardless if the player is creative or not.
      */
-    default void applyItemCooldownNoCheck(Item item, PlayerEntity player, int cooldown) {
-        player.getItemCooldownManager().set(item, cooldown);
-    }
-
-    /**
-     * Will still apply cooldown regardless if the player is creative or not.
-     */
-    default void applyItemCooldownNoCheck(ItemStack item, PlayerEntity player, int cooldown) {
-        this.applyItemCooldownNoCheck(item.getItem(), player, cooldown);
+    default void applyItemCooldownNoCheck(ItemStack stack, PlayerEntity player, int cooldown) {
+        player.getItemCooldownManager().set(stack, cooldown);
     }
 
     /**
@@ -64,13 +49,11 @@ public interface ICooldownItem {
         }
         if (user instanceof PlayerEntity player) {
             player.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"), true);
-        } else {
-            user.sendMessage(Text.translatableWithFallback("soulsweapons.weapon.on_cooldown","Can't cast this ability with the Cooldown effect!"));
         }
     }
 
     default boolean isCoolingDown(PlayerEntity user, ItemStack stack) {
-        return user.getItemCooldownManager().isCoolingDown(stack.getItem());
+        return user.getItemCooldownManager().isCoolingDown(stack);
     }
 
     default boolean hasCooldownEffect(PlayerEntity user) {

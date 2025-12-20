@@ -52,7 +52,7 @@ public record Permafrost(int frostApplied, int permafrostDuration, int permafros
                         }
                     }
                     float damage = EntityFrost.getFrostTriggerDamage(livingEntity, baseAoeDamage + livingEntity.getMaxHealth() * percentHealthDamage);
-                    livingEntity.damage(world.getDamageSources().freeze(), damage);
+                    livingEntity.damage(serverWorld, world.getDamageSources().freeze(), damage);
                     livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
                 }
             }

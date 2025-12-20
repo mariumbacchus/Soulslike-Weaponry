@@ -26,7 +26,7 @@ public record ThrowDragonslayerSwordspear(float speed, int minCooldown, int cool
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
                 world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
-                this.applyItemCooldown(stack.getItem(), playerEntity, this.getScaledCooldownThrow(world, stack));
+                this.applyItemCooldown(stack, playerEntity, this.getScaledCooldownThrow(world, stack));
             }
         }
     }

@@ -71,7 +71,7 @@ public class VeilOfFireAbility extends DawnbreakerExplosion implements IKeybindA
             int amp = (int) (this.veilOfFireAmp + this.veilOfFireBonusAmpPerLvl * lvl);
             this.dawnbreakerEvent(world, player, player, stack);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, duration, amp));
-            this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldown(stack));
+            this.applyItemCooldown(stack, player, this.getScaledCooldown(stack));
         }
         /*
         NOTE: Used to summon an orb of fireballs that shoots outwards from the player, but was a little

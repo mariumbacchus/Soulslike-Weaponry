@@ -33,6 +33,9 @@ import java.util.Optional;
 public interface IDetonateGround {
 
     default void detonateGroundEffect(LivingEntity user, int amplifier, float fallDistance, World world, ItemStack stack) {
+        if (!(world instanceof ServerWorld serverWorld)) {
+            return;
+        }
         float expansion = this.getDetonationAttributes().baseExpansion() + this.getDetonationAttributes().expansionMod() * Math.min(this.getDetonationAttributes().maxExpansion(), fallDistance / 10);
         float power = Math.min(this.getDetonationAttributes().maxDamage(), amplifier + fallDistance * this.getDetonationAttributes().fallDistanceDamageMod()); // fallDistance was prev. divided by 5
         Box box = user.getBoundingBox().expand(expansion);
@@ -42,8 +45,8 @@ public interface IDetonateGround {
                 if (!livingEntity.isAlive() || livingEntity.isTeammate(user)) {
                     continue;
                 }
-                float bonus = world instanceof ServerWorld serverWorld ? EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0) : 0;
-                boolean canDamageTarget = livingEntity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, user), power + bonus);
+                float bonus = EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0);
+                boolean canDamageTarget = livingEntity.damage(serverWorld, DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, user), power + bonus);
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getDetonationAttributes().launchMod(), this.getDetonationAttributes().maxLaunchPower()), 0);
                     float healMod = this.getDetonationAttributes().healMod();
@@ -55,11 +58,9 @@ public interface IDetonateGround {
         this.getDetonationAttributes().onTrigger().accept(user, fallDistance, stack);
         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
         float pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
-        if (!world.isClient) {
-            ParticleHandler.particleOutburstMap(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), ParticleEvents.BASE_GRAND_SKYFALL_MAP, pDistance);
-            for (ParticleEffect particle : this.getDetonationAttributes().particles().keySet()) {
-                ParticleHandler.particleOutburst(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), particle, this.getDetonationAttributes().particles().get(particle), pDistance);
-            }
+        ParticleHandler.particleOutburstMap(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), ParticleEvents.BASE_GRAND_SKYFALL_MAP, pDistance);
+        for (ParticleEffect particle : this.getDetonationAttributes().particles().keySet()) {
+            ParticleHandler.particleOutburst(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), particle, this.getDetonationAttributes().particles().get(particle), pDistance);
         }
     }
 

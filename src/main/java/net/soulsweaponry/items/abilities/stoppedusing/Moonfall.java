@@ -43,7 +43,7 @@ public record Moonfall(
                 float knockup = this.knockup + this.bonusKnockupPerLvl * lvl;
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
+                        entity.damage(serverWorld, DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
                                 power + this.bonusDamageEnchantMod * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0));
                         entity.addVelocity(0, this.knockup, 0);
                     }
@@ -62,7 +62,7 @@ public record Moonfall(
                         }
                 );
                 if (!player.isCreative()) {
-                    this.applyItemCooldown(stack.getItem(), player,
+                    this.applyItemCooldown(stack, player,
                             Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl - emp));
                     stack.damage(5, player, WeaponUtil.getActiveHandSlot(player));
                 }

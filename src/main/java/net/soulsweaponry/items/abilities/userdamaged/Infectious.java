@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -30,14 +31,14 @@ public record Infectious(
 
     @Override
     public boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity player) {
-        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH)) {
+        if (source.getAttacker() instanceof LivingEntity attacker && attacker.getWorld() instanceof ServerWorld serverWorld && player.hasStatusEffect(EffectRegistry.LIFE_LEACH)) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int duration = (int) (this.effectsDuration + this.effectsDurationPerLvl * lvl);
             int amp = (int) (this.effectsAmp + this.effectsAmpPerLvl * lvl);
             int fire = this.fireSeconds + this.fireSecondsPerLvl * lvl;
             double x = player.getX() - attacker.getX();
             double z = player.getZ() - attacker.getZ();
-            attacker.damage(player.getDamageSources().wither(), this.damage + this.bonusDamagePerLvl * lvl);
+            attacker.damage(serverWorld, player.getDamageSources().wither(), this.damage + this.bonusDamagePerLvl * lvl);
             attacker.takeKnockback(this.knockback + this.bonusKnockbackPerLvl * lvl, x, z);
             this.effectsOnTarget.forEach(effect -> attacker.addStatusEffect(new StatusEffectInstance(effect, duration, amp)));
             if (fire > 0) {

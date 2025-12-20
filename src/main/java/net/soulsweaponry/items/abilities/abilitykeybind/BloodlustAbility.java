@@ -26,7 +26,7 @@ public record BloodlustAbility(float selfDamage, int selfBleed, int bloodthirsty
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        player.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.BLEED), this.selfDamage);
+        player.damage(world, DamageSourceRegistry.create(world, DamageSourceRegistry.BLEED), this.selfDamage);
         BleedData.addBleed(player, this.selfBleed);
         stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, this.bloodthirstyDuration, this.bloodthirstyAmp));

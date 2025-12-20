@@ -21,7 +21,7 @@ public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamage
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
-        if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
+        if (user instanceof PlayerEntity player && !this.isCoolingDown(player, stack) && !world.isClient) {
             if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 MoonveilWave entity = new MoonveilWave(world, user, this.maxAge);
@@ -35,7 +35,7 @@ public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamage
                 world.spawnEntity(entity);
                 world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL, SoundCategory.PLAYERS, 1f, 1f);
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
-                this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
+                this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
             }
         }
     }

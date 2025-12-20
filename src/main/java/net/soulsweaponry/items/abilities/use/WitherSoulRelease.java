@@ -8,9 +8,9 @@ import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.targetdeath.ISoulHarvest;
 import net.soulsweaponry.registry.ComponentRegistry;
@@ -30,7 +30,7 @@ public class WitherSoulRelease implements ISoulHarvest {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
@@ -53,12 +53,12 @@ public class WitherSoulRelease implements ISoulHarvest {
                 if (!user.isCreative()) {
                     this.addAmount(stack, -1);
                 }
-                this.applyItemCooldown(stack.getItem(), user, 10);
+                this.applyItemCooldown(stack, user, 10);
                 stack.damage(1, user, LivingEntity.getSlotForHand(hand));
-                return TypedActionResult.success(stack, world.isClient());
+                return ActionResult.SUCCESS;
             }
         }
-        return TypedActionResult.fail(stack);
+        return ActionResult.FAIL;
     }
 
     /**

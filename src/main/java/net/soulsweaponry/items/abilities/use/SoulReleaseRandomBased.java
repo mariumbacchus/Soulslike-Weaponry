@@ -2,15 +2,16 @@ package net.soulsweaponry.items.abilities.use;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,13 +34,13 @@ public record SoulReleaseRandomBased(
 ) implements ISoulHarvest, ISummonAlliesAbility {
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         int power = user.isCreative() ? this.soulCost : this.getSouls(stack);
         if (power >= this.soulCost && world instanceof ServerWorld serverWorld && this.canSummonEntity(serverWorld, user, this.getSummonsListId())) {
             Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
             BlockPos on = BlockPos.ofFloored(vecBlocksAway);
             EntityType<?> type = this.entitiesToChoose.get(user.getRandom().nextInt(this.entitiesToChoose.size()));
-            Entity entity = type.create(world);
+            Entity entity = type.create(world, SpawnReason.SPAWN_ITEM_USE);
             if (entity != null) {
                 entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
                 if (entity instanceof TameableEntity tameableEntity) {
@@ -56,10 +57,10 @@ public record SoulReleaseRandomBased(
                 }
                 world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
                 ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-                return TypedActionResult.success(stack, true);
+                return ActionResult.SUCCESS;
             }
         }
-        return TypedActionResult.fail(stack);
+        return ActionResult.FAIL;
     }
 
     @Override

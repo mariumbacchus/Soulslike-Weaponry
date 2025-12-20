@@ -24,7 +24,7 @@ public record Parry(int parryFrames, float parryFramesPerLvl, int maxFrames,
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int frames = (int) (this.parryFrames + this.parryFramesPerLvl * lvl);
             ParryData.setParryTicks((IEntityDataSaver) player, 1, frames, this.maxFrames);
-            this.applyItemCooldownNoCheck(stack.getItem(), player, player.isCreative() ? 10
+            this.applyItemCooldownNoCheck(stack, player, player.isCreative() ? 10
                     : Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }
     }

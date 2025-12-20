@@ -22,7 +22,7 @@ public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int re
             if (ticksUsed >= 10) {
                 int level = WeaponUtil.getUpgradeLevel(stack);
                 stack.damage(2, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
-                this.applyItemCooldown(stack.getItem(), playerEntity,
+                this.applyItemCooldown(stack, playerEntity,
                         Math.max(this.minCooldown, this.cooldown - level * this.reducedCooldownPerLvl));
 
                 CometSpearEntity entity = new CometSpearEntity(world, playerEntity, stack);

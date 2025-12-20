@@ -28,7 +28,7 @@ public record ChaosStorm(
             if (ticksUsed >= 10) {
                 stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
                 this.summonFlamePillars(world, stack, user);
-                this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldown(stack));
+                this.applyItemCooldown(stack, player, this.getScaledCooldown(stack));
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, this.fireResistanceDuration, 0));
             }
         }

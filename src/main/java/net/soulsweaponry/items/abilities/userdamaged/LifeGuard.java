@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -39,14 +40,14 @@ public record LifeGuard(
         // Chance to save the player
         double savePercent = this.getLifeSaveChance(lvl);
         float explosionRange = this.lifeSaveExplosionRange + this.lifeSaveBonusExplosionRangePerLvl * lvl;
-        if (user.getHealth() - damageTaken < 0 && !user.getWorld().isClient && savePercent < user.getRandom().nextDouble()) {
+        if (user.getHealth() - damageTaken < 0 && user.getWorld() instanceof ServerWorld serverWorld && savePercent < user.getRandom().nextDouble()) {
             ParticleHandler.particleSphereList(user.getWorld(), 500, user.getX(), user.getY(), user.getZ(), 0.4f, ParticleTypes.SCULK_SOUL, ParticleTypes.SMOKE);
             user.getWorld().playSound(null, user.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1f, 1f);
             float explosionDamage = this.lifeSaveExplosionDamage + this.lifeSaveExplosionBonusDmgPerLvl * lvl;
             float explosionKnockback = this.lifeSaveExplosionKnockback + this.lifeSaveExplosionBonusKnockbackPerLvl * lvl;
             for (Entity entity1 : user.getWorld().getOtherEntities(user, user.getBoundingBox().expand(explosionRange))) {
                 if (entity1 instanceof LivingEntity living) {
-                    living.damage(user.getDamageSources().explosion(user, user), explosionDamage);
+                    living.damage(serverWorld, user.getDamageSources().explosion(user, user), explosionDamage);
                     double x = user.getX() - living.getX();
                     double z = user.getZ() - living.getZ();
                     living.takeKnockback(explosionKnockback, x, z);

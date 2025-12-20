@@ -31,7 +31,7 @@ public record ShootDragonProjectile(
             return;
         }
         if (!user.isCreative()) {
-            this.applyItemCooldown(stack.getItem(), user, this.getCooldown(stack));
+            this.applyItemCooldown(stack, user, this.getCooldown(stack));
         }
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         DragonStaffProjectile fireball = this.getDragonStaffProjectile(world, user, lvl);

@@ -39,7 +39,7 @@ public record Flameburst(float moltenMetalBaseRadius, float moltenMetalRadiusPer
                                 world.spawnEntity(pillar);
                             }
                     );
-                    this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl));
+                    this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl));
                 }
             }
         }

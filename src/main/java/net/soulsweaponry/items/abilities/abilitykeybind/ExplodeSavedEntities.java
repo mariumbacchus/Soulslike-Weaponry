@@ -50,14 +50,14 @@ public record ExplodeSavedEntities(double userExplosionRadius, float baseDamage,
         float damage = this.baseDamage + this.bonusDamagePerLvl * lvl;
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity living) {
-                entity.damage(world.getDamageSources().mobAttack(player),
+                entity.damage(world, world.getDamageSources().mobAttack(player),
                         damage + this.bonusEnchantDmgMod * EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
                 entity.addVelocity(0, this.knockup, 0);
             }
         }
         ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
-        this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownExplode(stack));
+        this.applyItemCooldown(stack, player, this.getScaledCooldownExplode(stack));
         this.explodeSavedEntities(world, stack, player);
     }
 
