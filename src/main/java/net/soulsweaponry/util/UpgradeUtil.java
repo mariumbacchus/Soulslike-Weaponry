@@ -11,9 +11,8 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeManager;
+import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -39,18 +38,18 @@ public class UpgradeUtil {
         return Identifier.of(SoulsWeaponry.ModId, "upgrade.armor_toughness." + slotName);
     }
 
-    private static AttributeModifierSlot getArmorSlot(ArmorItem armor) {
-        return switch (armor.getSlotType()) {
-            case CHEST -> AttributeModifierSlot.CHEST;
-            case LEGS -> AttributeModifierSlot.LEGS;
-            case FEET -> AttributeModifierSlot.FEET;
-            default -> AttributeModifierSlot.HEAD;
-        };
+    private static AttributeModifierSlot getArmorSlot(ItemStack stack) {
+        var equippable = stack.get(DataComponentTypes.EQUIPPABLE);
+        if (equippable != null) {
+            return AttributeModifierSlot.forEquipmentSlot(equippable.slot());
+        }
+        // Fallback (should basically never happen for real armor)
+        return AttributeModifierSlot.HEAD;
     }
 
     public static AttributeModifiersComponent getEffectiveAttrComponent(ItemStack stack) {
         AttributeModifiersComponent fromStack = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        return fromStack != null && !fromStack.modifiers().isEmpty() ? fromStack : stack.getItem().getAttributeModifiers();
+        return fromStack != null && !fromStack.modifiers().isEmpty() ? fromStack : null;
     }
 
     /**
@@ -73,8 +72,8 @@ public class UpgradeUtil {
         float secondary = secondaryPerLevel * level;
         switch (stack.getItem()) {
             case ArmorItem armor -> {
-                UpgradeUtil.setOrReplaceArmorUpgrade(stack, armor, primary);
-                UpgradeUtil.setOrReplaceArmorToughnessUpgrade(stack, armor, secondary);
+                UpgradeUtil.setOrReplaceArmorUpgrade(stack, primary);
+                UpgradeUtil.setOrReplaceArmorToughnessUpgrade(stack, secondary);
             }
             case RangedWeaponItem ranged -> {
                 if (ranged instanceof GunItem) {
@@ -149,7 +148,7 @@ public class UpgradeUtil {
      * 'total' should already be (perLevelBonus * level).
      */
     public static void setOrReplaceDamageUpgrade(ItemStack stack, float total) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ATTACK_DAMAGE, AttributeModifierSlot.MAINHAND, UPGRADE_DAMAGE_ID, total);
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.ATTACK_DAMAGE, AttributeModifierSlot.MAINHAND, UPGRADE_DAMAGE_ID, total);
     }
 
     /**
@@ -157,7 +156,7 @@ public class UpgradeUtil {
      * 'total' should already be (perLevelBonus * level).
      */
     public static void setOrReplaceMiningEfficiencyUpgrade(ItemStack stack, float total) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.PLAYER_MINING_EFFICIENCY, AttributeModifierSlot.MAINHAND, UPGRADE_MINING_EFFICIENCY_ID, total);
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.MINING_EFFICIENCY, AttributeModifierSlot.MAINHAND, UPGRADE_MINING_EFFICIENCY_ID, total);
     }
 
     /**
@@ -165,25 +164,25 @@ public class UpgradeUtil {
      * 'total' should already be (perLevelBonus * level).
      */
     public static void setOrReplaceAttackSpeedUpgrade(ItemStack stack, float total) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ATTACK_SPEED, AttributeModifierSlot.MAINHAND, UPGRADE_ATTACK_SPEED_ID, total);
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.ATTACK_SPEED, AttributeModifierSlot.MAINHAND, UPGRADE_ATTACK_SPEED_ID, total);
     }
 
     /**
      * Armor path: cumulative +ARMOR (Armor slot).
      * 'total' should already be (perLevelBonus * level).
      */
-    public static void setOrReplaceArmorUpgrade(ItemStack stack, ArmorItem armor, float total) {
-        AttributeModifierSlot slot = getArmorSlot(armor);
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ARMOR, slot, armorUpgradeId(armor.getSlotType().getName().toLowerCase()), total);
+    public static void setOrReplaceArmorUpgrade(ItemStack stack, float total) {
+        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(stack.get(DataComponentTypes.EQUIPPABLE).slot());
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.ARMOR, slot, armorUpgradeId(stack.get(DataComponentTypes.EQUIPPABLE).slot().getName()), total);
     }
 
     /**
      * Armor path: cumulative +ARMOR_TOUGHNESS (Armor slot).
      * 'total' should already be (perLevelBonus * level).
      */
-    public static void setOrReplaceArmorToughnessUpgrade(ItemStack stack, ArmorItem armor, float total) {
-        AttributeModifierSlot slot = getArmorSlot(armor);
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ARMOR_TOUGHNESS, slot, armorToughnessUpgradeId(armor.getSlotType().getName().toLowerCase()), total);
+    public static void setOrReplaceArmorToughnessUpgrade(ItemStack stack, float total) {
+        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(stack.get(DataComponentTypes.EQUIPPABLE).slot());
+        addOrReplaceUpgradeModifier(stack, EntityAttributes.ARMOR_TOUGHNESS, slot, armorToughnessUpgradeId(stack.get(DataComponentTypes.EQUIPPABLE).slot().getName()), total);
     }
 
     /**
@@ -204,12 +203,17 @@ public class UpgradeUtil {
 
     @Nullable
     public static ItemUpgradeRecipe findItemUpgradeRecipeForBase(World world, ItemStack baseStack) {
-        RecipeManager manager = world.getRecipeManager();
-        for (RecipeEntry<? extends Recipe<?>> entry : manager.values()) {
-            Recipe<?> recipe = entry.value();
-            if (recipe instanceof ItemUpgradeRecipe itemUpgradeRecipe) {
-                if (itemUpgradeRecipe.testBase(baseStack)) {
-                    return itemUpgradeRecipe;
+        if (world.getServer() == null) {
+            return null;
+        }
+        var manager = world.getServer().getRecipeManager();
+        if (!(manager instanceof ServerRecipeManager serverManager)) {
+            return null;
+        }
+        for (RecipeEntry<?> entry : serverManager.values()) {
+            if (entry.value() instanceof ItemUpgradeRecipe recipe) {
+                if (recipe.base().isPresent() && recipe.base().get().test(baseStack)) {
+                    return recipe;
                 }
             }
         }

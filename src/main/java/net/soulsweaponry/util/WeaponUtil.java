@@ -16,7 +16,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -115,12 +114,15 @@ public class WeaponUtil {
         return 0;
     }
 
-    public static void applyEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantKey, int level) {
-        var lookup = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
-        lookup.getEntry(enchantKey).ifPresentOrElse(
-                entry -> stack.addEnchantment(lookup.getEntry(entry.value()), level),
-                () -> SoulsWeaponry.LOGGER.warn("Enchantment {} not found when trying to apply to {}", enchantKey, stack)
-        );
+    /**
+     * Adds or replaces an enchantment level on the stack using enchantments component.
+     */
+    public static void applyEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantmentKey, int level) {
+        RegistryEntry<Enchantment> entry = world.getRegistryManager()
+                .getOrThrow(RegistryKeys.ENCHANTMENT)
+                .getOrThrow(enchantmentKey);
+        // Replace .set with .add if you want to add or merge instead
+        EnchantmentHelper.apply(stack, builder -> builder.set(entry, level));
     }
 
     public static float getBaseAttackDamage(ItemStack stack) {
@@ -341,7 +343,7 @@ public class WeaponUtil {
      * Luck = 1 * effect_amplifier, is normally at 0 without other effects or interactions.
      */
     public static int getLuckFactor(LivingEntity entity) {
-        return MathHelper.floor(entity.getAttributeValue(EntityAttributes.GENERIC_LUCK) * 2 + 2);
+        return MathHelper.floor(entity.getAttributeValue(EntityAttributes.LUCK) * 2 + 2);
     }
 
     /**
@@ -469,7 +471,7 @@ public class WeaponUtil {
 
     /**
      * Create a new builder with all the attributes from the previous component {@code toCopyFrom}.
-     * Should usually take in {@code super.getAttributeModifiers()} from {@link ArmorItem#getAttributeModifiers}
+     * Should usually take in the stack's {@code DataComponentTypes.ATTRIBUTE_MODIFIERS}
      * when it comes to armor items.
      */
     public static AttributeModifiersComponent.Builder createAndCopyAttributes(AttributeModifiersComponent toCopyFrom) {
@@ -479,4 +481,5 @@ public class WeaponUtil {
         }
         return builder;
     }
+
 }
