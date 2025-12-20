@@ -35,9 +35,9 @@ public class BossCompass extends Item {
     public void updatePos(ServerWorld world, BlockPos center, ItemStack stack) {
         Optional<RegistryEntryList.Named<Structure>> optional;
         if (world.getRegistryKey() == World.NETHER) {
-            optional = world.getRegistryManager().get(RegistryKeys.STRUCTURE).getEntryList(ModTags.Structures.DECAYING_KINGDOM);
+            optional = world.getRegistryManager().getOrThrow(RegistryKeys.STRUCTURE).getOptional(ModTags.Structures.DECAYING_KINGDOM);
         } else if (world.getRegistryKey() == World.OVERWORLD) {
-            optional = world.getRegistryManager().get(RegistryKeys.STRUCTURE).getEntryList(ModTags.Structures.CHAMPIONS_GRAVES);
+            optional = world.getRegistryManager().getOrThrow(RegistryKeys.STRUCTURE).getOptional(ModTags.Structures.CHAMPIONS_GRAVES);
         } else {
             optional = Optional.empty();
         }

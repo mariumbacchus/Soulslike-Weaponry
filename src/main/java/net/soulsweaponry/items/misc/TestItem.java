@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -135,7 +135,7 @@ public class TestItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         EntityPosture.getMaxPostureLoss(user);
         Optional<EntityStats> maybeStats = EntityStatsUtil.getStats(user);
@@ -366,9 +366,9 @@ public class TestItem extends Item {
 //                    world.addParticle(ParticleTypes.FLAME, vec.getX(), vec.getY(), vec.getZ(), 0, 0, 0);
 //                }
 //            }
-            return TypedActionResult.success(stack);
+            return ActionResult.SUCCESS;
         }
-        return TypedActionResult.fail(stack);
+        return ActionResult.FAIL;
     }
 
     /*private double orientedAngle(double x1, double y1, double x2, double y2) {

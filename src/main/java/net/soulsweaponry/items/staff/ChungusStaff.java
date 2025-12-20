@@ -61,11 +61,6 @@ public class ChungusStaff extends ModdedSword {
     }
 
     @Override
-    public boolean hasRecipeRemainder() {
-        return true;
-    }
-
-    @Override
     public ItemStack getRecipeRemainder(ItemStack stack) {
         return stack.copy();
     }

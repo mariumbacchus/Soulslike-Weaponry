@@ -12,8 +12,8 @@ public abstract class ModdedSword extends SwordItem implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
-    public ModdedSword(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
-        super(toolMaterial, settings.attributeModifiers(SwordItem.createAttributeModifiers(toolMaterial, attackDamage, - (4f - ingameAttackSpeed))));
+    public ModdedSword(ToolMaterial toolMaterial, float attackDamage, float ingameAttackSpeed, Settings settings) {
+        super(toolMaterial, attackDamage, - (4f - ingameAttackSpeed), settings);
     }
 
     @Override

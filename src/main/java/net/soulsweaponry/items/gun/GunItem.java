@@ -31,11 +31,6 @@ public abstract class GunItem extends RangedWeaponItem implements IHasAbilities 
     }
 
     @Override
-    public int getEnchantability() {
-        return 7;
-    }
-
-    @Override
     public int getRange() {
         return 15;
     }

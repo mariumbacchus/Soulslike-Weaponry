@@ -471,7 +471,7 @@ public class WeaponRegistry {
         CHUNGUS_STAFF = ItemRegistry.registerLegendaryWeapon(
                 "chungus_staff",
                 s -> new ChungusStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, s),
-                st -> st.maxDamage(1258).rarity(Rarity.EPIC),
+                st -> st.maxDamage(1258).rarity(Rarity.EPIC).recipeRemainder(CHUNGUS_STAFF),
                 ConfigConstructor.disable_recipe_chungus_staff,
                 ConfigConstructor.is_fireproof_chungus_staff
         );

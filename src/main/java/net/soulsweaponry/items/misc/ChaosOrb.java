@@ -8,9 +8,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -27,11 +27,11 @@ public class ChaosOrb extends Item implements IConfigDisable {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (this.isDisabled(stack)) {
             this.notifyDisabled(user);
-            return TypedActionResult.fail(stack);
+            return ActionResult.FAIL;
         }
         if (!world.isClient) {
             ChaosOrbEntity orb = new ChaosOrbEntity(EntityRegistry.CHAOS_ORB_ENTITY, world);
@@ -44,9 +44,9 @@ public class ChaosOrb extends Item implements IConfigDisable {
             }
             user.incrementStat(Stats.USED.getOrCreateStat(this));
             user.swingHand(hand, true);
-            return TypedActionResult.success(stack);
+            return ActionResult.SUCCESS;
         }
-        return TypedActionResult.consume(stack);
+        return ActionResult.CONSUME;
     }
 
     @Override

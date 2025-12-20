@@ -12,8 +12,8 @@ public abstract class ModdedAxe extends AxeItem implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
-    public ModdedAxe(ToolMaterial toolMaterial, int attackDamage, float ingameAttackSpeed, Settings settings) {
-        super(toolMaterial, settings.attributeModifiers(AxeItem.createAttributeModifiers(toolMaterial, attackDamage, - (4f - ingameAttackSpeed))));
+    public ModdedAxe(ToolMaterial material, float attackDamage, float ingameAttackSpeed, Settings settings) {
+        super(material, attackDamage, - (4f - ingameAttackSpeed), settings);
     }
 
     @Override
