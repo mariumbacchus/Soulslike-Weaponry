@@ -39,16 +39,16 @@ public class ItemStackTooltipMixin {
         double d = mod.value();
         if (player != null) {
             if (mod.idMatches(Item.BASE_ATTACK_DAMAGE_MODIFIER_ID)) {
-                d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                d += player.getAttributeBaseValue(EntityAttributes.ATTACK_DAMAGE);
             } else if (mod.idMatches(Item.BASE_ATTACK_SPEED_MODIFIER_ID)) {
-                d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED);
+                d += player.getAttributeBaseValue(EntityAttributes.ATTACK_SPEED);
             }
         }
         double e;
         if (mod.operation() == EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE
                 || mod.operation() == EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
             e = d * 100.0;
-        } else if (attribute.matches(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)) {
+        } else if (attribute.matches(EntityAttributes.KNOCKBACK_RESISTANCE)) {
             e = d * 10.0;
         } else {
             e = d;

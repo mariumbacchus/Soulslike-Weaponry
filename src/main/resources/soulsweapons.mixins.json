@@ -19,7 +19,7 @@
     "PersistentProjectileEntityInvoker",
     "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
-    "RecipeManagerMixin",
+    "ServerRecipeManagerMixin",
     "ServerPlayNetworkHandlerMixin",
     "SwordItemMixin",
     "WitherEntityMixin"

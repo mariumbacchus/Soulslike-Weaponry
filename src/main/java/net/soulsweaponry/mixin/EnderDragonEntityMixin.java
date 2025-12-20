@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,11 +19,12 @@ public class EnderDragonEntityMixin {
     
     @Inject(at = @At("TAIL"), method = "updatePostDeath()V")
     protected void updatePostDeath(CallbackInfo info) {
-        if (canDropSoul) {
-            ItemEntity soul = ((EnderDragonEntity)(Object)this).dropItem(ItemRegistry.LORD_SOUL_PURPLE);
+        EnderDragonEntity enderDragon = (EnderDragonEntity) (Object) this;
+        if (this.canDropSoul && enderDragon.getWorld() instanceof ServerWorld serverWorld) {
+            ItemEntity soul = enderDragon.dropItem(serverWorld, ItemRegistry.LORD_SOUL_PURPLE);
             if (soul != null) {
                 soul.setCovetedItem();
-                canDropSoul = false;
+                this.canDropSoul = false;
             }
         }
     }

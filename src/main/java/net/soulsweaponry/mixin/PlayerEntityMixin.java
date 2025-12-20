@@ -10,8 +10,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
@@ -62,7 +62,7 @@ public class PlayerEntityMixin {
 
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    public void interceptDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    public void interceptDamage(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
         if (player.hasStatusEffect(EffectRegistry.GHOSTLY)) {
             info.setReturnValue(false);
@@ -89,7 +89,7 @@ public class PlayerEntityMixin {
     @Inject(method = "attack", at = @At("HEAD"))
     public void interceptAttack(Entity target, CallbackInfo info) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY) && player.getMainHandStack().getItem() instanceof ToolItem) {
+        if (target instanceof LivingEntity && player.hasStatusEffect(EffectRegistry.BLOODTHIRSTY)) {
             float attackCooldown = player.getAttackCooldownProgress(0.5f);
             float heal = (2f + player.getStatusEffect(EffectRegistry.BLOODTHIRSTY).getAmplifier()) * attackCooldown;
             player.heal(heal);
@@ -107,7 +107,7 @@ public class PlayerEntityMixin {
         ItemStack stack = player.getInventory().getMainHandStack();
         boolean mainHeavy = IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent();
 
-        ItemStack offStack = player.getInventory().offHand.get(0);
+        ItemStack offStack = player.getInventory().offHand.getFirst();
         boolean offHeavy = IHasAbilities.getAbility(offStack, UltraHeavy.class).isPresent();
         if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
             // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.

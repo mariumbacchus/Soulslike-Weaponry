@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.BossBarHud;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.text.Text;
 import net.soulsweaponry.client.hud.CustomBossBar;
@@ -39,9 +40,9 @@ public abstract class BossBarHudMixin {
         ctx.getMatrices().push();
         RenderSystem.setShaderTexture(0, customBossBar.filledBar());
         // TODO these height and width values can be inserted as params in CustomBossBar record when the textures are made
-        ctx.drawTexture(customBossBar.emptyBar(), x, y, 0, 0, 182, 5, 182, 10);
+        ctx.drawTexture(RenderLayer::getGuiTextured, customBossBar.emptyBar(), x, y, 0, 0, 182, 5, 182, 10);
         int filled = (int)(originalBar.getPercent() * 182);
-        ctx.drawTexture(customBossBar.filledBar(), x, y, 0, 5, filled, 5, 182, 10);
+        ctx.drawTexture(RenderLayer::getGuiTextured, customBossBar.filledBar(), x, y, 0, 5, filled, 5, 182, 10);
 
         ctx.getMatrices().pop();
     }

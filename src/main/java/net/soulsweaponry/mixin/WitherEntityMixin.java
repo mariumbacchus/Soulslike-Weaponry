@@ -17,7 +17,10 @@ public class WitherEntityMixin {
     @Inject(at = @At("TAIL"), method = "dropEquipment")
     protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
         WitherEntity wither = ((WitherEntity)(Object)this);
-        ItemEntity[] drops = {wither.dropItem(ItemRegistry.LORD_SOUL_VOID), wither.dropItem(ItemRegistry.SHARD_OF_UNCERTAINTY)};
+        ItemEntity[] drops = {
+                wither.dropItem(world, ItemRegistry.LORD_SOUL_VOID),
+                wither.dropItem(world, ItemRegistry.SHARD_OF_UNCERTAINTY)
+        };
         for (ItemEntity entity : drops) {
             if (entity != null) {
                 entity.setCovetedItem();

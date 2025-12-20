@@ -3,6 +3,7 @@ package net.soulsweaponry.util;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.mixin.ServerRecipeManagerMixin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ public class RecipeHandler {
 
     /**
      * Map over item ids and a boolean determining whether the recipe (with the corresponding identifier) should
-     * be removed during runtime or not. See {@link net.soulsweaponry.mixin.RecipeManagerMixin} for usage.
+     * be removed during runtime or not. See {@link ServerRecipeManagerMixin} for usage.
      */
     public static final Map<Identifier, Boolean> RECIPE_IDS = new HashMap<>();
 

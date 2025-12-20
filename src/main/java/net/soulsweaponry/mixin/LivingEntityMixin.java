@@ -10,6 +10,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -60,7 +61,7 @@ public class LivingEntityMixin {
     }
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    public void interceptDamageHead(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    public void interceptDamageHead(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         if (source.isIn(DamageTypeTags.IS_LIGHTNING) && entity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
             entity.heal(ConfigConstructor.tonitrus_stormveil_effect_lightning_damage_heal + entity.getStatusEffect(EffectRegistry.STORMVEIL).getAmplifier());
@@ -115,7 +116,7 @@ public class LivingEntityMixin {
     }
 
     @Inject(method = "damage", at = @At("TAIL"))
-    public void interceptDamageTail(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    public void interceptDamageTail(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
         // Remove stacks of Blade Dance when taking damage
         if (info.getReturnValue() && entity.hasStatusEffect(EffectRegistry.BLADE_DANCE)) {
@@ -172,7 +173,7 @@ public class LivingEntityMixin {
     @Inject(method = "onDismounted", at = @At("HEAD"))
     public void interceptDismount(Entity entity, CallbackInfo info) {
         LivingEntity thisEntity = ((LivingEntity)(Object)this);
-        if (!thisEntity.getWorld().isClient && entity instanceof LivingEntity target && thisEntity instanceof PlayerEntity player) {
+        if (thisEntity.getWorld() instanceof ServerWorld serverWorld && entity instanceof LivingEntity target && thisEntity instanceof PlayerEntity player) {
             if (UmbralTrespassData.shouldDamageRiding(player)) {
                 float damage = UmbralTrespassData.getAbilityDamage(player);
                 float healMod = UmbralTrespassData.getHealModifier(player);
@@ -184,7 +185,7 @@ public class LivingEntityMixin {
                 }
                 player.removeStatusEffect(StatusEffects.INVISIBILITY);
                 player.removeStatusEffect(EffectRegistry.GHOSTLY);
-                target.damage(player.getWorld().getDamageSources().mobAttack(player), damage);
+                target.damage(serverWorld, player.getWorld().getDamageSources().mobAttack(player), damage);
                 UmbralTrespassData.setShouldDamageRiding(player, false);
                 if (!player.getWorld().isClient && player.getBlockPos() != null) {
                     player.getWorld().playSound(null, player.getBlockPos(), SoundRegistry.SLICE_TARGET_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);

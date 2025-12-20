@@ -12,8 +12,8 @@ import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -32,20 +32,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GlassBottleMixin {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    public void interceptUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> info) {
+    public void interceptUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> info) {
         BlockHitResult blockHitResult = raycast(world, user);
         ItemStack itemStack = user.getStackInHand(hand);
         BlockPos blockPos = blockHitResult.getBlockPos();
         FluidState fluid = world.getFluidState(blockPos);
         if (!world.canPlayerModifyAt(user, blockPos) || fluid.isOf(FluidRegistry.FLOWING_PURIFIED_BLOOD)) {
-            info.setReturnValue(TypedActionResult.pass(itemStack));
+            info.setReturnValue(ActionResult.PASS);
             info.cancel();
         }
         if (fluid.isOf(FluidRegistry.STILL_PURIFIED_BLOOD)) {
             world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
             world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-            info.setReturnValue(TypedActionResult.success(this.fill(itemStack, user, PotionContentsComponent.createStack(Items.POTION, Potions.HEALING)), world.isClient()));
+            info.setReturnValue(ActionResult.SUCCESS.withNewHandStack(this.fill(itemStack, user, PotionContentsComponent.createStack(Items.POTION, Potions.HEALING))));
             info.cancel();
         }
     }

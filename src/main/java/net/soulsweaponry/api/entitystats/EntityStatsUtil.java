@@ -10,7 +10,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.profiler.Profiler;
 import net.soulsweaponry.SoulsWeaponry;
 
 import java.io.IOException;
@@ -45,13 +44,30 @@ public class EntityStatsUtil implements IdentifiableResourceReloadListener {
         return ID;
     }
 
+    public static void register() {
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EntityStatsUtil());
+    }
+
+    /**
+     * Calculates a reduced amount based on the resistance provided, likely coming from an entity.
+     * <p> {@code result = amount * 2^(-resistance * 0.01)} </p>
+     * Some results for clarity:
+     * <p> resistance = -100 => 200% of amount </p>
+     * <p> resistance = 0 => 100% </p>
+     * <p> resistance = 10 => 93% </p>
+     * <p> resistance = 25 => 84% </p>
+     * <p> resistance = 50 => 71% </p>
+     * <p> resistance = 75 => 59% </p>
+     * <p> resistance = 100 => 50% </p>
+     * <p> resistance = 150 => 35% </p>
+     * <p> resistance = 300 => 12.5% </p>
+     */
+    public static float calculateResistance(float resistance, float amountToReduce) {
+        return Math.round(amountToReduce * Math.pow(2, -resistance * 0.01));
+    }
+
     @Override
-    public CompletableFuture<Void> reload(Synchronizer synchronizer,
-                                          ResourceManager manager,
-                                          Profiler prepareProfiler,
-                                          Profiler applyProfiler,
-                                          Executor prepareExecutor,
-                                          Executor applyExecutor) {
+    public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Executor prepareExecutor, Executor applyExecutor) {
         CompletableFuture<Map<Identifier, EntityStats>> loadFuture = CompletableFuture.supplyAsync(() -> {
             Map<Identifier, EntityStats> newStats = new HashMap<>();
             manager.findResources(FOLDER, id -> id.getPath().endsWith(".json")).forEach((resId, resource) -> {
@@ -77,27 +93,5 @@ public class EntityStatsUtil implements IdentifiableResourceReloadListener {
                                     statsMap.putAll(loaded);
                                 }, applyExecutor)
                 , applyExecutor);
-    }
-
-    public static void register() {
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new EntityStatsUtil());
-    }
-
-    /**
-     * Calculates a reduced amount based on the resistance provided, likely coming from an entity.
-     * <p> {@code result = amount * 2^(-resistance * 0.01)} </p>
-     * Some results for clarity:
-     * <p> resistance = -100 => 200% of amount </p>
-     * <p> resistance = 0 => 100% </p>
-     * <p> resistance = 10 => 93% </p>
-     * <p> resistance = 25 => 84% </p>
-     * <p> resistance = 50 => 71% </p>
-     * <p> resistance = 75 => 59% </p>
-     * <p> resistance = 100 => 50% </p>
-     * <p> resistance = 150 => 35% </p>
-     * <p> resistance = 300 => 12.5% </p>
-     */
-    public static float calculateResistance(float resistance, float amountToReduce) {
-        return Math.round(amountToReduce * Math.pow(2, -resistance * 0.01));
     }
 }

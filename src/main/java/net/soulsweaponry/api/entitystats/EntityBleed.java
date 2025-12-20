@@ -32,12 +32,12 @@ public class EntityBleed {
     }
 
     public static void triggerBloodLoss(LivingEntity entity) {
-        entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.BLEED), getBleedDamage(entity,
-                ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
         entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.BLOOD_LOSS, entity.getSoundCategory(), 1f, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.getDefaultState()),
                     entity.getParticleX(0.5), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(0.5), 30, 0, 0, 0, 0);
+            entity.damage(serverWorld, DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.BLEED), getBleedDamage(entity,
+                    ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
         }
         BleedData.setBleed((IEntityDataSaver) entity, 0);
         // Give strength to entities with Bloodlust (or other items later) in hand upon bleed proc
