@@ -3,11 +3,22 @@ package net.soulsweaponry.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.IngredientPlacement;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.ServerRecipeManager;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.SmithingRecipe;
+import net.minecraft.recipe.display.RecipeDisplay;
+import net.minecraft.recipe.display.SlotDisplay;
+import net.minecraft.recipe.display.SmithingRecipeDisplay;
 import net.minecraft.recipe.input.SmithingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
@@ -15,27 +26,63 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.RecipeSerializerRegistry;
 import net.soulsweaponry.util.UpgradeUtil;
+import org.jetbrains.annotations.Nullable;
 
-public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient addition, float primaryBonus, float secondaryBonus, boolean fallback) implements SmithingRecipe {
+// Suppressing because SmithingTransformRecipe which this class is based off of uses optionals as input (despite being bad practice) so it should still work
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+public class ItemUpgradeRecipe implements SmithingRecipe {
 
-    @Override
-    public boolean testTemplate(ItemStack stack) {
-        return this.template.test(stack);
+    final Optional<Ingredient> template;
+    final Optional<Ingredient> base;
+    final Optional<Ingredient> addition;
+    final float primaryBonus;
+    final float secondaryBonus;
+    final boolean fallback;
+
+    @Nullable
+    private IngredientPlacement ingredientPlacement;
+
+    public ItemUpgradeRecipe(Optional<Ingredient> template, Optional<Ingredient> base, Optional<Ingredient> addition, float primaryBonus, float secondaryBonus, boolean fallback) {
+        this.template = template;
+        this.base = base;
+        this.addition = addition;
+        this.primaryBonus = primaryBonus;
+        this.secondaryBonus = secondaryBonus;
+        this.fallback = fallback;
+    }
+
+    public float primaryBonus() {
+        return this.primaryBonus;
+    }
+
+    public float secondaryBonus() {
+        return this.secondaryBonus;
+    }
+
+    public boolean fallback() {
+        return this.fallback;
     }
 
     @Override
-    public boolean testBase(ItemStack stack) {
-        return this.base.test(stack);
+    public Optional<Ingredient> template() {
+        return this.template;
     }
 
     @Override
-    public boolean testAddition(ItemStack stack) {
-        return this.addition.test(stack);
+    public Optional<Ingredient> base() {
+        return this.base;
+    }
+
+    @Override
+    public Optional<Ingredient> addition() {
+        return this.addition;
     }
 
     @Override
     public boolean matches(SmithingRecipeInput input, World world) {
-        if (!this.template.test(input.template()) || !this.base.test(input.base()) || !this.addition.test(input.addition())) {
+        if (!Ingredient.matches(this.template(), input.template())
+                || !Ingredient.matches(this.base(), input.base())
+                || !Ingredient.matches(this.addition(), input.addition())) {
             return false;
         }
         int level = input.base().getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
@@ -46,19 +93,23 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
             return true;
         }
         // If the recipe is a fallback recipe, check if other recipes exist. If one does, use that one, if not then use the fallback recipe.
-        RecipeManager manager = world.getRecipeManager();
-        for (RecipeEntry<SmithingRecipe> entry : manager.listAllOfType(RecipeType.SMITHING)) {
-            SmithingRecipe recipe = entry.value();
-            if (recipe == this) {
-                continue;
-            }
-            if (recipe instanceof ItemUpgradeRecipe other && !other.fallback()) {
-                // Check if that specific recipe matches the same triple of items
-                if (other.template().test(input.template())
-                        && other.base().test(input.base())
-                        && other.addition().test(input.addition())) {
-                    // A specific, non-fallback upgrade exists for this input, this fallback recipe should NOT be used.
-                    return false;
+        if (world.getServer() != null) {
+            ServerRecipeManager manager = world.getServer().getRecipeManager();
+            for (RecipeEntry<?> entry : manager.values()) {
+                if (!(entry.value() instanceof SmithingRecipe recipe)) {
+                    continue;
+                }
+                if (recipe == this) {
+                    continue;
+                }
+                if (recipe instanceof ItemUpgradeRecipe other && !other.fallback()) {
+                    // Check if that specific recipe matches the same triple of items
+                    if (Ingredient.matches(other.template(), input.template())
+                            && Ingredient.matches(other.base(), input.base())
+                            && Ingredient.matches(other.addition(), input.addition())) {
+                        // A specific, non-fallback upgrade exists for this input, this fallback recipe should NOT be used.
+                        return false;
+                    }
                 }
             }
         }
@@ -80,38 +131,53 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
         UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(out, nextLevel, this.primaryBonus(), this.secondaryBonus());
     }
 
-    /**
-     * Used for recipe book preview, smithing results depend on inputs,
-     * so returning EMPTY is fine.
-     */
     @Override
-    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
-        ItemStack[] matches = this.base.getMatchingStacks();
-        return matches.length > 0 ? matches[0].copy() : ItemStack.EMPTY;
+    public RecipeSerializer<ItemUpgradeRecipe> getSerializer() {
+        return RecipeSerializerRegistry.SMITHING_ITEM_UPGRADE;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializerRegistry.SMITHING_ITEM_UPGRADE;
+    public IngredientPlacement getIngredientPlacement() {
+        if (this.ingredientPlacement == null) {
+            this.ingredientPlacement = IngredientPlacement.forMultipleSlots(List.of(this.template(), this.base(), this.addition()));
+        }
+        return this.ingredientPlacement;
+    }
+
+    @Override
+    public List<RecipeDisplay> getDisplays() {
+        return List.of(
+                new SmithingRecipeDisplay(
+                        Ingredient.toDisplay(this.template()),
+                        Ingredient.toDisplay(this.base()),
+                        Ingredient.toDisplay(this.addition()),
+                        new SlotDisplay.StackSlotDisplay(ItemStack.EMPTY),
+                        new SlotDisplay.ItemSlotDisplay(Items.SMITHING_TABLE)
+                )
+        );
     }
 
     public static class Serializer implements RecipeSerializer<ItemUpgradeRecipe> {
         private static final MapCodec<ItemUpgradeRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("template").forGetter(recipe -> recipe.template),
-                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("base").forGetter(recipe -> recipe.base),
-                                Ingredient.ALLOW_EMPTY_CODEC.fieldOf("addition").forGetter(recipe -> recipe.addition),
+                                Ingredient.CODEC.optionalFieldOf("template").forGetter(recipe -> recipe.template),
+                                Ingredient.CODEC.optionalFieldOf("base").forGetter(recipe -> recipe.base),
+                                Ingredient.CODEC.optionalFieldOf("addition").forGetter(recipe -> recipe.addition),
                                 Codec.FLOAT.fieldOf("primaryBonus").forGetter(ItemUpgradeRecipe::primaryBonus),
                                 Codec.FLOAT.fieldOf("secondaryBonus").forGetter(ItemUpgradeRecipe::secondaryBonus),
                                 Codec.BOOL.optionalFieldOf("fallback", false).forGetter(ItemUpgradeRecipe::fallback)
                         )
                         .apply(instance, ItemUpgradeRecipe::new)
         );
+
         private static final PacketCodec<RegistryByteBuf, ItemUpgradeRecipe> PACKET_CODEC =
                 PacketCodec.tuple(
-                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::template,
-                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::base,
-                        Ingredient.PACKET_CODEC, ItemUpgradeRecipe::addition,
+                        Ingredient.OPTIONAL_PACKET_CODEC,
+                        recipe -> recipe.template,
+                        Ingredient.OPTIONAL_PACKET_CODEC,
+                        recipe -> recipe.base,
+                        Ingredient.OPTIONAL_PACKET_CODEC,
+                        recipe -> recipe.addition,
                         PacketCodecs.FLOAT, ItemUpgradeRecipe::primaryBonus,
                         PacketCodecs.FLOAT, ItemUpgradeRecipe::secondaryBonus,
                         PacketCodecs.BOOL, ItemUpgradeRecipe::fallback,

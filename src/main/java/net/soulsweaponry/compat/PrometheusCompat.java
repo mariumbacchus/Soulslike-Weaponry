@@ -18,7 +18,7 @@ public class PrometheusCompat {
     private static final Identifier SOUL_FIRE_ASPECT_ID = Identifier.of("soul_fire_aspect");
 
     public static int getSoulFireAspect(ItemStack stack, DynamicRegistryManager registryManager) {
-        Registry<Enchantment> enchantmentRegistry = registryManager.get(RegistryKeys.ENCHANTMENT);
+        Registry<Enchantment> enchantmentRegistry = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT);
         Optional<RegistryEntry.Reference<Enchantment>> op = enchantmentRegistry.getEntry(SOUL_FIRE_ASPECT_ID);
         if (op.isPresent()) {
             RegistryEntry<Enchantment> soulFireAspect = op.get();
