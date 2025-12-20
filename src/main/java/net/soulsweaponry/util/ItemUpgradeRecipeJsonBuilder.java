@@ -2,6 +2,7 @@ package net.soulsweaponry.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -9,12 +10,16 @@ import net.minecraft.advancement.AdvancementRequirements;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 
@@ -67,13 +72,13 @@ public class ItemUpgradeRecipeJsonBuilder {
     }
 
     /** Convenience: tag for base */
-    public static ItemUpgradeRecipeJsonBuilder create(ItemConvertible template, TagKey<Item> baseTag, ItemConvertible addition, RecipeCategory category, float primaryBonus, float secondaryBonus, boolean fallback) {
-        return create(Ingredient.ofItems(template), Ingredient.fromTag(baseTag), Ingredient.ofItems(addition), category, primaryBonus, secondaryBonus, fallback);
+    public static ItemUpgradeRecipeJsonBuilder create(RegistryEntryLookup<Item> itemLookup, ItemConvertible template, TagKey<Item> baseTag, ItemConvertible addition, RecipeCategory category, float primaryBonus, float secondaryBonus, boolean fallback) {
+        return create(Ingredient.ofItems(template), Ingredient.fromTag(itemLookup.getOrThrow(baseTag)), Ingredient.ofItems(addition), category, primaryBonus, secondaryBonus, fallback);
     }
 
     /** Convenience: tags for base/addition */
-    public static ItemUpgradeRecipeJsonBuilder create(ItemConvertible template, TagKey<Item> baseTag, TagKey<Item> additionTag, RecipeCategory category, float primaryBonus, float secondaryBonus, boolean fallback) {
-        return create(Ingredient.ofItems(template), Ingredient.fromTag(baseTag), Ingredient.fromTag(additionTag), category, primaryBonus, secondaryBonus, fallback);
+    public static ItemUpgradeRecipeJsonBuilder create(RegistryEntryLookup<Item> itemLookup, ItemConvertible template, TagKey<Item> baseTag, TagKey<Item> additionTag, RecipeCategory category, float primaryBonus, float secondaryBonus, boolean fallback) {
+        return create(Ingredient.ofItems(template), Ingredient.fromTag(itemLookup.getOrThrow(baseTag)), Ingredient.fromTag(itemLookup.getOrThrow(additionTag)), category, primaryBonus, secondaryBonus, fallback);
     }
 
     public ItemUpgradeRecipeJsonBuilder criterion(String name, AdvancementCriterion<?> criterion) {
@@ -86,28 +91,29 @@ public class ItemUpgradeRecipeJsonBuilder {
     }
 
     public void offerTo(RecipeExporter exporter, Identifier id) {
-        validate(id);
+        RegistryKey<Recipe<?>> key = RegistryKey.of(RegistryKeys.RECIPE, id);
+        validate(key);
 
         Advancement.Builder adv = exporter.getAdvancementBuilder()
-                .criterion("has_the_recipe", RecipeUnlockedCriterion.create(id))
-                .rewards(AdvancementRewards.Builder.recipe(id))
+                .criterion("has_the_recipe", RecipeUnlockedCriterion.create(key))
+                .rewards(AdvancementRewards.Builder.recipe(key))
                 .criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
 
         this.criteria.forEach(adv::criterion);
 
-        ItemUpgradeRecipe recipe = new ItemUpgradeRecipe(this.template, this.base, this.addition, this.primaryBonus, this.secondaryBonus, this.fallback);
-        exporter.accept(id, recipe, adv.build(id.withPrefixedPath("recipes/" + this.category.getName() + "/")));
+        ItemUpgradeRecipe recipe = new ItemUpgradeRecipe(Optional.of(this.template), Optional.of(this.base), Optional.of(this.addition), this.primaryBonus, this.secondaryBonus, this.fallback);
+        exporter.accept(key, recipe, adv.build(id.withPrefixedPath("recipes/" + this.category.getName() + "/")));
     }
 
-    private void validate(Identifier id) {
+    private void validate(RegistryKey<Recipe<?>> key) {
         if (this.criteria.isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + id);
+            throw new IllegalStateException("No way of obtaining recipe " + key.getValue());
         }
         if (Float.isNaN(this.primaryBonus) || Float.isInfinite(this.primaryBonus)) {
-            throw new IllegalStateException("Invalid primaryBonus for recipe " + id + ": " + this.primaryBonus);
+            throw new IllegalStateException("Invalid primaryBonus for recipe " + key.getValue() + ": " + this.primaryBonus);
         }
         if (Float.isNaN(this.secondaryBonus) || Float.isInfinite(this.secondaryBonus)) {
-            throw new IllegalStateException("Invalid secondaryBonus for recipe " + id + ": " + this.secondaryBonus);
+            throw new IllegalStateException("Invalid secondaryBonus for recipe " + key.getValue() + ": " + this.secondaryBonus);
         }
     }
 }

@@ -51,7 +51,7 @@ public class UpgradeRecipes {
      * prioritize using the upgrade json file meant for itself rather than always defaulting to the tag recipe.
      */
     public static void createUpgrade(RecipeExporter recipeExporter, RegistryEntryLookup<Item> itemLookup, TagKey<Item> tag, float primaryBonus, float secondaryBonus, boolean fallback) {
-        ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus, fallback)
+        ItemUpgradeRecipeJsonBuilder.create(itemLookup, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus, fallback)
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(itemLookup, Items.STICK).build()))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, tag.id().getPath() + "_upgrade"));
