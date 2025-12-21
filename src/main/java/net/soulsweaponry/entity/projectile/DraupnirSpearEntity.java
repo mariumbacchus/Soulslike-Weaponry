@@ -40,22 +40,20 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         float f = ConfigConstructor.draupnir_spear_projectile_damage;
-        if (entity == null) {
+        if (entity == null || !(this.getWorld() instanceof ServerWorld serverWorld)) {
             return;
         }
         Entity owner = this.getOwner();
         DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, owner);
-        if (entity instanceof LivingEntity livingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
+        if (entity instanceof LivingEntity livingEntity) {
             f = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), livingEntity, damageSource, f);
         }
         this.dealtDamage = true;
-        if (entity.damage(damageSource, f)) {
+        if (entity.damage(serverWorld, damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (this.getWorld() instanceof ServerWorld serverWorld) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
-            }
+            EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
             if (entity instanceof LivingEntity livingEntity) {
                 this.knockback(livingEntity, damageSource);
                 this.onHit(livingEntity);

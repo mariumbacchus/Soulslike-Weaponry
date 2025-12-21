@@ -34,7 +34,7 @@ public class MoonlightArrow extends ModArrow {
 
     @Override
     public void tick() {
-        if (!this.inGround) {
+        if (!this.isInGround()) {
             Vec3d vec3d = this.getVelocity();
             double e = vec3d.x;
             double f = vec3d.y + 0.2f;

@@ -51,7 +51,7 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
                     source = this.getDamageSources().mobProjectile(this, null);
                 }
                 this.updateEntityDamage(serverWorld, living, source);
-                boolean wasHit = living.damage(source, (float) this.getDamage());
+                boolean wasHit = living.damage(serverWorld, source, (float) this.getDamage());
                 this.applyDamageEffects(wasHit, living);
                 this.entitiesHit.add(living.getUuid());
             }

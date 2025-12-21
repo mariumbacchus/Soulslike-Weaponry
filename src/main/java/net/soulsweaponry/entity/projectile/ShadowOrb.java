@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -48,8 +49,8 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
-            target.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.SHADOW_ORB, this, this.getOwner()), 5f);
+        if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
+            target.damage(serverWorld, DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.SHADOW_ORB, this, this.getOwner()), 5f);
             for (RegistryEntry<StatusEffect> effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }

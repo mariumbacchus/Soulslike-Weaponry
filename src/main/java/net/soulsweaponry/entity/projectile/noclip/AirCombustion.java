@@ -56,17 +56,17 @@ public class AirCombustion extends DamagingWarmupEntity {
 
     @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        if (target instanceof WarmthEntity) {
+        if (target instanceof WarmthEntity || !(this.getWorld() instanceof ServerWorld serverWorld)) {
             return;
         }
-        if (this.getWorld() instanceof ServerWorld serverWorld && this.getOwner() instanceof DayStalker stalker) {
+        if (this.getOwner() instanceof DayStalker stalker) {
             NightProwler prowler = stalker.getPartner(serverWorld);
             if (target.equals(prowler)) {
                 return;
             }
         }
-        DamageSource source = this.getOwner() instanceof LivingEntity living ? this.getWorld().getDamageSources().mobAttack(living) : this.getWorld().getDamageSources().mobProjectile(this, null);
-        target.damage(source, (float) this.getDamage());
+        DamageSource source = this.getOwner() instanceof LivingEntity living ? serverWorld.getDamageSources().mobAttack(living) : serverWorld.getDamageSources().mobProjectile(this, null);
+        target.damage(serverWorld, source, (float) this.getDamage());
         if (this.isEmpowered()) {
             target.setOnFireFor(4);
         }

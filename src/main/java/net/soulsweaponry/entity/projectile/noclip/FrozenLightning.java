@@ -3,10 +3,12 @@ package net.soulsweaponry.entity.projectile.noclip;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -27,7 +29,6 @@ public class FrozenLightning extends Entity {
         for (int i = 0; i < 5; i++) {
             this.seeds.add(this.random.nextLong());
         }
-        this.ignoreCameraFrustum = true;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class FrozenLightning extends Entity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (source.getAttacker() instanceof PlayerEntity) {
             if (this.getWorld().isClient) {
                 ParticleHandler.particleSphere(this.getWorld(), 100, this.getX(), this.getBodyY(0.5f), this.getZ(), ParticleEvents.ICE_PARTICLE, 1f);
@@ -57,7 +58,7 @@ public class FrozenLightning extends Entity {
                 }
                 this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
                 Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, 7.5f, 5);
-                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld(), SpawnReason.EVENT);
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(this.getBlockPos()));
                 lightningEntity.setChanneler(null);
                 this.getWorld().spawnEntity(lightningEntity);

@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
@@ -40,22 +41,25 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
 
     @Override
     public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
-        if (!this.getWorld().isClient && target instanceof MjolnirProjectile) {
-            ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
-            this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
-        }
-        boolean damaged = target.damage(damageSource, damage);
-        if (damaged) {
-            int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
-            if (target instanceof LivingEntity living) {
-                FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
-                FrostData.setFrostSource(living, owner);
-                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            if (target instanceof MjolnirProjectile) {
+                ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
+                this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
             }
-            FrostData.setFrostSource(this, owner);
-            Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
+            boolean damaged = target.damage(serverWorld, damageSource, damage);
+            if (damaged) {
+                int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
+                if (target instanceof LivingEntity living) {
+                    FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
+                    FrostData.setFrostSource(living, owner);
+                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
+                }
+                FrostData.setFrostSource(this, owner);
+                Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
+            }
+            return damaged;
         }
-        return damaged;
+        return false;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
 
     private PlayState predicate(AnimationState<?> state) {
         try {
-            if (!this.inGround || this.isNoClip()) {
+            if (!this.isInGround() || this.isNoClip()) {
                 state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
             } else {
                 state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));

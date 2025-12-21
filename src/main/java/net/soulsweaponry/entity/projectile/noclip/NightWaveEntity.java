@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.projectile.noclip;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -19,23 +20,23 @@ public class NightWaveEntity extends NoClipEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.getWorld().isClient) {
-            for (int i = 0; i < 40; ++i) {
-                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
-            }
-        } else {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             if (this.age % 4 == 0) {
                 List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
                 for (LivingEntity living : list) {
                     if (this.getOwner() instanceof LivingEntity) {
-                        living.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
+                        living.damage(serverWorld, this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
                     } else {
-                        living.damage(this.getWorld().getDamageSources().mobProjectile(this, null), 20f * BossConfig.night_prowler_damage_modifier);
+                        living.damage(serverWorld, this.getWorld().getDamageSources().mobProjectile(this, null), 20f * BossConfig.night_prowler_damage_modifier);
                     }
                 }
             }
             if (this.age % 10 == 0) {
                 this.playSound(SoundRegistry.MOONLIGHT_BIG_EVENT, 0.4f, 0.75f);
+            }
+        } else {
+            for (int i = 0; i < 40; ++i) {
+                this.getWorld().addParticle(ParticleRegistry.NIGHTFALL_PARTICLE, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0D, 0.0D, 0.0D);
             }
         }
         if (this.age > 15) {

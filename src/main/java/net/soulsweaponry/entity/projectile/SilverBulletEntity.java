@@ -108,7 +108,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
             this.setPitch(0f);
             this.setYaw(0f);
         }
-        if (!this.inGround) {
+        if (!this.isInGround()) {
             Vec3d vec3d = this.getVelocity();
             double e = vec3d.x;
             double f = vec3d.y;
@@ -267,7 +267,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
         if (this.getTether() > 0 && entityHitResult.getEntity() instanceof LivingEntity target) {
             Entity shooter = this.getOwner();
             if (shooter instanceof LivingEntity) {
-                double resistanceFactor = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
+                double resistanceFactor = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.KNOCKBACK_RESISTANCE));
                 Vec3d toShooter = new Vec3d(shooter.getX() - target.getX(), 0.0, shooter.getZ() - target.getZ());
                 double distance = toShooter.length();
                 double minRange = 1 + this.getTether() * ConfigConstructor.tether_enchant_min_activation_range_per_level;

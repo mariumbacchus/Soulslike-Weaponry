@@ -31,13 +31,11 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.ignoreCameraFrustum = true;
         this.setAllowArrowSticking(false);
     }
 
     public ReturningProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack weaponStack) {
         super(type, owner, world, weaponStack, weaponStack);
-        this.ignoreCameraFrustum = true;
         this.setAllowArrowSticking(false);
     }
 
@@ -87,7 +85,7 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
         if (this.inGroundTime > 4 || age > 60) {
             this.dealtDamage = true;
         }
-        if (!this.inGround && age > 60) {
+        if (!this.isInGround() && age > 60) {
             this.setShouldReturn(true);
         }
         Entity owner = this.getOwner();
@@ -140,21 +138,26 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
         if (inserted) {
             player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1f, (float) this.random.nextGaussian() + .25f);
         }
-        if (!inserted) {
-            this.dropStack(this.asItemStack(), 0.1f);
+        if (!inserted && this.getWorld() instanceof ServerWorld serverWorld) {
+            this.dropStack(serverWorld, this.asItemStack());
         }
         this.discard();
     }
 
     private void dropStack() {
-        if (!this.getWorld().isClient && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
-            this.dropStack(this.asItemStack(), 0.1f);
+        if (this.getWorld() instanceof ServerWorld serverWorld && this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+            this.dropStack(serverWorld, this.asItemStack());
         }
         this.discard();
     }
 
     public boolean shouldReturn() {
         return this.shouldReturn;
+    }
+
+    @Override
+    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
+        return true;
     }
 
     @Override
@@ -228,10 +231,6 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
     @Override
     protected float getDragInWater() {
         return 0.99f;
-    }
-
-    public boolean inGround() {
-        return this.inGround;
     }
 
     @Override

@@ -70,26 +70,26 @@ public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
      */
     public static DefaultAttributeContainer.Builder createAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, 10D)
-                .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
+                .add(EntityAttributes.FOLLOW_RANGE, 120D)
+                .add(EntityAttributes.MAX_HEALTH, 20)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.3D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 10.0D)
+                .add(EntityAttributes.ARMOR, 10D)
+                .add(EntityAttributes.FLYING_SPEED, 0.8D);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!this.getWorld().isClient) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             this.setWarmup(this.getWarmup() - 1);
             if (this.getWarmup() < 0) {
                 this.setEmerge(true);
                 if (this.getWarmup() == -7) {
                     List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
                     for (LivingEntity livingEntity : list) {
-                        this.damage(livingEntity);
+                        this.damage(serverWorld, livingEntity);
                     }
                 }
                 if (!this.startedAttack) {
@@ -104,20 +104,20 @@ public class NightsEdge extends PathAwareEntity implements Ownable, GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         return false;
     }
 
-    private void damage(LivingEntity target) {
+    private void damage(ServerWorld serverWorld, LivingEntity target) {
         LivingEntity livingEntity = this.getOwner();
         if (target.isAlive() && !target.isInvulnerable() && target != livingEntity) {
             if (livingEntity == null) {
-                if (target.damage(this.getDamageSources().magic(), this.getDamage())) {
+                if (target.damage(serverWorld, this.getDamageSources().magic(), this.getDamage())) {
                     target.addVelocity(0, 0.5f, 0);
                 }
             } else {
                 if (!livingEntity.isTeammate(target)) {
-                    if (target.damage(this.getDamageSources().indirectMagic(this, livingEntity), this.getDamage())) {
+                    if (target.damage(serverWorld, this.getDamageSources().indirectMagic(this, livingEntity), this.getDamage())) {
                         target.addVelocity(0, 0.5f, 0);
                     }
                 }

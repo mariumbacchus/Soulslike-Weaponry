@@ -1,10 +1,7 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,6 +19,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class MjolnirProjectile extends ReturningProjectile implements GeoEntity {
@@ -52,22 +50,25 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
 
     @Override
     public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
+        if (!(this.getWorld() instanceof ServerWorld serverWorld)) {
+            return false;
+        }
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;
         boolean hitAxe = target instanceof LeviathanAxeEntity;
-        boolean bl = target.damage(damageSource, damage) || hitAxe;
+        boolean bl = target.damage(serverWorld, damageSource, damage) || hitAxe;
         int strikes = 1;
         if (this.getWorld().isThundering() || hitAxe) strikes = 3;
         if (bl && this.getWorld() instanceof ServerWorld && this.getWorld().isSkyVisible(blockPos = target.getBlockPos())) {
             for (int i = 0; i < strikes; i++) {
-                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
+                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld(), SpawnReason.EVENT);
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                 lightningEntity.setChanneler(owner instanceof ServerPlayerEntity ? (ServerPlayerEntity)owner : null);
                 this.getWorld().spawnEntity(lightningEntity);
             }
             if (hitAxe) {
-                FrozenLightning frozenLightning = EntityRegistry.FROZEN_LIGHTNING.create(this.getWorld());
+                FrozenLightning frozenLightning = EntityRegistry.FROZEN_LIGHTNING.create(this.getWorld(), SpawnReason.EVENT);
                 frozenLightning.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                 this.getWorld().spawnEntity(frozenLightning);
             }
@@ -94,7 +95,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
 
     private PlayState predicate(AnimationState<?> state) {
         try {
-            if (!this.inGround || this.isNoClip()) {
+            if (!this.isInGround() || this.isNoClip()) {
                 state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
             } else {
                 state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));

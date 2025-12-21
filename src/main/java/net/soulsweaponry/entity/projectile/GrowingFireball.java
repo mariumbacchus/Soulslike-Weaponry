@@ -128,8 +128,8 @@ public class GrowingFireball extends UntargetableFireball implements GeoEntity {
     }
 
     private void detonate() {
-        if (!this.getWorld().isClient) {
-            boolean bl = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            boolean bl = serverWorld.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
             this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), this.getExplosionPower(), bl, World.ExplosionSourceType.MOB);
             this.discard();
         }

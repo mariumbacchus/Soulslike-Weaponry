@@ -38,8 +38,8 @@ public class BlackflameSnakeEntity extends NoClipEntity {
     public void tick() {
         super.tick();
         Entity target;
-        if (!this.getWorld().isClient) {
-            if ((target = this.getSavedTarget((ServerWorld) this.getWorld())) != null) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            if ((target = this.getSavedTarget(serverWorld)) != null) {
                 double f = target.getX() - this.getX();
                 double g = (target.getBodyY(0.5) - (this.getBodyY(0.5D))) / 4f;
                 double h = target.getZ() - this.getZ();
@@ -49,7 +49,7 @@ public class BlackflameSnakeEntity extends NoClipEntity {
             if (this.age % 4 == 0) {
                 for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox())) {
                     if (entity instanceof LivingEntity living && !this.isOwner(living) && !(entity instanceof NightProwler)) {
-                        if (living.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage())) {
+                        if (living.damage(serverWorld, this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage())) {
                             living.addVelocity(0, 1.5f, 0);
                             if (living instanceof PlayerEntity) {
                                 this.hasHitPlayer = true;

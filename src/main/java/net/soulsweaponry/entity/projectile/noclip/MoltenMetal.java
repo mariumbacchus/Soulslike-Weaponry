@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
@@ -67,19 +68,21 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
             }
         }
         List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
-        for (LivingEntity livingEntity : list) {
-            if (!livingEntity.isAlive() || livingEntity.isInvulnerable()) {
-                continue;
-            }
-            if (this.getOwner() != null && (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity))) {
-                continue;
-            }
-            livingEntity.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
-            livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
-            ItemStack stack = livingEntity.getOffHandStack();
-            if (livingEntity instanceof PlayerEntity player && stack.isIn(ConventionalItemTags.SHIELD_TOOLS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                player.disableShield();
-                stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            for (LivingEntity livingEntity : list) {
+                if (!livingEntity.isAlive() || livingEntity.isInvulnerable()) {
+                    continue;
+                }
+                if (this.getOwner() != null && (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity))) {
+                    continue;
+                }
+                livingEntity.damage(serverWorld, DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
+                livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
+                ItemStack stack = livingEntity.getOffHandStack();
+                if (livingEntity instanceof PlayerEntity player && stack.isIn(ConventionalItemTags.SHIELD_TOOLS) && !player.getItemCooldownManager().isCoolingDown(stack)) {
+                    player.disableShield(stack);
+                    stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
+                }
             }
         }
         if (this.age > this.getMaxAge() || this.getWorld().getBlockState(this.getBlockPos().down()).isAir()) {

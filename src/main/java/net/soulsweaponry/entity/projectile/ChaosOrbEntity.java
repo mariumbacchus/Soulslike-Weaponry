@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingItemEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -97,6 +98,11 @@ public class ChaosOrbEntity extends Entity implements GeoEntity, FlyingItemEntit
         } else {
             this.setPos(d, e, f);
         }
+    }
+
+    @Override
+    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+        return false;
     }
 
     @Override

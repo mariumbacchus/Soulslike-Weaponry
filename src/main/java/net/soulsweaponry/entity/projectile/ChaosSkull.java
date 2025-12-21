@@ -73,7 +73,7 @@ public class ChaosSkull extends WitherSkullEntity {
      */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity entity && this.getOwner() instanceof LivingEntity) {
+        if (entityHitResult.getEntity() != null && entityHitResult.getEntity() instanceof LivingEntity entity && this.getOwner() instanceof LivingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
             int rng = this.random.nextInt(3);
             if (rng == 0) {
                 int duration = this.random.nextInt(160) + 40;
@@ -84,7 +84,7 @@ public class ChaosSkull extends WitherSkullEntity {
             if (damage > this.getModifiedDamage(20)) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.HOSTILE, .5f, 1f);
             }
-            entity.damage(this.getWorld().getDamageSources().mobAttack((LivingEntity)this.getOwner()), damage);
+            entity.damage(serverWorld, this.getWorld().getDamageSources().mobAttack((LivingEntity)this.getOwner()), damage);
         }
     }
 

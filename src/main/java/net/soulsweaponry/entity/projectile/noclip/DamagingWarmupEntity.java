@@ -6,6 +6,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -29,7 +30,7 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.getWorld().isClient) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             this.reduceWarmup(1);
             if (this.getWarmup() < 0) {
                 if (this.getWarmup() == -7) {
@@ -44,10 +45,10 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
                         }
                         boolean wasHit;
                         if (this.getOwner() instanceof LivingEntity owner) {
-                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, owner),
+                            wasHit = livingEntity.damage(serverWorld, this.getWorld().getDamageSources().mobProjectile(this, owner),
                                     (float) this.getDamage() + this.getBonusDamage(livingEntity));
                         } else {
-                            wasHit = livingEntity.damage(this.getWorld().getDamageSources().mobProjectile(this, null),
+                            wasHit = livingEntity.damage(serverWorld, this.getWorld().getDamageSources().mobProjectile(this, null),
                                     (float) this.getDamage() + this.getBonusDamage(livingEntity));
                         }
                         this.applyDamageEffects(wasHit, livingEntity);

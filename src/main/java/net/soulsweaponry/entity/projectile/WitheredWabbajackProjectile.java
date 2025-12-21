@@ -82,7 +82,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (!this.getWorld().isClient) {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
@@ -104,7 +104,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                             boolean bl = this.random.nextBoolean();
                             if (bl) {
                                 ItemStack separate = itemStack.copy();
-                                living.dropStack(separate);
+                                living.dropStack(serverWorld, separate);
                                 itemStack.decrement(1);
                                 getWorld().playSound(null, living.getBlockPos(), SoundEvents.ENTITY_ARMOR_STAND_BREAK, SoundCategory.PLAYERS, 1f, 1f);
                             }
@@ -116,7 +116,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                         if (power > 50) {
                             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.CRIT_HIT_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                         }
-                        target.damage(this.getWorld().getDamageSources().magic(), power);
+                        target.damage(serverWorld, this.getWorld().getDamageSources().magic(), power);
                     }
                 }
             }
@@ -153,14 +153,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             BlockPos blockPos = blockHitResult.getBlockPos();
             this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
         }
-        if (this.getOwner() != null && this.getOwner() instanceof LivingEntity) {
-            this.randomCollisionEffect((LivingEntity)this.getOwner());
+        if (this.getOwner() != null && this.getOwner() instanceof LivingEntity owner && this.getWorld() instanceof ServerWorld serverWorld) {
+            this.randomCollisionEffect(serverWorld, owner);
         }
         this.resetListLuckFactors();
         this.discard();
     }
 
-    private void randomCollisionEffect(LivingEntity user) {
+    private void randomCollisionEffect(ServerWorld serverWorld, LivingEntity user) {
         int power = (int) (this.getBound(this.collisionAttributes.powerBound , this.collisionAttributes.powerLuckMod, user)
                         + WeaponUtil.getLuckFactor(user) * this.collisionAttributes.powerLuckFactorMod);
         boolean unluckyAf = this.getBound(100 , 10, user) == 1;
@@ -219,7 +219,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
                 user.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 5));
             }
             default -> {
-                boolean bl = getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+                boolean bl = serverWorld.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
                 this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, bl, bl ? World.ExplosionSourceType.TNT : World.ExplosionSourceType.TRIGGER);
             }
         }
