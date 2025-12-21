@@ -13,6 +13,7 @@ import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
@@ -87,7 +88,7 @@ public class ChaosMonarchGoal extends Goal {
     public void tick() {
         this.attackCooldown--;
         LivingEntity target = this.boss.getTarget();
-        if (target != null) {
+        if (target != null && this.boss.getWorld() instanceof ServerWorld serverWorld) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
@@ -105,7 +106,7 @@ public class ChaosMonarchGoal extends Goal {
                             this.boss.getWorld().playSound(null, this.boss.getX(), this.boss.getY(), this.boss.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f);
                             boolean bl = this.teleportAway();
                             if (!bl) {
-                                this.explode();
+                                this.explode(serverWorld);
                             } else {
                                 if (!this.boss.getWorld().isClient) {
                                     ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH);
@@ -121,10 +122,10 @@ public class ChaosMonarchGoal extends Goal {
                         if (this.attackStatus < 5) this.blockPos = target.getBlockPos();
                         if (this.blockPos != null) {
                             this.boss.getLookControl().lookAt(this.blockPos.getX(), this.blockPos.getY(), this.blockPos.getZ());
-                            if (this.attackStatus == 8) this.hitBox(blockPos, HitboxType.SWIPE);
-                            if (this.attackStatus == 16) this.hitBox(blockPos, HitboxType.SWIPE);
-                            if (this.attackStatus == 27) this.hitBox(blockPos, HitboxType.THRUST);
-                            if (this.attackStatus == 39) this.hitBox(blockPos, HitboxType.BONK);
+                            if (this.attackStatus == 8) this.hitBox(serverWorld, blockPos, HitboxType.SWIPE);
+                            if (this.attackStatus == 16) this.hitBox(serverWorld, blockPos, HitboxType.SWIPE);
+                            if (this.attackStatus == 27) this.hitBox(serverWorld, blockPos, HitboxType.THRUST);
+                            if (this.attackStatus == 39) this.hitBox(serverWorld, blockPos, HitboxType.BONK);
                         }
                         if (this.attackStatus >= 45) this.resetAttack(1);
                     }
@@ -168,18 +169,18 @@ public class ChaosMonarchGoal extends Goal {
      * what I wanted but good enough, maybe something I can fix later when I actaully learn
      * how to create proper hitboxes.
      */
-    private void hitBox(BlockPos blockPos, HitboxType type) {
+    private void hitBox(ServerWorld serverWorld, BlockPos blockPos, HitboxType type) {
         switch (type) {
             case SWIPE -> {
                 this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
-                this.generateHitbox(blockPos, 3, 15f);
+                this.generateHitbox(serverWorld, blockPos, 3, 15f);
             }
             case THRUST -> {
                 this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.HOSTILE, 1f, 1f);
-                this.generateHitbox(blockPos, 2, 20);
+                this.generateHitbox(serverWorld, blockPos, 2, 20);
             }
             case BONK -> {
-                this.generateHitbox(blockPos, 2, 30f);
+                this.generateHitbox(serverWorld, blockPos, 2, 30f);
                 this.boss.getWorld().playSound(null, blockPos, SoundEvents.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.boss.getWorld(), 100, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
@@ -188,12 +189,12 @@ public class ChaosMonarchGoal extends Goal {
         }
     }
 
-    private void generateHitbox(BlockPos blockPos, double expand, float damage) {
+    private void generateHitbox(ServerWorld serverWorld, BlockPos blockPos, double expand, float damage) {
         Box box = new Box(blockPos).expand(expand);
         List<Entity> intersectingEntities = this.boss.getWorld().getOtherEntities(this.boss, box);
         for (Entity entity : intersectingEntities) {
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
+                livingEntity.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
                 livingEntity.takeKnockback(this.boss.getRandom().nextDouble(), this.boss.getX() - livingEntity.getX(), this.boss.getZ() - livingEntity.getZ());
             }
         }
@@ -343,7 +344,7 @@ public class ChaosMonarchGoal extends Goal {
         return bl3;
     }
 
-    private void explode() {
+    private void explode(ServerWorld serverWorld) {
         this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 5f, 1f);
         Box chunkBox = new Box(this.boss.getBlockPos()).expand(5);
         List<Entity> nearbyEntities = this.boss.getWorld().getOtherEntities(this.boss, chunkBox);
@@ -352,13 +353,10 @@ public class ChaosMonarchGoal extends Goal {
                 double x = closestTarget.getX() - (this.boss.getX());
                 double z = closestTarget.getZ() - this.boss.getZ();
                 closestTarget.takeKnockback(10F, -x, -z);
-                closestTarget.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
+                closestTarget.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
             }
         }
-
-        if (!this.boss.getWorld().isClient) {
-            ParticleHandler.particleSphereList(this.boss.getWorld(), 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
-        }
+        ParticleHandler.particleSphereList(serverWorld, 1000, this.boss.getX(), this.boss.getY(), this.boss.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
     }
 
     enum HitboxType {

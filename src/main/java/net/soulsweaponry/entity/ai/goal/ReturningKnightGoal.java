@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -87,7 +88,7 @@ public class ReturningKnightGoal extends Goal {
         summonCooldown--;
         LivingEntity target = this.boss.getTarget();
 
-        if (target != null && !this.boss.isSpawning()) {
+        if (target != null && !this.boss.isSpawning() && this.boss.getWorld() instanceof ServerWorld serverWorld) {
             this.boss.setAttacking(true);                
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
@@ -166,7 +167,7 @@ public class ReturningKnightGoal extends Goal {
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.takeKnockback(2f, -(livingEntity.getX() - this.boss.getX()), -(livingEntity.getZ() - this.boss.getZ()));
-                            livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(20f));
+                            livingEntity.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(20f));
                         }
                     }
                     this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -179,7 +180,7 @@ public class ReturningKnightGoal extends Goal {
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity livingEntity) {
                             livingEntity.addVelocity(0, 1, 0);
-                            livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(25f));
+                            livingEntity.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(25f));
                         }
                     }
                     this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -214,7 +215,7 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 18) { //23
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity living) {
-                            entity.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(60f));
+                            entity.damage(serverWorld, DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(60f));
                             entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
                             if (living.isDead() && this.isValidSpawn(living.getBlockPos())) {
                                 this.summonAllies(living.getPos(), false);
@@ -250,7 +251,7 @@ public class ReturningKnightGoal extends Goal {
                 double x = target.getX() - this.boss.getX();
                 double z = target.getZ() - this.boss.getZ();
                 if (attackStatus == 12 && distanceToEntity < 25f) {
-                    target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(10f));
+                    target.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(10f));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
                     target.takeKnockback(2f, -x, -z);
@@ -284,7 +285,7 @@ public class ReturningKnightGoal extends Goal {
                 if (this.attackStatus == 52) {
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity) {
-                            entity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
+                            entity.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
                             entity.setVelocity(entity.getVelocity().x, 1.5f, entity.getVelocity().z);
                             this.boss.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
                             if (!this.boss.getWorld().isClient) {

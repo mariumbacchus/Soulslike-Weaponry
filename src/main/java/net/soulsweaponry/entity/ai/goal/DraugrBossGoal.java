@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -47,19 +48,19 @@ public class DraugrBossGoal extends MeleeAttackGoal {
 
     public void reset(float cooldownModifier, boolean shieldUp) {
         this.attackStatus = 0;
-        this.attackCooldown = (int)Math.floor((BossConfig.old_champions_remains_attack_cooldown_ticks * cooldownModifier) /
-                this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F ? 2 : 1);
+        this.attackCooldown = (BossConfig.old_champions_remains_attack_cooldown_ticks * cooldownModifier) /
+                this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F ? 2 : 1;
         this.boss.setState(States.IDLE);
         this.boss.updateDisableShield(false);
         this.boss.setShielding(shieldUp);
     }
 
-    public boolean applyDamage(LivingEntity target, float baseDamage) {
+    public boolean applyDamage(ServerWorld serverWorld, LivingEntity target, float baseDamage) {
         float modified = baseDamage * BossConfig.old_champions_remains_damage_modifier;
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }
-        return target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), modified);
+        return target.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), modified);
     }
 
     @Override
@@ -160,7 +161,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         super.tick();
         LivingEntity target = this.boss.getTarget();
-        if (target != null) {
+        if (target != null && this.boss.getWorld() instanceof ServerWorld serverWorld) {
             this.boss.setAttacking(true);
 
             if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F && !this.hasPostureBroken) {
@@ -191,35 +192,33 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             }
 
             switch (this.boss.getState()) {
-                case COUNTER -> this.singleTarget(target, 30, new int[]{18}, 20f, 0, true, true, true);
-                case SHIELD_BASH -> this.singleTarget(target, 30, new int[]{18}, 10f, 4f, false, false, true);
-                case SHIELD_VAULT -> this.leapAttack(target, 10f, true);
+                case COUNTER -> this.singleTarget(serverWorld, target, 30, new int[]{18}, 20f, 0, true, true, true);
+                case SHIELD_BASH -> this.singleTarget(serverWorld, target, 30, new int[]{18}, 10f, 4f, false, false, true);
+                case SHIELD_VAULT -> this.leapAttack(serverWorld, target, 10f, true);
                 case SWIPES -> {
                     int[] frames = {10, 18, 26};
-                    this.singleTarget(target, 33, frames, 16f, 0, false, false, false);
+                    this.singleTarget(serverWorld, target, 33, frames, 16f, 0, false, false, false);
                 }
                 case BACKSTEP -> this.backstep(target);
-                case HEAVY -> this.heavyBlow(target);
-                case GROUND_SLAM -> this.aoe(30, 14, 8f, 3f, List.of(), 4D, false);
-                case PARRY -> this.parry(target);
-                case BATTLE_CRY -> {
-                    this.aoe(50, 30, 0, 0, List.of(StatusEffects.SLOWNESS, StatusEffects.WEAKNESS), 10D, true);
-                }
-                case LEAP -> this.leapAttack(target, 18f, false);
-                case RUN_THRUST -> this.runThrust(target);
+                case HEAVY -> this.heavyBlow(serverWorld, target);
+                case GROUND_SLAM -> this.aoe(serverWorld, 30, 14, 8f, 3f, List.of(), 4D, false);
+                case PARRY -> this.parry(serverWorld, target);
+                case BATTLE_CRY -> this.aoe(serverWorld, 50, 30, 0, 0, List.of(StatusEffects.SLOWNESS, StatusEffects.WEAKNESS), 10D, true);
+                case LEAP -> this.leapAttack(serverWorld, target, 18f, false);
+                case RUN_THRUST -> this.runThrust(serverWorld, target);
                 default -> this.boss.setState(States.IDLE);
             }
         }
     }
 
-    private void singleTarget(LivingEntity target, int maxTicks, int[] frames, float damage, float knockback,
+    private void singleTarget(ServerWorld serverWorld, LivingEntity target, int maxTicks, int[] frames, float damage, float knockback,
                               boolean applyBleed, boolean disableShield, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         if (disableShield) this.boss.updateDisableShield(true);
         for (int frame : frames) {
             if (attackStatus == frame && this.isInMeleeRange(target)) {
-                if (this.applyDamage(target, damage)) {
+                if (this.applyDamage(serverWorld, target, damage)) {
                     this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                     if (!this.boss.getWorld().isClient) {
                         ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
@@ -241,7 +240,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void leapAttack(LivingEntity target, float damage, boolean stunTarget) {
+    private void leapAttack(ServerWorld serverWorld, LivingEntity target, float damage, boolean stunTarget) {
         this.attackStatus++;
         this.boss.updateDisableShield(true);
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
@@ -253,7 +252,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         if (attackStatus == 26) {
             this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             if (this.isInMeleeRange(target)) {
-                if (this.applyDamage(target, damage)) {
+                if (this.applyDamage(serverWorld, target, damage)) {
                     if (stunTarget) {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 10));
                     }
@@ -268,9 +267,9 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void parry(LivingEntity target) {
+    private void parry(ServerWorld serverWorld, LivingEntity target) {
         int[] frame = {26};
-        this.singleTarget(target, 40, frame, 18f, 0, false, true, false);
+        this.singleTarget(serverWorld, target, 40, frame, 18f, 0, false, true, false);
         if (attackStatus == 8 && this.isInMeleeRange(target)) {
             if (!target.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
                 this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT, SoundCategory.HOSTILE, .5f, 1f);
@@ -279,7 +278,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void aoe(int maxTicks, int frame, float damage, float knockback, List<RegistryEntry<StatusEffect>> effects, double boxSize, boolean shieldUpWhenDone) {
+    private void aoe(ServerWorld serverWorld, int maxTicks, int frame, float damage, float knockback, List<RegistryEntry<StatusEffect>> effects, double boxSize, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         if (!effects.isEmpty() && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
@@ -296,7 +295,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         living.addStatusEffect(new StatusEffectInstance(effect, 200, 0));
                     }
                     if (damage > 0) {
-                        this.applyDamage(living, damage);
+                        this.applyDamage(serverWorld, living, damage);
                         double x = living.getX() - this.boss.getX();
                         double z = living.getZ() - this.boss.getZ();
                         living.takeKnockback(knockback, -x, -z);
@@ -325,7 +324,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void runThrust(LivingEntity target) {
+    private void runThrust(ServerWorld serverWorld, LivingEntity target) {
         this.attackStatus++;
         if (attackStatus <= 10) {
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 5, 3));
@@ -333,7 +332,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         }
         if (attackStatus == 13 && this.isInMeleeRange(target)) {
-            if (this.applyDamage(target, 16f)) {
+            if (this.applyDamage(serverWorld, target, 16f)) {
                 BleedData.addBleed(target, (int) BossConfig.old_champions_remains_bleed_applied);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                 this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
@@ -347,7 +346,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void heavyBlow(LivingEntity target) {
+    private void heavyBlow(ServerWorld serverWorld, LivingEntity target) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
         if (attackStatus == 1 && target.getBlockPos() != null) this.boss.setTargetPos(target.getBlockPos());
@@ -362,7 +361,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
             }
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(1D))) {
                 if (entity instanceof LivingEntity living) {
-                    this.applyDamage(living, 25f);
+                    this.applyDamage(serverWorld, living, 25f);
                     living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 }
             }

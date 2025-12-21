@@ -29,8 +29,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.registry.*;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -74,7 +74,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         this.goalSelector.add(2, new NightProwlerGoal(this, 0.75D, true));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isPartner(entity)));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
@@ -203,7 +203,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -321,13 +321,13 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.night_prowler_health)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.night_prowler_armor)
-                .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
+                .add(EntityAttributes.FOLLOW_RANGE, 120D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.night_prowler_health)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.3D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 10.0D)
+                .add(EntityAttributes.ARMOR, BossConfig.night_prowler_armor)
+                .add(EntityAttributes.FLYING_SPEED, 0.8D);
     }
 
     @Override
@@ -354,8 +354,8 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         if (!this.getWorld().isClient) {
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
@@ -379,7 +379,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 NightProwlerGoal placeHolder = new NightProwlerGoal(this, 1D, true);
-                placeHolder.aoe(this.getBoundingBox().expand(4D), 50f, 4f, true);
+                placeHolder.aoe(serverWorld, this.getBoundingBox().expand(4D), 50f, 4f, true);
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
@@ -416,7 +416,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
@@ -451,7 +451,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (source.isOf(DamageTypes.EXPLOSION)) {
             amount = amount * 0.25f;
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     @SuppressWarnings({"deprecation"})

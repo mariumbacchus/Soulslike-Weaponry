@@ -83,7 +83,7 @@ public class FreyrSwordGoal extends Goal {
         if (this.entity.getWorld() instanceof ServerWorld serverWorld) {
             for (double[] hitFrame : this.hitFrames) {
                 if (this.attackTicks == hitFrame[0]) {
-                    if (target.damage(source, (float) (this.getAttackDamage(serverWorld, target) * hitFrame[1]))) {
+                    if (target.damage(serverWorld, source, (float) (this.getAttackDamage(serverWorld, target) * hitFrame[1]))) {
                         EnchantmentHelper.onTargetDamaged(serverWorld, target, source, this.entity.getStack());
                         ParticleHandler.singleParticle(this.entity.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                         world.playSound(null, this.entity.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.NEUTRAL, .8f, 1f);

@@ -24,9 +24,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
@@ -77,19 +77,19 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, p -> (!p.hasStatusEffect(EffectRegistry.CHUNGUS_TONIC_EFFECT) || this.isAggressive()) && !this.isTamed()));
-        this.targetSelector.add(5, new ActiveTargetGoal<>(this, MobEntity.class, true, entity -> entity instanceof Monster
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (target, serverWorld) -> (!target.hasStatusEffect(EffectRegistry.CHUNGUS_TONIC_EFFECT) || this.isAggressive()) && !this.isTamed()));
+        this.targetSelector.add(5, new ActiveTargetGoal<>(this, MobEntity.class, true, (entity, serverWorld) -> entity instanceof Monster
                 && !(entity instanceof CreeperEntity) && this.isTamed() && !this.isTeammate(entity)));
         this.targetSelector.add(6, new RevengeGoal(this).setGroupRevenge());
     }
 
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.moderatly_sized_chungus_heath)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.moderatly_sized_chungus_armor)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.FOLLOW_RANGE, 35D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.moderatly_sized_chungus_heath)
+                .add(EntityAttributes.ARMOR, BossConfig.moderatly_sized_chungus_armor)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.30000001192092896D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -145,8 +145,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld world) {
+        super.mobTick(world);
         if (!this.healthUpdated) {
             int rand = this.getRandom().nextInt(100);
             switch (rand) {
@@ -194,7 +194,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     private void updateStats(float health, int exp) {
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(health);
+        this.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(health);
         this.setHealth(health);
         this.experiencePoints = exp;
     }
@@ -308,7 +308,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     @Override
     protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
         super.dropEquipment(world, source, causedByPlayer);
-        this.inventory.clearToList().forEach(this::dropStack);
+        this.inventory.clearToList().forEach(stack -> this.dropStack(world, stack));
     }
 
     @Override
@@ -345,7 +345,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
         }
         LootTable lootTable = server.getReloadableRegistries().getLootTable(CHUNGUS_TRADES);
         List<ItemStack> list = lootTable.generateLoot(
-                new LootContextParameterSet.Builder((ServerWorld)this.getWorld()).add(LootContextParameters.THIS_ENTITY, this).build(LootContextTypes.BARTER)
+                new LootWorldContext.Builder((ServerWorld)this.getWorld()).add(LootContextParameters.THIS_ENTITY, this).build(LootContextTypes.BARTER)
         );
         return list.isEmpty() ? Items.DIRT.getDefaultStack() : list.getFirst();
     }
@@ -356,7 +356,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    protected void loot(ItemEntity item) {
+    protected void loot(ServerWorld world, ItemEntity item) {
         if (item.getStack().isOf(ItemRegistry.CHUNGUS_EMERALD)) {
             this.getInventory().addStack(item.getStack());
             this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ITEM_PICKUP, this.getSoundCategory(), 1f, 1f);
@@ -365,7 +365,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
-    public boolean isTeammate(Entity other) {
+    protected boolean isInSameTeam(Entity other) {
         if (other instanceof Tameable) {
             if (((Tameable)other).getOwner() != null && this.getOwner() != null) {
                 if (((Tameable)other).getOwner() == this.getOwner()) {
@@ -373,7 +373,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
                 }
             }
         }
-        return super.isTeammate(other);
+        return super.isInSameTeam(other);
     }
 
     public static boolean canSpawnInDark(EntityType<? extends MobEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {

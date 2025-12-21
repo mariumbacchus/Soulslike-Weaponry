@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -57,10 +58,10 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
-                entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
+                (entity, serverWorld) -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
         /* For when the other boss that summons this is implemented.
         * if (!this.isTamed()) {
             this.targetSelector.add(5, new RevengeGoal(this, EndBoss.class).setGroupRevenge());
@@ -160,13 +161,13 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     public static DefaultAttributeContainer.Builder createGiantAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.frost_giant_health)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 14.0D)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 3.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.frost_giant_armor)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0D);
+                .add(EntityAttributes.FOLLOW_RANGE, 30D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.frost_giant_health)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.20D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 14.0D)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 3.0D)
+                .add(EntityAttributes.ARMOR, BossConfig.frost_giant_armor)
+                .add(EntityAttributes.ATTACK_KNOCKBACK, 1.0D);
     }
 
     @Override
@@ -239,7 +240,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         public void tick() {
             super.tick();
             LivingEntity target = this.mob.getTarget();
-            if (target != null) {
+            if (target != null && this.mob.getWorld() instanceof ServerWorld serverWorld) {
                 double distanceToEntity = this.mob.squaredDistanceTo(target);
                 double d = this.getSquaredMaxAttackDistance(target);
                 if (distanceToEntity <= d && this.getCooldown() <= 0 && !this.mob.isSmashing()) {
@@ -251,7 +252,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
                     if (this.attackStatus == 32) {
                         for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
                             if (entity instanceof LivingEntity living && !this.isOwner(living)) {
-                                if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
+                                if (this.mob.tryAttack(serverWorld, living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
                             }
                         }
                         if (!this.mob.getWorld().isClient) {

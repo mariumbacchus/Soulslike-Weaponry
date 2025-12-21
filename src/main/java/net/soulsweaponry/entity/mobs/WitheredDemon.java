@@ -46,7 +46,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
 
     public WitheredDemon(EntityType<? extends WitheredDemon> entityType, World world) {
         super(entityType, world);
-        this.ignoreCameraFrustum = true;
         this.experiencePoints = 20;
     }
 
@@ -106,7 +105,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true, target -> {
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (target, serverWorld) -> {
             boolean bl = true;
             for (ItemStack stack : target.getArmorItems()) {
                 if (stack.getItem() instanceof Hallowheart) {
@@ -123,13 +122,13 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.withered_demon_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.withered_demon_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+        .add(EntityAttributes.FOLLOW_RANGE, 35D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.withered_demon_health)
+        .add(EntityAttributes.ARMOR, BossConfig.withered_demon_armor)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.12D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 12.0D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+        .add(EntityAttributes.ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -182,18 +181,16 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     @Override
-    public boolean tryAttack(Entity target) {
+    public boolean tryAttack(ServerWorld serverWorld, Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
         DamageSource damageSource = this.getDamageSources().mobAttack(this);
-        boolean bl = target.damage(damageSource, g);
+        boolean bl = target.damage(serverWorld, damageSource, g);
         if (bl) {
-            double d = target instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE) : 0.0;
+            double d = target instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(EntityAttributes.KNOCKBACK_RESISTANCE) : 0.0;
             double e = Math.max(0.0, 1.0 - d);
             target.setVelocity(target.getVelocity().add(0.0, 0.4F * e, 0.0));
-            if (this.getWorld() instanceof ServerWorld serverWorld) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, target, damageSource);
-            }
+            EnchantmentHelper.onTargetDamaged(serverWorld, target, damageSource);
         }
         return bl;
     }
@@ -249,10 +246,10 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
                 this.mob.setSwingArm(true);
             }
 
-            if (this.mob.getSwingArm()) {
+            if (this.mob.getSwingArm() && this.mob.getWorld() instanceof ServerWorld serverWorld) {
                 this.attackStatus++;
                 if (attackStatus == 10 && squaredDistance <= attackDistance) {
-                    this.mob.tryAttack(target);
+                    this.mob.tryAttack(serverWorld, target);
                 }
                 if (attackStatus >= 30) {
                     this.mob.setSwingArm(false);
@@ -279,7 +276,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     private float getAttackDamage() {
-        return (float)this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        return (float)this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
     }
 
     @Override

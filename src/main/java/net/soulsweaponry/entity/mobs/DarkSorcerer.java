@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
@@ -43,11 +44,11 @@ public class DarkSorcerer extends HostileEntity {
 
     public static DefaultAttributeContainer.Builder createSorcererAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.dark_sorcerer_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.dark_sorcerer_bonus_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+        .add(EntityAttributes.FOLLOW_RANGE, 25D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.dark_sorcerer_health)
+        .add(EntityAttributes.ARMOR, BossConfig.dark_sorcerer_bonus_armor)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.3000000003D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -126,7 +127,7 @@ public class DarkSorcerer extends HostileEntity {
             LivingEntity target = this.user.getTarget();
             double distanceToEntity = this.user.squaredDistanceTo(target);
 
-            if (target != null) {
+            if (target != null && this.user.getWorld() instanceof ServerWorld serverWorld) {
                 this.user.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
                 //Heal boss when close
@@ -146,7 +147,7 @@ public class DarkSorcerer extends HostileEntity {
                         this.user.setBeaming(true);
                         this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (attackTicks < 0) {
-                            target.damage(this.user.getWorld().getDamageSources().mobAttack(user), 2f);
+                            target.damage(serverWorld, this.user.getWorld().getDamageSources().mobAttack(user), 2f);
                             attackTicks = 10;
                         }
                     } else {

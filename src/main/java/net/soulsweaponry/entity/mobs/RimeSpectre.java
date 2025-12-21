@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -29,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -70,20 +72,20 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isTamed()
             || !(this.getOwner() instanceof PlayerEntity)));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
-                entity -> this.isTamed() && entity instanceof Monster && !this.isTeammate(entity)));
+                (entity, serverWorld) -> this.isTamed() && entity instanceof Monster && !this.isTeammate(entity)));
         this.targetSelector.add(5, new RevengeGoal(this).setGroupRevenge());
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (source.isOf(DamageTypes.FREEZE)) return false;
         if (source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC) || source.isOf(DamageSourceRegistry.MAGIC_DAMAGE_BYPASS_COOLDOWN)) {
-            return super.damage(source, amount);
+            return super.damage(serverWorld, source, amount);
         }
-        return super.damage(source, amount * 0.1f);
+        return super.damage(serverWorld, source, amount * 0.1f);
     }
 
     @Override
@@ -101,11 +103,11 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
 
     public static DefaultAttributeContainer.Builder createSpectreAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.rime_spectre_health)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.rime_spectre_armor)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
+                .add(EntityAttributes.FOLLOW_RANGE, 20D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.rime_spectre_health)
+                .add(EntityAttributes.ARMOR, BossConfig.rime_spectre_armor)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.5D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 10D);
     }
 
     @Override
@@ -215,7 +217,7 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
         this.setNoGravity(true);
         for (Entity entity : this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(6D))) {
             if (entity instanceof LivingEntity target && !this.isOwner(target) && !this.isTeammate(target)) {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 20, 0));
+                FrostData.addFrost(target, 5);
             }
         }
         if (this.hasStatusEffect(EffectRegistry.FREEZING)) this.removeStatusEffect(EffectRegistry.FREEZING);
@@ -230,9 +232,8 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    public void move(MovementType movementType, Vec3d movement) {
-        super.move(movementType, movement);
-        this.checkBlockCollision();
+    protected boolean shouldTickBlockCollision() {
+        return !this.isRemoved();
     }
 
     @Override
@@ -313,19 +314,19 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
         public void tick() {
             this.cooldown = Math.max(this.cooldown - 1, 0);
             LivingEntity target = this.mob.getTarget();
-            if (target != null && target.getBlockPos() != null) {
+            if (target != null && target.getBlockPos() != null && this.mob.getWorld() instanceof ServerWorld serverWorld) {
                 Vec3d vec3d = target.getEyePos();
                 if (this.cooldown > 0) {
                     this.moveRandomSpot(vec3d);
                 }
                 if (this.cooldown <= 0 && !this.mob.isInsideWall()) {
                     this.mob.setShooting(true);
-                    this.frostBeam(target);
+                    this.frostBeam(serverWorld, target);
                 }
             }
         }
 
-        private void frostBeam(LivingEntity target) {
+        private void frostBeam(ServerWorld serverWorld, LivingEntity target) {
             attackStatus++;
             this.mob.setShootPos(target.getBlockPos());
             this.mob.getLookControl().lookAt(target);
@@ -336,8 +337,9 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
                     Box box = new Box(target.getPos(), this.mob.getPos().add(0, 1, 0)).expand(1D);
                     for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, box)) {
                         if (entity instanceof LivingEntity living && !this.mob.isOwner(living) && !this.mob.isTeammate(living)) {
-                            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 2));
-                            living.damage(mob.getWorld().getDamageSources().mobAttack(this.mob), 2f);
+                            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 40, 0));
+                            living.damage(serverWorld, mob.getWorld().getDamageSources().mobAttack(this.mob), 2f);
+                            FrostData.addFrost(living, 4);
                         }
                     }
                 }

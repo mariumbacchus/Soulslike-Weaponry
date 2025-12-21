@@ -46,7 +46,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public abstract int getXp();
 
     @Override
-    protected void mobTick() {
+    protected void mobTick(ServerWorld serverWorld) {
         if (!this.hasUpdatedHealth) {
             this.setHealth(this.getMaxHealth());
             this.hasUpdatedHealth = true;
@@ -72,11 +72,11 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (this.getHealth() - amount > 0f) {
             this.tryToPlayBossMusic();
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     public abstract boolean isSpawning();
@@ -176,7 +176,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         super.onDeath(source);
         this.setDeath();
         if (this.getBossMusic() != null && this.hasBossMusic() && this.getWorld() instanceof ServerWorld serverWorld) {
-            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().getId()));
+            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().id()));
         }
     }
 

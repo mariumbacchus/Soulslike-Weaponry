@@ -20,11 +20,11 @@ public class SoulReaperGhost extends Remnant {
 
     public static DefaultAttributeContainer.Builder createGhostAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.familiar_ghost_health)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.familiar_ghost_armor)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.FOLLOW_RANGE, 30D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.familiar_ghost_health)
+                .add(EntityAttributes.ARMOR, BossConfig.familiar_ghost_armor)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 2.0D);
     }
 
     @Override

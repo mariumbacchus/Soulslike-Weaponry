@@ -21,6 +21,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -31,8 +32,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.registry.*;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -83,13 +84,13 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.chaos_monarch_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.chaos_monarch_armor)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+        .add(EntityAttributes.FOLLOW_RANGE, 60D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.chaos_monarch_health)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.15D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 20.0D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+        .add(EntityAttributes.ARMOR, BossConfig.chaos_monarch_armor)
+        .add(EntityAttributes.ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -155,14 +156,14 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     && <-- stops evaluating if the first operand evaluates to false since the result will be false */
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (source == (this.getWorld().getDamageSources().lightningBolt())) {
             return false;
         }
         if (source.isOf(DamageTypes.WITHER)) {
             return false;
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     @Override
@@ -171,8 +172,8 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {
             this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
             for (LivingEntity target : this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(3D))) {

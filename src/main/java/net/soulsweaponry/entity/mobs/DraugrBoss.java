@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -26,11 +27,11 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -99,12 +100,12 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.old_champions_remains_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.old_champions_remains_armor);
+        .add(EntityAttributes.FOLLOW_RANGE, 60D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.old_champions_remains_health)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.23D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 10D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+        .add(EntityAttributes.ARMOR, BossConfig.old_champions_remains_armor);
     }
 
     @Override
@@ -250,9 +251,9 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
      * Also reflect projectiles after 3 consecutive projectile hits if not hit with melee attacks.
     */
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (source.getAttacker() instanceof LivingEntity attacker) {
-            String item = attacker.getMainHandStack().getTranslationKey();
+            String item = attacker.getMainHandStack().getItem().getTranslationKey();
             if (Objects.equals(this.weaponDamagedById, item)) {
                 this.addSameWeaponCount();
             } else {
@@ -290,7 +291,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         } else {
             this.projectileCount = (int) BossConfig.old_champions_remains_max_projectile_hits_before_immune;
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     @Override
@@ -351,7 +352,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     public void onDeath(DamageSource source) {
         super.onDeath(source);
         this.setState(States.DEATH);
-        CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.BLACK_FLAME);
+        ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.BLACK_FLAME);
         NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, getWorld());
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
         entity.setVelocity(0, .1f, 0);

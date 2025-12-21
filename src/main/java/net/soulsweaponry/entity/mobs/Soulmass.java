@@ -22,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -117,12 +118,12 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
 
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.soulmass_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.soulmass_armor);
+        .add(EntityAttributes.FOLLOW_RANGE, 20D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.soulmass_health)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.28D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 8.0D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+        .add(EntityAttributes.ARMOR, BossConfig.soulmass_armor);
     }
 
     public void setClap(boolean bl) {
@@ -213,10 +214,10 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+        if (this.deathTicks >= this.getTicksUntilDeath() && this.getWorld() instanceof ServerWorld serverWorld) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
-            this.sacrificeEvent();
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            this.sacrificeEvent(serverWorld);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -235,10 +236,10 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
         return super.interactMob(player, hand);
     }
 
-    public void sacrificeEvent() {
+    public void sacrificeEvent(ServerWorld serverWorld) {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
         List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
-        var atk = this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        var atk = this.getAttributeInstance(EntityAttributes.ATTACK_DAMAGE);
         double damage = 16f;
         if (atk != null) {
             damage = atk.getValue() * 2f;
@@ -247,7 +248,7 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
             if (nearbyEntity instanceof HostileEntity closestTarget) {
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
-                closestTarget.damage(this.getWorld().getDamageSources().magic(), (float) damage);
+                closestTarget.damage(serverWorld, serverWorld.getDamageSources().magic(), (float) damage);
             }
         }
     }
@@ -324,7 +325,7 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
             if (uniqueCooldown > -1) {uniqueCooldown--;}
             LivingEntity target = this.entity.getTarget();
             
-            if (target != null) {
+            if (target != null && this.entity.getWorld() instanceof ServerWorld serverWorld) {
                 double distanceToEntity = this.entity.squaredDistanceTo(target);
                 this.entity.setAttacking(true);
                 this.entity.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
@@ -400,13 +401,13 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
                         this.attackStatus = 0;
                     }
                     this.entity.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
-                    var atk = this.entity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                    var atk = this.entity.getAttributeInstance(EntityAttributes.ATTACK_DAMAGE);
                     double damage = 6f;
                     if (atk != null) {
                         damage = atk.getValue() * 0.8f;
                     }
                     if (attackStatus % 5 == 0 && distanceToEntity < 130f) {
-                        target.damage(this.entity.getWorld().getDamageSources().mobAttack(this.entity), (float) damage);
+                        target.damage(serverWorld, this.entity.getWorld().getDamageSources().mobAttack(this.entity), (float) damage);
                         this.entity.heal(2f);
                         this.entity.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                     }

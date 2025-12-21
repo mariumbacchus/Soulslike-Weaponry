@@ -32,9 +32,9 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -107,12 +107,12 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.returning_knight_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.returning_knight_armor);
+        .add(EntityAttributes.FOLLOW_RANGE, 50D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.returning_knight_health)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.15D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 15.0D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 1.0D)
+        .add(EntityAttributes.ARMOR, BossConfig.returning_knight_armor);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -260,18 +260,18 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (this.blockBreakingCooldown <= 0) {
             this.blockBreakingCooldown = 20;
         }
-        if (this.isInvulnerableTo(source)) {
+        if (this.isInvulnerableTo(serverWorld, source)) {
            return false;
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
                 return false;
             }
-            return super.damage(source, amount);
+            return super.damage(serverWorld, source, amount);
         }
     }
 
@@ -315,8 +315,8 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         
         //Reflect all projectiles
         //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
@@ -334,7 +334,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
             int k;
             if (this.blockBreakingCooldown > 0) {
                 --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                if (this.blockBreakingCooldown == 0 && serverWorld.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                     i = MathHelper.floor(this.getY());
                     j = MathHelper.floor(this.getX());
                     k = MathHelper.floor(this.getZ());

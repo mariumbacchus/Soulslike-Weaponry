@@ -28,7 +28,6 @@ import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
@@ -198,7 +197,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         * */
         LivingEntity target = this.boss.getTarget();
-        if (target != null) {
+        if (target != null && this.boss.getWorld() instanceof ServerWorld serverWorld) {
             if (!this.boss.isPhaseTwo()) {
                 this.tickPartnerSwitch();
             }
@@ -216,11 +215,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
                 case DECIMATE -> {
                     this.attackLength = 60;
-                    this.decimate(target);
+                    this.decimate(serverWorld, target);
                 }
                 case DAWNBREAKER -> {
                     this.attackLength = 40;
-                    this.dawnbreaker(target);
+                    this.dawnbreaker(serverWorld, target);
                 }
                 case CHAOS_STORM -> {
                     this.attackLength = 90;
@@ -228,7 +227,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
                 case FLAMETHROWER -> {
                     this.attackLength = 90;
-                    this.flamethrower(target, distanceToEntity);
+                    this.flamethrower(serverWorld, target, distanceToEntity);
                 }
                 case SUNFIRE_RUSH -> {
                     this.attackLength = 117;
@@ -244,11 +243,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
                 case FLAMES_EDGE -> {
                     this.attackLength = this.boss.isPhaseTwo() ? 90 : 60;
-                    this.flamesEdge();
+                    this.flamesEdge(serverWorld);
                 }
                 case RADIANCE -> {
                     this.attackLength = 120;
-                    this.radiance();
+                    this.radiance(serverWorld);
                 }
                 case WARMTH -> {
                     this.attackLength = 100;
@@ -264,11 +263,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
                 case FLAMES_REACH -> {
                     this.attackLength = 60;
-                    this.flamesReach(target, distanceToEntity);
+                    this.flamesReach(serverWorld, target, distanceToEntity);
                 }
                 case SKY_HIGH -> {
                     this.attackLength = 210;
-                    this.skyHigh();
+                    this.skyHigh(serverWorld);
                 }
             }
         }
@@ -346,11 +345,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         return damage * BossConfig.day_stalker_damage_modifier;
     }
 
-    private boolean damageTarget(LivingEntity target, float damage) {
+    private boolean damageTarget(ServerWorld serverWorld, LivingEntity target, float damage) {
         if (this.boss.isPartner(target) || target instanceof WarmthEntity) {
             return false;
         }
-        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
+        if (target.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
             if (this.boss.isEmpowered()) {
                 target.setOnFireFor(2);
             }
@@ -377,7 +376,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(15, 0);
     }
 
-    private void decimate(LivingEntity target) {
+    private void decimate(ServerWorld serverWorld, LivingEntity target) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.boss.getLookControl().lookAt(target);
@@ -386,7 +385,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus == 29) {
             if (this.isInMeleeRange(target)) {
-                if (this.damageTarget(target, 30f)) {
+                if (this.damageTarget(serverWorld, target, 30f)) {
                     target.addVelocity(0, 1D, 0);
                 }
             }
@@ -446,13 +445,13 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, this.boss.isPhaseTwo() ? 0 : 60);
     }
 
-    private void dawnbreaker(LivingEntity target) {
+    private void dawnbreaker(ServerWorld serverWorld, LivingEntity target) {
         this.attackStatus++;
         this.mob.getNavigation().stop();
         if (this.attackStatus == 11 || this.attackStatus == 21) {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             if (this.isInMeleeRange(target)) {
-                this.damageTarget(target, 10f + (float)this.attackStatus/2f);
+                this.damageTarget(serverWorld, target, 10f + (float)this.attackStatus/2f);
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
@@ -464,7 +463,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus == 32) {
             this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.75f);
             if (this.isInMeleeRange(target)) {
-                this.damageTarget(target, 25f);
+                this.damageTarget(serverWorld, target, 25f);
                 if (!this.boss.getWorld().isClient) {
                     ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                 }
@@ -501,7 +500,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         return projectile;
     }
 
-    private void flamethrower(LivingEntity target, double distance) {
+    private void flamethrower(ServerWorld serverWorld, LivingEntity target, double distance) {
         this.attackStatus++;
         if (this.attackStatus >= 20 && this.attackStatus < 65 && target.getBlockPos() != null) {
             BlockPos targetPos;
@@ -524,7 +523,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 Box box = new Box(targetPos.toCenterPos(), this.boss.getPos()).expand(1D);
                 for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                     if (entity instanceof LivingEntity living && !this.boss.isPartner(living)) {
-                        living.damage(this.boss.getDamageSources().magic(), this.getModifiedDamage(this.boss.isPhaseTwo() ? 2f : 1f));
+                        living.damage(serverWorld, this.boss.getDamageSources().magic(), this.getModifiedDamage(this.boss.isPhaseTwo() ? 2f : 1f));
                         living.setOnFireFor(3);
                     }
                 }
@@ -533,7 +532,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (this.boss.isPhaseTwo()) {
                 for (int frame : this.flamethrowerMeleeFrames) {
                     if (this.attackStatus == frame) {
-                        this.aoeMelee(target, distance, 2D, 15f);
+                        this.aoeMelee(serverWorld, target, distance, 2D, 15f);
                         this.playSound(null, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
                     }
                 }
@@ -584,7 +583,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
      * @param expansion Box that looks for entities expansion range
      * @param damage Damage to be done to all entities in the box
      */
-    private void aoeMelee(LivingEntity target, double distanceToTarget, double expansion, float damage) {
+    private void aoeMelee(ServerWorld serverWorld, LivingEntity target, double distanceToTarget, double expansion, float damage) {
         double maxDistance = this.boss.squaredDistanceTo(target);
         BlockPos pos;
         if (this.isInMeleeRange(target)) {
@@ -597,7 +596,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
         for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(pos).expand(expansion))) {
             if (entity instanceof LivingEntity living) {
-                this.damageTarget(living, damage);
+                this.damageTarget(serverWorld, living, damage);
             }
         }
     }
@@ -659,7 +658,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(40, 0);
     }
 
-    private void flamesEdge() {
+    private void flamesEdge(ServerWorld serverWorld) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (!this.boss.isPhaseTwo()) {
@@ -673,7 +672,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             }
             if (this.attackStatus == 22) {
                 this.playSound(null, SoundRegistry.DAY_STALKER_FLAMES_EDGE_NORMAL, 1f, 1f);
-                this.aoe(4.3D, 35f, 1f);
+                this.aoe(serverWorld, 4.3D, 35f, 1f);
             }
         } else {
             this.boss.setFlamesEdgeRadius(8f);
@@ -686,16 +685,16 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             }
             if (this.attackStatus == 41) {
                 this.playSound(null, SoundRegistry.DAY_STALKER_FLAMES_EDGE_EMPOWERED, 1f, 1f);
-                this.aoe(6.2D, 40f, 1.5f);
+                this.aoe(serverWorld, 6.2D, 40f, 1.5f);
             }
         }
         this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 30, 0);
     }
 
-    public void aoe(double expansion, float damage, float knockback) {
+    public void aoe(ServerWorld serverWorld, double expansion, float damage, float knockback) {
         for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(expansion))) {
             if (entity instanceof LivingEntity target) {
-                if (this.damageTarget(target, damage) && knockback > 0) {
+                if (this.damageTarget(serverWorld, target, damage) && knockback > 0) {
                     double x = target.getX() - this.boss.getX();
                     double z = target.getZ() - this.boss.getZ();
                     target.takeKnockback(knockback, -x, -z);
@@ -704,15 +703,15 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
     }
 
-    private void radiance() {
+    private void radiance(ServerWorld serverWorld) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 75) {
             this.playSound(null, SoundRegistry.DAY_STALKER_RADIANCE, 1f, 1f);
         }
         if (this.attackStatus == 80) {
-            CustomDeathHandler.deathExplosionEvent(this.boss.getWorld(), this.boss.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
-            this.aoe(4D, 60f, 4f);
+            ParticleEvents.deathExplosionEvent(this.boss.getWorld(), this.boss.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
+            this.aoe(serverWorld, 4D, 60f, 4f);
         }
         this.checkAndReset(40, 140);
     }
@@ -792,7 +791,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(30, 0);
     }
 
-    private void skyHigh() {
+    private void skyHigh(ServerWorld serverWorld) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 23) {
@@ -816,7 +815,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 Box box = this.boss.getBoundingBox().expand(expansion);
                 for (Entity targets : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                     if (targets instanceof LivingEntity livingEntity) {
-                        this.damageTarget(livingEntity, power);
+                        this.damageTarget(serverWorld, livingEntity, power);
                     }
                 }
                 WeaponUtil.doConsumerOnCircle(this.boss.getWorld(), this.boss.getYaw(), this.boss.getPos(), 10, 10, new Vec2f(1.5f, 1.75f), ((vec3d, warmup, yaw) -> this.spawnFlamePillar(vec3d, warmup - 6, yaw)));
@@ -831,7 +830,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.checkAndReset(5, 80);
     }
 
-    private void flamesReach(LivingEntity target, double distance) {
+    private void flamesReach(ServerWorld serverWorld, LivingEntity target, double distance) {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         double maxDistance = this.boss.isPhaseTwo() ? 140D : 120D;
@@ -854,7 +853,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             Box box = new Box(targetPos.toCenterPos(), this.boss.getPos()).expand(1D);
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                 if (entity instanceof LivingEntity living) {
-                    this.damageTarget(living, 20f);
+                    this.damageTarget(serverWorld, living, 20f);
                     double x = target.getX() - (this.boss.getX());
                     double z = target.getZ() - this.boss.getZ();
                     target.takeKnockback(3F, x, z);
@@ -875,7 +874,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             }
             for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, new Box(blockPos).expand(3D))) {
                 if (entity instanceof LivingEntity living) {
-                    this.damageTarget(living, 25f);
+                    this.damageTarget(serverWorld, living, 25f);
                 }
             }
         }

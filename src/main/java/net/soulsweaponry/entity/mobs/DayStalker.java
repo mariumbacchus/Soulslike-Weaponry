@@ -30,8 +30,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -75,7 +75,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.goalSelector.add(2, new DayStalkerGoal(this, 0.75D, true));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isPartner(entity)));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
@@ -189,7 +189,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.deathTicks++;
         if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
@@ -292,13 +292,13 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.day_stalker_health)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.day_stalker_armor)
-                .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
+                .add(EntityAttributes.FOLLOW_RANGE, 120D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.day_stalker_health)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.3D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 10.0D)
+                .add(EntityAttributes.ARMOR, BossConfig.day_stalker_armor)
+                .add(EntityAttributes.FLYING_SPEED, 0.8D);
     }
 
     @Override
@@ -353,8 +353,8 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         if (!this.getWorld().isClient) {
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
@@ -381,7 +381,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
-                placeHolder.aoe(4D, 50f, 4f);
+                placeHolder.aoe(serverWorld, 4D, 50f, 4f);
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
@@ -535,7 +535,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
@@ -555,7 +555,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 this.getWorld().spawnEntity(airCombustion);
             }
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     @Override

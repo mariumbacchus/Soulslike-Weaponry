@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -63,8 +64,8 @@ public class NightShadeGoal extends Goal {
     }
 
     private void damageTarget(LivingEntity target, float damage) {
-        if (target instanceof NightShade) return;
-        target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
+        if (target instanceof NightShade || !(this.boss.getWorld() instanceof ServerWorld serverWorld)) return;
+        target.damage(serverWorld, this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
     }
 
     private float getModifiedDamage(float damage) {

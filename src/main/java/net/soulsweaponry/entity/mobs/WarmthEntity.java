@@ -51,10 +51,10 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
         this.goalSelector.add(4, new WarmthEntityGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, MobEntity.class, true,
-                entity -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
+                (entity, serverWorld) -> this.isTamed() && entity instanceof Monster && !(entity instanceof CreeperEntity) && !this.isTeammate(entity)));
     }
 
     private PlayState attacks(AnimationState<?> state) {
@@ -91,12 +91,12 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.warmth_health)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.warmth_armor)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6D)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 30D);
+                .add(EntityAttributes.FOLLOW_RANGE, 48D)
+                .add(EntityAttributes.MAX_HEALTH, BossConfig.warmth_health)
+                .add(EntityAttributes.ARMOR, BossConfig.warmth_armor)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.23D)
+                .add(EntityAttributes.ATTACK_DAMAGE, 6D)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 30D);
     }
 
     @Nullable
@@ -149,8 +149,8 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.age > 1200) {
-            this.kill();
+        if (this.age > 1200 && this.getWorld() instanceof ServerWorld serverWorld) {
+            this.kill(serverWorld);
         }
     }
 

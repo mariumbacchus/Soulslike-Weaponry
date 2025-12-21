@@ -49,11 +49,11 @@ public class Remnant extends TameableEntity {
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isTamed()
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true, (entity, serverWorld) -> !this.isTamed()
                 || !(this.getOwner() instanceof PlayerEntity)));
-        this.targetSelector.add(4, new ActiveTargetGoal<>(this, Remnant.class, true, entity -> !this.isTamed()
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, Remnant.class, true, (entity, serverWorld) -> !this.isTamed()
                 && (entity instanceof Remnant remnant && remnant.isTamed())));
-        this.targetSelector.add(5, new ActiveTargetGoal<>(this, MobEntity.class, true, entity -> entity instanceof Monster
+        this.targetSelector.add(5, new ActiveTargetGoal<>(this, MobEntity.class, true, (entity, serverWorld) -> entity instanceof Monster
                 && !(entity instanceof CreeperEntity) && this.isTamed() && !this.isTeammate(entity)));
         if (!this.isTamed()) {
             this.targetSelector.add(6, new RevengeGoal(this, ReturningKnight.class, Moonknight.class, Remnant.class, DayStalker.class, NightProwler.class).setGroupRevenge());
@@ -64,11 +64,11 @@ public class Remnant extends TameableEntity {
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.remnant_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.remnant_bonus_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+        .add(EntityAttributes.FOLLOW_RANGE, 30D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.remnant_health)
+        .add(EntityAttributes.ARMOR, BossConfig.remnant_bonus_armor)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.3000000003D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 2.0D);
     }
 
     public void initEquip() {
@@ -111,9 +111,9 @@ public class Remnant extends TameableEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         this.setSitting(false);
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class Remnant extends TameableEntity {
     }
 
     @Override
-    public boolean isTeammate(Entity other) {
+    protected boolean isInSameTeam(Entity other) {
         if (other instanceof Tameable) {
             if (((Tameable)other).getOwner() != null && this.getOwner() != null) {
                 if (((Tameable)other).getOwner() == this.getOwner()) {
@@ -143,7 +143,7 @@ public class Remnant extends TameableEntity {
                 }
             }
         }
-        return super.isTeammate(other);
+        return super.isInSameTeam(other);
     }
 
     @Override

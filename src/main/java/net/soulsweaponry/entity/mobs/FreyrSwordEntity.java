@@ -101,7 +101,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isTeammate(Entity other) {
+    protected boolean isInSameTeam(Entity other) {
         // Don't attack players if friendly fire is off
         if (!ConfigConstructor.sword_of_freyr_entity_friendly_fire && other instanceof PlayerEntity) {
             return true;
@@ -113,7 +113,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
                 }
             }
         }
-        return super.isTeammate(other);
+        return super.isInSameTeam(other);
     }
 
     @Override
@@ -124,8 +124,8 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public void mobTick() {
-        super.mobTick();
+    public void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         if (this.getOwner() != null) {
             if (!this.isBlockPosNullish(this.getStationaryPos()) /* != null */) {
                 if (this.getTarget() == null || this.squaredDistanceTo(this.stationaryAsVec3d()) > this.getFollowRange()) {
@@ -194,8 +194,12 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     public void dropStack() {
-        ItemEntity entity = this.dropStack(this.stack);
-        if (entity != null) entity.setCovetedItem();
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            ItemEntity entity = this.dropStack(serverWorld, this.stack);
+            if (entity != null) {
+                entity.setCovetedItem();
+            }
+        }
     }
 
     @Override
@@ -263,14 +267,14 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return PathAwareEntity.createLivingAttributes()
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.sword_of_freyr_entity_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.sword_of_freyr_entity_armor)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, ConfigConstructor.sword_of_freyr_damage);
+                .add(EntityAttributes.FOLLOW_RANGE, 100)
+                .add(EntityAttributes.MAX_HEALTH, ConfigConstructor.sword_of_freyr_entity_health)
+                .add(EntityAttributes.ARMOR, ConfigConstructor.sword_of_freyr_entity_armor)
+                .add(EntityAttributes.ATTACK_DAMAGE, ConfigConstructor.sword_of_freyr_damage);
     }
 
     public double getFollowRange() {
-        return this.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
+        return this.getAttributeValue(EntityAttributes.FOLLOW_RANGE);
     }
 
     public ItemStack getStack() {
@@ -317,11 +321,11 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (source.getAttacker() != null && this.getOwner() != null && source.getAttacker().equals(this.getOwner())) {
             return false;
         }
-        return super.damage(source, amount);
+        return super.damage(serverWorld, source, amount);
     }
 
     public Vec3d stationaryAsVec3d() {
@@ -364,7 +368,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.put("item", this.stack.encode(this.getRegistryManager()));
+        nbt.put("item", this.stack.toNbt(this.getRegistryManager()));
     }
 
     @Override

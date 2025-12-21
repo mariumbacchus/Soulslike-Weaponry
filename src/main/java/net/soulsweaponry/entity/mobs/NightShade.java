@@ -28,10 +28,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
+import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -63,11 +63,11 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.frenzied_shade_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.frenzied_shade_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
+        .add(EntityAttributes.FOLLOW_RANGE, 65D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.frenzied_shade_health)
+        .add(EntityAttributes.ARMOR, BossConfig.frenzied_shade_armor)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.3D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 10D);
     }
 
     @Override
@@ -115,9 +115,8 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
     }
 
     @Override
-    public void move(MovementType movementType, Vec3d movement) {
-        super.move(movementType, movement);
-        this.checkBlockCollision();
+    protected boolean shouldTickBlockCollision() {
+        return !this.isRemoved();
     }
 
     @Override
@@ -171,7 +170,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
             this.setAttackState(AttackStates.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
+                ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
                     NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.getWorld());
@@ -232,7 +231,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
                 return;
             }
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
             this.remove(RemovalReason.KILLED);
         }
     }

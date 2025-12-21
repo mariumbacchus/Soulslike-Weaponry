@@ -36,7 +36,6 @@ import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -78,12 +77,12 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.fallen_icon_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.fallen_icon_armor);
+        .add(EntityAttributes.FOLLOW_RANGE, 50D)
+        .add(EntityAttributes.MAX_HEALTH, BossConfig.fallen_icon_health)
+        .add(EntityAttributes.MOVEMENT_SPEED, 0.15D)
+        .add(EntityAttributes.ATTACK_DAMAGE, 15.0D)
+        .add(EntityAttributes.KNOCKBACK_RESISTANCE, 10.0D)
+        .add(EntityAttributes.ARMOR, BossConfig.fallen_icon_armor);
     }
 
     @Override
@@ -196,7 +195,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         if (this.blockBreakingCooldown <= 0) {
             this.blockBreakingCooldown = 20;
         }
@@ -204,16 +203,14 @@ public class Moonknight extends BossEntity implements GeoEntity {
             return false;
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
-            if (this.getWorld() instanceof ServerWorld serverWorld) {
-                PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().getId()));
-                this.setPlayingMusic(false);
-            }
+            PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().id()));
+            this.setPlayingMusic(false);
             this.clearStatusEffects();
             this.initiatePhaseTwo(true);
             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             return false;
         }
-        if (this.isInvulnerableTo(source)) {
+        if (this.isInvulnerableTo(serverWorld, source)) {
            return false;
         } else {
             Entity entity = source.getSource();
@@ -230,7 +227,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 }
                 return false;
             }
-            return super.damage(source, amount);
+            return super.damage(serverWorld, source, amount);
         }
     }
 
@@ -256,8 +253,8 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void mobTick() {
-        super.mobTick();
+    protected void mobTick(ServerWorld serverWorld) {
+        super.mobTick(serverWorld);
         if (this.isInitiatingPhaseTwo()) {
             this.phaseTransitionTicks++;
             this.tryToPlayBossMusic();
@@ -272,7 +269,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+                ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             }
             if (this.phaseTransitionTicks == 96) {
                 this.setInitiatedPhaseTwo(true);
@@ -292,7 +289,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             int k;
             if (this.blockBreakingCooldown > 0) {
                 --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                if (this.blockBreakingCooldown == 0 && serverWorld.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                     i = MathHelper.floor(this.getY());
                     j = MathHelper.floor(this.getX());
                     k = MathHelper.floor(this.getZ());
@@ -398,7 +395,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
         if (this.deathTicks == 40 && this.getBlockPos() != null) this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            ParticleEvents.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
             this.remove(RemovalReason.KILLED);
         }
     }
