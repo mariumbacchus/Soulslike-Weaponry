@@ -23,11 +23,11 @@ public class MoonlightC2SReceiver {
         ServerPlayerEntity player = ctx.player();
         ServerWorld serverWorld = player.getServerWorld();
         server.execute(() -> {
-            if (!player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
+            if (!player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.getDefaultStack())) {
                 boolean hasEffect = player.hasStatusEffect(EffectRegistry.MOON_HERALD);
                 int amp = hasEffect ? player.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() + 1 : 0;
                 MoonstoneRing.MOONSTONE_RING_SHOOT_MOONLIGHT.shootMoonlight(serverWorld, WeaponRegistry.MOONLIGHT_SHORTSWORD.getDefaultStack(), player, amp, 0);
-                player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, MoonstoneRing.MOONSTONE_RING_SHOOT_MOONLIGHT.cooldownWithEffect());
+                player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING.getDefaultStack(), MoonstoneRing.MOONSTONE_RING_SHOOT_MOONLIGHT.cooldownWithEffect());
                 player.swingHand(Hand.MAIN_HAND, true);
                 serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
             }

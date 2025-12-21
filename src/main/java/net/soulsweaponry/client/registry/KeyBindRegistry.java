@@ -112,7 +112,7 @@ public class KeyBindRegistry {
             if (effectShootMoonlight.isPressed()) {
                 if (client.player != null) {
                     boolean accept = client.player.hasStatusEffect(EffectRegistry.MOON_HERALD)
-                            && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING);
+                            && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING.getDefaultStack());
                     if (accept) {
                         ClientPlayNetworking.send(new MoonlightC2S());
                     }

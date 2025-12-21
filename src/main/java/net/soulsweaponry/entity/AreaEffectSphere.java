@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -134,13 +135,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
         super.tick();
         boolean bl = this.isWaiting();
         float f = this.getRadius();
-        if (this.getWorld().isClient) {
-            if (bl && this.random.nextBoolean()) {
-                return;
-            }
-            int points = MathHelper.floor(this.getRadius() * this.getParticleAmountModifier());
-            randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
-        } else {
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
             if (this.age >= this.waitTime + this.duration) {
                 this.discard();
                 return;
@@ -197,7 +192,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
 
                             for (StatusEffectInstance statusEffectInstance2 : list) {
                                 if (statusEffectInstance2.getEffectType().value().isInstant()) {
-                                    statusEffectInstance2.getEffectType().value().applyInstantEffect(this, this.getOwner(), livingEntity, statusEffectInstance2.getAmplifier(), 0.5);
+                                    statusEffectInstance2.getEffectType().value().applyInstantEffect(serverWorld, this, this.getOwner(), livingEntity, statusEffectInstance2.getAmplifier(), 0.5);
                                 } else {
                                     livingEntity.addStatusEffect(new StatusEffectInstance(statusEffectInstance2), this);
                                 }
@@ -224,7 +219,18 @@ public class AreaEffectSphere extends Entity implements Ownable {
                     }
                 }
             }
+        } else {
+            if (bl && this.random.nextBoolean()) {
+                return;
+            }
+            int points = MathHelper.floor(this.getRadius() * this.getParticleAmountModifier());
+            randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
         }
+    }
+
+    @Override
+    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+        return false;
     }
 
     public static void randomParticleBox(World world, double x, double y, double z, double points, float sizeModifier, ParticleEffect particle, Random random) {

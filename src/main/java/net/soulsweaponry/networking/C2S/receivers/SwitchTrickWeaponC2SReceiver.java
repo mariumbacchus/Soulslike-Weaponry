@@ -27,14 +27,13 @@ public class SwitchTrickWeaponC2SReceiver {
         ServerWorld serverWorld = player.getServerWorld();
         server.execute(() -> {
             ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
-            Item handItem = stack.getItem();
             ItemStack newWeapon = TrickWeaponUtil.getMappedStack(serverWorld, stack);
-            if (newWeapon != null && !player.getItemCooldownManager().isCoolingDown(handItem)) {
+            if (newWeapon != null && !player.getItemCooldownManager().isCoolingDown(stack)) {
                 if (newWeapon.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
                     disable.notifyDisabled(player);
                     return;
                 }
-                player.getItemCooldownManager().set(newWeapon.getItem(), 20);
+                player.getItemCooldownManager().set(newWeapon, 20);
                 serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT, SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
                 ParticleHandler.particleSphereList(serverWorld, 20, player.getX(), player.getY(), player.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 int slot = player.getInventory().selectedSlot;

@@ -92,7 +92,7 @@ public class PacketHelper {
                 boxPos, expansion,
                 damage, knockbackStrength,
                 knockbackX, knockbackZ,
-                sound.getId(), soundPos,
+                sound.id(), soundPos,
                 attackerUUID
         );
         ClientPlayNetworking.send(pkt);

@@ -18,7 +18,7 @@ public class LeviathanAxeEntityRenderer extends GeoProjectileRenderer<LeviathanA
     protected void applyRotations(LeviathanAxeEntity entity, MatrixStack matrixStack, float ageInTicks, float rotationYaw, float partialTick, float nativeScale) {
         super.applyRotations(animatable, matrixStack, ageInTicks, rotationYaw, partialTick, nativeScale);
         boolean noClip = entity.isNoClip();
-        if (!entity.inGround() || noClip) {
+        if (!entity.isOnGround() || noClip) {
             float totalTicks = entity.age + partialTick;
             matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(totalTicks * 60 * (noClip ? 1 : -1)));
         }

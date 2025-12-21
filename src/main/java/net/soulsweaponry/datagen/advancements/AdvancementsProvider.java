@@ -13,6 +13,8 @@ import net.minecraft.predicate.entity.EntityEffectPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LocationPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
@@ -40,6 +42,9 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
 
     @Override
     public void generateAdvancement(RegistryWrapper.WrapperLookup registryLookup, Consumer<AdvancementEntry> consumer) {
+        RegistryEntryLookup<EntityType<?>> entityRegistryEntryLookup = registryLookup.getOrThrow(RegistryKeys.ENTITY_TYPE);
+        RegistryEntryLookup<Item> itemRegistryEntryLookup = registryLookup.getOrThrow(RegistryKeys.ITEM);
+
         AdvancementEntry root = Advancement.Builder.create()
                 .display(
                         ItemRegistry.LOST_SOUL, // The display icon
@@ -56,7 +61,7 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 .build(consumer, SoulsWeaponry.ModId + ":root"); // "root" is the name
 
         // Items/base ones
-        AdvancementEntry lordSoul = this.generateAdvancement(consumer, "lord_soul", root, ItemRegistry.LORD_SOUL_ROSE,
+        AdvancementEntry lordSoul = this.generateAdvancement(itemRegistryEntryLookup, consumer, "lord_soul", root, ItemRegistry.LORD_SOUL_ROSE,
                 AdvancementFrame.CHALLENGE, true, true, false, ModTags.Items.LORD_SOUL);
         AdvancementEntry moonstone = this.generateAdvancement(consumer, "moonstone", root, ItemRegistry.MOONSTONE,
                 AdvancementFrame.TASK, true, true, false, ItemRegistry.MOONSTONE);
@@ -73,16 +78,16 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
 
         // Boss kills
         AdvancementEntry returningKnight = this.generateAdvancement(consumer, "returning_knight", root, ItemRegistry.ARKENSTONE, AdvancementFrame.CHALLENGE, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.RETURNING_KNIGHT)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityRegistry.RETURNING_KNIGHT)));
         AdvancementEntry draugrBoss = this.generateAdvancement(consumer, "draugr_boss", root, ItemRegistry.ESSENCE_OF_EVENTIDE, AdvancementFrame.GOAL, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.DRAUGR_BOSS)),
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityRegistry.DRAUGR_BOSS)),
                 InventoryChangedCriterion.Conditions.items(ItemRegistry.ESSENCE_OF_EVENTIDE));
         AdvancementEntry moonknight = this.generateAdvancement(consumer, "moonknight", draugrBoss, ItemRegistry.ESSENCE_OF_LUMINESCENCE, AdvancementFrame.CHALLENGE, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.MOONKNIGHT)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityRegistry.MOONKNIGHT)));
         AdvancementEntry decayingKing = this.generateAdvancement(consumer, "end_of_reigns", bloodthirsty, ItemRegistry.WITHERED_DEMON_HEART, AdvancementFrame.CHALLENGE, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.ACCURSED_LORD_BOSS)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityRegistry.ACCURSED_LORD_BOSS)));
         AdvancementEntry chaosMonarch = this.generateAdvancement(consumer, "ender_of_world_ender", uncertainty, ArmorRegistry.CHAOS_CROWN, AdvancementFrame.CHALLENGE, true, true, false,
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityRegistry.CHAOS_MONARCH)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityRegistry.CHAOS_MONARCH)));
 
         // Armor
         AdvancementEntry arkenplate = this.generateAdvancement(consumer, "arkenplate", returningKnight, ArmorRegistry.ARKENPLATE,
@@ -132,19 +137,19 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.GUTS_SWORD);
         AdvancementEntry wands = this.generateAdvancement(consumer, "lords_on_stick", chaosMonarch, WeaponRegistry.DRAGON_STAFF,
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.DRAGON_STAFF, WeaponRegistry.WITHERED_WABBAJACK);
-        AdvancementEntry trickWeapon = this.generateAdvancement(consumer, "trickweapon", pistol, WeaponRegistry.HOLY_GREATSWORD,
+        AdvancementEntry trickWeapon = this.generateAdvancement(itemRegistryEntryLookup, consumer, "trickweapon", pistol, WeaponRegistry.HOLY_GREATSWORD,
                 AdvancementFrame.GOAL, true, true, false, ModTags.Items.TRICK_WEAPONS);
         AdvancementEntry hodirGlaive = this.generateAdvancement(consumer, "glaive_of_hodir", lordSoul, WeaponRegistry.GLAIVE_OF_HODIR,
                 AdvancementFrame.GOAL, true, true, false, WeaponRegistry.GLAIVE_OF_HODIR);
         AdvancementEntry excalibur = this.generateAdvancement(consumer, "excalibur", lordSoul, WeaponRegistry.EXCALIBUR,
                 AdvancementFrame.CHALLENGE, true, true, false,
                 InventoryChangedCriterion.Conditions.items(WeaponRegistry.EXCALIBUR),
-                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(EntityType.WARDEN)));
+                OnKilledCriterion.Conditions.createPlayerKilledEntity(EntityPredicate.Builder.create().type(entityRegistryEntryLookup, EntityType.WARDEN)));
 
         // Special
         AdvancementEntry chaosOrb = this.generateAdvancement(consumer, "chaos_orb", decayingKing, ItemRegistry.CHAOS_ORB,
                 AdvancementFrame.GOAL, true, true, false, ItemRegistry.CHAOS_ORB);
-        AdvancementEntry killDayNightBoss = this.generateAdvancement(consumer, "kill_day_night_boss", chaosOrb, ItemRegistry.LORD_SOUL_DAY_STALKER,
+        AdvancementEntry killDayNightBoss = this.generateAdvancement(itemRegistryEntryLookup, consumer, "kill_day_night_boss", chaosOrb, ItemRegistry.LORD_SOUL_DAY_STALKER,
                 AdvancementFrame.CHALLENGE, true, true, false, ModTags.Items.DUO_BOSS_SOULS);
         AdvancementEntry dreamOn = this.generateAdvancement(consumer, "dream_on", lordSoul, Items.GOLDEN_BOOTS,
                 AdvancementFrame.CHALLENGE, true, true, false,
@@ -160,10 +165,10 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
     /**
      * Advancement for when acquiring an item in a specific tag
      */
-    public AdvancementEntry generateAdvancement(Consumer<AdvancementEntry> consumer, String advancementId, AdvancementEntry root, Item display,
+    public AdvancementEntry generateAdvancement(RegistryEntryLookup<Item> registryEntryLookup, Consumer<AdvancementEntry> consumer, String advancementId, AdvancementEntry root, Item display,
                                            AdvancementFrame frame, boolean showToast, boolean announceToChat, boolean hidden, TagKey<Item> tagCondition) {
         return this.generateAdvancement(consumer, advancementId, root, display, frame, showToast, announceToChat, hidden,
-                InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create().tag(tagCondition).build()));
+                InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create().tag(registryEntryLookup, tagCondition).build()));
     }
 
     /**

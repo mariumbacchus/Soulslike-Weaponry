@@ -11,6 +11,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
@@ -62,8 +63,8 @@ public class EvilForlorn extends Forlorn {
         if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && !getWorld().isClient) {
             this.discard();
         }
-        if (this.isInLava() && this.age % 10 == 0) {
-            this.damage(this.getDamageSources().magic(), 1f);
+        if (this.getWorld() instanceof ServerWorld serverWorld && this.isInLava() && this.age % 10 == 0) {
+            this.damage(serverWorld, this.getDamageSources().magic(), 1f);
         }
     }
 

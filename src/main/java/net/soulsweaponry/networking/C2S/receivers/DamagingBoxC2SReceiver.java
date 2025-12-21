@@ -44,7 +44,7 @@ public class DamagingBoxC2SReceiver {
             }
             for (Entity entity : serverWorld.getOtherEntities(player, new Box(blockPos).expand(expansion))) {
                 if (entity instanceof LivingEntity target) {
-                    target.damage(source, damage);
+                    target.damage(serverWorld, source, damage);
                     if (knockbackX == 0 && knockbackZ == 0) {
                         double x = blockPos.getX() - target.getX();
                         double z = blockPos.getZ() - target.getZ();

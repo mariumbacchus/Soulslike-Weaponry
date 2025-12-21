@@ -89,13 +89,13 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    public boolean damage(DamageSource source, float amount) {
+    public boolean damage(ServerWorld serverWorld, DamageSource source, float amount) {
         float x = amount;
         if (source.isOf(DamageTypes.FREEZE)) return false;
         if (this.isFireDamage(source)) {
             x *= 2;
         }
-        return super.damage(source, x);
+        return super.damage(serverWorld, source, x);
     }
 
     @Override

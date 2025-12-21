@@ -25,15 +25,15 @@ public class DamageSourceRegistry {
     public static RegistryKey<DamageType> MAGIC_DAMAGE_BYPASS_COOLDOWN = createType("magic_damage_bypass_cooldown");
 
     public static DamageSource create(World world, RegistryKey<DamageType> key) {
-        return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(key).get());
+        return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key));
     }
 
     public static DamageSource create(World world, RegistryKey<DamageType> key, Entity attacker) {
-        return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(key).get(), attacker);
+        return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key), attacker);
     }
 
     public static DamageSource create(World world, RegistryKey<DamageType> key, Entity source, Entity attacker) {
-        return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(key).get(), source, attacker);
+        return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key), source, attacker);
     }
 
     public static RegistryKey<DamageType> createType(String name) {

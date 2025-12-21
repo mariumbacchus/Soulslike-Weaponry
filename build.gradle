@@ -82,7 +82,7 @@ dependencies {
 	modImplementation "curse.maven:prickle-${project.prickle}"
 
 	// Compile time only
-	//modCompileOnly 'curse.maven:controllable-317269:6277376'
+	modCompileOnly 'curse.maven:controllable-317269:6277376'
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
 	modCompileOnly "it.crystalnest:prometheus-fabric:$prometheus_minecraft_version-$prometheus_version"
 	//modCompileOnly 'maven.modrinth:create-fabric:0.5.1-j-build.1631+mc1.20.1' //NB: fabric 1.21.1 version not out yet as of typing this

@@ -11,7 +11,6 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.BigChungusModel;
 import net.soulsweaponry.client.model.entity.projectile.ChungusHeadModel;
 import net.soulsweaponry.client.model.entity.projectile.DragonslayerSwordspearModel;
-import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;
 
 public class EntityModelLayerModRegistry {
 
@@ -20,7 +19,6 @@ public class EntityModelLayerModRegistry {
 
     public static final EntityModelLayer BIG_CHUNGUS_LAYER = createMain("big_chungus");
     public static final EntityModelLayer DRAGONSLAYER_SWORDSPEAR_LAYER = createMain("swordspear_entity");
-    public static final EntityModelLayer NIGHTS_EDGE_LAYER = createMain("nights_edge");
     public static final EntityModelLayer DARK_SORCERER_LAYER = createMain("dark_sorcerer");
     public static final EntityModelLayer FORLORN_LAYER = createMain("forlorn");
     public static final EntityModelLayer REMNANT_LAYER = createMain("remnant");
@@ -40,7 +38,6 @@ public class EntityModelLayerModRegistry {
     public static void initClient() {
         EntityModelLayerRegistry.registerModelLayer(DRAGONSLAYER_SWORDSPEAR_LAYER, DragonslayerSwordspearModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(BIG_CHUNGUS_LAYER, BigChungusModel::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(NIGHTS_EDGE_LAYER, NightsEdgeOldModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(CHUNGUS_HEAD_LAYER, ChungusHeadModel::getTexturedModelData);
 
         registerBiped(DARK_SORCERER_LAYER);

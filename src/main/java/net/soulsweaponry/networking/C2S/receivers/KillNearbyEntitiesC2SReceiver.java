@@ -18,7 +18,7 @@ public class KillNearbyEntitiesC2SReceiver {
         ServerWorld serverWorld = player.getServerWorld();
         server.execute(() -> {
             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(100D))) {
-                entity.kill();
+                entity.kill(serverWorld);
             }
         });
     }

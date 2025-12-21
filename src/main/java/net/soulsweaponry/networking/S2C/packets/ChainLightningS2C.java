@@ -14,9 +14,9 @@ public record ChainLightningS2C(Vector3f from, Vector3f to) implements CustomPay
     public static final CustomPayload.Id<ChainLightningS2C> TYPE = new CustomPayload.Id<>(ID);
     public static final PacketCodec<RegistryByteBuf, ChainLightningS2C> CODEC =
             PacketCodec.tuple(
-                    PacketCodecs.VECTOR3F.cast(),
+                    PacketCodecs.VECTOR_3F.cast(),
                     ChainLightningS2C::from,
-                    PacketCodecs.VECTOR3F.cast(),
+                    PacketCodecs.VECTOR_3F.cast(),
                     ChainLightningS2C::to,
                     ChainLightningS2C::new
             );
