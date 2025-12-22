@@ -1,11 +1,10 @@
 package net.soulsweaponry.items.bow;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.customarrows.SilverArrows;
-
-import java.util.function.Supplier;
 
 public class SimonsBowblade extends ModdedBow {
 
@@ -16,10 +15,10 @@ public class SimonsBowblade extends ModdedBow {
             ConfigConstructor.simons_bowblade_silver_arrows_undead_bonus_damage_per_level
     );
 
-    public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+    public SimonsBowblade(Settings settings, TagKey<Item> repairTag) {
         super(settings, createConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
                 ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
-                repairIngredientSupplier);
+                repairTag);
         this.addAbility(SILVER_ARROWS);
     }
 

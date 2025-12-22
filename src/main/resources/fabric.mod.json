@@ -43,7 +43,6 @@
     "java": ">=21",
     "fabric-api": ">=0.116.4",
     "geckolib": ">=4.7.6",
-    "attributefix": ">=21.1.2",
-    "ranged_weapon_api": ">=2.1.1"
+    "attributefix": ">=21.1.2"
   }
 }

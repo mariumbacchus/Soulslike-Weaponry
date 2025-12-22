@@ -4,12 +4,12 @@ import net.fabric_extras.ranged_weapon.api.CustomBow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.item.Item;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -17,14 +17,13 @@ import net.soulsweaponry.items.abilities.IHasAbilities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public abstract class ModdedBow extends CustomBow implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
-    public ModdedBow(Settings settings, RangedConfig config, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, config, repairIngredientSupplier);
+    public ModdedBow(Settings settings, RangedConfig config, TagKey<Item> repairTag) {
+        super(settings, config, repairTag);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
         String pullBonus = String.format("%.2f", config.pull_time_bonus());
@@ -44,10 +43,10 @@ public abstract class ModdedBow extends CustomBow implements IHasAbilities {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (this.isDisabled(user.getStackInHand(hand))) {
             this.notifyDisabled(user);
-            return TypedActionResult.fail(user.getStackInHand(hand));
+            return ActionResult.FAIL;
         }
         return super.use(world, user, hand);
     }

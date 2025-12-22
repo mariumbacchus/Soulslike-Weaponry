@@ -1,12 +1,11 @@
 package net.soulsweaponry.items.bow;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.abilitykeybind.Cloudburst;
 import net.soulsweaponry.items.abilities.customarrows.GaleArrows;
-
-import java.util.function.Supplier;
 
 public class Galeforce extends ModdedBow {
 
@@ -30,10 +29,10 @@ public class Galeforce extends ModdedBow {
             (int) ConfigConstructor.galeforce_cloudburst_reduced_cooldown_per_level
     );
 
-    public Galeforce(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+    public Galeforce(Settings settings, TagKey<Item> repairTag) {
         super(settings, createConfig((int) ConfigConstructor.galeforce_pull_time_ticks,
                 ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_bonus_velocity),
-                repairIngredientSupplier);
+                repairTag);
         this.addAbility(GALE_ARROWS, CLOUDBURST);
     }
 

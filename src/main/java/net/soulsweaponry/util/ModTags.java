@@ -81,6 +81,11 @@ public class ModTags {
         public static final TagKey<Item> REPAIRS_MOONSTONE_TOOL = createTag("repairs/moonstone_tool");
         public static final TagKey<Item> REPAIRS_ECHO_SHARD_TOOL = createTag("repairs/echo_shard_tool");
 
+        public static final TagKey<Item> REPAIRS_KRAKEN_SLAYER_BOW = createTag("repairs/kraken_slayer_bow");
+        public static final TagKey<Item> REPAIRS_KRAKEN_SLAYER_CROSSBOW = createTag("repairs/kraken_slayer_crossbow");
+        public static final TagKey<Item> REPAIRS_DARKMOON_LONGBOW = createTag("repairs/darkmoon_longbow");
+        public static final TagKey<Item> REPAIRS_SIMONS_BOWBLADE = createTag("repairs/simons_bowblade");
+        public static final TagKey<Item> REPAIRS_GALEFORCE = createTag("repairs/galeforce");
 
         public static final TagKey<Item> DEMON_HEARTS = createCommonTag("demon_hearts");
         public static final TagKey<Item> SILVER_INGOTS = createCommonTag("silver_ingots");

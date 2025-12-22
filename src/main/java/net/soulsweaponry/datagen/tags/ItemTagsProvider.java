@@ -243,5 +243,21 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_ECHO_SHARD_TOOL)
                 .add(Items.ECHO_SHARD);
 
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_KRAKEN_SLAYER_BOW)
+                .add(Items.GOLD_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_KRAKEN_SLAYER_CROSSBOW)
+                .add(Items.GOLD_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_DARKMOON_LONGBOW)
+                .add(Items.GOLD_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_SIMONS_BOWBLADE)
+                .add(Items.IRON_BLOCK)
+                .add(ItemRegistry.SOUL_INGOT);
+
+        this.getOrCreateTagBuilder(ModTags.Items.REPAIRS_GALEFORCE)
+                .add(ItemRegistry.VERGLAS)
+                .add(ItemRegistry.MOONSTONE);
     }
 }

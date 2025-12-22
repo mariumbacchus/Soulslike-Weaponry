@@ -1,12 +1,11 @@
 package net.soulsweaponry.items.bow;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.abilitykeybind.ArrowStorm;
 import net.soulsweaponry.items.abilities.customarrows.MoonlightArrowAbility;
-
-import java.util.function.Supplier;
 
 public class DarkmoonLongbow extends ModdedBow {
 
@@ -19,10 +18,10 @@ public class DarkmoonLongbow extends ModdedBow {
     );
     private static final MoonlightArrowAbility MOONLIGHT_ARROW = new MoonlightArrowAbility();
 
-    public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+    public DarkmoonLongbow(Settings settings, TagKey<Item> repairTag) {
         super(settings, createConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks,
                 ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_bonus_velocity),
-                repairIngredientSupplier);
+                repairTag);
         this.addAbility(ARROW_STORM, MOONLIGHT_ARROW);
     }
 

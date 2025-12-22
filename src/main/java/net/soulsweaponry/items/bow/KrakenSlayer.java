@@ -1,11 +1,10 @@
 package net.soulsweaponry.items.bow;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.customarrows.ThirdShotTrue;
-
-import java.util.function.Supplier;
 
 public class KrakenSlayer extends ModdedBow {
 
@@ -18,10 +17,10 @@ public class KrakenSlayer extends ModdedBow {
             (int) ConfigConstructor.kraken_slayer_bow_max_stacks_until_true_damage
     );
 
-    public KrakenSlayer(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+    public KrakenSlayer(Settings settings, TagKey<Item> repairTag) {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_bow_pull_time_ticks,
                 ConfigConstructor.kraken_slayer_bow_damage, ConfigConstructor.kraken_slayer_bow_bonus_velocity),
-                repairIngredientSupplier);
+                repairTag);
         this.addAbility(THIRD_SHOT_BOW);
     }
 

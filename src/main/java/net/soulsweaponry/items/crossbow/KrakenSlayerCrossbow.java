@@ -1,11 +1,10 @@
 package net.soulsweaponry.items.crossbow;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.TagKey;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.customarrows.ThirdShotTrue;
-
-import java.util.function.Supplier;
 
 public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
@@ -18,10 +17,10 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
             (int) ConfigConstructor.kraken_slayer_crossbow_max_stacks_until_true_damage
     );
 
-    public KrakenSlayerCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+    public KrakenSlayerCrossbow(Settings settings, TagKey<Item> repairTag) {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
                 ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_bonus_velocity),
-                repairIngredientSupplier);
+                repairTag);
         this.addAbility(THIRD_SHOT_CROSSBOW);
     }
 

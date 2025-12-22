@@ -1,10 +1,12 @@
 package net.soulsweaponry.registry;
 
-import net.minecraft.item.*;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.TranslucentWeapon;
+import net.soulsweaponry.items.TrickWeapon;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.items.bow.DarkmoonLongbow;
 import net.soulsweaponry.items.bow.Galeforce;
@@ -26,6 +28,7 @@ import net.soulsweaponry.items.staff.ChungusStaff;
 import net.soulsweaponry.items.staff.DragonStaff;
 import net.soulsweaponry.items.staff.WitheredWabbajack;
 import net.soulsweaponry.items.sword.*;
+import net.soulsweaponry.util.ModTags;
 
 import java.util.function.UnaryOperator;
 
@@ -93,7 +96,7 @@ public class WeaponRegistry {
     public static Item NIGHTLORDS_SWORD;
 
     public static void init() {
-        // Small helper so we can pass "no extra settings" cleanly
+        // Small helper for cases to apply "no extra settings" in the future
         UnaryOperator<Item.Settings> ID = UnaryOperator.identity();
 
         BLUEMOON_SHORTSWORD = ItemRegistry.registerLegendaryWeapon(
@@ -211,7 +214,7 @@ public class WeaponRegistry {
 
         GALEFORCE = ItemRegistry.registerLegendaryWeapon(
                 "galeforce",
-                s -> new Galeforce(s, () -> Ingredient.ofItems(ItemRegistry.VERGLAS, ItemRegistry.MOONSTONE)),
+                s -> new Galeforce(s, ModTags.Items.REPAIRS_GALEFORCE),
                 st -> st.maxDamage(1300).rarity(Rarity.EPIC),
                 ConfigConstructor.disable_recipe_galeforce,
                 ConfigConstructor.is_fireproof_galeforce
@@ -448,21 +451,21 @@ public class WeaponRegistry {
 
         KRAKEN_SLAYER = ItemRegistry.registerWeaponItem(
                 "kraken_slayer",
-                s -> new KrakenSlayer(s, () -> Ingredient.ofItems(Items.GOLD_INGOT)),
+                s -> new KrakenSlayer(s, ModTags.Items.REPAIRS_KRAKEN_SLAYER_BOW),
                 st -> st.maxDamage(1258).rarity(Rarity.EPIC),
                 ConfigConstructor.disable_recipe_kraken_slayer_bow,
                 ConfigConstructor.is_fireproof_kraken_slayer_bow
         );
         KRAKEN_SLAYER_CROSSBOW = ItemRegistry.registerLegendaryWeapon(
                 "kraken_slayer_crossbow",
-                s -> new KrakenSlayerCrossbow(s, () -> Ingredient.ofItems(Items.GOLD_INGOT)),
+                s -> new KrakenSlayerCrossbow(s, ModTags.Items.REPAIRS_KRAKEN_SLAYER_CROSSBOW),
                 st -> st.maxDamage(1258).rarity(Rarity.EPIC),
                 ConfigConstructor.disable_recipe_kraken_slayer_crossbow,
                 ConfigConstructor.is_fireproof_kraken_slayer_crossbow
         );
         DARKMOON_LONGBOW = ItemRegistry.registerLegendaryWeapon(
                 "darkmoon_longbow",
-                s -> new DarkmoonLongbow(s, () -> Ingredient.ofItems(Items.GOLD_INGOT)),
+                s -> new DarkmoonLongbow(s, ModTags.Items.REPAIRS_DARKMOON_LONGBOW),
                 st -> st.maxDamage(1400).rarity(Rarity.EPIC),
                 ConfigConstructor.disable_recipe_darkmoon_longbow,
                 ConfigConstructor.is_fireproof_darkmoon_longbow
@@ -510,7 +513,7 @@ public class WeaponRegistry {
 
         SIMONS_BOWBLADE = ItemRegistry.registerLegendaryWeapon(
                 "simons_bowblade",
-                s -> new SimonsBowblade(s, () -> Ingredient.ofItems(Items.IRON_BLOCK, ItemRegistry.SOUL_INGOT)),
+                s -> new SimonsBowblade(s, ModTags.Items.REPAIRS_SIMONS_BOWBLADE),
                 st -> st.maxDamage(1354).rarity(Rarity.RARE),
                 ConfigConstructor.disable_recipe_simons_bowblade,
                 ConfigConstructor.is_fireproof_simons_bowblade
