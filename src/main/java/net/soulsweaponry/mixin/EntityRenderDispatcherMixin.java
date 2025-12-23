@@ -14,11 +14,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
 
-    // TODO: The player with the effect is only invisible to himself, other players on a server still see him.
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public <E extends Entity> void render(E entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
+    // TODO other players on a server can still see the player despite having ghostly effect
+    @Inject(
+            method = "render(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void soulsweapons$hideGhostly(
+            Entity entity,
+            double x, double y, double z,
+            float tickDelta,
+            MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers,
+            int light,
+            CallbackInfo ci
+    ) {
         if (entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.GHOSTLY)) {
-            info.cancel();
+            ci.cancel();
         }
     }
 }

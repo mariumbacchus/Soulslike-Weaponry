@@ -320,8 +320,14 @@ public class BlockRegistry {
         return block;
     }
 
-    public static <B extends Block> B registerBlockAlone(B block, String name) {
-        return Registry.register(Registries.BLOCK, Identifier.of(SoulsWeaponry.ModId, name), block);
+    public static <B extends Block> B registerBlockAlone(
+            String name,
+            Function<AbstractBlock.Settings, B> factory,
+            AbstractBlock.Settings settings
+    ) {
+        RegistryKey<Block> key = blockKey(name);
+        B block = factory.apply(settings.registryKey(key));
+        return Registry.register(Registries.BLOCK, key, block);
     }
 
     private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(

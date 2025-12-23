@@ -10,12 +10,10 @@ import net.soulsweaponry.client.renderer.entity.mobs.BigChungusRenderer;
 public class BigChungusModel extends EntityModel<BigChungusRenderer.BigChungusRenderState> {
 
     private final ModelPart root;
-    private final ModelPart head;
 
     public BigChungusModel(ModelPart root) {
         super(root);
         this.root = root;
-        this.head = root.getChild("head");
     }
 
     public static TexturedModelData getTexturedModelData() {

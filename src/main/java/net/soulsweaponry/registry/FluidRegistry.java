@@ -40,8 +40,9 @@ public class FluidRegistry {
         FLOWING_PURIFIED_BLOOD = registerFluid("flowing_purified_blood", new PurifiedBlood.Flowing());
 
         PURIFIED_BLOOD_BLOCK = BlockRegistry.registerBlockAlone(
-                new PurifiedBloodBlock(STILL_PURIFIED_BLOOD, AbstractBlock.Settings.copy(Blocks.WATER)),
-                "purified_blood_block"
+                "purified_blood_block",
+                s -> new PurifiedBloodBlock(STILL_PURIFIED_BLOOD, s),
+                AbstractBlock.Settings.copy(Blocks.WATER)
         );
 
         PURIFIED_BLOOD_BUCKET = ItemRegistry.registerItem(
@@ -113,12 +114,13 @@ public class FluidRegistry {
         );
 
         PURIFIED_BLOOD_CAULDRON = BlockRegistry.registerBlockAlone(
-                new PurifiedBloodCauldronBlock(
+                "purified_blood_cauldron",
+                s -> new PurifiedBloodCauldronBlock(
                         Biome.Precipitation.NONE,
                         BLOOD_CAULDRON_BEHAVIOR,
-                        AbstractBlock.Settings.copy(Blocks.CAULDRON)
+                        s
                 ),
-                "purified_blood_cauldron"
+                AbstractBlock.Settings.copy(Blocks.CAULDRON)
         );
 
         CauldronFluidContent.registerCauldron(

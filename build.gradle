@@ -76,14 +76,13 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	// TODO there doesnt exist a 1.21.2 geckolib version so cant really test stuff on this minecraft version
 	modImplementation("software.bernie.geckolib:geckolib-fabric-${geckolib_minecraft_version}:${geckolib_version}")
 
 	modImplementation "maven.modrinth:attributefix:${project.attributefix_version}-fabric,${project.attributefix_minecraft_version}"
 
 	//modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
-	modImplementation name: "ranged_weapon_api-fabric-2.3.3+1.21.2"
-	include name: "ranged_weapon_api-fabric-2.3.3+1.21.2"
+	modImplementation name: "ranged_weapon_api-fabric-2.3.3+1.21.3"
+	include name: "ranged_weapon_api-fabric-2.3.3+1.21.3"
 
 	// Attributefix dependencies:
 	//modImplementation "curse.maven:bookshelf-${project.bookshelf}"
