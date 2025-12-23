@@ -54,7 +54,6 @@ public class SoulsWeaponry implements ModInitializer {
         FluidRegistry.registerCauldronBehavior();
         EffectRegistry.init();
         EnchantRegistry.init();
-        EntityRegistry.init();
         EventRegistry.init();
         ParticleRegistry.init();
         SpawnInit.init();
@@ -62,6 +61,7 @@ public class SoulsWeaponry implements ModInitializer {
         ArmorRegistry.init();
         RecipeSerializerRegistry.init();
         GunRegistry.init();
+        EntityRegistry.init();
         WorldGen.generateCustomWorldGen();
         LOGGER.info("Successfully registered SoulsWeapons content!");
         PacketRegistry.registerPackets();

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:iron_ingot"
-    },
-    "G": {
-      "tag": "c:lost_soul"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "minecraft:iron_ingot",
+    "G": "#c:lost_soul",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     " ##",

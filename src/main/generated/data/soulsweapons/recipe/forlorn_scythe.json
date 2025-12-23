@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "i": {
-      "item": "minecraft:netherite_scrap"
-    }
+    "/": "#c:rods/wooden",
+    "S": "#soulsweapons:lord_soul",
+    "i": "minecraft:netherite_scrap"
   },
   "pattern": [
     " ii",

@@ -1,16 +1,10 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "tag": "soulsweapons:lord_soul"
-  },
-  "base": {
-    "item": "soulsweapons:bluemoon_greatsword"
-  },
+  "addition": "#soulsweapons:lord_soul",
+  "base": "soulsweapons:bluemoon_greatsword",
   "result": {
     "count": 1,
     "id": "soulsweapons:moonlight_greatsword"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:lost_soul"
+        "recipe": "minecraft:lost_soul"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:lost_soul"
+      "minecraft:lost_soul"
     ]
   }
 }

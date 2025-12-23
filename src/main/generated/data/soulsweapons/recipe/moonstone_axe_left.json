@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:moonstone"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "i": {
-      "item": "soulsweapons:verglas"
-    }
+    "#": "soulsweapons:moonstone",
+    "/": "#c:rods/wooden",
+    "i": "soulsweapons:verglas"
   },
   "pattern": [
     "## ",

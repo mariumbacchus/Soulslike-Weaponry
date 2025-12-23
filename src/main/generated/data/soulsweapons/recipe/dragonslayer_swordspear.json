@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "G": {
-      "item": "minecraft:gold_ingot"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    }
+    "/": "#c:rods/wooden",
+    "G": "minecraft:gold_ingot",
+    "S": "#soulsweapons:lord_soul"
   },
   "pattern": [
     " G ",

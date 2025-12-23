@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:empowered_dawnbreaker"
+        "recipe": "minecraft:empowered_dawnbreaker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:empowered_dawnbreaker"
+      "minecraft:empowered_dawnbreaker"
     ]
   }
 }

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:blaze_rod"
-    },
-    "X": {
-      "item": "minecraft:dragon_head"
-    }
+    "#": "minecraft:blaze_rod",
+    "X": "minecraft:dragon_head"
   },
   "pattern": [
     "X",

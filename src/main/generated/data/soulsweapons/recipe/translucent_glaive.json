@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:lost_soul"
-    },
-    "X": {
-      "item": "soulsweapons:soul_ingot"
-    }
+    "#": "#c:lost_soul",
+    "X": "soulsweapons:soul_ingot"
   },
   "pattern": [
     " #",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "item": "minecraft:blaze_rod"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "g": {
-      "item": "minecraft:gold_ingot"
-    }
+    "/": "minecraft:blaze_rod",
+    "S": "#soulsweapons:lord_soul",
+    "g": "minecraft:gold_ingot"
   },
   "pattern": [
     " /g",

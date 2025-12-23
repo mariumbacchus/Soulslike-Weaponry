@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:crucible_sword"
+        "recipe": "minecraft:crucible_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:crucible_sword"
+      "minecraft:crucible_sword"
     ]
   }
 }

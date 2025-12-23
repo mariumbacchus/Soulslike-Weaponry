@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:skofnung"
+        "recipe": "minecraft:skofnung"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:skofnung"
+      "minecraft:skofnung"
     ]
   }
 }

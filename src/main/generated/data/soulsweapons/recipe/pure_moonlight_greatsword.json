@@ -1,16 +1,10 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "soulsweapons:essence_of_luminescence"
-  },
-  "base": {
-    "tag": "soulsweapons:upgradable_moonlight_swords"
-  },
+  "addition": "soulsweapons:essence_of_luminescence",
+  "base": "#soulsweapons:upgradable_moonlight_swords",
   "result": {
     "count": 1,
     "id": "soulsweapons:pure_moonlight_greatsword"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

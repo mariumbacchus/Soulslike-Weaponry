@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "soulsweapons:oleander"
-    }
+    "soulsweapons:oleander"
   ],
   "result": {
     "count": 2,

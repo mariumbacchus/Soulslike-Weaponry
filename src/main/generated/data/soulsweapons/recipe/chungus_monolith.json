@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": {
-      "item": "minecraft:deepslate"
-    },
-    "O": {
-      "item": "minecraft:golden_carrot"
-    },
-    "S": {
-      "item": "minecraft:stone"
-    }
+    "D": "minecraft:deepslate",
+    "O": "minecraft:golden_carrot",
+    "S": "minecraft:stone"
   },
   "pattern": [
     " S ",

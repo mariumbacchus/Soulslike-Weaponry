@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:crimson_ingot"
-    },
-    "X": {
-      "item": "minecraft:wither_skeleton_skull"
-    }
+    "#": "soulsweapons:crimson_ingot",
+    "X": "minecraft:wither_skeleton_skull"
   },
   "pattern": [
     "X",

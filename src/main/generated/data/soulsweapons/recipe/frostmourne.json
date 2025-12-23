@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:soul_ingot"
-    },
-    "D": {
-      "item": "soulsweapons:lord_soul_day_stalker"
-    },
-    "N": {
-      "item": "soulsweapons:lord_soul_night_prowler"
-    },
-    "X": {
-      "item": "soulsweapons:verglas"
-    }
+    "#": "soulsweapons:soul_ingot",
+    "D": "soulsweapons:lord_soul_day_stalker",
+    "N": "soulsweapons:lord_soul_night_prowler",
+    "X": "soulsweapons:verglas"
   },
   "pattern": [
     " #X",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:verglas"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    }
+    "#": "soulsweapons:verglas",
+    "/": "#c:rods/wooden",
+    "S": "#soulsweapons:lord_soul"
   },
   "pattern": [
     "S#",

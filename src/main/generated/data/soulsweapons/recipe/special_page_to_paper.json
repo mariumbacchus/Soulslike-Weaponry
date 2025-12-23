@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "soulsweapons:blood_vial_recipe_page"
-    }
+    "soulsweapons:blood_vial_recipe_page"
   ],
   "result": {
     "count": 1,

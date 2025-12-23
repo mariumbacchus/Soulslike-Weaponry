@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:enhanced_withered_chest"
+        "recipe": "minecraft:enhanced_withered_chest"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:enhanced_withered_chest"
+      "minecraft:enhanced_withered_chest"
     ]
   }
 }

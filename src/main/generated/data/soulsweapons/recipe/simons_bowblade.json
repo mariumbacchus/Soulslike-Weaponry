@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:string"
-    },
-    "S": {
-      "item": "minecraft:iron_ingot"
-    },
-    "X": {
-      "item": "minecraft:iron_sword"
-    }
+    "#": "minecraft:string",
+    "S": "minecraft:iron_ingot",
+    "X": "minecraft:iron_sword"
   },
   "pattern": [
     " X#",

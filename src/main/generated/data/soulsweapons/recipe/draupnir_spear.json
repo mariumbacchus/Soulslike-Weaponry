@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "X": {
-      "item": "minecraft:blaze_rod"
-    },
-    "Y": {
-      "tag": "soulsweapons:lord_soul"
-    }
+    "#": "minecraft:netherite_ingot",
+    "X": "minecraft:blaze_rod",
+    "Y": "#soulsweapons:lord_soul"
   },
   "pattern": [
     "#",

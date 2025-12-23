@@ -1,16 +1,10 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "soulsweapons:lord_soul_night_prowler"
-  },
-  "base": {
-    "item": "minecraft:stone_sword"
-  },
+  "addition": "soulsweapons:lord_soul_night_prowler",
+  "base": "minecraft:stone_sword",
   "result": {
     "count": 1,
     "id": "soulsweapons:nightlords_sword"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

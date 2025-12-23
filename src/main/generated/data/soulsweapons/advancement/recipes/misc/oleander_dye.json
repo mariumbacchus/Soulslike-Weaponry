@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:oleander_dye"
+        "recipe": "minecraft:oleander_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:oleander_dye"
+      "minecraft:oleander_dye"
     ]
   }
 }

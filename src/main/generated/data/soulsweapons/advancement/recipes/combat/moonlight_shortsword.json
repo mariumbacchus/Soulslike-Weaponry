@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:moonlight_shortsword"
+        "recipe": "minecraft:moonlight_shortsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:moonlight_shortsword"
+      "minecraft:moonlight_shortsword"
     ]
   }
 }

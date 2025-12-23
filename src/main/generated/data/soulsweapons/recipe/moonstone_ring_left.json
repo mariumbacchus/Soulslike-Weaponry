@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "D": {
-      "item": "soulsweapons:arkenstone"
-    },
-    "i": {
-      "tag": "c:ingots/iron"
-    }
+    "D": "soulsweapons:arkenstone",
+    "i": "#c:ingots/iron"
   },
   "pattern": [
     "Di ",

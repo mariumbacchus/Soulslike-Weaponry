@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:iron_ingot"
-    },
-    "D": {
-      "item": "soulsweapons:soul_ingot"
-    },
-    "N": {
-      "item": "soulsweapons:arkenstone"
-    },
-    "n": {
-      "item": "minecraft:netherite_ingot"
-    }
+    "#": "minecraft:iron_ingot",
+    "D": "soulsweapons:soul_ingot",
+    "N": "soulsweapons:arkenstone",
+    "n": "minecraft:netherite_ingot"
   },
   "pattern": [
     "# #",

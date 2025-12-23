@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "S": {
-      "item": "soulsweapons:crimson_ingot"
-    },
-    "i": {
-      "item": "minecraft:iron_ingot"
-    }
+    "/": "#c:rods/wooden",
+    "S": "soulsweapons:crimson_ingot",
+    "i": "minecraft:iron_ingot"
   },
   "pattern": [
     "iSi",

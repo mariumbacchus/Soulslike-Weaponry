@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "tag": "c:lost_soul"
-    }
+    "#": "#c:lost_soul"
   },
   "pattern": [
     "##",

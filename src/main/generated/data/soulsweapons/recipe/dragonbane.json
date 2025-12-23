@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "item": "soulsweapons:soul_ingot"
-    },
-    "O": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "S": {
-      "item": "minecraft:gold_ingot"
-    },
-    "X": {
-      "tag": "soulsweapons:dragonbane_material"
-    }
+    "/": "soulsweapons:soul_ingot",
+    "O": "#soulsweapons:lord_soul",
+    "S": "minecraft:gold_ingot",
+    "X": "#soulsweapons:dragonbane_material"
   },
   "pattern": [
     " XX",

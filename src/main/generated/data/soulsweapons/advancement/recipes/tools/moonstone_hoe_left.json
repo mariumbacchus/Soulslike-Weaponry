@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:moonstone_hoe_left"
+        "recipe": "minecraft:moonstone_hoe_left"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:moonstone_hoe_left"
+      "minecraft:moonstone_hoe_left"
     ]
   }
 }

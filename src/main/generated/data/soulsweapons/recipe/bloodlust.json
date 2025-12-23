@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "O": {
-      "tag": "c:demon_hearts"
-    },
-    "X": {
-      "tag": "c:ingots/iron"
-    }
+    "/": "#c:rods/wooden",
+    "O": "#c:demon_hearts",
+    "X": "#c:ingots/iron"
   },
   "pattern": [
     " XX",

@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:nether_brick"
-    },
-    "D": {
-      "item": "soulsweapons:crimson_ingot"
-    },
-    "N": {
-      "item": "soulsweapons:withered_demon_heart"
-    },
-    "n": {
-      "item": "minecraft:netherite_ingot"
-    }
+    "#": "minecraft:nether_brick",
+    "D": "soulsweapons:crimson_ingot",
+    "N": "soulsweapons:withered_demon_heart",
+    "n": "minecraft:netherite_ingot"
   },
   "pattern": [
     "# #",

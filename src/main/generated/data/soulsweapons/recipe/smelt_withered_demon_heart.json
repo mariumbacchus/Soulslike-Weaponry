@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 500,
   "experience": 10.0,
-  "ingredient": {
-    "item": "soulsweapons:withered_demon_heart"
-  },
+  "ingredient": "soulsweapons:withered_demon_heart",
   "result": {
     "id": "minecraft:netherite_ingot"
   }

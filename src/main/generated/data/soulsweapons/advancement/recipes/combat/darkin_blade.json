@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:darkin_blade"
+        "recipe": "minecraft:darkin_blade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:darkin_blade"
+      "minecraft:darkin_blade"
     ]
   }
 }

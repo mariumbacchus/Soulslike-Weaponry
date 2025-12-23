@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "c:lost_soul"
-    },
-    "C": {
-      "item": "soulsweapons:moonstone"
-    },
-    "D": {
-      "item": "soulsweapons:verglas"
-    }
+    "#": "#c:lost_soul",
+    "C": "soulsweapons:moonstone",
+    "D": "soulsweapons:verglas"
   },
   "pattern": [
     "#C#",

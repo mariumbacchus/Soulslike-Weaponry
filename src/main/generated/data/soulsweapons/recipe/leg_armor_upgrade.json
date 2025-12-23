@@ -1,15 +1,9 @@
 {
   "type": "soulsweapons:smithing_item_upgrade",
-  "addition": {
-    "item": "soulsweapons:twinkling_titanite"
-  },
-  "base": {
-    "tag": "minecraft:leg_armor"
-  },
+  "addition": "soulsweapons:twinkling_titanite",
+  "base": "#minecraft:leg_armor",
   "fallback": true,
   "primaryBonus": 0.8,
   "secondaryBonus": 0.6,
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

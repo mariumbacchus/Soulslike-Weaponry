@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:iron_block"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "minecraft:iron_block",
+    "X": "#c:rods/wooden"
   },
   "pattern": [
     " # ",

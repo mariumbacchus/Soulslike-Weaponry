@@ -1,15 +1,9 @@
 {
   "type": "soulsweapons:smithing_item_upgrade",
-  "addition": {
-    "item": "soulsweapons:twinkling_titanite"
-  },
-  "base": {
-    "tag": "minecraft:chest_armor"
-  },
+  "addition": "soulsweapons:twinkling_titanite",
+  "base": "#minecraft:chest_armor",
   "fallback": true,
   "primaryBonus": 1.0,
   "secondaryBonus": 0.6,
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:silver_bullet_iron_ingot"
+        "recipe": "minecraft:silver_bullet_iron_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:silver_bullet_iron_ingot"
+      "minecraft:silver_bullet_iron_ingot"
     ]
   }
 }

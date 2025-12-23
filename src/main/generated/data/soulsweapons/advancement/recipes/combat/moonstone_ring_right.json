@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:moonstone_ring_right"
+        "recipe": "minecraft:moonstone_ring_right"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:moonstone_ring_right"
+      "minecraft:moonstone_ring_right"
     ]
   }
 }

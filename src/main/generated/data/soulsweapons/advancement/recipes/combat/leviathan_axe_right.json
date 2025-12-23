@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:leviathan_axe_right"
+        "recipe": "minecraft:leviathan_axe_right"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:leviathan_axe_right"
+      "minecraft:leviathan_axe_right"
     ]
   }
 }

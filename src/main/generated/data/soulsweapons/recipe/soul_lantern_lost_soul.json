@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:iron_nugget"
-    },
-    "X": {
-      "tag": "c:lost_soul"
-    }
+    "#": "minecraft:iron_nugget",
+    "X": "#c:lost_soul"
   },
   "pattern": [
     "###",

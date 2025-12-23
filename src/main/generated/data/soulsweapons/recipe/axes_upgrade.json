@@ -1,15 +1,9 @@
 {
   "type": "soulsweapons:smithing_item_upgrade",
-  "addition": {
-    "item": "soulsweapons:twinkling_titanite"
-  },
-  "base": {
-    "tag": "minecraft:axes"
-  },
+  "addition": "soulsweapons:twinkling_titanite",
+  "base": "#minecraft:axes",
   "fallback": true,
   "primaryBonus": 1.25,
   "secondaryBonus": 5.0,
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

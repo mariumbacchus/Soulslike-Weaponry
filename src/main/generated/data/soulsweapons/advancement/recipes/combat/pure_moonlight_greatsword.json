@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:pure_moonlight_greatsword"
+        "recipe": "minecraft:pure_moonlight_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:pure_moonlight_greatsword"
+      "minecraft:pure_moonlight_greatsword"
     ]
   }
 }

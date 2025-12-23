@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "soulsweapons:moonstone"
-    },
-    "X": {
-      "item": "minecraft:bone"
-    }
+    "#": "soulsweapons:moonstone",
+    "X": "minecraft:bone"
   },
   "pattern": [
     "#X#",

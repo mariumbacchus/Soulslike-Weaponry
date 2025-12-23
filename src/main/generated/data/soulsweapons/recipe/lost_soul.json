@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "minecraft:soul_sand"
-  },
+  "ingredient": "minecraft:soul_sand",
   "result": {
     "id": "soulsweapons:lost_soul"
   }

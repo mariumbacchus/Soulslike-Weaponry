@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "soulsweapons:moonstone_block"
-    }
+    "soulsweapons:moonstone_block"
   ],
   "result": {
     "count": 9,

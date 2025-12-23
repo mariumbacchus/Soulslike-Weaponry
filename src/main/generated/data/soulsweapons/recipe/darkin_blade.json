@@ -1,16 +1,10 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "tag": "soulsweapons:lord_soul"
-  },
-  "base": {
-    "item": "soulsweapons:bloodthirster"
-  },
+  "addition": "#soulsweapons:lord_soul",
+  "base": "soulsweapons:bloodthirster",
   "result": {
     "count": 1,
     "id": "soulsweapons:darkin_blade"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

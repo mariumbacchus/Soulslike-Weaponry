@@ -14,6 +14,7 @@ import net.minecraft.loot.function.EnchantedCountIncreaseLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
@@ -23,14 +24,14 @@ import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.FoodRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
 
-    public static final HashMap<String, ArrayList<Item>> BOSS_DROPS = new HashMap<>();
+    public static final HashMap<String, List<Identifier>> BOSS_DROPS = new HashMap<>();
 
     private final RegistryWrapper.WrapperLookup registryLookup;
 
@@ -43,8 +44,12 @@ public class EntityLootTablesProvider extends SimpleFabricLootTableProvider {
     public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> lootTableBiConsumer) {
         for (String id : BOSS_DROPS.keySet()) {
             LootTable.Builder builder = LootTable.builder();
-            for (Item item : BOSS_DROPS.get(id)) {
+            for (Identifier itemId : BOSS_DROPS.get(id)) {
                 LootPool.Builder lootPoolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1));
+                Item item = Registries.ITEM.get(itemId);
+                if (item == Items.AIR) {
+                    throw new IllegalStateException("Boss drop item id not found in ITEM registry: " + itemId + " (boss=" + id + ")");
+                }
                 lootPoolBuilder.with(ItemEntry.builder(item).apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1))));
                 builder.pool(lootPoolBuilder);
             }

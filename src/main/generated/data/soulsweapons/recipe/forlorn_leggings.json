@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:crimson_ingot"
-    },
-    "L": {
-      "item": "soulsweapons:soul_ingot"
-    }
+    "#": "soulsweapons:crimson_ingot",
+    "L": "soulsweapons:soul_ingot"
   },
   "pattern": [
     "#L#",

@@ -1,6 +1,5 @@
 package net.soulsweaponry.registry;
 
-import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -24,6 +23,9 @@ import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
 import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.entity.projectile.noclip.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityRegistry {
 
@@ -163,6 +165,17 @@ public class EntityRegistry {
     }
 
     private static void registerBossDrops(String id, Item... items) {
-        EntityLootTablesProvider.BOSS_DROPS.put(id, Lists.newArrayList(items));
+        List<Identifier> list = new ArrayList<>(items.length);
+        for (Item item : items) {
+            if (item == null) {
+                throw new IllegalStateException("Null item passed to registerBossDrops for boss id=" + id);
+            }
+            Identifier itemId = Registries.ITEM.getId(item);
+            if (itemId.equals(Registries.ITEM.getDefaultId())) {
+                throw new IllegalStateException("Item not registered when building boss drops for boss id=" + id + ": " + item);
+            }
+            list.add(itemId);
+        }
+        EntityLootTablesProvider.BOSS_DROPS.put(id, list);
     }
 }

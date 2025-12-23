@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "soulsweapons:chungus_emerald_block"
-    }
+    "soulsweapons:chungus_emerald_block"
   ],
   "result": {
     "count": 9,

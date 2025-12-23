@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-    {
-      "item": "minecraft:iron_ingot"
-    },
-    {
-      "tag": "c:lost_soul"
-    },
-    {
-      "item": "minecraft:gunpowder"
-    }
+    "minecraft:iron_ingot",
+    "#c:lost_soul",
+    "minecraft:gunpowder"
   ],
   "result": {
     "count": 3,

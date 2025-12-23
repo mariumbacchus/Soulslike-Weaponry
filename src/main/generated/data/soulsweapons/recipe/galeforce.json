@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:moonstone"
-    },
-    "G": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "S": {
-      "item": "minecraft:string"
-    }
+    "#": "soulsweapons:moonstone",
+    "G": "#soulsweapons:lord_soul",
+    "S": "minecraft:string"
   },
   "pattern": [
     " #S",

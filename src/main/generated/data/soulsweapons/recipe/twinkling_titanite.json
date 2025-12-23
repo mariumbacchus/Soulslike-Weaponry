@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "soulsweapons:moonstone"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "V": {
-      "item": "soulsweapons:verglas"
-    }
+    "#": "soulsweapons:moonstone",
+    "S": "#soulsweapons:lord_soul",
+    "V": "soulsweapons:verglas"
   },
   "pattern": [
     " #V",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "minecraft:bone"
-    },
-    "X": {
-      "tag": "c:ingots/iron"
-    },
-    "Y": {
-      "tag": "c:lost_soul"
-    }
+    "I": "minecraft:bone",
+    "X": "#c:ingots/iron",
+    "Y": "#c:lost_soul"
   },
   "pattern": [
     "XIX",

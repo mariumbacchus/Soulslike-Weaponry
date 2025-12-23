@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:obsidian"
-    },
-    "O": {
-      "item": "minecraft:amethyst_shard"
-    },
-    "X": {
-      "item": "minecraft:diamond_pickaxe"
-    }
+    "#": "minecraft:obsidian",
+    "O": "minecraft:amethyst_shard",
+    "X": "minecraft:diamond_pickaxe"
   },
   "pattern": [
     "#O#",

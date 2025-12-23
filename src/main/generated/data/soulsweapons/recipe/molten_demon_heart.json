@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "tag": "c:demon_hearts"
-  },
+  "ingredient": "#c:demon_hearts",
   "result": {
     "id": "soulsweapons:molten_demon_heart"
   }

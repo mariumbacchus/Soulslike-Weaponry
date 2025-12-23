@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soulsweapons:nightlords_sword"
+        "recipe": "minecraft:nightlords_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "soulsweapons:nightlords_sword"
+      "minecraft:nightlords_sword"
     ]
   }
 }

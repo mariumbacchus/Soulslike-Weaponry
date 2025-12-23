@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "soulsweapons:soul_ingot"
-    },
-    "S": {
-      "tag": "soulsweapons:lord_soul"
-    },
-    "X": {
-      "tag": "c:lost_soul"
-    },
-    "Y": {
-      "item": "minecraft:iron_block"
-    }
+    "#": "soulsweapons:soul_ingot",
+    "S": "#soulsweapons:lord_soul",
+    "X": "#c:lost_soul",
+    "Y": "minecraft:iron_block"
   },
   "pattern": [
     "YYY",

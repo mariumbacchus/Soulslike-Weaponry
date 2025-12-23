@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:gold_ingot"
-    },
-    "A": {
-      "item": "minecraft:string"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
-    },
-    "Y": {
-      "item": "soulsweapons:essence_of_eventide"
-    }
+    "#": "minecraft:gold_ingot",
+    "A": "minecraft:string",
+    "X": "#c:rods/wooden",
+    "Y": "soulsweapons:essence_of_eventide"
   },
   "pattern": [
     " #A",
