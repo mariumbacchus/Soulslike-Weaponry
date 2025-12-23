@@ -8,7 +8,7 @@ import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.ingame.SmithingScreen;
-import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeType;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 
 public class SoulsWeaponryREIClientPlugin implements REIClientPlugin {
@@ -19,11 +19,10 @@ public class SoulsWeaponryREIClientPlugin implements REIClientPlugin {
         registry.addWorkstations(ItemUpgradeCategory.ITEM_UPGRADE, EntryStacks.of(Blocks.SMITHING_TABLE));
     }
 
+    //TODO fix compat
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.beginFiller(RecipeEntry.class)
-                .filter(entry -> entry.value() instanceof ItemUpgradeRecipe)
-                .fill(entry -> new ItemUpgradeDisplay((ItemUpgradeRecipe) entry.value()));
+        registry.registerRecipeFiller(ItemUpgradeRecipe.class, RecipeType.SMITHING, ItemUpgradeDisplay::new);
     }
 
     @Override

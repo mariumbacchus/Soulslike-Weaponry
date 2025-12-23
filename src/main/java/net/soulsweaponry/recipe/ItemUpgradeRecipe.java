@@ -146,15 +146,31 @@ public class ItemUpgradeRecipe implements SmithingRecipe {
 
     @Override
     public List<RecipeDisplay> getDisplays() {
+        ItemStack displayResult = firstPreviewStack(this.base);
         return List.of(
                 new SmithingRecipeDisplay(
                         Ingredient.toDisplay(this.template()),
                         Ingredient.toDisplay(this.base()),
                         Ingredient.toDisplay(this.addition()),
-                        new SlotDisplay.StackSlotDisplay(ItemStack.EMPTY),
+                        new SlotDisplay.StackSlotDisplay(displayResult),
                         new SlotDisplay.ItemSlotDisplay(Items.SMITHING_TABLE)
                 )
         );
+    }
+
+    private ItemStack firstPreviewStack(Optional<Ingredient> ingredient) {
+        if (ingredient.isEmpty()) {
+            return new ItemStack(Items.BARRIER); // must be non-empty
+        }
+        var matches = ingredient.get().getMatchingItems();
+        if (matches.isEmpty()) {
+            return new ItemStack(Items.BARRIER);
+        }
+        ItemStack out = matches.getFirst().value().getDefaultStack().copy();
+        int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        int next = Math.min(prev + 1, 5);
+        this.applyUpgrades(out, next);
+        return out;
     }
 
     public static class Serializer implements RecipeSerializer<ItemUpgradeRecipe> {

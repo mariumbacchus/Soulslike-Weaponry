@@ -19,8 +19,7 @@ import java.util.List;
 public class ItemUpgradeCategory implements DisplayCategory<ItemUpgradeDisplay> {
 
     public static final Identifier TEXTURE = Identifier.of("minecraft", "textures/gui/container/smithing.png");
-    public static final CategoryIdentifier<ItemUpgradeDisplay> ITEM_UPGRADE =
-            CategoryIdentifier.of(SoulsWeaponry.ModId, "smithing_item_upgrade");
+    public static final CategoryIdentifier<ItemUpgradeDisplay> ITEM_UPGRADE = CategoryIdentifier.of(SoulsWeaponry.ModId, "smithing_item_upgrade");
 
     @Override
     public CategoryIdentifier<? extends ItemUpgradeDisplay> getCategoryIdentifier() {
