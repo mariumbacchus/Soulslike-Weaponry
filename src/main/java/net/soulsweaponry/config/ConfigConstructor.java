@@ -895,7 +895,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float rageblade_fury_bonus_duration_per_level = 10;
     @Entry public static float rageblade_soul_of_cinder_duration = 200;
     @Entry public static float rageblade_soul_of_cinder_bonus_duration_per_lvl = 40;
-    @Entry public static float rageblade_soul_of_cinder_amp = 3;
+    @Entry public static float rageblade_soul_of_cinder_amp = 2;
     @Entry public static float rageblade_soul_of_cinder_bonus_amp_per_lvl = 0.6f;
 
     @Entry public static float holy_moonlight_greatsword_damage = 10;
