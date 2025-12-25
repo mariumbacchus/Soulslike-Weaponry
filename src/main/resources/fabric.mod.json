@@ -27,6 +27,9 @@
     "client": [
       "net.soulsweaponry.client.SoulsWeaponryClient"
     ],
+    "rei_common": [
+      "net.soulsweaponry.compat.SoulsWeaponryREICommonPlugin"
+    ],
     "rei_client": [
       "net.soulsweaponry.compat.SoulsWeaponryREIClientPlugin"
     ]
