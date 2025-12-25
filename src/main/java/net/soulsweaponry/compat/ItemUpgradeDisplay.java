@@ -1,5 +1,6 @@
 package net.soulsweaponry.compat;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
@@ -12,50 +13,60 @@ import net.minecraft.item.Items;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
-import net.soulsweaponry.registry.ComponentRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ItemUpgradeDisplay extends BasicDisplay {
 
-    // Serializer exactly like DefaultSmithingDisplay does it, just without the extra "type" field.
+    private final float primaryBonus;
+    private final float secondaryBonus;
+
     public static final DisplaySerializer<ItemUpgradeDisplay> SERIALIZER =
             DisplaySerializer.of(
                     RecordCodecBuilder.mapCodec(instance ->
                             instance.group(
                                     EntryIngredient.codec().listOf().fieldOf("inputs").forGetter(BasicDisplay::getInputEntries),
                                     EntryIngredient.codec().listOf().fieldOf("outputs").forGetter(BasicDisplay::getOutputEntries),
-                                    Identifier.CODEC.optionalFieldOf("location").forGetter(BasicDisplay::getDisplayLocation)
+                                    Identifier.CODEC.optionalFieldOf("location").forGetter(BasicDisplay::getDisplayLocation),
+                                    Codec.FLOAT.fieldOf("primaryBonus").forGetter(ItemUpgradeDisplay::primaryBonus),
+                                    Codec.FLOAT.fieldOf("secondaryBonus").forGetter(ItemUpgradeDisplay::secondaryBonus)
                             ).apply(instance, ItemUpgradeDisplay::new)
                     ),
                     PacketCodec.tuple(
                             EntryIngredient.streamCodec().collect(PacketCodecs.toList()), BasicDisplay::getInputEntries,
                             EntryIngredient.streamCodec().collect(PacketCodecs.toList()), BasicDisplay::getOutputEntries,
                             PacketCodecs.optional(Identifier.PACKET_CODEC), BasicDisplay::getDisplayLocation,
+                            PacketCodecs.FLOAT, ItemUpgradeDisplay::primaryBonus,
+                            PacketCodecs.FLOAT, ItemUpgradeDisplay::secondaryBonus,
                             ItemUpgradeDisplay::new
                     )
             );
 
-    public ItemUpgradeDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location) {
+    public ItemUpgradeDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs,
+                              Optional<Identifier> location, float primaryBonus, float secondaryBonus) {
         super(inputs, outputs, location);
+        this.primaryBonus = primaryBonus;
+        this.secondaryBonus = secondaryBonus;
     }
 
-    // REI will call this constructor via recipe filler
-    public ItemUpgradeDisplay(net.minecraft.recipe.RecipeEntry<ItemUpgradeRecipe> recipe) {
-        super(ItemUpgradeDisplayUtil.inputs(recipe.value()),
+    public ItemUpgradeDisplay(RecipeEntry<ItemUpgradeRecipe> recipe) {
+        this(
+                ItemUpgradeDisplayUtil.inputs(recipe.value()),
                 List.of(ItemUpgradeDisplayUtil.outputPreview(recipe.value())),
-                Optional.of(recipe.id().getValue()));
+                Optional.of(recipe.id().getValue()),
+                recipe.value().primaryBonus(),
+                recipe.value().secondaryBonus()
+        );
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return ItemUpgradeCategory.ITEM_UPGRADE;
+        return ItemUpgradeREIIds.ITEM_UPGRADE;
     }
 
     @Override
@@ -63,7 +74,14 @@ public class ItemUpgradeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 
-    // small helper holder so the codec/packet constructors don't need recipe class
+    public float primaryBonus() {
+        return primaryBonus;
+    }
+
+    public float secondaryBonus() {
+        return secondaryBonus;
+    }
+
     static class ItemUpgradeDisplayUtil {
         static List<EntryIngredient> inputs(ItemUpgradeRecipe r) {
             return List.of(
@@ -80,31 +98,16 @@ public class ItemUpgradeDisplay extends BasicDisplay {
             var matching = baseOpt.get().getMatchingItems();
             if (matching.isEmpty()) return EntryIngredients.of(Items.BARRIER);
 
-            // Build multiple outputs so REI can cycle them
-            List<ItemStack> outs = new ArrayList<>();
-
-            int max = (int) ConfigConstructor.item_upgrading_max_level;
-
+            EntryIngredient.Builder b = EntryIngredient.builder(matching.size());
             for (var entry : matching) {
-                ItemStack out = entry.value().getDefaultStack().copy();
-
-                int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-                int next = Math.min(prev + 1, max);
-
-                r.applyUpgrades(out, next);
-                outs.add(out);
+                ItemStack s = entry.value().getDefaultStack().copy();
+                b.add(me.shedaniel.rei.api.common.util.EntryStacks.of(s));
             }
-
-            // This makes it cyclable
-            return EntryIngredients.ofItemStacks(outs);
+            return b.build();
         }
     }
 
     static EntryIngredient opt(Optional<Ingredient> opt) {
         return opt.map(EntryIngredients::ofIngredient).orElse(EntryIngredient.empty());
-    }
-
-    static EntryIngredient barrier() {
-        return EntryIngredients.of(Items.BARRIER);
     }
 }

@@ -1,12 +1,18 @@
 package net.soulsweaponry.compat;
 
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
 import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
+
+import java.util.List;
+import java.util.Optional;
 
 public class SoulsWeaponryREICommonPlugin implements REICommonPlugin {
 
@@ -16,7 +22,19 @@ public class SoulsWeaponryREICommonPlugin implements REICommonPlugin {
     public void registerDisplays(ServerDisplayRegistry registry) {
         registry.beginRecipeFiller(ItemUpgradeRecipe.class)
                 .filterType(RecipeType.SMITHING)
-                .fill(ItemUpgradeDisplay::new);
+                .fill(entry -> {
+                    try {
+                        return new ItemUpgradeDisplay(entry);
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                        return new ItemUpgradeDisplay(
+                                List.of(EntryIngredient.empty(), EntryIngredient.empty(), EntryIngredient.empty()),
+                                List.of(EntryIngredients.of(Items.BARRIER)),
+                                Optional.of(entry.id().getValue()),
+                                0f, 0f
+                        );
+                    }
+                });
     }
 
     @Override

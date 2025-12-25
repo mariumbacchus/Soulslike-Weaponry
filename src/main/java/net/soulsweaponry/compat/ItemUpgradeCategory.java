@@ -3,27 +3,33 @@ package net.soulsweaponry.compat;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Slot;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryStack;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.UpgradeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ItemUpgradeCategory implements DisplayCategory<ItemUpgradeDisplay> {
 
     public static final Identifier TEXTURE = Identifier.of("minecraft", "textures/gui/container/smithing.png");
-    public static final CategoryIdentifier<ItemUpgradeDisplay> ITEM_UPGRADE = CategoryIdentifier.of(SoulsWeaponry.ModId, "smithing_item_upgrade");
 
     @Override
     public CategoryIdentifier<? extends ItemUpgradeDisplay> getCategoryIdentifier() {
-        return ITEM_UPGRADE;
+        return ItemUpgradeREIIds.ITEM_UPGRADE;
     }
 
     @Override
@@ -39,8 +45,6 @@ public class ItemUpgradeCategory implements DisplayCategory<ItemUpgradeDisplay> 
     @Override
     public List<Widget> setupDisplay(ItemUpgradeDisplay display, Rectangle bounds) {
         List<Widget> w = new ArrayList<>();
-
-        // standard background panel
         w.add(Widgets.createRecipeBase(bounds));
 
         final int x0 = bounds.getX() + 17;
@@ -55,22 +59,65 @@ public class ItemUpgradeCategory implements DisplayCategory<ItemUpgradeDisplay> 
         var inputs  = display.getInputEntries();
         var outputs = display.getOutputEntries();
 
+        Slot templateSlot = null;
+        Slot baseSlot = null;
+        Slot addSlot = null;
+
         if (!inputs.isEmpty()) {
-            w.add(Widgets.createSlot(new Point(xTemplate, ySlot)).entries(inputs.get(0)));
+            templateSlot = Widgets.createSlot(new Point(xTemplate, ySlot)).entries(inputs.get(0)).markInput();
+            w.add(templateSlot);
         }
         if (inputs.size() > 1) {
-            w.add(Widgets.createSlot(new Point(xBase, ySlot)).entries(inputs.get(1)));
+            baseSlot = Widgets.createSlot(new Point(xBase, ySlot)).entries(inputs.get(1)).markInput();
+            w.add(baseSlot);
         }
         if (inputs.size() > 2) {
-            w.add(Widgets.createSlot(new Point(xAdd, ySlot)).entries(inputs.get(2)));
+            addSlot = Widgets.createSlot(new Point(xAdd, ySlot)).entries(inputs.get(2)).markInput();
+            w.add(addSlot);
         }
 
         w.add(Widgets.createArrow(new Point(xArrow, ySlot - 1)));
+        w.add(Widgets.createResultSlotBackground(new Point(xResult, ySlot)));
 
-        w.add(Widgets.createResultSlotBackground(new Point(xResult, ySlot))); // big slot background
+        Slot resultSlot = Widgets.createSlot(new Point(xResult, ySlot))
+                .disableBackground()
+                .markOutput();
+
         if (!outputs.isEmpty()) {
-            w.add(Widgets.createSlot(new Point(xResult, ySlot)).disableBackground().markOutput().entries(outputs.get(0)));
+            resultSlot.entries(outputs.get(0));
         }
+        w.add(resultSlot);
+
+        if (baseSlot != null) {
+            AtomicReference<EntryStack<?>> lastBase = new AtomicReference<>(EntryStack.empty());
+
+            Slot finalBaseSlot = baseSlot;
+            w.add(Widgets.createDrawableWidget((graphics, mouseX, mouseY, delta) -> {
+                EntryStack<?> current = finalBaseSlot.getCurrentEntry();
+                if (current == null || current.isEmpty()) return;
+
+                if (!current.equals(lastBase.get())) {
+                    lastBase.set(current);
+
+                    Object v = current.getValue();
+                    if (v instanceof ItemStack baseStack) {
+                        ItemStack out = baseStack.copy();
+
+                        int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+                        int max  = (int) ConfigConstructor.item_upgrading_max_level;
+                        int next = Math.min(prev + 1, max);
+
+                        out.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, next);
+                        UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(
+                                out, next, display.primaryBonus(), display.secondaryBonus()
+                        );
+
+                        resultSlot.clearEntries().entries(EntryIngredients.of(out));
+                    }
+                }
+            }));
+        }
+
         return w;
     }
 

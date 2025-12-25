@@ -13,7 +13,7 @@ public class SoulsWeaponryREIClientPlugin implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         registry.add(new ItemUpgradeCategory());
-        registry.addWorkstations(ItemUpgradeCategory.ITEM_UPGRADE, EntryStacks.of(Blocks.SMITHING_TABLE));
+        registry.addWorkstations(ItemUpgradeREIIds.ITEM_UPGRADE, EntryStacks.of(Blocks.SMITHING_TABLE));
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SoulsWeaponryREIClientPlugin implements REIClientPlugin {
         registry.registerClickArea(
                 screen -> new Rectangle(134, 33, 18, 18),
                 SmithingScreen.class,
-                ItemUpgradeCategory.ITEM_UPGRADE
+                ItemUpgradeREIIds.ITEM_UPGRADE
         );
     }
 }

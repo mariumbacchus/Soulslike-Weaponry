@@ -17,6 +17,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
+import net.soulsweaponry.mixin.PersistentProjectileEntityAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -127,6 +128,20 @@ public abstract class ReturningProjectile extends ModPersistentProjectile {
             }
         }
         super.tick();
+    }
+
+    @Override
+    public boolean isInGround() {
+        return super.isInGround();
+    }
+
+    @Override
+    protected void age() {
+        PersistentProjectileEntityAccessor accessor = (PersistentProjectileEntityAccessor) this;
+        accessor.setLife(accessor.getLife() + 1);
+        if (accessor.getLife() >= 1200) {
+            this.setShouldReturn(true);
+        }
     }
 
     public void insertStack(PlayerEntity player) {
