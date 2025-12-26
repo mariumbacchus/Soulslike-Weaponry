@@ -22,8 +22,10 @@ public class TooltipUtil {
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon").formatted(Formatting.WHITE));
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon.1", IHasAbilities.formatKeybindText(KeyBindRegistry.switchWeapon.getBoundKeyLocalizedText())).formatted(Formatting.GRAY));
                         tooltip.add(Text.translatable("tooltip.soulsweapons.trick_weapon.2", text.copy().formatted(Formatting.WHITE)).formatted(Formatting.DARK_GRAY));
-                    } else if (!(item instanceof IHasAbilities)) {
-                        IHasAbilities.addShowInfoText(tooltip);
+                    } else {
+                        if (item instanceof IHasAbilities has && has.getAbilities().isEmpty()) {
+                            IHasAbilities.addShowInfoText(tooltip);
+                        }
                     }
                 }
             }

@@ -17,7 +17,9 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
@@ -26,7 +28,9 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.targetdeath.SoulHarvestTransform;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -53,8 +57,8 @@ public class WeaponUtil {
      * Copy over default item stack components such as enchants, damage or stack size.
      * Also copies over {@link ComponentRegistry#ITEM_UPGRADE_LEVEL} and bonus damage/speed
      * attributes gotten from it.
-     * Mainly used in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil} and
-     * {@link net.soulsweaponry.items.abilities.targetdeath.SoulHarvestTransform}.
+     * Mainly used in {@link TrickWeaponUtil} and
+     * {@link SoulHarvestTransform}.
      * @param prevStack previous stack to copy from
      * @param newStack new stack to copy to from the prev stack
      */
@@ -62,7 +66,20 @@ public class WeaponUtil {
         int lvl = WeaponUtil.getUpgradeLevel(prevStack);
         float nextDamage = WeaponUtil.getBaseAttackDamage(newStack);
         float nextAttackSpeed = WeaponUtil.getBaseAttackSpeed(newStack);
+
+        var model = newStack.get(DataComponentTypes.ITEM_MODEL);
+        var style = newStack.get(DataComponentTypes.TOOLTIP_STYLE);
+        var customModelData = newStack.get(DataComponentTypes.CUSTOM_MODEL_DATA);
+        var name = newStack.get(DataComponentTypes.ITEM_NAME);
+
+        // Copies over EVERY component, including item models and textures
         newStack.applyComponentsFrom(prevStack.getComponents());
+
+        newStack.set(DataComponentTypes.ITEM_MODEL, model);
+        newStack.set(DataComponentTypes.TOOLTIP_STYLE, style);
+        newStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, customModelData);
+        newStack.set(DataComponentTypes.ITEM_NAME, name);
+
         WeaponUtil.modifyStackAttributes(newStack, nextDamage, nextAttackSpeed);
         newStack.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, lvl);
         newStack.setCount(prevStack.getCount());
