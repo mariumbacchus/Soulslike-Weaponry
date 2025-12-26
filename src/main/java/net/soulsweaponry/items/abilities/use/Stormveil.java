@@ -36,7 +36,7 @@ public record Stormveil(int stormveilEffectBaseAmp, float bonusAmpPerLevelCeiled
                     return ActionResult.CONSUME.withNewHandStack(stack);
                 }
                 stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, true);
-                return ActionResult.PASS;
+                return ActionResult.FAIL;
             } else {
                 stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, false);
                 stack.damage(1, user, WeaponUtil.getActiveHandSlot(user));

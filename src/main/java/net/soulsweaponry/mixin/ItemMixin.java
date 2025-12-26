@@ -76,7 +76,10 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        info.setReturnValue(IHasAbilities.super.use(world, user, hand));
+        ActionResult result = IHasAbilities.super.use(world, user, hand);
+        if (result != ActionResult.PASS) {
+            info.setReturnValue(result);
+        }
     }
 
     @Inject(method = "onStoppedUsing", at = @At("HEAD"))
@@ -87,12 +90,14 @@ public class ItemMixin implements IHasAbilities {
         IHasAbilities.super.onStoppedUsing(stack, world, user, remainingUseTicks);
     }
 
-    @Inject(method = "getBonusAttackDamage", at = @At("HEAD"), cancellable = true)
-    public void getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource, CallbackInfoReturnable<Float> info) {
+    @Inject(method = "getBonusAttackDamage", at = @At("RETURN"), cancellable = true)
+    private void getBonusAttackDamage(Entity target, float base, DamageSource src, CallbackInfoReturnable<Float> info) {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        info.setReturnValue(IHasAbilities.super.getBonusAttackDamage(target, baseAttackDamage, damageSource));
+        float vanilla = info.getReturnValue();
+        float bonus = IHasAbilities.super.getBonusAttackDamage(target, base, src);
+        info.setReturnValue(vanilla + bonus);
     }
 
     @Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)
@@ -100,7 +105,10 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        info.setReturnValue(IHasAbilities.super.getUseAction(stack));
+        UseAction abilityAction = IHasAbilities.super.getUseAction(stack);
+        if (abilityAction != UseAction.NONE) {
+            info.setReturnValue(abilityAction);
+        }
     }
 
     @Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true)
@@ -108,7 +116,10 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        info.setReturnValue(IHasAbilities.super.getMaxUseTime(stack, user));
+        int ability = IHasAbilities.super.getMaxUseTime(stack, user);
+        if (ability != 0) {
+            info.setReturnValue(ability);
+        }
     }
 
     @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
@@ -116,7 +127,10 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        info.setReturnValue(IHasAbilities.super.useOnEntity(stack, user, entity, hand));
+        ActionResult result = IHasAbilities.super.useOnEntity(stack, user, entity, hand);
+        if (result != ActionResult.PASS) {
+            info.setReturnValue(result);
+        }
     }
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
