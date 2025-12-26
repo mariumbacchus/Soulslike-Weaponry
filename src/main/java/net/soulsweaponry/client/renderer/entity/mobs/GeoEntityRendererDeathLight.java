@@ -5,9 +5,10 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
+import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -17,7 +18,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.awt.*;
 
-public abstract class GeoEntityRendererDeathLight<T extends Entity & GeoAnimatable> extends GeoEntityRenderer<T> {
+public abstract class GeoEntityRendererDeathLight<T extends LivingEntity & IAnimatedDeath & GeoAnimatable> extends GeoEntityRenderer<T> {
 
     private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0) / 2.0);
     private final Color primaryColor;
@@ -53,12 +54,14 @@ public abstract class GeoEntityRendererDeathLight<T extends Entity & GeoAnimatab
     @Override
     public void renderFinal(MatrixStack poseStack, T animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
         super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, renderColor);
-        renderDeathLight(partialTick, poseStack, bufferSource, animatable.age);
+        if (!animatable.isAlive()) {
+            renderDeathLight(partialTick, poseStack, bufferSource, animatable.getDeathTicks());
+        }
     }
 
-    public void renderDeathLight(float partialTicks, MatrixStack stack, VertexConsumerProvider bufferIn, int age) {
-        if (age > 0) {
-            float l = ((float)age + partialTicks) / 200.0f;
+    public void renderDeathLight(float partialTicks, MatrixStack stack, VertexConsumerProvider bufferIn, int deathTicks) {
+        if (deathTicks > 0) {
+            float l = ((float)deathTicks + partialTicks) / 200.0f;
             float m = Math.min(l > 0.8f ? (l - 0.8f) / 0.2f : 0.0f, 1.0f);
             Random random = Random.create(432L);
             VertexConsumer vertexConsumer4 = bufferIn.getBuffer(RenderLayer.getLightning());
