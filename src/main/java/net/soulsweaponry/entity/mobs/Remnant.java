@@ -38,7 +38,9 @@ public class Remnant extends TameableEntity {
         this.setTamed(false, false);
         this.initEquip();
     }
-    
+
+    // NOTE: It used to spin a lot randomly when chasing targets, this was because the hitbox was too large, especially in width
+    @Override
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));

@@ -3,6 +3,7 @@
 # 1.4.1
 - Reduced the permafrost amplifier Rime Spectre would apply, added addition to the frost bar instead
 - Fixed a bug making returning projectiles (like Leviathan Axe and Mjølnir) despawn after 1200 ticks instead of returning to the user
+- Fixed mobs randomly spinning while pathfinding
 
 # 1.4
 Most of this update has been refactoring the code so that any weapon in the future can have any ability if compatible. This is in preparation for a system

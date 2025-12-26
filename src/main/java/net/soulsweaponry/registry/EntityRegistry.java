@@ -31,17 +31,17 @@ public class EntityRegistry {
 
     private static final String ModId = SoulsWeaponry.ModId;
 
-    public static final EntityType<WitheredDemon> WITHERED_DEMON = registerWithSpawnEgg(EntityType.Builder.create(WitheredDemon::new, SpawnGroup.MONSTER).dimensions(1f, 2f), "withered_demon", 10027008, 0);
+    public static final EntityType<WitheredDemon> WITHERED_DEMON = registerWithSpawnEgg(EntityType.Builder.create(WitheredDemon::new, SpawnGroup.MONSTER).dimensions(0.9f, 2f), "withered_demon", 10027008, 0);
     public static final EntityType<AccursedLordBoss> ACCURSED_LORD_BOSS = registerWithSpawnEgg(EntityType.Builder.create(AccursedLordBoss::new, SpawnGroup.MONSTER).dimensions(3F, 6F), "accursed_lord_boss", 0, 10027008);
     public static final EntityType<DraugrBoss> DRAUGR_BOSS = registerWithSpawnEgg(EntityType.Builder.create(DraugrBoss::new, SpawnGroup.MONSTER).dimensions(1.5F, 3F), "draugr_boss", 10263708, 7694143);
     public static final EntityType<NightShade> NIGHT_SHADE = registerWithSpawnEgg(EntityType.Builder.create(NightShade::new, SpawnGroup.MONSTER).dimensions(1.5F, 3.5F), "night_shade", 398638, 16576575);
     public static final EntityType<ReturningKnight> RETURNING_KNIGHT = registerWithSpawnEgg(EntityType.Builder.create(ReturningKnight::new, SpawnGroup.MONSTER).dimensions(3F, 8F), "returning_knight", 2251096, 6554982);
-    public static final EntityType<Remnant> REMNANT = registerWithSpawnEgg(EntityType.Builder.create(Remnant::new, SpawnGroup.CREATURE).dimensions(1F, 1.75F), "remnant", 6447971, 65514);
-    public static final EntityType<DarkSorcerer> DARK_SORCERER = registerWithSpawnEgg(EntityType.Builder.create(DarkSorcerer::new, SpawnGroup.CREATURE).dimensions(1F, 1.75F), "dark_sorcerer", 0, 2572343);
+    public static final EntityType<Remnant> REMNANT = registerWithSpawnEgg(EntityType.Builder.create(Remnant::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F), "remnant", 6447971, 65514); // 0.6F, 1.95F (zombie hitbox)
+    public static final EntityType<DarkSorcerer> DARK_SORCERER = registerWithSpawnEgg(EntityType.Builder.create(DarkSorcerer::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F), "dark_sorcerer", 0, 2572343);
     public static final EntityType<BigChungus> BIG_CHUNGUS = registerWithSpawnEgg(EntityType.Builder.create(BigChungus::new, SpawnGroup.MONSTER).dimensions(0.75f, 1f), "big_chungus", 12636653, 0);
-    public static final EntityType<SoulReaperGhost> SOUL_REAPER_GHOST = registerWithSpawnEgg(EntityType.Builder.create(SoulReaperGhost::new, SpawnGroup.CREATURE).dimensions(1F, 1.75F), "soul_reaper_ghost", 13480150, 13200614);
-    public static final EntityType<Forlorn> FORLORN = registerWithSpawnEgg(EntityType.Builder.create(Forlorn::new, SpawnGroup.CREATURE).dimensions(1F, 1.75F), "forlorn", 4859716, 5701896);
-    public static final EntityType<EvilForlorn> EVIL_FORLORN = registerWithSpawnEgg(EntityType.Builder.create(EvilForlorn::new, SpawnGroup.MONSTER).dimensions(1F, 1.75F), "evil_forlorn", 5701896, 4859716);
+    public static final EntityType<SoulReaperGhost> SOUL_REAPER_GHOST = registerWithSpawnEgg(EntityType.Builder.create(SoulReaperGhost::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F), "soul_reaper_ghost", 13480150, 13200614);
+    public static final EntityType<Forlorn> FORLORN = registerWithSpawnEgg(EntityType.Builder.create(Forlorn::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F), "forlorn", 4859716, 5701896);
+    public static final EntityType<EvilForlorn> EVIL_FORLORN = registerWithSpawnEgg(EntityType.Builder.create(EvilForlorn::new, SpawnGroup.MONSTER).dimensions(0.7F, 1.95F), "evil_forlorn", 5701896, 4859716);
     public static final EntityType<Soulmass> SOULMASS = registerWithSpawnEgg(EntityType.Builder.create(Soulmass::new, SpawnGroup.CREATURE).dimensions(2.7F, 3.5F), "soulmass", 4494266, 9658504);
     public static final EntityType<ChaosMonarch> CHAOS_MONARCH = registerWithSpawnEgg(EntityType.Builder.create(ChaosMonarch::new, SpawnGroup.MONSTER).dimensions(2.5F, 6F), "chaos_monarch", 4325468, 0);
     public static final EntityType<Moonknight> MOONKNIGHT = registerWithSpawnEgg(EntityType.Builder.create(Moonknight::new, SpawnGroup.MONSTER).dimensions(3F, 8F), "moonknight", 13357520, 390585);
