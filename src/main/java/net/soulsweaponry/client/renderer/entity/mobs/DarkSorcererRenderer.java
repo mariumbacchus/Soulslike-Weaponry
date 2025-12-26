@@ -2,10 +2,9 @@ package net.soulsweaponry.client.renderer.entity.mobs;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
-import net.minecraft.client.render.entity.model.ArmorEntityModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.util.Identifier;
@@ -15,12 +14,12 @@ import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 
 @Environment(EnvType.CLIENT)
-public class DarkSorcererRenderer extends MobEntityRenderer<DarkSorcerer, DarkSorcererRenderer.DarkSorcererRenderState, DarkSorcererModel> {
+public class DarkSorcererRenderer extends BipedEntityRenderer<DarkSorcerer, DarkSorcererRenderer.DarkSorcererRenderState, DarkSorcererModel> {
 
     public DarkSorcererRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DarkSorcererModel(ctx.getPart(EntityModelLayerModRegistry.DARK_SORCERER_LAYER)), 0.5F);
-        var innerArmor = new BipedEntityModel<DarkSorcererRenderState>(ctx.getPart(EntityModelLayerModRegistry.DARK_SORCERER_INNER_ARMOR));
-        var outerArmor = new BipedEntityModel<DarkSorcererRenderState>(ctx.getPart(EntityModelLayerModRegistry.DARK_SORCERER_OUTER_ARMOR));
+        BipedEntityModel<DarkSorcererRenderer.DarkSorcererRenderState> innerArmor = new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.DARK_SORCERER_INNER_ARMOR));
+        BipedEntityModel<DarkSorcererRenderer.DarkSorcererRenderState> outerArmor = new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.DARK_SORCERER_OUTER_ARMOR));
         this.addFeature(new ArmorFeatureRenderer<>(this, innerArmor, outerArmor, ctx.getEquipmentRenderer()));
     }
 

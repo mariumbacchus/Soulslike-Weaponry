@@ -2,7 +2,7 @@ package net.soulsweaponry.client.renderer.entity.mobs;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -15,16 +15,12 @@ import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 import net.soulsweaponry.entity.mobs.Forlorn;
 
 @Environment(EnvType.CLIENT)
-public class ForlornRenderer extends MobEntityRenderer<Forlorn, ForlornRenderer.ForlornRenderState, ForlornModel> {
+public class ForlornRenderer extends BipedEntityRenderer<Forlorn, ForlornRenderer.ForlornRenderState, ForlornModel> {
 
     public ForlornRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new ForlornModel(ctx.getPart(EntityModelLayerModRegistry.FORLORN_LAYER)), 0.7F);
-
-        BipedEntityModel<ForlornRenderState> innerArmor =
-                new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.FORLORN_INNER_ARMOR));
-        BipedEntityModel<ForlornRenderState> outerArmor =
-                new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.FORLORN_OUTER_ARMOR));
-
+        BipedEntityModel<ForlornRenderState> innerArmor = new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.FORLORN_INNER_ARMOR));
+        BipedEntityModel<ForlornRenderState> outerArmor = new BipedEntityModel<>(ctx.getPart(EntityModelLayerModRegistry.FORLORN_OUTER_ARMOR));
         this.addFeature(new ArmorFeatureRenderer<>(this, innerArmor, outerArmor, ctx.getEquipmentRenderer()));
     }
 
