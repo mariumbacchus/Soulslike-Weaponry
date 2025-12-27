@@ -40,6 +40,7 @@ public record SummonDraupnirSpears(float rangeOut, int spearAmount, int minCoold
             DraupnirSpearEntity entity = new DraupnirSpearEntity(world, player, stack);
             entity.setPos(x, player.getY() + 5, z);
             entity.setVelocity(x1, -3, z1);
+            entity.setPitch(-90);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
             world.spawnEntity(entity);
             ExplodeSavedEntities.saveEntityOnItem(stack, entity);
