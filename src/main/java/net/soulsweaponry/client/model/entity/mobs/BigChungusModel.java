@@ -19,41 +19,40 @@ public class BigChungusModel extends EntityModel<BigChungusRenderer.BigChungusRe
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData root = modelData.getRoot();
+        root.addChild(
+                "earRight",
+                ModelPartBuilder.create().uv(2, 0).cuboid(1.0F, 0F, -1.0F, 2.0F, 7.0F, 1.0F),
+                ModelTransform.NONE
+        );
 
-        ModelPartData body = root.addChild(
+        root.addChild(
+                "earLeft",
+                ModelPartBuilder.create().uv(3, 0).cuboid(-3.0F, 0F, -1.0F, 2.0F, 7.0F, 1.0F),
+                ModelTransform.NONE
+        );
+
+        root.addChild(
+                "feetRight",
+                ModelPartBuilder.create().uv(32, 0).cuboid(-4.0F, 23F, -3.0F, 2.0F, 1.0F, 6.0F),
+                ModelTransform.NONE
+        );
+
+        root.addChild(
+                "feetLeft",
+                ModelPartBuilder.create().uv(32, 0).cuboid(2.0F, 23F, -3.0F, 2.0F, 1.0F, 6.0F),
+                ModelTransform.NONE
+        );
+
+        root.addChild(
                 "body",
                 ModelPartBuilder.create().uv(0, 19).cuboid(-6.0F, 15F, -6.0F, 12.0F, 8.0F, 12.0F),
                 ModelTransform.NONE
         );
 
-        body.addChild(
+        root.addChild(
                 "head",
-                ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8F, -4.0F, 8.0F, 8.0F, 8.0F),
-                ModelTransform.pivot(0.0F, 15.0F, 0.0F)
-        );
-
-        body.addChild(
-                "earRight",
-                ModelPartBuilder.create().uv(2, 0).cuboid(1.0F, -7F, -1.0F, 2.0F, 7.0F, 1.0F),
-                ModelTransform.pivot(0.0F, 15.0F, 0.0F)
-        );
-
-        body.addChild(
-                "earLeft",
-                ModelPartBuilder.create().uv(3, 0).cuboid(-3.0F, -7F, -1.0F, 2.0F, 7.0F, 1.0F),
-                ModelTransform.pivot(0.0F, 15.0F, 0.0F)
-        );
-
-        body.addChild(
-                "feetRight",
-                ModelPartBuilder.create().uv(32, 0).cuboid(-4.0F, 8F, -3.0F, 2.0F, 1.0F, 6.0F),
-                ModelTransform.pivot(0.0F, 15.0F, 0.0F)
-        );
-
-        body.addChild(
-                "feetLeft",
-                ModelPartBuilder.create().uv(32, 0).cuboid(2.0F, 8F, -3.0F, 2.0F, 1.0F, 6.0F),
-                ModelTransform.pivot(0.0F, 15.0F, 0.0F)
+                ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, 7F, -4.0F, 8.0F, 8.0F, 8.0F),
+                ModelTransform.NONE
         );
 
         return TexturedModelData.of(modelData, 64, 64);
