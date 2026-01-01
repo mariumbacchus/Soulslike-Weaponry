@@ -25,7 +25,7 @@ public record TameChungus() implements IAbility {
             chungus.getNavigation().stop();
             return ActionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return ActionResult.FAIL;
     }
 
     @Override

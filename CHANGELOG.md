@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.4.1
+- REI now properly cycles the twinkling titanite upgrade recipe output instead of having one fixed item as the result when previewing the recipe
+- Reduced the permafrost amplifier Rime Spectre would apply, added addition to the frost bar instead
+- Fixed a bug making returning projectiles (like Leviathan Axe and Mjølnir) despawn after 1200 ticks instead of returning to the user
+- Fixed mobs randomly spinning while pathfinding
+- Fixed bugs with ability items preventing vanilla use even if the item had no ability overriding the default use
+
 # 1.4
 Most of this update has been refactoring the code so that any weapon in the future can have any ability if compatible. This is in preparation for a system
 kind of like "Ashes of War" from Elden Ring, where you can add the abilities you want to different weapons (if compatible). 

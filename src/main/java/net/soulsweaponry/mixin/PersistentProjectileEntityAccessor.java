@@ -10,4 +10,10 @@ public interface PersistentProjectileEntityAccessor {
 
     @Accessor("weapon")
     void setWeaponStack(ItemStack weapon);
+
+    @Accessor("life")
+    void setLife(int life);
+
+    @Accessor("life")
+    int getLife();
 }

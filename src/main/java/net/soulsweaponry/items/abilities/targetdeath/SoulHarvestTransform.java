@@ -63,12 +63,10 @@ public class SoulHarvestTransform extends SoulHarvest {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity player && entity.age % 20 == 0) {
+        if (!world.isClient && entity instanceof PlayerEntity player && entity.age % 20 == 0) {
             if (this.getSouls(stack) >= this.maxSouls && slot == player.getInventory().selectedSlot) {
-                if (!world.isClient) {
-                    ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
-                    ParticleHandler.particleOutburstMap(world, 200, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
-                }
+                ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
+                ParticleHandler.particleOutburstMap(world, 200, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
                 world.playSound(null, entity.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 0.8f, 1f);
                 Item item = this.redWeapon.get();
                 if (this.getDominantType(stack).equals(SoulType.BLUE)) {
@@ -76,8 +74,8 @@ public class SoulHarvestTransform extends SoulHarvest {
                 }
                 ItemStack newStack = new ItemStack(item);
                 WeaponUtil.copyOverItemComponents(world, stack, newStack);
-                player.getInventory().removeStack(slot);
-                player.getInventory().insertStack(slot, newStack);
+                player.getInventory().setStack(slot, newStack);
+                player.playerScreenHandler.sendContentUpdates();
             }
             float damage = WeaponUtil.getBaseAttackDamage(stack);
             float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);

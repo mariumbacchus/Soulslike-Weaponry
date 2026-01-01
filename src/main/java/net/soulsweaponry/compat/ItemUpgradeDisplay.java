@@ -3,6 +3,7 @@ package net.soulsweaponry.compat;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public class ItemUpgradeDisplay extends BasicDisplay {
 
     public ItemUpgradeDisplay(RecipeEntry<ItemUpgradeRecipe> recipe) {
         super(getInputList(recipe.value()),
-                List.of(EntryIngredient.of(EntryStacks.of(buildPreview(recipe.value())))));
+                List.of(EntryIngredient.of(buildPreviews(recipe.value()))));
     }
 
     private static List<EntryIngredient> getInputList(ItemUpgradeRecipe r) {
@@ -39,16 +40,20 @@ public class ItemUpgradeDisplay extends BasicDisplay {
         return ItemUpgradeCategory.ITEM_UPGRADE;
     }
 
-    private static ItemStack buildPreview(ItemUpgradeRecipe r) {
+    private static List<EntryStack<?>> buildPreviews(ItemUpgradeRecipe r) {
         ItemStack[] matches = r.base().getMatchingStacks();
         if (matches.length == 0) {
-            return ItemStack.EMPTY;
+            return List.of(EntryStacks.of(ItemStack.EMPTY));
         }
-        ItemStack out = matches[0].copy();
-        int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        int next = Math.min(prev + 1, 5);
-        r.applyUpgrades(out, next);
-        return out;
+        List<EntryStack<?>> outs = new ArrayList<>(matches.length);
+        for (ItemStack in : matches) {
+            ItemStack out = in.copy();
+            int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+            int next = Math.min(prev + 1, 5);
+            r.applyUpgrades(out, next);
+            outs.add(EntryStacks.of(out));
+        }
+        return outs;
     }
 }
 
