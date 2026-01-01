@@ -97,6 +97,6 @@
     }
   },
   "textures": {
-    "particle": "item/bloodlust"
+    "particle": "soulsweapons:item/bloodlust"
   }
 }

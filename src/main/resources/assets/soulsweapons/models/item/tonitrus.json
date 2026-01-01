@@ -92,6 +92,6 @@
     }
   },
   "textures": {
-    "particle": "item/tonitrus"
+    "particle": "soulsweapons:item/tonitrus"
   }
 }
