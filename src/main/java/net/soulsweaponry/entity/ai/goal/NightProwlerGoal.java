@@ -29,7 +29,7 @@ import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
 import net.soulsweaponry.entity.util.DeathSpiralLogic;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -603,7 +603,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.playSound(null, SoundRegistry.MOONLIGHT_BIG_EVENT, 1f, 1f);
         for (int i = -m; i <= m; i++) {
             Vec3d vec = target.rotateY((float) Math.toRadians(8 * i));
-            MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld());
+            MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
             entity.setAgeAndPoints(30, 150, (byte) 4);
             entity.setDamage(this.getModifiedDamage(20f));
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
@@ -624,7 +624,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             if (bl) {
                 entity = new NoDragWitherSkull(EntityType.WITHER_SKULL, this.boss.getWorld());
             } else {
-                entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld());
+                entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
                 ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, (byte) 4);
                 ((MoonlightProjectile) entity).setDamage(this.getModifiedDamage(20f));
             }
@@ -849,9 +849,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 this.boss.setFlying(true);
                 this.boss.addVelocity(0, 0.5f, 0);
             }
-            if (this.attackStatus == 84) {
+            if (this.attackStatus == 84 || this.attackStatus == 85) {
                 this.boss.setFlying(false);
-                this.boss.setVelocity(0, -1f, 0);
+                this.boss.setVelocity(0, -2f, 0);
             }
             if (!this.hasExploded && this.boss.isOnGround() && this.attackStatus >= 88 && this.attackStatus <= 110) {
                 this.hasExploded = true;

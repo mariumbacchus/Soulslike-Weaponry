@@ -56,7 +56,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     }
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> type, World world, LivingEntity owner) {
-        super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack(), null);
+        super(type, owner, world, WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack(), WeaponRegistry.MOONLIGHT_GREATSWORD.getDefaultStack());
         this.quickInit();
     }
 

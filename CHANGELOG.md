@@ -6,6 +6,13 @@
 - Fixed a bug making returning projectiles (like Leviathan Axe and Mjølnir) despawn after 1200 ticks instead of returning to the user
 - Fixed mobs randomly spinning while pathfinding
 - Fixed bugs with ability items preventing vanilla use even if the item had no ability overriding the default use
+- Fixed a bug preventing the user from reducing posture, bleed and frost buildup if the resistances were high enough
+- Fixed a bug preventing Darkmoon Greatsword from being used
+- Fixed a bug preventing Moonveil from being used while standing
+- Fixed a bug preventing items from being consumed when used on Blackstone Pedestal to summon bosses
+  - Added config lines in the boss config to enable/disable the consumption of the item
+- Fixed a bug preventing Day Stalker from spawning flames during the "Decimate" attack in phase 2
+- Day Stalker and Night Prowler can no longer move during phase transition
 
 # 1.4
 Most of this update has been refactoring the code so that any weapon in the future can have any ability if compatible. This is in preparation for a system

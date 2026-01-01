@@ -368,6 +368,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
         if (this.isInitiatingPhaseTwo()) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
             this.phaseTwoTicks++;
             this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;

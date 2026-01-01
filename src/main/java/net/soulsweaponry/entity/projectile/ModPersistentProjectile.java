@@ -29,7 +29,6 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
 
     // NB: Variables that are used client side (i.e. particle types, particle count, etc.) NEED to be data tracked! maxAge is used server side only so that's fine
     private static final Logger LOGGER = LogUtils.getLogger();
-    private int maxAge;
     private boolean allowArrowSticking;
     private static final TrackedData<Float> WIDTH = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> HEIGHT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
@@ -40,6 +39,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     private static final TrackedData<ParticleEffect> DESPAWN_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> AREA_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
+    private static final TrackedData<Integer> MAX_AGE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.INTEGER);
 
     public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -71,6 +71,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         builder.add(DESPAWN_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME);
         builder.add(TRAIL_PARTICLE, ParticleTypes.GLOW);
         builder.add(AREA_PARTICLE, ParticleRegistry.NIGHTFALL_PARTICLE);
+        builder.add(MAX_AGE, 0);
     }
 
     @Override
@@ -105,7 +106,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
             this.setBoundingBoxHeight(nbt.getFloat("BoundingBoxHeight"));
         }
         if (nbt.contains("MaxAge")) {
-            this.maxAge = nbt.getInt("MaxAge");
+            this.setMaxAge(nbt.getInt("MaxAge"));
         }
 
         RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
@@ -146,7 +147,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("BoundingBoxWidth", this.getBoundingBoxWidth());
         nbt.putFloat("BoundingBoxHeight", this.getBoundingBoxHeight());
-        nbt.putInt("MaxAge", this.maxAge);
+        nbt.putInt("MaxAge", this.getMaxAge());
         RegistryOps<NbtElement> registryOps = this.getRegistryManager().getOps(NbtOps.INSTANCE);
         nbt.put("AreaParticle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getAreaParticle()).getOrThrow());
         nbt.put("TrailParticle", ParticleTypes.TYPE_CODEC.encodeStart(registryOps, this.getTrailParticle()).getOrThrow());
@@ -183,11 +184,11 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     }
 
     public int getMaxAge() {
-        return this.maxAge;
+        return this.dataTracker.get(MAX_AGE);
     }
 
     public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
+        this.dataTracker.set(MAX_AGE, maxAge);
     }
 
     public byte getAreaParticleCount() {

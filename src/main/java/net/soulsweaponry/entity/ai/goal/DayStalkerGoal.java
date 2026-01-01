@@ -391,10 +391,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             if (this.boss.isPhaseTwo()) {
-                double maxY = Math.min(target.getY(), this.boss.getY());
                 float rotation = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()));
-                WeaponUtil.doConsumerOnLine(this.boss.getWorld(), rotation, this.boss.getPos(), maxY, 16, 1.25f,
-                        (Vec3d vec, Integer warmup, Float yaw) -> this.boss.getWorld().setBlockState(BlockPos.ofFloored(vec), Blocks.FIRE.getDefaultState()));
+                WeaponUtil.doConsumerOnLine(this.boss.getWorld(), rotation, this.boss.getPos(), 4, 16, 1.25f, (Vec3d vec, Integer warmup, Float yaw) -> this.boss.getWorld().setBlockState(BlockPos.ofFloored(vec), Blocks.FIRE.getDefaultState()));
             }
         }
         if (this.attackStatus == 42) {

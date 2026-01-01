@@ -282,7 +282,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
                 }
             }
         }
-        if (this.explosionPower > 0f && !this.getWorld().isClient) {
+        if (this.explosionPower > 0f && !this.getWorld().isClient) {//TODO with every gun enchant and ethereal (not ricochet, it works fine) boss loot wont drop due to the explosions killing the boss
             ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
             this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.TRIGGER);
         }

@@ -3,6 +3,7 @@ package net.soulsweaponry.entity.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.server.world.ServerWorld;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -23,9 +24,9 @@ public class Stormveil extends StatusEffect {
 
     @Override
     public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
-        if (entity.getWorld().isClient) {
+        if (entity.getWorld() instanceof ServerWorld serverWorld) {
             for (int i = 0; i < 40; i++) {
-                entity.getWorld().addParticle(ParticleRegistry.SOUL_SPARK, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
+                serverWorld.spawnParticles(ParticleRegistry.SOUL_SPARK, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 1, 0, 0, 0, 0);
             }
         }
         entity.playSound(SoundRegistry.STORMVEIL_AMBIENT, 1f, 1f);

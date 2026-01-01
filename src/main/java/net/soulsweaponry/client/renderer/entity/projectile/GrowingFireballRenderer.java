@@ -7,6 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.projectile.GrowingFireballModel;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class GrowingFireballRenderer extends GeoEntityRenderer<GrowingFireball> {
@@ -21,10 +22,8 @@ public class GrowingFireballRenderer extends GeoEntityRenderer<GrowingFireball> 
     }
 
     @Override
-    public void render(GrowingFireball entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
-        if (entity != null) {
-            poseStack.scale(entity.getRadius(), entity.getRadius(), entity.getRadius());
-        }//TODO replace with other renderer
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+    public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, GrowingFireball animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+        poseStack.scale(animatable.getRadius(), animatable.getRadius(), animatable.getRadius());
+        super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }
 }

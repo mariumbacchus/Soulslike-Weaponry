@@ -13,8 +13,10 @@ public class BleedData {
 
     public static void addBleed(LivingEntity entity, int amount) {
         if (!EntityBleed.isBleedDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
-            int newAmount = EntityBleed.getBleedBuildup(entity, amount);
-            addBleed((IEntityDataSaver) entity, newAmount, EntityBleed.getMaxBleed(entity));
+            if (amount > 0) {
+                amount = EntityBleed.getBleedBuildup(entity, amount);
+            }
+            addBleed((IEntityDataSaver) entity, amount, EntityBleed.getMaxBleed(entity));
         }
     }
 

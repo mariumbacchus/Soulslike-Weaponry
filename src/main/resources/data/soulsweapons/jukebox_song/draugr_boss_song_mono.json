@@ -4,5 +4,7 @@
     "translate": "item.soulsweapons.draugr_boss_disc.desc"
   },
   "length_in_seconds": 210,
-  "sound_event": "soulsweapons:draugr_boss_song_mono"
+  "sound_event": {
+    "sound_id": "soulsweapons:draugr_boss_song_mono"
+  }
 }

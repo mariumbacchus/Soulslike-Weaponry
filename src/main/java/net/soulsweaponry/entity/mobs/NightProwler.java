@@ -11,6 +11,8 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -365,6 +367,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             }
         }
         if (this.isInitiatingPhaseTwo()) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
             this.phaseTwoTicks++;
             this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;

@@ -38,11 +38,10 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
                 if (entity instanceof LivingEntity living) {
                     // Heal tamed entities with an owner, including those not owned by the user if config is true
                     if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || this.healMobsOwnedByOthers)) {
-                        living.heal(healOrDamage);
-                        if (world.isClient) {
-                            world.addParticle(ParticleTypes.HEART, living.getParticleX(0.5),
-                                    living.getRandomBodyY(), living.getParticleZ(0.5), 0, 0, 0);
+                        if (world.isClient && living.getHealth() < living.getMaxHealth()) {
+                            world.addParticle(ParticleTypes.HEART, living.getParticleX(0.5), living.getRandomBodyY(), living.getParticleZ(0.5), 0, 0, 0);
                         }
+                        living.heal(healOrDamage);
                     } else {
                         living.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.DRAGON_MIST, user), healOrDamage);
                     }

@@ -274,7 +274,7 @@ public class ChaosMonarchGoal extends Goal {
             new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
             new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
             new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),
-            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld()),
+            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss),
             new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld())
         };
         if (this.boss.getTarget() != null) {

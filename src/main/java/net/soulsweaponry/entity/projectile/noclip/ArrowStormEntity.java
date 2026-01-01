@@ -36,6 +36,7 @@ public class ArrowStormEntity extends NoClipEntity {
                 double g = vec.getZ() - this.getZ();
                 arrow.setVelocity(e, f, g);
                 arrow.setDamage(this.getDamage());
+                arrow.setPitch(-90);
                 ((PersistentProjectileEntityInvoker)this).invokeSetPierceLevel((byte) 4);
                 arrow.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 arrow.setOwner(this.getOwner());
