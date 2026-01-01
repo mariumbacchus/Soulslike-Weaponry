@@ -1229,6 +1229,9 @@
     "tag.item.soulsweapons.staves": "Staves",
     "tag.item.soulsweapons.soul_harvesting_weapons": "Soul Harvesting Weapons",
 
+    "tag.item.soulsweapons.melee_item_upgradables": "Melee Item Upgradables",
+    "tag.item.soulsweapons.ranged_item_upgradables": "Ranged Item Upgradables",
+
     "tag.item.c.demon_hearts": "Demon Hearts",
     "tag.item.c.lost_soul": "Lost Souls",
     "tag.item.c.silver_ingots": "Silver Ingots",
