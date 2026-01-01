@@ -36,7 +36,7 @@ public abstract class SpawnBossBlock extends Block implements IConfigDisable {
      * at the end of the manual initialization of the custom entities to spawn to set the position, play sound,
      * remove the block and spawn the boss.
      */
-    public boolean spawnEntity(World world, BlockPos pos, PlayerEntity player, LivingEntity boss, boolean disableSpawn) {
+    public boolean spawnEntity(World world, BlockPos pos, PlayerEntity player, LivingEntity boss, boolean disableSpawn, ItemStack consumableItem, boolean consumeItem) {
         if (disableSpawn) {
             this.notifyDisabledBossRespawning(player);
             return false;
@@ -45,6 +45,9 @@ public abstract class SpawnBossBlock extends Block implements IConfigDisable {
         world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         world.spawnEntity(boss);
         world.removeBlock(pos, false);
+        if (!player.getAbilities().creativeMode && consumeItem) {
+            consumableItem.decrement(1);
+        }
         return true;
     }
 

@@ -15,6 +15,7 @@ import net.soulsweaponry.datagen.tags.ItemTagsProvider;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
+import net.soulsweaponry.items.armor.ModdedArmor;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.misc.*;
 import net.soulsweaponry.util.RecipeHandler;
@@ -203,6 +204,7 @@ public class ItemRegistry {
                 case CrossbowItem c -> ItemTagsProvider.CROSSBOWS.add(item);
                 case MaceItem m -> ItemTagsProvider.MACES.add(item);
                 case ArmorItem ar -> ItemTagsProvider.ARMORS.add(item);
+                case ModdedArmor ar -> ItemTagsProvider.ARMORS.add(item);
                 default -> {}
             }
             if (IHasAbilities.getAbility(item.getDefaultStack(), UltraHeavy.class).isPresent()) {

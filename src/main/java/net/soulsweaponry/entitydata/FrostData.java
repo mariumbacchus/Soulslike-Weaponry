@@ -24,8 +24,10 @@ public class FrostData {
      */
     public static void addFrost(LivingEntity entity, int amount) {
         if (!EntityFrost.isFrostBuildupDisabled(entity) && !entity.isOnFire() && !isFrostCoolingDown(entity) && !entity.isDead() && !entity.getWorld().isClient) {
-            int newAmount = EntityFrost.getFrostBuildup(entity, amount);
-            addFrost((IEntityDataSaver) entity, newAmount, EntityFrost.getMaxFrostBuildup(entity));
+            if (amount > 0) {
+                amount = EntityFrost.getFrostBuildup(entity, amount);
+            }
+            addFrost((IEntityDataSaver) entity, amount, EntityFrost.getMaxFrostBuildup(entity));
         }
     }
 

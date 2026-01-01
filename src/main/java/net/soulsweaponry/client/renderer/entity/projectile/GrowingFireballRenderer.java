@@ -1,14 +1,12 @@
 package net.soulsweaponry.client.renderer.entity.projectile;
 
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.projectile.GrowingFireballModel;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -24,19 +22,9 @@ public class GrowingFireballRenderer extends GeoEntityRenderer<GrowingFireball> 
     }
 
     @Override
-    public void renderFinal(
-            MatrixStack poseStack,
-            GrowingFireball animatable,
-            BakedGeoModel model,
-            VertexConsumerProvider bufferSource,
-            @Nullable VertexConsumer buffer,
-            float partialTick,
-            int packedLight,
-            int packedOverlay,
-            int renderColor
-    ) {
+    public void scaleModelForRender(float widthScale, float heightScale, MatrixStack poseStack, GrowingFireball animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
         float r = animatable.getRadius();
         poseStack.scale(r, r, r);
-        super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, renderColor);
+        super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick, packedLight, packedOverlay);
     }
 }

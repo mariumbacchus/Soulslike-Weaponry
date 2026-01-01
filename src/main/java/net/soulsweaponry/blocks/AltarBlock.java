@@ -36,27 +36,15 @@ public class AltarBlock extends SpawnBossBlock {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
             entity.setSpawning(true);
-            boolean bl =spawnEntity(world, pos, player, entity, BossConfig.returning_knight_disable_respawn);
-            if (bl) {
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-            }
-            return bl;
+            return spawnEntity(world, pos, player, entity, BossConfig.returning_knight_disable_respawn, itemStack, BossConfig.returning_knight_consume_item_on_summoning);
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, BossConfig.old_champions_remains_disable_respawn);
+            return spawnEntity(world, pos, player, entity, BossConfig.old_champions_remains_disable_respawn, itemStack, BossConfig.old_champions_remains_consume_item_on_summoning);
         } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
             Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT, world);
             entity.setSpawning(true);
-            boolean bl = spawnEntity(world, pos, player, entity, BossConfig.fallen_icon_disable_respawn);
-            if (bl) {
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-            }
-            return bl;
+            return spawnEntity(world, pos, player, entity, BossConfig.fallen_icon_disable_respawn, itemStack, BossConfig.fallen_icon_consume_item_on_summoning);
         }
         return false;
     }

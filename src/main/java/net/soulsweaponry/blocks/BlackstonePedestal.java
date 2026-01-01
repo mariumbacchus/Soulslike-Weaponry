@@ -21,11 +21,11 @@ public class BlackstonePedestal extends SpawnBossBlock {
         if (itemStack.isOf(ItemRegistry.SHARD_OF_UNCERTAINTY)) {
             ChaosMonarch entity = new ChaosMonarch(EntityRegistry.CHAOS_MONARCH, world);
             entity.setAttack(1);
-            return spawnEntity(world, pos, player, entity, BossConfig.chaos_monarch_disable_respawn);
+            return spawnEntity(world, pos, player, entity, BossConfig.chaos_monarch_disable_respawn, itemStack, BossConfig.chaos_monarch_consume_item_on_summoning);
         } else if (itemStack.isOf(ItemRegistry.DEMON_CHUNK) || itemStack.isOf(ItemRegistry.WITHERED_DEMON_HEART)) {
             AccursedLordBoss entity = new AccursedLordBoss(EntityRegistry.ACCURSED_LORD_BOSS, world);
             entity.setAttackAnimation(AccursedLordAnimations.SPAWN);
-            return spawnEntity(world, pos, player, entity, BossConfig.decaying_king_disable_respawn);
+            return spawnEntity(world, pos, player, entity, BossConfig.decaying_king_disable_respawn, itemStack, BossConfig.decaying_king_consume_item_on_summoning);
         }
         return false;
     }

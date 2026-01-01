@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.entity.projectile;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;

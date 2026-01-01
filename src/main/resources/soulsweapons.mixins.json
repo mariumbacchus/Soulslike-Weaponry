@@ -19,8 +19,8 @@
     "PersistentProjectileEntityInvoker",
     "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
-    "ServerRecipeManagerMixin",
     "ServerPlayNetworkHandlerMixin",
+    "ServerRecipeManagerMixin",
     "SwordItemMixin",
     "WitherEntityMixin"
   ],
@@ -32,6 +32,7 @@
     "HeldItemRendererMixin",
     "ItemStackTooltipMixin",
     "KeyBindingAccessor",
+    "PlayerEntityRendererDebugMixin",
     "ShieldItemMixin"
   ],
   "injectors": {

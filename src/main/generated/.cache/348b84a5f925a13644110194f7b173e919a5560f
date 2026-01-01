@@ -1,6 +1,6 @@
-// 1.21.3	2025-12-23T19:40:26.3045746	Marium's Soulslike Weaponry/Tags for minecraft:item
+// 1.21.3	2026-01-01T17:50:10.6103399	Marium's Soulslike Weaponry/Tags for minecraft:item
 de2a6aee06ce7f209c2f53a12f2f28303613036c data\soulsweapons\tags\item\dragonbane_material.json
-35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\c\tags\item\armors.json
+5f25561602971c131fbc0cc8b3b2158c80acb3cc data\c\tags\item\armors.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data\minecraft\tags\item\enchantable\mace.json
 72059ac0bbab07f7de9e1d21c3a610467ad30b85 data\soulsweapons\tags\item\repairs\lost_soul_tool.json
 0e1779f94fe2aa0921e04cdec96fece5cc8e0c88 data\minecraft\tags\item\axes.json
@@ -43,7 +43,7 @@ dedb892f8ffd1d0ebf1eb8437cca9b757cd78893 data\minecraft\tags\item\chest_armor.js
 6ae1535849b050134707b4ad8ad1cddc714db7e0 data\soulsweapons\tags\item\repairs\galeforce.json
 7f6ecf18081cd6f543887ff3b17da3067ea4267d data\c\tags\item\tools\crossbow.json
 f2aa87f54e7951ea0cf81ac252c2abe279b0c936 data\soulsweapons\tags\item\repairs\kraken_slayer_bow.json
-7da12b4fe370ee15447fbc295fa046dd94a425d2 data\c\tags\item\tools\bow.json
+e6d7be94acb15c4e70212dcf15f3596af46b8eb9 data\c\tags\item\tools\bow.json
 3c136ad71b9cc1a962b06ab779e09369ea8e25a9 data\soulsweapons\tags\item\repairs\echo_shard_tool.json
 d55fe98220c4ec80d0a7ea4a5ba3522b0a5d69ed data\soulsweapons\tags\item\duo_boss_souls.json
 f2aa87f54e7951ea0cf81ac252c2abe279b0c936 data\soulsweapons\tags\item\repairs\darkmoon_longbow.json

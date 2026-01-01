@@ -20,7 +20,7 @@ import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
 public class ChungusHeadRenderer extends EntityRenderer<TntEntity, ChungusHeadModel.ChungusHeadRenderState> {
 
     private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/chungus/big_chungus.png");
-    private static final Identifier RED_EYES = Identifier.of(SoulsWeaponry.ModId, "textures/entity/chungus/red_eyes_overlay.png");//TODO needs to be tested since getTexture isnt overridden anymore
+    private static final Identifier RED_EYES = Identifier.of(SoulsWeaponry.ModId, "textures/entity/chungus/red_eyes_overlay.png");
 
     private final ChungusHeadModel model;
 

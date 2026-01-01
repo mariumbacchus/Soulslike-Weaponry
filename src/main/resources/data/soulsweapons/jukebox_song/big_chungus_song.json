@@ -4,5 +4,7 @@
     "translate": "item.soulsweapons.chungus_disc.desc"
   },
   "length_in_seconds": 112,
-  "sound_event": "soulsweapons:big_chungus_song"
+  "sound_event": {
+    "sound_id": "soulsweapons:big_chungus_song"
+  }
 }

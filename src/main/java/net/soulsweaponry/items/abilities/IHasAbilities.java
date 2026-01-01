@@ -329,9 +329,6 @@ public interface IHasAbilities extends IConfigDisable {
             this.notifyDisabled(player);
             return;
         }
-        if (this.preventUse(stack, player)) {
-            return;
-        }
 
         boolean sneaking = player.isSneaking();
         boolean offhand = player.getOffHandStack().isOf(stack.getItem());
@@ -378,7 +375,7 @@ public interface IHasAbilities extends IConfigDisable {
 
 
     default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        if (this.isDisabled(stack) || this.preventUse(stack, player)) {
+        if (this.isDisabled(stack)) {
             return; // Disabled item notification is given on client side
         }
 

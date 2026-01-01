@@ -8,6 +8,8 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -32,12 +34,19 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
 
     @Override
     public void tick() {
-        // NOTE: This is needed because no-clip makes the entity rotate in weird ways
-        this.setPitch(0f);
-        this.setYaw(0f);
         super.tick();
-        this.setPitch(0f);
-        this.setYaw(0f);
+        // Fixes weird rotation due to the entity being noclip
+        Vec3d v = this.getVelocity();
+        if (v.lengthSquared() > 1.0E-7) {
+            float yaw = (float)(MathHelper.atan2(v.x, v.z) * 180.0F / (float)Math.PI);
+            float pitch = (float)(MathHelper.atan2(v.y, v.horizontalLength()) * 180.0F / (float)Math.PI);
+
+            this.setYaw(yaw);
+            this.setPitch(pitch);
+            this.prevYaw = yaw;
+            this.prevPitch = pitch;
+        }
+
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.4D));
             DamageSource source;

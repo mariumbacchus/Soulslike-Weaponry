@@ -32,10 +32,8 @@ public class VeilOfFire extends StatusEffect {
             target.damage(world, entity.getDamageSources().inFire(), 2f + amplifier);
             target.setOnFireFor(2 + amplifier);
         }
-        if (entity.getWorld().isClient) { //TODO serverworld is passed, this may not work
-            for (int i = 0; i < 5; i++) {
-                entity.getWorld().addParticle(ParticleTypes.FLAME, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 0, 0, 0);
-            }
+        for (int i = 0; i < 8; i++) {
+            world.spawnParticles(ParticleTypes.FLAME, entity.getParticleX(1D), entity.getBodyY(0.5) + entity.getRandom().nextDouble() * 2 - 1D, entity.getParticleZ(1D), 1, 0, 0, 0, 0);
         }
         if (entity instanceof PlayerEntity player) {
             if (!player.isCreative()) {
