@@ -40,12 +40,12 @@
 
   "depends": {
     "fabric-key-binding-api-v1": "*",
-    "fabricloader": ">=0.18.2",
+    "fabricloader": ">=0.18.4",
     "fabric": "*",
-    "minecraft": "~1.21.2",
+    "minecraft": "~1.21.4",
     "java": ">=21",
-    "fabric-api": ">=0.106.1",
-    "geckolib": ">=4.7.2",
-    "attributefix": ">=21.2.3"
+    "fabric-api": ">=0.119.4",
+    "geckolib": ">=4.8.5",
+    "attributefix": ">=21.4.2"
   }
 }

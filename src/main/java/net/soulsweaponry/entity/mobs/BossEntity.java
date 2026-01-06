@@ -181,7 +181,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     }
 
     @Override
-    protected boolean shouldAlwaysDropXp() {
+    protected boolean shouldAlwaysDropExperience() {
         return true;
     }
 

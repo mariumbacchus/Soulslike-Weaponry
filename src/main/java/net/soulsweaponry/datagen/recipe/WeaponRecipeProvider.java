@@ -2,10 +2,10 @@ package net.soulsweaponry.datagen.recipe;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.server.recipe.CookingRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.RecipeGenerator;
-import net.minecraft.data.server.recipe.SmithingTransformRecipeJsonBuilder;
+import net.minecraft.data.recipe.RecipeExporter;
+import net.minecraft.data.recipe.RecipeGenerator;
+import net.minecraft.data.recipe.CookingRecipeJsonBuilder;
+import net.minecraft.data.recipe.SmithingTransformRecipeJsonBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
@@ -20,8 +20,8 @@ import net.soulsweaponry.util.ModTags;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.data.server.recipe.RecipeGenerator.conditionsFromItemPredicates;
-import static net.minecraft.data.server.recipe.RecipeGenerator.getRecipeName;
+import static net.minecraft.data.recipe.RecipeGenerator.conditionsFromItemPredicates;
+import static net.minecraft.data.recipe.RecipeGenerator.getRecipeName;
 
 public class WeaponRecipeProvider extends FabricRecipeProvider {
 
@@ -30,8 +30,8 @@ public class WeaponRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
-        return new RecipeGenerator(registries, exporter) {
+    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
+        return new RecipeGenerator(wrapperLookup, recipeExporter) {
             @Override
             public void generate() {
                 RegistryEntryLookup<Item> itemLookup = registries.getOrThrow(RegistryKeys.ITEM);

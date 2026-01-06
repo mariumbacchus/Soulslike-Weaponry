@@ -241,7 +241,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
         super.tickMovement();
         if (this.age % 4 == 0) {
             double random = this.getRandom().nextDouble();
-            this.getWorld().addParticle(ParticleTypes.GLOW, false,
+            this.getWorld().addParticle(ParticleTypes.GLOW,
                 this.getX() + random/4 - random/8, this.getEyeY() - random*6 + random*6/2, this.getZ() + random/4 - random/8, 
                 random/16 - random/32, random - random/2, random/16 - random/32);
         }

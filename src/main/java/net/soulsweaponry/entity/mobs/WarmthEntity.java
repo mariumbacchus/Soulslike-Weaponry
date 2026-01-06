@@ -189,7 +189,7 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            getWorld().addParticle(ParticleTypes.FLAME, true, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
+            getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getBodyY(0.5D), this.getZ(), velocityX*0.4f, velocityY*0.4f, velocityZ*0.4f);
         }
     }
 

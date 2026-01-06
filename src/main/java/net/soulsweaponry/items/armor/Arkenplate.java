@@ -1,12 +1,12 @@
 package net.soulsweaponry.items.armor;
 
+import net.minecraft.client.render.entity.equipment.EquipmentModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.equipment.ArmorMaterial;
-import net.minecraft.item.equipment.EquipmentModel;
 import net.minecraft.item.equipment.EquipmentType;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;

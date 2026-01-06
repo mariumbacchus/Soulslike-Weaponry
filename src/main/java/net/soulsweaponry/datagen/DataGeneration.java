@@ -7,9 +7,8 @@ import net.minecraft.registry.RegistryKeys;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.loot_tables.BlockLootTableProvider;
 import net.soulsweaponry.datagen.loot_tables.ChestLootTableProvider;
-import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
 import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTableProvider;
-import net.soulsweaponry.datagen.models.ModelProvider;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.*;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenerator;
@@ -44,7 +43,6 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         pack.addProvider(ItemTagsProvider::new);
         pack.addProvider(AdvancementsProvider::new);
         pack.addProvider(StatusEffectTagProvider::new);
-        pack.addProvider(ModelProvider::new);
     }
 
     @Override

@@ -146,7 +146,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
 
     public void detonateEntity(World world, double x, double y, double z, double points, float sizeModifier) {
         for (Vec3d vec : ParticleHandler.getSphereParticleCords(points, sizeModifier)) {
-            world.addParticle(this.getDespawnParticle(), true, x, y, z, vec.x, vec.y, vec.z);
+            world.addParticle(this.getDespawnParticle(), x, y, z, vec.x, vec.y, vec.z);
         }
     }
 

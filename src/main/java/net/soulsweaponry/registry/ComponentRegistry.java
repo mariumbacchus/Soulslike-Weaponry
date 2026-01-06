@@ -17,7 +17,7 @@ import java.util.function.UnaryOperator;
 public class ComponentRegistry {
 
     public static final ComponentType<Integer> ITEM_UPGRADE_LEVEL = register("item_upgrade_level", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    public static final ComponentType<Boolean> STORMVEIL_SURGE_EMPOWERED = register("stormveil_surge_empowered", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
+    public static final ComponentType<Boolean> STORMVEIL_SURGE_EMPOWERED = register("stormveil_surge_empowered", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOLEAN));
     public static final ComponentType<Integer> SOULS_HARVESTED = register("souls_harvested", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> RED_SOULS = register("red_souls", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> BLUE_SOULS = register("blue_souls", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
@@ -28,14 +28,14 @@ public class ComponentRegistry {
     public static final ComponentType<Integer> WITHER_SOUL_RELEASE_COUNTER = register("wither_soul_release_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> SHARPENED_STRIKES = register("sharpened_strikes", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> ESSENCE = register("essence", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
-    public static final ComponentType<Boolean> LUMINATE = register("luminate", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
-    public static final ComponentType<Boolean> IS_CORRUPT_ACTIVE = register("is_corrupt_active", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
+    public static final ComponentType<Boolean> LUMINATE = register("luminate", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOLEAN));
+    public static final ComponentType<Boolean> IS_CORRUPT_ACTIVE = register("is_corrupt_active", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOLEAN));
     public static final ComponentType<Float> GUN_BONUS_DAMAGE = register("gun_bonus_damage", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
     public static final ComponentType<Integer> POST_HIT_EFFECT_ID = register("post_hit_effect_id", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<Integer> KRAKEN_SLAYER_SHOTS_COUNTER = register("kraken_slayer_shots_counter", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.INTEGER));
     public static final ComponentType<UUID> SAVED_UUID = register("saved_uuid", b -> b.codec(Uuids.CODEC).packetCodec(Uuids.PACKET_CODEC));
     public static final ComponentType<BlockPos> SAVED_BLOCK_POS = register("saved_block_pos", builder -> builder.codec(BlockPos.CODEC).packetCodec(BlockPos.PACKET_CODEC));
-    public static final ComponentType<Boolean> INVISIBLE = register("invisible", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
+    public static final ComponentType<Boolean> INVISIBLE = register("invisible", builder -> builder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOLEAN));
     public static final ComponentType<String> MAPPED_TRICK_WEAPON = register("mapped_trick_weapon", builder -> builder.codec(Codec.STRING).packetCodec(PacketCodecs.STRING));
 
     public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builder) {

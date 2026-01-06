@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.spear;
 
-import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.DraupnirSpearItemRenderer;
@@ -13,6 +12,7 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -77,7 +77,7 @@ public class DraupnirSpear extends ModdedSword implements GeoItem {
             private DraupnirSpearItemRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getGeoItemRenderer() {
+            public GeoItemRenderer<?> getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new DraupnirSpearItemRenderer();
 

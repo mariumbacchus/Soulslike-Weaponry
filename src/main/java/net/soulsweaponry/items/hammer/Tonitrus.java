@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.hammer;
 
-import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -10,8 +9,8 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.TonitrusRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.items.abilities.use.Stormveil;
 import net.soulsweaponry.items.abilities.posthit.StormveilSurge;
+import net.soulsweaponry.items.abilities.use.Stormveil;
 import net.soulsweaponry.items.abilities.userdamaged.ElectricCherry;
 import net.soulsweaponry.registry.EffectRegistry;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -22,6 +21,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -69,7 +69,7 @@ public class Tonitrus extends ModdedSword implements GeoItem {
             private TonitrusRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getGeoItemRenderer() {
+            public GeoItemRenderer<?> getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new TonitrusRenderer();
 

@@ -232,15 +232,15 @@ public class ShootSilverBullet implements IAbility {
             double vy = look.y + rand.nextGaussian() * spread;
             double vz = look.z + rand.nextGaussian() * spread;
             if (i % 2 == 0) {
-                world.addParticle(ParticleTypes.FLAME, true,
+                world.addParticle(ParticleTypes.FLAME,
                         muzzle.x, muzzle.y, muzzle.z,
                         vx, vy, vz);
             } else {
-                world.addParticle(ParticleTypes.SMOKE, true,
+                world.addParticle(ParticleTypes.SMOKE,
                         muzzle.x, muzzle.y, muzzle.z,
                         vx, vy, vz);
             }
-            world.addParticle(ParticleTypes.SMOKE, true,
+            world.addParticle(ParticleTypes.SMOKE,
                     muzzle.x, muzzle.y, muzzle.z,
                     vx, vy, vz);
         }

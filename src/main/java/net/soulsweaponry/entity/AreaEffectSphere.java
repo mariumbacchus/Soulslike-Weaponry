@@ -241,7 +241,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(particle, true, x + velocityX*sizeModifier + random.nextGaussian(),
+            world.addParticle(particle, x + velocityX*sizeModifier + random.nextGaussian(),
                     y + velocityY*sizeModifier + random.nextGaussian(), z + velocityZ*sizeModifier + random.nextGaussian(),
                     0, 0, 0);
         }

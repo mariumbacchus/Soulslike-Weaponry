@@ -1,7 +1,7 @@
 package net.soulsweaponry.datagen.recipe;
 
-import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.recipe.RecipeExporter;
+import net.minecraft.data.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.item.ItemPredicate;
@@ -11,7 +11,7 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 
-import static net.minecraft.data.server.recipe.RecipeGenerator.conditionsFromItemPredicates;
+import static net.minecraft.data.recipe.RecipeGenerator.conditionsFromItemPredicates;
 
 public class ArmorRecipes {
 

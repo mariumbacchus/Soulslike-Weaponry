@@ -1,5 +1,6 @@
 package net.soulsweaponry.items.armor;
 
+import net.minecraft.client.render.entity.equipment.EquipmentModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.entity.EquipmentSlot;
@@ -8,7 +9,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.equipment.ArmorMaterial;
-import net.minecraft.item.equipment.EquipmentModel;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;

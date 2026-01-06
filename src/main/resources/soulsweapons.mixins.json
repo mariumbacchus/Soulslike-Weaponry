@@ -14,7 +14,6 @@
     "ItemMixin",
     "LivingEntityMixin",
     "MiningToolItemMixin",
-    "ModelInvoker",
     "PersistentProjectileEntityAccessor",
     "PersistentProjectileEntityInvoker",
     "PersistentProjectileEntityMixin",

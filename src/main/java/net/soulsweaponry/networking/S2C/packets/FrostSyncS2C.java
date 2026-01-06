@@ -14,7 +14,7 @@ public record FrostSyncS2C(int frostValue, boolean isFrostCoolingDown) implement
     public static final PacketCodec<RegistryByteBuf, FrostSyncS2C> CODEC =
             PacketCodec.tuple(
                     PacketCodecs.INTEGER, FrostSyncS2C::frostValue,
-                    PacketCodecs.BOOL, FrostSyncS2C::isFrostCoolingDown,
+                    PacketCodecs.BOOLEAN, FrostSyncS2C::isFrostCoolingDown,
                     FrostSyncS2C::new
             );
 

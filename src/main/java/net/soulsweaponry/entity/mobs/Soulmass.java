@@ -511,7 +511,7 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, x + velocityX/2, y + velocityY/2, z + velocityZ/2, 0, 0, 0);
+            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x + velocityX/2, y + velocityY/2, z + velocityZ/2, 0, 0, 0);
         } 
     }
 

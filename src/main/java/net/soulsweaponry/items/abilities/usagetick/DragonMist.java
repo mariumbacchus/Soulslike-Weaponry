@@ -60,9 +60,9 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
                     Vec3d jitter = new Vec3d(rx, ry, rz).multiply(spread);
                     Vec3d vel = pov.normalize().multiply(1.0).add(jitter);
 
-                    world.addParticle(ParticleRegistry.PURPLE_FLAME, true, origin.x, origin.y, origin.z,
+                    world.addParticle(ParticleRegistry.PURPLE_FLAME, origin.x, origin.y, origin.z,
                             vel.x, vel.y, vel.z);
-                    world.addParticle(ParticleTypes.DRAGON_BREATH, true, origin.x, origin.y, origin.z,
+                    world.addParticle(ParticleTypes.DRAGON_BREATH, origin.x, origin.y, origin.z,
                             vel.x, vel.y, vel.z);
                 }
             }

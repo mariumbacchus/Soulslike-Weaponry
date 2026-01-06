@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.scythe;
 
-import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -13,6 +12,7 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.NavigableMap;
@@ -83,7 +83,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
             private SoulReaperRenderer renderer;
 
             @Override
-            public BuiltinModelItemRenderer getGeoItemRenderer() {
+            public GeoItemRenderer<?> getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new SoulReaperRenderer();
 

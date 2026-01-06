@@ -12,7 +12,7 @@ public record ShouldDamageRidingSyncS2C(boolean damageRiding) implements CustomP
     public static final Identifier ID = Identifier.of(SoulsWeaponry.ModId, "should_damage_riding_sync");
     public static final Id<ShouldDamageRidingSyncS2C> TYPE = new Id<>(ID);
     public static final PacketCodec<RegistryByteBuf, ShouldDamageRidingSyncS2C> CODEC =
-            PacketCodec.tuple(PacketCodecs.BOOL, ShouldDamageRidingSyncS2C::damageRiding, ShouldDamageRidingSyncS2C::new);
+            PacketCodec.tuple(PacketCodecs.BOOLEAN, ShouldDamageRidingSyncS2C::damageRiding, ShouldDamageRidingSyncS2C::new);
 
     @Override
     public Id<? extends CustomPayload> getId() {
