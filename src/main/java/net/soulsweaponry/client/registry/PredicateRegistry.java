@@ -38,7 +38,12 @@ public class PredicateRegistry {
         PredicateRegistry.registerPull(WeaponRegistry.DARKMOON_LONGBOW);
         PredicateRegistry.registerPulling(WeaponRegistry.DARKMOON_LONGBOW);*/
 
-        PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
+        // TODO there is a new predicate pipeline now entirely done with components and jsons
+        // predicates for items now exist in soulsweapons/items instead of within the item model inside soulsweapons/models/items
+        // an example of one handled is comet_spear
+        // do this for the rest of the items
+        // TODO those commented out are done but may not be tested yet
+        //PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
         PredicateRegistry.registerThrowing(WeaponRegistry.NIGHTFALL);
         PredicateRegistry.registerThrowing(WeaponRegistry.DARKIN_BLADE);
         PredicateRegistry.registerThrowing(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR);
