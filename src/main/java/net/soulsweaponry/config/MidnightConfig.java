@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
  *  Credits to Minenash */
 
 /*
-    Edited to fit 1.21 version.
+    Edited to fit 1.21.4 version.
     NOTE: Throughout the changes, the widget system is likely broken. I don't use that system however, only
     the client and common side files generated. This is a note for future me in case I want to use that system.
  */
@@ -265,7 +265,8 @@ public abstract class MidnightConfig {
                 Objects.requireNonNull(client).setScreen(parent);
             }).dimensions(this.width / 2 + 4, this.height - 28, 150, 20).build());
 
-            this.list = new MidnightConfigListWidget(this.client, this.width, this.height, 32, this.height - 32);
+            //this.list = new MidnightConfigListWidget(this.client, this.width, this.height, 32, this.height - 32);
+            this.list = new MidnightConfigListWidget(this.client, this.width, this.height - 64, 32, 20);
             this.addSelectableChild(this.list);
             for (EntryInfo info : entries) {
                 if (info.id.equals(modid)) {
@@ -274,10 +275,10 @@ public abstract class MidnightConfig {
                         info.value = info.defaultValue;
                         info.tempValue = info.defaultValue.toString();
                         info.index = 0;
-                        double scrollAmount = list.getScrollAmount();
+                        double scrollAmount = list.getScrollY();
                         this.reload = true;
                         Objects.requireNonNull(client).setScreen(this);
-                        list.setScrollAmount(scrollAmount);
+                        list.setScrollY(scrollAmount);
                     })).dimensions(width - 205, 0, 40, 20).build();
 
                     if (info.widget instanceof Map.Entry) {
@@ -296,12 +297,12 @@ public abstract class MidnightConfig {
                         resetButton.setMessage(Text.literal("R").formatted(Formatting.RED));
                         ButtonWidget cycleButton = ButtonWidget.builder(Text.literal(String.valueOf(info.index)).formatted(Formatting.GOLD), (button -> {
                             ((List<String>)info.value).remove("");
-                            double scrollAmount = list.getScrollAmount();
+                            double scrollAmount = list.getScrollY();
                             this.reload = true;
                             info.index = info.index + 1;
                             if (info.index > ((List<String>)info.value).size()) info.index = 0;
                             Objects.requireNonNull(client).setScreen(this);
-                            list.setScrollAmount(scrollAmount);
+                            list.setScrollY(scrollAmount);
                         })).dimensions(width - 185, 0, 20, 20).build();
                         this.list.addButton(List.of(widget, resetButton, cycleButton), name, info);
                     } else if (info.widget != null) {
@@ -361,9 +362,8 @@ public abstract class MidnightConfig {
         TextRenderer textRenderer;
 
         public MidnightConfigListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l) {
-            super(minecraftClient, i, j, k, l);
+            super(minecraftClient, i, j, k, l, 0);
             this.centerListVertically = false;
-            this.setRenderHeader(false, 0);
             textRenderer = minecraftClient.textRenderer;
         }
 
