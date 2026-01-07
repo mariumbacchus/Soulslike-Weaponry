@@ -91,7 +91,7 @@ public record CorruptGround(
                             world.removeBlock(mutable, false);
                             TallPlantBlock.placeAt(world, TURNABLE_TALL_PLANT.get(turnTallPlant).getDefaultState(), mutable, 2);
                         }
-                        if (blockState2.isIn(BlockTags.TALL_FLOWERS)) {
+                        if (blockState2.isIn(BlockTags.FLOWERS) && blockState2.getBlock() instanceof TallPlantBlock) {
                             world.removeBlock(mutable, false);
                             TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
                         }

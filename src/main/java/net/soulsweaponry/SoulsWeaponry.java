@@ -58,6 +58,7 @@ public class SoulsWeaponry implements ModInitializer {
         ParticleRegistry.init();
         SpawnInit.init();
         WeaponRegistry.init();
+        MaterialRegistry.init();
         ArmorRegistry.init();
         RecipeSerializerRegistry.init();
         GunRegistry.init();

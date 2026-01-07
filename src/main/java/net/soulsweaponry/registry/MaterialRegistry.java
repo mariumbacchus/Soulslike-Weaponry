@@ -1,7 +1,10 @@
 package net.soulsweaponry.registry;
 
 import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentAsset;
+import net.minecraft.item.equipment.EquipmentAssetKeys;
 import net.minecraft.item.equipment.EquipmentType;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -13,6 +16,10 @@ import java.util.EnumMap;
 
 public class MaterialRegistry {
 
+    private static RegistryKey<EquipmentAsset> equipmentAsset(String path) {
+        return RegistryKey.of(EquipmentAssetKeys.REGISTRY_KEY, Identifier.of(SoulsWeaponry.ModId, path));
+    }
+
     public static final ArmorMaterial CHAOS_ARMOR = new ArmorMaterial(
             55,
             createMapWithArray(ConfigConstructor.chaos_armor_armor_points),
@@ -21,7 +28,7 @@ public class MaterialRegistry {
             4.0f,
             0.2f,
             ModTags.Items.REPAIRS_CHAOS_ARMOR,
-            Identifier.of(SoulsWeaponry.ModId, "chaos_armor")
+            equipmentAsset("chaos_armor")
     );
 
     public static final ArmorMaterial ENHANCED_CHAOS_ARMOR = new ArmorMaterial(
@@ -32,7 +39,7 @@ public class MaterialRegistry {
             4.0f,
             0.2f,
             ModTags.Items.REPAIRS_ENHANCED_CHAOS_ARMOR,
-            Identifier.of(SoulsWeaponry.ModId, "enhanced_chaos_armor")
+            equipmentAsset("enhanced_chaos_armor")
     );
 
     public static final ArmorMaterial WITHERED_ARMOR = new ArmorMaterial(
@@ -43,7 +50,7 @@ public class MaterialRegistry {
             4.0f,
             0.2f,
             ModTags.Items.REPAIRS_WITHERED_ARMOR,
-            Identifier.of(SoulsWeaponry.ModId, "withered_armor")
+            equipmentAsset("withered_armor")
     );
 
     public static final ArmorMaterial ENHANCED_WITHERED_ARMOR = new ArmorMaterial(
@@ -54,7 +61,7 @@ public class MaterialRegistry {
             4.0f,
             0.2f,
             ModTags.Items.REPAIRS_ENHANCED_WITHERED_ARMOR,
-            Identifier.of(SoulsWeaponry.ModId, "enhanced_withered_armor")
+            equipmentAsset("enhanced_withered_armor")
     );
 
     public static final ArmorMaterial CHAOS_SET = new ArmorMaterial(
@@ -65,7 +72,7 @@ public class MaterialRegistry {
             0.0f,
             0.0f,
             ModTags.Items.REPAIRS_CHAOS_SET,
-            Identifier.of(SoulsWeaponry.ModId, "chaos_set")
+            equipmentAsset("chaos_set")
     );
 
     public static final ArmorMaterial SOUL_INGOT = new ArmorMaterial(
@@ -76,7 +83,7 @@ public class MaterialRegistry {
             0.0f,
             0.0f,
             ModTags.Items.REPAIRS_SOUL_INGOT,
-            Identifier.of(SoulsWeaponry.ModId, "soul_ingot")
+            equipmentAsset("soul_ingot")
     );
 
     public static final ArmorMaterial SOUL_ROBES = new ArmorMaterial(
@@ -87,7 +94,7 @@ public class MaterialRegistry {
             0.0f,
             0.0f,
             ModTags.Items.REPAIRS_SOUL_ROBES,
-            Identifier.of(SoulsWeaponry.ModId, "soul_robes")
+            equipmentAsset("soul_robes")
     );
 
     public static final ArmorMaterial FORLORN_ARMOR = new ArmorMaterial(
@@ -98,7 +105,7 @@ public class MaterialRegistry {
             0.0f,
             0.0f,
             ModTags.Items.REPAIRS_FORLORN,
-            Identifier.of(SoulsWeaponry.ModId, "forlorn")
+            equipmentAsset("forlorn")
     );
 
     /**
@@ -118,4 +125,6 @@ public class MaterialRegistry {
             // hardcoded line in the future if needed.
         });
     }
+
+    public static void init() {}
 }

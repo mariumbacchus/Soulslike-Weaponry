@@ -2,6 +2,7 @@ package net.soulsweaponry.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.TallPlantBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -29,7 +30,7 @@ public class WitheredTallFlower extends WitheredTallGrass {
 
     private final RegistryEntry<StatusEffect> effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
-    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.FLOWERS) && block instanceof TallPlantBlock)).toList();
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, RegistryEntry<StatusEffect> effect) {
         super(settings, replacedBlock);
