@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:bettercombat",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/darkin_scythe_pre"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/darkin_scythe_pre_bettercombat"
+        }
+      }
+    ]
+  }
+}

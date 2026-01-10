@@ -183,14 +183,6 @@
 			"scale": [1.5, 1.8, 1.5]
 		}
 	},
-	"overrides": [
-		{
-			"predicate": {
-				"charged": 1
-			},
-			"model": "soulsweapons:item/bluemoon_greatsword_charged"
-		}
-	],
 	"groups": [
 		{
 			"name": "main",

@@ -31,6 +31,8 @@
     "HeldItemRendererMixin",
     "ItemStackTooltipMixin",
     "KeyBindingAccessor",
+    "NumericPropertiesAccessor",
+    "NumericPropertiesMixin",
     "PlayerEntityRendererDebugMixin",
     "ShieldItemMixin"
   ],

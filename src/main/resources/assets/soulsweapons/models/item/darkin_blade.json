@@ -41,13 +41,5 @@
 			"translation": [8, -9, 0],
 			"scale": [1.0, 1.0, 1]
 		}
-    },
-    "overrides": [
-        {
-            "predicate": {
-                "throwing": 1
-            },
-            "model": "soulsweapons:item/darkin_blade_charging"
-        }
-    ]
+    }
 }

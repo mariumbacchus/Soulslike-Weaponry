@@ -121,13 +121,5 @@
       "translation": [-4, 0, 0],
       "scale": [0.5, 0.5, 0.5]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "bettercombat": 1
-      },
-      "model": "soulsweapons:item/forlorn_scythe_bettercombat"
-    }
-  ]
+  }
 }

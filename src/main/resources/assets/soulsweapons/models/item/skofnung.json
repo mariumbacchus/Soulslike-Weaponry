@@ -24,13 +24,5 @@
           "translation": [5, 5, -3],
           "scale": [1.3, 1.3, 1.3]
       }
-    },
-    "overrides": [
-      {
-          "predicate": {
-              "prime": 1
-          },
-          "model": "soulsweapons:item/skofnung_prime"
-      }
-    ]
+    }
 }

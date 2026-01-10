@@ -36,7 +36,7 @@ public class Luminate implements IAbility {
         stack.set(ComponentRegistry.LUMINATE, bl);
     }
 
-    public boolean isActive(ItemStack stack) {
+    public static boolean isActive(ItemStack stack) {
         return Optional.ofNullable(stack.get(ComponentRegistry.LUMINATE)).orElse(false);
     }
 

@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:max_health",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/master_sword"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/master_sword_prime"
+        }
+      }
+    ]
+  }
+}

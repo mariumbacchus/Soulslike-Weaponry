@@ -34,13 +34,5 @@
             "translation": [ 0, 6, 0],
             "scale":[ 1.75, 1.75, 1.75 ]
         }
-    },
-    "overrides": [
-        {
-            "predicate": {
-                "invisible": 1
-            },
-            "model": "soulsweapons:item/translucent_double_greatsword_invisible"
-        }
-    ]
+    }
 }

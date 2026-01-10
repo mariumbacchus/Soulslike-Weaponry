@@ -126,13 +126,5 @@
         0.5
       ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "throwing": 1
-      },
-      "model": "soulsweapons:item/draupnir_spear_throwing"
-    }
-  ]
+  }
 }

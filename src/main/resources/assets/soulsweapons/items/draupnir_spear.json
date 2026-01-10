@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:using_item",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/draupnir_spear"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/draupnir_spear_throwing"
+    }
+  }
+}

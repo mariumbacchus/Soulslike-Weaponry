@@ -357,14 +357,6 @@
             "scale": [1.5, 1.5, 1.5]
         }
 	},
-	"overrides": [
-        {
-            "predicate": {
-                "throwing": 1
-            },
-            "model": "soulsweapons:item/dragonslayer_swordspear_throwing"
-        }
-    ],
 	"groups": [
 		{
 			"name": "handle",

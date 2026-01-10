@@ -38,13 +38,5 @@
       "translation": [ 2, 9, 0],
       "scale":[ 1.8, 1.8, 1.8 ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "prime": 1
-      },
-      "model": "soulsweapons:item/master_sword_prime"
-    }
-  ]
+  }
 }

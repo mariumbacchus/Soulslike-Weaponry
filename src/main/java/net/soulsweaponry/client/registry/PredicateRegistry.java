@@ -24,62 +24,20 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.Optional;
 
 public class PredicateRegistry {
-    
+
+    //TODO ikke glem custom resource packs!!!!
     public static void initClient() {
-
-        // The Ranged Weapon API adds predicates for you, so this isn't really needed anymore
-        /*PredicateRegistry.registerPull(WeaponRegistry.GALEFORCE);
-        PredicateRegistry.registerPulling(WeaponRegistry.GALEFORCE);
-        PredicateRegistry.registerPull(WeaponRegistry.KRAKEN_SLAYER);
-        PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER);
-        PredicateRegistry.registerPull(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW);
-        PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW);
-        PredicateRegistry.registerCrossbowCharged(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW);
-        PredicateRegistry.registerPull(WeaponRegistry.DARKMOON_LONGBOW);
-        PredicateRegistry.registerPulling(WeaponRegistry.DARKMOON_LONGBOW);*/
-
         // TODO there is a new predicate pipeline now entirely done with components and jsons
         // predicates for items now exist in soulsweapons/items instead of within the item model inside soulsweapons/models/items
         // an example of one handled is comet_spear
         // do this for the rest of the items
         // TODO those commented out are done but may not be tested yet
-        //PredicateRegistry.registerThrowing(WeaponRegistry.COMET_SPEAR);
-        PredicateRegistry.registerThrowing(WeaponRegistry.NIGHTFALL);
-        PredicateRegistry.registerThrowing(WeaponRegistry.DARKIN_BLADE);
-        PredicateRegistry.registerThrowing(WeaponRegistry.DRAGONSLAYER_SWORDSPEAR);
-        PredicateRegistry.registerThrowing(WeaponRegistry.WHIRLIGIG_SAWBLADE);
-        PredicateRegistry.registerThrowing(GunRegistry.GATLING_GUN);
-        PredicateRegistry.registerThrowing(WeaponRegistry.LEVIATHAN_AXE);
-        PredicateRegistry.registerThrowing(WeaponRegistry.MJOLNIR);
-        PredicateRegistry.registerThrowing(WeaponRegistry.MOONLIGHT_GREATSWORD);
-        PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD);
-        PredicateRegistry.registerThrowing(WeaponRegistry.DRAUPNIR_SPEAR);
+        PredicateRegistry.registerPulling(WeaponRegistry.KRAKEN_SLAYER);//TODO disse er krevende...
+        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER, "epicfight"); //TODO del av over!!
 
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SOUL_REAPER, "bettercombat");
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.FORLORN_SCYTHE, "bettercombat");
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRE, "bettercombat");
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.SHADOW_ASSASSIN_SCYTHE, "bettercombat");
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRIME, "bettercombat");
-        PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER, "epicfight");
-
-        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
-        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
-        PredicateRegistry.registerMaxEssence(WeaponRegistry.BLUEMOON_GREATSWORD);
-
-        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_SWORD);
-        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_GLAIVE);
-        PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD);
-
-        ModelPredicateProviderRegistry.register(WeaponRegistry.DRAUGR, Identifier.of("night"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity != null && livingEntity.getWorld().getDimension().hasSkyLight() && livingEntity.getWorld().getTimeOfDay() % 24000 > 13000 && livingEntity.getWorld().getTimeOfDay() % 24000 < 23000) {
-                if (!itemStack.getEnchantments().isEmpty()) {
-                    return 0.5F;
-                }
-                return 1.0F;
-            } else {
-                return 0.0F;
-            }
-        });
+        PredicateRegistry.registerCrossbowCharged(WeaponRegistry.KRAKEN_SLAYER_CROSSBOW); //TODO krevende...
+        PredicateRegistry.registerThrowing(WeaponRegistry.MOONLIGHT_GREATSWORD);//TODO 2d
+        PredicateRegistry.registerThrowing(WeaponRegistry.PURE_MOONLIGHT_GREATSWORD);//TODO 2d
 
         ModelPredicateProviderRegistry.register(ItemRegistry.BOSS_COMPASS, Identifier.of("angle"), new CompassAnglePredicateProvider((world, stack, entity) -> {
             if (stack.isOf(ItemRegistry.BOSS_COMPASS)) {
@@ -89,36 +47,8 @@ public class PredicateRegistry {
             return null;
         }));
 
-        ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, Identifier.of("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.getItem() instanceof Skofnung) {
-                boolean emp = ISharpened.isEmpowered(itemStack);
-                if (emp) {
-                    return 1.0F;
-                }
-            }
-            return 0.0f;
-        });
-
-
-        ModelPredicateProviderRegistry.register(WeaponRegistry.STING, Identifier.of("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.getItem() instanceof IHasAbilities hasAbilities) {
-                Optional<Luminate> op = hasAbilities.findAbility(Luminate.class);
-                if (op.isPresent() && op.get().isActive(itemStack)) {
-                    return 1.0F;
-                }
-            }
-            return 0.0f;
-        });
-
-        ModelPredicateProviderRegistry.register(WeaponRegistry.MASTER_SWORD, Identifier.of("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.isOf(WeaponRegistry.MASTER_SWORD) && livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth()) {
-                return 1.0f;
-            }
-            return 0.0f;
-        });
-
         ModelPredicateProviderRegistry.register(WeaponRegistry.TONITRUS, Identifier.of("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity != null && livingEntity.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+            if (livingEntity != null && livingEntity.hasStatusEffect(EffectRegistry.STORMVEIL)) {//TODO gjorde om til "stormveil_active", gjelder 2d
                 return 1f;
             }
             return 0.0f;
@@ -136,57 +66,4 @@ public class PredicateRegistry {
             return contents != null && contents.matches(EffectRegistry.CHUNGUS_TONIC_POTION) ? 1f : 0f;
         });
     }
-
-    // The Ranged Weapon API does this for you
-    /*protected static void registerPulling(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("pulling"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            }
-            return livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
-        });
-    }*/
-
-    // The Ranged Weapon API does this for you
-    /*protected static void registerPull(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("pull"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            }
-            return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / (20.0F - ((IReducedPullTime)itemStack.getItem()).getReducedPullTime());
-        });
-    }*/
-
-    protected static void registerThrowing(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("throwing"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            }
-            return livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
-        });
-    }
-
-    protected static void registerOtherModIsLoaded(Item item, String id) {
-        ModelPredicateProviderRegistry.register(item , Identifier.of(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
-    }
-
-    protected static void registerMaxEssence(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            Optional<IHasEssence> op = IHasAbilities.getAbility(itemStack, IHasEssence.class);
-            if (op.isPresent() && op.get().hasMaxEssence(itemStack)) {
-                return 1.0f;
-            }
-            return 0.0f;
-        });
-    }
-
-    public static void registerTranslucentAbility(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> InvisibleItem.isInvisible(itemStack) ? 1f : 0f);
-    }
-
-    /*protected static void registerCrossbowCharged(Item item) {
-        ModelPredicateProviderRegistry.register(item, Identifier.of("charged"), (stack, world, entity, seed) -> {
-            return CrossbowItem.isCharged(stack) ? 1.0f : 0.0f;
-        });
-    }*/
 }

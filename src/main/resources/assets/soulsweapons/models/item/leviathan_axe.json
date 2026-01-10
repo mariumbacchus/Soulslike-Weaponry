@@ -132,13 +132,5 @@
         0.9
       ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "throwing": 1
-      },
-      "model": "soulsweapons:item/leviathan_axe_charging"
-    }
-  ]
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:enemy_nearby",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/sting"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/sting_active"
+        }
+      }
+    ]
+  }
+}

@@ -29,13 +29,5 @@
       "translation": [ 0, 7, 0],
       "scale":[ 1.6, 1.6, 1.6 ]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "charged": 1
-      },
-      "model": "soulsweapons:item/holy_moonlight_greatsword_charged"
-    }
-  ]
+  }
 }

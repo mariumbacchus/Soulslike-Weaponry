@@ -333,14 +333,6 @@
 			"scale": [1, 1, 1.6]
 		}
 	},
-	"overrides": [
-        {
-            "predicate": {
-                "throwing": 1
-            },
-            "model": "soulsweapons:item/gatling_gun_using"
-        }
-    ],
 	"groups": [
 		{
 			"name": "main",

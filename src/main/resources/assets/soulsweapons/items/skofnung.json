@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:sharpened",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/skofnung"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/skofnung_prime"
+        }
+      }
+    ]
+  }
+}
