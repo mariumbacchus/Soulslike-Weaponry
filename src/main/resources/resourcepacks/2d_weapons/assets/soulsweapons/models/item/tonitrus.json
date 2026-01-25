@@ -29,13 +29,5 @@
         "translation": [ 0, 6, 0],
         "scale":[ 1.2, 1.2, 1.2 ]
       }
-    },
-    "overrides": [
-      {
-        "predicate": {
-          "charged": 1
-        },
-        "model": "soulsweapons:item/tonitrus_ani"
-      }
-    ]
+    }
 }

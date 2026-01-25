@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:using_item",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/pure_moonlight_greatsword"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/pure_moonlight_greatsword_throwing"
+    }
+  }
+}

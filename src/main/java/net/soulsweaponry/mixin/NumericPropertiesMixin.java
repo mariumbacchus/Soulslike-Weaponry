@@ -33,6 +33,8 @@ public class NumericPropertiesMixin {
     private static final Identifier MAX_HEALTH_ID = Identifier.of(SoulsWeaponry.ModId, "max_health");
     @Unique
     private static final Identifier STORMVEIL_ACTIVE_ID = Identifier.of(SoulsWeaponry.ModId, "stormveil_active");
+    @Unique
+    private static final Identifier CHUNGUS_TONIC_ID = Identifier.of(SoulsWeaponry.ModId, "chungus_tonic");
 
     @Inject(method = "bootstrap", at = @At("HEAD"))
     private static void sw_registerBowPull(CallbackInfo ci) {
@@ -47,5 +49,6 @@ public class NumericPropertiesMixin {
         mapper.put(ENEMY_NEARBY_ID, EnemyNearbyProperty.CODEC);
         mapper.put(MAX_HEALTH_ID, MaxHealthProperty.CODEC);
         mapper.put(STORMVEIL_ACTIVE_ID, StormveilActiveProperty.CODEC);
+        mapper.put(CHUNGUS_TONIC_ID, ChungusTonicProperty.CODEC);
     }
 }

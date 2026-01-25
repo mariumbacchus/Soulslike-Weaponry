@@ -34,13 +34,5 @@
         "translation": [ 0, 6, 0],
         "scale":[ 1.6, 1.6, 1.6 ]
       }
-    },
-    "overrides": [
-      {
-          "predicate": {
-              "throwing": 1
-          },
-          "model": "soulsweapons:item/moonlight_greatsword_throwing"
-      }
-    ]
+    }
 }

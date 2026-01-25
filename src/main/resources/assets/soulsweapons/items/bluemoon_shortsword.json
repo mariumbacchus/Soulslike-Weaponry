@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:charged_essence",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/bluemoon_shortsword"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/bluemoon_shortsword_charged"
+        }
+      }
+    ]
+  }
+}

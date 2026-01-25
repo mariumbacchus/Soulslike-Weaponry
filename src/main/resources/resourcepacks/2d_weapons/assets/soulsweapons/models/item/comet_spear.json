@@ -29,13 +29,5 @@
         "translation": [ -2, 4, 0],
         "scale":[ 1.8, 1.8, 1.8 ]
       }
-    },
-    "overrides": [
-      {
-          "predicate": {
-              "throwing": 1
-          },
-          "model": "soulsweapons:item/comet_spear_throwing"
-      }
-  ]
+    }
 }

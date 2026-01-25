@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:stormveil_active",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/tonitrus"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/tonitrus_ani"
+        }
+      }
+    ]
+  }
+}

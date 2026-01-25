@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:chungus_tonic",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/tipped_arrow"
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/chungus_tonic_tipped_arrow"
+        }
+      }
+    ]
+  }
+}

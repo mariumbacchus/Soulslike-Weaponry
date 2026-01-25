@@ -181,14 +181,6 @@
             "scale": [1.25, 1.25, 1.25]
         }
 	},
-	"overrides": [
-		{
-			"predicate": {
-				"charged": 1
-			},
-			"model": "soulsweapons:item/bluemoon_shortsword_charged"
-		}
-	],
 	"groups": [
 		{
 			"name": "main",

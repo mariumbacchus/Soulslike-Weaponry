@@ -648,33 +648,5 @@
 				}
 			]
 		}
-	],
-	"overrides": [
-		{
-			"predicate": {
-				"pulling": 1
-			},
-			"model": "soulsweapons:item/kraken_slayer_pulling_crossbow"
-		},
-		{
-			"predicate": {
-				"pulling": 1,
-				"pull": 0.58
-			},
-			"model": "soulsweapons:item/kraken_slayer_pull_crossbow_1"
-		},
-		{
-			"predicate": {
-				"pulling": 1,
-				"pull": 1.0
-			},
-			"model": "soulsweapons:item/kraken_slayer_pull_crossbow_2"
-		},
-		{
-			"predicate": {
-				"charged": 1
-			},
-			"model": "soulsweapons:item/kraken_slayer_charged_crossbow"
-		}
 	]
 }

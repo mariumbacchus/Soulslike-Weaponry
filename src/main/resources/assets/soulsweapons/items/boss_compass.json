@@ -1,0 +1,48 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:boss_compass_angle",
+
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "soulsweapons:item/boss_compass_16"
+    },
+
+    "entries": [
+      { "threshold": 0.000000, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_16" } },
+      { "threshold": 0.015625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_17" } },
+      { "threshold": 0.046875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_18" } },
+      { "threshold": 0.078125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_19" } },
+      { "threshold": 0.109375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_20" } },
+      { "threshold": 0.140625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_21" } },
+      { "threshold": 0.171875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_22" } },
+      { "threshold": 0.203125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_23" } },
+      { "threshold": 0.234375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_24" } },
+      { "threshold": 0.265625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_25" } },
+      { "threshold": 0.296875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_26" } },
+      { "threshold": 0.328125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_27" } },
+      { "threshold": 0.359375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_28" } },
+      { "threshold": 0.390625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_29" } },
+      { "threshold": 0.421875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_30" } },
+      { "threshold": 0.453125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_31" } },
+
+      { "threshold": 0.484375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_00" } },
+      { "threshold": 0.515625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_01" } },
+      { "threshold": 0.546875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_02" } },
+      { "threshold": 0.578125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_03" } },
+      { "threshold": 0.609375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_04" } },
+      { "threshold": 0.640625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_05" } },
+      { "threshold": 0.671875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_06" } },
+      { "threshold": 0.703125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_07" } },
+      { "threshold": 0.734375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_08" } },
+      { "threshold": 0.765625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_09" } },
+      { "threshold": 0.796875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_10" } },
+      { "threshold": 0.828125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_11" } },
+      { "threshold": 0.859375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_12" } },
+      { "threshold": 0.890625, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_13" } },
+      { "threshold": 0.921875, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_14" } },
+      { "threshold": 0.953125, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_15" } },
+      { "threshold": 0.984375, "model": { "type": "minecraft:model", "model": "soulsweapons:item/boss_compass_16" } }
+    ]
+  }
+}

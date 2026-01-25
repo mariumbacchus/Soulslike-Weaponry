@@ -1,0 +1,75 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "soulsweapons:epicfight",
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "minecraft:using_item",
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "soulsweapons:item/kraken_slayer"
+      },
+      "on_true": {
+        "type": "minecraft:range_dispatch",
+        "property": "ranged_weapon:bow_pull",
+        "fallback": {
+          "type": "minecraft:model",
+          "model": "soulsweapons:item/kraken_slayer_pulling"
+        },
+        "entries": [
+          {
+            "threshold": 0.65,
+            "model": {
+              "type": "minecraft:model",
+              "model": "soulsweapons:item/kraken_slayer_pull_1"
+            }
+          },
+          {
+            "threshold": 0.9,
+            "model": {
+              "type": "minecraft:model",
+              "model": "soulsweapons:item/kraken_slayer_pull_2"
+            }
+          }
+        ]
+      }
+    },
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:using_item",
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "soulsweapons:item/kraken_slayer_epicfight"
+          },
+          "on_true": {
+            "type": "minecraft:range_dispatch",
+            "property": "ranged_weapon:bow_pull",
+            "fallback": {
+              "type": "minecraft:model",
+              "model": "soulsweapons:item/kraken_slayer_pulling_crossbow"
+            },
+            "entries": [
+              {
+                "threshold": 0.65,
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "soulsweapons:item/kraken_slayer_pull_crossbow_1"
+                }
+              },
+              {
+                "threshold": 0.9,
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "soulsweapons:item/kraken_slayer_pull_crossbow_2"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
