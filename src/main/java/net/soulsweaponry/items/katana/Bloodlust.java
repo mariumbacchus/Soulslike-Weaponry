@@ -19,7 +19,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.IKeybindAbility;
 import net.soulsweaponry.util.TooltipAbilities;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -121,7 +121,7 @@ public class Bloodlust extends ModdedSword implements IBleed, GeoItem, IKeybindA
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        player.damage(CustomDamageSource.create(world, CustomDamageSource.BLEED), ConfigConstructor.bloodlust_ability_self_damage);
+        player.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.BLEED), ConfigConstructor.bloodlust_ability_self_damage);
         BleedData.addBleed(player, (int) ConfigConstructor.bloodlust_ability_self_bleed);
         stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
         player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, 300, (int) ConfigConstructor.bloodlust_ability_bloodthirsty_amp));

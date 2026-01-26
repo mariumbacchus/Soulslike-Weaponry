@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.ModTags;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -74,7 +74,7 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
             if (this.getOwner() != null && (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity))) {
                 continue;
             }
-            livingEntity.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
+            livingEntity.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
             livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
             ItemStack stack = livingEntity.getOffHandStack();
             if (livingEntity instanceof PlayerEntity player && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {

@@ -45,7 +45,7 @@ public class EffectRegistry {
     public static final StatusEffect GHOSTLY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191), "ghostly");
     public static final StatusEffect CHUNGUS_TONIC_EFFECT = registerEffect(new ChungusTonic(), "chungus_tonic_effect");
     public static final StatusEffect FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
-    public static final StatusEffect BLADE_DANCE = registerEffect(new BladeDance(), "blade_dance");
+    public static final StatusEffect BLADE_DANCE = registerEffect(new BladeDanceEffect(), "blade_dance");
     public static final StatusEffect STORMVEIL = registerEffect(new Stormveil(), "stormveil");
 
     public static final Potion WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");

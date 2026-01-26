@@ -19,7 +19,7 @@ import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.items.armor.ChaosRobes;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -46,7 +46,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
-            target.damage(CustomDamageSource.create(this.getWorld(), CustomDamageSource.SHADOW_ORB, this, this.getOwner()), 5f);
+            target.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.SHADOW_ORB, this, this.getOwner()), 5f);
             for (StatusEffect effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }

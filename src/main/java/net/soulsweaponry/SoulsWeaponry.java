@@ -45,9 +45,12 @@ public class SoulsWeaponry implements ModInitializer {
         MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
         LOGGER.info("Config initialized!");
+
         GeckoLib.initialize();
         LOGGER.info("Successfully initialized Geckolib!");
+
         AttributeRegistry.init();
+        DamageSourceRegistry.init();
         BlockRegistry.init();
         ItemRegistry.init();
         FluidRegistry.init();
@@ -62,6 +65,7 @@ public class SoulsWeaponry implements ModInitializer {
         ArmorRegistry.init();
         GunRegistry.init();
         WorldGen.generateCustomWorldGen();
+
         LOGGER.info("Successfully registered SoulsWeapons content!");
         PacketRegistry.registerC2SPackets();
 

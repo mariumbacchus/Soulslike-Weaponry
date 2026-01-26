@@ -2,6 +2,7 @@ package net.soulsweaponry.datagen.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalEntityTypeTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.EntityTypeTags;
@@ -34,7 +35,7 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityType.SKELETON)
                 .add(EntityType.WITHER_SKELETON)
                 .add(EntityType.SKELETON_HORSE);
-        this.getOrCreateTagBuilder(ModTags.Entities.BOSSES)
+        this.getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.WITHER)
                 .add(EntityRegistry.ACCURSED_LORD_BOSS)
@@ -50,8 +51,51 @@ public class EntityTagsProvider extends FabricTagProvider.EntityTypeTagProvider 
                 .add(EntityRegistry.RIME_SPECTRE);
         this.getOrCreateTagBuilder(ModTags.Entities.DRAGONS)
                 .add(EntityType.ENDER_DRAGON)
-                .addOptional(new Identifier("iceandfire", "ice_dragon"))
-                .addOptional(new Identifier("iceandfire", "fire_dragon"))
-                .addOptional(new Identifier("iceandfire", "lightning_dragon"));
+                .addOptional(Identifier.of("iceandfire", "ice_dragon"))
+                .addOptional(Identifier.of("iceandfire", "fire_dragon"))
+                .addOptional(Identifier.of("iceandfire", "lightning_dragon"));
+        this.getOrCreateTagBuilder(EntityTypeTags.ARROWS)
+                .add(EntityRegistry.MOONLIGHT_ARROW)
+                .add(EntityRegistry.SILVER_ARROW)
+                .add(EntityRegistry.KRAKEN_SLAYER_PROJECTILE)
+                .add(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE);
+        this.getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
+                .add(EntityRegistry.MOONLIGHT_ARROW)
+                .add(EntityRegistry.SILVER_ARROW)
+                .add(EntityRegistry.KRAKEN_SLAYER_PROJECTILE)
+                .add(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE)
+                .add(EntityRegistry.MOONLIGHT_ENTITY_TYPE)
+                .add(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE)
+                .add(EntityRegistry.DARK_MOON_PROJECTILE)
+                .add(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE)
+                .add(EntityRegistry.HORIZONTAL_MOONLIGHT_ENTITY_TYPE)
+                .add(EntityRegistry.SUNLIGHT_PROJECTILE_SMALL)
+                .add(EntityRegistry.SUNLIGHT_PROJECTILE_BIG)
+                .add(EntityRegistry.VERTICAL_SUNLIGHT_PROJECTILE)
+                .add(EntityRegistry.SWORDSPEAR_ENTITY_TYPE)
+                .add(EntityRegistry.COMET_SPEAR_ENTITY_TYPE)
+                .add(EntityRegistry.SILVER_BULLET_ENTITY_TYPE)
+                .add(EntityRegistry.CANNONBALL)
+                .add(EntityRegistry.LEVIATHAN_AXE_ENTITY_TYPE)
+                .add(EntityRegistry.MJOLNIR_ENTITY_TYPE)
+                .add(EntityRegistry.SHADOW_ORB)
+                .add(EntityRegistry.DRAUPNIR_SPEAR_TYPE)
+                .add(EntityRegistry.DRAGON_STAFF_PROJECTILE)
+                .add(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE)
+                .add(EntityRegistry.CHAOS_SKULL)
+                .add(EntityRegistry.GROWING_FIREBALL_ENTITY)
+                .add(EntityRegistry.NIGHT_SKULL)
+                .add(EntityRegistry.BLACKFLAME_SNAKE_ENTITY)
+                .add(EntityRegistry.NO_DRAG_WITHER_SKULL)
+                .add(EntityRegistry.NIGHTS_EDGE)
+                .add(EntityRegistry.NIGHT_WAVE)
+                .add(EntityRegistry.FLAME_PILLAR)
+                .add(EntityRegistry.HOLY_MOONLIGHT_PILLAR)
+                .add(EntityRegistry.GHOST_GLAIVE_TYPE)
+                .add(EntityRegistry.MOONVEIL_HORIZONTAL)
+                .add(EntityRegistry.MOONVEIL_VERTICAL)
+                .add(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY)
+                .add(EntityRegistry.MOLTEN_METAL)
+                .add(EntityRegistry.CHUNGUS_HEAD);
     }
 }

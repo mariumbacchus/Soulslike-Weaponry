@@ -16,7 +16,7 @@ import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.ModTags;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class EntityBleed {
     }
 
     public static void triggerBloodLoss(LivingEntity entity) {
-        entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), getBleedDamage(entity,
+        entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.BLEED), getBleedDamage(entity,
                 ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
         entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.BLOOD_LOSS, entity.getSoundCategory(), 1f, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
         if (entity.getWorld() instanceof ServerWorld serverWorld) {

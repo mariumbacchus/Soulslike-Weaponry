@@ -1413,26 +1413,38 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float permafrost_effect_base_frost_buildup = 1;
     @Entry public static float permafrost_effect_buildup_per_amp = 1;
 
+    @Entry(min=0) public static float blight_carrier_enchant_max_level = 2;
     @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
     @Entry(min=0) public static float blight_carrier_enchant_blight_per_level = 2;
 
+    @Entry(min=0) public static float chain_lightning_enchant_max_level = 3;
     @Entry(min=0) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
     @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
 
+    @Entry(min=0) public static float explosive_rounds_enchant_max_level = 3;
     @Entry(min=0) public static boolean explosive_rounds_enchant_destroys_blocks = false;
 
+    @Entry(min=0) public static float fast_hands_enchant_max_level = 3;
+
+    @Entry(min=0) public static float frostsilver_enchant_max_level = 2;
     @Entry(min=0) public static float frostsilver_enchant_permafrost_per_level = 4;
     @Entry(min=0) public static float frostsilver_enchant_permafrost_duration = 100;
 
     @Entry(min=0) public static double misfire_curse_enchant_trigger_chance = 0.3;
 
+    @Entry(min=0) public static float phantom_trace_enchant_max_level = 3;
     @Entry(min=0) public static float phantom_trace_enchant_phantom_projectile_damage_mod = 0.5f;
 
+    @Entry(min=0) public static float posture_breaker_enchant_max_level = 3;
+
+    @Entry(min=0) public static float ricochet_enchant_max_level = 3;
     @Entry(min=0) public static float ricochet_enchant_bounce_per_level = 1;
 
+    @Entry(min=0) public static float stagger_enchant_max_level = 3;
     @Entry(min=0) public static float stagger_enchant_posture_loss_applied_per_level = 5;
     @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
 
+    @Entry(min=0) public static float tether_enchant_max_level = 2;
     @Entry(min=0) public static float tether_enchant_drag_mod = 1f;
     @Entry(min=0) public static float tether_enchant_min_activation_range_per_level = 3f;
 
