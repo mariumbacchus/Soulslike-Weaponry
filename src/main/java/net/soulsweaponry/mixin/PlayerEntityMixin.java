@@ -13,18 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.IDetonateGround;
-import net.soulsweaponry.items.IUltraHeavy;
-import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -70,8 +67,9 @@ public class PlayerEntityMixin {
         if (player.hasStatusEffect(EffectRegistry.GHOSTLY)) {
             info.setReturnValue(false);
         }
-        int frames = ParryData.getParryFrames(player);
-        if (frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
+        int parryTicks = ParryData.getParryTicks(player);
+        int parryFrames = ParryData.getParryFrames(player);
+        if (parryTicks >= 1 && parryTicks <= parryFrames && !source.isIn(DamageTypeTags.BYPASSES_SHIELD)) {
             player.getWorld().sendEntityStatus(player, EntityStatuses.BLOCK_WITH_SHIELD);
             if (source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity) {
                 info.setReturnValue(false);
@@ -86,42 +84,6 @@ public class PlayerEntityMixin {
                 info.setReturnValue(false);
             }
         }
-        // Enhanced arkenplate && health < 1/3 && projectile
-        if (player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_ARKENPLATE) && player.getHealth() < player.getMaxHealth() * ConfigConstructor.arkenplate_mirror_trigger_percent
-                && source.isIn(DamageTypeTags.IS_PROJECTILE) && source.getSource() instanceof ProjectileEntity projectile) {
-            Vec3d playerPos = player.getPos();
-            Vec3d projectilePos = projectile.getPos();
-            Vec3d projectileMotion = projectile.getVelocity();
-            Vec3d reflectionVector = this.calculateReflectionVector(playerPos, projectilePos, projectileMotion);
-            // Reflect the projectile back
-            projectile.setVelocity(reflectionVector);
-            info.setReturnValue(false);
-        }
-        ItemStack stack = player.getInventory().getArmorStack(2);
-        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH) && !stack.isEmpty()
-                && (stack.isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST) || stack.isOf(ArmorRegistry.WITHERED_CHEST))) {
-            double x = player.getX() - attacker.getX();
-            double z = player.getZ() - attacker.getZ();
-            attacker.damage(player.getDamageSources().wither(), 1f);
-            attacker.takeKnockback(0.5f, x, z);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, (int) ConfigConstructor.withered_chest_apply_wither_duration, (int) ConfigConstructor.withered_chest_apply_wither_amplifier));
-            if (!player.getInventory().getArmorStack(2).isEmpty() && player.getInventory().getArmorStack(2).isOf(ArmorRegistry.ENHANCED_WITHERED_CHEST)) {
-                attacker.setOnFireFor((int) ConfigConstructor.withered_chest_apply_fire_seconds);
-            }
-            if (!player.getWorld().isClient) {
-                for (int i = 0; i < 50; i++) {
-                    ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME, player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
-                            player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f, player.getRandom().nextGaussian() / 10f);
-                }
-            }
-            player.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1f, 1f);
-        }
-    }
-
-    @Unique
-    private Vec3d calculateReflectionVector(Vec3d playerPos, Vec3d projectilePos, Vec3d projectileMotion) {
-        Vec3d vectorToPlayer = playerPos.subtract(projectilePos).normalize();
-        return projectileMotion.subtract(vectorToPlayer.multiply(projectileMotion.dotProduct(vectorToPlayer) * 2.0D));
     }
 
     @Inject(method = "attack", at = @At("HEAD"))
@@ -143,10 +105,10 @@ public class PlayerEntityMixin {
         PlayerEntity player = ((PlayerEntity) (Object)this);
 
         ItemStack stack = player.getInventory().getMainHandStack();
-        boolean mainHeavy = stack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        boolean mainHeavy = IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent();
 
         ItemStack offStack = player.getInventory().offHand.get(0);
-        boolean offHeavy = offStack.getItem() instanceof IUltraHeavy item && item.isHeavy();
+        boolean offHeavy = IHasAbilities.getAbility(offStack, UltraHeavy.class).isPresent();
         if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
             // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.
             // Therefore, only disable offhand completely if main hand is heavy, while give mining fatigue if heavy

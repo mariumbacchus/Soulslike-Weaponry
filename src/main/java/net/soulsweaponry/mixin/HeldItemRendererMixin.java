@@ -23,17 +23,18 @@ public class HeldItemRendererMixin {
 
     @Inject(method = "renderFirstPersonItem", at = @At("HEAD"))
     protected void interceptRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch,
-            Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices,
-                VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
-        int frames = ParryData.getParryFrames(player);
-        if (frames >= 1) {
-            this.parryProgress = frames == 1 ? 0.1f : parryProgress;
-            float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 6f;
+                                                  Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices,
+                                                  VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
+        int ticks = ParryData.getParryTicks(player); // TODO rewrite
+        int maxTicks = ParryData.getMaxParryTicks(player);
+        if (ticks >= 1) {
+            this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
+            float added = (1f / (float) maxTicks) / 6f;
             this.parryProgress = Math.min(this.parryProgress + added, 1f);
 
             float h;
-            float f = (float) ParryData.MAX_PARRY_FRAMES - parryProgress;
-            float g = f / (float) ParryData.MAX_PARRY_FRAMES;
+            float f = (float) maxTicks - parryProgress;
+            float g = f / (float) maxTicks;
             if (g < 0.8f) {
                 h = MathHelper.abs(MathHelper.cos(f / 4.0f * (float)Math.PI) * 0.1f);
                 matrices.translate(0.0f, h, 0.0f);

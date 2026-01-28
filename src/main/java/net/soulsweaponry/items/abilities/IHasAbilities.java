@@ -157,7 +157,6 @@ public interface IHasAbilities extends IConfigDisable {
         boolean sawSuccess = false;
         boolean sawConsume = false;
         boolean sawConsumePartial = false;
-        boolean sawSuccessNoItemUsed = false;
         boolean sawFail = false;
 
         for (var a : abilities) {
@@ -174,7 +173,6 @@ public interface IHasAbilities extends IConfigDisable {
                 case SUCCESS -> sawSuccess = true;
                 case CONSUME -> sawConsume = true;
                 case CONSUME_PARTIAL -> sawConsumePartial = true;
-                case SUCCESS_NO_ITEM_USED -> sawSuccessNoItemUsed = true;
                 case FAIL -> sawFail = true;
                 case PASS -> {}
             }
@@ -185,9 +183,6 @@ public interface IHasAbilities extends IConfigDisable {
         }
         if (sawConsume) {
             return TypedActionResult.consume(out);
-        }
-        if (sawSuccessNoItemUsed) {
-            return new TypedActionResult<>(ActionResult.SUCCESS_NO_ITEM_USED, out);
         }
         if (sawConsumePartial) {
             return new TypedActionResult<>(ActionResult.CONSUME_PARTIAL, out);
@@ -442,7 +437,6 @@ public interface IHasAbilities extends IConfigDisable {
         boolean sawSuccess = false;
         boolean sawConsume = false;
         boolean sawConsumePartial = false;
-        boolean sawSuccessNoItemUsed = false;
         boolean sawFail = false;
 
         for (var a : this.getAbilities()) {
@@ -451,7 +445,6 @@ public interface IHasAbilities extends IConfigDisable {
                 case SUCCESS -> sawSuccess = true;
                 case CONSUME -> sawConsume = true;
                 case CONSUME_PARTIAL -> sawConsumePartial = true;
-                case SUCCESS_NO_ITEM_USED -> sawSuccessNoItemUsed = true;
                 case FAIL -> sawFail = true;
                 case PASS -> {}
             }
@@ -461,9 +454,6 @@ public interface IHasAbilities extends IConfigDisable {
         }
         if (sawConsume) {
             return ActionResult.CONSUME;
-        }
-        if (sawSuccessNoItemUsed) {
-            return ActionResult.SUCCESS_NO_ITEM_USED;
         }
         if (sawConsumePartial) {
             return ActionResult.CONSUME_PARTIAL;

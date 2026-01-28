@@ -21,12 +21,13 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     @Inject(at = @At("HEAD"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
-        // Parry animation
+        // Parry animation TODO rewrite, also make use other hand if item is in other hand
         if (entity instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
-            int frames = ParryData.getParryFrames(abstractClientPlayerEntity);
-            if (frames >= 1) {
-                this.parryProgress = frames == 1 ? 0.1f : parryProgress;
-                float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 6f;
+            int ticks = ParryData.getParryTicks(abstractClientPlayerEntity);
+            int maxTicks = ParryData.getMaxParryTicks(abstractClientPlayerEntity);
+            if (ticks >= 1) {
+                this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
+                float added = (1f / (float) maxTicks) / 6f;
                 this.parryProgress = Math.min(this.parryProgress + added, 1f);
                 ModelPart modelPart = model.leftArm;
                 float f = parryProgress;

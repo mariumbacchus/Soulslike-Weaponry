@@ -1,16 +1,17 @@
 package net.soulsweaponry.mixin;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.ITooltipInfo;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.TooltipUtil;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.otherkeybind.Parry;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,16 +19,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ShieldItem.class)
-public class ShieldItemMixin {
+public abstract class ShieldItemMixin implements IHasAbilities {
+
+    @Unique
+    private static final Parry PARRY = new Parry(
+            (int) ConfigConstructor.shield_parry_frames,
+            ConfigConstructor.shield_parry_bonus_frames_per_level,
+            (int) ConfigConstructor.shield_parry_max_animation_frames,
+            (int) ConfigConstructor.shield_parry_min_cooldown,
+            (int) ConfigConstructor.shield_parry_cooldown,
+            (int) ConfigConstructor.shield_parry_reduced_cooldown_per_level
+    );
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void shield$init(Item.Settings settings, CallbackInfo info) {
+        if (ConfigConstructor.enable_shield_parry) {
+            this.addAbility(PARRY);
+        }
+    }
 
     @Inject(method = "appendTooltip", at = @At("TAIL"))
     protected void interceptTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo info) {
         if (ConfigConstructor.enable_shield_parry) {
-            if (ITooltipInfo.shouldShowInfo()) {
-                TooltipUtil.addAbilityTooltip(TooltipAbilities.PARRY, stack, tooltip);
-            } else {
-                ITooltipInfo.addShowInfoText(tooltip);
-            }
+            this.appendTooltipAbilities(stack, tooltip);
         }
     }
 }

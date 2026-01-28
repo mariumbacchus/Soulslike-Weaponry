@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ArrowItemMixin",
+    "CrossbowMixin",
     "DamageSourcesMixin",
     "EnchantmentHelperMixin",
     "EnderDragonEntityMixin",
@@ -14,9 +15,12 @@
     "ItemMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
+    "MiningToolItemMixin",
     "ModelInvoker",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
+    "ServerPlayNetworkHandlerMixin",
+    "SwordItemMixin",
     "WitherEntityMixin"
   ],
   "client": [
@@ -25,6 +29,7 @@
     "BossBarHudMixin",
     "EntityRenderDispatcherMixin",
     "HeldItemRendererMixin",
+    "ItemStackTooltipMixin",
     "KeyBindingAccessor",
     "ShieldItemMixin"
   ],
