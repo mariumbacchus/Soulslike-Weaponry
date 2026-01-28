@@ -20,7 +20,7 @@ import net.soulsweaponry.config.ChungusTonicWhitelist;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.MidnightConfig;
-import net.soulsweaponry.items.TestItem;
+import net.soulsweaponry.items.misc.TestItem;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;

@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.TriPredicate;
 import net.soulsweaponry.util.WeaponUtil;

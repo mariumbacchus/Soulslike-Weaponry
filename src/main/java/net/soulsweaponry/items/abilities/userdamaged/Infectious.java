@@ -5,7 +5,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 public record Infectious(
         float damage, float bonusDamagePerLvl, float knockback, float bonusKnockbackPerLvl,
-        List<RegistryEntry<StatusEffect>> effectsOnTarget, int effectsDuration, float effectsDurationPerLvl,
+        List<StatusEffect> effectsOnTarget, int effectsDuration, float effectsDurationPerLvl,
         int effectsAmp, float effectsAmpPerLvl, int fireSeconds, int fireSecondsPerLvl
 ) implements IAbility {
 

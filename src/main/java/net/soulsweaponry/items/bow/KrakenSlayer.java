@@ -1,73 +1,32 @@
 package net.soulsweaponry.items.bow;
 
-import net.fabric_extras.ranged_weapon.api.RangedConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.UseAction;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
-import net.soulsweaponry.items.ModdedBow;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.customarrows.ThirdShotTrue;
 
 import java.util.function.Supplier;
 
 public class KrakenSlayer extends ModdedBow {
 
+    private static final ThirdShotTrue THIRD_SHOT_BOW = new ThirdShotTrue(
+            ConfigConstructor.kraken_slayer_bow_true_damage,
+            ConfigConstructor.kraken_slayer_bow_bonus_true_damage_per_level,
+            ConfigConstructor.kraken_slayer_bow_use_animation,
+            (int) ConfigConstructor.kraken_slayer_bow_stacks_per_shot,
+            ConfigConstructor.kraken_slayer_bow_bonus_stacks_per_shot_per_level,
+            (int) ConfigConstructor.kraken_slayer_bow_max_stacks_until_true_damage
+    );
+
     public KrakenSlayer(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
-        this.addTooltipAbility(TooltipAbilities.FAST_PULL, TooltipAbilities.THIRD_SHOT);
-        this.configure(new RangedConfig((int) ConfigConstructor.kraken_slayer_pull_time_ticks, ConfigConstructor.kraken_slayer_damage, ConfigConstructor.kraken_slayer_max_velocity));
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_kraken_slayer_bow;
-    }
-
-    @Override
-    public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots") && bowStack.getNbt().getInt("firedShots") >= 2) {
-            TrueDamageArrow projectile = new TrueDamageArrow(world, shooter);
-            projectile.setTrueDamage(ConfigConstructor.kraken_slayer_bonus_true_damage + EnchantmentHelper.getLevel(Enchantments.POWER, bowStack));
-            bowStack.getNbt().putInt("firedShots", 0);
-            return projectile;
-        } else {
-            if (bowStack.hasNbt() && bowStack.getNbt().contains("firedShots")) {
-                bowStack.getNbt().putInt("firedShots", bowStack.getNbt().getInt("firedShots") + 1);
-            } else {
-                bowStack.getOrCreateNbt().putInt("firedShots", 1);
-            }
-        }
-        return null;
+        super(settings, createConfig((int) ConfigConstructor.kraken_slayer_bow_pull_time_ticks,
+                        ConfigConstructor.kraken_slayer_bow_damage, ConfigConstructor.kraken_slayer_bow_bonus_velocity),
+                repairIngredientSupplier);
+        this.addAbility(THIRD_SHOT_BOW);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_bow;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        for (UseAction action : UseAction.values()) {
-            if (action.toString().equals(ConfigConstructor.kraken_slayer_bow_use_animation)) {
-                return action;
-            }
-        }
-        return UseAction.SPEAR;
     }
 }

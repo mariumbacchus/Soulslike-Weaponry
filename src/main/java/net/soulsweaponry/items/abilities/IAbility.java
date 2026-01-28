@@ -1,11 +1,12 @@
 package net.soulsweaponry.items.abilities;
 
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -415,16 +416,15 @@ public interface IAbility extends ICooldownItem {
 
     /**
      * Used in armor items only.
-     * @param builder the builder to add attributes to, should have vanilla components before passing in
+     * @param builder the builder to add attributes to, should have vanilla attributes before passing in
      * @param equipmentSlot equipment slot the armor item is meant for
-     * @param attributeModifierSlot attribute modifier slot the item will apply to
      */
-    default void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {}
+    default void addArmorAttributeModifiers(ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder, EquipmentSlot equipmentSlot) {}
 
     /**
      * @return set of status effects the wielder cannot gain at all (trying to apply returns false and fails)
      */
-    default Set<RegistryEntry<StatusEffect>> getStatusEffectsImmuneTo() {
+    default Set<StatusEffect> getStatusEffectsImmuneTo() {
         return Set.of();
     }
 
@@ -472,12 +472,12 @@ public interface IAbility extends ICooldownItem {
         return getLocalizedEffectNames(entries);
     }
 
-    default Text getLocalizedEffectNames(Collection<RegistryEntry<StatusEffect>> effects) {
+    default Text getLocalizedEffectNames(Collection<StatusEffect> effects) {
         if (effects == null || effects.isEmpty()) {
             return Text.empty();
         }
         var effectNames = effects.stream()
-                .map(eff -> Text.translatable(eff.value().getTranslationKey())
+                .map(eff -> Text.translatable(eff.getTranslationKey())
                         .formatted(Formatting.DARK_GREEN))
                 .toList();
         return Texts.join(effectNames, Text.literal(", ").formatted(Formatting.GRAY));

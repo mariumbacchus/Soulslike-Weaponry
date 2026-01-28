@@ -1,14 +1,16 @@
 package net.soulsweaponry.items.abilities;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,7 +24,6 @@ import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipUtil;
 import net.soulsweaponry.util.WeaponUtil;
@@ -516,12 +517,13 @@ public interface IHasAbilities extends IConfigDisable {
      * @param equipmentSlot equipment slot the armor item is meant for
      * @return builder with the additional attributes
      */
-    default AttributeModifiersComponent.Builder applyArmorAttributeModifiers(AttributeModifiersComponent vanillaBuilder, EquipmentSlot equipmentSlot) {
-        AttributeModifiersComponent.Builder builder = WeaponUtil.createAndCopyAttributes(vanillaBuilder);
-        AttributeModifierSlot slot = AttributeModifierSlot.forEquipmentSlot(equipmentSlot);
-        this.getAbilities().forEach(ability -> {
-            ability.addArmorAttributeModifiers(builder, equipmentSlot, slot);
-        });
+    default ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> applyArmorAttributeModifiers(
+            Multimap<EntityAttribute, EntityAttributeModifier> vanillaBuilder,
+            EquipmentSlot equipmentSlot
+    ) {
+        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+        builder.putAll(vanillaBuilder);
+        this.getAbilities().forEach(ability -> ability.addArmorAttributeModifiers(builder, equipmentSlot));
         return builder;
     }
 

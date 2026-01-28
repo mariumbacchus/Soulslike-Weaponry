@@ -1,66 +1,38 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
+import net.soulsweaponry.items.abilities.posthit.GivesEssence;
+import net.soulsweaponry.items.abilities.stoppedusing.ShootMoonlight;
 
-public class BluemoonGreatsword extends MoonlightGreatsword implements IChargeNeeded {
+public class BluemoonGreatsword extends ModdedSword {
+
+    private static final ShootMoonlight SHOOT_MOONLIGHT = new ShootMoonlight(
+            (int) ConfigConstructor.bluemoon_greatsword_projectile_amount,
+            ConfigConstructor.bluemoon_greatsword_bonus_projectile_amount_per_level,
+            ConfigConstructor.bluemoon_greatsword_projectile_velocity,
+            ConfigConstructor.bluemoon_greatsword_projectile_damage,
+            ConfigConstructor.bluemoon_greatsword_projectile_bonus_damage_per_level
+    );
+    private static final GivesEssence GIVES_ESSENCE = new GivesEssence(
+            (int) ConfigConstructor.bluemoon_greatsword_essence_added_post_hit,
+            (int) ConfigConstructor.bluemoon_greatsword_bonus_essence_added_post_hit_per_level,
+            (int) ConfigConstructor.bluemoon_greatsword_essence_needed
+    );
+    private static final EssenceNeeded ESSENCE_NEEDED = new EssenceNeeded(
+            (int) ConfigConstructor.bluemoon_greatsword_essence_needed, true
+    );
 
     public BluemoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.bluemoon_greatsword_damage, ConfigConstructor.bluemoon_greatsword_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.CHARGE);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        this.addCharge(stack, this.getAddedCharge(stack));
-        return super.postHit(stack, target, attacker);
+        this.addAbility(SHOOT_MOONLIGHT, GIVES_ESSENCE, ESSENCE_NEEDED);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_bluemoon_greatsword;
-    }
-
-    @Override
-    public int getMaxCharge() {
-        return (int) ConfigConstructor.bluemoon_greatsword_charge_needed;
-    }
-
-    @Override
-    public int getAddedCharge(ItemStack stack) {
-        return (int) ConfigConstructor.bluemoon_greatsword_charge_added_post_hit;
-    }
-
-    @Override
-    public boolean acceptsMoonHeraldEffect(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_bluemoon_greatsword;
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[0];
-    }
-
-    @Override
-    public float getProjectileDamage() {
-        return ConfigConstructor.bluemoon_greatsword_projectile_damage;
-    }
-
-    @Override
-    public float getProjectileVelocity() {
-        return ConfigConstructor.bluemoon_greatsword_projectile_velocity;
     }
 }

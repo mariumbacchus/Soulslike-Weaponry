@@ -8,7 +8,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -23,21 +22,21 @@ import java.util.*;
 public class EffectImmunity implements IAbility {
 
     private final List<StatusEffectCategory> categoriesImmuneTo;
-    private final Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo;
+    private final Set<StatusEffect> statusEffectsImmuneTo;
     private final TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined;
     private boolean hasPositiveEffects = true;
 
-    public EffectImmunity(List<StatusEffectCategory> categoriesImmuneTo, Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo, TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined) {
+    public EffectImmunity(List<StatusEffectCategory> categoriesImmuneTo, Set<StatusEffect> statusEffectsImmuneTo, TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined) {
         this.categoriesImmuneTo = categoriesImmuneTo;
         this.statusEffectsImmuneTo = statusEffectsImmuneTo;
         this.onEffectDeclined = onEffectDeclined;
     }
 
-    public EffectImmunity(Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo, TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined) {
+    public EffectImmunity(Set<StatusEffect> statusEffectsImmuneTo, TriConsumer<LivingEntity, StatusEffectInstance, ItemStack> onEffectDeclined) {
         this(List.of(), statusEffectsImmuneTo, onEffectDeclined);
     }
 
-    public EffectImmunity(Set<RegistryEntry<StatusEffect>> statusEffectsImmuneTo) {
+    public EffectImmunity(Set<StatusEffect> statusEffectsImmuneTo) {
         this(List.of(), statusEffectsImmuneTo, (entity, effect, stack) -> {});
         this.hasPositiveEffects = false;
     }
@@ -48,15 +47,15 @@ public class EffectImmunity implements IAbility {
     }
 
     @Override
-    public Set<RegistryEntry<StatusEffect>> getStatusEffectsImmuneTo() {
+    public Set<StatusEffect> getStatusEffectsImmuneTo() {
         if (this.categoriesImmuneTo.isEmpty()) {
             return this.statusEffectsImmuneTo;
         }
         // Immunity to all effects with the categories inside categoriesImmuneTo
-        Set<RegistryEntry<StatusEffect>> out = new LinkedHashSet<>(this.statusEffectsImmuneTo);
+        Set<StatusEffect> out = new LinkedHashSet<>(this.statusEffectsImmuneTo);
         Registries.STATUS_EFFECT.streamEntries()
                 .filter(entry -> this.categoriesImmuneTo.contains(entry.value().getCategory()))
-                .forEach(out::add);
+                .forEach(entry -> out.add(entry.value()));
         return out;
     }
 

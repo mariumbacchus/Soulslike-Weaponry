@@ -1,84 +1,35 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.inventorytick.SoulFeast;
+import net.soulsweaponry.items.abilities.predicate.FullSetEquipped;
 import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.util.IAnimatedDeath;
 
-public class ForlornArmor extends SetBonusArmor {
+public class ForlornArmor extends ModdedArmor {
+
+    private static final FullSetEquipped SET_BONUS = new FullSetEquipped(
+            () -> ArmorRegistry.FORLORN_HELMET,
+            () -> ArmorRegistry.FORLORN_CHESTPLATE,
+            () -> ArmorRegistry.FORLORN_LEGGINGS,
+            () -> ArmorRegistry.FORLORN_BOOTS
+    );
+    private static final SoulFeast SOUL_FEAST = new SoulFeast(
+            ConfigConstructor.forlorn_armor_soul_feast_range,
+            ConfigConstructor.forlorn_armor_soul_feast_bonus_range_per_level,
+            ConfigConstructor.forlorn_armor_soul_feast_heal,
+            ConfigConstructor.forlorn_armor_soul_feast_bonus_heal_per_level
+    );
 
     public ForlornArmor(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_forlorn_set;
-    }
-
-    @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        return false;
-    }
-
-    @Override
-    protected void tickAdditionalSetEffects(ItemStack stack, PlayerEntity player) {
-        if (player.getWorld().isClient) return;
-        for (Entity entity : player.getWorld().getOtherEntities(player, player.getBoundingBox().expand(ConfigConstructor.forlorn_set_bonus_range))) {
-            if (stack.getItem() == this.getMatchingHead() && entity instanceof LivingEntity living && living.isDead() && (entity instanceof IAnimatedDeath animatedDeath ? animatedDeath.getDeathTicks() == 1 : living.deathTime == 1)) {
-                player.heal(ConfigConstructor.forlorn_set_bonus_heal);
-            }
-        }
-    }
-
-    @Override
-    protected Item getMatchingBoots() {
-        return ArmorRegistry.FORLORN_BOOTS;
-    }
-
-    @Override
-    protected Item getMatchingLegs() {
-        return ArmorRegistry.FORLORN_LEGGINGS;
-    }
-
-    @Override
-    protected Item getMatchingChest() {
-        return ArmorRegistry.FORLORN_CHESTPLATE;
-    }
-
-    @Override
-    protected Item getMatchingHead() {
-        return ArmorRegistry.FORLORN_HELMET;
-    }
-
-    @Override
-    public Text[] getFullSetAbilities() {
-        return new Text[] {
-                Text.translatable("tooltip.soulsweapons.armor.set_bonus.forlorn_armor_heal").formatted(Formatting.GRAY)
-        };
+        this.addAbility(SET_BONUS, SOUL_FEAST);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_forlorn_armor;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
     }
 
     @Override

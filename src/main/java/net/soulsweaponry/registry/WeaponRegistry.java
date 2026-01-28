@@ -12,6 +12,7 @@ import net.soulsweaponry.items.bow.Galeforce;
 import net.soulsweaponry.items.bow.KrakenSlayer;
 import net.soulsweaponry.items.bow.SimonsBowblade;
 import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
+import net.soulsweaponry.items.dagger.MehrunesRazor;
 import net.soulsweaponry.items.hammer.*;
 import net.soulsweaponry.items.katana.Bloodlust;
 import net.soulsweaponry.items.katana.Dragonbane;
@@ -41,7 +42,7 @@ public class WeaponRegistry {
     public static ToolItem WHIRLIGIG_SAWBLADE = new WhirligigSawblade(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem DRAGONSLAYER_SWORDSPEAR = new DragonslayerSwordspear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem GUINSOOS_RAGEBLADE = new GuinsoosRageblade(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static ToolItem GUTS_SWORD = new DragonslayerSwordBerserk(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static ToolItem GUTS_SWORD = new HeapOfRawIron(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem NIGHTFALL = new Nightfall(ModToolMaterials.IRON_BLOCK, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new FabricItemSettings().rarity(Rarity.EPIC));

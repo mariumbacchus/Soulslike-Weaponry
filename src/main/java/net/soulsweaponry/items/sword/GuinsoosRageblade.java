@@ -1,63 +1,38 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.inventorytick.SoulOfCinder;
+import net.soulsweaponry.items.abilities.posthit.StackingEffectAttacker;
 
 public class GuinsoosRageblade extends ModdedSword {
 
+    private static final StackingEffectAttacker HASTE_POST_HIT = new StackingEffectAttacker(
+            ConfigConstructor.rageblade_fury_status_effect_id,
+            (int) ConfigConstructor.rageblade_fury_start_amp,
+            (int) ConfigConstructor.rageblade_fury_bonus_amp_post_hit,
+            ConfigConstructor.rageblade_fury_bonus_amp_post_hit_per_level,
+            (int) ConfigConstructor.rageblade_fury_max_amp,
+            ConfigConstructor.rageblade_fury_bonus_max_amp_per_level,
+            (int) ConfigConstructor.rageblade_fury_duration,
+            (int) ConfigConstructor.rageblade_fury_bonus_duration_per_level
+    );
+    private static final SoulOfCinder SOUL_OF_CINDER = new SoulOfCinder(
+            (int) ConfigConstructor.rageblade_soul_of_cinder_duration,
+            (int) ConfigConstructor.rageblade_soul_of_cinder_bonus_duration_per_lvl,
+            (int) ConfigConstructor.rageblade_soul_of_cinder_amp,
+            ConfigConstructor.rageblade_soul_of_cinder_bonus_amp_per_lvl
+    );
+
     public GuinsoosRageblade(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.rageblade_damage, ConfigConstructor.rageblade_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.FURY, TooltipAbilities.HASTE, TooltipAbilities.FLAME_ENRAGED);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (attacker.isOnFire()) {
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 200, 2));
-        }
-        int speed = EnchantmentHelper.getLevel(Enchantments.SWEEPING, stack);
-        if (attacker.hasStatusEffect(StatusEffects.HASTE)) {
-            StatusEffectInstance effect = attacker.getStatusEffect(StatusEffects.HASTE);
-            int amplifier = effect.getAmplifier();
-            if (amplifier < 3 + speed || !ConfigConstructor.rageblade_haste_cap) {
-                attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, amplifier + 1));
-            } else {
-                attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, speed + 3));
-            }
-        } else {
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 60, 0));
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_rageblade;
+        this.addAbility(HASTE_POST_HIT, SOUL_OF_CINDER);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_rageblade;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

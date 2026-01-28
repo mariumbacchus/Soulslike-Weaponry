@@ -28,7 +28,7 @@ public class CustomDeathHandler {
     }
 
     public static void renderDeathLight(LivingEntity entity, float entityYaw, float partialTicks, MatrixStack stack, double[] translation,
-        VertexConsumerProvider bufferIn, int packedLightIn, int deathTicks, int[] rgbColorOne, int[] rgbColorTwo, int[] rgbColorThree, int[] rgbColorFour) {
+                                        VertexConsumerProvider bufferIn, int packedLightIn, int deathTicks, int[] rgbColorOne, int[] rgbColorTwo, int[] rgbColorThree, int[] rgbColorFour) {
         if (deathTicks > 0) {
             float l = ((float)deathTicks + partialTicks) / 200.0f;
             float m = Math.min(l > 0.8f ? (l - 0.8f) / 0.2f : 0.0f, 1.0f);
@@ -62,18 +62,18 @@ public class CustomDeathHandler {
     }
 
     private static void renderLight_1(VertexConsumer vertices, Matrix4f matrix, int alpha, int[] rgbColors) {
-        vertices.vertex(matrix, 0.0f, 0.0f, 0.0f).color(rgbColors[0], rgbColors[1], rgbColors[2], alpha).next();
+        vertices.vertex(matrix, 0.0f, 0.0f, 0.0f).color(rgbColors[0], rgbColors[1], rgbColors[2], alpha);
     }
 
     private static void renderLight_2(VertexConsumer vertices, Matrix4f matrix, float y, float x, int[] rgbColors) {
-        vertices.vertex(matrix, -HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, -HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 
     private static void renderLight_3(VertexConsumer vertices, Matrix4f matrix, float y, float x, int[] rgbColors) {
-        vertices.vertex(matrix, HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, HALF_SQRT_3 * x, y, -0.5f * x).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 
     private static void renderLight_4(VertexConsumer vertices, Matrix4f matrix, float y, float z, int[] rgbColors) {
-        vertices.vertex(matrix, 0.0f, y, 1.0f * z).color(rgbColors[0], rgbColors[1], rgbColors[2], 0).next();
+        vertices.vertex(matrix, 0.0f, y, z).color(rgbColors[0], rgbColors[1], rgbColors[2], 0);
     }
 }

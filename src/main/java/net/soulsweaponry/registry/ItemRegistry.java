@@ -12,9 +12,8 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
-import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.material.ModToolMaterials;
-import net.soulsweaponry.items.potion.*;
+import net.soulsweaponry.items.misc.*;
 import net.soulsweaponry.util.RecipeHandler;
 
 public class ItemRegistry {
