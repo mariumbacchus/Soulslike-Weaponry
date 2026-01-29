@@ -81,8 +81,8 @@ dependencies {
 	modImplementation "maven.modrinth:attributefix:${project.attributefix_version}-fabric,${project.attributefix_minecraft_version}"
 
 	//modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
-	modImplementation name: "ranged_weapon_api-fabric-2.3.3+1.21.3"
-	include name: "ranged_weapon_api-fabric-2.3.3+1.21.3"
+	modImplementation name: "ranged_weapon_api-fabric-2.3.3+1.21.4"
+	include name: "ranged_weapon_api-fabric-2.3.3+1.21.4"
 
 	// Attributefix dependencies:
 	//modImplementation "curse.maven:bookshelf-${project.bookshelf}"

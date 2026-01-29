@@ -34,6 +34,7 @@ public class SoulsWeaponry implements ModInitializer {
     public static final String CONFIG_FOLDER = "soulsweapons/";
     public static final Logger LOGGER = LoggerFactory.getLogger("Soulslike Weaponry");
     public static final ArrayList<Item> ITEM_GROUP_LIST = new ArrayList<>();
+    // TODO fix predicate property usage for item model jsons in resourcepacks
 
     @Override
     public void onInitialize() {
