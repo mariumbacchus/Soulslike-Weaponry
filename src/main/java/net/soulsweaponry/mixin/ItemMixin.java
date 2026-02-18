@@ -110,12 +110,12 @@ public class ItemMixin implements IHasAbilities {
         }
     }
 
-    @Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true) //TODO living entity isnt passed in 1.20.1 but is lowkey needed
-    public void getMaxUseTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> info) {
+    @Inject(method = "getMaxUseTime", at = @At("HEAD"), cancellable = true)
+    public void getMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> info) {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        int ability = IHasAbilities.super.getMaxUseTime(stack, user);
+        int ability = IHasAbilities.super.getMaxUseTime(stack);
         if (ability != 0) {
             info.setReturnValue(ability);
         }

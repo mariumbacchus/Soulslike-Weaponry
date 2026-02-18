@@ -34,7 +34,7 @@ public interface IChargeUsageTicks extends IChargeToUse {
     int getCooldown(ItemStack stack, int ticksUsed);
 
     @Override
-    int getMaxUseTime(ItemStack stack, LivingEntity user);
+    int getMaxUseTime(ItemStack stack);
 
     @Override
     default int useActionPriority() {

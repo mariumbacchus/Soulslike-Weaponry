@@ -12,7 +12,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
@@ -388,7 +387,7 @@ public interface IAbility extends ICooldownItem {
      * default to 72000 ticks if the item has any charge to use ability, else 0.
      * This is calculated inside {@link IHasAbilities}
      */
-    default int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    default int getMaxUseTime(ItemStack stack) {
         return -1;
     }
 

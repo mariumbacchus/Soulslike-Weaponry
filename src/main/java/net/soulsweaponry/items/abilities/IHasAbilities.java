@@ -257,55 +257,19 @@ public interface IHasAbilities extends IConfigDisable {
         return this.hasChargeToUseAbility() ? UseAction.SPEAR : UseAction.NONE;
     }
 
-    default int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        boolean sneaking = user.isSneaking();
-        boolean offhand = user.getOffHandStack().isOf(stack.getItem());
-
+    default int getMaxUseTime(ItemStack stack) {
         List<IAbility> abilities = this.getAbilities();
-        boolean hasSneakCharge = abilities.stream()
-                .anyMatch(a -> a.isSneakAbility() && a.isChargeToUse());
-        boolean hasOffhandCharge = abilities.stream()
-                .anyMatch(a -> a.isOffhandAbility() && a.isChargeToUse());
-        boolean hasNormalCharge = abilities.stream()
-                .anyMatch(a -> !a.isSneakAbility() && !a.isOffhandAbility() && a.isChargeToUse());
+        OptionalInt minCharge = abilities.stream()
+                .mapToInt(a -> a.getMaxUseTime(stack))
+                .filter(v -> v > 0)
+                .min();
 
-        // Choose which abilities can actually handle the charge in this context
-        List<IAbility> subset;
-        if (sneaking && hasSneakCharge) {
-            subset = abilities.stream()
-                    .filter(a -> a.isSneakAbility() && a.isChargeToUse())
-                    .toList();
-        } else if (offhand && hasOffhandCharge) {
-            subset = abilities.stream()
-                    .filter(a -> a.isOffhandAbility() && a.isChargeToUse())
-                    .toList();
-        } else if (hasNormalCharge) {
-            subset = abilities.stream()
-                    .filter(a -> !a.isSneakAbility() && !a.isOffhandAbility() && a.isChargeToUse())
-                    .toList();
-        } else {
-            // No charge abilities at all, fall back to original behavior for non-charge custom maxUseTime
-            subset = abilities.stream()
-                    .filter(a -> {
-                        if (sneaking && this.hasSneakToUseAbility()) return a.isSneakAbility();
-                        if (offhand && this.hasOffhandToUseAbility()) return a.isOffhandAbility();
-                        return !a.isSneakAbility() && !a.isOffhandAbility();
-                    })
-                    .toList();
+        if (minCharge.isPresent()) {
+            return minCharge.getAsInt();
         }
 
-        // Abilities override max use time if they want to
-        OptionalInt maxUse = subset.stream()
-                .mapToInt(a -> a.getMaxUseTime(stack, user))
-                .filter(v -> v >= 0)
-                .max();
-
-        if (maxUse.isPresent()) {
-            return maxUse.getAsInt();
-        }
-
-        // Default is 72000 if any of the subset are charge abilities, else 0
-        boolean hasCharge = subset.stream().anyMatch(IAbility::isChargeToUse);
+        // If any ability is charge-based, allow using
+        boolean hasCharge = abilities.stream().anyMatch(IAbility::isChargeToUse);
         return hasCharge ? 72000 : 0;
     }
 

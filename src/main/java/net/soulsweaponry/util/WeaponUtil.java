@@ -225,18 +225,18 @@ public class WeaponUtil {
         return list;
     }
 
-    public static int getChargeTime(ItemStack stack, LivingEntity user, int remainingUseTicks) {
+    public static int getChargeTime(ItemStack stack, int remainingUseTicks) {
         int i;
         if (WeaponUtil.isModLoaded("epicfight")) {
             i = Integer.MAX_VALUE - remainingUseTicks;
         } else {
-            i = stack.getItem().getMaxUseTime(stack, user) - remainingUseTicks;
+            i = stack.getItem().getMaxUseTime(stack) - remainingUseTicks;
         }
         return i;
     }
 
-    public static RegistryEntry<StatusEffect> parseStatusEffectId(String statusEffectId) {
-        RegistryEntry<StatusEffect> defaultEntry = StatusEffects.HASTE;
+    public static StatusEffect parseStatusEffectId(String statusEffectId) {
+        StatusEffect defaultEntry = StatusEffects.HASTE;
         if (statusEffectId == null || statusEffectId.isBlank()) {
             return defaultEntry;
         }
@@ -244,7 +244,7 @@ public class WeaponUtil {
         if (directId != null) {
             StatusEffect eff = Registries.STATUS_EFFECT.get(directId);
             if (eff != null) {
-                return Registries.STATUS_EFFECT.getEntry(eff);
+                return eff;
             }
         }
         return defaultEntry;

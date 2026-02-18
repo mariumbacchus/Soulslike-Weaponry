@@ -72,7 +72,7 @@ public record DragonMist(boolean healMobsOwnedByOthers, float baseDamageOrHeal, 
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    public int getMaxUseTime(ItemStack stack) {
         return this.maxUseTime + WeaponUtil.getUpgradeLevel(stack) * this.bonusMaxUseTimePerLvl;
     }
 

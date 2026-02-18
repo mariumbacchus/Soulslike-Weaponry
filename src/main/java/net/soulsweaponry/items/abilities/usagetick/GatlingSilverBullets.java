@@ -49,10 +49,10 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (remainingUseTicks > 0) {
-            if (remainingUseTicks == this.getMaxUseTime(stack, user)) {
+            if (remainingUseTicks == this.getMaxUseTime(stack)) {
                 world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
             }
-            if (remainingUseTicks < this.getMaxUseTime(stack, user) - 15 && remainingUseTicks % this.updateTick == 0 && user instanceof PlayerEntity playerEntity) {
+            if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % this.updateTick == 0 && user instanceof PlayerEntity playerEntity) {
                 ItemStack itemStack = this.canShoot(playerEntity, stack);
                 if (itemStack != null) {
                     this.shootProjectiles(world, playerEntity, stack);
@@ -72,7 +72,7 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    public int getMaxUseTime(ItemStack stack) {
         int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS);
         return this.maxUseTime + this.useTimePerFastHands * lvl;
     }
@@ -96,7 +96,7 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         List<Text> tooltip = super.getTooltipAbilities(stack);
-        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(this.getMaxUseTime(stack, null)))).formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_max_use_time").append(Text.literal(String.valueOf(this.getMaxUseTime(stack)))).formatted(Formatting.GRAY));
         return tooltip;
     }
 }
