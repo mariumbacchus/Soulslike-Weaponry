@@ -196,7 +196,7 @@ public interface IHasAbilities extends IConfigDisable {
     default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         boolean sneaking = user.isSneaking();
         boolean offhand = user.getOffHandStack().isOf(stack.getItem());
-        int fixedTicks = WeaponUtil.getChargeTime(stack, user, remainingUseTicks);
+        int fixedTicks = WeaponUtil.getChargeTime(stack, remainingUseTicks);
 
         // Only look at charge abilities when deciding the mode.
         boolean hasSneakChargeAbility = this.getAbilities().stream()
@@ -228,7 +228,10 @@ public interface IHasAbilities extends IConfigDisable {
         }
     }
 
-
+    /**
+     * Called in {@link net.soulsweaponry.mixin.PlayerEntityMixin#abilities$modifyAttackDamage} in 1.20.1, unlike 1.21.1
+     * that does the mixin inside item class.
+     */
     default float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
         if (this.isDisabled(ItemStack.EMPTY)) {
             return 0f;
@@ -258,6 +261,7 @@ public interface IHasAbilities extends IConfigDisable {
     }
 
     default int getMaxUseTime(ItemStack stack) {
+        // NOTE: Since LivingEntity is not passed unlike in 1.21.1, this will just choose the ability with lowest use-time
         List<IAbility> abilities = this.getAbilities();
         OptionalInt minCharge = abilities.stream()
                 .mapToInt(a -> a.getMaxUseTime(stack))
@@ -497,7 +501,7 @@ public interface IHasAbilities extends IConfigDisable {
     default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {
         this.applyTooltipAbilities(tooltip, stack);
         TooltipUtil.addAbilityTooltip(TooltipUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
-        int lvl = stack.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
+        int lvl = WeaponUtil.getUpgradeLevel(stack);
         if (lvl > 0) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
         }

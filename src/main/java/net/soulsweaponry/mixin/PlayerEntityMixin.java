@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
@@ -121,5 +122,24 @@ public class PlayerEntityMixin {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 10, 3));
             }
         }
+    }
+
+    @ModifyExpressionValue(
+            method = "attack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F",
+                    ordinal = 0
+            )
+    )
+    private float abilities$modifyAttackDamage(float original, Entity target) {
+        PlayerEntity attacker = (PlayerEntity)(Object)this;
+        ItemStack stack = attacker.getMainHandStack();
+        if (!(stack.getItem() instanceof IHasAbilities has) || has.getAbilities().isEmpty()) {
+            return original;
+        }
+        DamageSource source = attacker.getDamageSources().playerAttack(attacker);
+        float bonus = has.getBonusAttackDamage(target, original, source);
+        return original + bonus;
     }
 }

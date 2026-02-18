@@ -3,12 +3,14 @@ package net.soulsweaponry.mixin;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -87,16 +89,6 @@ public class ItemMixin implements IHasAbilities {
             return;
         }
         IHasAbilities.super.onStoppedUsing(stack, world, user, remainingUseTicks);
-    }
-
-    @Inject(method = "getBonusAttackDamage", at = @At("RETURN"), cancellable = true) //TODO figure out another way to add damage before calculations
-    private void getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource, CallbackInfoReturnable<Float> info) {
-        if (this.getAbilities().isEmpty()) {
-            return;
-        }
-        float vanilla = info.getReturnValue();
-        float bonus = IHasAbilities.super.getBonusAttackDamage(target, baseAttackDamage, damageSource);
-        info.setReturnValue(vanilla + bonus);
     }
 
     @Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)

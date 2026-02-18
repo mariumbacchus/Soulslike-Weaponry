@@ -1,21 +1,14 @@
 package net.soulsweaponry.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.items.IUndeadBonus;
 import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -54,20 +47,5 @@ public class EnchantmentHelperMixin {
             ItemStack stack = entity.getStackInHand(hand);
             //TODO get nbt and return addition
         }
-    }
-
-    @ModifyReturnValue(method = "getAttackDamage", at = @At("TAIL"))
-    private static float modifyAttackDamage(float originalDamage, ItemStack stack, EntityGroup group) { //TODO this needs to call abilities to do more damage
-        if (stack.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
-            return originalDamage;
-        }
-        float modifiedDamage = originalDamage;
-        if (stack.isOf(WeaponRegistry.STING) && group == EntityGroup.ARTHROPOD) {
-            modifiedDamage += ConfigConstructor.sting_bonus_arthropod_damage;
-        }
-        if (group == EntityGroup.UNDEAD && stack.getItem() instanceof IUndeadBonus undeadBonus && undeadBonus.isRighteous()) {
-            modifiedDamage += undeadBonus.getUndeadBonus(stack) + (float) EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
-        }
-        return modifiedDamage;
     }
 }
