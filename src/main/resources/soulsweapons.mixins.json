@@ -11,6 +11,7 @@
     "EnderDragonEntityMixin",
     "EntityDataSaverMixin",
     "EntityMixin",
+    "FabricItemMixin",
     "GlassBottleMixin",
     "ItemMixin",
     "LivingEntityInvoker",

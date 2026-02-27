@@ -1,5 +1,6 @@
 package net.soulsweaponry.util;
 
+import com.google.common.collect.Multimap;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -16,7 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -24,18 +25,20 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
-import net.soulsweaponry.registry.EnchantRegistry;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WeaponUtil {
 
     public static final String ITEM_UPGRADE_LEVEL_KEY = "ItemUpgradeLevel";
+    public static final String DAMAGE_KEY = "CustomDamage";
+    public static final String SPEED_KEY = "CustomSpeed";
 
     /**
      * Returns the upgrade level of the item. One can upgrade it by mixing the item with
@@ -52,7 +55,7 @@ public class WeaponUtil {
 
     /**
      * Copy over default item stack components such as enchants, damage or stack size.
-     * Also copies over {@link ComponentRegistry#ITEM_UPGRADE_LEVEL} and bonus damage/speed
+     * Also copies over item upgrade level and bonus damage/speed
      * attributes gotten from it.
      * Mainly used in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil} and
      * {@link net.soulsweaponry.items.abilities.targetdeath.SoulHarvestTransform}.
@@ -61,11 +64,14 @@ public class WeaponUtil {
      */
     public static void copyOverItemComponents(World world, ItemStack prevStack, ItemStack newStack) {
         int lvl = WeaponUtil.getUpgradeLevel(prevStack);
-        float nextDamage = WeaponUtil.getBaseAttackDamage(newStack);
-        float nextAttackSpeed = WeaponUtil.getBaseAttackSpeed(newStack);
-        newStack.applyComponentsFrom(prevStack.getComponents());
+        double nextDamage = WeaponUtil.getStackAttackDamage(newStack);
+        double nextAttackSpeed = WeaponUtil.getStackAttackSpeed(newStack);
+        newStack.setCount(prevStack.getCount());
+        if (prevStack.hasNbt()) {
+            newStack.setNbt(prevStack.getNbt().copy());
+        }
         WeaponUtil.modifyStackAttributes(newStack, nextDamage, nextAttackSpeed);
-        newStack.set(ComponentRegistry.ITEM_UPGRADE_LEVEL, lvl);
+        setUpgradeLevel(newStack, lvl);
         newStack.setCount(prevStack.getCount());
 
         // Rebuild the upgrade level bonuses based on the new item type (so ranged bonuses for bows instead of melee, etc.)
@@ -82,7 +88,7 @@ public class WeaponUtil {
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
     public static int getEnchantDamageBonus(ItemStack stack) {
-        return getHighestEnchantInTag(stack, EnchantmentTags.DAMAGE_EXCLUSIVE_SET);
+        return getHighestEnchantInTag(stack, ModTags.Enchantments.DAMAGE_ENCHANTMENTS);
     }
 
     /**
@@ -92,121 +98,73 @@ public class WeaponUtil {
      * has.
      */
     public static int getHighestEnchantInTag(ItemStack stack, TagKey<Enchantment> tag) {
-        return EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries().stream()
-                .filter(e -> e.getKey().isIn(tag))
-                .mapToInt(Map.Entry::getValue)
-                .max()
-                .orElse(0);
+        Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
+        int max = 0;
+        for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+            if (Registries.ENCHANTMENT.getEntry(entry.getKey()).isIn(tag)) {
+                max = Math.max(max, entry.getValue());
+            }
+        }
+        return max;
     }
 
     /**
-     * Gets the level of a specific enchant based on the RegistryKey for simplicity.
+     * Returns whether the stack has modified damage or attack speed thanks to abilities.
      */
-    public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
-        Boolean disable = EnchantRegistry.DISABLED_ENCHANTMENTS.get(enchantKey);
-        if (ConfigConstructor.disable_all_enchantments || (disable != null && disable)) {
-            return 0;
-        }
-        for (Map.Entry<RegistryEntry<Enchantment>, Integer> e : EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries()) {
-            if (e.getKey().getKey().filter(key -> key.equals(enchantKey)).isPresent()) {
-                return e.getValue();
+    public static boolean hasModifiedAttributes(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(DAMAGE_KEY) && stack.getNbt().contains(SPEED_KEY);
+    }
+
+    /**
+     * Gets the attack damage saved on the nbt to the stack, often times from abilities.
+     */
+    public static double getStackAttackDamage(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(DAMAGE_KEY) ? stack.getNbt().getDouble(DAMAGE_KEY) : getBaseItemAttackDamage(stack);
+    }
+
+    /**
+     * Gets the attack speed saved on the nbt to the stack, often times from abilities.
+     */
+    public static double getStackAttackSpeed(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(SPEED_KEY) ? stack.getNbt().getDouble(SPEED_KEY) : getBaseItemAttackSpeed(stack);
+    }
+
+    public static double getBaseItemAttackDamage(ItemStack stack) {
+        Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
+        for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
+            if (mod.getId().equals(IHasAbilities.ATTACK_DAMAGE_MODIFIER_ID)) {
+                return mod.getValue();
             }
         }
         return 0;
     }
 
-    public static void applyEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantKey, int level) {
-        var lookup = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT);
-        lookup.getEntry(enchantKey).ifPresentOrElse(
-                entry -> stack.addEnchantment(lookup.getEntry(entry.value()), level),
-                () -> SoulsWeaponry.LOGGER.warn("Enchantment {} not found when trying to apply to {}", enchantKey, stack)
-        );
-    }
-
-    public static float getBaseAttackDamage(ItemStack stack) {
-        AttributeModifiersComponent src = stack.getItem().getComponents()
-                .getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
-
-        for (var e : src.modifiers()) {
-            if (e.slot() == AttributeModifierSlot.MAINHAND
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
-                    && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
-                    && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(e.modifier().id())) {
-                return (float) e.modifier().value();
+    public static double getBaseItemAttackSpeed(ItemStack stack) {
+        Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
+        for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_SPEED)) {
+            if (mod.getId().equals(IHasAbilities.ATTACK_SPEED_MODIFIER_ID)) {
+                return mod.getValue();
             }
         }
-        return 0f;
-    }
-
-
-    public static float getBaseAttackSpeed(ItemStack stack) {
-        AttributeModifiersComponent src = stack.getItem().getComponents()
-                .getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
-
-        for (var e : src.modifiers()) {
-            if (e.slot() == AttributeModifierSlot.MAINHAND
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
-                    && e.modifier().operation() == EntityAttributeModifier.Operation.ADD_VALUE
-                    && BASE_ATTACK_SPEED_MODIFIER_ID.equals(e.modifier().id())) {
-                return (float) e.modifier().value();
-            }
-        }
-        return 0f;
+        return 0;
     }
 
     /**
-     * Override the damage and attack speed inside the {@code DataComponentTypes.ATTRIBUTE_MODIFIERS} component
-     * while keeping all other attributes as is. Call this in a tick method to update dynamically.
+     * Override the damage and attack speed of the item. Call this for consistency between versions.
+     * Saves values to a custom nbt that is applied in a mixin for {@link net.minecraft.item.Item#getAttributeModifiers(ItemStack, EquipmentSlot)}.
      * @param stack item stack
      * @param damage damage
      * @param attackSpeed attack speed, this is not pre-calculated so you need to enter {@code - (4f - 1.6f)}
      *                    if you want 1.6 in attack speed as a result
      */
-    public static void modifyStackAttributes(ItemStack stack, float damage, float attackSpeed) {
-        AttributeModifiersComponent source = stack.contains(DataComponentTypes.ATTRIBUTE_MODIFIERS)
-                ? stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS)
-                : stack.getItem().getComponents().getOrDefault(
-                DataComponentTypes.ATTRIBUTE_MODIFIERS,
-                AttributeModifiersComponent.DEFAULT
-        );
-
-        AttributeModifiersComponent.Builder b = AttributeModifiersComponent.builder();
-
-        // copy everything EXCEPT the two base MAINHAND rows we want to replace
-        for (AttributeModifiersComponent.Entry e : source.modifiers()) {
-            Identifier id = e.modifier().id();
-            boolean isMainhand = e.slot() == AttributeModifierSlot.MAINHAND;
-
-            boolean isBaseDamage = isMainhand
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)
-                    && BASE_ATTACK_DAMAGE_MODIFIER_ID.equals(id);
-
-            boolean isBaseSpeed = isMainhand
-                    && e.attribute().equals(EntityAttributes.GENERIC_ATTACK_SPEED)
-                    && BASE_ATTACK_SPEED_MODIFIER_ID.equals(id);
-
-            if (isBaseDamage || isBaseSpeed) continue; // drop those, replace later instead
-
-            b.add(e.attribute(), e.modifier(), e.slot());
-        }
-
-        // re-add the base rows with the dynamic values
-        b.add(
-                EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID, damage, EntityAttributeModifier.Operation.ADD_VALUE),
-                AttributeModifierSlot.MAINHAND
-        );
-        b.add(
-                EntityAttributes.GENERIC_ATTACK_SPEED,
-                new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE),
-                AttributeModifierSlot.MAINHAND
-        );
-
-        stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, b.build());
+    public static void modifyStackAttributes(ItemStack stack, double damage, double attackSpeed) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        nbt.putDouble(DAMAGE_KEY, damage);
+        nbt.putDouble(SPEED_KEY, attackSpeed);
     }
 
-    public static EquipmentSlot getActiveHandSlot(PlayerEntity player) {
-        return LivingEntity.getSlotForHand(player.getActiveHand());
+    public static Consumer<PlayerEntity> getActiveHandSlot(PlayerEntity player) {
+        return p -> p.sendToolBreakStatus(player.getActiveHand());
     }
 
     public static boolean isModLoaded(String modId) {
@@ -430,8 +388,8 @@ public class WeaponUtil {
         }
         // e.g. "soulsweapons:bleed_buildup:chungus"
         // Any non [a-z0-9/._-] character will be replaced with "-" to satisfy Identifier class (Looking at you, Mjölnir)
-        Identifier id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.value().getTranslationKey(), name));
-        return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
+        String id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.value().getTranslationKey(), name)).toString();
+        return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
     /**
@@ -462,7 +420,7 @@ public class WeaponUtil {
     public static List<EntityType<?>> getEntityListOffArray(String[] array) {
         Set<String> stringSet = Set.of(array);
         return stringSet.stream().map((str) -> {
-            Identifier entityId = Identifier.of(str.contains(":") ? str : "minecraft:" + str);
+            Identifier entityId = Identifier.tryParse(str.contains(":") ? str : "minecraft:" + str);
             return Registries.ENTITY_TYPE.get(entityId);
         }).collect(Collectors.toList());
     }
@@ -471,6 +429,7 @@ public class WeaponUtil {
      * Create a new builder with all the attributes from the previous component {@code toCopyFrom}.
      * Should usually take in {@code super.getAttributeModifiers()} from {@link ArmorItem#getAttributeModifiers}
      * when it comes to armor items.
+     * TODO used for armor items?
      */
     public static AttributeModifiersComponent.Builder createAndCopyAttributes(AttributeModifiersComponent toCopyFrom) {
         AttributeModifiersComponent.Builder builder = AttributeModifiersComponent.builder();

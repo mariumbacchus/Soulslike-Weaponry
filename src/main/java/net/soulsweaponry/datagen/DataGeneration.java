@@ -37,6 +37,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         pack.addProvider(StructureTagProvider::new);
         pack.addProvider(FluidTagsProvider::new);
         pack.addProvider(DamageTypeTagsProvider::new);
+        pack.addProvider(EnchantmentTagsProvider::new);
         pack.addProvider(EntityTagsProvider::new);
         pack.addProvider(ItemTagsProvider::new);
         pack.addProvider(AdvancementsProvider::new);

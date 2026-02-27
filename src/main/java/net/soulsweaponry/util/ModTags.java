@@ -115,6 +115,7 @@ public class ModTags {
         public static final TagKey<Enchantment> BULLET_COLLISION_EXCLUSIVE_SET = createTag("exclusive_set/bullet_collision");
         public static final TagKey<Enchantment> APPLY_FIRE = createTag("apply_fire");
         public static final TagKey<Enchantment> PREVENTS_AMMO_CONSUME = createTag("prevents_ammo_consume");
+        public static final TagKey<Enchantment> DAMAGE_ENCHANTMENTS = createTag("damage_enchantments");
 
         private static TagKey<Enchantment> createTag(String id) {
             return TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SoulsWeaponry.ModId, id));

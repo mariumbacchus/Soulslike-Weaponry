@@ -59,7 +59,7 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
@@ -71,7 +71,7 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
@@ -85,7 +85,7 @@ public interface IAbility extends ICooldownItem {
      * @param stack itemstack used
      * @param world world
      * @param user user wielding the stack
-     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param ticksUsed ticks used, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
@@ -316,7 +316,7 @@ public interface IAbility extends ICooldownItem {
      * @param world world
      * @param user living entity user
      * @param stack item stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
@@ -327,7 +327,7 @@ public interface IAbility extends ICooldownItem {
      * @param world world
      * @param user living entity user
      * @param stack item stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
@@ -339,7 +339,7 @@ public interface IAbility extends ICooldownItem {
      * @param world world
      * @param user living entity user
      * @param stack item stack
-     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, LivingEntity, int)}
+     * @param remainingUseTicks remaining use ticks, this automatically calls {@link WeaponUtil#getChargeTime(ItemStack, int)}
      *                          to get accurate ticks based on mods installed (epic fight mod messes things up for example), so no need
      *                          to call it again
      */
