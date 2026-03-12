@@ -18,7 +18,6 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
@@ -163,8 +162,8 @@ public class WeaponUtil {
         nbt.putDouble(SPEED_KEY, attackSpeed);
     }
 
-    public static Consumer<PlayerEntity> getActiveHandSlot(PlayerEntity player) {
-        return p -> p.sendToolBreakStatus(player.getActiveHand());
+    public static Consumer<LivingEntity> getActiveHandSlot(LivingEntity user) {
+        return p -> p.sendToolBreakStatus(user.getActiveHand());
     }
 
     public static boolean isModLoaded(String modId) {
@@ -372,7 +371,7 @@ public class WeaponUtil {
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
-    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float amount) {
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float amount) {
         return makeAttribute(attr, slot.getName().toLowerCase(), amount);
     }
 
@@ -381,14 +380,14 @@ public class WeaponUtil {
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
-    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, String name, float amount) {
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, String name, float amount) {
         // Don't display attributes with 0
         if (amount == 0) {
             return null;
         }
         // e.g. "soulsweapons:bleed_buildup:chungus"
         // Any non [a-z0-9/._-] character will be replaced with "-" to satisfy Identifier class (Looking at you, Mjölnir)
-        String id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.value().getTranslationKey(), name)).toString();
+        String id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.getTranslationKey(), name)).toString();
         return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
@@ -399,7 +398,7 @@ public class WeaponUtil {
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
-    public static EntityAttributeModifier makeAttribute(RegistryEntry<EntityAttribute> attr, EquipmentSlot slot, float[] perSlotValues) {
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float[] perSlotValues) {
         // Minecraft has feet at index 0 so just follow that pattern
         int idx = switch (slot) {
             case HEAD -> 3;
@@ -431,11 +430,11 @@ public class WeaponUtil {
      * when it comes to armor items.
      * TODO used for armor items?
      */
-    public static AttributeModifiersComponent.Builder createAndCopyAttributes(AttributeModifiersComponent toCopyFrom) {
-        AttributeModifiersComponent.Builder builder = AttributeModifiersComponent.builder();
+    /*public static Multimap<EntityAttribute, EntityAttributeModifier> createAndCopyAttributes(Multimap<EntityAttribute, EntityAttributeModifier> toCopyFrom) {
+        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         for (AttributeModifiersComponent.Entry e : toCopyFrom.modifiers()) {
             builder.add(e.attribute(), e.modifier(), e.slot());
         }
         return builder;
-    }
+    }*/
 }

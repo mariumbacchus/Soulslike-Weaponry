@@ -295,8 +295,6 @@ M	src/main/java/net/soulsweaponry/registry/WeaponRegistry.java
 
 M	src/main/java/net/soulsweaponry/SoulsWeaponry.java
 
-M	src/main/java/net/soulsweaponry/util/WeaponUtil.java
-
 M	src/main/resources/assets/soulsweapons/lang/en_us.json
 M	src/main/resources/assets/soulsweapons/lang/es_es.json
 M	src/main/resources/assets/soulsweapons/lang/es_mx.json

@@ -41,7 +41,7 @@ public record CircleLightningCall(
             float damage = this.baseSmashDamage + this.bonusSmashDamagePerLvl * lvl;
             if (entity instanceof LivingEntity living) {
                 entity.damage(world.getDamageSources().mobAttack(player),
-                         damage + this.enchantBonusSmashDamageMultiplier * EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
+                         damage + this.enchantBonusSmashDamageMultiplier * EnchantmentHelper.getAttackDamage(stack, living.getGroup()));
                 entity.addVelocity(0, .25f, 0);
             }
         }

@@ -1,8 +1,8 @@
 package net.soulsweaponry.items.abilities.armorattributes;
 
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -20,17 +20,17 @@ import java.util.List;
 public record BleedResistance(float[] bleedBuildupResistances, float[] bleedDamageResistances) implements IAbility {
 
     @Override
-    public void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {
+    public void addArmorAttributeModifiers(ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder, EquipmentSlot equipmentSlot) {
         if (this.bleedBuildupResistances == null || this.bleedDamageResistances == null) {
             return;
         }
         EntityAttributeModifier bleedBuildup = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, equipmentSlot, this.bleedBuildupResistances);
         EntityAttributeModifier bleedDamage = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, equipmentSlot, this.bleedDamageResistances);
         if (bleedBuildup != null) {
-            builder.add(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, bleedBuildup, attributeModifierSlot);
+            builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, bleedBuildup);
         }
         if (bleedDamage != null) {
-            builder.add(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, bleedDamage, attributeModifierSlot);
+            builder.put(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, bleedDamage);
         }
     }
 

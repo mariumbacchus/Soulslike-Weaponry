@@ -1,8 +1,8 @@
 package net.soulsweaponry.items.abilities.armorattributes;
 
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -20,17 +20,17 @@ import java.util.List;
 public record PostureResistance(float[] postureBuildupResistances, float[] basePostureIncrease) implements IAbility {
 
     @Override
-    public void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {
+    public void addArmorAttributeModifiers(ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder, EquipmentSlot equipmentSlot) {
         if (this.postureBuildupResistances == null || this.basePostureIncrease == null) {
             return;
         }
         EntityAttributeModifier postureBuildup = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, equipmentSlot, this.postureBuildupResistances);
         EntityAttributeModifier basePostureIncrease = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE, equipmentSlot, this.basePostureIncrease);
         if (postureBuildup != null) {
-            builder.add(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, postureBuildup, attributeModifierSlot);
+            builder.put(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, postureBuildup);
         }
         if (basePostureIncrease != null) {
-            builder.add(AttributeRegistry.BASE_POSTURE_INCREASE, basePostureIncrease, attributeModifierSlot);
+            builder.put(AttributeRegistry.BASE_POSTURE_INCREASE, basePostureIncrease);
         }
     }
 

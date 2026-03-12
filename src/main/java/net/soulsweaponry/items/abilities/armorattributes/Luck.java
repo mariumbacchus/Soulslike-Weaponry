@@ -1,8 +1,8 @@
 package net.soulsweaponry.items.abilities.armorattributes;
 
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
@@ -15,9 +15,9 @@ import java.util.List;
 public record Luck(float luck) implements IAbility {
 
     @Override
-    public void addArmorAttributeModifiers(AttributeModifiersComponent.Builder builder, EquipmentSlot equipmentSlot, AttributeModifierSlot attributeModifierSlot) {
+    public void addArmorAttributeModifiers(ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder, EquipmentSlot equipmentSlot) {
         EntityAttributeModifier luckMod = WeaponUtil.makeAttribute(EntityAttributes.GENERIC_LUCK, equipmentSlot, this.luck);
-        builder.add(EntityAttributes.GENERIC_LUCK, luckMod, attributeModifierSlot);
+        builder.put(EntityAttributes.GENERIC_LUCK, luckMod);
     }
 
     @Override

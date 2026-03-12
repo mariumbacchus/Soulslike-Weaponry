@@ -47,7 +47,7 @@ public record ShootSmallMoonlight(
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, LivingEntity.getSlotForHand(attacker.getActiveHand()));
+        stack.damage(1, attacker, WeaponUtil.getActiveHandSlot(attacker));
     }
 
     @Override
