@@ -137,6 +137,7 @@ M	src/main/generated/data/soulsweapons/recipe/ranged_item_upgradables_upgrade.js
 M	src/main/generated/data/soulsweapons/recipe/shovels_upgrade.json
 M	src/main/generated/data/soulsweapons/tags/item/melee_item_upgradables.json
 M	src/main/generated/data/soulsweapons/tags/item/soul_harvesting_weapons.json
+
 M	src/main/java/net/soulsweaponry/api/entitystats/EntityBleed.java
 M	src/main/java/net/soulsweaponry/api/entitystats/EntityFrost.java
 M	src/main/java/net/soulsweaponry/api/entitystats/EntityStats.java
@@ -189,9 +190,6 @@ M	src/main/java/net/soulsweaponry/entity/mobs/Soulmass.java
 M	src/main/java/net/soulsweaponry/entity/mobs/SoulReaperGhost.java
 M	src/main/java/net/soulsweaponry/entity/mobs/WarmthEntity.java
 M	src/main/java/net/soulsweaponry/entity/mobs/WitheredDemon.java
-
-M	src/main/java/net/soulsweaponry/events/LivingEntityTickHandler.java
-M	src/main/java/net/soulsweaponry/events/PlayerTickHandler.java
 
 ALL ABILITIES
 

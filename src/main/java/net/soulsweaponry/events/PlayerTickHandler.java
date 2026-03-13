@@ -12,9 +12,9 @@ public class PlayerTickHandler implements ServerTickEvents.StartTick {
     @Override
     public void onStartTick(MinecraftServer server) {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            int frames = ParryData.getParryFrames(player);
+            int frames = ParryData.getParryTicks(player);
             if (frames >= 1) {
-                ParryData.addParryFrames((IEntityDataSaver) player, 1);
+                ParryData.addParryTicks(player, 1);
                 player.stopUsingItem();
             }
             if (player.getAttacking() != null) {
