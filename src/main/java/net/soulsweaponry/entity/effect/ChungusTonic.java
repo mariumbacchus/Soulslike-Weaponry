@@ -10,6 +10,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.soulsweaponry.config.ChungusTonicWhitelist;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.DespawnTimerData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -20,11 +21,15 @@ import java.util.List;
 public class ChungusTonic extends StatusEffect {
 
     public ChungusTonic() {
-        super(StatusEffectCategory.BENEFICIAL, 0x29ff90);
+        super(StatusEffectCategory.BENEFICIAL, 0x29ff90 /*, ParticleTypes.LARGE_SMOKE */);//TODO custom "rainbow" particle that has randomly adjusting colors
     }
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+        super.onApplied(entity, attributes, amplifier);
+        if (!ConfigConstructor.chungus_tonic_can_change_entities) {
+            return;
+        }
         List<EntityType<?>> whitelist = WeaponUtil.getEntityListOffArray(ChungusTonicWhitelist.chungus_tonic_whitelist);
         if (!(entity instanceof PlayerEntity) && DespawnTimerData.getDespawnTicks(entity) == 0 && !entity.getWorld().isClient) {
             EntityType<?> type = whitelist.get(entity.getRandom().nextInt(whitelist.size()));

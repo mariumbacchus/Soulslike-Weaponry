@@ -168,11 +168,6 @@ M	src/main/java/net/soulsweaponry/entity/ai/goal/NightProwlerGoal.java
 M	src/main/java/net/soulsweaponry/entity/ai/goal/NightShadeGoal.java
 M	src/main/java/net/soulsweaponry/entity/ai/goal/ReturningKnightGoal.java
 
-M	src/main/java/net/soulsweaponry/entity/effect/Decay.java
-M	src/main/java/net/soulsweaponry/entity/effect/Freezing.java
-M	src/main/java/net/soulsweaponry/entity/effect/LifeLeach.java
-M	src/main/java/net/soulsweaponry/entity/effect/VeilOfFire.java
-
 M	src/main/java/net/soulsweaponry/entity/mobs/AccursedLordBoss.java
 M	src/main/java/net/soulsweaponry/entity/mobs/BigChungus.java
 M	src/main/java/net/soulsweaponry/entity/mobs/BossEntity.java
