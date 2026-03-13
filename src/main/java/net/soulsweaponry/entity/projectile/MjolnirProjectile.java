@@ -17,21 +17,19 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.noclip.FrozenLightning;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class MjolnirProjectile extends ReturningProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MjolnirProjectile(EntityType<? extends MjolnirProjectile> entityType, World world) {
         super(entityType, world);
-        this.setItemStack(new ItemStack(WeaponRegistry.MJOLNIR));
     }
 
     public MjolnirProjectile(World world, LivingEntity owner, ItemStack stack) {
@@ -51,8 +49,7 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
     }
 
     @Override
-    public boolean collide(Entity owner, Entity target, float damage) {
-        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
+    public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
         SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         BlockPos blockPos;
         float g = 1f;

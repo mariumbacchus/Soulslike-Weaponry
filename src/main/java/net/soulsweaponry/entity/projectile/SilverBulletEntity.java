@@ -26,6 +26,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -35,8 +36,8 @@ import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -44,7 +45,7 @@ import java.util.function.Predicate;
 
 public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity, IPostureLossProjectile {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int postureLoss;
     private boolean isEthereal;
     private float explosionPower;
@@ -250,7 +251,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
             }
             if (this.getOwner() instanceof LivingEntity owner) {
                 if (this.chainLightningDamage > 0f) {
-                    ChainLightning.trigger(this.getWorld(), target, owner, false, this.getChainLightningDamage(), this.getChainLightningRange());
+                    ChainLightning.trigger(this.getWorld(), target, owner, this.getChainLightningDamage(), this.getChainLightningRange());
                 }
             }
             if (this.getBlightCarrier() > 0) {
@@ -281,7 +282,7 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
                 }
             }
         }
-        if (this.explosionPower > 0f && !this.getWorld().isClient) {
+        if (this.explosionPower > 0f && !this.getWorld().isClient) {//TODO with every gun enchant and ethereal (not ricochet, it works fine) boss loot wont drop due to the explosions killing the boss
             ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
             this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.NONE);
         }
@@ -290,6 +291,9 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
 
     private void onPostureBreak(LivingEntity target) {
         if (this.getFreezeAmplifier() > 0) {
+            if (this.getOwner() != null) {
+                FrostData.setFrostSource(target, this.getOwner());
+            }
             target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
             target.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, SoundCategory.HOSTILE, 1f, 1f);
         }

@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.projectile.noclip;
 
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,9 +13,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
-import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.registry.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -77,7 +77,7 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
             livingEntity.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
             livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
             ItemStack stack = livingEntity.getOffHandStack();
-            if (livingEntity instanceof PlayerEntity player && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+            if (livingEntity instanceof PlayerEntity player && stack.isIn(ConventionalItemTags.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 player.disableShield(true);
                 stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, p -> p.sendToolBreakStatus(Hand.OFF_HAND));
             }

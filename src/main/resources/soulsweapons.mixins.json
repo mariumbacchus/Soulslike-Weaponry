@@ -18,6 +18,7 @@
     "LivingEntityMixin",
     "MiningToolItemMixin",
     "ModelInvoker",
+    "PersistentProjectileEntityAccessor",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
     "ServerPlayNetworkHandlerMixin",

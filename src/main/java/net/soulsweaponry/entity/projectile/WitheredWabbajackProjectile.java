@@ -3,16 +3,16 @@ package net.soulsweaponry.entity.projectile;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -24,10 +24,10 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.LuckChosenObject;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -42,10 +42,20 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     private static final List<LuckChosenObject<CollisionEffect>> COLLISIONS = new ArrayList<>();
     private static final List<LuckChosenObject<EntityHitEffect>> ENTITY_EFFECTS = new ArrayList<>();
 
+    // Default values
+    public EntityHitAttributes entityHitAttributes = new EntityHitAttributes(
+            75, 5, 5,
+            3, 1, 0.5f,
+            300, 50, 50
+    );
+    public CollisionAttributes collisionAttributes = new CollisionAttributes(
+            10, 1, 1
+    );
+
     public WitheredWabbajackProjectile(EntityType<? extends WitheredWabbajackProjectile> entityType, World world) {
         super(entityType, world);
     }
-    
+
     public WitheredWabbajackProjectile(World world, LivingEntity owner, double directionX, double directionY, double directionZ) {
         this(owner.getX(), owner.getY(), owner.getZ(), directionX, directionY, directionZ, world);
         this.setOwner(owner);
@@ -75,9 +85,12 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             if (entity instanceof LivingEntity target && owner instanceof LivingEntity user) {
-                int power = this.getBound(75 , 5, user) + WeaponUtil.getLuckFactor(user) * 5;
-                int amplifier = this.getBound(3 , 1, user) + WeaponUtil.getLuckFactor(user)/2;
-                int duration = this.getBound(300 , 50, user) + WeaponUtil.getLuckFactor(user) * 50;
+                int power = (int) (this.getBound(this.entityHitAttributes.powerBound , this.entityHitAttributes.powerLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.powerLuckFactorMod);
+                int amplifier = (int) (this.getBound(this.entityHitAttributes.ampBound , this.entityHitAttributes.ampLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.ampLuckFactorMod);
+                int duration = (int) (this.getBound(this.entityHitAttributes.durationBound , this.entityHitAttributes.durationLuckMod, user)
+                        + WeaponUtil.getLuckFactor(user) * this.entityHitAttributes.durationLuckFactorMod);
                 switch (this.getRandomEntityHitEffect(user)) {
                     case RANDOM_EFFECT_TARGET ->
                             target.addStatusEffect(new StatusEffectInstance(this.getRandomEffect(true), duration, amplifier));
@@ -147,7 +160,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     private void randomCollisionEffect(LivingEntity user) {
-        int power = this.getBound(10 , 1, user) + WeaponUtil.getLuckFactor(user);
+        int power = (int) (this.getBound(this.collisionAttributes.powerBound , this.collisionAttributes.powerLuckMod, user)
+                + WeaponUtil.getLuckFactor(user) * this.collisionAttributes.powerLuckFactorMod);
         boolean unluckyAf = this.getBound(100 , 10, user) == 1;
         if (unluckyAf) {
             boolean isWarden = this.random.nextBoolean();
@@ -188,7 +202,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             case PARTICLES -> {
                 if (!this.getWorld().isClient) {
-                    DefaultParticleType particle = this.getRandomParticle();
+                    ParticleEffect particle = this.getRandomParticle();
                     int amount = 1000;
                     if (particle == ParticleTypes.ELDER_GUARDIAN) {
                         amount = 1;
@@ -210,11 +224,11 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
         }
     }
 
-    private DefaultParticleType getRandomParticle() {
+    private ParticleEffect getRandomParticle() {
         Random number = new Random();
-        ArrayList<DefaultParticleType> arr = new ArrayList<>();
+        ArrayList<ParticleEffect> arr = new ArrayList<>();
         Registries.PARTICLE_TYPE.stream().forEach(p -> {
-            if (p instanceof DefaultParticleType d) {
+            if (p instanceof ParticleEffect d) {
                 arr.add(d);
             }
         });
@@ -268,16 +282,25 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
 
     private List<LuckChosenObject<StatusEffect>> getEffectList() {
         List<LuckChosenObject<StatusEffect>> list = new ArrayList<>();
-        for (StatusEffect effect : Registries.STATUS_EFFECT) {
-            if (effect.getCategory().equals(StatusEffectCategory.HARMFUL)) {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.BAD));
-            } else if (effect.getCategory().equals(StatusEffectCategory.BENEFICIAL)) {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.GOOD));
-            } else {
-                list.add(new LuckChosenObject<>(effect, WeaponUtil.LuckType.NEUTRAL));
+        for (RegistryEntry<StatusEffect> entry : Registries.STATUS_EFFECT.getIndexedEntries()) {
+            StatusEffect effect = entry.value();
+            WeaponUtil.LuckType type;
+            switch (effect.getCategory()) {
+                case HARMFUL -> type = WeaponUtil.LuckType.BAD;
+                case BENEFICIAL -> type = WeaponUtil.LuckType.GOOD;
+                default -> type = WeaponUtil.LuckType.NEUTRAL;
             }
+            list.add(new LuckChosenObject<>(effect, type));
         }
         return list;
+    }
+
+    public void setEntityHitAttributes(EntityHitAttributes entityHitAttributes) {
+        this.entityHitAttributes = entityHitAttributes;
+    }
+
+    public void setCollisionAttributes(CollisionAttributes collisionAttributes) {
+        this.collisionAttributes = collisionAttributes;
     }
 
     static {
@@ -327,4 +350,14 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     enum EntityHitEffect {
         RANDOM_EFFECT_TARGET, RANDOM_EFFECT_USER, DROP_ARMOR, RANDOM_DAMAGE, LAUNCH, CHUNGUS_TONIC
     }
+
+    public record EntityHitAttributes(
+            int powerBound, int powerLuckMod, float powerLuckFactorMod,
+            int ampBound, int ampLuckMod, float ampLuckFactorMod,
+            int durationBound, int durationLuckMod, float durationLuckFactorMod
+    ) {}
+
+    public record CollisionAttributes(
+            int powerBound, int powerLuckMod, float powerLuckFactorMod
+    ) {}
 }

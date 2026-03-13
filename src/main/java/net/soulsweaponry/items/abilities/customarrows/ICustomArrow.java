@@ -9,11 +9,7 @@ import net.soulsweaponry.items.abilities.IAbility;
 
 /**
  * Called in {@link net.soulsweaponry.mixin.ArrowItemMixin} to replace the normal arrow with a custom projectile.
- * This only works if the item extends {@link net.minecraft.item.RangedWeaponItem} and calls
- * {@link net.minecraft.item.RangedWeaponItem#createArrowEntity} to create the arrow entity and is
- * therefore overwritten by the {@link #getModifiedProjectile}.
- * <p>
- * This means that use and onStoppedUsing methods can't be overwritten if extending RangedWeaponItem class.
+ * This means that use and onStoppedUsing methods shouldn't be overwritten if extending RangedWeaponItem class.
  */
 public interface ICustomArrow extends IAbility {
 

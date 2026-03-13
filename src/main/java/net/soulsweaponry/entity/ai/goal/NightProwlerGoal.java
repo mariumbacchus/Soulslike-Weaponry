@@ -26,7 +26,7 @@ import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
 import net.soulsweaponry.entity.util.DeathSpiralLogic;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

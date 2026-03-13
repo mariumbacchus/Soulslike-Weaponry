@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeOldModel;
 import net.soulsweaponry.client.registry.EntityModelLayerModRegistry;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 
 public class NightsEdgeOldRenderer extends EntityRenderer<NightsEdge> {
     private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/entity/nights_edge_noised.png");

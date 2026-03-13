@@ -1,20 +1,16 @@
 package net.soulsweaponry.entity.projectile;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -23,13 +19,13 @@ import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private boolean dealtDamage;
 
     public DraupnirSpearEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
@@ -42,21 +38,6 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
         this.setItemStack(stack.copy());
     }
 
-    public void detonate() {
-        if (this.getOwner() != null && this.getBlockPos() != null && !getWorld().isClient) {
-            float power = ConfigConstructor.draupnir_spear_detonate_power + ((float) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, asItemStack()) / 2.5f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), power, false, World.ExplosionSourceType.NONE);
-            if (power > 2f) {
-                for (Entity entity : getWorld().getOtherEntities(this.getOwner(), this.getBoundingBox().expand(power))) {
-                    if (entity instanceof LivingEntity living) {
-                        living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 100, MathHelper.floor(power - 2)));
-                    }
-                }
-            }
-            this.remove(RemovalReason.DISCARDED);
-        }
-    }
-
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
@@ -64,30 +45,26 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
         if (entity == null) {
             return;
         }
+        Entity owner = this.getOwner();
+        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, owner);
         if (entity instanceof LivingEntity livingEntity) {
             f += EnchantmentHelper.getAttackDamage(this.asItemStack(), livingEntity.getGroup());
         }
-
-        Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.getWorld().getDamageSources().thrown(this, entity2);
         this.dealtDamage = true;
-        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if (entity instanceof LivingEntity livingEntity2) {
-                if (entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity2, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity2);
+            if (entity instanceof LivingEntity livingEntity) {
+                if (owner instanceof LivingEntity) {
+                    EnchantmentHelper.onUserDamaged(livingEntity, owner);
+                    EnchantmentHelper.onTargetDamaged((LivingEntity)owner, livingEntity);
                 }
-                this.onHit(livingEntity2);
+                this.onHit(livingEntity);
             }
         }
-
-        this.setVelocity(this.getVelocity().multiply(-0.01D, -0.1D, -0.01D));
-        float g = 1.0F;
-        this.playSound(soundEvent, g, 1.0F);
+        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
+        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     @Override

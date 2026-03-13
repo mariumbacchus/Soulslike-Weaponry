@@ -7,7 +7,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.arrow.MoonlightArrow;
-import net.soulsweaponry.mixin.PersistentProjectileEntityInvoker;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class MoonlightArrowAbility implements ICustomArrow {
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
         MoonlightArrow projectile = new MoonlightArrow(world, shooter, arrowStack, bowStack);
-        ((PersistentProjectileEntityInvoker)projectile).invokeSetPierceLevel((byte) 4);
+        projectile.setPierceLevel((byte) 4);
         projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
         return projectile;
     }

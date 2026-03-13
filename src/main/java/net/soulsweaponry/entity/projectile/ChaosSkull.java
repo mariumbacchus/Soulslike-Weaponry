@@ -20,14 +20,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.ExplosionBehavior;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ChaosSkull extends WitherSkullEntity {
 
@@ -53,9 +54,9 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage*ConfigConstructor.chaos_monarch_damage_modifier;
+        return damage* BossConfig.chaos_monarch_damage_modifier;
     }
-    
+
     /**
      * On specifically entities hit, and will react only to instances of {@linkplain LivingEntity}.
      * Will do random effects that include random damage and random potion effects.
@@ -175,31 +176,31 @@ public class ChaosSkull extends WitherSkullEntity {
      * There are mainly bad/irritating effects with a few good ones sprinkled in, this is for a boss fight after all.
      */
     private StatusEffect getPotionEffect() {
-        StatusEffect[] effects = {
-            StatusEffects.ABSORPTION,
-            StatusEffects.BAD_OMEN,
-            StatusEffects.BLINDNESS,
-            StatusEffects.DARKNESS,
-            StatusEffects.FIRE_RESISTANCE,
-            StatusEffects.GLOWING,
-            StatusEffects.HASTE,
-            StatusEffects.HUNGER,
-            StatusEffects.INVISIBILITY,
-            StatusEffects.JUMP_BOOST,
-            StatusEffects.LEVITATION,
-            StatusEffects.MINING_FATIGUE,
-            StatusEffects.NAUSEA,
-            StatusEffects.NIGHT_VISION,
-            StatusEffects.POISON,
-            StatusEffects.REGENERATION,
-            StatusEffects.SLOWNESS,
-            StatusEffects.SLOW_FALLING,
-            StatusEffects.SPEED,
-            StatusEffects.STRENGTH,
-            StatusEffects.WEAKNESS,
-            StatusEffects.WITHER,
-        };
-        return effects[this.random.nextInt(effects.length)];
+        List<StatusEffect> effects = List.of(
+                StatusEffects.ABSORPTION,
+                StatusEffects.BAD_OMEN,
+                StatusEffects.BLINDNESS,
+                StatusEffects.DARKNESS,
+                StatusEffects.FIRE_RESISTANCE,
+                StatusEffects.GLOWING,
+                StatusEffects.HASTE,
+                StatusEffects.HUNGER,
+                StatusEffects.INVISIBILITY,
+                StatusEffects.JUMP_BOOST,
+                StatusEffects.LEVITATION,
+                StatusEffects.MINING_FATIGUE,
+                StatusEffects.NAUSEA,
+                StatusEffects.NIGHT_VISION,
+                StatusEffects.POISON,
+                StatusEffects.REGENERATION,
+                StatusEffects.SLOWNESS,
+                StatusEffects.SLOW_FALLING,
+                StatusEffects.SPEED,
+                StatusEffects.STRENGTH,
+                StatusEffects.WEAKNESS,
+                StatusEffects.WITHER
+        );
+        return effects.get(this.random.nextInt(effects.size()));
     }
 
     @Override
@@ -221,7 +222,7 @@ public class ChaosSkull extends WitherSkullEntity {
 
     private EntityType<?> randomPassive() {
         EntityType<?>[] passiveEntities = {
-            EntityType.BAT, EntityType.BEE, EntityType.CHICKEN, EntityType.COD, EntityType.COW, EntityType.GLOW_SQUID,
+                EntityType.BAT, EntityType.BEE, EntityType.CHICKEN, EntityType.COD, EntityType.COW, EntityType.GLOW_SQUID,
                 EntityType.HORSE, EntityType.LLAMA, EntityType.WANDERING_TRADER, EntityType.MOOSHROOM, EntityType.PIG,
                 EntityType.POLAR_BEAR, EntityType.PUFFERFISH, EntityType.RABBIT, EntityType.SALMON
         };

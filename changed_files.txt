@@ -195,20 +195,6 @@ M	src/main/java/net/soulsweaponry/entity/mobs/SoulReaperGhost.java
 M	src/main/java/net/soulsweaponry/entity/mobs/WarmthEntity.java
 M	src/main/java/net/soulsweaponry/entity/mobs/WitheredDemon.java
 
-M	src/main/java/net/soulsweaponry/entity/projectile/ChaosSkull.java
-M	src/main/java/net/soulsweaponry/entity/projectile/DragonslayerSwordspearEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/DragonStaffProjectile.java
-M	src/main/java/net/soulsweaponry/entity/projectile/DraupnirSpearEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/LeviathanAxeEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/MoonlightProjectile.java
-M	src/main/java/net/soulsweaponry/entity/projectile/NightSkull.java
-M	src/main/java/net/soulsweaponry/entity/projectile/noclip/FrozenLightning.java
-M	src/main/java/net/soulsweaponry/entity/projectile/noclip/GhostGlaiveEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/noclip/HolyMoonlightPillar.java
-M	src/main/java/net/soulsweaponry/entity/projectile/noclip/NightWaveEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/SilverBulletEntity.java
-M	src/main/java/net/soulsweaponry/entity/projectile/WitheredWabbajackProjectile.java
-
 M	src/main/java/net/soulsweaponry/events/LivingEntityTickHandler.java
 M	src/main/java/net/soulsweaponry/events/PlayerTickHandler.java
 
