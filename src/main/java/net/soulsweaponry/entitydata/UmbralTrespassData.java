@@ -1,11 +1,12 @@
 package net.soulsweaponry.entitydata;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.S2C.packets.ShouldDamageRidingSyncS2C;
-import net.soulsweaponry.networking.S2C.packets.UTDamageCooldownSyncS2C;
+import net.soulsweaponry.networking.PacketIds;
 
 public class UmbralTrespassData {
 
@@ -75,10 +76,17 @@ public class UmbralTrespassData {
     }
 
     public static void syncDamageRidingData(boolean bl, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new ShouldDamageRidingSyncS2C(bl));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(bl);
+        ServerPlayNetworking.send(entity, PacketIds.SYNC_DAMAGE_RIDING_DATA, buf);
     }
 
     public static void syncOtherStats(float damage, int cooldown, float healMod, double maxHealthBonus, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new UTDamageCooldownSyncS2C(damage, cooldown, healMod, maxHealthBonus));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeFloat(damage);
+        buf.writeInt(cooldown);
+        buf.writeFloat(healMod);
+        buf.writeDouble(maxHealthBonus);
+        ServerPlayNetworking.send(entity, PacketIds.SYNC_UMBRAL_DAMAGE_COOLDOWN, buf);
     }
 }

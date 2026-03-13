@@ -1,13 +1,14 @@
 package net.soulsweaponry.entitydata;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.networking.S2C.packets.MaxPostureSyncS2C;
-import net.soulsweaponry.networking.S2C.packets.PostureSyncS2C;
+import net.soulsweaponry.networking.PacketIds;
 
 public class PostureData {
 
@@ -59,7 +60,9 @@ public class PostureData {
     }
 
     public static void syncData(int data, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new PostureSyncS2C(data));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(data);
+        ServerPlayNetworking.send(entity, PacketIds.POSTURE_SYNC, buf);
     }
 
     /**
@@ -84,6 +87,8 @@ public class PostureData {
     }
 
     public static void syncMaxPosture(int data, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new MaxPostureSyncS2C(data));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(data);
+        ServerPlayNetworking.send(entity, PacketIds.MAX_POSTURE_SYNC, buf);
     }
 }

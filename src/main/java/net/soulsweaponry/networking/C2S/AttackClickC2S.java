@@ -11,23 +11,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 
-public class KeybindAbilityC2S {
+public class AttackClickC2S {
 
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
-            if (serverWorld != null) {
-                for (ItemStack armorStack : player.getArmorItems()) {
-                    if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                        abilityItem.useKeybindAbilityServer(serverWorld, armorStack, player, null);
-                    }
-                }
-                for (Hand hand : Hand.values()) {
-                    ItemStack stack = player.getStackInHand(hand);
-                    if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                        abilityItem.useKeybindAbilityServer(serverWorld, stack, player, hand);
-                    }
-                }
+            // Can only attack with main hand
+            ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+            if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+                hasAbilities.onAttackClickServer(serverWorld, stack, player);
             }
         });
     }

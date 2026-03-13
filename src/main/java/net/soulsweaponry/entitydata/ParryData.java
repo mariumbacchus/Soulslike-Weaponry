@@ -1,12 +1,14 @@
 package net.soulsweaponry.entitydata;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.networking.S2C.packets.ParrySyncS2C;
+import net.soulsweaponry.networking.PacketIds;
 
 public class ParryData {
 
@@ -80,6 +82,10 @@ public class ParryData {
     }
 
     public static void syncTicks(int ticks, int frames, int maxTicks, ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, new ParrySyncS2C(ticks, frames, maxTicks));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(ticks);
+        buf.writeInt(frames);
+        buf.writeInt(maxTicks);
+        ServerPlayNetworking.send(player, PacketIds.PARRY_SYNC, buf);
     }
 }

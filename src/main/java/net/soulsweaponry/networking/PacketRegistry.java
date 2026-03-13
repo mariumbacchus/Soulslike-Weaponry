@@ -18,6 +18,7 @@ public class PacketRegistry {
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.PARRY, ParryC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.DAMAGING_BOX, DamagingBoxC2S::receive);
         ServerPlayNetworking.registerGlobalReceiver(PacketIds.RETURN_THROWN_WEAPON, ReturnThrownWeaponC2S::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PacketIds.ATTACK_CLICK, AttackClickC2S::receive);
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             ServerPlayNetworking.registerGlobalReceiver(PacketIds.KILL_NEARBY_ENTITIES, KillNearbyEntitiesC2S::receive);
@@ -42,5 +43,7 @@ public class PacketRegistry {
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.BLEED_SYNC, BleedSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.TARGET_POSTURE_SYNC, TargetPostureSyncS2C::receive);
         ClientPlayNetworking.registerGlobalReceiver(PacketIds.MAX_POSTURE_SYNC, MaxPostureSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.ECHO_DAMAGE_SYNC, EchoDamageSyncS2C::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PacketIds.FROST_SYNC, FrostSyncS2C::receive);
     }
 }

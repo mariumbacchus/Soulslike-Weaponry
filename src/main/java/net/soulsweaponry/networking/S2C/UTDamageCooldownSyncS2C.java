@@ -13,7 +13,8 @@ public class UTDamageCooldownSyncS2C {
         if (client.player != null) {
             ((IEntityDataSaver)client.player).getPersistentData().putFloat(UmbralTrespassData.UMBRAL_DAMAGE_ID, buf.readFloat());
             ((IEntityDataSaver)client.player).getPersistentData().putInt(UmbralTrespassData.COOLDOWN_ID, buf.readInt());
-            ((IEntityDataSaver)client.player).getPersistentData().putBoolean(UmbralTrespassData.HEAL_ID, buf.readBoolean());
+            ((IEntityDataSaver)client.player).getPersistentData().putFloat(UmbralTrespassData.HEAL_ID, buf.readFloat());
+            ((IEntityDataSaver)client.player).getPersistentData().putDouble(UmbralTrespassData.MAX_HEALTH_DAMAGE_ID, buf.readDouble());
         }
     }
 }

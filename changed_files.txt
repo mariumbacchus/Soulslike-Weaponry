@@ -45,13 +45,6 @@ A	src/main/generated/data/soulsweapons/tags/item/melee_item_upgradables.json
 A	src/main/generated/data/soulsweapons/tags/item/ranged_item_upgradables.json
 A	src/main/generated/data/soulsweapons/tags/mob_effect/nightlord_attack_boost_gained_from.json
 
-A	src/main/java/net/soulsweaponry/networking/C2S/packets/AttackClickC2S.java
-A	src/main/java/net/soulsweaponry/networking/C2S/receivers/AttackClickC2SReceiver.java
-A	src/main/java/net/soulsweaponry/networking/S2C/packets/EchoDamageSyncS2C.java
-A	src/main/java/net/soulsweaponry/networking/S2C/packets/FrostSyncS2C.java
-A	src/main/java/net/soulsweaponry/networking/S2C/receivers/EchoDamageSyncS2CReceiver.java
-A	src/main/java/net/soulsweaponry/networking/S2C/receivers/FrostSyncS2CReceiver.java
-
 A	src/main/resources/assets/soulsweapons/lang/vi_vn.json
 A	src/main/resources/assets/soulsweapons/models/item/nightlords_sword.json
 A	src/main/resources/assets/soulsweapons/models/item/twinkling_titanite.json
@@ -194,18 +187,6 @@ M	src/main/java/net/soulsweaponry/entity/mobs/WitheredDemon.java
 ALL ABILITIES
 
 M	src/main/java/net/soulsweaponry/mixin/ItemMixin.java
-
-M	src/main/java/net/soulsweaponry/networking/C2S/receivers/CollectSummonsC2SReceiver.java
-M	src/main/java/net/soulsweaponry/networking/C2S/receivers/KeybindAbilityC2SReceiver.java
-M	src/main/java/net/soulsweaponry/networking/C2S/receivers/MoonlightC2SReceiver.java
-M	src/main/java/net/soulsweaponry/networking/C2S/receivers/ParryC2SReceiver.java
-M	src/main/java/net/soulsweaponry/networking/C2S/receivers/SwitchTrickWeaponC2SReceiver.java
-M	src/main/java/net/soulsweaponry/networking/PacketReceiverRegistry.java
-M	src/main/java/net/soulsweaponry/networking/PacketRegistry.java
-M	src/main/java/net/soulsweaponry/networking/S2C/packets/ParrySyncS2C.java
-M	src/main/java/net/soulsweaponry/networking/S2C/packets/UTDamageCooldownSyncS2C.java
-M	src/main/java/net/soulsweaponry/networking/S2C/receivers/ParrySyncS2CReceiver.java
-M	src/main/java/net/soulsweaponry/networking/S2C/receivers/UTDamageCooldownSyncS2CReceiver.java
 
 M	src/main/java/net/soulsweaponry/registry/ArmorRegistry.java
 M	src/main/java/net/soulsweaponry/registry/AttributeRegistry.java

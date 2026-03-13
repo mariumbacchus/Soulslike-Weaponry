@@ -1,12 +1,14 @@
 package net.soulsweaponry.entitydata;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityFrost;
-import net.soulsweaponry.networking.S2C.packets.FrostSyncS2C;
+import net.soulsweaponry.networking.PacketIds;
 
 import java.util.UUID;
 
@@ -98,7 +100,10 @@ public class FrostData {
     }
 
     public static void syncFrostData(int value, boolean frostCoolingDown, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new FrostSyncS2C(value, frostCoolingDown));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(value);
+        buf.writeBoolean(frostCoolingDown);
+        ServerPlayNetworking.send(entity, PacketIds.FROST_SYNC, buf);
     }
 
     /**

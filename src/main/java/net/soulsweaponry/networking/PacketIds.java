@@ -21,6 +21,8 @@ public class PacketIds {
     public static final Identifier BLEED_SYNC = new Identifier(SoulsWeaponry.ModId, "bleed_data_sync");
     public static final Identifier TARGET_POSTURE_SYNC = new Identifier(SoulsWeaponry.ModId, "target_posture_data_sync");
     public static final Identifier MAX_POSTURE_SYNC = new Identifier(SoulsWeaponry.ModId, "max_posture_data_sync");
+    public static final Identifier ECHO_DAMAGE_SYNC = new Identifier(SoulsWeaponry.ModId, "echo_damage_sync");
+    public static final Identifier FROST_SYNC = new Identifier(SoulsWeaponry.ModId, "frost_sync");
 
     // Client to Server
     public static final Identifier MOONLIGHT = new Identifier(SoulsWeaponry.ModId, "moonlight");
@@ -33,6 +35,7 @@ public class PacketIds {
     public static final Identifier RETURN_THROWN_WEAPON = new Identifier(SoulsWeaponry.ModId, "try_return_thrown_weapons");
     public static final Identifier SUMMONS_UUIDS = new Identifier(SoulsWeaponry.ModId, "summons_uuids");
     public static final Identifier PARRY = new Identifier(SoulsWeaponry.ModId, "parry_keybind");
+    public static final Identifier ATTACK_CLICK = new Identifier(SoulsWeaponry.ModId, "attack_click");
     // Packet ids used for debugging in dev environment only
     public static final Identifier KILL_NEARBY_ENTITIES = new Identifier(SoulsWeaponry.ModId, "kill_nearby_entities");
     public static final Identifier GIVE_RESISTANCE = new Identifier(SoulsWeaponry.ModId, "give_or_clear_resistance");

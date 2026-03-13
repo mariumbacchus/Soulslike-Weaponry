@@ -1,11 +1,13 @@
 package net.soulsweaponry.entitydata;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.soulsweaponry.api.entitystats.EntityBleed;
-import net.soulsweaponry.networking.S2C.packets.BleedSyncS2C;
+import net.soulsweaponry.networking.PacketIds;
 
 public class BleedData {
 
@@ -58,6 +60,8 @@ public class BleedData {
     }
 
     public static void syncData(int data, ServerPlayerEntity entity) {
-        ServerPlayNetworking.send(entity, new BleedSyncS2C(data));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(data);
+        ServerPlayNetworking.send(entity, PacketIds.BLEED_SYNC, buf);
     }
 }

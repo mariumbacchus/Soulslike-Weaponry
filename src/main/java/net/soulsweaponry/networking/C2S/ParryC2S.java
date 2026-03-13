@@ -12,7 +12,11 @@ import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.otherkeybind.Parry;
 import net.soulsweaponry.util.ModTags;
+
+import java.util.Optional;
 
 public class ParryC2S {
 
@@ -20,10 +24,15 @@ public class ParryC2S {
         server.execute(() -> {
             ServerWorld serverWorld = Iterables.tryFind(server.getWorlds(), (element) -> element == player.getWorld()).orNull();
             if (serverWorld != null) {
-                ItemStack stack = player.getStackInHand(Hand.OFF_HAND);
-                if (ConfigConstructor.enable_shield_parry && stack.isIn(ModTags.Items.SHIELDS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                    ParryData.setParryFrames((IEntityDataSaver) player, 1);
-                    player.getItemCooldownManager().set(stack.getItem(), player.isCreative() ? 10 : (int) ConfigConstructor.shield_parry_cooldown);
+                for (Hand hand : Hand.values()) {
+                    ItemStack stack = player.getStackInHand(hand);
+                    if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+                        Optional<Parry> op = hasAbilities.findAbility(Parry.class);
+                        if (op.isPresent()) {
+                            op.get().parry(player, stack);
+                            break;
+                        }
+                    }
                 }
             }
         });
