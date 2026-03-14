@@ -27,7 +27,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -184,7 +184,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         }
         return PlayState.CONTINUE;
     }
-    
+
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
@@ -222,27 +222,22 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.day_stalker_is_fire_immune;
+        return BossConfig.day_stalker_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.day_stalker_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.day_stalker_group_type;
+        return BossConfig.day_stalker_has_inverted_heal_and_harm;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.day_stalker_status_effect_blacklist;
+        return BossConfig.day_stalker_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.day_stalker_disables_shields;
+        return BossConfig.day_stalker_disables_shields;
     }
 
     @Override
@@ -299,11 +294,11 @@ public class DayStalker extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 120D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.day_stalker_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.day_stalker_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.day_stalker_armor)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.day_stalker_armor)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8D);
     }
 
@@ -355,7 +350,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.day_stalker_xp;
+        return (int) BossConfig.day_stalker_xp;
     }
 
     @Override
@@ -374,6 +369,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
         if (this.isInitiatingPhaseTwo()) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
             this.phaseTwoTicks++;
             this.setFlying(false);
             int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
@@ -552,10 +548,10 @@ public class DayStalker extends BossEntity implements GeoEntity {
             amount = amount * 0.6f;
         }
         if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && !this.isFlying()) {
-            amount = amount * (this.isPhaseTwo() ? ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
-                    ConfigConstructor.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
-            if (source.getAttacker() instanceof LivingEntity attacker && this.getHealth() < this.getMaxHealth() * ConfigConstructor.day_stalker_projectile_cause_air_combustion_below_percent_health) {
-                AirCombustion airCombustion = new AirCombustion(this.getWorld(), this, 35f * ConfigConstructor.day_stalker_damage_modifier, this.isPhaseTwo() ? 5f : 3f, 12);
+            amount = amount * (this.isPhaseTwo() ? BossConfig.day_stalker_empowered_projectile_damage_taken_modifier_phase_2 :
+                    BossConfig.day_stalker_empowered_projectile_damage_taken_modifier_phase_1);
+            if (source.getAttacker() instanceof LivingEntity attacker && this.getHealth() < this.getMaxHealth() * BossConfig.day_stalker_projectile_cause_air_combustion_below_percent_health) {
+                AirCombustion airCombustion = new AirCombustion(this.getWorld(), this, 35f * BossConfig.day_stalker_damage_modifier, this.isPhaseTwo() ? 5f : 3f, 12);
                 airCombustion.setPos(attacker.getX(), attacker.getY(), attacker.getZ());
                 airCombustion.setEmpowered(this.isEmpowered());
                 this.getWorld().spawnEntity(airCombustion);

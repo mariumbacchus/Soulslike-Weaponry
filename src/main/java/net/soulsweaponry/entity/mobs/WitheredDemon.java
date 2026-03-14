@@ -20,11 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.Hallowheart;
-import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -62,7 +61,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         } else {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         }
-        
+
         return PlayState.CONTINUE;
     }
 
@@ -98,17 +97,12 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
-    
+
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(1, new DemonAttackGoal(this, 1.7D, false));
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
@@ -125,18 +119,18 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         }));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
         this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.withered_demon_health)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.withered_demon_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.withered_demon_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.withered_demon_armor)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -145,12 +139,12 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
         BlockPos positionEntity = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
         BlockState state = this.getWorld().getBlockState(positionEntity);
         return view.doesNotIntersectEntities(this) && !getWorld().containsFluid(this.getBoundingBox())
-            && state.getBlock().canMobSpawnInside(state)
-            && !getWorld().getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
-            && getWorld().getDifficulty() != Difficulty.PEACEFUL
-            && getWorld().getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
-            && this.getWorld().getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON)
-            && this.isSpawnable();
+                && state.getBlock().canMobSpawnInside(state)
+                && !getWorld().getBlockState(positionEntity.down()).isOf(Blocks.NETHER_WART_BLOCK)
+                && getWorld().getDifficulty() != Difficulty.PEACEFUL
+                && getWorld().getBlockState(positionEntity.down()).isOf(Blocks.CRIMSON_NYLIUM)
+                && this.getWorld().getBlockState(blockUnderEntity).allowsSpawning(view, blockUnderEntity, EntityRegistry.WITHERED_DEMON)
+                && this.isSpawnable();
     }
 
     public boolean isSpawnable() {
@@ -192,12 +186,14 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(this.getWorld().getDamageSources().mobAttack(this), g);
+        DamageSource damageSource = this.getDamageSources().mobAttack(this);
+        boolean bl = target.damage(damageSource, g);
         if (bl) {
-           target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
-           this.applyDamageEffects(this, target);
+            double d = target instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE) : 0.0;
+            double e = Math.max(0.0, 1.0 - d);
+            target.setVelocity(target.getVelocity().add(0.0, 0.4F * e, 0.0));
+            this.applyDamageEffects(this, target);
         }
-        
         return bl;
     }
 
@@ -300,6 +296,11 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     @Override
     public boolean isUndead() {
         return true;
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override

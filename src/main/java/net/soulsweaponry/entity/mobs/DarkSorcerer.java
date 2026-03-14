@@ -2,10 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -25,7 +22,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 import java.util.EnumSet;
@@ -42,11 +39,11 @@ public class DarkSorcerer extends HostileEntity {
 
     public static DefaultAttributeContainer.Builder createSorcererAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.dark_sorcerer_health)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.dark_sorcerer_bonus_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.dark_sorcerer_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.dark_sorcerer_bonus_armor)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     @Override
@@ -58,6 +55,7 @@ public class DarkSorcerer extends HostileEntity {
                 && this.getWorld().getBlockState(blockUnderEntity).isOf(Blocks.DEEPSLATE_TILES);
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(BEAMING, Boolean.FALSE);
@@ -159,12 +157,12 @@ public class DarkSorcerer extends HostileEntity {
                     this.user.getNavigation().startMovingAlong(this.path, 1D);
                 }
                 super.tick();
-                
+
             }
         }
     }
 
-    public void tickMovement() {        
+    public void tickMovement() {
         if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
             double f = this.getBeamCords().getY() - this.getEyeY();
@@ -204,5 +202,10 @@ public class DarkSorcerer extends HostileEntity {
     @Override
     public boolean isUndead() {
         return true;
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 }

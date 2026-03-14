@@ -2,6 +2,7 @@ package net.soulsweaponry.entity.mobs;
 
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
@@ -29,6 +30,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -55,7 +57,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     public int deathTicks;
     private int blockBreakingCooldown;
     private final List<UUID> healers = new ArrayList<>();
-    
+
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
     }
@@ -95,6 +97,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(OBLITERATE, Boolean.FALSE);
@@ -109,24 +112,24 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.returning_knight_armor);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.returning_knight_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.returning_knight_armor);
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new ReturningKnightGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     @Override
     public int getTicksUntilDeath() {
@@ -224,7 +227,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
         if (this.isSpawning()) {
             this.spawnTicks++;
-            
+
             for(int i = 0; i < 50; ++i) {
                 Random random = this.getRandom();
                 BlockPos pos = this.getBlockPos();
@@ -236,7 +239,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 getWorld().addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
-            
+
             if (this.spawnTicks % 10 == 0) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
@@ -267,7 +270,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
             this.blockBreakingCooldown = 20;
         }
         if (this.isInvulnerableTo(source)) {
-           return false;
+            return false;
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
@@ -279,32 +282,32 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.returning_knight_projectile_immunity_whitelist;
+        return BossConfig.returning_knight_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.returning_knight_status_effect_blacklist;
+        return BossConfig.returning_knight_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.returning_knight_disables_shields;
+        return BossConfig.returning_knight_disables_shields;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.returning_knight_is_undead;
+        return BossConfig.returning_knight_has_inverted_heal_and_harm;
     }
 
     @Override
-    public String getGroupId() {
-        return ConfigConstructor.returning_knight_group_type;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.returning_knight_is_fire_immune;
+        return BossConfig.returning_knight_is_fire_immune;
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -318,13 +321,13 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.returning_knight_xp;
+        return (int) BossConfig.returning_knight_xp;
     }
 
     @Override
     protected void mobTick() {
         super.mobTick();
-        
+
         //Reflect all projectiles
         //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
         Box chunkBox = this.getBoundingBox().expand(3);

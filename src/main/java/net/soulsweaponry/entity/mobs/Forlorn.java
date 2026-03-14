@@ -10,7 +10,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Forlorn extends Remnant {
-    
+
     public Forlorn(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         Forlorn.initEquip(this, Collections.emptyMap());
@@ -32,11 +32,11 @@ public class Forlorn extends Remnant {
 
     public static DefaultAttributeContainer.Builder createForlornAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.forlorn_health)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.forlorn_bonus_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.forlorn_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.forlorn_bonus_armor)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package net.soulsweaponry.entity.mobs;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -26,9 +24,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
+
+import java.util.Random;
 
 public class Remnant extends TameableEntity {
 
@@ -39,7 +39,7 @@ public class Remnant extends TameableEntity {
         this.setTamed(false);
         this.initEquip();
     }
-    
+
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
@@ -65,35 +65,35 @@ public class Remnant extends TameableEntity {
 
     public static DefaultAttributeContainer.Builder createRemnantAttributes() {
         return MobEntity.createMobAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.remnant_health)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.remnant_bonus_armor)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.remnant_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.remnant_bonus_armor)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
     public void initEquip() {
         int[] chance = {6, 6, 2, 4, 1, 2, 2, 2};
         Item[] equipment = {
-            ArmorRegistry.SOUL_INGOT_HELMET,
-            ArmorRegistry.SOUL_INGOT_CHESTPLATE,
-            ArmorRegistry.SOUL_INGOT_LEGGINGS,
-            ArmorRegistry.SOUL_INGOT_BOOTS,
-            Items.SHIELD,
-            WeaponRegistry.TRANSLUCENT_SWORD,
-            WeaponRegistry.TRANSLUCENT_GLAIVE,
-            WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD,
+                ArmorRegistry.SOUL_INGOT_HELMET,
+                ArmorRegistry.SOUL_INGOT_CHESTPLATE,
+                ArmorRegistry.SOUL_INGOT_LEGGINGS,
+                ArmorRegistry.SOUL_INGOT_BOOTS,
+                Items.SHIELD,
+                WeaponRegistry.TRANSLUCENT_SWORD,
+                WeaponRegistry.TRANSLUCENT_GLAIVE,
+                WeaponRegistry.TRANSLUCENT_DOUBLE_GREATSWORD,
         };
         EquipmentSlot[] spot = {
-            EquipmentSlot.HEAD,
-            EquipmentSlot.CHEST,
-            EquipmentSlot.LEGS,
-            EquipmentSlot.FEET,
-            EquipmentSlot.OFFHAND,
+                EquipmentSlot.HEAD,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET,
+                EquipmentSlot.OFFHAND,
                 //Needs a main-hand slot for each weapon
-            EquipmentSlot.MAINHAND,
-            EquipmentSlot.MAINHAND,
-            EquipmentSlot.MAINHAND,
+                EquipmentSlot.MAINHAND,
+                EquipmentSlot.MAINHAND,
+                EquipmentSlot.MAINHAND,
         };
         for (int i = 0; i < chance.length; i++) {
             int random = (new Random()).nextInt(10);
@@ -153,6 +153,11 @@ public class Remnant extends TameableEntity {
     }
 
     @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
+    }
+
+    @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
         return null;
     }
@@ -188,6 +193,11 @@ public class Remnant extends TameableEntity {
         if (nbt.contains("soul_amount")) {
             this.soulAmount = nbt.getInt("soul_amount");
         }
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 
     @Override

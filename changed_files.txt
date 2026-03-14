@@ -103,28 +103,6 @@ M	src/main/java/net/soulsweaponry/client/SoulsWeaponryClient.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
 
-M	src/main/java/net/soulsweaponry/entity/mobs/AccursedLordBoss.java
-M	src/main/java/net/soulsweaponry/entity/mobs/BigChungus.java
-M	src/main/java/net/soulsweaponry/entity/mobs/BossEntity.java
-M	src/main/java/net/soulsweaponry/entity/mobs/ChaosMonarch.java
-M	src/main/java/net/soulsweaponry/entity/mobs/DarkSorcerer.java
-M	src/main/java/net/soulsweaponry/entity/mobs/DayStalker.java
-M	src/main/java/net/soulsweaponry/entity/mobs/DraugrBoss.java
-M	src/main/java/net/soulsweaponry/entity/mobs/EvilForlorn.java
-M	src/main/java/net/soulsweaponry/entity/mobs/Forlorn.java
-M	src/main/java/net/soulsweaponry/entity/mobs/FreyrSwordEntity.java
-M	src/main/java/net/soulsweaponry/entity/mobs/FrostGiant.java
-M	src/main/java/net/soulsweaponry/entity/mobs/Moonknight.java
-M	src/main/java/net/soulsweaponry/entity/mobs/NightProwler.java
-M	src/main/java/net/soulsweaponry/entity/mobs/NightShade.java
-M	src/main/java/net/soulsweaponry/entity/mobs/Remnant.java
-M	src/main/java/net/soulsweaponry/entity/mobs/ReturningKnight.java
-M	src/main/java/net/soulsweaponry/entity/mobs/RimeSpectre.java
-M	src/main/java/net/soulsweaponry/entity/mobs/Soulmass.java
-M	src/main/java/net/soulsweaponry/entity/mobs/SoulReaperGhost.java
-M	src/main/java/net/soulsweaponry/entity/mobs/WarmthEntity.java
-M	src/main/java/net/soulsweaponry/entity/mobs/WitheredDemon.java
-
 ALL ABILITIES
 
 M	src/main/java/net/soulsweaponry/mixin/ItemMixin.java

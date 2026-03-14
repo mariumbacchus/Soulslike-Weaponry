@@ -4,7 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -29,15 +31,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -81,12 +84,12 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.fallen_icon_armor);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.fallen_icon_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.fallen_icon_armor);
     }
 
     @Override
@@ -130,7 +133,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     public void setBeamLocation(BlockPos pos) {
         this.dataTracker.set(BEAM_LOCATION, pos);
     }
-    
+
     public BlockPos getBeamLocation() {
         return this.dataTracker.get(BEAM_LOCATION);
     }
@@ -219,7 +222,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             return false;
         }
         if (this.isInvulnerableTo(source)) {
-           return false;
+            return false;
         } else {
             Entity entity = source.getSource();
             if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile) && entity.getBlockPos() != null) {
@@ -241,17 +244,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.fallen_icon_projectile_immunity_whitelist;
+        return BossConfig.fallen_icon_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.fallen_icon_status_effect_blacklist;
+        return BossConfig.fallen_icon_status_effect_blacklist;
     }
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.fallen_icon_xp;
+        return (int) BossConfig.fallen_icon_xp;
     }
 
     @Override
@@ -290,7 +293,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.bossBar.setColor(Color.BLUE);
             }
         }
-        
+
         if (ConfigConstructor.can_bosses_break_blocks) {
             int j;
             int i;
@@ -410,22 +413,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.fallen_icon_is_fire_immune;
+        return BossConfig.fallen_icon_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.fallen_icon_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.fallen_icon_group_type;
+        return BossConfig.fallen_icon_has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.fallen_icon_disables_shields;
+        return BossConfig.fallen_icon_disables_shields;
     }
 
     @Override
@@ -446,15 +444,15 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new MoonknightGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -588,12 +586,12 @@ public class Moonknight extends BossEntity implements GeoEntity {
         HEAVY_SWING,
         UNBREAKABLE
     }
-    /* 
+    /*
      * NB!!! So there was a bug in the Goal class where while using a certain attack, all attacks would stop.
-     * That was because the index of the attack in phase 2 enum and the phase one spawn enum were the same 
+     * That was because the index of the attack in phase 2 enum and the phase one spawn enum were the same
      * (it was SWORD_OF_LIGHT vs SPAWN). So even though they were two different constants, it would
      * still think that when it attacked, it was spawning, and since the goal stops ticking if it is spawning (to
-     * prevent the boss from attacking early), the boss would simply freeze forever. 
+     * prevent the boss from attacking early), the boss would simply freeze forever.
      * It could have something to do with the fact that the boss passes integers it generates based on the enum value
      * array index, haven't bothered looking into it. All I know is that in my desperate attempt to make the code better
      * and more readable, it got worse and just overall chaotic. At least I have learned my lesson.

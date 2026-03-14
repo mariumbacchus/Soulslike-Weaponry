@@ -40,8 +40,8 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IConfigDisable;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;
@@ -83,8 +83,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.moderatly_sized_chungus_heath)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.moderatly_sized_chungus_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.moderatly_sized_chungus_heath)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.moderatly_sized_chungus_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
@@ -283,6 +283,11 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("healthUpdated", this.healthUpdated);
@@ -316,14 +321,6 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
             if (!player.isCreative()) {
                 stack.decrement(1);
             }
-            return ActionResult.SUCCESS;
-        }
-        if (stack.isOf(WeaponRegistry.CHUNGUS_STAFF) && !((IConfigDisable)stack.getItem()).isDisabled(stack) && !this.isAggressive() && !this.isTamed()) {
-            this.setTamed(true);
-            this.setOwner(player);
-            this.setTarget(null);
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
-            this.navigation.stop();
             return ActionResult.SUCCESS;
         }
         if (this.isTamed() && this.isOwner(player) && this.getTradeTicks() == 0) {

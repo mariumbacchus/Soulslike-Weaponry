@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.DraugrBossGoal;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -100,14 +100,15 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.old_champions_remains_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.old_champions_remains_armor);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.old_champions_remains_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.old_champions_remains_armor);
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(IS_SHIELDING, Boolean.FALSE);
@@ -117,17 +118,16 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         this.dataTracker.startTracking(POS, new BlockPos(0,0,0));
     }
 
-
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new DraugrBossGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public void setShielding(boolean bl) {
         this.dataTracker.set(IS_SHIELDING, bl);
@@ -193,7 +193,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     public void tickMovement() {
         super.tickMovement();
-        
+
         if (this.isSpawning()) {
             this.spawnTicks++;
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 10, 50));
@@ -208,7 +208,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 getWorld().addParticle(ParticleTypes.SOUL, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/8, newZ/2);
             }
-            
+
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 40) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
@@ -249,7 +249,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
      * {@link net.soulsweaponry.items.TrickWeapon} come especially in handy here.
      * <p>
      * Also reflect projectiles after 3 consecutive projectile hits if not hit with melee attacks.
-    */
+     */
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (source.getAttacker() instanceof LivingEntity attacker) {
@@ -259,8 +259,8 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
             } else {
                 this.setSameWeaponCount(0);
             }
-            if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
-                double x = this.getSameWeaponCount() - (ConfigConstructor.old_champions_remains_hits_before_growing_resistant -
+            if (this.getSameWeaponCount() >= BossConfig.old_champions_remains_hits_before_growing_resistant) {
+                double x = this.getSameWeaponCount() - (BossConfig.old_champions_remains_hits_before_growing_resistant -
                         this.getSameWeaponCount() > 0 ? 1 : 0);
                 amount = (float) (amount * Math.pow((1f / 1.07f), x));
             }
@@ -289,7 +289,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
                 this.projectileCount--;
             }
         } else {
-            this.projectileCount = (int) ConfigConstructor.old_champions_remains_max_projectile_hits_before_immune;
+            this.projectileCount = (int) BossConfig.old_champions_remains_max_projectile_hits_before_immune;
         }
         return super.damage(source, amount);
     }
@@ -302,7 +302,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.old_champions_remains_xp;
+        return (int) BossConfig.old_champions_remains_xp;
     }
 
     @Override
@@ -325,22 +325,22 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.old_champions_remains_is_undead;
+        return BossConfig.old_champions_remains_has_inverted_heal_and_harm;
     }
 
     @Override
-    public String getGroupId() {
-        return ConfigConstructor.old_champions_remains_group_type;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.old_champions_remains_status_effect_blacklist;
+        return BossConfig.old_champions_remains_status_effect_blacklist;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.old_champions_remains_is_fire_immune;
+        return BossConfig.old_champions_remains_is_fire_immune;
     }
 
     @Override
@@ -380,7 +380,7 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.old_champions_remains_disables_shields && this.shouldDisableShield || ConfigConstructor.old_champions_remains_disables_shields_all_attacks;
+        return BossConfig.old_champions_remains_disables_shields && this.shouldDisableShield || BossConfig.old_champions_remains_disables_shields_all_attacks;
     }
 
     public void updateDisableShield(boolean bl) {
@@ -400,15 +400,15 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_WITHER_SKELETON_AMBIENT;
     }
-  
+
     protected SoundEvent getHurtSound(DamageSource source) {
-        if (this.getSameWeaponCount() >= ConfigConstructor.old_champions_remains_hits_before_growing_resistant) {
+        if (this.getSameWeaponCount() >= BossConfig.old_champions_remains_hits_before_growing_resistant) {
             return SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR;
         } else {
             return SoundEvents.ENTITY_WITHER_SKELETON_HURT;
         }
     }
-  
+
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_WITHER_SKELETON_DEATH;
     }

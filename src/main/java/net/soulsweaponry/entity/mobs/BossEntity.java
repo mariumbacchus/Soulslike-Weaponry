@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.mobs;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -15,6 +14,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
-    
+
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
     private boolean playingMusic = false;
@@ -61,6 +62,8 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
             this.playingMusic = true;
         }
     }
+
+    //TODO always render as long as not in idle? (meaning always render when doing attack so no desync happens)
 
     @Override
     public void tick() {
@@ -145,7 +148,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (this.hasCustomName()) {
-           this.bossBar.setName(this.getDisplayName());
+            this.bossBar.setName(this.getDisplayName());
         }
         if (nbt.contains("HasUpdatedHealth")) {
             this.hasUpdatedHealth = nbt.getBoolean("HasUpdatedHealth");
@@ -220,24 +223,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public abstract boolean isUndead();
 
     @Override
-    public EntityGroup getGroup() {
-        String id = this.getGroupId();
-        if (id == null) {
-            return EntityGroup.DEFAULT;
-        }
-        return switch (id.toUpperCase()) {
-            case "UNDEAD" -> EntityGroup.UNDEAD;
-            case "ARTHROPOD" -> EntityGroup.ARTHROPOD;
-            case "ILLAGER" -> EntityGroup.ILLAGER;
-            case "AQUATIC" -> EntityGroup.AQUATIC;
-            default -> EntityGroup.DEFAULT;
-        };
-    }
-
-    @Override
     public abstract boolean disablesShield();
-
-    public abstract String getGroupId();
 
     /**
      * Should be called during damage method for bosses that are projectile immune to check whether the entity
@@ -255,8 +241,41 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      * should damage the boss or not.
      */
     public boolean isProjectileWhitelisted(Entity entity) {
-        Identifier attackerId = EntityType.getId(entity.getType());
-        return List.of(this.getWhitelistedProjectiles()).contains(attackerId.getPath());
+        Identifier projectileId = EntityType.getId(entity.getType());
+        if (projectileId == null) {
+            return false;
+        }
+
+        EntityType<?> type = entity.getType();
+        for (String raw : this.getWhitelistedProjectiles()) {
+            if (raw == null || raw.isEmpty()) {
+                continue;
+            }
+
+            String s = raw.trim();
+            // Tag form, i.e: "#minecraft:arrows" or "#soulsweapons:something"
+            if (s.startsWith("#")) {
+                String tagStr = s.substring(1); // drop '#'
+                Identifier tagId = tagStr.contains(":")
+                        ? Identifier.tryParse(tagStr)
+                        : Identifier.of(projectileId.getNamespace(), tagStr);
+                TagKey<EntityType<?>> tagKey = TagKey.of(RegistryKeys.ENTITY_TYPE, tagId);
+                if (type.getRegistryEntry().isIn(tagKey)) {
+                    return true;
+                }
+                continue;
+            }
+
+            // Normal ID form, i.e: "arrow", "minecraft:arrow", "big_moonlight_projectile", "soulsweapons:big_moonlight_projectile"
+            Identifier whitelistId = s.contains(":")
+                    ? Identifier.tryParse(s) // full ID given
+                    : Identifier.of(projectileId.getNamespace(), s); // use projectile's namespace by default
+
+            if (whitelistId.equals(projectileId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

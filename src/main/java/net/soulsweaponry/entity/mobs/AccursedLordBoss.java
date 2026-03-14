@@ -17,7 +17,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -26,12 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -46,8 +45,7 @@ import java.util.List;
 
 public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    public int deathTicks;
+    private final software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this); int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
     public ArrayList<BlockPos> lavaPos = new ArrayList<>();
@@ -58,7 +56,17 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.decaying_king_is_fire_immune;
+        return BossConfig.decaying_king_is_fire_immune;
+    }
+
+    @Override
+    public boolean isUndead() {
+        return BossConfig.decaying_king_has_inverted_heal_and_harm;
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
@@ -92,7 +100,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.decaying_king_xp;
+        return (int) BossConfig.decaying_king_xp;
     }
 
     @Override
@@ -121,7 +129,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(1, new AccursedLordGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
@@ -130,20 +138,21 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, WitherSkeletonEntity.class, true));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, WitherEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-            .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-            .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.decaying_king_armor)
-            .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.decaying_king_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.decaying_king_armor)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(ATTACKS, 9);
@@ -172,7 +181,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
         if (this.isSpawning()) {
             this.spawnTicks++;
-            
+
             for(int i = 0; i < 50; ++i) {
                 Random random = this.getRandom();
                 BlockPos pos = this.getBlockPos();
@@ -184,7 +193,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 getWorld().addParticle(ParticleTypes.FLAME, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/6, newZ/2);
             }
-            
+
             if (this.spawnTicks % 10 == 0 && this.spawnTicks < 70) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
@@ -197,7 +206,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
+                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * BossConfig.decaying_king_damage_modifier);
                     }
                 }
                 if (!this.getWorld().isClient) {
@@ -231,23 +240,13 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isUndead() {
-        return ConfigConstructor.decaying_king_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.decaying_king_group_type;
-    }
-
-    @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.decaying_king_status_effect_blacklist;
+        return BossConfig.decaying_king_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.decaying_king_disables_shields;
+        return BossConfig.decaying_king_disables_shields;
     }
 
     @Override
@@ -263,11 +262,11 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     protected SoundEvent getAmbientSound() {
         return SoundRegistry.DEMON_BOSS_IDLE_EVENT;
     }
-  
+
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundRegistry.DEMON_BOSS_HURT_EVENT;
     }
-  
+
     protected SoundEvent getDeathSound() {
         return SoundRegistry.DEMON_BOSS_DEATH_EVENT;
     }

@@ -3,7 +3,10 @@ package net.soulsweaponry.entity.mobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -12,11 +15,15 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -25,7 +32,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.EntityView;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -92,8 +99,8 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.warmth_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.warmth_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.warmth_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.warmth_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 30D);
@@ -131,6 +138,11 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             this.getWorld().addParticle(ParticleTypes.FLAME, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), 0.0, 0.0, 0.0);
         }
         super.tickMovement();
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -266,17 +278,17 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
             if (attackStatus == 30) this.entity.getWorld().playSound(null, this.entity.getBlockPos(), SoundRegistry.WARMTH_BUFF_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             if (this.attackStatus == 35) {
                 boolean bl = this.entity.isTamed() && this.entity.getOwner() != null;
-                    for (Entity en : this.entity.getWorld().getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
-                        if (en instanceof LivingEntity living) {
-                            if (bl && !(living instanceof HostileEntity)) {
+                for (Entity en : this.entity.getWorld().getOtherEntities(this.entity, this.entity.getBoundingBox().expand(16D))) {
+                    if (en instanceof LivingEntity living) {
+                        if (bl && !(living instanceof HostileEntity)) {
+                            this.addEffects(living);
+                        } else {
+                            if (living instanceof Monster) {
                                 this.addEffects(living);
-                            } else {
-                                if (living instanceof Monster) {
-                                    this.addEffects(living);
-                                }
                             }
                         }
                     }
+                }
                 this.addEffects(this.entity);
             }
             if (this.attackStatus >= 40) {

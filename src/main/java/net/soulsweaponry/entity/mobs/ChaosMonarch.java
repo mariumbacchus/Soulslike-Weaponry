@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -19,7 +20,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -28,9 +29,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
-import net.soulsweaponry.items.armor.ChaosRobes;
+import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -42,12 +43,19 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.List;
+
 public class ChaosMonarch extends BossEntity implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
+    public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
+            (int) BossConfig.chaos_monarch_wither_ground_range,
+            0, 3, 0,
+            List.of(new StatusEffectInstance(StatusEffects.WITHER, 80, 1))
+    );
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
         super(entityType, world, Color.PURPLE);
@@ -68,25 +76,25 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
-	protected void initGoals() {
+    protected void initGoals() {
         this.goalSelector.add(1, new ChaosMonarchGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, AccursedLordBoss.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-		super.initGoals();
-	}
+        super.initGoals();
+    }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
-        .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.chaos_monarch_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
-        .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.chaos_monarch_armor)
-        .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.chaos_monarch_health)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.chaos_monarch_armor)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
     @Override
@@ -125,8 +133,8 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         super.tickMovement();
         if (this.isSpawning()) {
             this.spawnTicks++;
-            DefaultParticleType[] dragonParticles = {ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH};
-            DefaultParticleType[] portalParticles = {ParticleTypes.PORTAL};
+            ParticleEffect[] dragonParticles = {ParticleTypes.DRAGON_BREATH, ParticleTypes.DRAGON_BREATH};
+            ParticleEffect[] portalParticles = {ParticleTypes.PORTAL};
             if (this.spawnTicks % 2 == 0 && this.spawnTicks < 20) {
                 this.particleExplosion(portalParticles, 4f);
             }
@@ -164,7 +172,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.chaos_monarch_xp;
+        return (int) BossConfig.chaos_monarch_xp;
     }
 
     @Override
@@ -178,7 +186,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
                 }
             }
         }
-        if (ConfigConstructor.chaos_monarch_wither_ground) {
+        if (BossConfig.chaos_monarch_wither_ground) {
             this.turnBlocks(this.getWorld(), this.getBlockPos());
         }
     }
@@ -199,15 +207,14 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     private void turnBlocks(World world, BlockPos blockPos) {
-        ChaosRobes cape = (ChaosRobes) ArmorRegistry.CHAOS_ROBES;
-        cape.turnBlocks(this, world, blockPos, 3);
+        CORRUPT_GROUND.turnBlocks(this, world, blockPos, ArmorRegistry.CHAOS_ROBES.getDefaultStack());
     }
 
-    private void particleExplosion(DefaultParticleType[] particles, float sizeModifier) {
+    private void particleExplosion(ParticleEffect[] particles, float sizeModifier) {
         this.roundParticleOutburst(this.getWorld(), 1000, particles, this.getX(), this.getY() + 3, this.getZ(), sizeModifier);
     }
 
-    public void roundParticleOutburst(World world, double points, DefaultParticleType[] particles, double x, double y, double z, float sizeModifier) {
+    public void roundParticleOutburst(World world, double points, ParticleEffect[] particles, double x, double y, double z, float sizeModifier) {
         double phi = Math.PI * (3. - Math.sqrt(5.));
         for (int i = 0; i < points; i++) {
             double velocityY = 1 - (i/(points - 1)) * 2;
@@ -215,10 +222,10 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
             double theta = phi * i;
             double velocityX = Math.cos(theta) * radius;
             double velocityZ = Math.sin(theta) * radius;
-            for (DefaultParticleType particle : particles) {
+            for (ParticleEffect particle : particles) {
                 world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
-        } 
+        }
     }
 
     /**
@@ -239,14 +246,14 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     /**
      * Turns the given integer previously to the datatracker into an enum for switch
      * statements.
-     * 
+     *
      * <p> Was previously:
      * public int getAttack() {
      *      return this.dataTracker.get(ATTACK);
      * }
      * <p> Was changed to current function for clarity reasons.
      */
-    
+
     public Attack getAttack() {
         return Attack.values()[this.dataTracker.get(ATTACK)];
     }
@@ -264,30 +271,30 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
         float k = MathHelper.sin(f);
         return new Vec3d(i * j, -k, h * j);
     }
-    
+
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.chaos_monarch_disables_shields;
+        return BossConfig.chaos_monarch_disables_shields;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.chaos_monarch_is_fire_immune;
+        return BossConfig.chaos_monarch_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.chaos_monarch_is_undead;
+        return BossConfig.chaos_monarch_has_inverted_heal_and_harm;
     }
 
     @Override
-    public String getGroupId() {
-        return ConfigConstructor.chaos_monarch_group_type;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.chaos_monarch_status_effect_blacklist;
+        return BossConfig.chaos_monarch_status_effect_blacklist;
     }
 
     @Override

@@ -15,16 +15,15 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -103,7 +102,7 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        LeviathanAxe.iceExplosion(this.getWorld(), this.getBlockPos(), null, 1);
+        Permafrost.iceExplosion(this.getWorld(), this.getBlockPos(), this, 3f, 1);
         super.onDeath(damageSource);
     }
 
@@ -146,12 +145,6 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
         this.dataTracker.set(SMASH, bl);
     }
 
-    @Nullable
-    @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
-    }
-
     @Override
     protected void initDataTracker() {
         this.dataTracker.startTracking(SMASH, false);
@@ -176,11 +169,11 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createGiantAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frost_giant_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.frost_giant_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 14.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 3.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.frost_giant_armor)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.frost_giant_armor)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0D);
     }
 
@@ -216,6 +209,11 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
 
     @Override
     public void initEquip() {}
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
+    }
 
     static class FrostGiantGoal extends MeleeAttackGoal{
         private final FrostGiant mob;
