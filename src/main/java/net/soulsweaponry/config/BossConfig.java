@@ -36,6 +36,7 @@ public class BossConfig extends MidnightConfig {
     @Entry public static double withered_demon_armor = 2D;
 
     @Entry public static boolean decaying_king_disable_respawn = false;
+    @Entry public static boolean decaying_king_consume_item_on_summoning = true;
     @Entry(min = 1, max = 1000000D) public static double decaying_king_health = 600D;
     @Entry(min = 1, max = 1000000D) public static double decaying_king_armor = 10D;
     @Entry(min = 0) public static float decaying_king_attack_cooldown_ticks = 20;
@@ -48,6 +49,7 @@ public class BossConfig extends MidnightConfig {
     @Entry public static String[] decaying_king_status_effect_blacklist = {};
 
     @Entry public static boolean returning_knight_disable_respawn = false;
+    @Entry public static boolean returning_knight_consume_item_on_summoning = true;
     @Entry(min = 1, max = 1000000D) public static double returning_knight_health = 500D;
     @Entry(min = 1, max = 1000000D) public static double returning_knight_armor = 15D;
     @Entry(min = 0) public static float returning_knight_attack_cooldown_ticks = 40;
@@ -62,6 +64,7 @@ public class BossConfig extends MidnightConfig {
     @Entry public static String[] returning_knight_status_effect_blacklist = {"minecraft:poison"};
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
+    @Entry public static boolean old_champions_remains_consume_item_on_summoning = false;
     @Entry(min = 1, max = 1000000D) public static double old_champions_remains_health = 300D;
     @Entry(min = 1, max = 1000000D) public static double old_champions_remains_armor = 10D;
     @Entry(min = 0) public static float old_champions_remains_attack_cooldown_ticks = 10;
@@ -88,6 +91,7 @@ public class BossConfig extends MidnightConfig {
     @Entry public static String[] frenzied_shade_status_effect_blacklist = {};
 
     @Entry public static boolean chaos_monarch_disable_respawn = false;
+    @Entry public static boolean chaos_monarch_consume_item_on_summoning = true;
     @Entry(min = 1, max = 1000000D) public static double chaos_monarch_health = 450D;
     @Entry(min = 1, max = 1000000D) public static double chaos_monarch_armor = 4D;
     @Entry(min = 0) public static float chaos_monarch_attack_cooldown_ticks = 20;
@@ -101,6 +105,7 @@ public class BossConfig extends MidnightConfig {
     @Entry public static String[] chaos_monarch_status_effect_blacklist = {"soulsweapons:bleed", "minecraft:levitation", "minecraft:wither"};
 
     @Entry public static boolean fallen_icon_disable_respawn = false;
+    @Entry public static boolean fallen_icon_consume_item_on_summoning = true;
     @Entry(min = 1, max = 1000000D) public static double fallen_icon_health = 550D;
     @Entry(min = 1, max = 1000000D) public static double fallen_icon_armor = 20D;
     @Entry(min = 0) public static float fallen_icon_attack_cooldown_ticks_phase_1 = 30;
