@@ -12,7 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
@@ -22,6 +22,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 
 public class NightShadeGoal extends Goal {
 
@@ -58,7 +59,7 @@ public class NightShadeGoal extends Goal {
 
     private void reset(float cooldownModifier) {
         this.attackStatus = 0;
-        this.attackCooldown = (int) Math.floor((float)ConfigConstructor.frenzied_shade_cooldown * cooldownModifier);
+        this.attackCooldown = (int) Math.floor(BossConfig.frenzied_shade_cooldown * cooldownModifier);
     }
 
     private void damageTarget(LivingEntity target, float damage) {
@@ -67,7 +68,7 @@ public class NightShadeGoal extends Goal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
+        return damage * BossConfig.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
     }
 
     private void randomAttack(LivingEntity target) {
@@ -223,7 +224,7 @@ public class NightShadeGoal extends Goal {
             projectile.setVelocity(e, f, g, 1.5f, 1f);
             projectile.setDamage(this.getModifiedDamage(25f));
             projectile.setDespawnParticleExpansion(0.5f);
-            projectile.setAgeAndPoints(30, 150, 10);
+            projectile.setAgeAndPoints(30, 150, (byte) 10);
             this.boss.getWorld().spawnEntity(projectile);
         }
         if (attackStatus >= 10) {
@@ -240,7 +241,7 @@ public class NightShadeGoal extends Goal {
         double g = target.getZ() - this.boss.getZ();
         if (attackStatus >= 6 && attackStatus <= 15) {
             this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 1f);
-            ShadowOrb orb = new ShadowOrb(this.boss.getWorld(), this.boss, e, f, g);
+            ShadowOrb orb = new ShadowOrb(this.boss.getWorld(), this.boss, new Vec3d(e, f, g), List.of());
             orb.setPosition(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             orb.setVelocity(e, f, g, 2f, 1f);
             this.boss.getWorld().spawnEntity(orb);
@@ -250,7 +251,7 @@ public class NightShadeGoal extends Goal {
             MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 2f, 1f);
-            projectile.setAgeAndPoints(30, 75, 4);
+            projectile.setAgeAndPoints(30, 75, (byte) 4);
             projectile.setDamage(this.getModifiedDamage(18f));
             this.boss.getWorld().spawnEntity(projectile);
         }

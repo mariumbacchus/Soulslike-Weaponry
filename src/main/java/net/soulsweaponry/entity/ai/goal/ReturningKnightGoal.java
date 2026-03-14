@@ -11,7 +11,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
@@ -51,19 +51,19 @@ public class ReturningKnightGoal extends Goal {
     }
 
     public void resetAttackCooldown(float cooldownModifier) {
-        this.attackCooldown = (int) Math.floor(ConfigConstructor.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.attackCooldown = (int) Math.floor(BossConfig.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSummonCooldown(float cooldownModifier) {
-        this.summonCooldown = (int) Math.floor(ConfigConstructor.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.summonCooldown = (int) Math.floor(BossConfig.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
-        this.specialCooldown = (int) Math.floor(ConfigConstructor.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.specialCooldown = (int) Math.floor(BossConfig.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.returning_knight_damage_modifier;
+        return damage * BossConfig.returning_knight_damage_modifier;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ReturningKnightGoal extends Goal {
         LivingEntity target = this.boss.getTarget();
 
         if (target != null && !this.boss.isSpawning()) {
-            this.boss.setAttacking(true);                
+            this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);
@@ -147,7 +147,7 @@ public class ReturningKnightGoal extends Goal {
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
                 }
             }
-            
+
             //Mace of Spades
             if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 50D && this.randomAttack == 5 && target.getBlockPos() != null) {
                 this.targetPos = target.getBlockPos();
@@ -159,7 +159,7 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
                 this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
-                
+
                 Box aoe = new Box(targetPos.getX() - 5, targetPos.getY() - 2, targetPos.getZ() - 5, targetPos.getX() + 5, targetPos.getY() + 2, targetPos.getZ() + 5);
                 List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
                 if (this.attackStatus == 7) {
@@ -210,7 +210,7 @@ public class ReturningKnightGoal extends Goal {
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 Box aoe = new Box(targetPos).expand(3D);
                 List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
-                
+
                 if (this.attackStatus == 18) { //23
                     for (Entity entity : entities) {
                         if (entity instanceof LivingEntity living) {

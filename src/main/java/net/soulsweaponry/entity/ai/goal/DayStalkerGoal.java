@@ -16,7 +16,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DayStalker;
 import net.soulsweaponry.entity.mobs.NightProwler;
 import net.soulsweaponry.entity.mobs.WarmthEntity;
@@ -60,17 +60,17 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     /*
-    * When issuing an attack, it periodically syncronises with the boss how much time that
-    * is left before the animation is over. This way, if it is interrupted, the animation will go on,
-    * and the next attack will have its cooldown set to how much time was left until the animation
-    * is finished.
-    *
-    * Example:
-    * Day Stalker uses an attack with 60 ticks as animation time, but the target gets in creative mode
-    * or dies at 25 ticks. 35 ticks is saved in the boss class and reduced in the tickMovement or mobTick
-    * method. When the AI kicks up again, it checks whether that saved cooldown is being reduced or not
-    * before doing any further action.
-    */
+     * When issuing an attack, it periodically syncronises with the boss how much time that
+     * is left before the animation is over. This way, if it is interrupted, the animation will go on,
+     * and the next attack will have its cooldown set to how much time was left until the animation
+     * is finished.
+     *
+     * Example:
+     * Day Stalker uses an attack with 60 ticks as animation time, but the target gets in creative mode
+     * or dies at 25 ticks. 35 ticks is saved in the boss class and reduced in the tickMovement or mobTick
+     * method. When the AI kicks up again, it checks whether that saved cooldown is being reduced or not
+     * before doing any further action.
+     */
 
     @Override
     public boolean canStart() {
@@ -285,12 +285,12 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (timer == 0) {
                 partner.setFlying(!partner.isFlying());
                 this.boss.setFlying(!this.boss.isFlying());
-                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             } else if (partner.isFlying() == this.boss.isFlying()) {
                 boolean bl = this.boss.getRandom().nextBoolean();
                 this.boss.setFlying(bl);
                 partner.setFlying(!bl);
-                this.boss.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+                this.boss.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             }
         }
     }
@@ -330,9 +330,9 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackCooldown = MathHelper.floor((double)attackCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.day_stalker_cooldown_modifier_phase_2 : BossConfig.day_stalker_cooldown_modifier_phase_1));
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.day_stalker_special_cooldown_modifier_phase_2 : ConfigConstructor.day_stalker_special_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.day_stalker_special_cooldown_modifier_phase_2 : BossConfig.day_stalker_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
             this.boss.setChaseTarget(true);
@@ -343,7 +343,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.day_stalker_damage_modifier;
+        return damage * BossConfig.day_stalker_damage_modifier;
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {
@@ -391,10 +391,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             if (this.boss.isPhaseTwo()) {
-                double maxY = Math.min(target.getY(), this.boss.getY());
                 float rotation = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - this.boss.getZ(), target.getX() - this.boss.getX()));
-                WeaponUtil.doConsumerOnLine(this.boss.getWorld(), rotation, this.boss.getPos(), maxY, 16, 1.25f,
-                        (Vec3d vec, Integer warmup, Float yaw) -> this.boss.getWorld().setBlockState(BlockPos.ofFloored(vec), Blocks.FIRE.getDefaultState()));
+                WeaponUtil.doConsumerOnLine(this.boss.getWorld(), rotation, this.boss.getPos(), 4, 16, 1.25f, (Vec3d vec, Integer warmup, Float yaw) -> this.boss.getWorld().setBlockState(BlockPos.ofFloored(vec), Blocks.FIRE.getDefaultState()));
             }
         }
         if (this.attackStatus == 42) {
@@ -493,7 +491,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private MoonlightProjectile getMoonlightProjectile(EntityType<? extends MoonlightProjectile> type, float damage, int rotationDegrees, int maxAge, int explosionParticleCount, int trailParticleCount, int fireTicksApplied) {
         MoonlightProjectile projectile = new MoonlightProjectile(type, this.boss.getWorld(), this.boss);
         if (this.boss.isEmpowered()) projectile.setAppliedEffectDuration(fireTicksApplied);
-        projectile.setAgeAndPoints(maxAge, explosionParticleCount, trailParticleCount);
+        projectile.setAgeAndPoints(maxAge, explosionParticleCount, (byte) trailParticleCount);
         projectile.setDamage(this.getModifiedDamage(damage));
         projectile.setModelRotation(rotationDegrees);
         projectile.setDespawnParticle(ParticleTypes.FLAME);

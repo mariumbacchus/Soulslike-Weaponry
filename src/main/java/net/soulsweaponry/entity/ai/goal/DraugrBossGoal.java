@@ -9,11 +9,12 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -23,6 +24,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 
 import static net.soulsweaponry.entity.mobs.DraugrBoss.States;
@@ -45,7 +47,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
 
     public void reset(float cooldownModifier, boolean shieldUp) {
         this.attackStatus = 0;
-        this.attackCooldown = (int)Math.floor((ConfigConstructor.old_champions_remains_attack_cooldown_ticks * cooldownModifier) /
+        this.attackCooldown = (int)Math.floor((BossConfig.old_champions_remains_attack_cooldown_ticks * cooldownModifier) /
                 this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F ? 2 : 1);
         this.boss.setState(States.IDLE);
         this.boss.updateDisableShield(false);
@@ -53,7 +55,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     }
 
     public boolean applyDamage(LivingEntity target, float baseDamage) {
-        float modified = baseDamage * ConfigConstructor.old_champions_remains_damage_modifier;
+        float modified = baseDamage * BossConfig.old_champions_remains_damage_modifier;
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }
@@ -192,11 +194,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                 }
                 case BACKSTEP -> this.backstep(target);
                 case HEAVY -> this.heavyBlow(target);
-                case GROUND_SLAM -> this.aoe(30, 14, 8f, 3f, new StatusEffect[]{}, 4D, false);
+                case GROUND_SLAM -> this.aoe(30, 14, 8f, 3f, List.of(), 4D, false);
                 case PARRY -> this.parry(target);
                 case BATTLE_CRY -> {
-                    StatusEffect[] effects = {StatusEffects.SLOWNESS, StatusEffects.WEAKNESS};
-                    this.aoe(50, 30, 0, 0, effects, 10D, true);
+                    this.aoe(50, 30, 0, 0, List.of(StatusEffects.SLOWNESS, StatusEffects.WEAKNESS), 10D, true);
                 }
                 case LEAP -> this.leapAttack(target, 18f, false);
                 case RUN_THRUST -> this.runThrust(target);
@@ -218,7 +219,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
                         ParticleHandler.singleParticle(this.boss.getWorld(), ParticleTypes.SWEEP_ATTACK, target.getX(), target.getEyeY(), target.getZ(), 0, 0, 0);
                     }
                     if (applyBleed) {
-                        BleedData.addBleed(target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
+                        BleedData.addBleed(target, (int) BossConfig.old_champions_remains_bleed_applied);
                         target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 200, 0));
                     }
                     if (knockback > 0) {
@@ -272,10 +273,10 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
     }
 
-    private void aoe(int maxTicks, int frame, float damage, float knockback, StatusEffect[] effects, double boxSize, boolean shieldUpWhenDone) {
+    private void aoe(int maxTicks, int frame, float damage, float knockback, List<StatusEffect> effects, double boxSize, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
-        if (effects.length > 0 && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        if (!effects.isEmpty() && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
         if (attackStatus == frame) {
             if (damage > 0) {
                 if (!this.boss.getWorld().isClient) {
@@ -299,8 +300,8 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         if (this.attackStatus >= maxTicks) {
             this.reset(2f, shieldUpWhenDone);
-            if (effects.length > 0) {
-                this.specialCooldown = (int) ConfigConstructor.old_champions_remains_special_cooldown_ticks;
+            if (!effects.isEmpty()) {
+                this.specialCooldown = (int) BossConfig.old_champions_remains_special_cooldown_ticks;
             }
         }
     }
@@ -327,7 +328,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         }
         if (attackStatus == 13 && this.isInMeleeRange(target)) {
             if (this.applyDamage(target, 16f)) {
-                BleedData.addBleed(target, (int) ConfigConstructor.old_champions_remains_bleed_applied);
+                BleedData.addBleed(target, (int) BossConfig.old_champions_remains_bleed_applied);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, 100, 0));
                 this.boss.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1f, 1f);
                 if (!this.boss.getWorld().isClient) {

@@ -103,16 +103,6 @@ M	src/main/java/net/soulsweaponry/client/SoulsWeaponryClient.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
 
-M	src/main/java/net/soulsweaponry/entity/ai/goal/AccursedLordGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/ChaosMonarchGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/DayStalkerGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/DraugrBossGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/FreyrSwordGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/MoonknightGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/NightProwlerGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/NightShadeGoal.java
-M	src/main/java/net/soulsweaponry/entity/ai/goal/ReturningKnightGoal.java
-
 M	src/main/java/net/soulsweaponry/entity/mobs/AccursedLordBoss.java
 M	src/main/java/net/soulsweaponry/entity/mobs/BigChungus.java
 M	src/main/java/net/soulsweaponry/entity/mobs/BossEntity.java

@@ -10,13 +10,14 @@ import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
@@ -36,14 +37,14 @@ public class ChaosMonarchGoal extends Goal {
     private boolean randomOrNot;
     private int controlledProjectile = 0;
     private BlockPos blockPos;
-    
+
     public ChaosMonarchGoal(ChaosMonarch boss) {
         this.boss = boss;
         this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.chaos_monarch_damage_modifier;
+        return damage * BossConfig.chaos_monarch_damage_modifier;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ChaosMonarchGoal extends Goal {
 
     private int adjustCooldown(float cooldownModifier) {
         int reducedCooldown = MathHelper.floor(this.boss.getMaxHealth()/this.boss.getHealth())*4;
-        return MathHelper.floor(ConfigConstructor.chaos_monarch_attack_cooldown_ticks * cooldownModifier - reducedCooldown);
+        return MathHelper.floor(BossConfig.chaos_monarch_attack_cooldown_ticks * cooldownModifier - reducedCooldown);
     }
 
     public void randomAttack() {
@@ -257,24 +258,24 @@ public class ChaosMonarchGoal extends Goal {
 
     private void randomProjectiles() {
         ProjectileEntity[] projectiles = {
-            new ArrowEntity(this.boss.getWorld(), this.boss),
-            new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.getWorld()),
-            new FireballEntity(EntityType.FIREBALL, this.boss.getWorld()),
-            new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.getWorld()),
-            new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.getWorld()),
-            new SpectralArrowEntity(this.boss.getWorld(), this.boss),
-            new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.getWorld()),
-            new EggEntity(EntityType.EGG, this.boss.getWorld()),
-            new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld()),
-            new SnowballEntity(EntityType.SNOWBALL, this.boss.getWorld()),
-            new TridentEntity(EntityType.TRIDENT, this.boss.getWorld()),
-            //Mod projectiles
-            new Cannonball(this.boss.getWorld(), this.boss),
-            new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
-            new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
-            new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),
-            new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld()),
-            new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld())
+                new ArrowEntity(this.boss.getWorld(), this.boss),
+                new DragonFireballEntity(EntityType.DRAGON_FIREBALL, this.boss.getWorld()),
+                new FireballEntity(EntityType.FIREBALL, this.boss.getWorld()),
+                new LlamaSpitEntity(EntityType.LLAMA_SPIT, this.boss.getWorld()),
+                new SmallFireballEntity(EntityType.SMALL_FIREBALL, this.boss.getWorld()),
+                new SpectralArrowEntity(this.boss.getWorld(), this.boss),
+                new WitherSkullEntity(EntityType.WITHER_SKULL, this.boss.getWorld()),
+                new EggEntity(EntityType.EGG, this.boss.getWorld()),
+                new ExperienceBottleEntity(EntityType.EXPERIENCE_BOTTLE, this.boss.getWorld()),
+                new SnowballEntity(EntityType.SNOWBALL, this.boss.getWorld()),
+                new TridentEntity(EntityType.TRIDENT, this.boss.getWorld()),
+                //Mod projectiles
+                new Cannonball(this.boss.getWorld(), this.boss),
+                new ChargedArrow(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE, this.boss.getWorld()),
+                new CometSpearEntity(EntityRegistry.COMET_SPEAR_ENTITY_TYPE, this.boss.getWorld()),
+                new DragonslayerSwordspearEntity(EntityRegistry.SWORDSPEAR_ENTITY_TYPE, this.boss.getWorld()),
+                new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss),
+                new SilverBulletEntity(EntityRegistry.SILVER_BULLET_ENTITY_TYPE, this.boss.getWorld())
         };
         if (this.boss.getTarget() != null) {
             LivingEntity target = this.boss.getTarget();
