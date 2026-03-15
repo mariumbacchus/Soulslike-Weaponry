@@ -20,13 +20,13 @@ import net.minecraft.world.World;
 import net.soulsweaponry.blocks.*;
 import net.soulsweaponry.items.abilities.abilitykeybind.IKeybindAbility;
 import net.soulsweaponry.registry.BlockRegistry;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public record CorruptGround(
         int range, float bonusRangePerLvl, float effectRange, float effectRangePerLvl, List<StatusEffectInstance> effects
@@ -37,7 +37,7 @@ public record CorruptGround(
             Blocks.DIRT, BlockRegistry.WITHERED_DIRT
     );
     private static final Map<Block, WitheredGrass> TURNABLE_GRASS = Map.of(
-            Blocks.SHORT_GRASS, BlockRegistry.WITHERED_GRASS,
+            Blocks.GRASS, BlockRegistry.WITHERED_GRASS,
             Blocks.FERN, BlockRegistry.WITHERED_FERN,
             Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH
     );
@@ -48,7 +48,7 @@ public record CorruptGround(
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        stack.set(ComponentRegistry.IS_CORRUPT_ACTIVE, !this.isActivated(stack));
+        NbtHelper.putBoolean(stack, NbtIds.IS_CORRUPT_ACTIVE, !this.isActivated(stack));
     }
 
     @Override
@@ -67,7 +67,7 @@ public record CorruptGround(
     }
 
     public boolean isActivated(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.IS_CORRUPT_ACTIVE)).orElse(false);
+        return NbtHelper.getBoolean(stack, NbtIds.IS_CORRUPT_ACTIVE, false);
     }
 
     public void turnBlocks(LivingEntity entity, World world, BlockPos blockPos, ItemStack stack) {

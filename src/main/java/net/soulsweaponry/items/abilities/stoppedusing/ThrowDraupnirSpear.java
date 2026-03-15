@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.DraupnirSpearEntity;
-import net.soulsweaponry.items.abilities.abilitykeybind.ExplodeSavedEntities;
+import net.soulsweaponry.util.NbtHelper;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -24,8 +24,8 @@ public record ThrowDraupnirSpear(float projectileSpeed, int minCooldown, int coo
             entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.projectileSpeed, 1.0F);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
             world.spawnEntity(entity);
-            world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
-            ExplodeSavedEntities.saveEntityOnItem(stack, entity);
+            world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            NbtHelper.saveEntityOnItem(stack, entity);
             this.applyItemCooldown(stack.getItem(), playerEntity, this.getScaledCooldownThrow(stack));
             stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
         }

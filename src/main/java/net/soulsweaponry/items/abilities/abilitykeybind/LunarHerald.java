@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.abilities.abilitykeybind;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,7 +28,7 @@ public record LunarHerald(
             int amp = (int) (this.amp + this.bonusAmpPerLvl * lvl);
             player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, duration, amp));
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
-            stack.damage(1, player, LivingEntity.getSlotForHand(hand == null ? player.getActiveHand() : hand));
+            stack.damage(1, player, p -> p.sendToolBreakStatus(hand == null ? player.getActiveHand() : hand));
         }
     }
 

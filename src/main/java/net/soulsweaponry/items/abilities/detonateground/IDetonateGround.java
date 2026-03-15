@@ -8,7 +8,6 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -21,9 +20,9 @@ import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.spear.CometSpear;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -42,7 +41,7 @@ public interface IDetonateGround {
                 if (!livingEntity.isAlive() || livingEntity.isTeammate(user)) {
                     continue;
                 }
-                float bonus = world instanceof ServerWorld serverWorld ? EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0) : 0;
+                float bonus = EnchantmentHelper.getAttackDamage(stack, livingEntity.getGroup());
                 boolean canDamageTarget = livingEntity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, user), power + bonus);
                 if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getDetonationAttributes().launchMod(), this.getDetonationAttributes().maxLaunchPower()), 0);
@@ -53,7 +52,7 @@ public interface IDetonateGround {
             }
         }
         this.getDetonationAttributes().onTrigger().accept(user, fallDistance, stack);
-        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
+        world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         float pDistance = fallDistance >= 25 ? fallDistance/25 : 1;
         if (!world.isClient) {
             ParticleHandler.particleOutburstMap(world, MathHelper.floor(200 * pDistance), user.getX(), user.getY(), user.getZ(), ParticleEvents.BASE_GRAND_SKYFALL_MAP, pDistance);

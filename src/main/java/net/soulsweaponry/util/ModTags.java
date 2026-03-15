@@ -89,9 +89,10 @@ public class ModTags {
     }
 
     public static class Entities {
-        public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
         public static final TagKey<EntityType<?>> RANGED_MOBS = createCommonTag("ranged_mobs");
         public static final TagKey<EntityType<?>> DRAGONS = createCommonTag("dragons");
+        public static final TagKey<EntityType<?>> ARTHROPOD = createCommonTag("arthropod");
+        public static final TagKey<EntityType<?>> UNDEAD = createCommonTag("undead");
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {
             return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of("c", id));

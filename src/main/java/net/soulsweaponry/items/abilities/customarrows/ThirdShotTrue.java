@@ -9,7 +9,8 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
@@ -22,21 +23,17 @@ public record ThirdShotTrue(
 
     @Override
     public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        Integer firedShots = bowStack.get(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER);
+        int firedShots = NbtHelper.getInt(bowStack, NbtIds.KRAKEN_SLAYER_SHOTS_COUNTER, 0);
         int lvl = WeaponUtil.getUpgradeLevel(bowStack);
         int stacksPerShot = this.getStacksAddedPerShot(lvl);
-        if (firedShots != null) {
-            if (firedShots >= this.maxStacksUntilTrigger) {
-                TrueDamageArrow projectile = new TrueDamageArrow(world, shooter, arrowStack, bowStack);
-                projectile.setTrueDamage(this.getTrueDamage(lvl));
-                projectile.setDamage(originalArrow.getDamage());
-                bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, stacksPerShot);
-                return projectile;
-            } else {
-                bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, firedShots + stacksPerShot);
-            }
+        if (firedShots >= this.maxStacksUntilTrigger) {
+            TrueDamageArrow projectile = new TrueDamageArrow(world, shooter, arrowStack, bowStack);
+            projectile.setTrueDamage(this.getTrueDamage(lvl));
+            projectile.setDamage(originalArrow.getDamage());
+            NbtHelper.putInt(bowStack, NbtIds.KRAKEN_SLAYER_SHOTS_COUNTER, stacksPerShot);
+            return projectile;
         } else {
-            bowStack.set(ComponentRegistry.KRAKEN_SLAYER_SHOTS_COUNTER, stacksPerShot);
+            NbtHelper.putInt(bowStack, NbtIds.KRAKEN_SLAYER_SHOTS_COUNTER, firedShots + stacksPerShot);
         }
         return null;
     }

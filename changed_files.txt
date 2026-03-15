@@ -73,3 +73,5 @@ M	src/main/java/net/soulsweaponry/registry/ComponentRegistry.java
 UpgradeUtil.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
 M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
+
+ModTags

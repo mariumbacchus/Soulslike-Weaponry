@@ -14,9 +14,8 @@ import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.registry.AttributeRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
-import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.Optional;
 
@@ -101,7 +100,7 @@ public class EntityBleed {
      */
     public static boolean isBleedDisabled(LivingEntity entity) {
         Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        return entity.getType().isIn(EntityTypeTags.SKELETONS) || entity.getType().isIn(ModTags.Entities.SKELETONS) || ConfigConstructor.disable_bleed_mechanic_for_all_mobs
+        return entity.getType().isIn(EntityTypeTags.SKELETONS) || ConfigConstructor.disable_bleed_mechanic_for_all_mobs
                 || (op.isPresent() && op.get().max_bleed < 0);
     }
 }

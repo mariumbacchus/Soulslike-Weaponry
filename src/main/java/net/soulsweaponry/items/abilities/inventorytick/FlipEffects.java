@@ -7,21 +7,22 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FlipEffects implements IAbility {
 
     /**
      * Will contain harmful effects as the key, and the opposite beneficial effect as value
      */
-    private static final HashMap<RegistryEntry<StatusEffect>, RegistryEntry<StatusEffect>> FLIPPABLE_EFFECTS = new HashMap<>();
+    private static final HashMap<StatusEffect, StatusEffect> FLIPPABLE_EFFECTS = new HashMap<>();
     private final float newEffectDurationMod;
     private final float newEffectAmpMod;
     private final int minCooldown;
@@ -47,14 +48,14 @@ public class FlipEffects implements IAbility {
 
     private void flipEffects(PlayerEntity player, ItemStack stack) {
         List<StatusEffectInstance> statusEffectsCopy = new ArrayList<>(player.getStatusEffects());
-        List<RegistryEntry<StatusEffect>> effectsToRemove = new ArrayList<>();
+        List<StatusEffect> effectsToRemove = new ArrayList<>();
         boolean triggered = false;
         for (StatusEffectInstance instance : statusEffectsCopy) {
-            RegistryEntry<StatusEffect> effect = instance.getEffectType();
-            if (effect.value().getCategory() == StatusEffectCategory.HARMFUL) {
+            StatusEffect effect = instance.getEffectType();
+            if (effect.getCategory() == StatusEffectCategory.HARMFUL) {
                 int duration = (int) (instance.getDuration() * this.newEffectDurationMod);
                 int amplifier = (int) (instance.getAmplifier() * this.newEffectAmpMod);
-                RegistryEntry<StatusEffect> newEffect = FLIPPABLE_EFFECTS.get(instance.getEffectType());
+                StatusEffect newEffect = FLIPPABLE_EFFECTS.get(instance.getEffectType());
                 if (newEffect == null) {
                     newEffect = StatusEffects.REGENERATION;
                 }
@@ -63,7 +64,7 @@ public class FlipEffects implements IAbility {
                 player.addStatusEffect(new StatusEffectInstance(newEffect, duration, amplifier));
             }
         }
-        for (RegistryEntry<StatusEffect> effectToRemove : effectsToRemove) {
+        for (StatusEffect effectToRemove : effectsToRemove) {
             player.removeStatusEffect(effectToRemove);
         }
         if (triggered && !player.isCreative()) {

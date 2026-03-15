@@ -1,16 +1,18 @@
 package net.soulsweaponry.items.abilities.bonusdamage;
 
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.soulsweaponry.util.ModTags;
 
 import java.util.List;
 
 public class UndeadBonus extends EntityTagBonus {
 
     public UndeadBonus(float baseBonusDamage, float bonusDamagePerLvl) {
-        super(EntityTypeTags.UNDEAD, baseBonusDamage, bonusDamagePerLvl);
+        super(ModTags.Entities.UNDEAD, EntityGroup.UNDEAD, baseBonusDamage, bonusDamagePerLvl);
     }
 
     @Override

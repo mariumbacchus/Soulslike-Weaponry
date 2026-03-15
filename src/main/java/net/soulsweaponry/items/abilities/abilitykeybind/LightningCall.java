@@ -68,7 +68,7 @@ public record LightningCall(
                     target.damage(world.getDamageSources().mobAttack(player), this.stormStompDamage + this.bonusStormStompDamagePerLvl * lvl);
                     ParticleHandler.particleSphereList(world, 20, target.getX(), target.getY(), target.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
                 }
-                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
         this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownAbility(world, stack));

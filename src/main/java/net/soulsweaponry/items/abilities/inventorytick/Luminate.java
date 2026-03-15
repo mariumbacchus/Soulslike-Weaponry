@@ -7,10 +7,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * TODO for another time: Make the item light up if it is active like how Dynamic Lights or shaders do it
@@ -33,11 +33,11 @@ public class Luminate implements IAbility {
     }
 
     private void setActive(ItemStack stack, boolean bl) {
-        stack.set(ComponentRegistry.LUMINATE, bl);
+        NbtHelper.putBoolean(stack, NbtIds.LUMINATE, bl);
     }
 
     public boolean isActive(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.LUMINATE)).orElse(false);
+        return NbtHelper.getBoolean(stack, NbtIds.LUMINATE, false);
     }
 
     @Override

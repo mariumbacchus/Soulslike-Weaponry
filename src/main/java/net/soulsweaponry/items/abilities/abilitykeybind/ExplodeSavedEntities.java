@@ -17,19 +17,17 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Spawns an explosion around the player and detonates all the entities saved to the item, spawning
  * a regular TNT explosion with power based on the item's level.
- * Entities to explode and be removed come from the {@link ComponentRegistry#SAVED_ENTITY_UUID_LIST} component.
+ * Entities to explode and be removed come from the saved {@link net.soulsweaponry.util.NbtIds#SAVED_ENTITY_UUID_LIST} nbt.
  */
 public record ExplodeSavedEntities(double userExplosionRadius, float baseDamage, float bonusDamagePerLvl,
                                    float bonusEnchantDmgMod, float knockup,
@@ -51,50 +49,41 @@ public record ExplodeSavedEntities(double userExplosionRadius, float baseDamage,
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity living) {
                 entity.damage(world.getDamageSources().mobAttack(player),
-                        damage + this.bonusEnchantDmgMod * EnchantmentHelper.getDamage(world, stack, living, world.getDamageSources().playerAttack(player), 0));
+                        damage + this.bonusEnchantDmgMod * EnchantmentHelper.getAttackDamage(stack, living.getGroup()));
                 entity.addVelocity(0, this.knockup, 0);
             }
         }
         ParticleHandler.particleOutburstMap(world, 250, player.getX(), player.getY(), player.getZ(), ParticleEvents.DEFAULT_GRAND_SKYFALL_MAP, 0.5f);
-        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
         this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownExplode(stack));
         this.explodeSavedEntities(world, stack, player);
     }
 
     private void explodeSavedEntities(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        List<UUID> uuids = stack.get(ComponentRegistry.SAVED_ENTITY_UUID_LIST);
-        if (uuids != null) {
-            for (UUID uuid : uuids) {
-                Entity entity = world.getEntity(uuid);
-                if (entity == null) {
-                    continue;
-                }
-                float power = this.spearBaseExplosionPower + this.spearBonusExplosionPowerPerLvl * WeaponUtil.getUpgradeLevel(stack);
-                world.createExplosion(player, entity.getX(), entity.getY(), entity.getZ(), power, false, World.ExplosionSourceType.TRIGGER);
-                if (power >= this.powerNeededToApplyWeakness) {
-                    for (Entity entity2 : world.getOtherEntities(player, entity.getBoundingBox().expand(power))) {
-                        if (entity2 instanceof LivingEntity living) {
-                            living.addStatusEffect(new StatusEffectInstance(
-                                    StatusEffects.WEAKNESS, this.weaknessDuration,
-                                    (int) (this.weaknessBaseAmp + this.bonusWeaknessAmpPerPower * power)));
-                        }
+        List<UUID> uuids = NbtHelper.getSavedEntities(stack);
+        for (UUID uuid : uuids) {
+            Entity entity = world.getEntity(uuid);
+            if (entity == null) {
+                continue;
+            }
+            float power = this.spearBaseExplosionPower + this.spearBonusExplosionPowerPerLvl * WeaponUtil.getUpgradeLevel(stack);
+            world.createExplosion(player, entity.getX(), entity.getY(), entity.getZ(), power, false, World.ExplosionSourceType.NONE);
+            if (power >= this.powerNeededToApplyWeakness) {
+                for (Entity entity2 : world.getOtherEntities(player, entity.getBoundingBox().expand(power))) {
+                    if (entity2 instanceof LivingEntity living) {
+                        living.addStatusEffect(new StatusEffectInstance(
+                                StatusEffects.WEAKNESS, this.weaknessDuration,
+                                (int) (this.weaknessBaseAmp + this.bonusWeaknessAmpPerPower * power)));
                     }
                 }
-                entity.remove(Entity.RemovalReason.DISCARDED);
             }
-            stack.set(ComponentRegistry.SAVED_ENTITY_UUID_LIST, List.of());
+            entity.remove(Entity.RemovalReason.DISCARDED);
         }
+        NbtHelper.clearSavedEntities(stack);
     }
 
     private int getScaledCooldownExplode(ItemStack stack) {
         return Math.max(this.minCooldown, this.cooldown - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl);
-    }
-
-    public static void saveEntityOnItem(ItemStack stack, Entity entity) {
-        List<UUID> ids = Optional.ofNullable(stack.get(ComponentRegistry.SAVED_ENTITY_UUID_LIST)).orElse(new ArrayList<>());
-        List<UUID> newList = new ArrayList<>(ids);
-        newList.add(entity.getUuid());
-        stack.set(ComponentRegistry.SAVED_ENTITY_UUID_LIST, newList);
     }
 
     @Override
