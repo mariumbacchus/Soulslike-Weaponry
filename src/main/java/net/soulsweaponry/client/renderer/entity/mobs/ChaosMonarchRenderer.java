@@ -20,7 +20,7 @@ public class ChaosMonarchRenderer extends GeoEntityRenderer<ChaosMonarch> {
         super(ctx, new ChaosMonarchModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
     protected float getDeathMaxRotation(ChaosMonarch entityLivingBaseIn) {
         return 0f;
@@ -28,10 +28,10 @@ public class ChaosMonarchRenderer extends GeoEntityRenderer<ChaosMonarch> {
 
     @Override
     public void render(ChaosMonarch entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+        //TODO find other method
+        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
+                entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }
 }

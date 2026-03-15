@@ -20,7 +20,7 @@ public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss
         super(ctx, new AccursedLordBossModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
     protected float getDeathMaxRotation(AccursedLordBoss entityLivingBaseIn) {
         return 0f;
@@ -28,10 +28,11 @@ public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss
 
     @Override
     public void render(AccursedLordBoss entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+        //TODO find other method, also just make an abstract class of GeoEntityRenderer<?> that
+        // has the custom death light handling by default instead of calling from every boss renderer
+        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
+                entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }
 }

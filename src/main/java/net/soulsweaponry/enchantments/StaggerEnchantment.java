@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IUltraHeavy;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
@@ -47,10 +46,5 @@ public class StaggerEnchantment extends Enchantment {
             PostureData.addPostureLoss(living, postureLoss);
         }
         super.onTargetDamaged(user, target, level);
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof IUltraHeavy || super.isAcceptableItem(stack);
     }
 }

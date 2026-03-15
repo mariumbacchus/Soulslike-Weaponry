@@ -95,7 +95,7 @@ public class FreyrSwordGoal extends Goal {
 
     public float getAttackDamage(ServerWorld world, LivingEntity target) {
         return ConfigConstructor.sword_of_freyr_damage + ConfigConstructor.sword_of_freyr_entity_bonus_damage_per_level
-                * WeaponUtil.getUpgradeLevel(this.entity.asItemStack()) + ConfigConstructor.sword_of_freyr_entity_bonus_enchant_damage_mod
-                * EnchantmentHelper.getAttackDamage(this.entity.asItemStack(), target.getGroup());
+                * WeaponUtil.getUpgradeLevel(this.entity.getStack()) + ConfigConstructor.sword_of_freyr_entity_bonus_enchant_damage_mod
+                * EnchantmentHelper.getAttackDamage(this.entity.getStack(), target.getGroup());
     }
 }

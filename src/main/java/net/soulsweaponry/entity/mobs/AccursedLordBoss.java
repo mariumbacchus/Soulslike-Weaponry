@@ -45,7 +45,8 @@ import java.util.List;
 
 public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
-    private final software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this); int deathTicks;
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
     public ArrayList<BlockPos> lavaPos = new ArrayList<>();

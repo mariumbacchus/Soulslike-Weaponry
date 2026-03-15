@@ -57,7 +57,7 @@ public class Supernova extends UltraHeavyWeapon {
                     pillar.setPos(vec3d.getX(), vec3d.getY(), vec3d.getZ());
                     pillar.setParticleAmountMod(1.5f);
                     user.getWorld().spawnEntity(pillar);
-                    user.getWorld().playSound(null, BlockPos.ofFloored(vec3d), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 1f, 1f);
+                    user.getWorld().playSound(null, BlockPos.ofFloored(vec3d), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
                 }));
             }
     );

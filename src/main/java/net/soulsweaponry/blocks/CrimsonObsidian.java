@@ -1,9 +1,11 @@
 package net.soulsweaponry.blocks;
 
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalEntityTypeTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +62,7 @@ public class CrimsonObsidian extends BlockWithEntity {
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
         if (!world.isClient) {
             CrimsonObsidianBlockEntity blockEntity = (CrimsonObsidianBlockEntity) world.getBlockEntity(pos);
-            if (blockEntity != null && !entity.getType().isIn(ModTags.Entities.SKELETONS) && entity.damage(world.getDamageSources().hotFloor(), 1.0F)) {
+            if (blockEntity != null && !entity.getType().isIn(EntityTypeTags.SKELETONS) && entity.damage(world.getDamageSources().hotFloor(), 1.0F)) {
                 blockEntity.increaseBloodCount();
             }
         }

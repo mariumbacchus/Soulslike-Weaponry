@@ -47,7 +47,7 @@ import java.util.List;
 
 public class ChaosMonarch extends BossEntity implements GeoEntity {
 
-    private final software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
     private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
