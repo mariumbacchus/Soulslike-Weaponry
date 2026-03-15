@@ -9,18 +9,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
-import net.soulsweaponry.items.*;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.IHasEssence;
+import net.soulsweaponry.items.abilities.ISharpened;
+import net.soulsweaponry.items.abilities.inventorytick.Luminate;
+import net.soulsweaponry.items.abilities.use.InvisibleItem;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
-import net.soulsweaponry.items.sword.Sting;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
+import java.util.Optional;
+
 public class PredicateRegistry {
-    
+
     public static void initClient() {
 
         // The Ranged Weapon API adds predicates for you, so this isn't really needed anymore
@@ -53,9 +58,9 @@ public class PredicateRegistry {
         PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.DARKIN_SCYTHE_PRIME, "bettercombat");
         PredicateRegistry.registerOtherModIsLoaded(WeaponRegistry.KRAKEN_SLAYER, "epicfight");
 
-        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
-        PredicateRegistry.registerCharged(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
-        PredicateRegistry.registerCharged(WeaponRegistry.BLUEMOON_GREATSWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.HOLY_MOONLIGHT_SWORD);
+        PredicateRegistry.registerMaxEssence(WeaponRegistry.BLUEMOON_GREATSWORD);
 
         PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_SWORD);
         PredicateRegistry.registerTranslucentAbility(WeaponRegistry.TRANSLUCENT_GLAIVE);
@@ -82,7 +87,7 @@ public class PredicateRegistry {
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.SKOFNUNG, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (itemStack.getItem() instanceof Skofnung) {
-                boolean emp = Skofnung.isEmpowered(itemStack);
+                boolean emp = ISharpened.isEmpowered(itemStack);
                 if (emp) {
                     return 1.0F;
                 }
@@ -92,9 +97,9 @@ public class PredicateRegistry {
 
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.STING, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.getItem() instanceof Sting) {
-                boolean emp = ((Sting) itemStack.getItem()).isActive(itemStack);
-                if (emp) {
+            if (itemStack.getItem() instanceof IHasAbilities hasAbilities) {
+                Optional<Luminate> op = hasAbilities.findAbility(Luminate.class);
+                if (op.isPresent() && op.get().isActive(itemStack)) {
                     return 1.0F;
                 }
             }
@@ -127,7 +132,7 @@ public class PredicateRegistry {
 
     // The Ranged Weapon API does this for you
     /*protected static void registerPulling(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("pulling"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+        ModelPredicateProviderRegistry.register(item, Identifier.of("pulling"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity == null) {
                 return 0.0F;
             }
@@ -137,7 +142,7 @@ public class PredicateRegistry {
 
     // The Ranged Weapon API does this for you
     /*protected static void registerPull(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("pull"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
+        ModelPredicateProviderRegistry.register(item, Identifier.of("pull"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
             if (livingEntity == null) {
                 return 0.0F;
             }
@@ -158,9 +163,10 @@ public class PredicateRegistry {
         ModelPredicateProviderRegistry.register(item , new Identifier(id), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> WeaponUtil.isModLoaded(id) ? 1f : 0f);
     }
 
-    protected static void registerCharged(Item item) {
+    protected static void registerMaxEssence(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (((IChargeNeeded)item).isCharged(itemStack)) {
+            Optional<IHasEssence> op = IHasAbilities.getAbility(itemStack, IHasEssence.class);
+            if (op.isPresent() && op.get().hasMaxEssence(itemStack)) {
                 return 1.0f;
             }
             return 0.0f;
@@ -168,11 +174,11 @@ public class PredicateRegistry {
     }
 
     public static void registerTranslucentAbility(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> TranslucentWeapon.isInvisible(itemStack) ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(item, new Identifier("invisible"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> InvisibleItem.isInvisible(itemStack) ? 1f : 0f);
     }
 
     /*protected static void registerCrossbowCharged(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("charged"), (stack, world, entity, seed) -> {
+        ModelPredicateProviderRegistry.register(item, Identifier.of("charged"), (stack, world, entity, seed) -> {
             return CrossbowItem.isCharged(stack) ? 1.0f : 0.0f;
         });
     }*/

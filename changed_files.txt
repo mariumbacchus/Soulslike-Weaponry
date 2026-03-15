@@ -64,6 +64,7 @@ M	src/main/generated/data/soulsweapons/recipe/ranged_item_upgradables_upgrade.js
 M	src/main/generated/data/soulsweapons/recipe/shovels_upgrade.json
 M	src/main/generated/data/soulsweapons/tags/item/melee_item_upgradables.json
 M	src/main/generated/data/soulsweapons/tags/item/soul_harvesting_weapons.json
+D	src/main/generated/data/c/tags/item/tools/ranged_weapon.json
 
 A	src/main/resources/assets/soulsweapons/lang/vi_vn.json
 A	src/main/resources/assets/soulsweapons/models/item/nightlords_sword.json
@@ -82,43 +83,6 @@ A	src/main/resources/assets/soulsweapons/textures/mob_effect/potency.png
 A	src/main/resources/assets/soulsweapons/textures/mob_effect/soul_of_cinder.png
 A	src/main/resources/data/soulsweapons/capabilities/weapons/nightlords_sword.json
 A	src/main/resources/data/soulsweapons/weapon_attributes/nightlords_sword.json
-D	src/main/generated/data/c/tags/item/tools/ranged_weapon.json
-
-M	.gitignore
-M	build.gradle
-M	CHANGELOG.md
-M	gradle.properties
-M	README.md
-
-M	src/main/java/net/soulsweaponry/client/hud/BleedHudOverlay.java
-M	src/main/java/net/soulsweaponry/client/hud/FrostHudOverlay.java
-M	src/main/java/net/soulsweaponry/client/hud/PostureHudOverlay.java
-M	src/main/java/net/soulsweaponry/client/registry/HudRegistry.java
-M	src/main/java/net/soulsweaponry/client/registry/KeyBindRegistry.java
-M	src/main/java/net/soulsweaponry/client/registry/ParticleClientRegistry.java
-M	src/main/java/net/soulsweaponry/client/registry/PredicateRegistry.java
-
-M	src/main/java/net/soulsweaponry/client/SoulsWeaponryClient.java
-
-M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
-M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
-
-ALL ABILITIES
-
-M	src/main/java/net/soulsweaponry/mixin/ItemMixin.java
-
-M	src/main/java/net/soulsweaponry/registry/ArmorRegistry.java
-M	src/main/java/net/soulsweaponry/registry/AttributeRegistry.java
-M	src/main/java/net/soulsweaponry/registry/ComponentRegistry.java
-M	src/main/java/net/soulsweaponry/registry/EffectRegistry.java
-M	src/main/java/net/soulsweaponry/registry/EnchantRegistry.java
-M	src/main/java/net/soulsweaponry/registry/EntityRegistry.java
-M	src/main/java/net/soulsweaponry/registry/ItemRegistry.java
-M	src/main/java/net/soulsweaponry/registry/MaterialRegistry.java
-M	src/main/java/net/soulsweaponry/registry/ParticleRegistry.java
-M	src/main/java/net/soulsweaponry/registry/WeaponRegistry.java
-
-M	src/main/java/net/soulsweaponry/SoulsWeaponry.java
 
 M	src/main/resources/assets/soulsweapons/lang/en_us.json
 M	src/main/resources/assets/soulsweapons/lang/es_es.json
@@ -140,3 +104,16 @@ M	src/main/resources/data/soulsweapons/entitystats/returning_knight.json
 M	src/main/resources/data/soulsweapons/entitystats/withered_demon.json
 M	src/main/resources/fabric.mod.json
 M	src/main/resources/soulsweapons.mixins.json
+
+M	.gitignore
+M	build.gradle
+M	CHANGELOG.md
+M	gradle.properties
+M	README.md
+
+M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
+M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
+
+ALL ABILITIES
+// They use component registry so maybe make one for nbt strings to keep overview and make helper methods in weapon util?
+M	src/main/java/net/soulsweaponry/registry/ComponentRegistry.java

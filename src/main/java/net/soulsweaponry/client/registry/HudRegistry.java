@@ -10,6 +10,7 @@ public class HudRegistry {
     public static void init() {
         registerEffectOverlay(new PostureHudOverlay());
         registerEffectOverlay(new BleedHudOverlay());
+        registerEffectOverlay(new FrostHudOverlay());
         CustomBossBar.init();
         HudRenderCallback.EVENT.register(new TargetPostureHudOverlay());
     }

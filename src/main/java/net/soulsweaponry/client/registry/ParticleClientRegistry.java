@@ -2,12 +2,13 @@ package net.soulsweaponry.client.registry;
 
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.FlameParticle;
+import net.soulsweaponry.client.particles.CyanSweepAttackParticle;
 import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 public class ParticleClientRegistry {
-    
+
     public static void initClient() {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.PURPLE_FLAME, FlameParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.NIGHTFALL_PARTICLE, FlameParticle.Factory::new);
@@ -19,5 +20,6 @@ public class ParticleClientRegistry {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.BLUE_FLAME, FlameParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.SOUL_SPARK, SoulSparkFactory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.ECHO_SMOKE, EchoSmokeFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.ECHO_SWEEP_ATTACK, CyanSweepAttackParticle.Factory::new);
     }
 }

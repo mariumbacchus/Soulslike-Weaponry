@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
 
 public class ParticleRegistry {
-    
+
     public static final DefaultParticleType NIGHTFALL_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType DAZZLING_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType PURPLE_FLAME = FabricParticleTypes.simple();
@@ -19,6 +19,7 @@ public class ParticleRegistry {
     public static final DefaultParticleType BLUE_FLAME = FabricParticleTypes.simple();
     public static final DefaultParticleType SOUL_SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType ECHO_SMOKE = FabricParticleTypes.simple();
+    public static final DefaultParticleType ECHO_SWEEP_ATTACK = FabricParticleTypes.simple();
 
     public static void init() {
         registerParticle(NIGHTFALL_PARTICLE, "nightfall_particle");
@@ -31,6 +32,7 @@ public class ParticleRegistry {
         registerParticle(BLUE_FLAME, "blue_flame");
         registerParticle(SOUL_SPARK, "soul_spark");
         registerParticle(ECHO_SMOKE, "echo_smoke");
+        registerParticle(ECHO_SWEEP_ATTACK, "echo_sweep_attack");
     }
 
     public static void registerParticle(DefaultParticleType particle, String name) {

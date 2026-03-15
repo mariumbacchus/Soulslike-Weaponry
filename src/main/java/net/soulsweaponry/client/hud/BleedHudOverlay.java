@@ -10,18 +10,20 @@ import net.soulsweaponry.entitydata.BleedData;
 
 public class BleedHudOverlay extends EffectHudOverlay {
 
-    private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
+    private static final Identifier TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
 
     @Override
-    public Identifier getTexture() {
+    public Identifier getTexture(ClientPlayerEntity player) {
         return TEXTURE;
     }
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int bleed = BleedData.getBleed(player);
-        float bleedPerPixel = EntityBleed.getMaxBleed(player) / (float) 182;
-        return MathHelper.floor((float) bleed / bleedPerPixel);
+        int bleed = Math.max(0, BleedData.getBleed(player));
+        int max = Math.max(1, EntityBleed.getMaxBleed(player));
+        bleed = Math.min(bleed, max);
+        int pixels = bleed * BAR_WIDTH / max;
+        return MathHelper.clamp(pixels, 0, BAR_WIDTH);
     }
 
     @Override

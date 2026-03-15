@@ -1,28 +1,24 @@
 package net.soulsweaponry.client.registry;
 
 import com.mrcrayfish.controllable.client.binding.ButtonBindings;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.WeaponUtil;
-import org.lwjgl.glfw.GLFW;
-
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Hand;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.PacketIds;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.util.WeaponUtil;
+import org.lwjgl.glfw.GLFW;
 
 public class KeyBindRegistry {
 
@@ -92,23 +88,15 @@ public class KeyBindRegistry {
                 ClientPlayNetworking.send(PacketIds.KEYBIND_ABILITY, PacketByteBufs.empty());
                 if (client.player != null) {
                     ClientPlayerEntity player = client.player;
-                    for (Hand hand : Hand.values()) {
-                        ItemStack stack = player.getStackInHand(hand);
-                        if (stack.getItem() instanceof IKeybindAbility abilityItem) {
-                            if (stack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(stack)) {
-                                configDisable.notifyDisabled(player);
-                            } else {
-                                abilityItem.useKeybindAbilityClient(client.world, player.getStackInHand(hand), player);
-                            }
+                    for (ItemStack armorStack : player.getArmorItems()) {
+                        if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
+                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player, null);
                         }
                     }
-                    for (ItemStack armorStack : player.getArmorItems()) {
-                        if (armorStack.getItem() instanceof IKeybindAbility abilityItem) {
-                            if (armorStack.getItem() instanceof IConfigDisable configDisable && configDisable.isDisabled(armorStack)) {
-                                configDisable.notifyDisabled(player);
-                            } else {
-                                abilityItem.useKeybindAbilityClient(client.world, armorStack, player);
-                            }
+                    for (Hand hand : Hand.values()) {
+                        ItemStack stack = player.getStackInHand(hand);
+                        if (stack.getItem() instanceof IHasAbilities abilityItem) {
+                            abilityItem.useKeybindAbilityClient(client.world, stack, player, hand);
                         }
                     }
                 }
@@ -122,34 +110,34 @@ public class KeyBindRegistry {
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            boolean effect = effectShootMoonlight.isPressed();
-            boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
-            boolean controller = false;
-            if (WeaponUtil.isModLoaded("controllable")) {
-                controller = ButtonBindings.ATTACK.isButtonPressed();
-            }
-            if (effect || melee || controller) {
+            if (effectShootMoonlight.isPressed()) {
                 if (client.player != null) {
-                    boolean accept = false;
-                    if (effect && client.player.hasStatusEffect(EffectRegistry.MOON_HERALD) && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING)) {
-                        accept = true;
-                        client.player.getItemCooldownManager().set(ItemRegistry.MOONSTONE_RING, (int) ConfigConstructor.moonstone_ring_projectile_cooldown);
-                    } else if (melee || controller) {
-                        for (Hand hand : Hand.values()) {
-                            ItemStack stack = client.player.getStackInHand(hand);
-                            boolean moonlight = stack.isOf(WeaponRegistry.MOONLIGHT_SHORTSWORD) && !ConfigConstructor.disable_use_moonlight_shortsword;
-                            boolean bluemoon = stack.isOf(WeaponRegistry.BLUEMOON_SHORTSWORD) && !ConfigConstructor.disable_use_bluemoon_shortsword;
-                            // Sending message each left click with the item is a bit much so don't do that
-                            if (moonlight || bluemoon) {
-                                accept = true;
-                            }
-                        }
-                    }
+                    boolean accept = client.player.hasStatusEffect(EffectRegistry.MOON_HERALD)
+                            && !client.player.getItemCooldownManager().isCoolingDown(ItemRegistry.MOONSTONE_RING);
                     if (accept) {
                         PacketByteBuf buf = PacketByteBufs.create();
                         ClientPlayNetworking.send(PacketIds.MOONLIGHT, buf);
                     }
                 }
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            boolean melee = client.options.attackKey.isPressed() && client.mouse.isCursorLocked();
+            boolean controller = false;
+            if (WeaponUtil.isModLoaded("controllable")) {
+                controller = ButtonBindings.ATTACK.isButtonDown();
+            }
+            if (client.player == null) {
+                return;
+            }
+            if (melee || controller) {
+                // Can only attack with main hand
+                ItemStack stack = client.player.getStackInHand(Hand.MAIN_HAND);
+                if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+                    hasAbilities.onAttackClickClient(client.world, stack, client.player);
+                }
+                PacketByteBuf buf = PacketByteBufs.create();
+                ClientPlayNetworking.send(PacketIds.ATTACK_CLICK, buf);
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

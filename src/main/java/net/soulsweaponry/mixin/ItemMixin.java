@@ -14,6 +14,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -146,6 +147,14 @@ public class ItemMixin implements IHasAbilities {
             return;
         }
         IHasAbilities.super.usageTick(world, user, stack, remainingUseTicks);
+    }
+
+    @Inject(method = "isFireproof", at = @At("HEAD"), cancellable = true)
+    private void soulsweapons$dynamicFireproof(CallbackInfoReturnable<Boolean> info) {
+        Item self = (Item)(Object)this;
+        if (ItemRegistry.FIREPROOF_ITEMS.contains(self)) {
+            info.setReturnValue(true);
+        }
     }
 
     // Meant for custom items so just ignore

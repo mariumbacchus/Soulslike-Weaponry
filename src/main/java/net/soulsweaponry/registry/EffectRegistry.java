@@ -40,13 +40,37 @@ public class EffectRegistry {
     public static final StatusEffect CALCULATED_FALL = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff), "calculated_fall");
     public static final StatusEffect VEIL_OF_FIRE = registerEffect(new VeilOfFire(), "veil_of_fire");
     public static final StatusEffect BLIGHT = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c), "blight");
-    public static final StatusEffect SHADOW_STEP = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78), "shadow_step").addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "48403ce1-d9b3-4757-b1ef-9fbacff0ed37", 0.30000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+    public static final StatusEffect SHADOW_STEP = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78), "shadow_step")
+            .addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "48403ce1-d9b3-4757-b1ef-9fbacff0ed37", 0.30000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
     public static final StatusEffect COOLDOWN = registerEffect(new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x525252), "cooldown");
     public static final StatusEffect GHOSTLY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191), "ghostly");
     public static final StatusEffect CHUNGUS_TONIC_EFFECT = registerEffect(new ChungusTonic(), "chungus_tonic_effect");
     public static final StatusEffect FROST_MOON = registerEffect(new FrostMoon(), "frost_moon");
     public static final StatusEffect BLADE_DANCE = registerEffect(new BladeDanceEffect(), "blade_dance");
     public static final StatusEffect STORMVEIL = registerEffect(new Stormveil(), "stormveil");
+    public static final StatusEffect POTENCY = registerEffect(new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094), "potency");
+    public static final StatusEffect SOUL_OF_CINDER = registerEffect(
+            new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xcc3300)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            "895bad0e-6ca8-40f5-8a83-a7c8ea83357f", 2.0,
+                            EntityAttributeModifier.Operation.ADDITION
+                    ), "soul_of_cinder"
+    );
+    public static final StatusEffect EXALTED = registerEffect(
+            new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xff0000)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                            "c49bff3d-6493-405c-aa6a-5533a973dfb1", 1.5f,
+                            EntityAttributeModifier.Operation.ADDITION
+                    ).addAttributeModifier(
+                            EntityAttributes.GENERIC_ATTACK_SPEED,
+                            "f7b8619e-5c30-45ec-9da9-1e4f30fd88eb", 0.1F,
+                            EntityAttributeModifier.Operation.MULTIPLY_TOTAL
+                    )
+            , "exalted"
+    );
+    public static final StatusEffect ECHO = registerEffect(new Echo(), "echo");
 
     public static final Potion WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final Potion STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");
