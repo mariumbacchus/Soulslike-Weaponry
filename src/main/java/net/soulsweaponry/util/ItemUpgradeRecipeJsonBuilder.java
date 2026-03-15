@@ -1,26 +1,24 @@
 package net.soulsweaponry.util;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import com.google.gson.JsonObject;
-
 import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.CriterionMerger;
+import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.util.Identifier;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.item.Item;
-
+import net.minecraft.util.Identifier;
 import net.soulsweaponry.registry.RecipeSerializerRegistry;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Builder that serializes to:
@@ -44,7 +42,7 @@ public class ItemUpgradeRecipeJsonBuilder {
     private final float secondaryBonus;
     private final boolean fallback;
 
-    private final Map<String, AdvancementCriterion> criteria = new LinkedHashMap<>();
+    private final Map<String, CriterionConditions> criteria = new LinkedHashMap<>();
 
     private ItemUpgradeRecipeJsonBuilder(Ingredient template, Ingredient base, Ingredient addition, RecipeCategory category, float primaryBonus, float secondaryBonus, boolean fallback) {
         this.template = template;
@@ -80,7 +78,7 @@ public class ItemUpgradeRecipeJsonBuilder {
         return create(Ingredient.ofItems(template), Ingredient.fromTag(baseTag), Ingredient.fromTag(additionTag), category, primaryBonus, secondaryBonus, fallback);
     }
 
-    public ItemUpgradeRecipeJsonBuilder criterion(String name, AdvancementCriterion criterion) {
+    public ItemUpgradeRecipeJsonBuilder criterion(String name, CriterionConditions criterion) {
         this.criteria.put(name, criterion);
         return this;
     }

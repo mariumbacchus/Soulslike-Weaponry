@@ -1,9 +1,9 @@
 package net.soulsweaponry.datagen.recipe;
 
+import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
@@ -16,8 +16,6 @@ import net.soulsweaponry.util.ModTags;
 
 import java.util.function.Consumer;
 
-import static net.minecraft.data.server.recipe.RecipeProvider.conditionsFromItemPredicates;
-
 public class UpgradeRecipes {
 
     public static void generateRecipes(Consumer<RecipeJsonProvider> recipeExporter) {
@@ -26,10 +24,10 @@ public class UpgradeRecipes {
         createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f, true);
 
         // Armor items (head to feet via tags)
-        createUpgrade(recipeExporter, ItemTags.HEAD_ARMOR, 0.6f, 0.6f, true);
-        createUpgrade(recipeExporter, ItemTags.CHEST_ARMOR, 1f, 0.6f, true);
-        createUpgrade(recipeExporter, ItemTags.LEG_ARMOR, 0.8f, 0.6f, true);
-        createUpgrade(recipeExporter, ItemTags.FOOT_ARMOR, 0.6f, 0.6f, true);
+        createUpgrade(recipeExporter, ModTags.Items.HEAD_ARMOR, 0.6f, 0.6f, true);
+        createUpgrade(recipeExporter, ModTags.Items.CHEST_ARMOR, 1f, 0.6f, true);
+        createUpgrade(recipeExporter, ModTags.Items.LEG_ARMOR, 0.8f, 0.6f, true);
+        createUpgrade(recipeExporter, ModTags.Items.FOOT_ARMOR, 0.6f, 0.6f, true);
 
         // Guns
         createUpgrade(recipeExporter, GunRegistry.GATLING_GUN, 1, 0f);
@@ -53,15 +51,13 @@ public class UpgradeRecipes {
      */
     public static void createUpgrade(Consumer<RecipeJsonProvider> recipeExporter, TagKey<Item> tag, float primaryBonus, float secondaryBonus, boolean fallback) {
         ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, tag, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus, fallback)
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.STICK).build()))
+                .criterion("has_item", InventoryChangedCriterion.Conditions.items(Items.STICK))
                 .offerTo(recipeExporter, Identifier.of(SoulsWeaponry.ModId, tag.id().getPath() + "_upgrade"));
     }
 
     public static void createUpgrade(Consumer<RecipeJsonProvider> recipeExporter, Item item, float primaryBonus, float secondaryBonus) {
         ItemUpgradeRecipeJsonBuilder.create(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, item, ItemRegistry.TWINKLING_TITANITE, RecipeCategory.COMBAT, primaryBonus, secondaryBonus)
-                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(Items.STICK).build()))
+                .criterion("has_item", InventoryChangedCriterion.Conditions.items(Items.STICK))
                 .offerTo(recipeExporter, new Identifier(item.toString() + "_upgrade"));
     }
 }

@@ -11,7 +11,8 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.registry.RecipeSerializerRegistry;
-import net.soulsweaponry.util.UpgradeUtil;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.stream.Stream;
@@ -72,17 +73,16 @@ public record ItemUpgradeRecipe(Identifier id, Ingredient template, Ingredient b
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
         ItemStack out = inventory.getStack(1).copy();
-
         int prev = WeaponUtil.getUpgradeLevel(out);
         int nextLevel = Math.min(prev + 1, (int) ConfigConstructor.item_upgrading_max_level);
-
         applyUpgrades(out, nextLevel);
         return out;
     }
 
-    public void applyUpgrades(ItemStack out, int nextLevel) {
-        WeaponUtil.setUpgradeLevel(out, nextLevel);
-        UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(out, nextLevel, this.primaryBonus, this.secondaryBonus);
+    public void applyUpgrades(ItemStack stack, int level) {
+        WeaponUtil.setUpgradeLevel(stack, level);
+        NbtHelper.putFloat(stack, NbtIds.UPGRADE_PRIMARY, this.primaryBonus);
+        NbtHelper.putFloat(stack, NbtIds.UPGRADE_SECONDARY, this.secondaryBonus);
     }
 
     /**

@@ -26,7 +26,7 @@ public class SwitchTrickWeaponC2S {
             if (serverWorld != null) {
                 ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
                 Item handItem = stack.getItem();
-                ItemStack newWeapon = TrickWeaponUtil.getMappedStack(stack);
+                ItemStack newWeapon = TrickWeaponUtil.getMappedStack(serverWorld, stack);
                 if (newWeapon != null && !player.getItemCooldownManager().isCoolingDown(handItem)) {
                     if (newWeapon.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
                         disable.notifyDisabled(player);

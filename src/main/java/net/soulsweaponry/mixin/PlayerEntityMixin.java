@@ -1,6 +1,7 @@
 package net.soulsweaponry.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
@@ -21,6 +22,8 @@ import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.registry.*;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -141,5 +144,15 @@ public class PlayerEntityMixin {
         DamageSource source = attacker.getDamageSources().playerAttack(attacker);
         float bonus = has.getBonusAttackDamage(target, original, source);
         return original + bonus;
+    }
+
+    @Inject(method = "getBlockBreakingSpeed", at = @At("RETURN"), cancellable = true)
+    private void soulsweapons$applyUpgradeMiningSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
+        PlayerEntity player = (PlayerEntity)(Object)this;
+        ItemStack stack = player.getMainHandStack();
+        float bonus = NbtHelper.getFloat(stack, NbtIds.UPGRADE_MINING_EFFICIENCY, 0f);
+        if (bonus > 0f) {
+            cir.setReturnValue(cir.getReturnValue() + bonus);
+        }
     }
 }

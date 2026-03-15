@@ -27,6 +27,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipUtil;
+import net.soulsweaponry.util.UpgradeUtil;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -473,19 +474,23 @@ public interface IHasAbilities extends IConfigDisable {
         return stack;
     }
 
-    default Multimap<EntityAttribute, EntityAttributeModifier> modifyAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> vanilla, ItemStack stack, EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
+    default Multimap<EntityAttribute, EntityAttributeModifier> modifyAttributeModifiers(
+            Multimap<EntityAttribute, EntityAttributeModifier> vanilla,
+            ItemStack stack,
+            EquipmentSlot slot
+    ) {
+        Multimap<EntityAttribute, EntityAttributeModifier> base;
         double damage = WeaponUtil.getStackAttackDamage(stack);
         double attackSpeed = WeaponUtil.getStackAttackSpeed(stack);
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
-            attributeModifiers = builder.build();
-            return attributeModifiers;
+            base = builder.build();
         } else {
-            return vanilla;
+            base = vanilla;
         }
+        return UpgradeUtil.applyUpgradeModifiers(base, stack, slot);
     }
 
     /**

@@ -13,7 +13,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
@@ -50,7 +49,7 @@ public class WeaponUtil {
     }
 
     /**
-     * Copy over default item stack components such as enchants, damage or stack size.
+     * Copy over default item stack nbt values such as enchants, damage or stack size.
      * Also copies over item upgrade level and bonus damage/speed
      * attributes gotten from it.
      * Mainly used in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil} and
@@ -60,24 +59,26 @@ public class WeaponUtil {
      */
     public static void copyOverItemComponents(World world, ItemStack prevStack, ItemStack newStack) {
         int lvl = WeaponUtil.getUpgradeLevel(prevStack);
-        double nextDamage = WeaponUtil.getStackAttackDamage(newStack);
-        double nextAttackSpeed = WeaponUtil.getStackAttackSpeed(newStack);
         newStack.setCount(prevStack.getCount());
         if (prevStack.hasNbt()) {
             newStack.setNbt(prevStack.getNbt().copy());
         }
-        WeaponUtil.modifyStackAttributes(newStack, nextDamage, nextAttackSpeed);
-        setUpgradeLevel(newStack, lvl);
-        newStack.setCount(prevStack.getCount());
+        WeaponUtil.setUpgradeLevel(newStack, lvl);
 
-        // Rebuild the upgrade level bonuses based on the new item type (so ranged bonuses for bows instead of melee, etc.)
-        // Ignore if no upgrade recipe is found and keep old attributes
-        ItemUpgradeRecipe recipe = UpgradeUtil.findItemUpgradeRecipeForBase(world, newStack);
+        // Recalculate upgrade scaling for the new weapon type
+        ItemUpgradeRecipe recipe = UpgradeUtil.findItemUpgradeRecipeForBase(newStack);
         if (recipe != null) {
             float primaryPerLevel = recipe.primaryBonus();
             float secondaryPerLevel = recipe.secondaryBonus();
-            UpgradeUtil.rebuildUpgradeAttributesForCurrentForm(newStack, lvl, primaryPerLevel, secondaryPerLevel);
+            NbtHelper.putFloat(newStack, NbtIds.UPGRADE_PRIMARY, primaryPerLevel);
+            NbtHelper.putFloat(newStack, NbtIds.UPGRADE_SECONDARY, secondaryPerLevel);
         }
+        // Reset dynamic attributes so they rebuild properly
+        WeaponUtil.modifyStackAttributes(
+                newStack,
+                WeaponUtil.getBaseItemAttackDamage(newStack),
+                WeaponUtil.getBaseItemAttackSpeed(newStack)
+        );
     }
 
     /**
@@ -420,20 +421,6 @@ public class WeaponUtil {
             return Registries.ENTITY_TYPE.get(entityId);
         }).collect(Collectors.toList());
     }
-
-    /**
-     * Create a new builder with all the attributes from the previous component {@code toCopyFrom}.
-     * Should usually take in {@code super.getAttributeModifiers()} from {@link ArmorItem#getAttributeModifiers}
-     * when it comes to armor items.
-     * TODO used for armor items?
-     */
-    /*public static Multimap<EntityAttribute, EntityAttributeModifier> createAndCopyAttributes(Multimap<EntityAttribute, EntityAttributeModifier> toCopyFrom) {
-        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-        for (AttributeModifiersComponent.Entry e : toCopyFrom.modifiers()) {
-            builder.add(e.attribute(), e.modifier(), e.slot());
-        }
-        return builder;
-    }*/
 
     public static boolean hasAnyEnchantmentsIn(ItemStack stack, TagKey<Enchantment> tag) {
         Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);

@@ -21,6 +21,7 @@ import net.soulsweaponry.items.misc.TestItem;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
+import net.soulsweaponry.util.UpgradeUtil;
 import net.soulsweaponry.world.gen.WorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +101,7 @@ public class SoulsWeaponry implements ModInitializer {
                             }
                         })).build());
 
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, success) -> UpgradeUtil.rebuildRecipeCache(server.getOverworld()));
         ServerLifecycleEvents.SERVER_STARTING.register(TrickWeaponUtil::loadMappings);
         EntityStatsUtil.register();
 

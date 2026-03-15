@@ -1,272 +1,132 @@
 package net.soulsweaponry.util;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.fabric_extras.ranged_weapon.api.EntityAttributes_RangedWeapon;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+import java.util.*;
 
 public class UpgradeUtil {
 
-    private static final Identifier UPGRADE_DAMAGE_ID = Identifier.of(SoulsWeaponry.ModId, "upgrade.damage");
-    private static final Identifier UPGRADE_ATTACK_SPEED_ID = Identifier.of(SoulsWeaponry.ModId, "upgrade.attack_speed");
-    private static final Identifier UPGRADE_RANGED_DAMAGE_ID = Identifier.of(SoulsWeaponry.ModId, "upgrade.ranged.damage");
-    private static final Identifier UPGRADE_RANGED_HASTE_ID  = Identifier.of(SoulsWeaponry.ModId, "upgrade.ranged.haste");
-    private static final Identifier UPGRADE_MINING_EFFICIENCY_ID  = Identifier.of(SoulsWeaponry.ModId, "upgrade.mining.efficiency");
+    private static final Map<Item, ItemUpgradeRecipe> ITEM_CACHE = new HashMap<>();
 
-    public static final String GUN_BONUS_DAMAGE_KEY = "GunBonusDamage";
+    public static final UUID UPGRADE_DAMAGE = UUID.fromString("4a1c33a1-7a43-4670-8b0e-6567e4492309");
+    public static final UUID UPGRADE_ATTACK_SPEED = UUID.fromString("1fb53593-9302-4753-a56f-ec9cad97e1e7");
+    public static final UUID UPGRADE_ARMOR = UUID.fromString("f33e4864-6760-41ec-ad22-332da08d3274");
+    public static final UUID UPGRADE_ARMOR_TOUGHNESS = UUID.fromString("63898510-5d7f-4cb4-a8a1-f97d342da034");
+    public static final UUID UPGRADE_RANGED_DAMAGE = UUID.fromString("a80078e9-593d-4344-beb5-5b0dd98c05cf");
+    public static final UUID UPGRADE_RANGED_HASTE = UUID.fromString("fc081fc5-6d03-4fa8-8d4e-76bdf9260af1");
 
-    private static Identifier armorUpgradeId(String slotName) {
-        return Identifier.of(SoulsWeaponry.ModId, "upgrade.armor." + slotName);
-    }
-
-    private static Identifier armorToughnessUpgradeId(String slotName) {
-        return Identifier.of(SoulsWeaponry.ModId, "upgrade.armor_toughness." + slotName);
-    }
-
-    private static EquipmentSlot getArmorSlot(ArmorItem armor) {
-        return armor.getSlotType();
-    }
-
-    public static NbtList getOrCreateAttributeModifiersList(ItemStack stack) {
-        NbtCompound nbt = stack.getOrCreateNbt();
-        if (!nbt.contains("AttributeModifiers", NbtElement.LIST_TYPE)) {
-            nbt.put("AttributeModifiers", new NbtList());
-        }
-        return nbt.getList("AttributeModifiers", NbtElement.COMPOUND_TYPE);
-    }
-
-    /**
-     * Rebuilds all "upgrade.*" modifiers based on:
-     *  <li> current item type (armor / ranged / gun / melee) </li>
-     *  <li> given upgrade level </li>
-     *  <li> primary/secondary per-level bonuses </li>
-     *  <p>
-     *  Mainly called in {@link net.soulsweaponry.recipe.ItemUpgradeRecipe#applyUpgrades(ItemStack, int)}
-     *  and when switching items in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil}.
-     */
-    public static void rebuildUpgradeAttributesForCurrentForm(ItemStack stack, int level, float primaryPerLevel, float secondaryPerLevel) {
+    public static Multimap<EntityAttribute, EntityAttributeModifier> applyUpgradeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> vanilla, ItemStack stack, EquipmentSlot slot) {
+        int level = NbtHelper.getInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, 0);
         if (level <= 0) {
-            UpgradeUtil.clearAllUpgradeModifiers(stack);
-            return;
+            return vanilla;
         }
-        UpgradeUtil.clearAllUpgradeModifiers(stack);
-
+        float primaryPerLevel = NbtHelper.getFloat(stack, NbtIds.UPGRADE_PRIMARY, 0f);
+        float secondaryPerLevel = NbtHelper.getFloat(stack, NbtIds.UPGRADE_SECONDARY, 0f);
         float primary = primaryPerLevel * level;
         float secondary = secondaryPerLevel * level;
 
-        if (stack.getItem() instanceof ArmorItem armor) {
-            UpgradeUtil.setOrReplaceArmorUpgrade(stack, armor, primary);
-            UpgradeUtil.setOrReplaceArmorToughnessUpgrade(stack, armor, secondary);
-        } else if (stack.getItem() instanceof RangedWeaponItem ranged) {
-            if (ranged instanceof GunItem) {
-                stack.getOrCreateNbt().putFloat(GUN_BONUS_DAMAGE_KEY, primary);
-            } else {
-                UpgradeUtil.setOrReplaceRangedDamageUpgrade(stack, primary);
-                UpgradeUtil.setOrReplaceRangedHasteUpgrade(stack, secondary);
-            }
+        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+        builder.putAll(vanilla);
+        if (stack.getItem() instanceof ArmorItem) {
+            applyArmorUpgrade(builder, slot, primary, secondary);
+        } else if (stack.getItem() instanceof RangedWeaponItem) {
+            applyRangedUpgrade(builder, slot, primary, secondary);
         } else if (stack.getItem() instanceof MiningToolItem) {
-            UpgradeUtil.setOrReplaceDamageUpgrade(stack, primary);
-            UpgradeUtil.setOrReplaceMiningEfficiencyUpgrade(stack, secondary);
+            applyMiningUpgrade(builder, stack, slot, primary, secondary);
         } else {
-            UpgradeUtil.setOrReplaceDamageUpgrade(stack, primary);
-            if (secondary > 0) {
-                UpgradeUtil.setOrReplaceAttackSpeedUpgrade(stack, secondary);
-            }
+            applyWeaponUpgrade(builder, slot, primary, secondary);
         }
+        return builder.build();
     }
 
-    /**
-     * Removes all SoulsWeaponry upgrade modifiers (upgrade.*)
-     * but leaves vanilla + other mods' modifiers alone.
-     */
-    public static void clearAllUpgradeModifiers(ItemStack stack) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null || !nbt.contains("AttributeModifiers", NbtElement.LIST_TYPE)) {
+    private static void applyWeaponUpgrade(
+            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder,
+            EquipmentSlot slot,
+            float damageBonus,
+            float speedBonus
+    ) {
+        if (slot != EquipmentSlot.MAINHAND) {
             return;
         }
-        NbtList list = nbt.getList("AttributeModifiers", NbtElement.COMPOUND_TYPE);
-        if (list.isEmpty()) {
+        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(UPGRADE_DAMAGE, "upgrade.damage", damageBonus, EntityAttributeModifier.Operation.ADDITION));
+        if (speedBonus > 0) {
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(UPGRADE_ATTACK_SPEED, "upgrade.attack_speed", speedBonus, EntityAttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private static void applyArmorUpgrade(
+            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder,
+            EquipmentSlot slot,
+            float armorBonus,
+            float toughnessBonus
+    ) {
+        builder.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UPGRADE_ARMOR, "upgrade.armor", armorBonus, EntityAttributeModifier.Operation.ADDITION));
+        if (toughnessBonus > 0) {
+            builder.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(UPGRADE_ARMOR_TOUGHNESS, "upgrade.armor_toughness", toughnessBonus, EntityAttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private static void applyMiningUpgrade(
+            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder,
+            ItemStack stack,
+            EquipmentSlot slot,
+            float damageBonus,
+            float efficiencyBonus
+    ) {
+        if (slot != EquipmentSlot.MAINHAND) {
             return;
         }
-
-        NbtList rebuilt = new NbtList();
-        for (int i = 0; i < list.size(); i++) {
-            NbtCompound e = list.getCompound(i);
-            String name = e.getString("Name");
-            if (name == null || name.isEmpty()) {
-                rebuilt.add(e);
-                continue;
-            }
-            if (!name.startsWith(SoulsWeaponry.ModId + ":upgrade.")) {
-                rebuilt.add(e);
-            }
+        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(UPGRADE_DAMAGE, "upgrade.damage", damageBonus, EntityAttributeModifier.Operation.ADDITION));
+        if (efficiencyBonus > 0) {
+            NbtHelper.putFloat(stack, NbtIds.UPGRADE_MINING_EFFICIENCY, efficiencyBonus);
         }
-        nbt.put("AttributeModifiers", rebuilt);
     }
 
-    /**
-     * Adds/replaces a single upgrade modifier while preserving all other modifiers.
-     * This adds a "blue" addition modifier instead of changing the main value unlike other methods in WeaponUtil.
-     */
-    private static void addOrReplaceUpgradeModifier(ItemStack stack, EntityAttribute attribute, EquipmentSlot slot, Identifier id, float amount, EntityAttributeModifier.Operation operation) {
-        NbtCompound nbt = stack.getOrCreateNbt();
-        NbtList list = getOrCreateAttributeModifiersList(stack);
-
-        UUID uuid = uuidFor(id);
-        int[] targetUuid = uuidToIntArray(uuid);
-
-        NbtList rebuilt = new NbtList();
-        for (int i = 0; i < list.size(); i++) {
-            NbtCompound e = list.getCompound(i);
-            if (matchesUuid(e, targetUuid)) {
-                continue;
-            }
-            rebuilt.add(e);
-        }
-
-        Identifier attrId = Registries.ATTRIBUTE.getId(attribute);
-        if (attrId == null) {
-            nbt.put("AttributeModifiers", rebuilt);
+    private static void applyRangedUpgrade(
+            ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder,
+            EquipmentSlot slot,
+            float damageBonus,
+            float hasteBonus
+    ) {
+        if (slot != EquipmentSlot.MAINHAND) {
             return;
         }
-
-        NbtCompound mod = new NbtCompound();
-        mod.putString("AttributeName", attrId.toString());
-        mod.putString("Name", id.toString());
-        mod.putDouble("Amount", amount);
-        mod.putInt("Operation", operation.getId());
-        mod.putIntArray("UUID", targetUuid);
-        mod.putString("Slot", slotToString(slot));
-        rebuilt.add(mod);
-
-        nbt.put("AttributeModifiers", rebuilt);
+        builder.put(EntityAttributes_RangedWeapon.DAMAGE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_DAMAGE, "upgrade.ranged_damage", damageBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (hasteBonus > 0) {
+            builder.put(EntityAttributes_RangedWeapon.HASTE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_HASTE, "upgrade.ranged_haste", hasteBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
-    private static void addOrReplaceUpgradeModifier(ItemStack stack, EntityAttribute attribute, EquipmentSlot slot, Identifier id, float amount) {
-        addOrReplaceUpgradeModifier(stack, attribute, slot, id, amount, EntityAttributeModifier.Operation.ADDITION);
-    }
-
-    /**
-     * Tool/weapon path: cumulative +ATTACK_DAMAGE (MAINHAND).
-     * 'total' should already be (perLevelBonus * level).
-     */
-    public static void setOrReplaceDamageUpgrade(ItemStack stack, float total) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ATTACK_DAMAGE, EquipmentSlot.MAINHAND, UPGRADE_DAMAGE_ID, total);
-    }
-
-    /**
-     * Tool/weapon path: cumulative +MINING_EFFICIENCY (MAINHAND).
-     * 'total' should already be (perLevelBonus * level).
-     */
-    public static void setOrReplaceMiningEfficiencyUpgrade(ItemStack stack, float total) {//TODO apply nbt and call from mixin
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.PLAYER_MINING_EFFICIENCY, EquipmentSlot.MAINHAND, UPGRADE_MINING_EFFICIENCY_ID, total);
-    }
-
-    /**
-     * Tool/weapon path: cumulative +ATTACK_SPEED (MAINHAND).
-     * 'total' should already be (perLevelBonus * level).
-     */
-    public static void setOrReplaceAttackSpeedUpgrade(ItemStack stack, float total) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ATTACK_SPEED, EquipmentSlot.MAINHAND, UPGRADE_ATTACK_SPEED_ID, total);
-    }
-
-    /**
-     * Armor path: cumulative +ARMOR (Armor slot).
-     * 'total' should already be (perLevelBonus * level).
-     */
-    public static void setOrReplaceArmorUpgrade(ItemStack stack, ArmorItem armor, float total) {
-        EquipmentSlot slot = getArmorSlot(armor);
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ARMOR, slot, armorUpgradeId(armor.getSlotType().getName()), total);
-    }
-
-    /**
-     * Armor path: cumulative +ARMOR_TOUGHNESS (Armor slot).
-     * 'total' should already be (perLevelBonus * level).
-     */
-    public static void setOrReplaceArmorToughnessUpgrade(ItemStack stack, ArmorItem armor, float total) {
-        EquipmentSlot slot = getArmorSlot(armor);
-        addOrReplaceUpgradeModifier(stack, EntityAttributes.GENERIC_ARMOR_TOUGHNESS, slot, armorToughnessUpgradeId(armor.getSlotType().getName()), total);
-    }
-
-    /**
-     * Smithing upgrade for ranged damage: +total as a MULTIPLIER to base.
-     * total = 0.1f -> +10%; 0.3f -> +30%, etc.
-     */
-    public static void setOrReplaceRangedDamageUpgrade(ItemStack stack, float totalMultiplier) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes_RangedWeapon.DAMAGE.attribute, EquipmentSlot.MAINHAND, UPGRADE_RANGED_DAMAGE_ID, totalMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE);
-    }
-
-    /**
-     * Smithing upgrade for draw speed (haste). Base is 100; API
-     * examples also use ADD_MULTIPLIED_BASE for haste.
-     */
-    public static void setOrReplaceRangedHasteUpgrade(ItemStack stack, float totalMultiplier) {
-        addOrReplaceUpgradeModifier(stack, EntityAttributes_RangedWeapon.HASTE.attribute, EquipmentSlot.MAINHAND, UPGRADE_RANGED_HASTE_ID, totalMultiplier, EntityAttributeModifier.Operation.MULTIPLY_BASE);
-    }
-
-    @Nullable
-    public static ItemUpgradeRecipe findItemUpgradeRecipeForBase(World world, ItemStack baseStack) {
+    public static void rebuildRecipeCache(World world) {
+        ITEM_CACHE.clear();
         RecipeManager manager = world.getRecipeManager();
-        for (Recipe<?> recipe : manager.values()) {
-            if (recipe instanceof ItemUpgradeRecipe itemUpgradeRecipe) {
-                if (itemUpgradeRecipe.testBase(baseStack)) {
-                    return itemUpgradeRecipe;
+        for (var recipe : manager.values()) {
+            if (!(recipe instanceof ItemUpgradeRecipe upgrade)) {
+                continue;
+            }
+            ItemStack[] stacks = upgrade.base().getMatchingStacks();
+            for (ItemStack stack : stacks) {
+                Item item = stack.getItem();
+                if (!upgrade.fallback() || !ITEM_CACHE.containsKey(item)) {
+                    ITEM_CACHE.put(item, upgrade);
                 }
             }
         }
-        return null;
     }
 
-    private static UUID uuidFor(Identifier id) {
-        return UUID.nameUUIDFromBytes(id.toString().getBytes(StandardCharsets.UTF_8));
-    }
-
-    private static int[] uuidToIntArray(UUID uuid) {
-        long most = uuid.getMostSignificantBits();
-        long least = uuid.getLeastSignificantBits();
-        return new int[] {
-                (int)(most >> 32), (int)most,
-                (int)(least >> 32), (int)least
-        };
-    }
-
-    private static boolean matchesUuid(NbtCompound e, int[] targetUuid) {
-        if (!e.contains("UUID", NbtElement.INT_ARRAY_TYPE)) {
-            return false;
-        }
-        int[] u = e.getIntArray("UUID");
-        if (u.length != 4) return false;
-        return u[0] == targetUuid[0] && u[1] == targetUuid[1] && u[2] == targetUuid[2] && u[3] == targetUuid[3];
-    }
-
-    private static String slotToString(EquipmentSlot slot) {
-        return switch (slot) {
-            case MAINHAND -> "mainhand";
-            case OFFHAND -> "offhand";
-            case FEET -> "feet";
-            case LEGS -> "legs";
-            case CHEST -> "chest";
-            case HEAD -> "head";
-        };
+    @Nullable
+    public static ItemUpgradeRecipe findItemUpgradeRecipeForBase(ItemStack stack) {
+        return ITEM_CACHE.get(stack.getItem());
     }
 }

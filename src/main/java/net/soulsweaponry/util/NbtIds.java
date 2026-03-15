@@ -2,7 +2,6 @@ package net.soulsweaponry.util;
 
 public class NbtIds {
 
-    public static final String ITEM_UPGRADE_LEVEL = "ItemUpgradeLevel";
     public static final String STORMVEIL_SURGE_EMPOWERED = "StormveilSurgeEmpowered";
     public static final String SOULS_HARVESTED = "SoulsHarvested";
     public static final String RED_SOULS = "RedSouls";
@@ -21,4 +20,9 @@ public class NbtIds {
     public static final String SAVED_BLOCK_POS = "SavedBlockPos";
     public static final String INVISIBLE = "Invisible";
     public static final String MAPPED_TRICK_WEAPON = "MappedTrickWeapon";
+
+    public static final String ITEM_UPGRADE_LEVEL = "ItemUpgradeLevel";
+    public static final String UPGRADE_PRIMARY = "UpgradePrimary";
+    public static final String UPGRADE_SECONDARY = "UpgradeSecondary";
+    public static final String UPGRADE_MINING_EFFICIENCY = "UpgradeMiningEfficiency";
 }

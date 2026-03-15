@@ -65,13 +65,3 @@ M	src/main/generated/data/soulsweapons/recipe/shovels_upgrade.json
 M	src/main/generated/data/soulsweapons/tags/item/melee_item_upgradables.json
 M	src/main/generated/data/soulsweapons/tags/item/soul_harvesting_weapons.json
 D	src/main/generated/data/c/tags/item/tools/ranged_weapon.json
-
-ALL ABILITIES
-// They use component registry so maybe make one for nbt strings to keep overview and make helper methods in weapon util?
-M	src/main/java/net/soulsweaponry/registry/ComponentRegistry.java
-
-UpgradeUtil.java
-M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
-M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
-
-ModTags
