@@ -42,8 +42,8 @@ public record ShadowStep(float baseBonusDamage, float bonusDamagePerAmp, int sha
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         if (entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP)) {
             int amp = living.getStatusEffect(EffectRegistry.SHADOW_STEP).getAmplifier();
             damage += this.baseBonusDamage + this.bonusDamagePerAmp * amp;

@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -45,7 +44,7 @@ public class ApplyStackingEffect implements IAbility {
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         LivingEntity entity = this.applyOnTarget ? target : attacker;
         int lvl = WeaponUtil.getUpgradeLevel(stack);
-        RegistryEntry<StatusEffect> statusEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId);
+        StatusEffect statusEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId);
         int duration = this.duration + this.bonusDurationPerLvl * lvl;
         if (entity.hasStatusEffect(statusEffect)) {
             StatusEffectInstance effect = entity.getStatusEffect(statusEffect);
@@ -60,7 +59,7 @@ public class ApplyStackingEffect implements IAbility {
 
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
-        Text text = WeaponUtil.parseStatusEffectId(this.statusEffectId).value().getName();
+        Text text = WeaponUtil.parseStatusEffectId(this.statusEffectId).getName();
         MutableText formatted = text.copy().formatted(Formatting.LIGHT_PURPLE);
         return List.of(
                 Text.translatable("tooltip.soulsweapons.tainted_edge").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.BOLD),

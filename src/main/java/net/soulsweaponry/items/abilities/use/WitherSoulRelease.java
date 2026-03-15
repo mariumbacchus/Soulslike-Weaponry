@@ -2,7 +2,6 @@ package net.soulsweaponry.items.abilities.use;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
@@ -13,10 +12,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.targetdeath.ISoulHarvest;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class WitherSoulRelease implements ISoulHarvest {
@@ -34,29 +33,26 @@ public class WitherSoulRelease implements ISoulHarvest {
         if (!world.isClient) {
             this.detonatePrevEntity((ServerWorld) world, stack);
         }
-        Integer kills = stack.get(ComponentRegistry.SOULS_HARVESTED);
-        if (kills != null) {
-            int power = this.getSouls(stack);
-            if (power > 0 || user.isCreative()) {
-                WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
-                entity.setPos(user.getX(), user.getEyeY(), user.getZ());
-                entity.setOwner(user);
-                if (this.isCritical(stack)) {
-                    entity.setCharged(true);
-                    stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1);
-                } else {
-                    stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1 + Optional.ofNullable(stack.get(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER)).orElse(0));
-                }
-                entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
-                world.spawnEntity(entity);
-                this.setPrevUuid(stack, entity);
-                if (!user.isCreative()) {
-                    this.addAmount(stack, -1);
-                }
-                this.applyItemCooldown(stack.getItem(), user, 10);
-                stack.damage(1, user, LivingEntity.getSlotForHand(hand));
-                return TypedActionResult.success(stack, world.isClient());
+        int power = this.getSouls(stack);
+        if (power > 0 || user.isCreative()) {
+            WitherSkullEntity entity = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
+            entity.setPos(user.getX(), user.getEyeY(), user.getZ());
+            entity.setOwner(user);
+            if (this.isCritical(stack)) {
+                entity.setCharged(true);
+                NbtHelper.putInt(stack, NbtIds.WITHER_SOUL_RELEASE_COUNTER, 1);
+            } else {
+                NbtHelper.putInt(stack, NbtIds.WITHER_SOUL_RELEASE_COUNTER, 1 + NbtHelper.getInt(stack, NbtIds.WITHER_SOUL_RELEASE_COUNTER, 0));
             }
+            entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 3f, 1.0F);
+            world.spawnEntity(entity);
+            this.setPrevUuid(stack, entity);
+            if (!user.isCreative()) {
+                this.addAmount(stack, -1);
+            }
+            this.applyItemCooldown(stack.getItem(), user, 10);
+            stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
+            return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack);
     }
@@ -67,7 +63,7 @@ public class WitherSoulRelease implements ISoulHarvest {
      * checked in the world whether it exists or not, then removed accordingly.
      */
     private void detonatePrevEntity(ServerWorld world, ItemStack stack) {
-        UUID prev = stack.get(ComponentRegistry.SAVED_UUID);
+        UUID prev = NbtHelper.getUUID(stack, NbtIds.SAVED_UUID);
         if (prev != null) {
             Entity entity = world.getEntity(prev);
             if (entity instanceof WitherSkullEntity skull) {
@@ -79,14 +75,16 @@ public class WitherSoulRelease implements ISoulHarvest {
     }
 
     private void setPrevUuid(ItemStack stack, Entity entityToSet) {
-        stack.set(ComponentRegistry.SAVED_UUID, entityToSet.getUuid());
+        NbtHelper.putUUID(stack, NbtIds.SAVED_UUID, entityToSet.getUuid());
     }
 
     private boolean isCritical(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER)).orElseGet(() -> {
-            stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1);
-            return 1;
-        }) >= 3;
+        int counter = NbtHelper.getInt(stack, NbtIds.WITHER_SOUL_RELEASE_COUNTER, 0);
+        if (counter == 0) {
+            NbtHelper.putInt(stack, NbtIds.WITHER_SOUL_RELEASE_COUNTER, 1);
+            counter = 1;
+        }
+        return counter >= 3;
     }
 
     @Override

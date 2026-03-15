@@ -29,7 +29,7 @@ public record ThrowCometSpear(float speed, int minCooldown, int cooldown, int re
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
-                world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+                world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
             }
         }
     }

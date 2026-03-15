@@ -29,7 +29,7 @@ public record ThrowGhostGlaive(float projectileDamage, float bonusDamagePerLvl,
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.projectileSpeed, 1.0F);
                 entity.setPostureLoss(this.postureLoss);
                 world.spawnEntity(entity);
-                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1f, .5f);
+                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
                 this.applyItemCooldown(stack.getItem(), playerEntity, Math.max(this.minCooldown, this.cooldown - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl));
             }
         }

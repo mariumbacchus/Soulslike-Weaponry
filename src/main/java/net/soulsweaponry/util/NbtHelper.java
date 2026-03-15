@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,7 @@ public class NbtHelper {
 
     /** UUIDs */
 
+    @Nullable
     public static UUID getUUID(ItemStack stack, String key) {
         return has(stack, key) ? stack.getNbt().getUuid(key) : null;
     }
@@ -203,7 +205,7 @@ public class NbtHelper {
 
     /** Entity storage */
 
-    public static void saveEntityOnItem(ItemStack stack, Entity entity) {
+    public static void saveEntityInListOnItem(ItemStack stack, Entity entity) {
         addUUID(stack, NbtIds.SAVED_ENTITY_UUID_LIST, entity.getUuid());
     }
 

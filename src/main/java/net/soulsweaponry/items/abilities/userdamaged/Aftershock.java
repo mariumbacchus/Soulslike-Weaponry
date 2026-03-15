@@ -41,7 +41,7 @@ public record Aftershock(
                     this.damageTarget(target, stack, player, knocback, damage);
                 }
             }
-            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
+            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
             if (!player.isCreative()) {
                 this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
             }
@@ -50,8 +50,8 @@ public record Aftershock(
     }
 
     public void damageTarget(LivingEntity target, ItemStack stack, PlayerEntity player, float knocback, float damage) {
-        if (player.getWorld() instanceof ServerWorld serverWorld) {
-            damage += EnchantmentHelper.getDamage(serverWorld, stack, target, serverWorld.getDamageSources().mobAttack(player), 0) * this.bonusEnchantDamageMod;
+        if (player.getWorld() instanceof ServerWorld) {
+            damage += EnchantmentHelper.getAttackDamage(stack, target.getGroup()) * this.bonusEnchantDamageMod;
         }
         for (StatusEffectInstance instance : this.targetHitEffects) {
             target.addStatusEffect(new StatusEffectInstance(instance));

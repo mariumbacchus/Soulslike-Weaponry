@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.entitydata.BleedData;
@@ -14,13 +15,13 @@ import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public final class SwitchPostHit implements IAbility {
@@ -99,7 +100,7 @@ public final class SwitchPostHit implements IAbility {
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.freezeDuration, this.freezeAmp));
             }
             case FIRE -> {
-                target.setOnFireForTicks(this.fireTicks);
+                target.setOnFireFor((int) Math.floor(this.fireTicks / 20f));
             }
             case CRIPPLE -> {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, this.crippleDuration, this.slowAmp));
@@ -121,7 +122,9 @@ public final class SwitchPostHit implements IAbility {
     public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
         float res = 0;
         if (target instanceof LivingEntity living) {
-            if (living.isOnFire() || living.getStatusEffects().stream().anyMatch(p -> p.getEffectType().isIn(ModTags.Effects.NIGHTLORD_ATTACK_BOOST_GAINED_FROM))) {
+            if (living.isOnFire() || living.getStatusEffects().stream().anyMatch(
+                    p -> Registries.STATUS_EFFECT.getEntry(p.getEffectType())
+                            .isIn(ModTags.Effects.NIGHTLORD_ATTACK_BOOST_GAINED_FROM))) {
                 res += this.bonusAgainstEffect;
             }
         }
@@ -145,11 +148,11 @@ public final class SwitchPostHit implements IAbility {
 
     private void selectRandomEffect(ItemStack stack) {
         int rand = RAND.nextInt(1, PostHitEffect.values().length);
-        stack.set(ComponentRegistry.POST_HIT_EFFECT_ID, rand);
+        NbtHelper.putInt(stack, NbtIds.POST_HIT_EFFECT_ID, rand);
     }
 
     private PostHitEffect getPostHitEffect(ItemStack stack) {
-        return PostHitEffect.values()[Optional.ofNullable(stack.get(ComponentRegistry.POST_HIT_EFFECT_ID)).orElse(0)];
+        return PostHitEffect.values()[NbtHelper.getInt(stack, NbtIds.POST_HIT_EFFECT_ID, 0)];
     }
 
     private Text formatPostHitEffect(PostHitEffect effect) {

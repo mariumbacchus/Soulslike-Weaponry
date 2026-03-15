@@ -25,7 +25,7 @@ public record ThrowMjolnir(float baseVelocity, float bonusVelocityPerLvl) implem
             projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, this.baseVelocity + WeaponUtil.getUpgradeLevel(stack) * this.bonusVelocityPerLvl, 1.0f);
             projectile.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
             world.spawnEntity(projectile);
-            world.playSoundFromEntity(null, projectile, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0f, 1.0f);
+            world.playSoundFromEntity(null, projectile, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0f, 1.0f);
             if (!player.getAbilities().creativeMode) {
                 player.getInventory().removeOne(stack);
             }

@@ -12,13 +12,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, int maxBladeDanceAmp,
@@ -32,9 +32,9 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
         amp = Math.min(amp, this.maxBladeDanceAmp);
         attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, 160, amp));
         if (!WeaponUtil.isFightModLoaded() && amp == this.maxBladeDanceAmp) {
-            int counter = Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER)).orElse(0);
-            stack.set(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER, counter + 1);
-            if (Optional.ofNullable(stack.get(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER)).orElse(0) >= 3) {
+            int counter = NbtHelper.getInt(stack, NbtIds.BLADE_DANCE_POST_HIT_COUNTER, 0);
+            NbtHelper.putInt(stack, NbtIds.BLADE_DANCE_POST_HIT_COUNTER, counter + 1);
+            if (counter + 1 >= 3) {
                 double damage = attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
                 for (Entity entity : attacker.getWorld().getOtherEntities(attacker, attacker.getBoundingBox().expand(2D, 1D, 2D))) {
                     if (entity instanceof LivingEntity living) {
@@ -49,14 +49,14 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
                     double z = z0 + r * Math.sin(i * Math.PI / 180);
                     ParticleHandler.singleParticle(attacker.getWorld(), ParticleTypes.SWEEP_ATTACK, x, attacker.getBodyY(0.5f), z, 0, 0, 0);
                 }
-                stack.set(ComponentRegistry.BLADE_DANCE_POST_HIT_COUNTER, 0);
+                NbtHelper.putInt(stack, NbtIds.BLADE_DANCE_POST_HIT_COUNTER, 0);
             }
         }
     }
 
     public void updateBladeDanceItem(ItemStack stack, int effectAmplifier) {
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         effectAmplifier += 1;
         damage += this.bonusDamagePerAmp * effectAmplifier;
         attackSpeed += this.bonusAttackSpeedPerAmp * effectAmplifier;

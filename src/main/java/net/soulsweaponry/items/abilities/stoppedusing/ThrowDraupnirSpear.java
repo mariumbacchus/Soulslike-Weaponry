@@ -25,7 +25,7 @@ public record ThrowDraupnirSpear(float projectileSpeed, int minCooldown, int coo
             entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
             world.spawnEntity(entity);
             world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-            NbtHelper.saveEntityOnItem(stack, entity);
+            NbtHelper.saveEntityInListOnItem(stack, entity);
             this.applyItemCooldown(stack.getItem(), playerEntity, this.getScaledCooldownThrow(stack));
             stack.damage(1, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
         }

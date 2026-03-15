@@ -64,7 +64,7 @@ public record ShootRandomProjectile(
                     witheredWabbajackProjectile.setEntityHitAttributes(this.entityHitAttributes);
                 }
                 world.spawnEntity(entity);
-                stack.damage(1, user, LivingEntity.getSlotForHand(hand));
+                stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
             }
             for (LuckChosenObject<EntityType<?>> luckChosenEntity : PROJECTILES) {
                 luckChosenEntity.setLuckFactor(10);

@@ -1,6 +1,7 @@
 package net.soulsweaponry.items.abilities.use;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -23,10 +24,11 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,19 +105,19 @@ public class ShootSilverBullet implements IAbility {
     }
 
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
-        if (WeaponUtil.getLevel(gunStack, EnchantRegistry.MISFIRE_CURSE) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
+        if (EnchantmentHelper.getLevel(EnchantRegistry.MISFIRE_CURSE, gunStack) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
         float power = this.getCalculatedDamage(this.damage, gunStack);
-        int ethereal = WeaponUtil.getLevel(gunStack, EnchantRegistry.ETHEREAL);
-        int explosivePower = WeaponUtil.getLevel(gunStack, EnchantRegistry.EXPLOSIVE_ROUNDS);
-        int chainLightningLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.CHAIN_LIGHTNING);
-        int blightCarrierLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.BLIGHT_CARRIER);
-        int freezeLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.FROSTSILVER);
-        int phantomTraceLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.PHANTOM_TRACE);
-        int tetherLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.TETHER);
-        int ricochetLevel = WeaponUtil.getLevel(gunStack, EnchantRegistry.RICOCHET);
+        int ethereal = EnchantmentHelper.getLevel(EnchantRegistry.ETHEREAL, gunStack);
+        int explosivePower = EnchantmentHelper.getLevel(EnchantRegistry.EXPLOSIVE_ROUNDS, gunStack);
+        int chainLightningLevel = EnchantmentHelper.getLevel(EnchantRegistry.CHAIN_LIGHTNING, gunStack);
+        int blightCarrierLevel = EnchantmentHelper.getLevel(EnchantRegistry.BLIGHT_CARRIER, gunStack);
+        int freezeLevel = EnchantmentHelper.getLevel(EnchantRegistry.FROSTSILVER, gunStack);
+        int phantomTraceLevel = EnchantmentHelper.getLevel(EnchantRegistry.PHANTOM_TRACE, gunStack);
+        int tetherLevel = EnchantmentHelper.getLevel(EnchantRegistry.TETHER, gunStack);
+        int ricochetLevel = EnchantmentHelper.getLevel(EnchantRegistry.RICOCHET, gunStack);
 
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
@@ -247,7 +249,7 @@ public class ShootSilverBullet implements IAbility {
     }
 
     public void postShot(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f,1f);
+        world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f,1f);
         stack.damage(this.stackDamage, user, WeaponUtil.getActiveHandSlot(user));
         user.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
         if (!user.isCreative()) {
@@ -260,7 +262,7 @@ public class ShootSilverBullet implements IAbility {
     }
 
     public int getPostureLoss(ItemStack stack) {
-        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.VISCERAL);
+        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
         return (int) (this.postureLoss + lvl * this.postureLossPerVisceral);
     }
 
@@ -270,16 +272,18 @@ public class ShootSilverBullet implements IAbility {
      */
     public float getCalculatedDamage(float damage, ItemStack gunStack) {
         // double attr = shooter.getAttributeValue(EntityAttributes_RangedWeapon.DAMAGE.entry); If weapon with bonus was held in offhand (with ANY attribute bonus), it would apply to main hand weapon >:(
-        damage += gunStack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f); // Damage per level is from the upgrade recipe file instead
+        damage += NbtHelper.getFloat(gunStack, NbtIds.GUN_BONUS_DAMAGE, 0f); // Damage per level is from the upgrade recipe file instead
         return damage / this.velocity;
     }
 
     public int getReducedCooldown(ItemStack stack) {
-        return WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS) * this.reducedCooldownPerFastHands;
+        return EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack) * this.reducedCooldownPerFastHands;
     }
 
     public boolean hasInfinity(ItemStack stack) {
-        return EnchantmentHelper.hasAnyEnchantmentsIn(stack, ModTags.Enchantments.PREVENTS_AMMO_CONSUME) || WeaponUtil.getUpgradeLevel(stack) >= this.levelToUnlockInfinity;
+        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0
+                || WeaponUtil.hasAnyEnchantmentsIn(stack, ModTags.Enchantments.PREVENTS_AMMO_CONSUME)
+                || WeaponUtil.getUpgradeLevel(stack) >= this.levelToUnlockInfinity;
     }
 
     public int getBulletsNeeded(ItemStack stack) {
@@ -294,7 +298,7 @@ public class ShootSilverBullet implements IAbility {
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         List<Text> tooltip = new ArrayList<>();
-        float bonus = stack.getOrDefault(ComponentRegistry.GUN_BONUS_DAMAGE, 0f);
+        float bonus = NbtHelper.getFloat(stack, NbtIds.GUN_BONUS_DAMAGE, 0f);
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         MutableText damage = Text.literal(String.format("%.1f", (this.damage + bonus)));
         MutableText postureLoss = Text.literal(String.valueOf(this.getPostureLoss(stack)));

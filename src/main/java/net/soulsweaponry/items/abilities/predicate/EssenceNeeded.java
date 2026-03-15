@@ -7,8 +7,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IHasEssence;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public record EssenceNeeded(int maxEssence, boolean acceptWithMoonHerald) implem
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
-        stack.set(ComponentRegistry.ESSENCE, 0);
+        NbtHelper.putInt(stack, NbtIds.ESSENCE, 0);
     }
 
     @Override

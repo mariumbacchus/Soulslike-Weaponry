@@ -18,7 +18,7 @@ public record TameChungus() implements IAbility {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (entity instanceof BigChungus chungus && !chungus.isTamed()) {
-            chungus.setTamed(true, false);
+            chungus.setTamed(true);
             chungus.setOwner(user);
             chungus.setTarget(null);
             chungus.getWorld().sendEntityStatus(chungus, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);

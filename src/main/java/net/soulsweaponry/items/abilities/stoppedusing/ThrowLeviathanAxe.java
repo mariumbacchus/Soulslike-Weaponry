@@ -29,7 +29,7 @@ public record ThrowLeviathanAxe(float baseSpeed, float speedPerLvl) implements I
                 entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, this.baseSpeed + speed, 1.0F);
                 entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 world.spawnEntity(entity);
-                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1f, .5f);
+                world.playSound(playerEntity, playerEntity.getBlockPos(), SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1f, .5f);
                 if (!playerEntity.getAbilities().creativeMode) {
                     playerEntity.getInventory().removeOne(stack);
                 }

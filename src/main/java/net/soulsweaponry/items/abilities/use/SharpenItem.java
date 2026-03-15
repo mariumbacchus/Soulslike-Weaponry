@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.abilities.use;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -13,8 +12,9 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.ISharpened;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +31,8 @@ public class SharpenItem implements IAbility {
             if (swordStack.getItem() instanceof IHasAbilities hasAbilities) {
                 Optional<ISharpened> op = hasAbilities.findAbility(ISharpened.class);
                 if (op.isPresent() && !ISharpened.isEmpowered(swordStack)) {
-                    swordStack.set(ComponentRegistry.SHARPENED_STRIKES, op.get().getMaxEmpoweredStrikes(swordStack));
-                    stack.damage(1, user, LivingEntity.getSlotForHand(hand));
+                    NbtHelper.putInt(swordStack, NbtIds.SHARPENED_STRIKES, op.get().getMaxEmpoweredStrikes(swordStack));
+                    stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
                     world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT, SoundCategory.PLAYERS, .5f, 1f);
                     world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.PLAYERS, .5f, 1f);
                     return TypedActionResult.success(user.getStackInHand(hand));

@@ -15,7 +15,7 @@ public record BasicStatBoost(
         float bonusDamage, float bonusDamagePerLvl,
         float bonusAttackSpeed, float bonusAttackSpeedPerLvl,
         List<Text> tooltip
-) implements IAbility {
+) implements IAbility { // TODO need to thoroughly test this
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
@@ -23,8 +23,8 @@ public record BasicStatBoost(
             return;
         }
         int lvl = WeaponUtil.getUpgradeLevel(stack);
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         if (this.activatePredicate.test(stack, world, entity, slot, selected)) {
             damage += this.bonusDamage + this.bonusDamagePerLvl * lvl;
             attackSpeed += this.bonusAttackSpeed + this.bonusAttackSpeedPerLvl * lvl;

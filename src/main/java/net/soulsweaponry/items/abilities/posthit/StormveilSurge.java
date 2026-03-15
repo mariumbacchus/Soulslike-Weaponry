@@ -10,8 +10,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public record StormveilSurge(float rangePerAmp, float damagePerAmp, int minCoold
             float radius = this.rangePerAmp * (amp + 1);
             float damage = this.damagePerAmp * (amp + 1);
             ChainLightning.trigger(attacker.getWorld(), target, attacker, damage, radius);
-            Boolean empowered = stack.get(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED);
-            if (empowered != null && empowered) {
+            boolean empowered = NbtHelper.getBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
+            if (empowered) {
                 LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, attacker.getWorld());
                 lightningEntity.setPos(target.getX(), target.getY(), target.getZ());
                 attacker.getWorld().spawnEntity(lightningEntity);
-                stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, false);
+                NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
                 attacker.removeStatusEffect(EffectRegistry.STORMVEIL);
                 // Reduce Stormveil to 20 ticks (originally remove, but want to keep immunity to lightning for a second still)
                 attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, 20));

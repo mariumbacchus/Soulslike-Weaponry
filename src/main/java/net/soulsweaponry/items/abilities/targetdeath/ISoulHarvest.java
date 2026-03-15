@@ -1,12 +1,11 @@
 package net.soulsweaponry.items.abilities.targetdeath;
 
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalEntityTypeTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.registry.ComponentRegistry;
-
-import java.util.Optional;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 public interface ISoulHarvest extends IAbility {
 
@@ -23,12 +22,12 @@ public interface ISoulHarvest extends IAbility {
     }
 
     default void addAmount(ItemStack stack, int amount) {
-        amount += Optional.ofNullable(stack.get(ComponentRegistry.SOULS_HARVESTED)).orElse(0);
-        stack.set(ComponentRegistry.SOULS_HARVESTED, amount);
+        amount += NbtHelper.getInt(stack, NbtIds.SOULS_HARVESTED, 0);
+        NbtHelper.putInt(stack, NbtIds.SOULS_HARVESTED, amount);
     }
 
     default int getSouls(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.SOULS_HARVESTED)).orElse(0);
+        return NbtHelper.getInt(stack, NbtIds.SOULS_HARVESTED, 0);
     }
 
     default boolean canCollectSouls() {

@@ -44,7 +44,7 @@ public record SoulReleaseRandomBased(
                 entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
                 if (entity instanceof TameableEntity tameableEntity) {
                     tameableEntity.setOwner(user);
-                    tameableEntity.setTamed(true, false);
+                    tameableEntity.setTamed(true);
                 }
                 this.updateStats(entity, power, stack, this.bonusHealthPerPower, this.bonusHealthIncreasePerLvl, this.maxBonusHealth, this.bonusAttackPerPower, this.bonusAttackIncreasePerLvl, this.maxBonusAttack);
                 entity.addVelocity(0, 0.1f, 0);

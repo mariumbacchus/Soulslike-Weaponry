@@ -1,9 +1,8 @@
 package net.soulsweaponry.items.abilities;
 
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.registry.ComponentRegistry;
-
-import java.util.Optional;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 public interface IHasEssence extends IAbility {
 
@@ -14,6 +13,6 @@ public interface IHasEssence extends IAbility {
     }
 
     static int getEssence(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.ESSENCE)).orElse(0);
+        return NbtHelper.getInt(stack, NbtIds.ESSENCE, 0);
     }
 }

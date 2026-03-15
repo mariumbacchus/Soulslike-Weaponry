@@ -35,7 +35,7 @@ public record LifeGuard(
         for (int i = 0; i < j; i++) {
             ParticleHandler.singleParticle(user.getWorld(), ParticleTypes.SOUL, user.getParticleX(1f), user.getRandomBodyY(), user.getParticleZ(1f), 0, 0, 0);
         }
-        user.getWorld().playSound(null, user.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE.value(), SoundCategory.PLAYERS, 1f, 1f);
+        user.getWorld().playSound(null, user.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
         // Chance to save the player
         double savePercent = this.getLifeSaveChance(lvl);
         float explosionRange = this.lifeSaveExplosionRange + this.lifeSaveBonusExplosionRangePerLvl * lvl;
@@ -56,7 +56,7 @@ public record LifeGuard(
             rounded += this.lifeSaveStackDamage();
         }
         if (rounded > 0) {
-            stack.damage(rounded, user, LivingEntity.getSlotForHand(hand));
+            stack.damage(rounded, user, p -> p.sendToolBreakStatus(hand));
         }
         return damageTaken;
     }

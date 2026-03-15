@@ -17,8 +17,8 @@ public record RainBoostsStats(float bonusAttackDamage, float bonusAttackSpeed) i
         if (world.isClient) {
             return;
         }
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         if (world.isRaining()) {
             damage += this.bonusAttackDamage;
             attackSpeed += this.bonusAttackSpeed;

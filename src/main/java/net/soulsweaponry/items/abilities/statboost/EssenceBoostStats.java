@@ -17,8 +17,8 @@ public record EssenceBoostStats(float maxDamageBoost, float maxAttackSpeedBoost,
         if (world.isClient) {
             return;
         }
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         float per = (float) IHasEssence.getEssence(stack) / this.maxEssence;
         damage += this.maxDamageBoost * per;
         attackSpeed += this.maxAttackSpeedBoost * per;

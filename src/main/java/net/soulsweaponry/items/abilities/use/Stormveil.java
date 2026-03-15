@@ -12,15 +12,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.posthit.StormveilSurge;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
 /**
- * Applies {@link EffectRegistry#STORMVEIL} effect to the user, and using again empowers it with the {@link ComponentRegistry#STORMVEIL_SURGE_EMPOWERED} component.
+ * Applies {@link EffectRegistry#STORMVEIL} effect to the user, and using again empowers it with the {@link NbtIds#STORMVEIL_SURGE_EMPOWERED} component.
  * A weapon using this ability should also use or implement {@link StormveilSurge} to gain the post hit effects while having
  * the Stormveil effect granted by this ability.
  */
@@ -30,15 +31,15 @@ public record Stormveil(int stormveilEffectBaseAmp, float bonusAmpPerLevelCeiled
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
         if (!user.hasStatusEffect(EffectRegistry.COOLDOWN)) {
             if (user.hasStatusEffect(EffectRegistry.STORMVEIL)) {
-                Boolean empowered = stack.get(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED);
-                if (empowered != null && !empowered) {
-                    stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, true);
+                boolean empowered = NbtHelper.getBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
+                if (!empowered) {
+                    NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, true);
                     return TypedActionResult.consume(stack);
                 }
-                stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, true);
+                NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, true);
                 return TypedActionResult.pass(stack);
             } else {
-                stack.set(ComponentRegistry.STORMVEIL_SURGE_EMPOWERED, false);
+                NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
                 stack.damage(1, user, WeaponUtil.getActiveHandSlot(user));
                 int amp = MathHelper.ceil( this.stormveilEffectBaseAmp + WeaponUtil.getUpgradeLevel(stack) * this.bonusAmpPerLevelCeiled);
                 user.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, this.stormveilEffectDuration, amp));

@@ -1,6 +1,7 @@
 package net.soulsweaponry.items.abilities.posthit;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public record BlazingBlade(float baseFireSeconds, float bonusSecondsPerLvl, floa
                 return;
             }
         }
-        time += (int) (this.fireAspectLvlBonus * WeaponUtil.getLevel(stack, Enchantments.FIRE_ASPECT));
+        time += (int) (this.fireAspectLvlBonus * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
         target.setOnFireFor(time);
     }
 

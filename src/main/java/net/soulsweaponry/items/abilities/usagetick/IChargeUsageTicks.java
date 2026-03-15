@@ -28,7 +28,7 @@ public interface IChargeUsageTicks extends IChargeToUse {
 
     @Override
     default void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        this.stop(user, stack, WeaponUtil.getChargeTime(stack, user, remainingUseTicks));
+        this.stop(user, stack, WeaponUtil.getChargeTime(stack, remainingUseTicks));
     }
 
     int getCooldown(ItemStack stack, int ticksUsed);

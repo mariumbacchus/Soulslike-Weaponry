@@ -22,8 +22,8 @@ public record FirstHitBigDamage(
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (entity instanceof PlayerEntity player) {
-            float damage = WeaponUtil.getBaseAttackDamage(stack);
-            float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+            double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+            double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
             if (!this.isCoolingDown(player, stack)) {
                 damage += this.bonusDamage;
             }

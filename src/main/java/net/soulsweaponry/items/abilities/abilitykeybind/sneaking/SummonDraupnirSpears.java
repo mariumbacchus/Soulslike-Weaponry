@@ -42,7 +42,7 @@ public record SummonDraupnirSpears(float rangeOut, int spearAmount, int minCoold
             entity.setVelocity(x1, -3, z1);
             entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
             world.spawnEntity(entity);
-            NbtHelper.saveEntityOnItem(stack, entity);
+            NbtHelper.saveEntityInListOnItem(stack, entity);
             ParticleHandler.particleOutburst(world, 10, x, player.getY() + 5, z, ParticleTypes.CLOUD, new Vec3d(4, 4, 4), 0.5f);
         }
         if (!player.isCreative()) {

@@ -1,7 +1,6 @@
 package net.soulsweaponry.items.abilities.targetdeath;
 
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
-import net.minecraft.component.ComponentType;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -17,14 +16,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.ModTags;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class SoulHarvestTransform extends SoulHarvest {
@@ -55,9 +54,9 @@ public class SoulHarvestTransform extends SoulHarvest {
     public void handleKill(LivingEntity target, ItemStack stack) {
         int amount = target.getType().isIn(ConventionalEntityTypeTags.BOSSES) ? 20 : 1;
         if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
-            this.addAmount(stack, amount, ComponentRegistry.BLUE_SOULS);
+            this.addAmount(stack, amount, NbtIds.BLUE_SOULS);
         } else {
-            this.addAmount(stack, amount, ComponentRegistry.RED_SOULS);
+            this.addAmount(stack, amount, NbtIds.RED_SOULS);
         }
     }
 
@@ -79,20 +78,20 @@ public class SoulHarvestTransform extends SoulHarvest {
                 player.getInventory().removeStack(slot);
                 player.getInventory().insertStack(slot, newStack);
             }
-            float damage = WeaponUtil.getBaseAttackDamage(stack);
-            float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+            double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+            double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
             WeaponUtil.modifyStackAttributes(stack, damage + this.getBonusDamage(stack), attackSpeed);
         }
     }
 
-    public void addAmount(ItemStack stack, int amount, ComponentType<Integer> soulType) {
-        amount += Optional.ofNullable(stack.get(soulType)).orElse(0);
-        stack.set(soulType, amount);
+    public void addAmount(ItemStack stack, int amount, String soulType) {
+        amount += NbtHelper.getInt(stack, soulType, 0);
+        NbtHelper.putInt(stack, soulType, amount);
     }
 
     public SoulType getDominantType(ItemStack stack) {
-        int blue = Optional.ofNullable(stack.get(ComponentRegistry.BLUE_SOULS)).orElse(0);
-        int red = Optional.ofNullable(stack.get(ComponentRegistry.RED_SOULS)).orElse(0);
+        int blue = NbtHelper.getInt(stack, NbtIds.BLUE_SOULS, 0);
+        int red = NbtHelper.getInt(stack, NbtIds.RED_SOULS, 0);
         if (blue > red) {
             return SoulType.BLUE;
         } else {
@@ -107,8 +106,8 @@ public class SoulHarvestTransform extends SoulHarvest {
 
     public int getSouls(ItemStack stack) {
         int amount = 0;
-        amount += Optional.ofNullable(stack.get(ComponentRegistry.BLUE_SOULS)).orElse(0);
-        amount += Optional.ofNullable(stack.get(ComponentRegistry.RED_SOULS)).orElse(0);
+        amount += NbtHelper.getInt(stack, NbtIds.BLUE_SOULS, 0);
+        amount += NbtHelper.getInt(stack, NbtIds.RED_SOULS, 0);
         return amount;
     }
 

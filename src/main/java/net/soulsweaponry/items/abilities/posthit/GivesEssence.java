@@ -5,7 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.items.abilities.IHasEssence;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
@@ -23,13 +24,8 @@ public record GivesEssence(int essencePostHit, int bonusPerLvl, int maxEssence) 
     }
 
     public void addEssence(ItemStack stack, int amount) {
-        Integer essence = stack.get(ComponentRegistry.ESSENCE);
-        if (essence != null) {
-            int newEssence = IHasEssence.getEssence(stack) + amount;
-            stack.set(ComponentRegistry.ESSENCE, Math.min(newEssence, this.maxEssence));
-        } else {
-            stack.set(ComponentRegistry.ESSENCE, 0);
-        }
+        int newEssence = IHasEssence.getEssence(stack) + amount;
+        NbtHelper.putInt(stack, NbtIds.ESSENCE, Math.min(newEssence, this.maxEssence));
     }
 
     public int essenceProgressPercent(ItemStack stack) {

@@ -17,7 +17,10 @@ import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.noclip.HolyMoonlightPillar;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.registry.DamageSourceRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
@@ -44,7 +47,7 @@ public record Moonfall(
                 for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
                     if (entity instanceof LivingEntity target) {
                         entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
-                                power + this.bonusDamageEnchantMod * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0));
+                                power + this.bonusDamageEnchantMod * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
                         entity.addVelocity(0, this.knockup, 0);
                     }
                 }
@@ -67,7 +70,7 @@ public record Moonfall(
                     stack.damage(5, player, WeaponUtil.getActiveHandSlot(player));
                 }
                 world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
-                world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                 ParticleHandler.particleOutburstMap(player.getWorld(), 150, vecBlocksAway.getX(), user.getY(), vecBlocksAway.getZ(), ParticleEvents.MOONFALL_MAP, 1f);
             }
         }

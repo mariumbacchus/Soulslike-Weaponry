@@ -75,8 +75,7 @@ public record SonicBoom(
         }
 
         float damage = this.damage + this.bonusDamagePerLvl * lvl
-                + this.bonusEnchantDamageMod * EnchantmentHelper.getDamage(serverWorld, stack, target,
-                world.getDamageSources().playerAttack(player), 0);
+                + this.bonusEnchantDamageMod * EnchantmentHelper.getAttackDamage(stack, target.getGroup());
 
         float knockback = this.knockbackPowerMod + this.bonusKnockbackModPerLvl * lvl;
 
@@ -116,7 +115,7 @@ public record SonicBoom(
     }
 
     private void fail(World world, PlayerEntity player) {
-        world.playSound(null, player.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE.value(), SoundCategory.PLAYERS, 1f, 1f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
         this.notifyRange(player);
     }
 

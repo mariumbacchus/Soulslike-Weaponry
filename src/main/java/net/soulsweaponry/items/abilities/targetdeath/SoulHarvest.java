@@ -5,10 +5,10 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.List;
-import java.util.Optional;
 
 public class SoulHarvest implements ISoulHarvest {
 
@@ -19,7 +19,7 @@ public class SoulHarvest implements ISoulHarvest {
 
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
-        String kills = String.valueOf(Optional.ofNullable(stack.get(ComponentRegistry.SOULS_HARVESTED)).orElse(0));
+        String kills = String.valueOf(NbtHelper.getInt(stack, NbtIds.SOULS_HARVESTED, 0));
         return List.of(
                 Text.translatable("tooltip.soulsweapons.soul_trap").formatted(Formatting.DARK_PURPLE),
                 Text.translatable("tooltip.soulsweapons.soul_trap_description").formatted(Formatting.GRAY),

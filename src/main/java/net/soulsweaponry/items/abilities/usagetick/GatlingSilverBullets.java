@@ -1,5 +1,6 @@
 package net.soulsweaponry.items.abilities.usagetick;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.use.ShootSilverBullet;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
                 ItemStack itemStack = this.canShoot(playerEntity, stack);
                 if (itemStack != null) {
                     this.shootProjectiles(world, playerEntity, stack);
-                    this.spawnShotParticles(world, playerEntity, this.particleAmount + WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS), this.particleSpread);
+                    this.spawnShotParticles(world, playerEntity, this.particleAmount + EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack), this.particleSpread);
                     world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
                 }
@@ -73,7 +73,7 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        int lvl = WeaponUtil.getLevel(stack, EnchantRegistry.FAST_HANDS);
+        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack);
         return this.maxUseTime + this.useTimePerFastHands * lvl;
     }
 

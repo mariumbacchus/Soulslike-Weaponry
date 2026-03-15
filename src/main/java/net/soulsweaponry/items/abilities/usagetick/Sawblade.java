@@ -40,9 +40,8 @@ public record Sawblade(
             int duration = this.bleedDuration + this.bleedDurationPerLvl * lvl;
             int amp = (int) (this.bleedAmp + this.bleedAmpPerLvl * lvl);
             for (Entity nearbyEntity : nearbyEntities) {
-                if (nearbyEntity instanceof LivingEntity target && world instanceof ServerWorld serverWorld) {
-                    if (target.damage(world.getDamageSources().mobAttack(user), damage
-                            + EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().mobAttack(user), 0) * this.bonusEnchantDamageMod)) {
+                if (nearbyEntity instanceof LivingEntity target && world instanceof ServerWorld) {
+                    if (target.damage(world.getDamageSources().mobAttack(user), damage + EnchantmentHelper.getAttackDamage(stack, target.getGroup()))) {
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(this.knockback, 0, 0);
                         BleedData.addBleed(target, (int) (this.bleed + this.bleedPerLvl * lvl));

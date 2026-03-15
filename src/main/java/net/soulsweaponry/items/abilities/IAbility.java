@@ -306,6 +306,8 @@ public interface IAbility extends ICooldownItem {
      * <p>
      * Can be overwritten to for example prevent use() call if {@link EssenceNeeded}
      * returns insufficient essence amount, so the ability can't be used.
+     *
+     * TODO an enum should be made for abilities to declare so that only specific use cases are blocked, for example only use instead of use and keybind or something like that.
      */
     default boolean preventUsePredicate(ItemStack stack, PlayerEntity user) {
         return false;

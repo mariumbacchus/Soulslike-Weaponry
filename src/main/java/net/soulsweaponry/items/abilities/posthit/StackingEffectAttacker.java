@@ -22,7 +22,7 @@ public class StackingEffectAttacker extends ApplyStackingEffect {
 
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
-        Text text = WeaponUtil.parseStatusEffectId(this.statusEffectId).value().getName();
+        Text text = WeaponUtil.parseStatusEffectId(this.statusEffectId).getName();
         MutableText formatted = text.copy().formatted(Formatting.GOLD);
         return List.of(
                 Text.translatable("tooltip.soulsweapons.fury").formatted(Formatting.RED),

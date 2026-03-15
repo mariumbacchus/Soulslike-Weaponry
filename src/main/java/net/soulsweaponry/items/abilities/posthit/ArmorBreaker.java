@@ -21,11 +21,7 @@ public record ArmorBreaker(int bonusArmorStackDamage) implements IAbility {
         }) {
             ItemStack armorStack = target.getEquippedStack(slot);
             if (!armorStack.isEmpty() && armorStack.isDamageable()) {
-                armorStack.damage(
-                        this.bonusArmorStackDamage,
-                        target,
-                        slot
-                );
+                armorStack.damage(this.bonusArmorStackDamage, target, e -> e.sendEquipmentBreakStatus(slot));
             }
         }
     }

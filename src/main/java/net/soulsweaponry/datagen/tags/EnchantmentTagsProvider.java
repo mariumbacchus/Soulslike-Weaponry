@@ -6,6 +6,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.util.ModTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,5 +24,16 @@ public class EnchantmentTagsProvider extends FabricTagProvider<Enchantment> {
                 .add(Enchantments.BANE_OF_ARTHROPODS)
                 .add(Enchantments.SHARPNESS)
                 .add(Enchantments.IMPALING);
+
+        this.getOrCreateTagBuilder(ModTags.Enchantments.BULLET_COLLISION_EXCLUSIVE_SET)
+                .add(EnchantRegistry.ETHEREAL)
+                .add(EnchantRegistry.RICOCHET);
+
+        this.getOrCreateTagBuilder(ModTags.Enchantments.APPLY_FIRE)
+                .add(Enchantments.FLAME)
+                .add(Enchantments.FIRE_ASPECT);
+
+        this.getOrCreateTagBuilder(ModTags.Enchantments.PREVENTS_AMMO_CONSUME)
+                .add(Enchantments.INFINITY);
     }
 }

@@ -23,7 +23,7 @@ public record SummonRemnant(boolean allowNonUndeadChance, double summonChance, i
 
     @Override
     public void onTargetDeath(DamageSource damageSource, ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (target.hasInvertedHealingAndHarm() || this.allowNonUndeadChance) {
+        if (target.isUndead() || this.allowNonUndeadChance) {
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < this.summonChance) {

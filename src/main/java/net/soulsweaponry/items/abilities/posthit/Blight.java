@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -41,7 +40,7 @@ public class Blight extends ApplyStackingEffect {
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         super.postHit(stack, target, attacker);
         int lvl = WeaponUtil.getUpgradeLevel(stack);
-        RegistryEntry<StatusEffect> statusEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId);
+        StatusEffect statusEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId);
         if (!target.hasStatusEffect(statusEffect)) {
             return;
         }
@@ -50,7 +49,7 @@ public class Blight extends ApplyStackingEffect {
         if (needed >= this.ampNeededForExtraEffect) {
             int amp = (int) (this.extraEffectAmp + this.bonusExtraEffectAmpPerLvl * lvl);
             int duration = this.extraEffectDuration + this.extraEffectDurationPerLvl * lvl;
-            RegistryEntry<StatusEffect> extraEffect = WeaponUtil.parseStatusEffectId(this.extraEffectId);
+            StatusEffect extraEffect = WeaponUtil.parseStatusEffectId(this.extraEffectId);
             target.addStatusEffect(new StatusEffectInstance(extraEffect, duration, amp));
         }
     }
@@ -58,8 +57,8 @@ public class Blight extends ApplyStackingEffect {
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         List<Text> tooltip = new ArrayList<>(super.getTooltipAbilities(stack));
-        Text prevEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId).value().getName();
-        Text newEffect = WeaponUtil.parseStatusEffectId(this.extraEffectId).value().getName();
+        Text prevEffect = WeaponUtil.parseStatusEffectId(this.statusEffectId).getName();
+        Text newEffect = WeaponUtil.parseStatusEffectId(this.extraEffectId).getName();
         MutableText formattedPrev = prevEffect.copy().formatted(Formatting.LIGHT_PURPLE);
         MutableText formattedNew = newEffect.copy().formatted(Formatting.WHITE);
         tooltip.add(Text.translatable("tooltip.soulsweapons.blight.1", formattedPrev,

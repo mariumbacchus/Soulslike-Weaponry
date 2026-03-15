@@ -16,7 +16,6 @@ import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiPredicate;
 
 /**
@@ -46,8 +45,8 @@ public record Riptide(
             if (ticksUsed >= 10) {
                 int level = WeaponUtil.getUpgradeLevel(stack);
                 WeaponUtil.launchTarget(user, this.launchPower + level * this.bonusPowerPerLvl, false);
-                playerEntity.useRiptide(20, this.collisionDamage, stack);
-                world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+                playerEntity.useRiptide(20); // this.collisionDamage isn't used in 1.20.1
+                world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 if (playerEntity.isOnGround()) {
                     playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
                 }
@@ -72,7 +71,7 @@ public record Riptide(
             tooltip.add(Text.translatable("tooltip.soulsweapons.riptide.2").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip.soulsweapons.riptide.3").formatted(Formatting.GRAY));
         }
-        if (!Objects.equals(this.shouldApplyCooldown.label().getLiteralString(), "")) {
+        if (!this.shouldApplyCooldown.label().getString().isBlank()) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.riptide.4").append(this.shouldApplyCooldown.label()).formatted(Formatting.GRAY));
         }
         return tooltip;

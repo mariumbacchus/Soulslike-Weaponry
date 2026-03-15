@@ -13,7 +13,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -35,7 +34,6 @@ import java.util.stream.Collectors;
 
 public class WeaponUtil {
 
-    public static final String ITEM_UPGRADE_LEVEL_KEY = "ItemUpgradeLevel";
     public static final String DAMAGE_KEY = "CustomDamage";
     public static final String SPEED_KEY = "CustomSpeed";
 
@@ -44,12 +42,11 @@ public class WeaponUtil {
      * a Twinkling Titanite in the Smithing Table with a Netherite Upgrade Template.
      */
     public static int getUpgradeLevel(ItemStack stack) {
-        NbtCompound nbt = stack.getNbt();
-        return (nbt != null && nbt.contains(ITEM_UPGRADE_LEVEL_KEY, NbtCompound.INT_TYPE)) ? nbt.getInt(ITEM_UPGRADE_LEVEL_KEY) : 0;
+        return NbtHelper.getInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, 0);
     }
 
     public static void setUpgradeLevel(ItemStack stack, int level) {
-        stack.getOrCreateNbt().putInt(ITEM_UPGRADE_LEVEL_KEY, level);
+        NbtHelper.putInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, level);
     }
 
     /**
@@ -437,4 +434,14 @@ public class WeaponUtil {
         }
         return builder;
     }*/
+
+    public static boolean hasAnyEnchantmentsIn(ItemStack stack, TagKey<Enchantment> tag) {
+        Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
+        for (Enchantment ench : enchants.keySet()) {
+            if (Registries.ENCHANTMENT.getEntry(ench).isIn(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

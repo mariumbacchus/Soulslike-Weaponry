@@ -100,7 +100,7 @@ public class DawnbreakerExplosion implements IAbility {
     }
 
     public boolean shouldAffectEntity(LivingEntity target) {
-        return target.hasInvertedHealingAndHarm() || this.affectAllEntities;
+        return target.isUndead() || this.affectAllEntities;
     }
 
     public void dawnbreakerEvent(World world, LivingEntity target, LivingEntity attacker, ItemStack stack) {

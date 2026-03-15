@@ -2,7 +2,6 @@ package net.soulsweaponry.items.abilities.use;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -20,7 +19,10 @@ import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.Objects;
 
 /**
  * Use to spawn entities based on the amount of souls the item has harvested by fetching {@link #getSouls(ItemStack)}.
@@ -77,7 +79,7 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
                 this.addAmount(stack, - cost);
             }
         }
-        stack.damage(3, player, LivingEntity.getSlotForHand(hand));
+        stack.damage(3, player, p -> p.sendToolBreakStatus(hand));
         return TypedActionResult.success(stack, true);
     }
 

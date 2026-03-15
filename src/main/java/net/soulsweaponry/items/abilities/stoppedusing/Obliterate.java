@@ -30,7 +30,7 @@ public record Obliterate(
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            if (ticksUsed >= 10 && world instanceof ServerWorld serverWorld) {
+            if (ticksUsed >= 10 && world instanceof ServerWorld) {
                 this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldownSmash(stack));
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(this.rangeOutwards).add(player.getPos());
@@ -41,7 +41,7 @@ public record Obliterate(
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
                         entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player),
-                                power + this.enchantBonusModifier * EnchantmentHelper.getDamage(serverWorld, stack, target, world.getDamageSources().playerAttack(player), 0));
+                                power + this.enchantBonusModifier * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
                         entity.addVelocity(0, this.yVelocity, 0);
                     }
                 }

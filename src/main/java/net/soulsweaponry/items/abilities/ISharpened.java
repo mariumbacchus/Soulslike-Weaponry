@@ -5,9 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.registry.ComponentRegistry;
-
-import java.util.Optional;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 public interface ISharpened extends IAbility {
 
@@ -15,13 +14,13 @@ public interface ISharpened extends IAbility {
         return getEmpoweredAttacks(stack) > 0;
     }
 
-    static Integer getEmpoweredAttacks(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.SHARPENED_STRIKES)).orElse(0);
+    static int getEmpoweredAttacks(ItemStack stack) {
+        return NbtHelper.getInt(stack, NbtIds.SHARPENED_STRIKES, 0);
     }
 
     default void reduceEmpowered(ItemStack stack, World world, LivingEntity attacker) {
         if (isEmpowered(stack)) {
-            stack.set(ComponentRegistry.SHARPENED_STRIKES, getEmpoweredAttacks(stack) - 1);
+            NbtHelper.putInt(stack, NbtIds.SHARPENED_STRIKES, getEmpoweredAttacks(stack) - 1);
             if (getEmpoweredAttacks(stack) <= 0) {
                 world.playSound(null, attacker.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, .75f, 1f);
             }

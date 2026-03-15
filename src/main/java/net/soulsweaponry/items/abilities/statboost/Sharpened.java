@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Grants stat boost and bleed post hit if the weapon is sharpened, meaning the
- * {@link net.soulsweaponry.registry.ComponentRegistry#SHARPENED_STRIKES} is bigger than 0.
+ * {@link net.soulsweaponry.util.NbtIds#SHARPENED_STRIKES} is bigger than 0.
  */
 public record Sharpened(
         float bonusDamage, float bonusDamagePerLvl,
@@ -50,8 +50,8 @@ public record Sharpened(
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         int lvl = WeaponUtil.getUpgradeLevel(stack);
-        float damage = WeaponUtil.getBaseAttackDamage(stack);
-        float attackSpeed = WeaponUtil.getBaseAttackSpeed(stack);
+        double damage = WeaponUtil.getBaseItemAttackDamage(stack);
+        double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
         if (ISharpened.isEmpowered(stack)) {
             damage += this.bonusDamage + this.bonusDamagePerLvl * lvl;
             attackSpeed += this.bonusAttackSpeed + this.bonusAttackSpeedPerLvl * lvl;

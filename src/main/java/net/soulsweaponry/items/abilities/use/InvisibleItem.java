@@ -9,28 +9,24 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.soulsweaponry.items.abilities.IAbility;
-import net.soulsweaponry.registry.ComponentRegistry;
+import net.soulsweaponry.util.NbtHelper;
+import net.soulsweaponry.util.NbtIds;
 
 import java.util.List;
-import java.util.Optional;
 
 public class InvisibleItem implements IAbility {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        Boolean invisible = stack.get(ComponentRegistry.INVISIBLE);
-        if (invisible != null) {
-            stack.set(ComponentRegistry.INVISIBLE, !invisible);
-        } else {
-            stack.set(ComponentRegistry.INVISIBLE, true);
-        }
+        boolean invisible = isInvisible(stack);
+        NbtHelper.putBoolean(stack, NbtIds.INVISIBLE, !invisible);
         this.applyItemCooldown(stack, user, 20);
         user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.75f);
         return TypedActionResult.success(stack);
     }
 
     public static boolean isInvisible(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.INVISIBLE)).orElse(false);
+        return NbtHelper.getBoolean(stack, NbtIds.INVISIBLE, false);
     }
 
     @Override

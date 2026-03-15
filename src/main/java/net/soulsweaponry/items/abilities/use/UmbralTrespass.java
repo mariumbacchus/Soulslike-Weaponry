@@ -33,15 +33,14 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
             this.notifyCooldown(user);
             return TypedActionResult.fail(stack);
         }
-        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < this.maxRange && world instanceof ServerWorld serverWorld) {
+        if (user.getAttacking() != null && user.squaredDistanceTo(user.getAttacking()) < this.maxRange && world instanceof ServerWorld) {
             LivingEntity target = user.getAttacking();
             if (user.startRiding(target, true)) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 if (!UmbralTrespassData.shouldDamageRiding(user)) {
                     UmbralTrespassData.setShouldDamageRiding(user, true);
                     UmbralTrespassData.setOtherStats(user, this.baseDamage + lvl * this.bonusDamagePerLvl
-                                    + this.bonusEnchantDamageModifier * EnchantmentHelper.getDamage(
-                                            serverWorld, stack, target, user.getDamageSources().playerAttack(user), 0),
+                                    + this.bonusEnchantDamageModifier * EnchantmentHelper.getAttackDamage(stack, target.getGroup()),
                             Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl), this.healMod, this.maxHealthBonusDamage);
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, this.ticksBeforeDismount, 0));
                     user.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, this.ticksBeforeDismount, 0));
