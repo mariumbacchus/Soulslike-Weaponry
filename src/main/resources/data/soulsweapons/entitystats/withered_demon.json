@@ -1,5 +1,7 @@
 {
   "posture_loss_buildup_resistance": 20,
   "bleed_buildup_resistance": -20,
-  "bleed_damage_resistance": -40
+  "bleed_damage_resistance": -40,
+  "frost_buildup_resistance": -50,
+  "frost_damage_resistance": -30
 }

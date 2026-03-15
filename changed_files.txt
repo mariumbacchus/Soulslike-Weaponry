@@ -66,54 +66,10 @@ M	src/main/generated/data/soulsweapons/tags/item/melee_item_upgradables.json
 M	src/main/generated/data/soulsweapons/tags/item/soul_harvesting_weapons.json
 D	src/main/generated/data/c/tags/item/tools/ranged_weapon.json
 
-A	src/main/resources/assets/soulsweapons/lang/vi_vn.json
-A	src/main/resources/assets/soulsweapons/models/item/nightlords_sword.json
-A	src/main/resources/assets/soulsweapons/models/item/twinkling_titanite.json
-A	src/main/resources/assets/soulsweapons/particles/echo_sweep_attack.json
-A	src/main/resources/assets/soulsweapons/textures/gui/frost.png
-A	src/main/resources/assets/soulsweapons/textures/gui/frost_cooldown.png
-A	src/main/resources/assets/soulsweapons/textures/item/nightlord_essence.png
-A	src/main/resources/assets/soulsweapons/textures/item/nightlord_essence.png.mcmeta
-A	src/main/resources/assets/soulsweapons/textures/item/nightlords_sword.png
-A	src/main/resources/assets/soulsweapons/textures/item/twinkling_titanite.png
-A	src/main/resources/assets/soulsweapons/textures/item/twinkling_titanite.png.mcmeta
-A	src/main/resources/assets/soulsweapons/textures/mob_effect/echo.png
-A	src/main/resources/assets/soulsweapons/textures/mob_effect/exalted.png
-A	src/main/resources/assets/soulsweapons/textures/mob_effect/potency.png
-A	src/main/resources/assets/soulsweapons/textures/mob_effect/soul_of_cinder.png
-A	src/main/resources/data/soulsweapons/capabilities/weapons/nightlords_sword.json
-A	src/main/resources/data/soulsweapons/weapon_attributes/nightlords_sword.json
-
-M	src/main/resources/assets/soulsweapons/lang/en_us.json
-M	src/main/resources/assets/soulsweapons/lang/es_es.json
-M	src/main/resources/assets/soulsweapons/lang/es_mx.json
-M	src/main/resources/assets/soulsweapons/lang/ja_jp.json
-M	src/main/resources/assets/soulsweapons/lang/ko_kr.json
-M	src/main/resources/assets/soulsweapons/lang/ru_ru.json
-M	src/main/resources/assets/soulsweapons/lang/vi_vn.json
-M	src/main/resources/assets/soulsweapons/lang/zh_cn.json
-M	src/main/resources/data/minecraft/entitystats/player.json
-M	src/main/resources/data/soulsweapons/entitystats/accursed_lord_boss.json
-M	src/main/resources/data/soulsweapons/entitystats/chaos_monarch.json
-M	src/main/resources/data/soulsweapons/entitystats/day_stalker.json
-M	src/main/resources/data/soulsweapons/entitystats/draugr_boss.json
-M	src/main/resources/data/soulsweapons/entitystats/moonknight.json
-M	src/main/resources/data/soulsweapons/entitystats/night_prowler.json
-M	src/main/resources/data/soulsweapons/entitystats/night_shade.json
-M	src/main/resources/data/soulsweapons/entitystats/returning_knight.json
-M	src/main/resources/data/soulsweapons/entitystats/withered_demon.json
-M	src/main/resources/fabric.mod.json
-M	src/main/resources/soulsweapons.mixins.json
-
-M	.gitignore
-M	build.gradle
-M	CHANGELOG.md
-M	gradle.properties
-M	README.md
-
-M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
-M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java
-
 ALL ABILITIES
 // They use component registry so maybe make one for nbt strings to keep overview and make helper methods in weapon util?
 M	src/main/java/net/soulsweaponry/registry/ComponentRegistry.java
+
+UpgradeUtil.java
+M	src/main/java/net/soulsweaponry/datagen/recipe/ItemRecipes.java
+M	src/main/java/net/soulsweaponry/datagen/recipe/UpgradeRecipes.java

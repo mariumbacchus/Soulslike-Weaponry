@@ -2,5 +2,7 @@
   "base_posture_unit": 280,
   "posture_loss_buildup_resistance": -135,
   "bleed_buildup_resistance": 300,
-  "bleed_damage_resistance": 300
+  "bleed_damage_resistance": 300,
+  "frost_buildup_resistance": 50,
+  "frost_damage_resistance": 50
 }
