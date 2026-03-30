@@ -50,13 +50,64 @@ public class LivingEntityMixin {
     /*
      * NB! Only called if the damage is bigger than 0 (decimals count)
      */
+//    @ModifyReturnValue(method = "modifyAppliedDamage", at = @At("TAIL"))
+//    private float modifyDamageReturnValue(float originalAmount) {
+//        LivingEntity entity = (LivingEntity) (Object) this;
+//        if (capturedDamageSource != null) {
+//            return ModifyDamageUtil.modifyDamageTakenTail(entity, originalAmount, capturedDamageSource);
+//        }
+//        return originalAmount;
+//    }
+
+    // Dmg Cap (25%) + Gating (in 10 tick = 0.5s) FOR BOSS (Boss Entity and any Mob with >= 200 HP)
     @ModifyReturnValue(method = "modifyAppliedDamage", at = @At("TAIL"))
     private float modifyDamageReturnValue(float originalAmount) {
         LivingEntity entity = (LivingEntity) (Object) this;
+        float finalAmount = originalAmount;
+
         if (capturedDamageSource != null) {
-            return ModifyDamageUtil.modifyDamageTakenTail(entity, originalAmount, capturedDamageSource);
+            finalAmount = ModifyDamageUtil.modifyDamageTakenTail(entity, finalAmount, capturedDamageSource);
         }
-        return originalAmount;
+
+        if (entity instanceof net.soulsweaponry.entity.mobs.BossEntity || entity.getMaxHealth() >= 200.0f) {
+
+            float maxDamageLimit = entity.getMaxHealth() * 0.25f;
+
+            //CASE 1: POSTURE BREAK
+            if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK)) {
+                this.souls_wasPostureBroken = true;
+
+                if (this.souls_damageTakenDuringPostureBreak + finalAmount > maxDamageLimit) {
+                    finalAmount = maxDamageLimit - this.souls_damageTakenDuringPostureBreak;
+                    if (finalAmount <= 0f) return 0f;
+                }
+                this.souls_damageTakenDuringPostureBreak += finalAmount;
+            }
+            //CASE 2: NORMAL
+            else {
+                if (this.souls_wasPostureBroken) {
+                    this.souls_damageTakenDuringPostureBreak = 0f;
+                    this.souls_wasPostureBroken = false;
+                    this.souls_damageTakenThisWindow = 0f;
+                    this.souls_lastDamageWindowTick = entity.age;
+                }
+
+                int currentTick = entity.age;
+                //10 tick
+                if (currentTick - this.souls_lastDamageWindowTick > 10) {
+                    this.souls_damageTakenThisWindow = 0f;
+                    this.souls_lastDamageWindowTick = currentTick;
+                }
+
+                if (this.souls_damageTakenThisWindow + finalAmount > maxDamageLimit) {
+                    finalAmount = maxDamageLimit - this.souls_damageTakenThisWindow;
+                    if (finalAmount <= 0f) return 0f;
+                }
+                this.souls_damageTakenThisWindow += finalAmount;
+            }
+        }
+
+        return finalAmount;
     }
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
@@ -248,4 +299,14 @@ public class LivingEntityMixin {
             abilities.getAbilities().forEach(a -> a.onEquipStack(entity, slot, oldStack, newStack));
         }
     }
+
+    //Damage Cap + Gating
+    @Unique
+    private int souls_lastDamageWindowTick = 0;
+    @Unique
+    private float souls_damageTakenThisWindow = 0f;
+    @Unique
+    private float souls_damageTakenDuringPostureBreak = 0f;
+    @Unique
+    private boolean souls_wasPostureBroken = false;
 }
