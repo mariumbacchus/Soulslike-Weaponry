@@ -1,6 +1,6 @@
 package net.soulsweaponry.compat;
 
-import it.crystalnest.soul_fire_d.api.FireManager;
+//import it.crystalnest.soul_fire_d.api.FireManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
+/**
+ * TODO For some reason adding soul fired as dependency just doesnt work idk errors are everywhere
+ */
 public class PrometheusCompat {
 
     private static final Identifier SOUL_FIRE_ASPECT_ID = new Identifier("soul_fire_aspect");
@@ -21,10 +24,10 @@ public class PrometheusCompat {
     }
 
     public static void igniteNormalFire(LivingEntity target, float seconds) {
-        FireManager.setOnFire(target, seconds, FireManager.DEFAULT_FIRE_TYPE);
+        //FireManager.setOnFire(target, seconds, FireManager.DEFAULT_FIRE_TYPE);
     }
 
     public static void igniteSoulFire(LivingEntity target, float seconds) {
-        FireManager.setOnFire(target, seconds, FireManager.SOUL_FIRE_TYPE);
+        //FireManager.setOnFire(target, seconds, FireManager.SOUL_FIRE_TYPE);
     }
 }
