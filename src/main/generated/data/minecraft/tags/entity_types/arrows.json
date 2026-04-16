@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:moonlight_arrow",
+    "soulsweapons:silver_arrow",
+    "soulsweapons:kraken_slayer_projectile",
+    "soulsweapons:charged_arrow_entity"
+  ]
+}

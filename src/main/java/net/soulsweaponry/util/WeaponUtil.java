@@ -23,6 +23,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
@@ -129,7 +130,7 @@ public class WeaponUtil {
     public static double getBaseItemAttackDamage(ItemStack stack) {
         Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
         for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
-            if (mod.getId().equals(IHasAbilities.ATTACK_DAMAGE_MODIFIER_ID)) {
+            if (mod.getId().equals(ItemAccessor.getAttackDamageModifierId())) {
                 return mod.getValue();
             }
         }
@@ -139,7 +140,7 @@ public class WeaponUtil {
     public static double getBaseItemAttackSpeed(ItemStack stack) {
         Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(stack, EquipmentSlot.MAINHAND);
         for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_SPEED)) {
-            if (mod.getId().equals(IHasAbilities.ATTACK_SPEED_MODIFIER_ID)) {
+            if (mod.getId().equals(ItemAccessor.getAttackSpeedModifierId())) {
                 return mod.getValue();
             }
         }

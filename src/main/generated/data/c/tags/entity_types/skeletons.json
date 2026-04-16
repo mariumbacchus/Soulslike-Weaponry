@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "minecraft:skeleton",
-    "minecraft:wither_skeleton",
-    "minecraft:skeleton_horse"
-  ]
-}

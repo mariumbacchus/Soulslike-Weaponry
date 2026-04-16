@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:needs_diamond_tool",
+      "required": false
+    }
+  ]
+}

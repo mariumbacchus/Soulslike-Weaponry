@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-18T20:02:05.9358382	Marium's Soulslike Weaponry/Advancements
+// 1.20.1	2026-04-16T23:14:01.0241168	Marium's Soulslike Weaponry/Advancements
 a3a56d2f71701cb2587a1e2aa7d6e24ceadfc92a data\soulsweapons\advancements\heap_of_iron.json
 6e3196061981c90f86c16f17ff08eac925b5f580 data\soulsweapons\advancements\root.json
 6a877e118ae29c73a88f828c5fc4ed17f814d858 data\soulsweapons\advancements\lords_on_stick.json
@@ -7,8 +7,8 @@ cd4cb295ef23cf92fafec33f6f7c74740df2cd80 data\soulsweapons\advancements\draugr_b
 526f3d130ad95bc44364f8e6050ac04a8ce1e04a data\soulsweapons\advancements\moonlight_tools.json
 e67d6eaeb184cc77a0749c1c5faee2ce832193fe data\soulsweapons\advancements\returning_knight.json
 ac04da4a0c8905ecde7570acd733fda5baca3c40 data\soulsweapons\advancements\lord_soul.json
-59faa76ed240aae04bcb9ce6cf30a4572432abfa data\soulsweapons\advancements\dragonslayer_swordspear.json
 2b62ae0d2d1bb37f5580f1ff39a2f54fc0446f49 data\soulsweapons\advancements\blunderbuss.json
+59faa76ed240aae04bcb9ce6cf30a4572432abfa data\soulsweapons\advancements\dragonslayer_swordspear.json
 b2cf1bbf8799ef621b527e3f27c2155c678fb9a6 data\soulsweapons\advancements\transform_scythe.json
 2b3ea13ef6da05c61511a1fb027aa1056afb6b1d data\soulsweapons\advancements\leviathan_axe.json
 dd8254ee13f61197c327a4fb7a5076418e15b285 data\soulsweapons\advancements\hallowheart.json
@@ -19,7 +19,7 @@ befc113f42f0841b0b63d36f1952bcf35736d072 data\soulsweapons\advancements\rageblad
 9b142bb50233c34432389d7ba3ceaa9af1d765f9 data\soulsweapons\advancements\arkenplate.json
 d6747ee4d19bb01a20b655ba95205f82da4fde43 data\soulsweapons\advancements\kill_day_night_boss.json
 36ac7bd3b7432d85c9d6b3fc576e7e8111212645 data\soulsweapons\advancements\trickweapon.json
-9a378a8c681c9cf94cef1527b9456dedc17100f2 data\soulsweapons\advancements\all_weapons.json
+39a965377d27835062eb1ea6a90b5b8d91c179d1 data\soulsweapons\advancements\all_weapons.json
 d20c53af9905bc8917ee61371ef94589fc166eea data\soulsweapons\advancements\moonknight.json
 782cf0597de79680213564c9962dc7f3f5524310 data\soulsweapons\advancements\uncertainty.json
 6adc61411aa7a5d499a0621131221ea8692ea141 data\soulsweapons\advancements\chaos_orb.json

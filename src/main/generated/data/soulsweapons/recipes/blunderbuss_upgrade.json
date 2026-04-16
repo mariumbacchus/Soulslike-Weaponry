@@ -1,0 +1,15 @@
+{
+  "type": "soulsweapons:smithing_item_upgrade",
+  "addition": {
+    "item": "soulsweapons:twinkling_titanite"
+  },
+  "base": {
+    "item": "soulsweapons:blunderbuss"
+  },
+  "fallback": false,
+  "primaryBonus": 3.5,
+  "secondaryBonus": 0.0,
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

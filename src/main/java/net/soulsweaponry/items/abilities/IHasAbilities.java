@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.TooltipUtil;
@@ -35,9 +36,6 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public interface IHasAbilities extends IConfigDisable {
-
-    UUID ATTACK_DAMAGE_MODIFIER_ID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-    UUID ATTACK_SPEED_MODIFIER_ID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
 
     List<IAbility> getAbilities();
 
@@ -484,8 +482,8 @@ public interface IHasAbilities extends IConfigDisable {
         double attackSpeed = WeaponUtil.getStackAttackSpeed(stack);
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));
-            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ItemAccessor.getAttackDamageModifierId(), "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierId(), "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
             base = builder.build();
         } else {
             base = vanilla;

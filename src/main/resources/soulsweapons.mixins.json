@@ -12,6 +12,7 @@
     "EntityDataSaverMixin",
     "EntityMixin",
     "GlassBottleMixin",
+    "ItemAccessor",
     "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",

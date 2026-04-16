@@ -15,6 +15,7 @@ import net.minecraft.util.math.ColorHelper;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.*;
 import net.soulsweaponry.items.abilities.posthit.SwitchPostHit;
+import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
 import net.soulsweaponry.registry.FluidRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -64,6 +65,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
         HudRegistry.init();
+        PacketRegistry.registerS2CPackets();
 
         FluidRenderHandlerRegistry.INSTANCE.register(FluidRegistry.STILL_PURIFIED_BLOOD, FluidRegistry.FLOWING_PURIFIED_BLOOD,
                 new SimpleFluidRenderHandler(

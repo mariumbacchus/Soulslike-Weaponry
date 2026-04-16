@@ -42,9 +42,10 @@ public class SoulRobesArmor extends ModdedArmor {
             },
             List.of(
                     Text.translatable("tooltip.soulsweapons.fortified").formatted(Formatting.BLUE),
-                    Text.translatable("tooltip.soulsweapons.fortified.1",
-                            Text.of(String.valueOf(StatusEffects.NIGHT_VISION.getName().copy().append(", ")
-                                    .append(EffectRegistry.MAGIC_RESISTANCE.getName())))).formatted(Formatting.GRAY)
+                    Text.translatable(
+                            "tooltip.soulsweapons.fortified.1",
+                            StatusEffects.NIGHT_VISION.getName().copy().append(", ").append(EffectRegistry.MAGIC_RESISTANCE.getName())
+                    ).formatted(Formatting.GRAY)
             ), 20
     );
 

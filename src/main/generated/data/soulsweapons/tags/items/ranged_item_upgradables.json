@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bows",
+    "soulsweapons:kraken_slayer_crossbow",
+    "minecraft:crossbow"
+  ]
+}

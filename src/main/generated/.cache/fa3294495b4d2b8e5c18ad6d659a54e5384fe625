@@ -1,6 +1,9 @@
-// 1.20.1	2025-08-18T20:02:05.9473111	Marium's Soulslike Weaponry/Tags for minecraft:entity_type
+// 1.20.1	2026-04-16T23:14:01.0344648	Marium's Soulslike Weaponry/Tags for minecraft:entity_type
+87e94353fa6d7415a11af5a608fe64f0d585429a data\c\tags\entity_types\arthropod.json
+fb4045b27ca0d9e55889a44c29d22ce8ef7691a0 data\minecraft\tags\entity_types\impact_projectiles.json
 03f6a9c764af218e0aae04c256b0bba536ea3f60 data\minecraft\tags\entity_types\freeze_immune_entity_types.json
 27b1a80783ef1703af8ce585987b47cb58b55434 data\c\tags\entity_types\ranged_mobs.json
 24a86eaab93220486f41a34ecaa6e7eaa8f88b7b data\c\tags\entity_types\bosses.json
 62fd71e78bcac7c2c5b4514697f6eed886bd34cc data\c\tags\entity_types\dragons.json
-76e241b1b1e6516f4476999cc735572b6db39b3d data\c\tags\entity_types\skeletons.json
+23efe9440b19ab9a8da6820a553fd95b67639bff data\minecraft\tags\entity_types\arrows.json
+01ba432300770cf8fa256cefba8616c38022082f data\c\tags\entity_types\undead.json

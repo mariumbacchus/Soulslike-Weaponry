@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "soulsweapons:bleed",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:dragon_mist",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:magic_damage_bypass_cooldown",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+// 1.20.1	2026-04-16T23:14:01.0261206	Marium's Soulslike Weaponry/soulsweapons Dynamic Registries
+c8fd1d8e9eb2ca46adac6f8b2a3dae14cee7427f data\soulsweapons\damage_type\freyr_sword.json
+eaf28d84f9da368774890f4f053932c884554cc6 data\soulsweapons\damage_type\obliterated.json
+f818344fe43690916d868d438fae3be2df27c94e data\soulsweapons\damage_type\shadow_orb.json
+aa80bbf8f1314852e24b980f0f1b090bc206a190 data\soulsweapons\damage_type\magic_damage_bypass_cooldown.json
+2b581616c48fe0c833f919ad5ab58fb8db354e51 data\soulsweapons\damage_type\bleed.json
+3be1c484ce646417c8a6307cd354913d0d5ef3f1 data\soulsweapons\damage_type\player_fire.json
+34ac4fa80acd14d08005425144dfdbce16b88de3 data\soulsweapons\damage_type\oblivion.json
+ce13c8ae07ee2b1c3fc76ce6c4c339bdc38d9b0f data\soulsweapons\damage_type\dragon_mist.json
+b0002ab3be9157b280851f2b0eaa25384c8c85c5 data\soulsweapons\damage_type\player_lightning.json
+bb7471859e13238f104a23a0d29ba35280ab6fc8 data\soulsweapons\damage_type\beam.json

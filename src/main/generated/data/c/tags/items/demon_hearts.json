@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "soulsweapons:demon_heart",
+    {
+      "id": "bewitchment:demon_heart",
+      "required": false
+    }
+  ]
+}
