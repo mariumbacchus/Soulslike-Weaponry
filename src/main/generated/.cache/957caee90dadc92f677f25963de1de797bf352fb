@@ -1,6 +1,6 @@
-// 1.20.1	2026-04-16T23:14:01.0332758	Marium's Soulslike Weaponry/minecraft:entity Loot Table
-876404f176719c547322abec032416344e40789f data\soulsweapons\loot_tables\entities\dark_sorcerer.json
+// 1.20.1	2026-04-16T23:30:42.4002989	Marium's Soulslike Weaponry/minecraft:entity Loot Table
 be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_tables\entities\returning_knight.json
+876404f176719c547322abec032416344e40789f data\soulsweapons\loot_tables\entities\dark_sorcerer.json
 bb067d9e00792672a68fe601c3a8498bd6780e7e data\soulsweapons\loot_tables\entities\day_stalker.json
 44770cd0641de03aa29af78333163d9a568f3982 data\soulsweapons\loot_tables\entities\soulmass.json
 c29f93389952bb468f4cb3b275ab8f0d8ba3ab40 data\soulsweapons\loot_tables\entities\frost_giant.json
@@ -8,10 +8,10 @@ c29f93389952bb468f4cb3b275ab8f0d8ba3ab40 data\soulsweapons\loot_tables\entities\
 ad0b0cd1c873825c82b7af653c6d9bcffefe9c41 data\soulsweapons\loot_tables\entities\big_chungus.json
 d3e857923f4e2715ed6c1d6818d4008daa57ae3d data\soulsweapons\loot_tables\entities\night_prowler.json
 d728477b893dda2bbc16893f22f7a5936721ac9f data\soulsweapons\loot_tables\entities\night_shade.json
-fc7bed79fe47c974178438c1beec1e8cac607959 data\soulsweapons\loot_tables\entities\chaos_monarch.json
 ad8d768c9d55b282e300d6dacbe9f2b0b7802c53 data\soulsweapons\loot_tables\entities\rime_spectre.json
+fc7bed79fe47c974178438c1beec1e8cac607959 data\soulsweapons\loot_tables\entities\chaos_monarch.json
 ad53a903ea6bb43119b9ab0c117c51f3d640c8c4 data\soulsweapons\loot_tables\entities\moonknight.json
 32418a84e486264ce8e539393823ddb700c21b8c data\soulsweapons\loot_tables\entities\draugr_boss.json
 45c6519e25f33f317caf9a87b21ca7a62bc673e5 data\soulsweapons\loot_tables\entities\accursed_lord_boss.json
-702f65084fa028bf972c2b5a545134057ed2b400 data\soulsweapons\loot_tables\entities\withered_demon.json
 76e9daa945381030f9e1b1298250916976d5fd75 data\soulsweapons\loot_tables\entities\remnant.json
+702f65084fa028bf972c2b5a545134057ed2b400 data\soulsweapons\loot_tables\entities\withered_demon.json

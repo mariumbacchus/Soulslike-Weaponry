@@ -1,4 +1,4 @@
-// 1.20.1	2026-04-16T23:14:01.0271597	Marium's Soulslike Weaponry/Tags for minecraft:item
+// 1.20.1	2026-04-16T23:30:42.3885672	Marium's Soulslike Weaponry/Tags for minecraft:item
 7f38b782ef0289e7cf67edbd0ff54f8409646dc9 data\c\tags\items\wood_sticks.json
 c981ffeaab4dc3e1f1885fcb3d23663d53c5fc22 data\soulsweapons\tags\items\ranged_item_upgradables.json
 218dc060248f4ed6a64a41202c45b3902bddf400 data\soulsweapons\tags\items\dragonbane_material.json
@@ -14,12 +14,12 @@ ec0bb74e345e1fac74f54f9a3f7cfbffad2c61f0 data\soulsweapons\tags\items\lord_soul.
 c3c8cf2c2e14b1dd6ac212a0a20f3e5216b6d678 data\c\tags\items\chest_armor.json
 4ad946caedb84491f263bfc0b981b6426217dab8 data\minecraft\tags\items\axes.json
 c8c074fb12da18163b9a10b0cfebb3fefc8cefb7 data\soulsweapons\tags\items\upgradable_moonlight_swords.json
-4db5fb2a08fd51e6e604e4d113817f3c68ef8d47 data\minecraft\tags\items\pickaxes.json
 109be82efe6fecee957f27034a5f3c92aed1dc48 data\soulsweapons\tags\items\summonable_weapons.json
+4db5fb2a08fd51e6e604e4d113817f3c68ef8d47 data\minecraft\tags\items\pickaxes.json
 381ba4005f91e2106575acdc1acd8ed23dd47b36 data\soulsweapons\tags\items\melee_item_upgradables.json
 5583f1f6d8e9eb953f5366899a8fe5035e6dd42a data\soulsweapons\tags\items\guns.json
 76b7ef4151286d29157dc10b8b6056c91c31505b data\soulsweapons\tags\items\soul_harvesting_weapons.json
-9540255ef5c7f43da47ddd07c429a40b121ef2d6 data\minecraft\tags\items\swords.json
+bf1bd48407bf5eb96e44af412187a1837348de33 data\minecraft\tags\items\swords.json
 3ee56876611c7f1587f1d7528d24fc04dad7e622 data\c\tags\items\bows.json
 a15ada327b918def603d23bb86aa6f7fcb7756e1 data\c\tags\items\foot_armor.json
 fe769a09e3d176cc45de6a0b632d04a393aff347 data\minecraft\tags\items\shovels.json

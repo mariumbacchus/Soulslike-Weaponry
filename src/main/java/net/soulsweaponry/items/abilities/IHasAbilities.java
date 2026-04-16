@@ -480,6 +480,9 @@ public interface IHasAbilities extends IConfigDisable {
         Multimap<EntityAttribute, EntityAttributeModifier> base;
         double damage = WeaponUtil.getStackAttackDamage(stack);
         double attackSpeed = WeaponUtil.getStackAttackSpeed(stack);
+        //TODO
+        System.out.println("Damage " + damage);
+        System.out.println("Attack speed " + attackSpeed);
         if (slot == EquipmentSlot.MAINHAND) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ItemAccessor.getAttackDamageModifierId(), "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));

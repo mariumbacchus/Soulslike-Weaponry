@@ -1,14 +1,14 @@
-// 1.20.1	2026-04-16T23:14:01.0322756	Marium's Soulslike Weaponry/Tags for minecraft:block
+// 1.20.1	2026-04-16T23:30:42.39924	Marium's Soulslike Weaponry/Tags for minecraft:block
 fde6727893ec462631cb8c10c3e9eaf0b4b16478 data\minecraft\tags\blocks\dirt.json
 d132f79d07a9cfc9ba91eb3f112f468f63ca92fe data\soulsweapons\tags\blocks\needs_echo_shard_tool.json
 9b05ea35e0699d3159248b939eb65057081a7410 data\soulsweapons\tags\blocks\needs_iron_block_tool.json
-4a6135be86031b89945ad1851cd9c4096a3c0bb4 data\minecraft\tags\blocks\needs_diamond_tool.json
 d132f79d07a9cfc9ba91eb3f112f468f63ca92fe data\soulsweapons\tags\blocks\needs_moonstone_tool.json
-fde6727893ec462631cb8c10c3e9eaf0b4b16478 data\minecraft\tags\blocks\mineable\shovel.json
+4a6135be86031b89945ad1851cd9c4096a3c0bb4 data\minecraft\tags\blocks\needs_diamond_tool.json
 9b05ea35e0699d3159248b939eb65057081a7410 data\soulsweapons\tags\blocks\needs_lost_soul_tool.json
+fde6727893ec462631cb8c10c3e9eaf0b4b16478 data\minecraft\tags\blocks\mineable\shovel.json
 d132f79d07a9cfc9ba91eb3f112f468f63ca92fe data\soulsweapons\tags\blocks\needs_crimson_ingot_tool.json
 9b05ea35e0699d3159248b939eb65057081a7410 data\soulsweapons\tags\blocks\needs_lost_soul_durable_tool.json
 d132f79d07a9cfc9ba91eb3f112f468f63ca92fe data\soulsweapons\tags\blocks\needs_moonstone_or_verglas_tool.json
-1dbb4ecd123ea3b203e562f7cc29d0e11318959f data\minecraft\tags\blocks\needs_stone_tool.json
-01d3c8645720ce27e998733a704da5bbff1cd8db data\minecraft\tags\blocks\needs_iron_tool.json
 cfd11bd61f353b49678576b75e1f72cb3cf2792d data\minecraft\tags\blocks\mineable\pickaxe.json
+01d3c8645720ce27e998733a704da5bbff1cd8db data\minecraft\tags\blocks\needs_iron_tool.json
+1dbb4ecd123ea3b203e562f7cc29d0e11318959f data\minecraft\tags\blocks\needs_stone_tool.json

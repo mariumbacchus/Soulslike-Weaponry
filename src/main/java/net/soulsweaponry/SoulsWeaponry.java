@@ -2,7 +2,6 @@ package net.soulsweaponry;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -13,12 +12,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.*;
-import net.soulsweaponry.items.misc.TestItem;
-import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.UpgradeUtil;
@@ -63,6 +59,7 @@ public class SoulsWeaponry implements ModInitializer {
         WeaponRegistry.init();
         ArmorRegistry.init();
         GunRegistry.init();
+        RecipeSerializerRegistry.init();
         WorldGen.generateCustomWorldGen();
 
         LOGGER.info("Successfully registered SoulsWeapons content!");
@@ -88,10 +85,6 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(ModId, "enhanced_gow"), modContainer, Text.literal("Szombie's 3D GOW Weapons"), ResourcePackActivationType.DEFAULT_ENABLED);
             LOGGER.info("Successfully registered built-in Szombie's Enhanced 3D GOW Weapons resourcepack!");
         });
-
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            ItemRegistry.registerItem(new TestItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, 10, -2.4f, new FabricItemSettings().fireproof().rarity(Rarity.RARE)), "test_item");
-        }
 
         Registry.register(Registries.ITEM_GROUP, new Identifier(ModId, "general"),
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.soulsweapons.general"))
