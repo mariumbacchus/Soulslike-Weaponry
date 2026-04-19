@@ -28,12 +28,14 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
         this.configure(rangedConfig);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
-        if (rangedConfig.pull_time() > 0) {
+        float diffSeconds = Math.abs(rangedConfig.pull_time() - 20f) / 20f;
+        String pullTimeSeconds = String.format("%.2f", diffSeconds);
+        if (rangedConfig.pull_time() > 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
-            list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", rangedConfig.pull_time()).formatted(Formatting.GRAY));
-        } else if (rangedConfig.pull_time() < 0) {
+            list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
+        } else if (rangedConfig.pull_time() < 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
-            list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", rangedConfig.pull_time()).formatted(Formatting.GRAY));
+            list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
         }
         this.addAbility(pullSpeedAbility);
     }

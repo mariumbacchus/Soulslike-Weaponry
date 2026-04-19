@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 
 public abstract class ModArrow extends ArrowEntity {
 
-    private ItemStack arrowStack;
-    private ItemStack weaponStack;
+    private ItemStack arrowStack = ItemStack.EMPTY;
+    private ItemStack weaponStack = ItemStack.EMPTY;
 
     public ModArrow(EntityType<? extends ArrowEntity> entityType, World world) {
         super(entityType, world);

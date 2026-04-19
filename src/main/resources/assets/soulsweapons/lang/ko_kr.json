@@ -895,6 +895,7 @@
     "tooltip.soulsweapons.throw_dragonslayer_swordspear": "Falling Bolt",
     "tooltip.soulsweapons.throw_dragonslayer_swordspear.1": "- Throw the weapon at enemies, summoning",
     "tooltip.soulsweapons.throw_dragonslayer_swordspear.2": "lightning on them if the skies are clear",
+    "tooltip.soulsweapons.upgrade_efficiency": "+%s Mining Efficiency",
 
     "tooltip.soulsweapons.spear_arsenal": "Spear Arsenal",
     "tooltip.soulsweapons.spear_arsenal.1": "- Use to throw, thrown spears will remain for a while",

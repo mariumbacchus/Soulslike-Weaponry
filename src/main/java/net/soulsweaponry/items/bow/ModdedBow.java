@@ -27,12 +27,14 @@ public abstract class ModdedBow extends CustomBow implements IHasAbilities {
         this.configure(config);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
-        if (config.pull_time() > 0) { //TODO newer versions of ranged weapon api use seconds instead of ticks so test if i need the static method from 1.21.1 or not to fix that
+        float diffSeconds = Math.abs(config.pull_time() - 20f) / 20f;
+        String pullTimeSeconds = String.format("%.2f", diffSeconds);
+        if (config.pull_time() > 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
-            list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", config.pull_time()).formatted(Formatting.GRAY));
-        } else if (config.pull_time() < 0) {
+            list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
+        } else if (config.pull_time() < 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
-            list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", config.pull_time()).formatted(Formatting.GRAY));
+            list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
         }
         this.addAbility(pullSpeedAbility);
     }

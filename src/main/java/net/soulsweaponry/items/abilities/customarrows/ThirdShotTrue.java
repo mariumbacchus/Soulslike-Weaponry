@@ -5,7 +5,6 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
@@ -44,16 +43,6 @@ public record ThirdShotTrue(
 
     public int getStacksAddedPerShot(int lvl) {
         return (int) (this.stacksAddedPerShot + this.bonusStacksPerLvl * lvl);
-    }
-
-    @Override
-    public UseAction getUseAction() {
-        for (UseAction action : UseAction.values()) {
-            if (action.toString().equals(this.useAction)) {
-                return action;
-            }
-        }
-        return UseAction.SPEAR;
     }
 
     @Override

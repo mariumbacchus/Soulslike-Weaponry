@@ -14,8 +14,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
+import net.minecraft.item.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -27,9 +26,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ItemRegistry;
-import net.soulsweaponry.util.TooltipUtil;
-import net.soulsweaponry.util.UpgradeUtil;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.util.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -480,10 +477,8 @@ public interface IHasAbilities extends IConfigDisable {
         Multimap<EntityAttribute, EntityAttributeModifier> base;
         double damage = WeaponUtil.getStackAttackDamage(stack);
         double attackSpeed = WeaponUtil.getStackAttackSpeed(stack);
-        //TODO
-        System.out.println("Damage " + damage);
-        System.out.println("Attack speed " + attackSpeed);
-        if (slot == EquipmentSlot.MAINHAND) {
+        boolean melee = stack.getItem() instanceof TridentItem || stack.getItem() instanceof SwordItem || stack.getItem() instanceof MiningToolItem;
+        if (slot == EquipmentSlot.MAINHAND && melee) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ItemAccessor.getAttackDamageModifierId(), "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierId(), "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
@@ -527,8 +522,12 @@ public interface IHasAbilities extends IConfigDisable {
         this.applyTooltipAbilities(tooltip, stack);
         TooltipUtil.addAbilityTooltip(TooltipUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);
         int lvl = WeaponUtil.getUpgradeLevel(stack);
+        float efficiency = NbtHelper.getFloat(stack, NbtIds.UPGRADE_MINING_EFFICIENCY, 0f);
         if (lvl > 0) {
             tooltip.add(Text.translatable("tooltip.soulsweapons.level", lvl).formatted(Formatting.DARK_GRAY));
+        }
+        if (efficiency > 0) {
+            tooltip.add(Text.translatable("tooltip.soulsweapons.upgrade_efficiency", String.format("%.1f", efficiency)).formatted(Formatting.AQUA));
         }
     }
 

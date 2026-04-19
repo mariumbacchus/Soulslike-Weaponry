@@ -30,7 +30,6 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
 
     // NB: Variables that are used client side (i.e. particle types, particle count, etc.) NEED to be data tracked! maxAge is used server side only so that's fine
     private static final Logger LOGGER = LogUtils.getLogger();
-    private ItemStack stack;
     private int maxAge;
     private static final TrackedData<Float> WIDTH = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> HEIGHT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
@@ -41,6 +40,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     private static final TrackedData<ParticleEffect> DESPAWN_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> TRAIL_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
     private static final TrackedData<ParticleEffect> AREA_PARTICLE = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.PARTICLE);
+    private static final TrackedData<ItemStack> STACK = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
     public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
         super(type, owner, world);
@@ -72,6 +72,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         this.dataTracker.startTracking(DESPAWN_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME);
         this.dataTracker.startTracking(TRAIL_PARTICLE, ParticleTypes.GLOW);
         this.dataTracker.startTracking(AREA_PARTICLE, ParticleRegistry.NIGHTFALL_PARTICLE);
+        this.dataTracker.startTracking(STACK, ItemStack.EMPTY);
     }
 
     @Override
@@ -100,7 +101,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Stack", NbtElement.COMPOUND_TYPE)) {
-            this.stack = ItemStack.fromNbt(nbt.getCompound("Stack"));
+            this.setItemStack(ItemStack.fromNbt(nbt.getCompound("Stack")));
         }
         if (nbt.contains("BoundingBoxWidth")) {
             this.setBoundingBoxWidth(nbt.getFloat("BoundingBoxWidth"));
@@ -149,8 +150,8 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        if (this.stack != null) {
-            nbt.put("Stack", this.stack.writeNbt(new NbtCompound()));
+        if (this.asItemStack() != null) {
+            nbt.put("Stack", this.asItemStack().writeNbt(new NbtCompound()));
         }
         nbt.putFloat("BoundingBoxWidth", this.getBoundingBoxWidth());
         nbt.putFloat("BoundingBoxHeight", this.getBoundingBoxHeight());
@@ -166,11 +167,11 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
 
     @Override
     protected ItemStack asItemStack() {
-        return this.stack;
+        return this.dataTracker.get(STACK);
     }
 
     public void setItemStack(ItemStack stackShotFrom) {
-        this.stack = stackShotFrom;
+        this.dataTracker.set(STACK, stackShotFrom == null ? ItemStack.EMPTY : stackShotFrom.copy());
     }
 
     public void setRadius(float radius) {

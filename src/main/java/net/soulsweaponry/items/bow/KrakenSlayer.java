@@ -2,6 +2,7 @@ package net.soulsweaponry.items.bow;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.UseAction;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.abilities.customarrows.ThirdShotTrue;
 
@@ -20,7 +21,7 @@ public class KrakenSlayer extends ModdedBow {
 
     public KrakenSlayer(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_bow_pull_time_ticks,
-                        ConfigConstructor.kraken_slayer_bow_damage, ConfigConstructor.kraken_slayer_bow_bonus_velocity),
+                        ConfigConstructor.kraken_slayer_bow_damage, ConfigConstructor.kraken_slayer_bow_velocity),
                 repairIngredientSupplier);
         this.addAbility(THIRD_SHOT_BOW);
     }
@@ -28,5 +29,15 @@ public class KrakenSlayer extends ModdedBow {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_kraken_slayer_bow;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        for (UseAction action : UseAction.values()) {
+            if (action.toString().equals(ConfigConstructor.kraken_slayer_bow_use_animation)) {
+                return action;
+            }
+        }
+        return UseAction.SPEAR;
     }
 }

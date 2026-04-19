@@ -20,7 +20,7 @@ public class KrakenSlayerCrossbow extends ModdedCrossbow {
 
     public KrakenSlayerCrossbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, createConfig((int) ConfigConstructor.kraken_slayer_crossbow_pull_time_ticks,
-                        ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_bonus_velocity),
+                        ConfigConstructor.kraken_slayer_crossbow_damage, ConfigConstructor.kraken_slayer_crossbow_velocity),
                 repairIngredientSupplier);
         this.addAbility(THIRD_SHOT_CROSSBOW);
     }

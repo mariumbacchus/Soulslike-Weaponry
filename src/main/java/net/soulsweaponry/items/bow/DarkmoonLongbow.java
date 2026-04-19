@@ -21,7 +21,7 @@ public class DarkmoonLongbow extends ModdedBow {
 
     public DarkmoonLongbow(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, createConfig((int) ConfigConstructor.darkmoon_longbow_pull_time_ticks,
-                        ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_bonus_velocity),
+                        ConfigConstructor.darkmoon_longbow_damage, ConfigConstructor.darkmoon_longbow_velocity),
                 repairIngredientSupplier);
         this.addAbility(ARROW_STORM, MOONLIGHT_ARROW);
     }

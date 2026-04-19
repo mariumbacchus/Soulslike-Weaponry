@@ -94,7 +94,9 @@ public class SoulsWeaponry implements ModInitializer {
                             }
                         })).build());
 
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, success) -> UpgradeUtil.rebuildRecipeCache(server.getOverworld()));
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> UpgradeUtil.rebuildRecipeCache(server.getRecipeManager()));
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, success) -> UpgradeUtil.rebuildRecipeCache(server.getRecipeManager()));
+
         ServerLifecycleEvents.SERVER_STARTING.register(TrickWeaponUtil::loadMappings);
         EntityStatsUtil.register();
 

@@ -15,10 +15,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
 
-    @Inject(method = "getAttributeModifiers", at = @At("RETURN"), cancellable = true) //TODO this needs to be tested THOROUGHLY
+    @Inject(method = "getAttributeModifiers", at = @At("RETURN"), cancellable = true)
     private void soulsweapons$modifyAttributes(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
         ItemStack stack = (ItemStack)(Object)this;
-        if (WeaponUtil.hasModifiedAttributes(stack) && stack.getItem() instanceof IHasAbilities hasAbilities) {
+        if (!(stack.getItem() instanceof IHasAbilities hasAbilities)) {
+            return;
+        }
+        boolean hasCustom = WeaponUtil.hasModifiedAttributes(stack);
+        boolean hasUpgrade = WeaponUtil.getUpgradeLevel(stack) > 0;
+        if (hasCustom || hasUpgrade) {
             cir.setReturnValue(hasAbilities.modifyAttributeModifiers(cir.getReturnValue(), stack, slot));
         }
     }

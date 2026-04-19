@@ -22,7 +22,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.apache.logging.log4j.util.TriConsumer;

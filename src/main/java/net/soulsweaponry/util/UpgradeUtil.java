@@ -9,11 +9,12 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeManager;
-import net.minecraft.world.World;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class UpgradeUtil {
 
@@ -21,10 +22,20 @@ public class UpgradeUtil {
 
     public static final UUID UPGRADE_DAMAGE = UUID.fromString("4a1c33a1-7a43-4670-8b0e-6567e4492309");
     public static final UUID UPGRADE_ATTACK_SPEED = UUID.fromString("1fb53593-9302-4753-a56f-ec9cad97e1e7");
-    public static final UUID UPGRADE_ARMOR = UUID.fromString("f33e4864-6760-41ec-ad22-332da08d3274");
-    public static final UUID UPGRADE_ARMOR_TOUGHNESS = UUID.fromString("63898510-5d7f-4cb4-a8a1-f97d342da034");
     public static final UUID UPGRADE_RANGED_DAMAGE = UUID.fromString("a80078e9-593d-4344-beb5-5b0dd98c05cf");
     public static final UUID UPGRADE_RANGED_HASTE = UUID.fromString("fc081fc5-6d03-4fa8-8d4e-76bdf9260af1");
+    public static final Map<EquipmentSlot, UUID> UPGRADE_ARMOR_UUIDS = Map.of(
+            EquipmentSlot.HEAD, UUID.fromString("a1c5ebbd-d2b3-47ff-86f6-bd05d011042f"),
+            EquipmentSlot.CHEST, UUID.fromString("9c8f2dc1-568d-4f0e-add9-529bbc16d9fd"),
+            EquipmentSlot.LEGS, UUID.fromString("6794c6ea-7bf8-4392-ad70-b96e4541c0a5"),
+            EquipmentSlot.FEET, UUID.fromString("b17ac08c-d8da-46f4-9445-31399a237df9")
+    );
+    public static final Map<EquipmentSlot, UUID> UPGRADE_ARMOR_TOUGHNESS_UUIDS = Map.of(
+            EquipmentSlot.HEAD, UUID.fromString("b294a88e-d01a-454e-95ca-d4c248ca3452"),
+            EquipmentSlot.CHEST, UUID.fromString("1ed4b145-41d1-4d02-a1c9-a231fe2a18bd"),
+            EquipmentSlot.LEGS, UUID.fromString("c3d61498-2282-483a-b8d8-19b9e0d35957"),
+            EquipmentSlot.FEET, UUID.fromString("b679e338-fe2b-4d55-8b67-60882a228530")
+    );
 
     public static Multimap<EntityAttribute, EntityAttributeModifier> applyUpgradeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> vanilla, ItemStack stack, EquipmentSlot slot) {
         int level = NbtHelper.getInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, 0);
@@ -39,7 +50,7 @@ public class UpgradeUtil {
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(vanilla);
         if (stack.getItem() instanceof ArmorItem) {
-            applyArmorUpgrade(builder, slot, primary, secondary);
+            applyArmorUpgrade(builder, stack, slot, primary, secondary);
         } else if (stack.getItem() instanceof RangedWeaponItem) {
             applyRangedUpgrade(builder, slot, primary, secondary);
         } else if (stack.getItem() instanceof MiningToolItem) {
@@ -67,13 +78,20 @@ public class UpgradeUtil {
 
     private static void applyArmorUpgrade(
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder,
+            ItemStack stack,
             EquipmentSlot slot,
             float armorBonus,
             float toughnessBonus
     ) {
-        builder.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UPGRADE_ARMOR, "upgrade.armor", armorBonus, EntityAttributeModifier.Operation.ADDITION));
+        if (!(stack.getItem() instanceof ArmorItem armorItem)) {
+            return;
+        }
+        if (armorItem.getSlotType() != slot) {
+            return;
+        }
+        builder.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UPGRADE_ARMOR_UUIDS.get(slot), "upgrade.armor", armorBonus, EntityAttributeModifier.Operation.ADDITION));
         if (toughnessBonus > 0) {
-            builder.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(UPGRADE_ARMOR_TOUGHNESS, "upgrade.armor_toughness", toughnessBonus, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(UPGRADE_ARMOR_TOUGHNESS_UUIDS.get(slot), "upgrade.armor_toughness", toughnessBonus, EntityAttributeModifier.Operation.ADDITION));
         }
     }
 
@@ -108,9 +126,8 @@ public class UpgradeUtil {
         }
     }
 
-    public static void rebuildRecipeCache(World world) {
+    public static void rebuildRecipeCache(RecipeManager manager) {
         ITEM_CACHE.clear();
-        RecipeManager manager = world.getRecipeManager();
         for (var recipe : manager.values()) {
             if (!(recipe instanceof ItemUpgradeRecipe upgrade)) {
                 continue;

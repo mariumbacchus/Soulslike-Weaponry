@@ -575,7 +575,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkin_scythe_prime_omnivamp_reduced_cooldown_per_level = 8;
 
     @Entry public static float darkmoon_longbow_damage = 9;
-    @Entry public static float darkmoon_longbow_bonus_velocity = 0f;
+    /**
+     * NB! Called _bonus_velocity in 1.21 and above due to changes in ranged weapon api
+     */
+    @Entry public static float darkmoon_longbow_velocity = 3f;
     @Entry public static float darkmoon_longbow_pull_time_ticks = 25;
     @Entry public static boolean darkmoon_longbow_can_apply_arrow_effects = true;
 
@@ -839,7 +842,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float frostmourne_frost_post_hit_permafrost_amp_per_level = 1f;
 
     @Entry public static float galeforce_damage = 10;
-    @Entry public static float galeforce_bonus_velocity = 0.25f;
+    /**
+     * NB! Called _bonus_velocity in 1.21 and above due to changes in ranged weapon api
+     */
+    @Entry public static float galeforce_velocity = 3.25f;
     @Entry public static float galeforce_pull_time_ticks = 20;
     @Entry public static boolean galeforce_can_apply_arrow_effects = true;
 
@@ -947,7 +953,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kirkhammer_silver_sword_righteous_undead_bonus_damage_per_level = 0.5f;
 
     @Entry public static float kraken_slayer_bow_damage = 7;
-    @Entry public static float kraken_slayer_bow_bonus_velocity = 0f;
+    /**
+     * NB! Called _bonus_velocity in 1.21 and above due to changes in ranged weapon api
+     */
+    @Entry public static float kraken_slayer_bow_velocity = 3f;
     @Entry public static float kraken_slayer_bow_pull_time_ticks = 10;
     @Entry public static String kraken_slayer_bow_use_animation = "SPEAR";
     @Entry public static float kraken_slayer_bow_true_damage = 4f;
@@ -957,7 +966,10 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float kraken_slayer_bow_max_stacks_until_true_damage = 3;
 
     @Entry public static float kraken_slayer_crossbow_damage = 9;
-    @Entry public static float kraken_slayer_crossbow_bonus_velocity = 0f;
+    /**
+     * NB! Called _bonus_velocity in 1.21 and above due to changes in ranged weapon api
+     */
+    @Entry public static float kraken_slayer_crossbow_velocity = 3.15F;
     @Entry public static float kraken_slayer_crossbow_pull_time_ticks = 15;
     @Entry public static float kraken_slayer_crossbow_true_damage = 4f;
     @Entry public static float kraken_slayer_crossbow_bonus_true_damage_per_level = 1.5f;

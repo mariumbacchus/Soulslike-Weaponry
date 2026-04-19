@@ -32,7 +32,7 @@ public class Galeforce extends ModdedBow {
 
     public Galeforce(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, createConfig((int) ConfigConstructor.galeforce_pull_time_ticks,
-                        ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_bonus_velocity),
+                        ConfigConstructor.galeforce_damage, ConfigConstructor.galeforce_velocity),
                 repairIngredientSupplier);
         this.addAbility(GALE_ARROWS, CLOUDBURST);
     }
