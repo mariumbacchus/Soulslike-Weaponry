@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "soulsweapons:moonstone"
+    },
+    "S": {
+      "tag": "soulsweapons:lord_soul"
+    },
+    "V": {
+      "item": "soulsweapons:verglas"
+    }
+  },
+  "pattern": [
+    " #V",
+    "#S#",
+    "V# "
+  ],
+  "result": {
+    "item": "soulsweapons:twinkling_titanite"
+  },
+  "show_notification": true
+}

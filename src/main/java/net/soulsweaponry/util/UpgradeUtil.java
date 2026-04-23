@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeManager;
+import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,11 +50,16 @@ public class UpgradeUtil {
 
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(vanilla);
-        if (stack.getItem() instanceof ArmorItem) {
+        Item item = stack.getItem();
+        if (item instanceof ArmorItem) {
             applyArmorUpgrade(builder, stack, slot, primary, secondary);
-        } else if (stack.getItem() instanceof RangedWeaponItem) {
-            applyRangedUpgrade(builder, slot, primary, secondary);
-        } else if (stack.getItem() instanceof MiningToolItem) {
+        } else if (item instanceof RangedWeaponItem) {
+            if (item instanceof GunItem) {
+                NbtHelper.putFloat(stack, NbtIds.GUN_BONUS_DAMAGE, primary);
+            } else {
+                applyRangedUpgrade(builder, slot, primary, secondary);
+            }
+        } else if (item instanceof MiningToolItem) {
             applyMiningUpgrade(builder, stack, slot, primary, secondary);
         } else {
             applyWeaponUpgrade(builder, slot, primary, secondary);
