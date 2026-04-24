@@ -1,8 +1,106 @@
 # Changelog
 
+# 1.4.2
+- Fixed bug causing Galeforce Cloudburst to target oneself
+- Upgrading weapons with negative limitation abilities (such as Sealed Potential on Holy Moonlight Greatsword) to level 5 removes the limitation, this is the case for:
+  - Holy Moonlight Greatsword
+  - Bluemoon Greatsword
+  - Dark Moon Greatsword
+  - Master Sword
+  - Added config lines to change this level cap for this removal to trigger
+
+# 1.4.1
+- REI now properly cycles the twinkling titanite upgrade recipe output instead of having one fixed item as the result when previewing the recipe
+- Reduced the permafrost amplifier Rime Spectre would apply, added addition to the frost bar instead
+- Fixed a bug making returning projectiles (like Leviathan Axe and Mjølnir) despawn after 1200 ticks instead of returning to the user
+- Fixed mobs randomly spinning while pathfinding
+- Fixed bugs with ability items preventing vanilla use even if the item had no ability overriding the default use
+- Fixed a bug preventing the user from reducing posture, bleed and frost buildup if the resistances were high enough
+- Fixed a bug preventing Darkmoon Greatsword from being used
+- Fixed a bug preventing Moonveil from being used while standing
+- Fixed a bug preventing items from being consumed when used on Blackstone Pedestal to summon bosses
+    - Added config lines in the boss config to enable/disable the consumption of the item
+- Fixed a bug preventing Day Stalker from spawning flames during the "Decimate" attack in phase 2
+- Day Stalker and Night Prowler can no longer move during phase transition
+
+# 1.4
+Most of this update has been refactoring the code so that any weapon in the future can have any ability if compatible. This is in preparation for a system
+kind of like "Ashes of War" from Elden Ring, where you can add the abilities you want to different weapons (if compatible).
+This also means there might be new bugs with certain weapons I failed to catch, so do report them if you find any.
+Due to this restructuring, there aren't that many new additions compared to older big updates, except for the new upgrading system I hope you'll enjoy!
+
+### Additions
+- Added Sword of the Nightlord
+    - Switching to this weapon makes it apply a random on-hit effect post hit: bleed, poison, chain lightning, wither, permafrost, fire, cripple (slow & weakness & mining fatigue), magic damage, and lastly blight & decay
+    - Attacking targets having either one of these effects deals bonus damage
+    - Switching to this weapon gives you the Potency effect, making certain weapons (like this one) deal bonus damage for a few seconds
+- Added Frost Buildup mechanic & entity stats
+    - Leviathan Axe, Dark Moon Greatsword, Sword of the Nightlord (given right ability) and Frostmourne all apply Frost Buildup
+    - Permafrost effect applies gradual Frost
+    - At max Frost, Icicle AOE Explosion is triggered, damaging the main entity and others around it. Instead of the buildup being set to 0, it enters a cooldown state, gradually reducing the buildup from the max amount and where additional buildup added during cooldown is ignored
+    - ```max_frost_buildup```, ```frost_buildup_resistance``` and ```frost_damage_resistance``` have been added as options in the ```entitystats``` file
+- Changed Permafrost effect slightly
+    - Taking fire damage now removes Permafrost effect
+    - Permafrost icicle explosion now damages nearby players too (not the main inflicter), and will no longer target allies of the inflicter
+    - Increased the icicle explosion spread range slightly
+- Added a new upgrading system with the Smithing Table
+    - A new item Twinkling Titanite has been added, use it to upgrade items' stats, like damage and attack speed for melee and ranged weapons, or armor values for armor
+    - These bonuses are added as recipes with the type `"soulsweapons:smithing_item_upgrade"`, therefore making it possible to create own stat files for specific items or overwrite old ones
+    - Items can be upgraded max 5 times, but can be changed in config
+    - Added REI compatability for this system too
+    - The bonuses depend on the item, for example bows and crossbows get ranged damage and draw speed, mining tools get mining efficiency and attack damage, armor gains armor and armor toughness, and so on... (default is just damage and attack speed for other items)
+    - Weapons will now have ability damage, cooldowns, etc. scale off of "Upgrade Level" instead of enchants, therefore, config lines previously dictating what enchants made the weapons scale have been removed and replaced with _per_level instead
+    - Many weapons have new bonuses based on the upgrade level, such as:
+        - Moonlight Greatsword (and pure variant) shoot more projectiles based on upgrade level (3-7), and so does Bluemoon and the Master Sword
+        - Holy Moonlight Greatsword have more pillars summoned based on level
+        - Guns now gain infinity at upgrade level above 2
+        - and more!
+- Daggers now deal increased damage when performing the Posture Break critical hit, currently only Mehrunes Razor does this with 100% increase
+- Soul Reaper summons get bonus health and attack damage based on the soul amount up to a max amount, can be changed in config
+    - Soulmass' beam attack and sacrifice AOE explosion now scale off of generic attack damage attribute (which is increased by Soul Reaper)
+- Overhauled the ability system on the legendary weapons. Also moved away from off-hand ability triggers since Better Combat doesn't allow off-handing heavy weapons. Many abilities have therefore changed to be either triggered when sneaking or with the keybind ability trigger
+- Dragon Staff and Whirligig Sawblade has reduced cooldown based on the time used
+- Veil of Fire effect no longer sets the user on fire (since it was kinda irritating to have constant fire on the HUD)
+- Moved all boss config lines over to a new config file named `soulsweapons_boss_config.json`
+- Added the Soul of Cinder status effect, another version of Strength that is only granted when the player is on fire, right now only through Guinsoo's Rageblade
+- Lich Bane now always deal the bonus magic damage, regardless of % health left
+- Changed Cape of Chaos
+    - Ability keybind toggles whether the ground should be withered or not
+    - The wither effect no longer applies to allies of the user
+    - Removed config line chaos_cape_wither_ground in favor of the "disable use" one for the item
+- Kraken Slayer Crossbow no longer scales off of Quick Charge due to the new upgrade system
+- Enabled crafting for the Kraken Slayer Bow
+- Added Echo effect, damage taken with it is saved then done back upon removal of it (damage is not applied if removed via commands or other abilities like via the Skofnung Stone)
+- Added Resonance ability to Lich Bane, apply Echo effect post hit as long as the entity neither has it from before and the item is not on cooldown
+- Added compatability with Soul Fire'd mod, Blazing Blade ability now scales off of Soul Fire Aspect and applies Soul Fire if the weapon has the enchantment
+
+### Bugfixes
+- Fixed a bug causing the posture loss, bleed and frost ui bars to overflow
+- Fixed a bug causing weapons with dynamically changing attack damage and speed (i.e. Draugr during nightime, Mjølnir when raining, etc.) to have other attributes removed (like range from Better Combat)
+- Fixed a bug causing Mehrunes Razor to deal less bonus missing health damage
+- Fixed bugs preventing Rime Spectre from taking magic damage
+- Rime Spectre emerges from the ground when not attacking anything
+- Fixed bug preventing mobs from having the Decay effect
+- Fixed a bug causing config line for projectile immunity for some bosses to not recognize full namespace
+    - It now recognizes tags, full and only part of namespaces, such as "#minecraft:arrows" for tags and regular namespaces like "soulsweapons:moonlight_projectile" and "moonlight_projectile" will work
+
+# 1.3.2
+- Fixed bug preventing mobs from dropping items
+
+# 1.3.1 - 1.21.1 Specific changes
+- Entity groups have been changed to be tags, therefore config lines such as ```decaying_king_group_type = "UNDEAD"``` have been removed.
+    - If you want to make a boss a different group, make a tag for that group and add the boss to it
+    - The same goes for if you want to remove a boss from a tag, simply add a "remove" list like how there exists one for "values"
+- Config lines determining whether bosses are undead or not have been renamed to ```_has_inverted_heal_and_harm``` for clarity as that is the effect in game the line had
+- Config lines regarding max velocity of projectiles shot out of bows and crossbows have been changed to ```_bonus_velocity``` and their values have been changed due to this, config reset is advised
+- Updated config values referring to Sweeping Edge enchant boosting damage or reducing cooldowns due to mojang changing the id from ```sweeping``` to ```sweeping_edge```, delete of the config and relaunch to create a new one is recommended
+- Due to enchantments being datapacks, some config lines regarding enchants have been changed:
+    - Lines for enchant levels have been removed
+    - Lines for disabling enchants only disable the functionality of the enchants, they can still be acquired despite not working
+
 ## 1.3.1
 - Fixed a bug preventing Chungus Potions from being crafted
-  - Recipes for the Splash and Lingering has been changed due to this
+    - Recipes for the Splash and Lingering has been changed due to this
 - Fixed compatibility issue with Create mod and the Chungus Potions, they can now be inserted and extracted from fluid tanks correctly
 - Splash Chungus Potions now have random particle colors
 - Added config lines for how many bullets are needed in the inventory for guns with infinity to shoot
@@ -17,28 +115,28 @@
 ### New additions
 - Added Dragonbane, a new katana from Skyrim having the Chain Lightning ability builtin and does 20 bonus damage to dragon entities, can be made with Netherite ingots or Dragon Bones from Ice & Fire (accepted material is inside soulsweapons:dragonbane_material item tag)
 - Added Supernova, a spiky mace that does bonus durability damage to armor, has a chance to inflict fire post hit and has passive firethorns effect while holding it
-  - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
-  - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
+    - Using it spawns Flame Pillars a short path leaving behind pools of Molten Metal that sets the targets in it on fire, disables shields and does 100 durability damage to it
+    - Calculated Fall detonation spawns Flame Pillar ripples outwards with the amount based on fall distance
 - Added Mehrunes' Razor, a new dagger that has a chance to deal bonus damage equal to the missing health of the target, with an additional very small chance to instantly kill the target
-  - There is a blacklist of entities in the config that will make the razor unable to instakill those entities
+    - There is a blacklist of entities in the config that will make the razor unable to instakill those entities
 - Added Tonitrus, a mace from Bloodborne which you can use to give yourself the new Stormveil effect, making you apply Chain Lightning post hit and immune to Lightning damage, using it again with the effect makes you summon a lightning strike on the target post hit, then removing the Stormveil effect
 - Added the Stormveil effect, making the wearer immune to Lightning damage and has a chance to inflict thorns lightning damage on targets hitting the wearer
 - Added Bloodlust, a katana from Dark Souls 3 applying large amounts of bleed buildup and can be used to damage yourself, but also give you Strength 2 and Bloodthirsty effects, targets suffering Blood Loss around you while having this weapon in hand also gives you Strength
-  - Bleed buildup is a part of the reworked bleed system, more on that later in the log
+    - Bleed buildup is a part of the reworked bleed system, more on that later in the log
 - Added the new Blight Carrier gun enchantment, making Silver Bullets apply stacking Blight effect on targets, increasing their damage taken based on their armor amount
 - Added the new Frostsilver gun enchantment, making Silver Bullets apply strong Permafrost effect if the target Posture Breaks
-  - Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
-    - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
+    - Hitting a target with Posture Break effect while having Permafrost triggers the Ice Explosion early and removes the effect (together with the Posture Break since it triggers)
+        - Note: Permafrost & other damage over time effects still trigger Posture Breaks!
 - Added the new Phantom Trace gun enchantment, guns now fire additional copies of the main bullet that fly off after a delay, they do 50% damage, but has all other effects the main bullet has
-  - Bullets with this enchant are rendered with a cyan overlay
+    - Bullets with this enchant are rendered with a cyan overlay
 - Added the new Tether gun enchantment, making Silver Bullets drag the target towards you if outside a certain range
 - Added the new Ricochet gun enchantment, granting Silver Bullets the ability to bounce off of blocks with bounce amount based on enchant level
-  - On contact with a block, the bullets will bounce off and:
-    - have its speed reduced to max 1.5 speed
-    - first try to target the mob the owner last attacked
-    - if no mob was attacked recently, it will target the closest mob around it
-    - if no mob is close, it will bounce off a random direction
-  - A gun cannot have both Ethereal & Ricochet enchant
+    - On contact with a block, the bullets will bounce off and:
+        - have its speed reduced to max 1.5 speed
+        - first try to target the mob the owner last attacked
+        - if no mob was attacked recently, it will target the closest mob around it
+        - if no mob is close, it will bounce off a random direction
+    - A gun cannot have both Ethereal & Ricochet enchant
 
 ### Item changes
 #### Guns:
@@ -48,19 +146,19 @@
 - Adjusted the position of the Gatling Gun when using in first person (now centered more)
 - Adjusted the particle spread of the guns
 - Adjusted Chain Lightning enchantment to do damage scaling off of the damage to the projectile instead of a constant value
-  - Due to this the config line ```chain_lightning_enchant_damage_per_level``` has been replaced with ```chain_lightning_enchant_damage_mod_per_level```
+    - Due to this the config line ```chain_lightning_enchant_damage_per_level``` has been replaced with ```chain_lightning_enchant_damage_mod_per_level```
 - Bullets with Ethereal enchant are now rendered translucent
 - Bullets now spawn Soul Fire Flame particles upon de-spawn
 - Explosive Rounds enchantment no longer breaks blocks around the target hit with the explosion
-  - Added config line to toggle this (when on, the explosion counts as a mob, so gamerule doMobGriefing can also be used to turn off)
+    - Added config line to toggle this (when on, the explosion counts as a mob, so gamerule doMobGriefing can also be used to turn off)
 - Added config lines for the max enchant levels for all enchants (where it matters)
 - The max age of bullets has been reduced from 100 -> 60 (ticks) (ethereal makes it 25 like before)
-  - For cannonballs: 100 -> 60 (ticks) with Ethereal enchant, 300 -> 120 (ticks) otherwise
+    - For cannonballs: 100 -> 60 (ticks) with Ethereal enchant, 300 -> 120 (ticks) otherwise
 - Buffed Posture Loss applied by all guns
-  - Blunderbuss: Base 25 -> 30 (per bullet), Bonus per enchant level 2 -> 3
-  - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50
-  - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
-  - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
+    - Blunderbuss: Base 25 -> 30 (per bullet), Bonus per enchant level 2 -> 3
+    - Hunter Cannon: Base 60 -> 120, Bonus per enchant level 60 -> 50
+    - Hunter Pistol: Base 30 -> 50, Bonus per enchant level 7 -> 10
+    - Gatling Gun: Base 9 -> 10, Bonus per enchant level 1 -> 3
 
 #### Armor:
 - Hallowheart makes the wearer completely immune to Wither effect at all times instead of just under 50% health
@@ -69,45 +167,45 @@
 - Soul Robes set gives Magic Resistance 4 instead of 2 (80% reduced magic damage)
 - Armor that grants effects no longer display potion particles
 - Some armor sets give posture and bleed resistances (more on what that entails in the "Reworked Mechanics" section)
-  - Arkenplate & Enhanced Arkenplate: 
-    - Bleed buildup resistance: 100
-    - Bleed damage resistance: 60
-  - Chaos Helmet: 
-    - Bleed buildup resistance: 60
-    - Bleed damage resistance: 40
-  - Forlorn Armor (full set): 
-    - Posture loss buildup resistance: 140
-    - Base posture increase: 80
-    - Bleed buildup resistance: 200
-    - Bleed damage resistance: 100
-  - Soul Ingot Armor (full set): 
-    - Bleed buildup resistance: 25
-    - Bleed damage resistance: 15
-  - Hallowheart & Enhanced Hallowheart: 
-    - Posture loss buildup resistance: 25
-    - Bleed buildup resistance: 40
+    - Arkenplate & Enhanced Arkenplate:
+        - Bleed buildup resistance: 100
+        - Bleed damage resistance: 60
+    - Chaos Helmet:
+        - Bleed buildup resistance: 60
+        - Bleed damage resistance: 40
+    - Forlorn Armor (full set):
+        - Posture loss buildup resistance: 140
+        - Base posture increase: 80
+        - Bleed buildup resistance: 200
+        - Bleed damage resistance: 100
+    - Soul Ingot Armor (full set):
+        - Bleed buildup resistance: 25
+        - Bleed damage resistance: 15
+    - Hallowheart & Enhanced Hallowheart:
+        - Posture loss buildup resistance: 25
+        - Bleed buildup resistance: 40
 
 #### Weapons:
 - Added Ice and Fire dragons to the tag Dragon's Scourge ability checks to apply bonus damage (Dragonslayer Swordspear and Heap of Raw Iron have this ability)
 - Added new Withered Wabbajack on entity hit effects:
-  - Chance to launch the target in the air with random launch power
-  - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
-  - Adjusted how the chances for the effects are calculated with weights
+    - Chance to launch the target in the air with random launch power
+    - Chance to apply Chungus Tonic effect on the target, turning it into a random entity
+    - Adjusted how the chances for the effects are calculated with weights
 - Calculated Fall ground explosion no longer damages mobs on the same team as the user (like tamed mobs)
 - Kirkhammer now applies Slowness 2 and Posture Loss on targets hit in the Calculated Fall explosion
 - Excalibur has a new ability called Lightbringer, making the wielder immune to Darkness and Blindness, while instead gaining Speed, Strength and Night Vision when applied with those effects
 - Leviathan Axe has a smoother spin animation
 - Added Szombie's models of Leviathan Axe & Mjölnir as a built-in resourcepack for those weapons
 - Heap of Raw Iron only gives Bloodthirsty effect with max amplifier 3, and the ticks before damage is capped at each 20th tick instead of being lower and lower the higher amplifier is
-  - Bloodthirsty effect now increases bleed applied by the items: bleed = amplifier * originalBleed * 0.75
+    - Bloodthirsty effect now increases bleed applied by the items: bleed = amplifier * originalBleed * 0.75
 - Ultra Heavy weapons now apply Posture Loss on their own without the need for Stagger enchant
-  - Posture Loss bonus modifier for those weapons when having Stagger enchant has been reduced from 2 to 0.9 due to this
-  - Kirkhammer applies 40
-  - Darkin Blade applies 30
-  - Heap of Raw Iron applies 30
-  - Featherlight applies 20
-  - Nightfall applies 40
-  - Supernova applies 35
+    - Posture Loss bonus modifier for those weapons when having Stagger enchant has been reduced from 2 to 0.9 due to this
+    - Kirkhammer applies 40
+    - Darkin Blade applies 30
+    - Heap of Raw Iron applies 30
+    - Featherlight applies 20
+    - Nightfall applies 40
+    - Supernova applies 35
 
 ### Bosses
 - Changed Night Prowler's Darkness Rise attack to spawn delayed Blackflame Snake explosions instead of applying continuous Decay effect
@@ -122,13 +220,13 @@
     - Overheat attack will now summon Flame Pillar lines at the left & right of the original line 4 times with delay, resulting in 9 lines in total
     - Chaos Storm now spawns pools of Molten Metal if in phase two, damaging mobs in it and setting them on fire
 - Changed Fallen Icon 2nd phase attacks
-  - Thrust attack now has 3 other follow-up attacks: A ground slam, a sword swipe and a blinding light ground slam with his fist, spawning projectiles only with Hard difficulty on (unlike the real Blinding Light attack which always does this in phase 2)
-  - Increased the trigger range for Blinding Light attack and expanded the hitbox slightly
-  - Sword of Light now shoots wider projectiles that go through entities and walls, with the last slam & big projectile being replaced with the old Moonfall attack, summoning pillars of light along a path
-  - Moonfall now summons 7 lines of light pillars every 45th degrees (except at 180 degrees) instead of just 1 ahead of the boss
-  - Moonveil attack now starts with the Fallen Icon leaping towards its main target, then the AOE explosion triggers as he pierces the ground with his sword, with an additional delayed AOE coming after a short while like before
-  - Core Beam has bigger range to trigger, higher explosion power and no longer destroys blocks
-  - Heavy Swing attack summons a wider projectile that also goes through walls and entities
+    - Thrust attack now has 3 other follow-up attacks: A ground slam, a sword swipe and a blinding light ground slam with his fist, spawning projectiles only with Hard difficulty on (unlike the real Blinding Light attack which always does this in phase 2)
+    - Increased the trigger range for Blinding Light attack and expanded the hitbox slightly
+    - Sword of Light now shoots wider projectiles that go through entities and walls, with the last slam & big projectile being replaced with the old Moonfall attack, summoning pillars of light along a path
+    - Moonfall now summons 7 lines of light pillars every 45th degrees (except at 180 degrees) instead of just 1 ahead of the boss
+    - Moonveil attack now starts with the Fallen Icon leaping towards its main target, then the AOE explosion triggers as he pierces the ground with his sword, with an additional delayed AOE coming after a short while like before
+    - Core Beam has bigger range to trigger, higher explosion power and no longer destroys blocks
+    - Heavy Swing attack summons a wider projectile that also goes through walls and entities
 
 ### Bugfixes
 - Fixed a bug causing guns not to find stacks of Silver Bullets in inventory even though the player has enough, and now decrements correct amount as well
@@ -150,11 +248,11 @@
     - As listed above, the guns have their posture loss applied buffed
     - Some armor sets give posture resistances (can be changed in config)
     - Posture Break now deals 5% of the targets max health as bonus damage
-      - Added config lines for Posture Break damage
-      - Base value was reduced to 2 against players and 6 against other mobs
+        - Added config lines for Posture Break damage
+        - Base value was reduced to 2 against players and 6 against other mobs
 - Reworked Bleed effect
     - It now works as a buildup, dealing damage as soon as the bar is filled up (just like in the Souls series), max bleed is still 200
-      - Max bleed can be universally changed in config, but can also be changed for just one entity in the entitystats file with the line max_bleed
+        - Max bleed can be universally changed in config, but can also be changed for just one entity in the entitystats file with the line max_bleed
     - Skofnung when empowered now applies 60 bleed value with the bleed effect
     - Whirligig Sawblade applies 25 bleed each tick
     - Old Champion's Remains applies 100 bleed on some of the attacks that previously only applied the effect
@@ -164,32 +262,32 @@
     - Some bosses in the mod are weaker to bleed, while others are stronger against it
     - Some armor sets give bleed damage and buildup resistances (can be changed in config)
 - Bosses and some mobs are now weaker/stronger against bleed and posture loss
-  - Decaying King: Higher posture loss resistance; Very high bleed buildup resistance, but very low bleed damage resistance
-  - Returning Knight: Weak to posture loss; Extremely high bleed resistance (both buildup and damage)
-  - Old Champion's Remains: Very weak to posture loss; Extremely high bleed resistance
-  - Frenzied Shade: Weak to posture loss; Immune to bleed
-  - Fallen Icon: Weak to posture loss; Immune to bleed
-  - Monarch of Chaos: Slightly resistant to posture loss; Immune to bleed
-  - Day Stalker: Very high resistance against posture loss; Weak to bleed
-  - Night Prowler: Highly resistant to posture loss; Slightly stronger against bleed
-  - Withered Demon: Mildly resistant to posture loss; Very weak to bleed
+    - Decaying King: Higher posture loss resistance; Very high bleed buildup resistance, but very low bleed damage resistance
+    - Returning Knight: Weak to posture loss; Extremely high bleed resistance (both buildup and damage)
+    - Old Champion's Remains: Very weak to posture loss; Extremely high bleed resistance
+    - Frenzied Shade: Weak to posture loss; Immune to bleed
+    - Fallen Icon: Weak to posture loss; Immune to bleed
+    - Monarch of Chaos: Slightly resistant to posture loss; Immune to bleed
+    - Day Stalker: Very high resistance against posture loss; Weak to bleed
+    - Night Prowler: Highly resistant to posture loss; Slightly stronger against bleed
+    - Withered Demon: Mildly resistant to posture loss; Very weak to bleed
 
 
 ### Config changes
 - Added velocity config lines for moonlight projectiles
 - Added config lines for Lunar Herald amplifier and duration applied by the Lunar Ring (moonstone_ring)
-  - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
+    - Also changed config line ```moonlight_ring_projectile_cooldown``` to ```moonstone_ring_projectile_cooldown``` for consistency
 - All int values in the config have been changed to floats
-  - If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
+    - If you tried to change an int value to a float on a line that would not accept it (like 9 -> 9.5 on the Darkin Blade weapon damage line), the config would reset due to it thinking the value is invalid. To avoid confusion and reset, all previous int (whole number) lines has been changed to float, so decimals can be used for them. Most of them will still ignore the decimals like before.
 - Added options to always see the item tooltip in the client config
 
 ### Keybind changes
 - Switched a few keybinds, I still encourage to switch these to a button that fits better for you
-  - Parry: RIGHT ALT -> R
-  - Return Freyr Sword: R -> Z
-  - Stationary Freyr Sword: Z -> RIGHT ALT
+    - Parry: RIGHT ALT -> R
+    - Return Freyr Sword: R -> Z
+    - Stationary Freyr Sword: Z -> RIGHT ALT
 - Added keybinds for showing item tooltip info and lore, these are unbound by default and when unbound will by default use SHIFT and CONTROL to display like usual
-  - NOTE: Binding them to keys WILL override other keybinds so for example setting either to TAB will override the "show player list" function
+    - NOTE: Binding them to keys WILL override other keybinds so for example setting either to TAB will override the "show player list" function
 
 
 
@@ -216,42 +314,42 @@
 
 
 - Old Champion's Remains now bounce off projectiles after 3 consecutive projectile hits
-  - Melee attacks reset the counter
-  - The amount of hits before growing immune can be changed with config line ```old_champions_remains_max_projectile_hits_before_immune```
+    - Melee attacks reset the counter
+    - The amount of hits before growing immune can be changed with config line ```old_champions_remains_max_projectile_hits_before_immune```
 - Removed the darkness effect from Frenzied Shade's shadow orb attack
 - Copies of the Frenzied Shade now die when the main one does
 - Added boss music to Old Champion's Remains and Frenzied Shade and disc of the Champion's song
 - Returning Knight now only uses the summon attack if no healer is alive
-  - It will no longer summon healers under 50%, instead increasing the Remnant spawn amount
-  - Obliterate attack will summon two Remnants instead of one if under 50% health, and will spawn regardless if the target that died was undead or not
-  - Added config line for the summon attack cooldown
+    - It will no longer summon healers under 50%, instead increasing the Remnant spawn amount
+    - Obliterate attack will summon two Remnants instead of one if under 50% health, and will spawn regardless if the target that died was undead or not
+    - Added config line for the summon attack cooldown
 - Added hurt sounds to Day Stalker and Night Prowler (phantom sounds for now)
 - Soulmasses can now be healed by using Lost Souls on it (items inside the common lost_soul tag)
 
 
 - Added config lines for entity health and armor for entities that didn't have it already and changed values of some, the config has to be deleted and re-generated for these changes to take effect
-  - Mobs/Entities:
-    - Dark Sorcerer: Health 10, Bonus Armor 0 (unchanged)
-    - Evil Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
-    - Familiar Ghost: Health 10, Armor 0 (unchanged)
-    - Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
-    - Frost Giant: Health 50, Armor 8 (unchanged)
-    - Moderately Sized Chungus: Health 14, Armor 0 (unchanged)
-    - Remnant: Health 10 -> 20, Bonus Armor 0 (unchanged)
-    - Rime Spectre: Health 10, Bonus Armor 0 (unchanged)
-    - Soulmass: Health 50 -> 75, Armor 4 -> 10 (unchanged)
-    - Sword of Freyr: Health 50 (unchanged), Armor 0 -> 10
-    - Sphere of Warmth: Health 20, Armor 0 (unchanged)
-    - Withered Demon: Health 80 (unchanged), Armor 0 -> 2
-  - Bosses:
-    - Decaying King: Health 500 -> 600, Armor 5 -> 10
-    - Returning Knight: Health 400 -> 500, Armor 8 -> 15
-    - Old Champion's Remains: Health 200 -> 300, Armor 5 -> 10
-    - Frenzied Shade: Health 100 -> 150, Armor 0 -> 2
-    - Monarch of Chaos: Health 400 -> 450, Armor 4 (unchanged)
-    - Fallen Icon: Health 500 -> 550, Armor 20 (unchanged)
-    - Day Stalker: Health 500 -> 600, Armor 10 -> 15
-    - Night Prowler: Health 400 -> 500, Armor 10 (unchanged)
+    - Mobs/Entities:
+        - Dark Sorcerer: Health 10, Bonus Armor 0 (unchanged)
+        - Evil Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
+        - Familiar Ghost: Health 10, Armor 0 (unchanged)
+        - Forlorn: Health 15 -> 30, Bonus Armor 0 (unchanged)
+        - Frost Giant: Health 50, Armor 8 (unchanged)
+        - Moderately Sized Chungus: Health 14, Armor 0 (unchanged)
+        - Remnant: Health 10 -> 20, Bonus Armor 0 (unchanged)
+        - Rime Spectre: Health 10, Bonus Armor 0 (unchanged)
+        - Soulmass: Health 50 -> 75, Armor 4 -> 10 (unchanged)
+        - Sword of Freyr: Health 50 (unchanged), Armor 0 -> 10
+        - Sphere of Warmth: Health 20, Armor 0 (unchanged)
+        - Withered Demon: Health 80 (unchanged), Armor 0 -> 2
+    - Bosses:
+        - Decaying King: Health 500 -> 600, Armor 5 -> 10
+        - Returning Knight: Health 400 -> 500, Armor 8 -> 15
+        - Old Champion's Remains: Health 200 -> 300, Armor 5 -> 10
+        - Frenzied Shade: Health 100 -> 150, Armor 0 -> 2
+        - Monarch of Chaos: Health 400 -> 450, Armor 4 (unchanged)
+        - Fallen Icon: Health 500 -> 550, Armor 20 (unchanged)
+        - Day Stalker: Health 500 -> 600, Armor 10 -> 15
+        - Night Prowler: Health 400 -> 500, Armor 10 (unchanged)
 
 
 - Fabric only: Made it compatible with Epic Fight mod in case someone downloads the fabric version and uses Sinytra Connector with Epic Fight
@@ -260,7 +358,7 @@
 - Fixed a bug preventing other weapons such as axes from disabling shields
 - Increased the durability of Forlorn Scythe to be on par with the other legendary weapons
 - Added compatibility with Terramity, Lost Souls from that mod will work with this mods interactions and recipes
-  - Added it to the c:lost_soul (fabric) / forge:lost_soul tags, so if any other mods have similar items, they can be added into that tag through a datapack
+    - Added it to the c:lost_soul (fabric) / forge:lost_soul tags, so if any other mods have similar items, they can be added into that tag through a datapack
 - Forge specific: Fixed bug delaying custom keybind inputs if bound to mouse buttons
 
 ## 1.2.2
@@ -268,15 +366,15 @@
 - Galeforce ability doesn't need an arrow in inventory to shoot, won't consume one either and arrows can have custom effects, but they can't be picked up
 - Added missing recipe to turn Chungus Emerald Blocks back into Chungus Emeralds
 - Changed NightProwler ECLIPSE attack
-  - It now summons a portal above itself
-  - No longer shoots 3 skulls together
-  - Spawns skulls randomly from the summoned portal with shorter interval between
-  - These skulls may be hard to see, so added a config line ```night_prowler_eclipse_skulls_glow``` to make them glow if the player wishes so
+    - It now summons a portal above itself
+    - No longer shoots 3 skulls together
+    - Spawns skulls randomly from the summoned portal with shorter interval between
+    - These skulls may be hard to see, so added a config line ```night_prowler_eclipse_skulls_glow``` to make them glow if the player wishes so
 - Fixed bug where ShadowOrbs would collide with each-other
 - Removed custom hold animations for some weapons due to messing with Sinytra Connector and forge
 - Weapons saving to the item NBT generate a new NBT if it doesn't exist already
 - Dragon Staff Vigorous Fog ability heals tamed entities, including those not owned by the user based on config line ```dragon_staff_vigorous_fog_heal_tamed_entities_owned_by_others```
-  - Added config line ```dragon_staff_vigorous_fog_damage_and_heal``` to change heal and damage by the ability
+    - Added config line ```dragon_staff_vigorous_fog_damage_and_heal``` to change heal and damage by the ability
 - Fixed bug where Holy Moonlight Greatsword and Night's Edge abilities would not spawn entities when standing on 1 block thick ground
 - Fixed bug where Night Prowler would be stuck in the sky in phase 2
 - Added config lines for each boss that contains a list of all status effects the boss is immune to (for example ```chaos_monarch_status_effect_blacklist```)

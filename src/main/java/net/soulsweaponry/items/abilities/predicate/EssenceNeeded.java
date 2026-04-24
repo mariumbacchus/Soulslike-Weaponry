@@ -10,27 +10,34 @@ import net.soulsweaponry.items.abilities.IHasEssence;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.NbtHelper;
 import net.soulsweaponry.util.NbtIds;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record EssenceNeeded(int maxEssence, boolean acceptWithMoonHerald) implements IHasEssence {
+public record EssenceNeeded(int maxEssence, boolean acceptWithMoonHerald, int itemLevelForRemoval) implements IHasEssence {
 
     @Override
     public boolean preventUsePredicate(ItemStack stack, PlayerEntity user) {
         return !this.hasMaxEssence(stack)
                 && !user.isCreative()
                 && this.acceptWithMoonHerald
-                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD);
+                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD)
+                && WeaponUtil.getUpgradeLevel(stack) < this.itemLevelForRemoval;
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
-        NbtHelper.putInt(stack, NbtIds.ESSENCE, 0);
+        if (WeaponUtil.getUpgradeLevel(stack) < this.itemLevelForRemoval) {
+            NbtHelper.putInt(stack, NbtIds.ESSENCE, 0);
+        }
     }
 
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
+        if (WeaponUtil.getUpgradeLevel(stack) >= this.itemLevelForRemoval) {
+            return List.of();
+        }
         List<Text> tooltip = new ArrayList<>();
         tooltip.add(Text.translatable("tooltip.soulsweapons.need_essence").formatted(Formatting.RED));
         tooltip.add(Text.translatable("tooltip.soulsweapons.need_essence.1").formatted(Formatting.GRAY));

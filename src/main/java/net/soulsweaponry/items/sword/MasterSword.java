@@ -11,7 +11,7 @@ import net.soulsweaponry.items.abilities.stoppedusing.SkywardStrikes;
 public class MasterSword extends ModdedSword {
 
     private static final UndeadBonus UNDEAD_BONUS = new UndeadBonus(ConfigConstructor.master_sword_righteous_base_undead_bonus_damage, ConfigConstructor.master_sword_righteous_undead_bonus_damage_per_level);
-    private static final FullHealthNeeded FULL_HEALTH_NEEDED = new FullHealthNeeded();
+    private static final FullHealthNeeded FULL_HEALTH_NEEDED = new FullHealthNeeded((int) ConfigConstructor.master_sword_item_upgrade_needed_to_remove_health_requirement);
     private static final SkywardStrikes SKYWARD_STRIKES = new SkywardStrikes(
             (int) ConfigConstructor.master_sword_projectile_amount,
             ConfigConstructor.master_sword_bonus_projectile_amount_per_level,

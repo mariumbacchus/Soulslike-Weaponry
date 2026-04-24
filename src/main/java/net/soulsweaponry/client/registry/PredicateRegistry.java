@@ -13,6 +13,7 @@ import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.IHasEssence;
 import net.soulsweaponry.items.abilities.ISharpened;
 import net.soulsweaponry.items.abilities.inventorytick.Luminate;
+import net.soulsweaponry.items.abilities.predicate.FullHealthNeeded;
 import net.soulsweaponry.items.abilities.use.InvisibleItem;
 import net.soulsweaponry.items.misc.BossCompass;
 import net.soulsweaponry.items.sword.Skofnung;
@@ -107,7 +108,8 @@ public class PredicateRegistry {
         });
 
         ModelPredicateProviderRegistry.register(WeaponRegistry.MASTER_SWORD, new Identifier("prime"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int number) -> {
-            if (itemStack.isOf(WeaponRegistry.MASTER_SWORD) && livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth()) {
+            Optional<FullHealthNeeded> fullHealthNeeded = IHasAbilities.getAbility(itemStack, FullHealthNeeded.class);
+            if (livingEntity != null && livingEntity.getHealth() >= livingEntity.getMaxHealth() || (fullHealthNeeded.isPresent() && WeaponUtil.getUpgradeLevel(itemStack) >= fullHealthNeeded.get().itemLevelForRemoval())) {
                 return 1.0f;
             }
             return 0.0f;

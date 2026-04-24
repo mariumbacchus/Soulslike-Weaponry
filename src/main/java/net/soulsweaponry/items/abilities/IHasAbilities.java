@@ -291,9 +291,6 @@ public interface IHasAbilities extends IConfigDisable {
             this.notifyDisabled(player);
             return;
         }
-        if (this.preventUse(stack, player)) {
-            return;
-        }
 
         boolean sneaking = player.isSneaking();
         boolean offhand = player.getOffHandStack().isOf(stack.getItem());
@@ -340,7 +337,7 @@ public interface IHasAbilities extends IConfigDisable {
 
 
     default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        if (this.isDisabled(stack) || this.preventUse(stack, player)) {
+        if (this.isDisabled(stack)) {
             return; // Disabled item notification is given on client side
         }
 
@@ -480,7 +477,7 @@ public interface IHasAbilities extends IConfigDisable {
         boolean melee = stack.getItem() instanceof TridentItem || stack.getItem() instanceof SwordItem || stack.getItem() instanceof MiningToolItem;
         if (slot == EquipmentSlot.MAINHAND && melee) {
             ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ItemAccessor.getAttackDamageModifierId(), "Weapon modifier", damage - 1, EntityAttributeModifier.Operation.ADDITION));
+            builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ItemAccessor.getAttackDamageModifierId(), "Weapon modifier", damage, EntityAttributeModifier.Operation.ADDITION));
             builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierId(), "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
             base = builder.build();
         } else {

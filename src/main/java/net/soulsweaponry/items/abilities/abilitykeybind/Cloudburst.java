@@ -41,7 +41,7 @@ public record Cloudburst(
             if (arrowStack.isEmpty()) {
                 arrowStack = new ItemStack(Items.ARROW);
             }
-            if (player.getAttacking() != null) {
+            if (player.getAttacking() != null && !player.getAttacking().equals(player)) {
                 LivingEntity target = player.getAttacking();
                 double x = target.getX() - player.getX();
                 double y = target.getEyeY() - player.getBodyY(1f);

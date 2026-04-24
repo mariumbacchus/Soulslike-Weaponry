@@ -460,6 +460,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bluemoon_greatsword_essence_needed = 8;
     @Entry public static float bluemoon_greatsword_essence_added_post_hit = 1;
     @Entry public static float bluemoon_greatsword_bonus_essence_added_post_hit_per_level = 2;
+    @Entry public static float bluemoon_greatsword_item_upgrade_needed_to_remove_essence_requirement = 5;
     @Entry public static float bluemoon_greatsword_projectile_amount = 1;
     @Entry public static float bluemoon_greatsword_bonus_projectile_amount_per_level = 0.4f;
     @Entry public static float bluemoon_greatsword_projectile_damage = 8.0f;
@@ -600,6 +601,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_frost_moon_cooldown = 700;
     @Entry public static float dark_moon_greatsword_frost_moon_min_cooldown = 300;
     @Entry public static float dark_moon_greatsword_frost_moon_reduced_cooldown_per_level = 60;
+    @Entry public static float dark_moon_greatsword_item_upgrade_needed_to_remove_frost_moon_requirement = 5;
 
     @Entry public static float dark_moon_greatsword_projectile_amount = 1;
     @Entry public static float dark_moon_greatsword_bonus_projectile_amount_per_level = 0;
@@ -911,6 +913,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_greatsword_essence_added_post_hit = 3;
     @Entry public static float holy_moonlight_greatsword_bonus_essence_added_post_hit_per_level = 3;
     @Entry public static float holy_moonlight_ability_essence_needed = 50;
+    @Entry public static float holy_moonlight_ability_item_upgrade_needed_to_remove_essence_requirement = 5;
+
 
     @Entry public static float holy_moonlight_moonfall_ruptures_amount = 8;
     @Entry public static float holy_moonlight_moonfall_bonus_ruptures_amount_per_level = 1;
@@ -1024,6 +1028,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float master_sword_projectile_damage = 11.0f;
     @Entry public static float master_sword_projectile_bonus_damage_per_level = 3f;
     @Entry public static float master_sword_projectile_velocity = 1.5f;
+    @Entry public static float master_sword_item_upgrade_needed_to_remove_health_requirement = 5;
 
     @Entry public static float mehrunes_razor_damage = 6f;
     @Entry public static float mehrunes_razor_attack_speed = 2f;

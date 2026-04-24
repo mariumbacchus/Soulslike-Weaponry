@@ -15,7 +15,7 @@ public record BasicStatBoost(
         float bonusDamage, float bonusDamagePerLvl,
         float bonusAttackSpeed, float bonusAttackSpeedPerLvl,
         List<Text> tooltip
-) implements IAbility { // TODO need to thoroughly test this
+) implements IAbility {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
