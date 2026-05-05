@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.ModTags;
@@ -57,12 +58,14 @@ public class ShootSilverBullet implements IAbility {
     public final int reducedCooldownPerFastHands;
     public final int particleAmount;
     public final float particleSpread;
+    public final boolean bypassIFrames;
 
     public ShootSilverBullet(
             float damage, float velocity, float divergence, int postureLoss, float postureLossPerVisceral,
             int projectileCount, float projectileCountPerLvl, int bulletsNeededWithInfinity, int bulletsNeeded,
             int levelToUnlockInfinity, int stackDamage, int maxProjectileAge, int maxProjectileAgeEthereal,
-            int minCooldown, int cooldown, int reducedCooldownPerFastHands, int particleAmount, float particleSpread
+            int minCooldown, int cooldown, int reducedCooldownPerFastHands, int particleAmount, float particleSpread,
+            boolean bypassIFrames
     ) {
         this.damage = damage;
         this.velocity = velocity;
@@ -82,6 +85,7 @@ public class ShootSilverBullet implements IAbility {
         this.reducedCooldownPerFastHands = reducedCooldownPerFastHands;
         this.particleAmount = particleAmount;
         this.particleSpread = particleSpread;
+        this.bypassIFrames = bypassIFrames;
     }
 
     @Override
@@ -120,6 +124,9 @@ public class ShootSilverBullet implements IAbility {
         int ricochetLevel = EnchantmentHelper.getLevel(EnchantRegistry.RICOCHET, gunStack);
 
         SilverBulletEntity entity = this.getModdedProjectile(world, shooter, gunStack);
+        if (this.bypassIFrames) {
+            entity.setCustomDamageSource(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.SILVER_BULLET_BYPASS_COOLDOWN));
+        }
         entity.setPos(shooter.getX(), shooter.getEyeY() - 0.4f, shooter.getZ());
         entity.pickupType = PersistentProjectileEntity.PickupPermission.DISALLOWED;
         entity.setMaxAge(this.maxProjectileAge);

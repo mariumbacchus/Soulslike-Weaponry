@@ -1,11 +1,11 @@
-// 1.20.1	2026-04-23T22:35:04.4103112	Marium's Soulslike Weaponry/Recipes
+// 1.20.1	2026-05-05T23:00:24.3999016	Marium's Soulslike Weaponry/Recipes
 6ac617da1c0aca4adcdebe9d40978c99d55b236d data\soulsweapons\recipes\holy_greatsword.json
 77e2400341d4a08730ea5fd56df357ee5ee94537 data\soulsweapons\advancements\recipes\combat\draugr.json
 58d40c755e5fc68eb99e6f272a31fdc9b5779338 data\soulsweapons\recipes\oleander_dye.json
 22f04bd5f9400dbd69774626effc150dccb2a8b2 data\soulsweapons\advancements\recipes\combat\empowered_dawnbreaker.json
 b60982d9f678d644234f249995a788970da5481c data\soulsweapons\advancements\recipes\combat\nightlords_sword.json
-639522410d81c5bc7c36b71dde4fc8c80ef72e56 data\soulsweapons\advancements\recipes\misc\draugr_boss_disc.json
 2eecc2a81e3e3590fd6f2056ba80be467fa50937 data\soulsweapons\recipes\moonstone_ring_right.json
+639522410d81c5bc7c36b71dde4fc8c80ef72e56 data\soulsweapons\advancements\recipes\misc\draugr_boss_disc.json
 566ab3d0f29c54008acd7212fbc2ec9e4e5736c9 data\soulsweapons\recipes\forlorn_boots.json
 ab7282d99d18d5a1f7c6e52d82f398f2075c9f8f data\soulsweapons\advancements\recipes\misc\verglas.json
 a6d44f68a2fa079d5f58eff09d2e5ded098da0ed data\soulsweapons\recipes\crimson_obsidian.json
@@ -244,8 +244,8 @@ a6a9c9a400e8bce2414bbf7581bd634077b88ccb data\soulsweapons\recipes\soul_robes_ch
 60e39f84af7931cf0d562a778049832cfd9dd741 data\soulsweapons\recipes\bloodthirster.json
 a01046381e14cdd5903f4a00da8dc9c55933d58c data\soulsweapons\advancements\recipes\combat\gatling_gun_upgrade.json
 e89552042718b0b352c8022fc5c0a4d984532d57 data\soulsweapons\advancements\recipes\combat\forlorn_boots.json
-a020fc91b72c7a1e281caf26163099fbbdbc2afb data\soulsweapons\recipes\holy_moonlight_sword.json
 f66e36dc9279bb8040467f3d62e72253acaba192 data\soulsweapons\recipes\master_sword.json
+a020fc91b72c7a1e281caf26163099fbbdbc2afb data\soulsweapons\recipes\holy_moonlight_sword.json
 4603be629af8719257c0467aac967a2ccba1ec41 data\soulsweapons\recipes\chaos_helmet.json
 346fcbbf899935cf8f9d5677d0d0f5ed403965c1 data\soulsweapons\advancements\recipes\combat\hunter_pistol_upgrade.json
 4879887365999d41b2a4342af3fe8ffd028fc0fa data\soulsweapons\advancements\recipes\combat\dragon_staff.json

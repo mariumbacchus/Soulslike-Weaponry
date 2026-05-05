@@ -1497,6 +1497,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float blunderbuss_reduced_cooldown_per_fast_hands_level = 8;
     @Entry public static float blunderbuss_bullets_needed = 2;
     @Entry public static float blunderbuss_level_to_unlock_infinity = 2;
+    @Entry public static boolean blunderbuss_bullets_bypass_entity_invincibility_frames = false;
 
     @Entry public static float blunderbuss_bullets_needed_with_infinity = 2;
     @Entry public static float gatling_gun_damage = 3;
@@ -1514,6 +1515,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float gatling_gun_bullets_needed = 1;
     @Entry public static float gatling_gun_bullets_needed_with_infinity = 1;
     @Entry public static float gatling_gun_level_to_unlock_infinity = 2;
+    @Entry public static boolean gatling_gun_bullets_bypass_entity_invincibility_frames = true;
 
     @Entry public static float hunter_cannon_damage = 30f;
     @Entry public static float hunter_cannon_velocity = 3f;
@@ -1529,6 +1531,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_cannon_bullets_needed_with_infinity = 10;
     @Entry public static float hunter_cannon_level_to_unlock_infinity = 2;
     @Entry public static float hunter_cannon_launch_power = 2f;
+    @Entry public static boolean hunter_cannon_bullets_bypass_entity_invincibility_frames = false;
 
     @Entry public static float hunter_pistol_damage = 6f;
     @Entry public static float hunter_pistol_velocity = 3f;
@@ -1543,4 +1546,5 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_pistol_bullets_needed = 1;
     @Entry public static float hunter_pistol_bullets_needed_with_infinity = 1;
     @Entry public static float hunter_pistol_level_to_unlock_infinity = 2;
+    @Entry public static boolean hunter_pistol_bullets_bypass_entity_invincibility_frames = false;
 }

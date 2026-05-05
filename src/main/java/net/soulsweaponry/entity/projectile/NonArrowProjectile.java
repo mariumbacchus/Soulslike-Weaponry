@@ -9,17 +9,20 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 
 public abstract class NonArrowProjectile extends ModPersistentProjectile {
+
+    private DamageSource damageSource = null;
 
     public NonArrowProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -39,10 +42,19 @@ public abstract class NonArrowProjectile extends ModPersistentProjectile {
         this.setItemStack(stack);
     }
 
+    public void setCustomDamageSource(DamageSource damageSource) {
+        this.damageSource = damageSource;
+    }
+
+    @Nullable
+    public DamageSource getCustomDamageSource() {
+        return this.damageSource;
+    }
+
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         DamageSource damageSource;
-        Entity entity2;
+        Entity owner = this.getOwner();
         Entity entity = entityHitResult.getEntity();
         float f = (float)this.getVelocity().length();
         int i = MathHelper.ceil(MathHelper.clamp((double)f * this.getDamage(), 0.0, 2.147483647E9));
@@ -50,12 +62,14 @@ public abstract class NonArrowProjectile extends ModPersistentProjectile {
             long l = this.random.nextInt(i / 2 + 2);
             i = (int)Math.min(l + (long)i, Integer.MAX_VALUE);
         }
-        if ((entity2 = this.getOwner()) == null) {
-            damageSource = this.getWorld().getDamageSources().arrow(this, this);
+        if (this.damageSource != null) {
+            damageSource = this.damageSource;
         } else {
-            damageSource = this.getWorld().getDamageSources().arrow(this, entity2);
-            if (entity2 instanceof LivingEntity) {
-                ((LivingEntity)entity2).onAttacking(entity);
+            damageSource = this.getWorld().getDamageSources().arrow(this, Objects.requireNonNullElse(owner, this));
+        }
+        if (owner != null) {
+            if (owner instanceof LivingEntity livingOwner) {
+                livingOwner.onAttacking(entity);
             }
         }
         boolean bl = entity.getType() == EntityType.ENDERMAN;
@@ -75,13 +89,13 @@ public abstract class NonArrowProjectile extends ModPersistentProjectile {
                         livingEntity.addVelocity(vec3d.x, 0.1, vec3d.z);
                     }
                 }
-                if (!this.getWorld().isClient && entity2 instanceof LivingEntity) {
-                    EnchantmentHelper.onUserDamaged(livingEntity, entity2);
-                    EnchantmentHelper.onTargetDamaged((LivingEntity)entity2, livingEntity);
+                if (!this.getWorld().isClient && owner instanceof LivingEntity livingOwner) {
+                    EnchantmentHelper.onUserDamaged(livingEntity, livingOwner);
+                    EnchantmentHelper.onTargetDamaged(livingOwner, livingEntity);
                 }
                 this.onHit(livingEntity);
-                if (livingEntity != entity2 && livingEntity instanceof PlayerEntity && entity2 instanceof ServerPlayerEntity && !this.isSilent()) {
-                    ((ServerPlayerEntity)entity2).networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
+                if (livingEntity != owner && livingEntity instanceof PlayerEntity && owner instanceof ServerPlayerEntity serverPlayerOwner && !this.isSilent()) {
+                    serverPlayerOwner.networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.PROJECTILE_HIT_PLAYER, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
                 }
             }
             this.playSound(this.getSound(), 1.0f, 1.0f - (this.random.nextFloat() / 2f));

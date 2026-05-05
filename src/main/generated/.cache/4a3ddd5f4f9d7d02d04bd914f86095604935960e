@@ -1,4 +1,4 @@
-// 1.20.1	2026-04-23T22:35:04.4057623	Marium's Soulslike Weaponry/Advancements
+// 1.20.1	2026-05-05T23:00:24.3968988	Marium's Soulslike Weaponry/Advancements
 a3a56d2f71701cb2587a1e2aa7d6e24ceadfc92a data\soulsweapons\advancements\heap_of_iron.json
 6e3196061981c90f86c16f17ff08eac925b5f580 data\soulsweapons\advancements\root.json
 6a877e118ae29c73a88f828c5fc4ed17f814d858 data\soulsweapons\advancements\lords_on_stick.json
@@ -25,8 +25,8 @@ d20c53af9905bc8917ee61371ef94589fc166eea data\soulsweapons\advancements\moonknig
 6adc61411aa7a5d499a0621131221ea8692ea141 data\soulsweapons\advancements\chaos_orb.json
 407a3fb7e37db57d23bc992a209ff965db6e189f data\soulsweapons\advancements\excalibur.json
 23b961e0818838533790106c4697fa4ea7194016 data\soulsweapons\advancements\infused_hallowheart.json
-ab2009868800c6db9c7623e87ccec3244425bb57 data\soulsweapons\advancements\end_of_reigns.json
 01783f75587b917125758fc2f7e732d618b18adf data\soulsweapons\advancements\ender_of_world_ender.json
+ab2009868800c6db9c7623e87ccec3244425bb57 data\soulsweapons\advancements\end_of_reigns.json
 cbda8e0b0a5ef797ba6ae25059725516dde873ae data\soulsweapons\advancements\demon_heart.json
 d97b879391c0f21fbb3aedb3ab777bce8576629e data\soulsweapons\advancements\whirligig_sawblade.json
 c3eae095f78e513d533380b86a3934afe1a3cce8 data\soulsweapons\advancements\cannon.json

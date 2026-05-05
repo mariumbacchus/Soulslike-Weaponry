@@ -1,8 +1,9 @@
-// 1.20.1	2026-04-23T22:35:04.4169171	Marium's Soulslike Weaponry/Tags for minecraft:damage_type
+// 1.20.1	2026-05-05T23:00:24.4065922	Marium's Soulslike Weaponry/Tags for minecraft:damage_type
 73ebb503bb3b01b00c7469935360a4e377373900 data\minecraft\tags\damage_type\witch_resistant_to.json
-73ebb503bb3b01b00c7469935360a4e377373900 data\minecraft\tags\damage_type\bypasses_cooldown.json
+b5aa381f1ddb714c1453d36b6ef504e665d78bb3 data\minecraft\tags\damage_type\bypasses_cooldown.json
 6774ab0e9ab6a9c4fa2d69857866146f59218743 data\minecraft\tags\damage_type\bypasses_armor.json
 73ebb503bb3b01b00c7469935360a4e377373900 data\minecraft\tags\damage_type\no_impact.json
 45e987097d0a3d2d4231678d1c6b81be4ac9a8b1 data\minecraft\tags\damage_type\is_lightning.json
 cf7dfb34e4ac4e2b1c6362c742af747eb3bbec7a data\minecraft\tags\damage_type\is_fire.json
 73ebb503bb3b01b00c7469935360a4e377373900 data\minecraft\tags\damage_type\avoids_guardian_thorns.json
+f244b217547ebb6ed2c5466e1653e6678447ce52 data\minecraft\tags\damage_type\is_projectile.json

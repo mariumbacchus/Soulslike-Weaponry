@@ -2,12 +2,15 @@
 
 # 1.4.2
 - Fixed bug causing Galeforce Cloudburst to target oneself
+- Fixed a bug causing the game to crash due to item stacks not being set properly
 - Upgrading weapons with negative limitation abilities (such as Sealed Potential on Holy Moonlight Greatsword) to level 5 removes the limitation, this is the case for:
   - Holy Moonlight Greatsword
   - Bluemoon Greatsword
   - Dark Moon Greatsword
   - Master Sword
   - Added config lines to change this level cap for this removal to trigger
+- Gatling Gun bullets now bypasses invulnerability frames
+  - Added config lines for all the guns to toggle this
 
 # 1.4.1
 - REI now properly cycles the twinkling titanite upgrade recipe output instead of having one fixed item as the result when previewing the recipe
