@@ -39,6 +39,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
+    // Recursion depth tracker per thread to prevent abilities from infinitely calling onUserDamaged
+    @Unique
+    private static final ThreadLocal<Integer> soulsweapons$abilityDamageDepth = ThreadLocal.withInitial(() -> 0);
+
     @Unique
     private DamageSource capturedDamageSource;
 
@@ -74,34 +78,49 @@ public class LivingEntityMixin {
                 entity.removeStatusEffect(EffectRegistry.FREEZING);
             }
         }
+
         boolean anyFalse = false;
-        for (ItemStack armorStack : entity.getArmorItems()) {
-            if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
-                for (IAbility a : hasUser.getAbilities()) {
-                    if (!a.onUserDamaged(source, amount, armorStack, entity)) {
-                        anyFalse = true;
-                    }
-                }
-            }
+        // Do not re-enter ability-trigger code while already inside it
+        if (soulsweapons$abilityDamageDepth.get() > 0) {
+            return;
         }
-        for (Hand hand : Hand.values()) {
-            ItemStack userStack = entity.getStackInHand(hand);
-            if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
-                for (IAbility a : hasUser.getAbilities()) {
-                    if (!a.onUserDamaged(source, amount, userStack, entity)) {
-                        anyFalse = true;
-                    }
-                }
-            }
-            if (source.getAttacker() instanceof LivingEntity attacker) {
-                ItemStack attackerStack = attacker.getStackInHand(hand);
-                if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
-                    for (IAbility a : hasAtk.getAbilities()) {
-                        if (!a.onTargetDamaged(source, amount, attackerStack, entity)) {
+        soulsweapons$abilityDamageDepth.set(soulsweapons$abilityDamageDepth.get() + 1);
+        try {
+            for (ItemStack armorStack : entity.getArmorItems()) {
+                if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, armorStack, entity)) {
                             anyFalse = true;
                         }
                     }
                 }
+            }
+            for (Hand hand : Hand.values()) {
+                ItemStack userStack = entity.getStackInHand(hand);
+                if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, userStack, entity)) {
+                            anyFalse = true;
+                        }
+                    }
+                }
+                if (source.getAttacker() instanceof LivingEntity attacker) {
+                    ItemStack attackerStack = attacker.getStackInHand(hand);
+                    if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
+                        for (IAbility a : hasAtk.getAbilities()) {
+                            if (!a.onTargetDamaged(source, amount, attackerStack, entity)) {
+                                anyFalse = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } finally {
+            int depth = soulsweapons$abilityDamageDepth.get() - 1;
+            if (depth <= 0) {
+                soulsweapons$abilityDamageDepth.remove();
+            } else {
+                soulsweapons$abilityDamageDepth.set(depth);
             }
         }
         // Do lightning-thorns when having Stormveil effect

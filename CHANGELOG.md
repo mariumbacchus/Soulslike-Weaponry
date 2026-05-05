@@ -3,6 +3,7 @@
 # 1.4.2
 - Fixed bug causing Galeforce Cloudburst to target oneself
 - Fixed a bug causing the game to crash due to item stacks not being set properly
+- Fixed a bug causing the game to crash when two players attacked one-another with Aftershock and Infectious abilities on their armor causing the abilities to infinitely trigger eachother recursively
 - Upgrading weapons with negative limitation abilities (such as Sealed Potential on Holy Moonlight Greatsword) to level 5 removes the limitation, this is the case for:
   - Holy Moonlight Greatsword
   - Bluemoon Greatsword
