@@ -82,6 +82,7 @@ dependencies {
 	modRuntimeOnly("maven.modrinth:better-combat:${project.better_combat}-fabric")
 	modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
 	modRuntimeOnly("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
+	modRuntimeOnly("curse.maven:jade-${project.jade}")
 
 	// Attributefix dependencies:
 	modImplementation "curse.maven:bookshelf-${project.bookshelf}"

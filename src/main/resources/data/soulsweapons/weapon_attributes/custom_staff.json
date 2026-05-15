@@ -1,6 +1,6 @@
 {
     "attributes": {
-      "attack_range": 3,
+      "attack_range": 3.25,
       "two_handed": false,
       "category": "staff",
       "attacks": [

@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "attack_range": 3.25,
+        "attack_range": 3.5,
         "two_handed": true,
         "pose": "bettercombat:pose_two_handed_sword",
         "category": "claymore",

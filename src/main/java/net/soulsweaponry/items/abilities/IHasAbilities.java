@@ -535,6 +535,24 @@ public interface IHasAbilities extends IConfigDisable {
                 .orElse((stack) -> stack.isOf(ItemRegistry.SILVER_BULLET));
     }
 
+    @Nullable
+    default DamageSource getMeleeDamageSource(ItemStack stack, DamageSource original, Entity target, PlayerEntity player) {
+        if (this.isDisabled(stack)) {
+            return null;
+        }
+        return this.getAbilities().stream()
+                .map(ability -> ability.getMeleeDamageSource(stack, original, target, player))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
+
+
+
+
+
+
     default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {
         this.applyTooltipAbilities(tooltip, stack);
         TooltipUtil.addAbilityTooltip(TooltipUtil.TooltipAbilities.TRICK_WEAPON, stack, tooltip);

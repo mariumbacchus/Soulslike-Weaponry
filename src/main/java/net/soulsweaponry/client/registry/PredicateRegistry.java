@@ -78,6 +78,12 @@ public class PredicateRegistry {
             }
         });
 
+        ModelPredicateProviderRegistry.register(
+                WeaponRegistry.LARGE_MOONLIGHT_SWORD,
+                Identifier.of("blocking"),
+                (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F
+        );
+
         ModelPredicateProviderRegistry.register(ItemRegistry.BOSS_COMPASS, Identifier.of("angle"), new CompassAnglePredicateProvider((world, stack, entity) -> {
             if (stack.isOf(ItemRegistry.BOSS_COMPASS)) {
                 BossCompass item = (BossCompass) stack.getItem();

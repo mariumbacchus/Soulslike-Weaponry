@@ -86,6 +86,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_tonitrus = false;
     @Entry public static boolean disable_recipe_bloodlust = false;
     @Entry public static boolean disable_recipe_sword_of_the_nightlord = false;
+    @Entry public static boolean disable_recipe_large_sword_of_moonlight = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -172,6 +173,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_bloodlust = false;
     @Entry public static boolean disable_use_sword_of_the_nightlord = false;
     @Entry public static boolean disable_use_sting = false;
+    @Entry public static boolean disable_use_large_sword_of_moonlight = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_enhanced_arkenplate = false;
@@ -242,6 +244,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_tonitrus = false;
     @Entry public static boolean is_fireproof_bloodlust = false;
     @Entry public static boolean is_fireproof_sword_of_the_nightlord = true;
+    @Entry public static boolean is_fireproof_large_sword_of_moonlight = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -967,6 +970,16 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static boolean kraken_slayer_can_apply_arrow_effects = true;
     @Entry public static float kraken_slayer_player_true_damage_taken_modifier = 0.4f;
+
+    @Entry public static float large_sword_of_moonlight_damage = 10;
+    @Entry public static float large_sword_of_moonlight_attack_speed = 1.2f;
+    @Entry public static float large_sword_of_moonlight_righteous_base_undead_bonus_damage = 2f;
+    @Entry public static float large_sword_of_moonlight_righteous_undead_bonus_damage_per_level = 0.5f;
+    @Entry public static float large_sword_of_moonlight_magic_damage_reduction_when_blocking = 0.8f;
+    @Entry public static float large_sword_of_moonlight_magic_frailty_duration = 80;
+    @Entry public static float large_sword_of_moonlight_magic_frailty_duration_per_level = 15;
+    @Entry public static float large_sword_of_moonlight_magic_frailty_amp = 1;
+    @Entry public static float large_sword_of_moonlight_magic_frailty_amp_per_level = 0.4f;
 
     @Entry public static float leviathan_axe_damage = 10;
     @Entry public static float leviathan_axe_attack_speed = 1.2f;

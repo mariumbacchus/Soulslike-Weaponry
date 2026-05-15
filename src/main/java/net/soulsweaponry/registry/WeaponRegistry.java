@@ -89,6 +89,7 @@ public class WeaponRegistry {
     public static ToolItem TONITRUS = new Tonitrus(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));
     public static ToolItem BLOODLUST = new Bloodlust(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));
     public static ToolItem NIGHTLORDS_SWORD = new NightlordsSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
+    public static ToolItem LARGE_MOONLIGHT_SWORD = new LargeMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
 
     public static void init() {
         ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword, ConfigConstructor.is_fireproof_bluemoon_shortsword);
@@ -151,5 +152,6 @@ public class WeaponRegistry {
         ItemRegistry.registerLegendaryWeapon(TONITRUS, "tonitrus", ConfigConstructor.disable_recipe_tonitrus, ConfigConstructor.is_fireproof_tonitrus);
         ItemRegistry.registerLegendaryWeapon(BLOODLUST, "bloodlust", ConfigConstructor.disable_recipe_bloodlust, ConfigConstructor.is_fireproof_bloodlust);
         ItemRegistry.registerLegendaryWeapon(NIGHTLORDS_SWORD, "nightlords_sword", ConfigConstructor.disable_recipe_sword_of_the_nightlord, ConfigConstructor.is_fireproof_sword_of_the_nightlord);
+        ItemRegistry.registerLegendaryWeapon(LARGE_MOONLIGHT_SWORD, "large_sword_of_moonlight", ConfigConstructor.disable_recipe_large_sword_of_moonlight, ConfigConstructor.is_fireproof_large_sword_of_moonlight);
     }
 }

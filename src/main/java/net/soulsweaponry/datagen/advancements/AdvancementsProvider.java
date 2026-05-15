@@ -111,10 +111,16 @@ public class AdvancementsProvider extends FabricAdvancementProvider {
         AdvancementEntry moonlightSwords = this.generateAdvancementAcceptEither(consumer, "moonlight_tools", bluemoonSwords, WeaponRegistry.MOONLIGHT_GREATSWORD,
                 AdvancementFrame.GOAL, true, true, false,
                 WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD);
-        AdvancementEntry allMoonlight = this.generateAdvancement(consumer, "all_moonlight_weapons", moonlightSwords, WeaponRegistry.DARK_MOON_GREATSWORD,
+        AdvancementEntry allMoonlight = this.generateAdvancement(consumer, "all_moonlight_weapons", moonlightSwords, WeaponRegistry.LARGE_MOONLIGHT_SWORD,
                 AdvancementFrame.GOAL, true, true, false,
-                WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD, WeaponRegistry.BLUEMOON_GREATSWORD, WeaponRegistry.BLUEMOON_SHORTSWORD,
-                WeaponRegistry.MOONVEIL, WeaponRegistry.DARK_MOON_GREATSWORD, WeaponRegistry.PURE_MOONLIGHT_GREATSWORD, WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD, WeaponRegistry.HOLY_MOONLIGHT_SWORD);
+                WeaponRegistry.MOONLIGHT_GREATSWORD, WeaponRegistry.MOONLIGHT_SHORTSWORD,
+                WeaponRegistry.BLUEMOON_GREATSWORD, WeaponRegistry.BLUEMOON_SHORTSWORD,
+                WeaponRegistry.MOONVEIL,
+                WeaponRegistry.DARK_MOON_GREATSWORD,
+                WeaponRegistry.PURE_MOONLIGHT_GREATSWORD,
+                WeaponRegistry.HOLY_MOONLIGHT_GREATSWORD, WeaponRegistry.HOLY_MOONLIGHT_SWORD,
+                WeaponRegistry.LARGE_MOONLIGHT_SWORD
+        );
         AdvancementEntry transformScythe = this.generateAdvancementAcceptEither(consumer, "transform_scythe", lordSoul, WeaponRegistry.DARKIN_SCYTHE_PRE,
                 AdvancementFrame.CHALLENGE, true, true, false,
                 WeaponRegistry.DARKIN_SCYTHE_PRIME, WeaponRegistry.SHADOW_ASSASSIN_SCYTHE);

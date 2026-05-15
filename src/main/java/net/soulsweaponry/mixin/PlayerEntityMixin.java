@@ -1,5 +1,6 @@
 package net.soulsweaponry.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
@@ -19,11 +20,14 @@ import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.items.abilities.use.Block;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -58,6 +62,20 @@ public class PlayerEntityMixin {
         if (!player.getWorld().isClient && player.hasStatusEffect(EffectRegistry.GHOSTLY)) {
             info.cancel();
         }
+    }
+
+
+    @ModifyVariable(method = "attack", at = @At("STORE"), ordinal = 0)
+    private DamageSource soulsweaponry$changeAttackDamageSource(DamageSource original, Entity target) {
+        PlayerEntity player = (PlayerEntity)(Object)this;
+        ItemStack stack = player.getWeaponStack();
+        if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+            DamageSource newSource = hasAbilities.getMeleeDamageSource(stack, original, target, player);
+            if (newSource != null) {
+                return newSource;
+            }
+        }
+        return original;
     }
 
 
@@ -121,5 +139,17 @@ public class PlayerEntityMixin {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 10, 3));
             }
         }
+    }
+
+    @ModifyExpressionValue(
+            method = "damageShield",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"
+            )
+    )
+    private boolean soulsweaponry$allowAbilityShieldItems(boolean original) {
+        PlayerEntity player = ((PlayerEntity) (Object)this);
+        return original || (player.getActiveItem().getItem() instanceof IHasAbilities && IHasAbilities.getAbility(player.getActiveItem(), Block.class).isPresent());
     }
 }

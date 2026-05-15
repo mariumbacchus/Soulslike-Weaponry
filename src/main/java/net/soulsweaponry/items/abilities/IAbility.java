@@ -436,6 +436,19 @@ public interface IAbility extends ICooldownItem {
      */
     default void onStatusEffectDeclined(LivingEntity entity, StatusEffectInstance declinedEffectInstance, ItemStack stack) {}
 
+    /**
+     * Returns a custom damage source during {@link PlayerEntity#attack(Entity)}, overriding the default playerAttack() damage source.
+     * An example of this use is to return magic damage source so that the weapon deals purely magic damage, bypassing regular armor.
+     */
+    default DamageSource getMeleeDamageSource(ItemStack stack, DamageSource original, Entity target, PlayerEntity player) {
+        return null;
+    }
+
+
+
+
+
+
     List<Text> getTooltipAbilities(ItemStack stack);
 
     /**

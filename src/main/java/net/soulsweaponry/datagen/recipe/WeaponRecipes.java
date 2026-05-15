@@ -465,6 +465,17 @@ public class WeaponRecipes {
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ConventionalItemTags.IRON_INGOTS).build()))
                 .offerTo(recipeExporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.LARGE_MOONLIGHT_SWORD)
+                .input('O', ItemRegistry.MOONSTONE)
+                .input('S', ConventionalItemTags.GOLD_INGOTS)
+                .input('X', ModTags.Items.LORD_SOUL)
+                .input('/', ConventionalItemTags.WOODEN_RODS)
+                .pattern(" OO")
+                .pattern("SXO")
+                .pattern("/S ")
+                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .offerTo(recipeExporter);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, recipeExporter);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, recipeExporter);

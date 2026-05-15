@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "O": {
+      "item": "soulsweapons:moonstone"
+    },
+    "S": {
+      "tag": "c:ingots/gold"
+    },
+    "X": {
+      "tag": "soulsweapons:lord_soul"
+    }
+  },
+  "pattern": [
+    " OO",
+    "SXO",
+    "/S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soulsweapons:large_sword_of_moonlight"
+  }
+}

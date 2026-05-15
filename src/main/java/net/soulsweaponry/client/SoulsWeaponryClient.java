@@ -63,6 +63,7 @@ public class SoulsWeaponryClient implements ClientModInitializer {
         KeyBindRegistry.initClient();
         ParticleClientRegistry.initClient();
         HudRegistry.init();
+        ShaderRegistry.init();
 
         FluidRenderHandlerRegistry.INSTANCE.register(FluidRegistry.STILL_PURIFIED_BLOOD, FluidRegistry.FLOWING_PURIFIED_BLOOD,
                 new SimpleFluidRenderHandler(

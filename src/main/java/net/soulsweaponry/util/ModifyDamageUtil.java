@@ -47,10 +47,17 @@ public class ModifyDamageUtil {
                 newAmount += amountAdded;
             }
         }
-        if ((source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) && entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
-            int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
-            float amountReduced = newAmount * ((amplifier + 1)*.2f);
-            newAmount -= amountReduced;
+        if (source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC)) {
+            if (entity.hasStatusEffect(EffectRegistry.MAGIC_RESISTANCE)) {
+                int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_RESISTANCE).getAmplifier();
+                float amountReduced = newAmount * ((amplifier + 1) * 0.2f);
+                newAmount -= amountReduced;
+            }
+            if (entity.hasStatusEffect(EffectRegistry.MAGIC_FRAILTY)) {
+                int amplifier = entity.getStatusEffect(EffectRegistry.MAGIC_FRAILTY).getAmplifier();
+                float amountIncreased = newAmount * ((amplifier + 1) * 0.1f);
+                newAmount += amountIncreased;
+            }
         }
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();

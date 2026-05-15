@@ -81,6 +81,7 @@ public class EffectRegistry {
             , "exalted"
     );
     public static final RegistryEntry<StatusEffect> ECHO = registerEffect(new Echo(), "echo");
+    public static final RegistryEntry<StatusEffect> MAGIC_FRAILTY = registerEffect(new MagicFrailty(), "magic_frailty");
 
     public static final RegistryEntry<Potion> WARDING = registerPotion(new Potion(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 4000)), "warding");
     public static final RegistryEntry<Potion> STRONG_WARDING = registerPotion(new Potion("warding", new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 2000, 1)), "strong_warding");

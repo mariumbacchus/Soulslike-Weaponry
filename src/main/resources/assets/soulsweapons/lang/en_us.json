@@ -171,6 +171,7 @@
     "item.soulsweapons.tonitrus": "Tonitrus",
     "item.soulsweapons.bloodlust": "Bloodlust",
     "item.soulsweapons.nightlords_sword": "Sword of the Nightlord",
+    "item.soulsweapons.large_sword_of_moonlight": "Large Sword of Moonlight",
 
     "item.soulsweapons.big_chungus_spawn_egg": "Moderately Sized Chungus Spawn Egg",
     "item.soulsweapons.withered_demon_spawn_egg": "Withered Demon Spawn Egg",
@@ -300,6 +301,7 @@
     "effect.soulsweapons.soul_of_cinder": "Soul of Cinder",
     "effect.soulsweapons.exalted": "Exalted",
     "effect.soulsweapons.echo": "Echo",
+    "effect.soulsweapons.magic_frailty": "Magic Frailty",
 
     "item.minecraft.potion.effect.warding": "Potion of Magical Warding",
     "item.minecraft.splash_potion.effect.warding": "Splash Potion of Magical Warding",
@@ -841,6 +843,18 @@
 
     "tooltip.soulsweapons.draupnirs_call": "Draupnir's Call",
     "tooltip.soulsweapons.draupnirs_call.1": "- Summon %s §6Draupnir Spears§r from the sky around you",
+
+    "tooltip.soulsweapons.moonlit": "Moonlit",
+    "tooltip.soulsweapons.moonlit.1": "- Deals purely magic damage, bypassing armor",
+    "tooltip.soulsweapons.moonlit.2": "- Damage goes through shields",
+
+    "tooltip.soulsweapons.block": "Block",
+    "tooltip.soulsweapons.block.1": "- Use to block incoming attacks",
+    "tooltip.soulsweapons.block.2": "- Reduce magic damage taken by %s when blocking",
+
+    "tooltip.soulsweapons.magic_frailty": "Magic Frailty",
+    "tooltip.soulsweapons.magic_frailty.1": "- Apply Magic Frailty effect on targets,",
+    "tooltip.soulsweapons.magic_frailty.2": "increasing magic damage they take",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

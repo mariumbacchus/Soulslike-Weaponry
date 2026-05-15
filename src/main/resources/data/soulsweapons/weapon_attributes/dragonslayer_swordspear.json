@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "attack_range": 3.25,
+        "attack_range": 3.5,
         "pose": "bettercombat:rapier",
         "two_handed": false,
         "category": "spear",

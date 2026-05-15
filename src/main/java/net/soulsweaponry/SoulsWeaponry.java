@@ -87,6 +87,10 @@ public class SoulsWeaponry implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "enhanced_gow"), modContainer, Text.literal("Szombie's 3D GOW Weapons"), ResourcePackActivationType.DEFAULT_ENABLED);
             LOGGER.info("Successfully registered built-in Szombie's Enhanced 3D GOW Weapons resourcepack!");
         });
+        FabricLoader.getInstance().getModContainer(ModId).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(ModId, "remove_item_shaders"), modContainer, Text.literal("Remove Item Shaders"), ResourcePackActivationType.NORMAL);
+            LOGGER.info("Successfully registered built-in Remove Item Shaders resourcepack!");
+        });
 
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             ItemRegistry.registerItem(new TestItem(new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");

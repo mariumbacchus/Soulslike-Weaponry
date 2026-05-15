@@ -301,6 +301,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "soulsweapons:large_sword_of_moonlight": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:large_sword_of_moonlight"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "soulsweapons:leviathan_axe": {
       "conditions": {
         "items": [
@@ -704,6 +714,9 @@
     ],
     [
       "soulsweapons:nightlords_sword"
+    ],
+    [
+      "soulsweapons:large_sword_of_moonlight"
     ]
   ],
   "sends_telemetry_event": true

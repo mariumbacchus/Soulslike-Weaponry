@@ -1,4 +1,4 @@
-// 1.21.1	2026-01-01T23:12:39.7562512	Marium's Soulslike Weaponry/Recipes
+// 1.21.1	2026-05-15T23:05:54.3069323	Marium's Soulslike Weaponry/Recipes
 9e5a8ba37d6be44dacabd6c8a0982c95c07085b6 data\soulsweapons\recipe\head_armor_upgrade.json
 2465fb1e3b35cc9424e37eabd907d8a27cd5e33a data\soulsweapons\recipe\mehrunes_razor.json
 487e01909939668cf603cb086b7b52b6983c1648 data\soulsweapons\advancement\recipes\combat\darkin_blade.json
@@ -115,6 +115,7 @@ e46a33c254604ce8db5ef35b6e868ebf792e93b5 data\soulsweapons\advancement\recipes\c
 4b39d57b0132eb0e934599c18773db4223d4930e data\soulsweapons\recipe\soulfire_stain.json
 ccc7168a4405f66b21856d9615292d498b2a4641 data\soulsweapons\advancement\recipes\building_blocks\chungus_emerald_block.json
 35d595ae222d201a65017a8904331dbf4a914e84 data\soulsweapons\advancement\recipes\combat\whirligig_sawblade.json
+f98d1b93c2f92276a0e65497a1e40dd471097cf8 data\soulsweapons\advancement\recipes\combat\large_sword_of_moonlight.json
 bcb372c2d8674612b14777ebeb67f5b08e76419b data\soulsweapons\advancement\recipes\misc\verglas.json
 b2ff0e11573461a6d4033083368aeba260f84404 data\soulsweapons\recipe\hunter_cannon.json
 cf6e0009f47b041bf839d88d1ff066706b7bc729 data\soulsweapons\advancement\recipes\combat\translucent_sword.json
@@ -262,6 +263,7 @@ d70ed14188ed7c9e50d47f0b3a3859860f1fd25c data\soulsweapons\advancement\recipes\c
 a791004cd55e20d6882b4e8bd00a517be7c8ff92 data\soulsweapons\recipe\cracked_infused_blackstone.json
 525ba9dbf4366a0d375070fc4f42c065e773cc40 data\soulsweapons\advancement\recipes\building_blocks\infused_blackstone.json
 c43bb2af86b6a1d1354b22dae668ac4dbf24c5c9 data\soulsweapons\advancement\recipes\misc\glass_vial.json
+32e2324867d6f8590d4f541975f16e10385c179c data\soulsweapons\recipe\large_sword_of_moonlight.json
 8e047682e4439fe3cda6a47b17f4f0ad77e0dbe6 data\soulsweapons\advancement\recipes\combat\hunter_pistol_upgrade.json
 0a4d50de1e433dc95386dd62bb20c9f1934c24d5 data\soulsweapons\recipe\bluemoon_shortsword.json
 62fb793476c263f68036be82d2b75674e8f5d26f data\soulsweapons\advancement\recipes\combat\glaive_of_hodir.json

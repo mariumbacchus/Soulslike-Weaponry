@@ -51,6 +51,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "soulsweapons:large_sword_of_moonlight": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:large_sword_of_moonlight"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "soulsweapons:moonlight_greatsword": {
       "conditions": {
         "items": [
@@ -99,7 +109,7 @@
     "frame": "goal",
     "icon": {
       "count": 1,
-      "id": "soulsweapons:dark_moon_greatsword"
+      "id": "soulsweapons:large_sword_of_moonlight"
     },
     "title": {
       "translate": "advancements.soulsweapons.all_moonlight_weapons.title"
@@ -132,6 +142,9 @@
     ],
     [
       "soulsweapons:holy_moonlight_sword"
+    ],
+    [
+      "soulsweapons:large_sword_of_moonlight"
     ]
   ],
   "sends_telemetry_event": true
