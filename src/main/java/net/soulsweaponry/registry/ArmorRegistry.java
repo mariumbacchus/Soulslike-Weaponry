@@ -13,9 +13,9 @@ public class ArmorRegistry {
     public static final Item CHAOS_CROWN = new ChaosCrown(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC));
     public static final Item CHAOS_HELMET = new ChaosHelmet(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.HELMET, new FabricItemSettings().rarity(Rarity.EPIC));
     public static final Item ARKENPLATE = new Arkenplate(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item WITHERED_CHEST = new Hallowheart(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
-    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(ModArmorMaterials.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static final Item ENHANCED_ARKENPLATE = new EnhancedArkenplate(ModArmorMaterials.ENHANCED_CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static final Item WITHERED_CHEST = new Hallowheart(ModArmorMaterials.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
+    public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(ModArmorMaterials.ENHANCED_WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
     public static final Item CHAOS_ROBES = new ChaosRobes(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new FabricItemSettings().rarity(Rarity.EPIC));
 
     public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.HELMET, new FabricItemSettings());

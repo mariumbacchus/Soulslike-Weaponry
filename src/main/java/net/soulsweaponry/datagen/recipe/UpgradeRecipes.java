@@ -31,9 +31,9 @@ public class UpgradeRecipes {
 
         // Guns
         createUpgrade(recipeExporter, GunRegistry.GATLING_GUN, 1, 0f);
-        createUpgrade(recipeExporter, GunRegistry.HUNTER_CANNON, 6, 0f);
-        createUpgrade(recipeExporter, GunRegistry.BLUNDERBUSS, 3.5f, 0f);
-        createUpgrade(recipeExporter, GunRegistry.HUNTER_PISTOL, 2.5f, 0f);
+        createUpgrade(recipeExporter, GunRegistry.HUNTER_CANNON, 9, 0f);
+        createUpgrade(recipeExporter, GunRegistry.BLUNDERBUSS, 2f, 0f);
+        createUpgrade(recipeExporter, GunRegistry.HUNTER_PISTOL, 3f, 0f);
 
         // Mining items
         createUpgrade(recipeExporter, ItemTags.SHOVELS, 1f, 5, true);

@@ -1485,21 +1485,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float silver_bullet_undead_bonus_damage = 4f;
     @Entry(min=0) public static float silver_bullet_posture_loss_on_player_modifier = 0.75f;
 
-    @Entry public static float blunderbuss_damage = 13f;
+    @Entry public static float blunderbuss_damage = 8f;
     @Entry public static float blunderbuss_velocity = 3f;
     @Entry public static float blunderbuss_divergence = 10f;
     @Entry public static float blunderbuss_projectile_amount = 3;
-    @Entry public static float blunderbuss_projectile_amount_per_level = 0.8f;
+    @Entry public static float blunderbuss_projectile_amount_per_level = 0.4f;
     @Entry public static float blunderbuss_posture_loss = 30;
     @Entry public static float blunderbuss_posture_loss_per_enchant_level = 3;
-    @Entry public static float blunderbuss_min_cooldown = 20;
-    @Entry public static float blunderbuss_cooldown = 80;
+    @Entry public static float blunderbuss_min_cooldown = 50;
+    @Entry public static float blunderbuss_cooldown = 200;
     @Entry public static float blunderbuss_reduced_cooldown_per_fast_hands_level = 8;
-    @Entry public static float blunderbuss_bullets_needed = 2;
+    @Entry public static float blunderbuss_bullets_needed = 3;
     @Entry public static float blunderbuss_level_to_unlock_infinity = 2;
-    @Entry public static boolean blunderbuss_bullets_bypass_entity_invincibility_frames = false;
+    @Entry public static boolean blunderbuss_bullets_bypass_entity_invincibility_frames = true;
+    @Entry public static float blunderbuss_bullets_needed_with_infinity = 3;
 
-    @Entry public static float blunderbuss_bullets_needed_with_infinity = 2;
     @Entry public static float gatling_gun_damage = 3;
     @Entry public static float gatling_gun_velocity = 3f;
     @Entry public static float gatling_gun_divergence = 3f;

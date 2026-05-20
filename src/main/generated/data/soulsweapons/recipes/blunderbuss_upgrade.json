@@ -7,7 +7,7 @@
     "item": "soulsweapons:blunderbuss"
   },
   "fallback": false,
-  "primaryBonus": 3.5,
+  "primaryBonus": 2.0,
   "secondaryBonus": 0.0,
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"
