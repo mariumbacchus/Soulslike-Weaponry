@@ -32,11 +32,10 @@ public abstract class ModdedArmor extends ArmorItem implements IHasAbilities {
 
     @Override
     public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> vanilla = super.getAttributeModifiers(slot);
-        if (slot == this.type.getEquipmentSlot()) {
-            return this.applyArmorAttributeModifiers(vanilla, slot).build();
+        if (slot != this.getSlotType()) {
+            return super.getAttributeModifiers(slot);
         }
-        return vanilla;
+        return this.applyArmorAttributeModifiers(super.getAttributeModifiers(slot), slot).build();
     }
 
     /**

@@ -7,7 +7,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.projectile.noclip.MoonveilWave;
-import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.stoppedusing.sneaking.MoonveilVertical;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -17,7 +16,7 @@ import net.soulsweaponry.util.WeaponUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IAbility {
+public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamagePerLvl, int minCooldown, int cooldown, int reducedCooldownPerLvl) implements IChargeToUse {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {

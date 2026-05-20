@@ -27,6 +27,7 @@ import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -383,10 +384,14 @@ public class WeaponUtil {
         if (amount == 0) {
             return null;
         }
-        // e.g. "soulsweapons:bleed_buildup:chungus"
-        // Any non [a-z0-9/._-] character will be replaced with "-" to satisfy Identifier class (Looking at you, Mjölnir)
-        String id = Identifier.of(SoulsWeaponry.ModId, String.format("%s.%s", attr.getTranslationKey(), name)).toString();
-        return new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADDITION);
+        Identifier attrId = Registries.ATTRIBUTE.getId(attr);
+        if (attrId == null) {
+            return null;
+        }
+        String id = SoulsWeaponry.ModId + ":" + attrId.getPath() + "." + name.toLowerCase(Locale.ROOT);
+        // 1.20.1 checks for UUID so strings won't work alone
+        UUID uuid = UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8));
+        return new EntityAttributeModifier(uuid, id, amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
     /**

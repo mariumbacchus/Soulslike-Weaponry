@@ -169,6 +169,11 @@ public final class SwitchPostHit implements IAbility {
         public int color() { return color; }
     }
 
+    /**
+     * NB! Need to register the texture being changed based on the effect by calling this with
+     * ColorProviderRegistry.ITEM.register() and applying necessary changed to the model
+     * (having 2 texture layers, see WeaponRegistry.NIGHTLORDS_SWORD as example).
+     */
     public static int getModelColor(ItemStack stack) {
         return IHasAbilities.getAbility(stack, SwitchPostHit.class)
                 .map(a -> a.getPostHitEffect(stack).color())
