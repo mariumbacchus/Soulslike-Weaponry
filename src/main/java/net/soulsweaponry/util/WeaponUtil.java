@@ -7,25 +7,32 @@ import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.*;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionBehavior;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
@@ -41,6 +48,8 @@ import static net.minecraft.item.Item.BASE_ATTACK_DAMAGE_MODIFIER_ID;
 import static net.minecraft.item.Item.BASE_ATTACK_SPEED_MODIFIER_ID;
 
 public class WeaponUtil {
+
+    public static final ExplosionBehavior DEFAULT_EXPLOSION_BEHAVIOR = new ExplosionBehavior();
 
     /**
      * Returns the upgrade level of the item. One can upgrade it by mixing the item with
@@ -478,5 +487,83 @@ public class WeaponUtil {
             builder.add(e.attribute(), e.modifier(), e.slot());
         }
         return builder;
+    }
+
+    /**
+     * Simulate an explosion without breaking blocks or killing item entities. The range, damage and knockback
+     * should match as if it was a legit explosion.
+     * @param world world
+     * @param explosionCauser entity that caused the explosion and will NOT take damage from it
+     * @param power power of the explosion
+     * @param x x
+     * @param y y
+     * @param z z
+     */
+    public static void simulateExplosion(ServerWorld world, Entity explosionCauser, float power, double x, double y, double z) {
+        if (power <= 0.0F) {
+            return;
+        }
+        float radius = power * 2f;
+        Vec3d explosionPos = new Vec3d(x, y, z);
+        Box affectedBox = new Box(
+                MathHelper.floor(x - radius - 1.0),
+                MathHelper.floor(y - radius - 1.0),
+                MathHelper.floor(z - radius - 1.0),
+                MathHelper.floor(x + radius + 1.0),
+                MathHelper.floor(y + radius + 1.0),
+                MathHelper.floor(z + radius + 1.0)
+        );
+        DamageSource damageSource = Explosion.createDamageSource(world, explosionCauser);
+        Explosion explosion = new Explosion(
+                world,
+                explosionCauser,
+                damageSource,
+                DEFAULT_EXPLOSION_BEHAVIOR,
+                x, y, z,
+                power,
+                false,
+                Explosion.DestructionType.KEEP,
+                ParticleTypes.EXPLOSION,
+                ParticleTypes.EXPLOSION_EMITTER,
+                SoundEvents.ENTITY_GENERIC_EXPLODE
+        );
+        for (Entity target : world.getOtherEntities(explosionCauser, affectedBox)) {
+            if (target instanceof ItemEntity || target.isImmuneToExplosion(explosion)) {
+                continue;
+            }
+            double distanceRatio = Math.sqrt(target.squaredDistanceTo(explosionPos)) / radius;
+            if (distanceRatio > 1.0) {
+                continue;
+            }
+            double knockbackX = target.getX() - x;
+            double knockbackY = (target instanceof TntEntity ? target.getY() : target.getEyeY()) - y;
+            double knockbackZ = target.getZ() - z;
+            double distance = Math.sqrt(knockbackX * knockbackX + knockbackY * knockbackY + knockbackZ * knockbackZ);
+
+            if (distance == 0.0) {
+                continue;
+            }
+            knockbackX /= distance;
+            knockbackY /= distance;
+            knockbackZ /= distance;
+            if (DEFAULT_EXPLOSION_BEHAVIOR.shouldDamage(explosion, target)) {
+                target.damage(damageSource, DEFAULT_EXPLOSION_BEHAVIOR.calculateDamage(explosion, target));
+            }
+
+            double exposure = Explosion.getExposure(explosionPos, target);
+            double knockbackStrength = (1.0 - distanceRatio) * exposure * DEFAULT_EXPLOSION_BEHAVIOR.getKnockbackModifier(target);
+            if (target instanceof LivingEntity livingTarget) {
+                knockbackStrength *= 1.0 - livingTarget.getAttributeValue(EntityAttributes.GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE);
+            }
+
+            Vec3d knockback = new Vec3d(knockbackX * knockbackStrength, knockbackY * knockbackStrength, knockbackZ * knockbackStrength);
+            target.setVelocity(target.getVelocity().add(knockback));
+            target.velocityModified = true;
+            target.onExplodedBy(explosionCauser);
+        }
+
+        float pitch = (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F;
+        world.playSound(null, BlockPos.ofFloored(x, y, z), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 4.0F, pitch);
+        world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0.0, 0.0, 0.0, 0.0);
     }
 }

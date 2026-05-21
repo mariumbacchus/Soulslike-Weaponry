@@ -1432,8 +1432,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
     @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
 
-    @Entry(min=0) public static boolean explosive_rounds_enchant_destroys_blocks = false;
-
     @Entry(min=0) public static float frostsilver_enchant_permafrost_per_level = 4;
     @Entry(min=0) public static float frostsilver_enchant_permafrost_duration = 100;
 
