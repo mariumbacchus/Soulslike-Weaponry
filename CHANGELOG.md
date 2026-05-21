@@ -1,5 +1,7 @@
 # Changelog
 
+- Fixed bug causing explosions spawned by Silver Bullets with Explosive Rounds enchant to kill items, inspired by vao211's pull request
+
 # 1.4.1
 - REI now properly cycles the twinkling titanite upgrade recipe output instead of having one fixed item as the result when previewing the recipe
 - Reduced the permafrost amplifier Rime Spectre would apply, added addition to the frost bar instead
