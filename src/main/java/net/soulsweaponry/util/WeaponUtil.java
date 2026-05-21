@@ -5,22 +5,27 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.ProtectionEnchantment;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
@@ -435,5 +440,73 @@ public class WeaponUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * Simulate an explosion without breaking blocks or killing item entities. The range, damage and knockback
+     * should match as if it was a legit explosion.
+     * @param world world
+     * @param explosionCauser entity that caused the explosion and will NOT take damage from it
+     * @param power power of the explosion
+     * @param x x
+     * @param y y
+     * @param z z
+     */
+    public static void simulateExplosion(ServerWorld world, Entity explosionCauser, float power, double x, double y, double z) {
+        if (power <= 0.0F) {
+            return;
+        }
+        float radius = power * 2.0F;
+        Vec3d explosionPos = new Vec3d(x, y, z);
+        Box affectedBox = new Box(
+                MathHelper.floor(x - radius - 1.0),
+                MathHelper.floor(y - radius - 1.0),
+                MathHelper.floor(z - radius - 1.0),
+                MathHelper.floor(x + radius + 1.0),
+                MathHelper.floor(y + radius + 1.0),
+                MathHelper.floor(z + radius + 1.0)
+        );
+        DamageSource damageSource = world.getDamageSources().explosion(explosionCauser, explosionCauser);
+        for (Entity target : world.getOtherEntities(explosionCauser, affectedBox)) {
+            if (target instanceof ItemEntity || target.isImmuneToExplosion()) {
+                continue;
+            }
+
+            double distanceRatio = Math.sqrt(target.squaredDistanceTo(explosionPos)) / radius;
+            if (distanceRatio > 1.0D) {
+                continue;
+            }
+
+            double dirX = target.getX() - x;
+            double dirY = (target instanceof TntEntity ? target.getY() : target.getEyeY()) - y;
+            double dirZ = target.getZ() - z;
+
+            double distance = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+            if (distance == 0.0D) {
+                continue;
+            }
+            dirX /= distance;
+            dirY /= distance;
+            dirZ /= distance;
+
+            double exposure = Explosion.getExposure(explosionPos, target);
+            double impact = (1.0D - distanceRatio) * exposure;
+
+            float damage = (float)((int)((impact * impact + impact) / 2.0D * 7.0D * radius + 1.0D));
+            target.damage(damageSource, damage);
+
+            double knockbackStrength;
+            if (target instanceof LivingEntity livingTarget) {
+                knockbackStrength = ProtectionEnchantment.transformExplosionKnockback(livingTarget, impact);
+            } else {
+                knockbackStrength = impact;
+            }
+            Vec3d knockback = new Vec3d(dirX * knockbackStrength, dirY * knockbackStrength, dirZ * knockbackStrength);
+            target.setVelocity(target.getVelocity().add(knockback));
+            target.velocityModified = true;
+        }
+        float pitch = (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F;
+        world.playSound(null, BlockPos.ofFloored(x, y, z), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 4.0F, pitch);
+        world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0.0, 0.0, 0.0, 0.0);
     }
 }

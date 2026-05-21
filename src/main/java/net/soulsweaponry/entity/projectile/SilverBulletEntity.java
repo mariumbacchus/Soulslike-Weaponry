@@ -13,6 +13,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -34,6 +35,7 @@ import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -282,9 +284,8 @@ public class SilverBulletEntity extends NonArrowProjectile implements GeoEntity,
                 }
             }
         }
-        if (this.explosionPower > 0f && !this.getWorld().isClient) {//TODO with every gun enchant and ethereal (not ricochet, it works fine) boss loot wont drop due to the explosions killing the boss
-            ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
-            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.NONE);
+        if (this.explosionPower > 0f && this.getWorld() instanceof ServerWorld serverWorld) {
+            WeaponUtil.simulateExplosion(serverWorld, this.getOwner(), this.explosionPower, this.getX(), this.getY(), this.getZ());
         }
         this.discard();
     }

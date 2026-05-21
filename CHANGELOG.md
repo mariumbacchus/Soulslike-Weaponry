@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.4.3
+- Fixed bug causing explosions spawned by Silver Bullets with Explosive Rounds enchant to kill items, inspired by vao211's pull request
+  - Due to this, Explosive Rounds can no longer destroy blocks (config line for it has been removed), make issues about it on github if you want it back
+
 # 1.4.2
 - Fixed bug causing Galeforce Cloudburst to target oneself
 - Fixed a bug causing the game to crash due to item stacks not being set properly

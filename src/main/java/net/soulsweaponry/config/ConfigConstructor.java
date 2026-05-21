@@ -1439,7 +1439,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
 
     @Entry(min=0) public static float explosive_rounds_enchant_max_level = 3;
-    @Entry(min=0) public static boolean explosive_rounds_enchant_destroys_blocks = false;
 
     @Entry(min=0) public static float fast_hands_enchant_max_level = 3;
 
