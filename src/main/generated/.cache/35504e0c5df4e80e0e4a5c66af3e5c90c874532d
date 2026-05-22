@@ -1,7 +1,7 @@
-// 1.21.1	2026-01-01T23:12:39.7461953	Marium's Soulslike Weaponry/Tags for minecraft:enchantment
+// 1.21.1	2026-05-22T21:02:39.32709	Marium's Soulslike Weaponry/Tags for minecraft:enchantment
 88fb83399a0b641acc2683994e02c1ebbad2c01c data\minecraft\tags\enchantment\curse.json
-88fb83399a0b641acc2683994e02c1ebbad2c01c data\minecraft\tags\enchantment\treasure.json
 867a46675788b8828ad55be564b2cafa7de11c84 data\minecraft\tags\enchantment\tradeable.json
+88fb83399a0b641acc2683994e02c1ebbad2c01c data\minecraft\tags\enchantment\treasure.json
 e75b6140f85c49238797aaf1cb08eae0fa4f9a6f data\minecraft\tags\enchantment\in_enchanting_table.json
 8a21720e500490f85fe101dbcd880667f164c485 data\soulsweapons\tags\enchantment\apply_fire.json
 79125d5d5f8199eb65d00c77e0879ae70b83f1ea data\soulsweapons\tags\enchantment\prevents_ammo_consume.json

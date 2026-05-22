@@ -16,7 +16,7 @@ public class HolyMoonlightGreatsword extends ModdedSword {
             ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage_per_level
     );
     private static final EssenceNeeded ESSENCE_NEEDED = new EssenceNeeded(
-            (int) ConfigConstructor.holy_moonlight_ability_essence_needed, true
+            (int) ConfigConstructor.holy_moonlight_ability_essence_needed, true, (int) ConfigConstructor.holy_moonlight_ability_item_upgrade_needed_to_remove_essence_requirement
     );
     private static final GivesEssence GIVES_ESSENCE = new GivesEssence(
             (int) ConfigConstructor.holy_moonlight_greatsword_essence_added_post_hit,

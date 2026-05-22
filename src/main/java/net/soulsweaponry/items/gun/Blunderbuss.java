@@ -21,7 +21,8 @@ public class Blunderbuss extends GunItem {
             (int) ConfigConstructor.blunderbuss_min_cooldown,
             (int) ConfigConstructor.blunderbuss_cooldown,
             (int) ConfigConstructor.blunderbuss_reduced_cooldown_per_fast_hands_level,
-            50, 0.2f
+            50, 0.2f,
+            ConfigConstructor.blunderbuss_bullets_bypass_entity_invincibility_frames
     );
 
     public Blunderbuss(Settings settings) {

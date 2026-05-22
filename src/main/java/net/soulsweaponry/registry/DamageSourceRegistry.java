@@ -23,6 +23,7 @@ public class DamageSourceRegistry {
     public static RegistryKey<DamageType> PLAYER_LIGHTNING = createType("player_lightning");
     public static RegistryKey<DamageType> PLAYER_FIRE = createType("player_fire");
     public static RegistryKey<DamageType> MAGIC_DAMAGE_BYPASS_COOLDOWN = createType("magic_damage_bypass_cooldown");
+    public static RegistryKey<DamageType> SILVER_BULLET_BYPASS_COOLDOWN = createType("silver_bullet_bypass_cooldown");
 
     public static DamageSource create(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(key).get());
@@ -51,6 +52,7 @@ public class DamageSourceRegistry {
         registerable.register(PLAYER_LIGHTNING, new DamageType("player_lightning", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
         registerable.register(PLAYER_FIRE, new DamageType("player_fire", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
         registerable.register(MAGIC_DAMAGE_BYPASS_COOLDOWN, new DamageType("magic_damage_bypass_cooldown", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
+        registerable.register(SILVER_BULLET_BYPASS_COOLDOWN, new DamageType("silver_bullet_bypass_cooldown", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F));
     }
 
     public static void init() {}

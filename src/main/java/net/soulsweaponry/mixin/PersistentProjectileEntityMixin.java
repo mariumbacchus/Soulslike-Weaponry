@@ -1,10 +1,13 @@
 package net.soulsweaponry.mixin;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.util.hit.EntityHitResult;
 import net.soulsweaponry.entity.projectile.ModPersistentProjectile;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PersistentProjectileEntity.class)
@@ -32,5 +35,21 @@ public abstract class PersistentProjectileEntityMixin {
             }
         }
         target.setStuckArrowCount(newCount);
+    }
+
+    @ModifyVariable(
+            method = "onEntityHit",
+            at = @At("STORE"),
+            ordinal = 0
+    )
+    private DamageSource soulsweaponry$modifyProjectileDamageSource(DamageSource original, EntityHitResult entityHitResult) {
+        PersistentProjectileEntity projectile = (PersistentProjectileEntity)(Object)this;
+        if (projectile instanceof ModPersistentProjectile modProjectile) {
+            DamageSource customSource = modProjectile.getCustomDamageSource();
+            if (customSource != null) {
+                return customSource;
+            }
+        }
+        return original;
     }
 }

@@ -22,7 +22,8 @@ public class HunterCannon extends GunItem {
             (int) ConfigConstructor.hunter_cannon_cooldown,
             (int) ConfigConstructor.hunter_cannon_reduced_cooldown_per_fast_hands,
             50, 0.4f,
-            ConfigConstructor.hunter_cannon_launch_power
+            ConfigConstructor.hunter_cannon_launch_power,
+            ConfigConstructor.hunter_cannon_bullets_bypass_entity_invincibility_frames
     );
 
     public HunterCannon(Settings settings) {

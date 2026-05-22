@@ -32,14 +32,15 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
             int levelToUnlockInfinity, int stackDamage, int maxProjectileAge,
             int maxProjectileAgeEthereal, int minCooldown, int cooldown,
             int reducedCooldownPerFastHands, int particleAmount, float particleSpread,
-            int maxUseTime, int useTimePerFastHands, int updateTick
+            int maxUseTime, int useTimePerFastHands, int updateTick,
+            boolean bypassIFrames
     ) {
         super(
                 damage, velocity, divergence, postureLoss, postureLossPerVisceral,
                 projectileCount, projectileCountPerLvl, bulletsNeededWithInfinity,
                 bulletsNeeded, levelToUnlockInfinity, stackDamage, maxProjectileAge,
                 maxProjectileAgeEthereal, minCooldown, cooldown, reducedCooldownPerFastHands,
-                particleAmount, particleSpread
+                particleAmount, particleSpread, bypassIFrames
         );
         this.maxUseTime = maxUseTime;
         this.useTimePerFastHands = useTimePerFastHands;

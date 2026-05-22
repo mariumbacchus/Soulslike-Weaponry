@@ -15,6 +15,7 @@ import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 

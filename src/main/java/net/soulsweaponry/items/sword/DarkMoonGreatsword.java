@@ -48,7 +48,7 @@ public class DarkMoonGreatsword extends ModdedSword {
             (int) ConfigConstructor.dark_moon_greatsword_projectile_permafrost_duration,
             ConfigConstructor.dark_moon_greatsword_projectile_permafrost_bonus_duration_per_level
     );
-    private static final FrostMoonNeeded FROST_MOON_NEEDED = new FrostMoonNeeded();
+    private static final FrostMoonNeeded FROST_MOON_NEEDED = new FrostMoonNeeded((int) ConfigConstructor.dark_moon_greatsword_item_upgrade_needed_to_remove_frost_moon_requirement);
 
     public DarkMoonGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dark_moon_greatsword_damage, ConfigConstructor.dark_moon_greatsword_attack_speed, settings);
