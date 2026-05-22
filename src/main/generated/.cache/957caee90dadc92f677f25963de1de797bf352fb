@@ -1,6 +1,6 @@
-// 1.20.1	2026-05-20T23:18:51.7703117	Marium's Soulslike Weaponry/minecraft:entity Loot Table
-be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_tables\entities\returning_knight.json
+// 1.20.1	2026-05-22T21:22:37.2426334	Marium's Soulslike Weaponry/minecraft:entity Loot Table
 876404f176719c547322abec032416344e40789f data\soulsweapons\loot_tables\entities\dark_sorcerer.json
+be2758b6741346c9e1c73c60f978220f18ab68ab data\soulsweapons\loot_tables\entities\returning_knight.json
 bb067d9e00792672a68fe601c3a8498bd6780e7e data\soulsweapons\loot_tables\entities\day_stalker.json
 44770cd0641de03aa29af78333163d9a568f3982 data\soulsweapons\loot_tables\entities\soulmass.json
 c29f93389952bb468f4cb3b275ab8f0d8ba3ab40 data\soulsweapons\loot_tables\entities\frost_giant.json
