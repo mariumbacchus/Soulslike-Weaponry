@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -30,6 +31,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     // NB: Variables that are used client side (i.e. particle types, particle count, etc.) NEED to be data tracked! maxAge is used server side only so that's fine
     private static final Logger LOGGER = LogUtils.getLogger();
     private boolean allowArrowSticking;
+    private DamageSource damageSource = null;
     private static final TrackedData<Float> WIDTH = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> HEIGHT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Integer> DESPAWN_PARTICLE_COUNT = DataTracker.registerData(ModPersistentProjectile.class, TrackedDataHandlerRegistry.INTEGER);
@@ -286,5 +288,14 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
 
     public void setAllowArrowSticking(boolean allowArrowSticking) {
         this.allowArrowSticking = allowArrowSticking;
+    }
+
+    public void setCustomDamageSource(DamageSource damageSource) {
+        this.damageSource = damageSource;
+    }
+
+    @Nullable
+    public DamageSource getCustomDamageSource() {
+        return this.damageSource;
     }
 }

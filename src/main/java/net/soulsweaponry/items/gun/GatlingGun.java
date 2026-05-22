@@ -24,7 +24,8 @@ public class GatlingGun extends GunItem {
             (int) ConfigConstructor.gatling_gun_reduced_cooldown_per_fast_hands,
             2, 0.15f,
             (int) ConfigConstructor.gatling_gun_max_use_time,
-            (int) ConfigConstructor.gatling_gun_bonus_max_use_time_per_fast_hands, 4
+            (int) ConfigConstructor.gatling_gun_bonus_max_use_time_per_fast_hands, 4,
+            ConfigConstructor.gatling_gun_bullets_bypass_entity_invincibility_frames
     );
 
     public GatlingGun(Settings settings) {

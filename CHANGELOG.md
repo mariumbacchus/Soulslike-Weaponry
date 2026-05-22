@@ -3,7 +3,33 @@
 # 1.4.3
 - Fixed bug causing explosions spawned by Silver Bullets with Explosive Rounds enchant to kill items, inspired by vao211's pull request
     - Due to this, Explosive Rounds can no longer destroy blocks (config line for it has been removed), make issues about it on github if you want it back
-TODO: 1.4.2
+- Fixed a bug causing Silver Bullets that bypass invulnerability frames to trigger Posture Break damage
+
+# 1.4.2
+- Fixed bug causing Galeforce Cloudburst to target oneself
+- Fixed a bug causing the game to crash due to item stacks not being set properly
+- Fixed a bug causing the game to crash when two players attacked one-another with Aftershock and Infectious abilities on their armor causing the abilities to infinitely trigger eachother recursively
+- Upgrading weapons with negative limitation abilities (such as Sealed Potential on Holy Moonlight Greatsword) to level 5 removes the limitation, this is the case for:
+    - Holy Moonlight Greatsword
+    - Bluemoon Greatsword
+    - Dark Moon Greatsword
+    - Master Sword
+    - Added config lines to change this level cap for this removal to trigger
+- Gatling Gun bullets now bypasses invulnerability frames
+    - Added config lines for all the guns to toggle this
+    - Phantom Trace bullets does not go through invulnerability frames
+- Blunderbuss bullets now also bypass invulnerability frames
+    - Phantom Trace bullets does not go through invulnerability frames
+    - Reduced damage and increased cooldown since more bullets can now hit the same target
+        - Damage per bullet: 13 -> 8
+        - Damage per bullet per level: 3.5 -> 2.0
+        - Bonus bullets shot per level: 0.8 -> 0.4
+        - Minimum cooldown: 20 -> 50
+        - Cooldown: 80 -> 200
+        - Bullets needed: 2 -> 3
+        - Bullets needed with infinity: 2 -> 3
+- Adjusted damage per level for Hunter Pistol: 2.5 -> 3.0
+- Adjusted damage per level for Hunter Cannon: 6.0 -> 9.0
 
 # 1.4.1
 - REI now properly cycles the twinkling titanite upgrade recipe output instead of having one fixed item as the result when previewing the recipe

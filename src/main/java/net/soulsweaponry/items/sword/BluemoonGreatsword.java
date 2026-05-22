@@ -23,7 +23,7 @@ public class BluemoonGreatsword extends ModdedSword {
             (int) ConfigConstructor.bluemoon_greatsword_essence_needed
     );
     private static final EssenceNeeded ESSENCE_NEEDED = new EssenceNeeded(
-            (int) ConfigConstructor.bluemoon_greatsword_essence_needed, true
+            (int) ConfigConstructor.bluemoon_greatsword_essence_needed, true, (int) ConfigConstructor.bluemoon_greatsword_item_upgrade_needed_to_remove_essence_requirement
     );
 
     public BluemoonGreatsword(ToolMaterial toolMaterial, Settings settings) {

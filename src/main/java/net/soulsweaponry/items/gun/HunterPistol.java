@@ -21,7 +21,8 @@ public class HunterPistol extends GunItem {
             (int) ConfigConstructor.hunter_pistol_min_cooldown,
             (int) ConfigConstructor.hunter_pistol_cooldown,
             (int) ConfigConstructor.hunter_pistol_reduced_cooldown_per_fast_hands,
-            10, 0.1f
+            10, 0.1f,
+            ConfigConstructor.hunter_pistol_bullets_bypass_entity_invincibility_frames
     );
 
     public HunterPistol(Settings settings) {

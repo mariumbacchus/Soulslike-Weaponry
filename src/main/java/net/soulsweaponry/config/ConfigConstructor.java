@@ -463,6 +463,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float bluemoon_greatsword_essence_needed = 8;
     @Entry public static float bluemoon_greatsword_essence_added_post_hit = 1;
     @Entry public static float bluemoon_greatsword_bonus_essence_added_post_hit_per_level = 2;
+    @Entry public static float bluemoon_greatsword_item_upgrade_needed_to_remove_essence_requirement = 5;
     @Entry public static float bluemoon_greatsword_projectile_amount = 1;
     @Entry public static float bluemoon_greatsword_bonus_projectile_amount_per_level = 0.4f;
     @Entry public static float bluemoon_greatsword_projectile_damage = 8.0f;
@@ -600,6 +601,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dark_moon_greatsword_frost_moon_cooldown = 700;
     @Entry public static float dark_moon_greatsword_frost_moon_min_cooldown = 300;
     @Entry public static float dark_moon_greatsword_frost_moon_reduced_cooldown_per_level = 60;
+    @Entry public static float dark_moon_greatsword_item_upgrade_needed_to_remove_frost_moon_requirement = 5;
 
     @Entry public static float dark_moon_greatsword_projectile_amount = 1;
     @Entry public static float dark_moon_greatsword_bonus_projectile_amount_per_level = 0;
@@ -908,6 +910,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float holy_moonlight_greatsword_essence_added_post_hit = 3;
     @Entry public static float holy_moonlight_greatsword_bonus_essence_added_post_hit_per_level = 3;
     @Entry public static float holy_moonlight_ability_essence_needed = 50;
+    @Entry public static float holy_moonlight_ability_item_upgrade_needed_to_remove_essence_requirement = 5;
 
     @Entry public static float holy_moonlight_moonfall_ruptures_amount = 8;
     @Entry public static float holy_moonlight_moonfall_bonus_ruptures_amount_per_level = 1;
@@ -1025,6 +1028,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float master_sword_projectile_damage = 11.0f;
     @Entry public static float master_sword_projectile_bonus_damage_per_level = 3f;
     @Entry public static float master_sword_projectile_velocity = 1.5f;
+    @Entry public static float master_sword_item_upgrade_needed_to_remove_health_requirement = 5;
 
     @Entry public static float mehrunes_razor_damage = 6f;
     @Entry public static float mehrunes_razor_attack_speed = 2f;
@@ -1467,20 +1471,21 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float silver_bullet_undead_bonus_damage = 4f;
     @Entry(min=0) public static float silver_bullet_posture_loss_on_player_modifier = 0.75f;
 
-    @Entry public static float blunderbuss_damage = 13f;
+    @Entry public static float blunderbuss_damage = 8f;
     @Entry public static float blunderbuss_velocity = 3f;
     @Entry public static float blunderbuss_divergence = 10f;
     @Entry public static float blunderbuss_projectile_amount = 3;
-    @Entry public static float blunderbuss_projectile_amount_per_level = 0.8f;
+    @Entry public static float blunderbuss_projectile_amount_per_level = 0.4f;
     @Entry public static float blunderbuss_posture_loss = 30;
     @Entry public static float blunderbuss_posture_loss_per_enchant_level = 3;
-    @Entry public static float blunderbuss_min_cooldown = 20;
-    @Entry public static float blunderbuss_cooldown = 80;
+    @Entry public static float blunderbuss_min_cooldown = 50;
+    @Entry public static float blunderbuss_cooldown = 200;
     @Entry public static float blunderbuss_reduced_cooldown_per_fast_hands_level = 8;
-    @Entry public static float blunderbuss_bullets_needed = 2;
+    @Entry public static float blunderbuss_bullets_needed = 3;
     @Entry public static float blunderbuss_level_to_unlock_infinity = 2;
+    @Entry public static boolean blunderbuss_bullets_bypass_entity_invincibility_frames = true;
+    @Entry public static float blunderbuss_bullets_needed_with_infinity = 3;
 
-    @Entry public static float blunderbuss_bullets_needed_with_infinity = 2;
     @Entry public static float gatling_gun_damage = 3;
     @Entry public static float gatling_gun_velocity = 3f;
     @Entry public static float gatling_gun_divergence = 3f;
@@ -1496,6 +1501,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float gatling_gun_bullets_needed = 1;
     @Entry public static float gatling_gun_bullets_needed_with_infinity = 1;
     @Entry public static float gatling_gun_level_to_unlock_infinity = 2;
+    @Entry public static boolean gatling_gun_bullets_bypass_entity_invincibility_frames = true;
 
     @Entry public static float hunter_cannon_damage = 30f;
     @Entry public static float hunter_cannon_velocity = 3f;
@@ -1511,6 +1517,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_cannon_bullets_needed_with_infinity = 10;
     @Entry public static float hunter_cannon_level_to_unlock_infinity = 2;
     @Entry public static float hunter_cannon_launch_power = 2f;
+    @Entry public static boolean hunter_cannon_bullets_bypass_entity_invincibility_frames = false;
 
     @Entry public static float hunter_pistol_damage = 6f;
     @Entry public static float hunter_pistol_velocity = 3f;
@@ -1525,4 +1532,5 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float hunter_pistol_bullets_needed = 1;
     @Entry public static float hunter_pistol_bullets_needed_with_infinity = 1;
     @Entry public static float hunter_pistol_level_to_unlock_infinity = 2;
+    @Entry public static boolean hunter_pistol_bullets_bypass_entity_invincibility_frames = false;
 }

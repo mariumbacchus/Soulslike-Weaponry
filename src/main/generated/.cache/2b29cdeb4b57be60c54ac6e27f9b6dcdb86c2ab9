@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-15T23:05:54.3069323	Marium's Soulslike Weaponry/Recipes
+// 1.21.1	2026-05-22T21:17:11.7029361	Marium's Soulslike Weaponry/Recipes
 9e5a8ba37d6be44dacabd6c8a0982c95c07085b6 data\soulsweapons\recipe\head_armor_upgrade.json
 2465fb1e3b35cc9424e37eabd907d8a27cd5e33a data\soulsweapons\recipe\mehrunes_razor.json
 487e01909939668cf603cb086b7b52b6983c1648 data\soulsweapons\advancement\recipes\combat\darkin_blade.json
@@ -10,7 +10,7 @@ d47ef9cedb2ea9aa761a8ef1147860485f85b74b data\soulsweapons\advancement\recipes\c
 e3eda9a0cda985886c547a969d7a3247a3a54264 data\soulsweapons\recipe\smelt_withered_demon_heart.json
 22cd15779161be7ac1d3d7b69f8cb5511c1a3321 data\soulsweapons\advancement\recipes\combat\forlorn_boots.json
 4832e07db7406203496d2e21abeb29194c74a141 data\soulsweapons\recipe\forlorn_chestplate.json
-e761bf6de84cfe4e314a7085d2c7aabcdd1a7e8c data\soulsweapons\recipe\hunter_cannon_upgrade.json
+ea257e06f3c7d9bd6d7d9052372db9bcab8b6713 data\soulsweapons\recipe\hunter_cannon_upgrade.json
 1c47cb9cd64219f088fdce7dc08c401cffadacb1 data\soulsweapons\recipe\leviathan_axe_left.json
 0ad32e0b1f2c656e5a14674e7fbe5c60af52a1c4 data\soulsweapons\advancement\recipes\building_blocks\soulfire_stain.json
 0e5889b6a025de5bc97685471255337ae02463a8 data\soulsweapons\advancement\recipes\combat\frostmourne.json
@@ -207,7 +207,7 @@ b228a63f18f4e4d807bf37e8c726354c581bfbca data\soulsweapons\advancement\recipes\m
 299da038c4f6a45a17c8b435ce549da64d9d054c data\soulsweapons\recipe\demon_chunk.json
 2ac5160f1e3e23ab7aed07c83e980c0dfb3b649c data\soulsweapons\recipe\bloodthirster.json
 0b72211da2aac8feeb15c62a3fc24878579b241d data\soulsweapons\advancement\recipes\combat\silver_bullet_iron_ingot.json
-233b44e718955c0dae7c57bb239f340857492c04 data\soulsweapons\recipe\hunter_pistol_upgrade.json
+282dd9f56cc46d0d258b08c11c4953fa5f08fb67 data\soulsweapons\recipe\hunter_pistol_upgrade.json
 cbc2aaea2d0f092ef16ad35496b4dde281a6bf2d data\soulsweapons\advancement\recipes\tools\moonstone_axe_left.json
 14b7191e59053e07b8c3c5e1ac4bde9882e1b071 data\soulsweapons\recipe\hunter_pistol.json
 608b8d280d6992eac27e91333ae5008faefaa457 data\soulsweapons\advancement\recipes\misc\draugr_boss_disc.json
@@ -268,4 +268,4 @@ c43bb2af86b6a1d1354b22dae668ac4dbf24c5c9 data\soulsweapons\advancement\recipes\m
 0a4d50de1e433dc95386dd62bb20c9f1934c24d5 data\soulsweapons\recipe\bluemoon_shortsword.json
 62fb793476c263f68036be82d2b75674e8f5d26f data\soulsweapons\advancement\recipes\combat\glaive_of_hodir.json
 0800b1ae29e003bcec7e871a10e39d4e822bae69 data\soulsweapons\advancement\recipes\combat\pickaxes_upgrade.json
-8853ea446536a503ce3d28ba5fdad758ba3b03bc data\soulsweapons\recipe\blunderbuss_upgrade.json
+b78be4ccbfc783a9251d76ddf12f8e10a7cf24bf data\soulsweapons\recipe\blunderbuss_upgrade.json
