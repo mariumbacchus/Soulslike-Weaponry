@@ -13,7 +13,6 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -30,11 +29,11 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -283,8 +282,49 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
                 }
             }
         }
-        if (this.explosionPower > 0f && this.getWorld() instanceof ServerWorld serverWorld) {
-            WeaponUtil.simulateExplosion(serverWorld, this.getOwner(), this.explosionPower, this.getX(), this.getY(), this.getZ());
+//        if (this.explosionPower > 0f && !this.getWorld().isClient) {//TODO with every gun enchant and ethereal (not ricochet, it works fine) boss loot wont drop due to the explosions killing the boss
+//            ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.SOUL, new Vec3d(1, 1 ,1), 0.6f);
+//            this.getWorld().createExplosion(this.getOwner(), this.getX(), this.getY(), this.getZ(), this.explosionPower, ConfigConstructor.explosive_rounds_enchant_destroys_blocks ? World.ExplosionSourceType.MOB : World.ExplosionSourceType.TRIGGER);
+//        }
+//        this.discard();
+
+        //Fix: bosses don't get explode dmg and ignore aoe dmg if explode on mobs
+        //cons: cannot destroy block (even turn on)
+        if (this.explosionPower > 0f && !this.getWorld().isClient) {
+            ParticleHandler.particleOutburst(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleTypes.EXPLOSION, new Vec3d(1, 1 ,1), 0.6f);
+            this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.PLAYERS, 1.0f, 1.0f);
+            float radius = this.explosionPower * 2.0f;
+            Box blastBox = this.getBoundingBox().expand(radius);
+
+            List<LivingEntity> targets = this.getWorld().getEntitiesByClass(LivingEntity.class, blastBox, e -> e.isAlive() && e != this.getOwner());
+
+            for (LivingEntity target : targets) {
+                // HP > 200 (is Boss from any mod)
+                if (target.getMaxHealth() >= 200.0f) {
+                    continue;
+                }
+
+                // Calculate distance for explod and damage
+                double dist = Math.sqrt(this.squaredDistanceTo(target));
+                if (dist <= radius) {
+                    float damageMultiplier = (float) (1.0 - (dist / radius));
+
+                    // Damage
+                    float aoeDamage = this.explosionPower * 4.0f * damageMultiplier;
+                    target.damage(this.getDamageSources().thrown(this, this.getOwner()), aoeDamage);
+
+                    // Knockback
+                    double kbStrength = this.explosionPower * 0.3 * damageMultiplier;
+                    Vec3d pushDir = target.getPos().subtract(this.getPos()).normalize().multiply(kbStrength);
+                    if (pushDir.lengthSquared() > 0) {
+                        pushDir = pushDir.normalize().multiply(kbStrength);
+                    } else {
+                        pushDir = new Vec3d(0, kbStrength, 0); // Đẩy thẳng lên trời nếu trùng vị trí
+                    }
+                    target.addVelocity(pushDir.x, pushDir.y + 0.2, pushDir.z);
+                    target.velocityModified = true;
+                }
+            }
         }
         this.discard();
     }
