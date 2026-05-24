@@ -91,6 +91,7 @@ dependencies {
     modRuntimeOnly("curse.maven:caelus-api-308989:5281700")
     modRuntimeOnly("curse.maven:curios-api-309927:6406027")
     modRuntimeOnly("curse.maven:patchouli-306770:6164575")
+    modRuntimeOnly("curse.maven:jade-324717:6855440")
 
     // Compile only
     // Controllable mod for controller support
